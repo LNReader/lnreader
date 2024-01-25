@@ -256,7 +256,7 @@ export const downloadChapter = async (
   try {
     const plugin = getPlugin(pluginId);
     if (!plugin) {
-      throw new Error(getString('actions.pluginNotFound'));
+      throw new Error(getString('downloadScreen.pluginNotFound'));
     }
     const chapterText = await plugin.parseChapter(chapterUrl);
     if (chapterText && chapterText.length) {
@@ -268,7 +268,7 @@ export const downloadChapter = async (
         );
       });
     } else {
-      throw new Error(getString('actions.download.chapterEmptyOrScrapeError'));
+      throw new Error(getString('downloadScreen.chapterEmptyOrScrapeError'));
     }
   } catch (error) {
     throw error;
@@ -292,7 +292,7 @@ const deleteDownloadedFiles = async (
     }
     await RNFS.unlink(path);
   } catch (error) {
-    throw new Error(getString('actions.chapter.deleteChapterError'));
+    throw new Error(getString('novelScreen.deleteChapterError'));
   }
 };
 
@@ -349,7 +349,7 @@ export const deleteDownloads = async (chapters: DownloadedChapter[]) => {
   );
   db.transaction(tx => {
     tx.executeSql('UPDATE Chapter SET isDownloaded = 0', [], () =>
-      showToast(getString('actions.chapter.deletedAllDownloads')),
+      showToast(getString('novelScreen.deletedAllDownloads')),
     );
   });
 };
@@ -384,7 +384,7 @@ export const deleteReadChaptersFromDb = async () => {
   db.transaction(tx => {
     tx.executeSql(updateIsDownloadedQuery, [], noop, txnErrorCallback);
   });
-  showToast(getString('actions.chapter.readChaptersDeleted'));
+  showToast(getString('novelScreen.readChaptersDeleted'));
 };
 
 const bookmarkChapterQuery = 'UPDATE Chapter SET bookmark = ? WHERE id = ?';

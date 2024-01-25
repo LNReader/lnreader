@@ -58,5 +58,5 @@ export const deleteAllHistory = async () => {
   db.transaction(tx => {
     tx.executeSql('UPDATE CHAPTER SET readTime = NULL');
   });
-  showToast(getString('actions.history.deleted'));
+  showToast(getString('historyScreen.deleted'));
 };

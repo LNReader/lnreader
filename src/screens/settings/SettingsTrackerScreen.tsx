@@ -19,7 +19,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
   return (
     <Provider>
       <Appbar
-        title={getString('moreScreen.settingsScreen.tracking')}
+        title={getString('tracking')}
         handleGoBack={() => navigation.goBack()}
         theme={theme}
       />
@@ -32,7 +32,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
       >
         <List.Section>
           <List.SubHeader theme={theme}>
-            {getString('moreScreen.settingsScreen.trackingScreen.services')}
+            {getString('trackingScreen.services')}
           </List.SubHeader>
           <List.Item
             title="AniList"
@@ -72,9 +72,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
                   {getString('moreScreen.settings')}
                 </List.SubHeader>
                 <List.Item
-                  title={getString(
-                    'moreScreen.settingsScreen.trackingScreen.revalidateMyanimelist',
-                  )}
+                  title={getString('trackingScreen.revalidateMyanimelist')}
                   onPress={async () => {
                     const revalidate = getTracker('MyAnimeList')?.revalidate;
                     if (revalidate) {
@@ -105,12 +103,9 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
                 fontSize: 18,
               }}
             >
-              {getString(
-                'moreScreen.settingsScreen.trackingScreen.logOutMessage',
-                {
-                  name: tracker?.name,
-                },
-              )}
+              {getString('trackingScreen.logOutMessage', {
+                name: tracker?.name,
+              })}
             </Text>
             <View
               style={{

@@ -1,41 +1,4 @@
 {
-  "actions": {
-    "chapter": {
-      "deleteChapterError": "Cant delete chapter chapter folder",
-      "deletedAllDownloads": "Deleted all Downloads",
-      "readChaptersDeleted": "Read chapters deleted"
-    },
-    "download": {
-      "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
-      "chapterName": "Chapter: %{name}",
-      "completed": "Download completed",
-      "downloader": "Downloader",
-      "downloading": "Downloading",
-      "downloadingNovel": "Downloading: %{name}",
-      "failed": "Download failed: %{message}",
-      "serviceRunning": "Another service is running. Queued chapters"
-    },
-    "history": {
-      "deleted": "History deleted."
-    },
-    "import": {
-      "error": "Import Error",
-      "novel": "Import Novel",
-      "staticFiles": "Import Static Files"
-    },
-    "migrate": {
-      "anotherServiceIsRunning": "Another service is running",
-      "migratingToNewSource": "Migrating %{name} to new source",
-      "migrationError": "Migration error",
-      "novelMigrated": "Novel Migrated"
-    },
-    "pluginNotFound": "Plugin not found!",
-    "updates": {
-      "libraryUpdated": "Library Updated",
-      "novelsUpdated": "%{num} novels updated",
-      "updatingLibrary": "Updating library"
-    }
-  },
   "advancedSettings": {
     "cachedNovelsDeletedToast": "Cached novels deleted",
     "clearCachedNovels": "Clear cached novels",
@@ -49,25 +12,41 @@
     "deleteReadChapters": "Delete read chapters",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted.",
     "importEpub": "Import Epub",
+    "importError": "Import Error",
+    "importNovel": "Import Novel",
+    "importStaticFiles": "Import Static Files",
     "useFAB": "Use FAB instead of button",
     "userAgent": "User Agent"
   },
+  "appearance": "Appearance",
+  "appearanceScreen": {
+    "accentColor": "Accent Color",
+    "alwaysShowNavLabels": "Always show nav labels",
+    "appTheme": "App theme",
+    "darkTheme": "Dark Theme",
+    "hideBackdrop": "Hide backdrop",
+    "lightTheme": "Light Theme",
+    "navbar": "Navbar",
+    "novelInfo": "Novel info",
+    "pureBlackDarkMode": "Pure black dark mode",
+    "showHistoryInTheNav": "Show history in the nav",
+    "showUpdatesInTheNav": "Show updates in the nav",
+    "theme": {
+      "default": "Default",
+      "lavender": "Lavender",
+      "midnightDusk": "Midnight Dusk",
+      "strawberry": "Strawberry Daiquiri",
+      "tako": "Tako",
+      "teal": "Teal",
+      "turquoise": "Turquoise",
+      "yotsuba": "Yotsuba"
+    }
+  },
   "backupScreen": {
+    "backupName": "Backup name",
     "createBackup": "Create backup",
     "createBackupDesc": "Can be used to restore current library",
     "createBackupWarning": "Create backup may not work on devices with Android 9 or lower.",
-    "googeDrive": "Googe Drive",
-    "googeDriveDesc": "Backup to your Google Drive",
-    "legacyBackup": "Legacy Backup",
-    "remoteBackup": "Remote Backup",
-    "restoreBackup": "Restore backup",
-    "restoreBackupDesc": "Restore library from backup file",
-    "restoreError": "Restore error",
-    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
-    "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
-    "selfHost": "Self Host",
-    "selfHostDesc": "Backup to your server",
-    "backupName": "Backup name",
     "drive": {
       "backup": "Drive Backup",
       "backupInterruped": "Drive Backup Interruped",
@@ -75,6 +54,8 @@
       "restore": "Drive Restore",
       "restoreInterruped": "Drive Restore Interruped"
     },
+    "googeDrive": "Googe Drive",
+    "googeDriveDesc": "Backup to your Google Drive",
     "legacy": {
       "backupCreated": "Backup created %{fileName}",
       "libraryRestored": "Library Restored",
@@ -84,6 +65,7 @@
       "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
       "pluginNotExist": "Plugin with id %{id} doenst exist!"
     },
+    "legacyBackup": "Legacy Backup",
     "noBackupFounded": "No backup founded",
     "remote": {
       "backup": "Self Host Backup",
@@ -93,7 +75,15 @@
       "restoreInterruped": "Self Host Restore Interruped",
       "unknownHost": "Unknown host"
     },
-    "restorinBackup": "Restoring backup"
+    "remoteBackup": "Remote Backup",
+    "restoreBackup": "Restore backup",
+    "restoreBackupDesc": "Restore library from backup file",
+    "restoreError": "Restore error",
+    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
+    "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
+    "restorinBackup": "Restoring backup",
+    "selfHost": "Self Host",
+    "selfHostDesc": "Backup to your server"
   },
   "browse": "Browse",
   "browseScreen": {
@@ -108,8 +98,12 @@
     "latest": "Latest",
     "listEmpty": "Enable languages from settings",
     "migration": {
+      "anotherServiceIsRunning": "Another service is running",
       "dialogMessage": "Migrate %{url}?",
+      "migratingToNewSource": "Migrating %{name} to new source",
+      "migrationError": "Migration error",
       "novelAlreadyInLibrary": "Novel already in library",
+      "novelMigrated": "Novel Migrated",
       "selectSource": "Select Source",
       "selectSourceDesc": "Select a Source To Migrate From"
     },
@@ -119,7 +113,7 @@
     "searchbar": "Search sources",
     "selectNovel": "Select Novel",
     "uninstalledPlugin": "Uninstalled %{name}",
-    "updatedTo": "Updated to %{}"
+    "updatedTo": "Updated to %{version}"
   },
   "categories": {
     "addCategories": "Add category",
@@ -187,11 +181,20 @@
   "downloadScreen": {
     "cancelDownloads": "Cancel downloads",
     "cancelled": "Downloads cancelled.",
+    "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
+    "chapterName": "Chapter: %{name}",
+    "completed": "Download completed",
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",
+    "downloader": "Downloader",
+    "downloading": "Downloading",
+    "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "downloads",
+    "failed": "Download failed: %{message}",
     "noDownloads": "No downloads",
-    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
+    "pluginNotFound": "Plugin not found!",
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
+    "serviceRunning": "Another service is running. Queued chapters"
   },
   "globalSearch": {
     "allSources": "all sources",
@@ -202,6 +205,7 @@
   "historyScreen": {
     "chapter": "Chapter",
     "clearHistorWarning": "Are you sure? All history will be lost.",
+    "deleted": "History deleted.",
     "nothingReadRecently": "Nothing read recently",
     "searchbar": "Search history"
   },
@@ -260,30 +264,6 @@
     "settings": "Settings",
     "settingsScreen": {
       "advanced": "Advanced",
-      "appearance": "Appearance",
-      "appearanceScreen": {
-        "accentColor": "Accent Color",
-        "alwaysShowNavLabels": "Always show nav labels",
-        "appTheme": "App theme",
-        "darkTheme": "Dark Theme",
-        "hideBackdrop": "Hide backdrop",
-        "lightTheme": "Light Theme",
-        "navbar": "Navbar",
-        "novelInfo": "Novel info",
-        "pureBlackDarkMode": "Pure black dark mode",
-        "showHistoryInTheNav": "Show history in the nav",
-        "showUpdatesInTheNav": "Show updates in the nav",
-        "theme": {
-          "default": "Default",
-          "lavender": "Lavender",
-          "midnightDusk": "Midnight Dusk",
-          "strawberry": "Strawberry Daiquiri",
-          "tako": "Tako",
-          "teal": "Teal",
-          "turquoise": "Turquoise",
-          "yotsuba": "Yotsuba"
-        }
-      },
       "browseSettings": "Browse Settings",
       "browseSettingsScreen": {
         "languages": "Languages",
@@ -345,12 +325,6 @@
         "textColorModal": "Reader text color",
         "title": "Reader",
         "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar"
-      },
-      "tracking": "Tracking",
-      "trackingScreen": {
-        "logOutMessage": "Log out from %{name}?",
-        "revalidateMyanimelist": "Revalidate MyAnimeList",
-        "services": "Services"
       }
     }
   },
@@ -384,7 +358,9 @@
       "useCustomJSWarning": "May not be supported by all EPUB readers",
       "useReaderTheme": "Use reader theme"
     },
+    "deleteChapterError": "Cant delete chapter chapter folder",
     "deleteMessage": "Delete downloaded chapters?",
+    "deletedAllDownloads": "Deleted all Downloads",
     "download": {
       "custom": "Custom",
       "customAmount": "Download custom amount",
@@ -417,6 +393,7 @@
     "migrate": "Migrate",
     "noSummary": "No summary",
     "progress": "Progress %{progress} %",
+    "readChaptersDeleted": "Read chapters deleted",
     "startReadingChapters": "Start reading %{name}",
     "status": {
       "cancelled": "Cancelled",
@@ -480,13 +457,22 @@
     "totalChapters": "Total chapters",
     "unreadChapters": "Unread chapters"
   },
+  "tracking": "Tracking",
+  "trackingScreen": {
+    "logOutMessage": "Log out from %{name}?",
+    "revalidateMyanimelist": "Revalidate MyAnimeList",
+    "services": "Services"
+  },
   "updates": "Updates",
   "updatesScreen": {
     "deletedChapters": "Deleted %{num} chapters",
     "emptyView": "No recent updates",
     "lastUpdatedAt": "Library last updated:",
+    "libraryUpdated": "Library Updated",
     "newChapters": "new Chapters",
+    "novelsUpdated": "%{num} novels updated",
     "searchbar": "Search updates",
-    "updatesLower": "updates"
+    "updatesLower": "updates",
+    "updatingLibrary": "Updating library"
   }
 }

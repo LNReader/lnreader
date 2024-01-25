@@ -29,7 +29,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title={getString('moreScreen.settingsScreen.appearance')}
+          title={getString('appearance')}
           icon="palette-outline"
           onPress={() =>
             navigation.navigate('SettingsStack', {
@@ -59,7 +59,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title={getString('moreScreen.settingsScreen.tracking')}
+          title={getString('tracking')}
           icon="sync"
           onPress={() =>
             navigation.navigate('SettingsStack', {

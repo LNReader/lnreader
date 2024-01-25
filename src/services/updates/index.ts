@@ -43,7 +43,7 @@ const updateLibrary = async (categoryId?: number) => {
 
   const notificationOptions = {
     taskName: 'Library Update',
-    taskTitle: getString('actions.updates.updatingLibrary'),
+    taskTitle: getString('updatesScreen.updatingLibrary'),
     taskDesc: '(0/' + libraryNovels.length + ')',
     taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',
@@ -85,8 +85,8 @@ const updateLibrary = async (categoryId?: number) => {
             if (libraryNovels.length === i + 1) {
               Notifications.scheduleNotificationAsync({
                 content: {
-                  title: getString('actions.updates.libraryUpdated'),
-                  body: getString('actions.updates.novelsUpdated', {
+                  title: getString('updatesScreen.libraryUpdated'),
+                  body: getString('updatesScreen.novelsUpdated', {
                     num: libraryNovels.length,
                   }),
                 },

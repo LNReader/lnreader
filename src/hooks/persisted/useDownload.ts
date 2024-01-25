@@ -28,10 +28,10 @@ const downloadChapterAction = async (taskData?: TaskData) => {
     while (queue.length > 0) {
       const { novel, chapter } = queue[0];
       await BackgroundService.updateNotification({
-        taskTitle: getString('actions.download.downloadingNovel', {
+        taskTitle: getString('downloadScreen.downloadingNovel', {
           name: novel.name,
         }),
-        taskDesc: getString('actions.download.chapterName', {
+        taskDesc: getString('downloadScreen.chapterName', {
           name: chapter.name,
         }),
       });
@@ -44,7 +44,7 @@ const downloadChapterAction = async (taskData?: TaskData) => {
         Notifications.scheduleNotificationAsync({
           content: {
             title: chapter.name,
-            body: getString('actions.download.failed', {
+            body: getString('downloadScreen.failed', {
               message: error.message,
             }),
           },
@@ -63,8 +63,8 @@ const downloadChapterAction = async (taskData?: TaskData) => {
     MMKVStorage.delete(BACKGROUND_ACTION);
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('actions.download.downloader'),
-        body: getString('actions.download.completed'),
+        title: getString('downloadScreen.downloader'),
+        body: getString('downloadScreen.completed'),
       },
       trigger: null,
     });
@@ -98,7 +98,7 @@ export default function useDownload() {
       if (!BackgroundService.isRunning()) {
         BackgroundService.start(downloadChapterAction, {
           taskName: 'Download chapters',
-          taskTitle: getString('actions.download.downloading'),
+          taskTitle: getString('downloadScreen.downloading'),
           taskDesc: getString('common.preparing'),
           taskIcon: { name: 'notification_icon', type: 'drawable' },
           color: '#00adb5',
@@ -107,7 +107,7 @@ export default function useDownload() {
         });
       }
     } else {
-      showToast(getString('actions.download.serviceRunning'));
+      showToast(getString('downloadScreen.serviceRunning'));
     }
   };
 

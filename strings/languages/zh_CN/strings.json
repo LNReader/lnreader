@@ -1,41 +1,4 @@
 {
-  "actions": {
-    "chapter": {
-      "deleteChapterError": "无法删除章节文件夹",
-      "deletedAllDownloads": "所有下载已删除",
-      "readChaptersDeleted": "阅读章节已删除"
-    },
-    "download": {
-      "chapterEmptyOrScrapeError": "章节为空或应用无法抓取",
-      "chapterName": "章节：%{name}",
-      "completed": "下载完成",
-      "downloader": "下载器",
-      "downloading": "正在下载",
-      "downloadingNovel": "正在下载：%{name}",
-      "failed": "下载失败：%{message}",
-      "serviceRunning": "另一个服务正在运行。已加入队列"
-    },
-    "history": {
-      "deleted": "历史记录已删除。"
-    },
-    "import": {
-      "error": "导入出错",
-      "novel": "导入小说",
-      "staticFiles": "导入静态文件"
-    },
-    "migrate": {
-      "anotherServiceIsRunning": "另一个服务正在运行",
-      "migratingToNewSource": "正在将 %{name} 迁移到新源",
-      "migrationError": "迁移出错",
-      "novelMigrated": "小说迁移完成"
-    },
-    "pluginNotFound": "找不到插件！",
-    "updates": {
-      "libraryUpdated": "书库已更新",
-      "novelsUpdated": "已更新 %{num} 部小说",
-      "updatingLibrary": "更新书库"
-    }
-  },
   "advancedSettings": {
     "cachedNovelsDeletedToast": "缓存的小说已删除",
     "clearCachedNovels": "清除缓存的小说",
@@ -49,25 +12,41 @@
     "deleteReadChapters": "删除已读章节",
     "deleteReadChaptersDialogTitle": "您确定吗？所有标记为已读的章节都将被删除。",
     "importEpub": "导入 EPUB",
+    "importError": "导入出错",
+    "importNovel": "导入小说",
+    "importStaticFiles": "导入静态文件",
     "useFAB": "使用浮动操作按钮",
     "userAgent": "用户代理"
   },
+  "appearance": "外观",
+  "appearanceScreen": {
+    "accentColor": "强调色",
+    "alwaysShowNavLabels": "始终显示导航标签",
+    "appTheme": "主题",
+    "darkTheme": "深色",
+    "hideBackdrop": "隐藏背景",
+    "lightTheme": "浅色",
+    "navbar": "导航栏",
+    "novelInfo": "小说信息",
+    "pureBlackDarkMode": "纯黑深色模式",
+    "showHistoryInTheNav": "在导航中显示历史记录",
+    "showUpdatesInTheNav": "在导航中显示更新",
+    "theme": {
+      "default": "默认",
+      "lavender": "薰衣草",
+      "midnightDusk": "午夜黄昏",
+      "strawberry": "草莓黛绮丽",
+      "tako": "Tako",
+      "teal": "青色",
+      "turquoise": "绿松石",
+      "yotsuba": "四叶草"
+    }
+  },
   "backupScreen": {
+    "backupName": "备份名称",
     "createBackup": "创建备份",
     "createBackupDesc": "可用于恢复当前书库",
     "createBackupWarning": "创建备份可能无法在 Android 9 或更低版本的设备上运行。",
-    "googeDrive": "Google 云端硬盘",
-    "googeDriveDesc": "备份到您的 Google 云端硬盘",
-    "legacyBackup": "旧版备份",
-    "remoteBackup": "远程备份",
-    "restoreBackup": "恢复备份",
-    "restoreBackupDesc": "从备份文件恢复书库",
-    "restoreError": "恢复错误",
-    "restoreErrorDesc": "用这个来恢复剩余的。节省您的时间。",
-    "restoreLargeBackupsWarning": "恢复大量备份可能会冻结应用程序，直到恢复完成",
-    "selfHost": "自托管",
-    "selfHostDesc": "备份到您的服务器",
-    "backupName": "备份名称",
     "drive": {
       "backup": "云端硬盘备份",
       "backupInterruped": "云端硬盘备份中断",
@@ -75,6 +54,8 @@
       "restore": "云端硬盘恢复",
       "restoreInterruped": "云端硬盘恢复中断"
     },
+    "googeDrive": "Google 云端硬盘",
+    "googeDriveDesc": "备份到您的 Google 云端硬盘",
     "legacy": {
       "backupCreated": "备份已创建 %{fileName}",
       "libraryRestored": "书库已恢复",
@@ -84,6 +65,7 @@
       "novelsRestoredError": "%{num} 部小说出现错误。请使用恢复错误备份重试。",
       "pluginNotExist": "ID 为 %{id} 的插件不存在！"
     },
+    "legacyBackup": "旧版备份",
     "noBackupFounded": "没有找到备份",
     "remote": {
       "backup": "自托管备份",
@@ -93,7 +75,15 @@
       "restoreInterruped": "自托管恢复中断",
       "unknownHost": "未知主机"
     },
-    "restorinBackup": "恢复备份"
+    "remoteBackup": "远程备份",
+    "restoreBackup": "恢复备份",
+    "restoreBackupDesc": "从备份文件恢复书库",
+    "restoreError": "恢复错误",
+    "restoreErrorDesc": "用这个来恢复剩余的。节省您的时间。",
+    "restoreLargeBackupsWarning": "恢复大量备份可能会冻结应用程序，直到恢复完成",
+    "restorinBackup": "恢复备份",
+    "selfHost": "自托管",
+    "selfHostDesc": "备份到您的服务器"
   },
   "browse": "浏览",
   "browseScreen": {
@@ -108,8 +98,12 @@
     "latest": "最新",
     "listEmpty": "从设置中启用语言",
     "migration": {
+      "anotherServiceIsRunning": "另一个服务正在运行",
       "dialogMessage": "迁移 %{url}？",
+      "migratingToNewSource": "正在将 %{name} 迁移到新源",
+      "migrationError": "迁移出错",
       "novelAlreadyInLibrary": "小说已经在书库中",
+      "novelMigrated": "小说迁移完成",
       "selectSource": "选择源",
       "selectSourceDesc": "选择要迁移的源"
     },
@@ -187,11 +181,20 @@
   "downloadScreen": {
     "cancelDownloads": "取消下载",
     "cancelled": "下载已取消。",
+    "chapterEmptyOrScrapeError": "章节为空或应用无法抓取",
+    "chapterName": "章节：%{name}",
+    "completed": "下载完成",
     "dbInfo": "已下载章节保存在 SQLite 数据库中。",
     "downloadChapters": "已下载章节",
+    "downloader": "下载器",
+    "downloading": "正在下载",
+    "downloadingNovel": "正在下载：%{name}",
     "downloadsLower": "下载",
+    "failed": "下载失败：%{message}",
     "noDownloads": "无下载",
-    "removeDownloadsWarning": "您确定吗？所有已下载章节都将被删除。"
+    "pluginNotFound": "找不到插件！",
+    "removeDownloadsWarning": "您确定吗？所有已下载章节都将被删除。",
+    "serviceRunning": "另一个服务正在运行。已加入队列"
   },
   "globalSearch": {
     "allSources": "所有源",
@@ -202,6 +205,7 @@
   "historyScreen": {
     "chapter": "章节",
     "clearHistorWarning": "您确定吗？所有历史记录都将删除。",
+    "deleted": "历史记录已删除。",
     "nothingReadRecently": "最近没读过什么",
     "searchbar": "搜索历史记录"
   },
@@ -260,30 +264,6 @@
     "settings": "设置",
     "settingsScreen": {
       "advanced": "高级",
-      "appearance": "外观",
-      "appearanceScreen": {
-        "accentColor": "强调色",
-        "alwaysShowNavLabels": "始终显示导航标签",
-        "appTheme": "主题",
-        "darkTheme": "深色",
-        "hideBackdrop": "隐藏背景",
-        "lightTheme": "浅色",
-        "navbar": "导航栏",
-        "novelInfo": "小说信息",
-        "pureBlackDarkMode": "纯黑深色模式",
-        "showHistoryInTheNav": "在导航中显示历史记录",
-        "showUpdatesInTheNav": "在导航中显示更新",
-        "theme": {
-          "default": "默认",
-          "lavender": "薰衣草",
-          "midnightDusk": "午夜黄昏",
-          "strawberry": "草莓黛绮丽",
-          "tako": "Tako",
-          "teal": "青色",
-          "turquoise": "绿松石",
-          "yotsuba": "四叶草"
-        }
-      },
       "browseSettings": "浏览设置",
       "browseSettingsScreen": {
         "languages": "语言",
@@ -345,12 +325,6 @@
         "textColorModal": "阅读器文本颜色",
         "title": "阅读器",
         "verticalSeekbarDesc": "切换垂直和水平进度条"
-      },
-      "tracking": "进度记录",
-      "trackingScreen": {
-        "logOutMessage": "从 %{name} 注销？",
-        "revalidateMyanimelist": "重新认证 MyAnimeList",
-        "services": "服务"
       }
     }
   },
@@ -384,7 +358,9 @@
       "useCustomJSWarning": "在部分 EPUB 阅读器中可能不被支持",
       "useReaderTheme": "使用阅读器主题"
     },
+    "deleteChapterError": "无法删除章节文件夹",
     "deleteMessage": "删除下载的章节？",
+    "deletedAllDownloads": "所有下载已删除",
     "download": {
       "custom": "自定义",
       "customAmount": "下载自定义数量",
@@ -417,6 +393,7 @@
     "migrate": "迁移",
     "noSummary": "无简介",
     "progress": "进度 %{progress} %",
+    "readChaptersDeleted": "阅读章节已删除",
     "startReadingChapters": "开始阅读 %{name}",
     "status": {
       "cancelled": "取消",
@@ -480,13 +457,22 @@
     "totalChapters": "统计数据",
     "unreadChapters": "未读章节"
   },
+  "tracking": "进度记录",
+  "trackingScreen": {
+    "logOutMessage": "从 %{name} 注销？",
+    "revalidateMyanimelist": "重新认证 MyAnimeList",
+    "services": "服务"
+  },
   "updates": "更新",
   "updatesScreen": {
     "deletedChapters": "已删除 %{num} 个章节",
     "emptyView": "没有新章节",
     "lastUpdatedAt": "最近更新：",
+    "libraryUpdated": "书库已更新",
     "newChapters": "新章节",
+    "novelsUpdated": "已更新 %{num} 部小说",
     "searchbar": "搜索更新",
-    "updatesLower": "更新"
+    "updatesLower": "更新",
+    "updatingLibrary": "更新书库"
   }
 }

@@ -3,9 +3,7 @@ import { getString } from '@strings/translations';
 export const strawberryDaiquiriTheme = {
   light: {
     id: 16,
-    name: getString(
-      'moreScreen.settingsScreen.appearanceScreen.theme.strawberry',
-    ),
+    name: getString('appearanceScreen.theme.strawberry'),
     isDark: false,
     primary: 'rgb(182, 30, 64)',
     onPrimary: 'rgb(255, 255, 255)',
@@ -42,9 +40,7 @@ export const strawberryDaiquiriTheme = {
   },
   dark: {
     id: 17,
-    name: getString(
-      'moreScreen.settingsScreen.appearanceScreen.theme.strawberry',
-    ),
+    name: getString('appearanceScreen.theme.strawberry'),
     isDark: true,
     primary: 'rgb(255, 178, 184)',
     onPrimary: 'rgb(103, 0, 29)',

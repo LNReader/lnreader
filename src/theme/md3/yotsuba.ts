@@ -3,7 +3,7 @@ import { getString } from '@strings/translations';
 export const yotsubaTheme = {
   light: {
     id: 12,
-    name: getString('moreScreen.settingsScreen.appearanceScreen.theme.yotsuba'),
+    name: getString('appearanceScreen.theme.yotsuba'),
     isDark: false,
     primary: 'rgb(174, 50, 0)',
     onPrimary: 'rgb(255, 255, 255)',
@@ -40,7 +40,7 @@ export const yotsubaTheme = {
   },
   dark: {
     id: 13,
-    name: getString('moreScreen.settingsScreen.appearanceScreen.theme.yotsuba'),
+    name: getString('appearanceScreen.theme.yotsuba'),
     isDark: true,
     primary: 'rgb(255, 181, 158)',
     onPrimary: 'rgb(94, 23, 0)',

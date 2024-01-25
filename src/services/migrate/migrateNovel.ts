@@ -60,7 +60,7 @@ export const migrateNovel = async (
 ) => {
   const currentAction = MMKVStorage.getString(BACKGROUND_ACTION);
   if (currentAction) {
-    showToast(getString('actions.migrate.anotherServiceIsRunning'));
+    showToast(getString('browseScreen.migration.anotherServiceIsRunning'));
     return;
   }
   try {
@@ -81,7 +81,7 @@ export const migrateNovel = async (
 
     const options = {
       taskName: 'Migration',
-      taskTitle: getString('actions.migrate.migratingToNewSource', {
+      taskTitle: getString('browseScreen.migration.migratingToNewSource', {
         name: fromNovel.name,
       }),
       taskDesc: '(0/' + fromChapters.length + ')',
@@ -219,7 +219,7 @@ export const migrateNovel = async (
             setProgress(toProgresss);
             Notifications.scheduleNotificationAsync({
               content: {
-                title: getString('actions.migrate.novelMigrated'),
+                title: getString('browseScreen.migration.novelMigrated'),
                 body: fromNovel.name,
               },
               trigger: null,
@@ -235,7 +235,7 @@ export const migrateNovel = async (
   } catch (error: any) {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('actions.migrate.migrationError'),
+        title: getString('browseScreen.migration.migrationError'),
         body: error.message,
       },
       trigger: null,
