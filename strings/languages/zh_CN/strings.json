@@ -1,9 +1,11 @@
 {
   "actions": {
     "backup": {
+      "backupName": "备份名称",
       "drive": {
         "backup": "云端硬盘备份",
         "backupInterruped": "云端硬盘备份中断",
+        "googleDriveBackup": "Google 云端硬盘备份",
         "restore": "云端硬盘恢复",
         "restoreInterruped": "云端硬盘恢复中断"
       },
@@ -16,11 +18,14 @@
         "novelsRestoredError": "%{num} 部小说出现错误。请使用恢复错误备份重试。",
         "pluginNotExist": "ID 为 %{id} 的插件不存在！"
       },
+      "noBackupFounded": "没有找到备份",
       "remote": {
         "backup": "自托管备份",
         "backupInterruped": "自托管备份中断",
+        "host": "主机",
         "restore": "自托管恢复",
-        "restoreInterruped": "自托管恢复中断"
+        "restoreInterruped": "自托管恢复中断",
+        "unknownHost": "未知主机"
       }
     },
     "chapter": {
@@ -121,6 +126,7 @@
     "categories": "类别",
     "chapters": "章节",
     "clear": "清除",
+    "copiedToClipboard": "已复制到剪贴板：%{name}",
     "delete": "删除",
     "deleted": "已删除 %{name}",
     "display": "显示",
@@ -143,6 +149,8 @@
     "searchFor": "搜索",
     "searchResults": "搜索结果",
     "show": "显示",
+    "signIn": "登录",
+    "signOut": "登出",
     "sort": "排序",
     "submit": "确定"
   },
@@ -373,7 +381,6 @@
       "useCustomJSWarning": "在部分 EPUB 阅读器中可能不被支持",
       "useReaderTheme": "使用阅读器主题"
     },
-    "copiedToClipboard": "已复制到剪贴板：%{name}",
     "deleteMessage": "删除下载的章节？",
     "download": {
       "custom": "自定义",

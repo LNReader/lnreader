@@ -3,8 +3,10 @@
  */
 
 export interface StringMap {
+  'actions.backup.backupName': 'string';
   'actions.backup.drive.backup': 'string';
   'actions.backup.drive.backupInterruped': 'string';
+  'actions.backup.drive.googleDriveBackup': 'string';
   'actions.backup.drive.restore': 'string';
   'actions.backup.drive.restoreInterruped': 'string';
   'actions.backup.legacy.backupCreated': 'string';
@@ -14,10 +16,13 @@ export interface StringMap {
   'actions.backup.legacy.novelsRestored': 'string';
   'actions.backup.legacy.novelsRestoredError': 'string';
   'actions.backup.legacy.pluginNotExist': 'string';
+  'actions.backup.noBackupFounded': 'string';
   'actions.backup.remote.backup': 'string';
   'actions.backup.remote.backupInterruped': 'string';
+  'actions.backup.remote.host': 'string';
   'actions.backup.remote.restore': 'string';
   'actions.backup.remote.restoreInterruped': 'string';
+  'actions.backup.remote.unknownHost': 'string';
   'actions.chapter.deleteChapterError': 'string';
   'actions.chapter.deletedAllDownloads': 'string';
   'actions.chapter.readChaptersDeleted': 'string';
@@ -92,6 +97,7 @@ export interface StringMap {
   'common.categories': 'string';
   'common.chapters': 'string';
   'common.clear': 'string';
+  'common.copiedToClipboard': 'string';
   'common.delete': 'string';
   'common.deleted': 'string';
   'common.display': 'string';
@@ -114,6 +120,8 @@ export interface StringMap {
   'common.searchFor': 'string';
   'common.searchResults': 'string';
   'common.show': 'string';
+  'common.signIn': 'string';
+  'common.signOut': 'string';
   'common.sort': 'string';
   'common.submit': 'string';
   'date.calendar.lastDay': 'string';
@@ -292,7 +300,6 @@ export interface StringMap {
   'novelScreen.convertToEpubModal.useCustomJS': 'string';
   'novelScreen.convertToEpubModal.useCustomJSWarning': 'string';
   'novelScreen.convertToEpubModal.useReaderTheme': 'string';
-  'novelScreen.copiedToClipboard': 'string';
   'novelScreen.deleteMessage': 'string';
   'novelScreen.download.custom': 'string';
   'novelScreen.download.customAmount': 'string';

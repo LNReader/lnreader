@@ -97,7 +97,7 @@ const NovelInfoHeader = ({
                 onLongPress={() => {
                   Clipboard.setStringAsync(novel.name).then(() =>
                     showToast(
-                      getString('novelScreen.copiedToClipboard', {
+                      getString('common.copiedToClipboard', {
                         name: novel.name,
                       }),
                     ),

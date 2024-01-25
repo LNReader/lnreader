@@ -1,9 +1,11 @@
 {
   "actions": {
     "backup": {
+      "backupName": "Backup name",
       "drive": {
         "backup": "Drive Backup",
         "backupInterruped": "Drive Backup Interruped",
+        "googleDriveBackup": "Google Drive Backup",
         "restore": "Drive Restore",
         "restoreInterruped": "Drive Restore Interruped"
       },
@@ -16,11 +18,14 @@
         "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
         "pluginNotExist": "Plugin with id %{id} doenst exist!"
       },
+      "noBackupFounded": "No backup founded",
       "remote": {
         "backup": "Self Host Backup",
         "backupInterruped": "Self Host Backup Interruped",
+        "host": "Host",
         "restore": "Self Host Restore",
-        "restoreInterruped": "Self Host Restore Interruped"
+        "restoreInterruped": "Self Host Restore Interruped",
+        "unknownHost": "Unknown host"
       }
     },
     "chapter": {
@@ -121,6 +126,7 @@
     "categories": "Categories",
     "chapters": "Chapters",
     "clear": "Clear",
+    "copiedToClipboard": "Copied to clipboard: %{name}",
     "delete": "Delete",
     "deleted": "Deleted %{name}",
     "display": "Display",
@@ -143,6 +149,8 @@
     "searchFor": "Search for",
     "searchResults": "Search results",
     "show": "Show",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
     "sort": "Sort",
     "submit": "Submit"
   },
@@ -373,7 +381,6 @@
       "useCustomJSWarning": "May not be supported by all EPUB readers",
       "useReaderTheme": "Use reader theme"
     },
-    "copiedToClipboard": "Copied to clipboard: %{name}",
     "deleteMessage": "Delete downloaded chapters?",
     "download": {
       "custom": "Custom",

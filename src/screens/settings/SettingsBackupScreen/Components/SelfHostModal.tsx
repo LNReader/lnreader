@@ -40,7 +40,7 @@ function CreateBackup({
     <>
       <TextInput
         value={backupName}
-        placeholder={'Backup name'}
+        placeholder={getString('actions.backup.backupName')}
         onChangeText={setBackupName}
         mode="outlined"
         underlineColor={theme.outline}
@@ -104,7 +104,10 @@ function RestoreBackup({
           </Button>
         )}
         ListEmptyComponent={() => (
-          <EmptyView description="No backup founded" theme={theme} />
+          <EmptyView
+            description={getString('actions.backup.noBackupFounded')}
+            theme={theme}
+          />
         )}
       />
       <View style={styles.footerContainer}>
@@ -139,7 +142,7 @@ function SetHost({
     <>
       <TextInput
         value={host}
-        placeholder={'Host'}
+        placeholder={getString('actions.backup.remote.host')}
         onChangeText={setHost}
         mode="outlined"
         underlineColor={theme.outline}
@@ -163,7 +166,9 @@ function SetHost({
                 if (data.name === 'LNReader') {
                   setBackupModal(BackupModal.CONNECTED);
                 } else {
-                  throw new Error('Unknown host');
+                  throw new Error(
+                    getString('actions.backup.remote.unknownHost'),
+                  );
                 }
               })
               .catch((error: any) => {
@@ -189,12 +194,12 @@ function Connected({
   return (
     <>
       <Button
-        title="Backup"
+        title={getString('common.backup')}
         style={[styles.btnOutline, { borderColor: theme.outline }]}
         onPress={() => setBackupModal(BackupModal.CREATE_BACKUP)}
       />
       <Button
-        title="Restore"
+        title={getString('common.restore')}
         style={[styles.btnOutline, { borderColor: theme.outline }]}
         onPress={() => setBackupModal(BackupModal.RESTORE_BACKUP)}
       />
@@ -261,7 +266,7 @@ export default function SelfHostModal({
       <>
         <View style={styles.titleContainer}>
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-            Self Host Backup
+            {getString('actions.backup.remote.backup')}
           </Text>
         </View>
         {renderModal()}
