@@ -312,7 +312,6 @@
         "cssHint": "提示: 您可以创建源相关的 CSS 配置. (#sourceId-[SOURCEID])",
         "customCSS": "自定义 CSS",
         "customJS": "自定义 JS",
-        "customJSPlaceholder": "示例",
         "deleteCustomTheme": "删除自定义主题",
         "jsHint": "提示: 您可以访问以下变量: html, novelName, chapterName, sourceId, chapterId, novelId",
         "notSaved": "未保存",
@@ -331,7 +330,6 @@
   "novelScreen": {
     "addToLibaray": "添加到书库",
     "bottomSheet": {
-      "byChapterName": "按章节名",
       "displays": {
         "chapterNumber": "章节编号",
         "sourceTitle": "源标题"

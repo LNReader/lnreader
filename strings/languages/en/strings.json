@@ -312,7 +312,6 @@
         "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
         "customCSS": "Custom CSS",
         "customJS": "Custom JS",
-        "customJSPlaceholder": "Example",
         "deleteCustomTheme": "Delete custom theme",
         "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
         "notSaved": "Not saved",
@@ -331,7 +330,6 @@
   "novelScreen": {
     "addToLibaray": "Add to library",
     "bottomSheet": {
-      "byChapterName": "By chapter name",
       "displays": {
         "chapterNumber": "Chapter number",
         "sourceTitle": "Source title"
