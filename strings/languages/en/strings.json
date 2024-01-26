@@ -1,4 +1,12 @@
 {
+  "aboutScreen": {
+    "discord": "Discord",
+    "github": "Github",
+    "helpTranslate": "Help translate",
+    "sources": "Sources",
+    "version": "Version",
+    "whatsNew": "What's new"
+  },
   "advancedSettings": {
     "cachedNovelsDeletedToast": "Cached novels deleted",
     "clearCachedNovels": "Clear cached novels",
@@ -249,14 +257,6 @@
   "more": "More",
   "moreScreen": {
     "about": "About",
-    "aboutScreen": {
-      "discord": "Discord",
-      "github": "Github",
-      "helpTranslate": "Help translate",
-      "sources": "Sources",
-      "version": "Version",
-      "whatsNew": "What's new"
-    },
     "downloadOnly": "Downloaded only",
     "downloadOnlyDesc": "Filters all novels in your library",
     "downloadQueue": "Download queue",

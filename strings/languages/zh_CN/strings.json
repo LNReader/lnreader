@@ -1,4 +1,12 @@
 {
+  "aboutScreen": {
+    "discord": "Discord",
+    "github": "Github",
+    "helpTranslate": "帮助翻译",
+    "sources": "源代码",
+    "version": "版本",
+    "whatsNew": "新增内容"
+  },
   "advancedSettings": {
     "cachedNovelsDeletedToast": "缓存的小说已删除",
     "clearCachedNovels": "清除缓存的小说",
@@ -249,14 +257,6 @@
   "more": "更多",
   "moreScreen": {
     "about": "关于",
-    "aboutScreen": {
-      "discord": "Discord",
-      "github": "Github",
-      "helpTranslate": "帮助翻译",
-      "sources": "源代码",
-      "version": "版本",
-      "whatsNew": "新增内容"
-    },
     "downloadOnly": "仅已下载",
     "downloadOnlyDesc": "过滤您书库中的所有小说",
     "downloadQueue": "下载队列",

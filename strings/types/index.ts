@@ -3,6 +3,12 @@
  */
 
 export interface StringMap {
+  'aboutScreen.discord': 'string';
+  'aboutScreen.github': 'string';
+  'aboutScreen.helpTranslate': 'string';
+  'aboutScreen.sources': 'string';
+  'aboutScreen.version': 'string';
+  'aboutScreen.whatsNew': 'string';
   'advancedSettings.cachedNovelsDeletedToast': 'string';
   'advancedSettings.clearCachedNovels': 'string';
   'advancedSettings.clearCachedNovelsDesc': 'string';
@@ -208,12 +214,6 @@ export interface StringMap {
   'libraryScreen.searchbar': 'string';
   'more': 'string';
   'moreScreen.about': 'string';
-  'moreScreen.aboutScreen.discord': 'string';
-  'moreScreen.aboutScreen.github': 'string';
-  'moreScreen.aboutScreen.helpTranslate': 'string';
-  'moreScreen.aboutScreen.sources': 'string';
-  'moreScreen.aboutScreen.version': 'string';
-  'moreScreen.aboutScreen.whatsNew': 'string';
   'moreScreen.downloadOnly': 'string';
   'moreScreen.downloadOnlyDesc': 'string';
   'moreScreen.downloadQueue': 'string';
