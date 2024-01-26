@@ -156,7 +156,7 @@ const importEpubAction = async (taskData?: TaskData) => {
     const filePathSet = new Set<string>();
     if (novel.chapters) {
       BackgroundService.updateNotification({
-        taskTitle: getString('advancedSettings.importNovel'),
+        taskTitle: getString('advancedSettingsScreen.importNovel'),
         taskDesc: '0/' + novel.chapters.length,
         progressBar: {
           value: 0,
@@ -191,7 +191,7 @@ const importEpubAction = async (taskData?: TaskData) => {
     // move static files
     const novelDir = NovelDownloadFolder + '/local/' + novelId;
     BackgroundService.updateNotification({
-      taskTitle: getString('advancedSettings.importStaticFiles'),
+      taskTitle: getString('advancedSettingsScreen.importStaticFiles'),
       taskDesc: '0/' + filePathSet.size,
       progressBar: {
         value: 0,
@@ -217,7 +217,7 @@ const importEpubAction = async (taskData?: TaskData) => {
     }
     Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('advancedSettings.importEpub'),
+        title: getString('advancedSettingsScreen.importEpub'),
         body: getString('common.done'),
       },
       trigger: null,
@@ -225,7 +225,7 @@ const importEpubAction = async (taskData?: TaskData) => {
   } catch (e: any) {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('advancedSettings.importError'),
+        title: getString('advancedSettingsScreen.importError'),
         body: e.message,
       },
       trigger: null,
@@ -270,7 +270,7 @@ export const importEpub = async () => {
     // importEpubAction catches itself
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: getString('advancedSettings.importError'),
+        title: getString('advancedSettingsScreen.importError'),
         body: e.message,
       },
       trigger: null,

@@ -102,7 +102,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
   return (
     <>
       <Appbar
-        title={getString('moreScreen.settingsScreen.generalSettings')}
+        title={getString('generalSettings')}
         // @ts-ignore
         handleGoBack={navigation.goBack}
         theme={theme}
@@ -222,7 +222,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
           />
           <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>
-            {getString('moreScreen.settingsScreen.generalSettings')}
+            {getString('generalSettings')}
           </List.SubHeader>
           <SwitchSetting
             label={getString('generalSettingsScreen.disableHapticFeedback')}

@@ -1,5 +1,5 @@
 {
-  "advancedSettings": {
+  "advancedSettingsScreen": {
     "deleteReadChapters": "Delete read chapters",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
   },
@@ -14,6 +14,13 @@
     "pinned": "Pinned",
     "removeFromLibrary": "Removed from library",
     "searchbar": "Search sources"
+  },
+  "browseSettings": "Browse Settings",
+  "browseSettingsScreen": {
+    "languages": "Languages",
+    "onlyShowPinnedSources": "Only show pinned sources",
+    "searchAllSources": "Search all sources",
+    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
   },
   "categories": {
     "addCategories": "Add category",
@@ -50,6 +57,7 @@
     "search": "Search",
     "searchFor": "Search for",
     "searchResults": "Search results",
+    "settings": "Settings",
     "sort": "Sort",
     "submit": "Submit"
   },
@@ -66,6 +74,33 @@
     "downloadChapters": "downloaded Chapters",
     "downloadsLower": "downloads",
     "noDownloads": "No downloads"
+  },
+  "generalSettings": "General",
+  "generalSettingsScreen": {
+    "asc": "(Ascending)",
+    "autoDownload": "Auto-download",
+    "bySource": "By source",
+    "chapterSort": "Default chapter sort",
+    "desc": "(Descending)",
+    "disableHapticFeedback": "Disable haptic feedback",
+    "displayMode": "Display Mode",
+    "downloadNewChapters": "Download new chapters",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Global update",
+    "itemsPerRow": "Items per row",
+    "itemsPerRowLibrary": "Items per row in library",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel",
+    "novelBadges": "Novel Badges",
+    "novelSort": "Novel Sort",
+    "refreshMetadata": "Automatically refresh metadata",
+    "refreshMetadataDescription": "Check for new cover and details when updating library",
+    "updateLibrary": "Update library on launch",
+    "updateOngoing": "Only update ongoing novels",
+    "updateTime": "Show last update time",
+    "useFAB": "Use FAB in Library"
   },
   "globalSearch": {
     "allSources": "all sources",
@@ -113,16 +148,10 @@
   "more": "More",
   "moreScreen": {
     "downloadOnly": "Downloaded only",
-    "incognitoMode": "Incognito mode",
-    "settings": "Settings",
-    "settingsScreen": {
-      "browseSettings": "Browse Settings",
-      "generalSettings": "General"
-    }
+    "incognitoMode": "Incognito mode"
   },
   "novelScreen": {
     "addToLibaray": "Add to library",
-    "bottomSheet": {},
     "chapters": "chapters",
     "continueReading": "Continue reading",
     "convertToEpubModal": {
@@ -179,53 +208,6 @@
     "finished": "Finished",
     "noNextChapter": "There's no next chapter"
   },
-  "sourceScreen": {
-    "noResultsFound": "No results found"
-  },
-  "statsScreen": {
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "readChapters": "Read chapters",
-    "statusDistribution": "Status distribution",
-    "title": "Statistics",
-    "titlesInLibrary": "Titles in library",
-    "totalChapters": "Total chapters",
-    "unreadChapters": "Unread chapters"
-  },
-  "updates": "Updates",
-  "updatesScreen": {
-    "emptyView": "No recent updates",
-    "lastUpdatedAt": "Library last updated:",
-    "newChapters": "new Chapters",
-    "searchbar": "Search updates",
-    "updatesLower": "updates"
-  },
-  "generalSettingsScreen": {
-    "asc": "(Ascending)",
-    "autoDownload": "Auto-download",
-    "bySource": "By source",
-    "chapterSort": "Default chapter sort",
-    "desc": "(Descending)",
-    "disableHapticFeedback": "Disable haptic feedback",
-    "displayMode": "Display Mode",
-    "downloadNewChapters": "Download new chapters",
-    "epub": "EPUB",
-    "epubLocation": "EPUB Location",
-    "epubLocationDescription": "The place where you open and export your EPUB files.",
-    "globalUpdate": "Global update",
-    "itemsPerRow": "Items per row",
-    "itemsPerRowLibrary": "Items per row in library",
-    "jumpToLastReadChapter": "Jump to last read chapter in list",
-    "novel": "Novel",
-    "novelBadges": "Novel Badges",
-    "novelSort": "Novel Sort",
-    "refreshMetadata": "Automatically refresh metadata",
-    "refreshMetadataDescription": "Check for new cover and details when updating library",
-    "updateLibrary": "Update library on launch",
-    "updateOngoing": "Only update ongoing novels",
-    "updateTime": "Show last update time",
-    "useFAB": "Use FAB in Library"
-  },
   "readerSettings": {
     "autoScrollInterval": "Auto scroll interval (in seconds)",
     "autoScrollOffset": "Auto scroll offset (screen height by default)",
@@ -249,10 +231,25 @@
     "title": "Reader",
     "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar"
   },
-  "browseSettingsScreen": {
-    "languages": "Languages",
-    "onlyShowPinnedSources": "Only show pinned sources",
-    "searchAllSources": "Search all sources",
-    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+  "sourceScreen": {
+    "noResultsFound": "No results found"
+  },
+  "statsScreen": {
+    "downloadedChapters": "Downloaded chapters",
+    "genreDistribution": "Genre distribution",
+    "readChapters": "Read chapters",
+    "statusDistribution": "Status distribution",
+    "title": "Statistics",
+    "titlesInLibrary": "Titles in library",
+    "totalChapters": "Total chapters",
+    "unreadChapters": "Unread chapters"
+  },
+  "updates": "Updates",
+  "updatesScreen": {
+    "emptyView": "No recent updates",
+    "lastUpdatedAt": "Library last updated:",
+    "newChapters": "new Chapters",
+    "searchbar": "Search updates",
+    "updatesLower": "updates"
   }
 }

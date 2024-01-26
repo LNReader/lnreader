@@ -1,5 +1,5 @@
 {
-  "advancedSettings": {
+  "advancedSettingsScreen": {
     "deleteReadChapters": "Delete read chapters",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
   },
@@ -14,6 +14,13 @@
     "pinned": "已固定",
     "removeFromLibrary": "Removed from library",
     "searchbar": "搜索资源"
+  },
+  "browseSettings": "浏览设置",
+  "browseSettingsScreen": {
+    "languages": "语言",
+    "onlyShowPinnedSources": "仅显示已经置顶的源",
+    "searchAllSources": "搜索所有源",
+    "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
   },
   "categories": {
     "addCategories": "Add category",
@@ -50,6 +57,7 @@
     "search": "搜索",
     "searchFor": "Search for",
     "searchResults": "Search results",
+    "settings": "设置",
     "sort": "排序",
     "submit": "Submit"
   },
@@ -66,6 +74,33 @@
     "downloadChapters": "downloaded Chapters",
     "downloadsLower": "downloads",
     "noDownloads": "No downloads"
+  },
+  "generalSettings": "常规",
+  "generalSettingsScreen": {
+    "asc": "(Ascending)",
+    "autoDownload": "Auto-download",
+    "bySource": "By source",
+    "chapterSort": "Default chapter sort",
+    "desc": "(Descending)",
+    "disableHapticFeedback": "Disable haptic feedback",
+    "displayMode": "Display Mode",
+    "downloadNewChapters": "Download new chapters",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Global update",
+    "itemsPerRow": "Items per row",
+    "itemsPerRowLibrary": "Items per row in library",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel",
+    "novelBadges": "Novel Badges",
+    "novelSort": "Novel Sort",
+    "refreshMetadata": "Automatically refresh metadata",
+    "refreshMetadataDescription": "Check for new cover and details when updating library",
+    "updateLibrary": "Update library on launch",
+    "updateOngoing": "Only update ongoing novels",
+    "updateTime": "Show last update time",
+    "useFAB": "Use FAB in Library"
   },
   "globalSearch": {
     "allSources": "所有源",
@@ -113,16 +148,10 @@
   "more": "更多",
   "moreScreen": {
     "downloadOnly": "Downloaded only",
-    "incognitoMode": "Incognito mode",
-    "settings": "设置",
-    "settingsScreen": {
-      "browseSettings": "浏览设置",
-      "generalSettings": "常规"
-    }
+    "incognitoMode": "Incognito mode"
   },
   "novelScreen": {
     "addToLibaray": "添加到书库",
-    "bottomSheet": {},
     "chapters": "章节",
     "continueReading": "继续阅读",
     "convertToEpubModal": {
@@ -179,53 +208,6 @@
     "finished": "已完成",
     "noNextChapter": "没有下一章节"
   },
-  "sourceScreen": {
-    "noResultsFound": "未找到相应结果"
-  },
-  "statsScreen": {
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "readChapters": "Read chapters",
-    "statusDistribution": "Status distribution",
-    "title": "Statistics",
-    "titlesInLibrary": "Titles in library",
-    "totalChapters": "Total chapters",
-    "unreadChapters": "Unread chapters"
-  },
-  "updates": "更新",
-  "updatesScreen": {
-    "emptyView": "No recent updates",
-    "lastUpdatedAt": "最近更新的库：",
-    "newChapters": "new Chapters",
-    "searchbar": "搜索更新",
-    "updatesLower": "updates"
-  },
-  "generalSettingsScreen": {
-    "asc": "(Ascending)",
-    "autoDownload": "Auto-download",
-    "bySource": "By source",
-    "chapterSort": "Default chapter sort",
-    "desc": "(Descending)",
-    "disableHapticFeedback": "Disable haptic feedback",
-    "displayMode": "Display Mode",
-    "downloadNewChapters": "Download new chapters",
-    "epub": "EPUB",
-    "epubLocation": "EPUB Location",
-    "epubLocationDescription": "The place where you open and export your EPUB files.",
-    "globalUpdate": "Global update",
-    "itemsPerRow": "Items per row",
-    "itemsPerRowLibrary": "Items per row in library",
-    "jumpToLastReadChapter": "Jump to last read chapter in list",
-    "novel": "Novel",
-    "novelBadges": "Novel Badges",
-    "novelSort": "Novel Sort",
-    "refreshMetadata": "Automatically refresh metadata",
-    "refreshMetadataDescription": "Check for new cover and details when updating library",
-    "updateLibrary": "Update library on launch",
-    "updateOngoing": "Only update ongoing novels",
-    "updateTime": "Show last update time",
-    "useFAB": "Use FAB in Library"
-  },
   "readerSettings": {
     "autoScrollInterval": "自动滚动间隔(以秒计)",
     "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
@@ -249,10 +231,25 @@
     "title": "阅读器",
     "verticalSeekbarDesc": "切换垂直和水平进度条"
   },
-  "browseSettingsScreen": {
-    "languages": "语言",
-    "onlyShowPinnedSources": "仅显示已经置顶的源",
-    "searchAllSources": "搜索所有源",
-    "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
+  "sourceScreen": {
+    "noResultsFound": "未找到相应结果"
+  },
+  "statsScreen": {
+    "downloadedChapters": "Downloaded chapters",
+    "genreDistribution": "Genre distribution",
+    "readChapters": "Read chapters",
+    "statusDistribution": "Status distribution",
+    "title": "Statistics",
+    "titlesInLibrary": "Titles in library",
+    "totalChapters": "Total chapters",
+    "unreadChapters": "Unread chapters"
+  },
+  "updates": "更新",
+  "updatesScreen": {
+    "emptyView": "No recent updates",
+    "lastUpdatedAt": "最近更新的库：",
+    "newChapters": "new Chapters",
+    "searchbar": "搜索更新",
+    "updatesLower": "updates"
   }
 }

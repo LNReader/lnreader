@@ -17,7 +17,7 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
   return (
     <ScreenContainer theme={theme}>
       <MoreHeader
-        title={getString('moreScreen.about')}
+        title={getString('common.about')}
         navigation={navigation}
         theme={theme}
         goBack={true}

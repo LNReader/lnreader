@@ -167,7 +167,7 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
             theme={theme}
           />
           <SwitchSetting
-            label={getString('advancedSettings.useFAB')}
+            label={getString('advancedSettingsScreen.useFAB')}
             value={useFabForContinueReading}
             onPress={() =>
               setAppSettings({

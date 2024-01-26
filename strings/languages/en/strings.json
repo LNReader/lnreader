@@ -7,7 +7,8 @@
     "version": "Version",
     "whatsNew": "What's new"
   },
-  "advancedSettings": {
+  "advancedSettings": "Advanced",
+  "advancedSettingsScreen": {
     "cachedNovelsDeletedToast": "Cached novels deleted",
     "clearCachedNovels": "Clear cached novels",
     "clearCachedNovelsDesc": "Delete cached novels which not in your library",
@@ -123,6 +124,13 @@
     "uninstalledPlugin": "Uninstalled %{name}",
     "updatedTo": "Updated to %{version}"
   },
+  "browseSettings": "Browse Settings",
+  "browseSettingsScreen": {
+    "languages": "Languages",
+    "onlyShowPinnedSources": "Only show pinned sources",
+    "searchAllSources": "Search all sources",
+    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+  },
   "categories": {
     "addCategories": "Add category",
     "cantDeleteDefault": "You cant delete default category",
@@ -139,6 +147,7 @@
     "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library"
   },
   "common": {
+    "about": "About",
     "add": "Add",
     "all": "All",
     "backup": "Backup",
@@ -173,6 +182,7 @@
     "search": "Search",
     "searchFor": "Search for",
     "searchResults": "Search results",
+    "settings": "Settings",
     "show": "Show",
     "signIn": "Sign in",
     "signOut": "Sign out",
@@ -204,6 +214,37 @@
     "pluginNotFound": "Plugin not found!",
     "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
     "serviceRunning": "Another service is running. Queued chapters"
+  },
+  "generalSettings": "General",
+  "generalSettingsScreen": {
+    "asc": "(Ascending)",
+    "autoDownload": "Auto-download",
+    "bySource": "By source",
+    "chapterSort": "Default chapter sort",
+    "desc": "(Descending)",
+    "disableHapticFeedback": "Disable haptic feedback",
+    "displayMode": "Display Mode",
+    "downloadNewChapters": "Download new chapters",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Global update",
+    "gridSize": "Grid size",
+    "gridSizeDesc": "%{num} per row",
+    "itemsPerRow": "Items per row",
+    "itemsPerRowLibrary": "Items per row in library",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel",
+    "novelBadges": "Novel Badges",
+    "novelSort": "Novel Sort",
+    "refreshMetadata": "Automatically refresh metadata",
+    "refreshMetadataDescription": "Check for new cover and details when updating library",
+    "sortOrder": "Sort Order",
+    "updateLibrary": "Update library on launch",
+    "updateLibraryDesc": "Not recommended for low devices",
+    "updateOngoing": "Only update ongoing novels",
+    "updateTime": "Show last update time",
+    "useFAB": "Use FAB in Library"
   },
   "globalSearch": {
     "allSources": "all sources",
@@ -256,18 +297,11 @@
   },
   "more": "More",
   "moreScreen": {
-    "about": "About",
     "downloadOnly": "Downloaded only",
     "downloadOnlyDesc": "Filters all novels in your library",
     "downloadQueue": "Download queue",
     "incognitoMode": "Incognito mode",
-    "incognitoModeDesc": "Pauses reading history",
-    "settings": "Settings",
-    "settingsScreen": {
-      "advanced": "Advanced",
-      "browseSettings": "Browse Settings",
-      "generalSettings": "General"
-    }
+    "incognitoModeDesc": "Pauses reading history"
   },
   "novelScreen": {
     "addToLibaray": "Add to library",
@@ -383,6 +417,29 @@
     "noNextChapter": "There's no next chapter",
     "noPreviousChapter": "There's no previous chapter"
   },
+  "readerSettings": {
+    "autoScrollInterval": "Auto scroll interval (in seconds)",
+    "autoScrollOffset": "Auto scroll offset (screen height by default)",
+    "backgroundColor": "Background color",
+    "backgroundColorModal": "Reader background color",
+    "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+    "clearCustomJS": "Are you sure? Your custom JS would be reset.",
+    "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+    "customCSS": "Custom CSS",
+    "customJS": "Custom JS",
+    "deleteCustomTheme": "Delete custom theme",
+    "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Not saved",
+    "openCSSFile": "Open CSS file",
+    "openJSFile": "Open JS file",
+    "preset": "Preset",
+    "readerTheme": "Reader theme",
+    "saveCustomTheme": "Save custom theme",
+    "textColor": "Text color",
+    "textColorModal": "Reader text color",
+    "title": "Reader",
+    "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar"
+  },
   "sourceScreen": {
     "noResultsFound": "No results found"
   },
@@ -414,64 +471,5 @@
     "searchbar": "Search updates",
     "updatesLower": "updates",
     "updatingLibrary": "Updating library"
-  },
-  "generalSettingsScreen": {
-    "asc": "(Ascending)",
-    "autoDownload": "Auto-download",
-    "bySource": "By source",
-    "chapterSort": "Default chapter sort",
-    "desc": "(Descending)",
-    "disableHapticFeedback": "Disable haptic feedback",
-    "displayMode": "Display Mode",
-    "downloadNewChapters": "Download new chapters",
-    "epub": "EPUB",
-    "epubLocation": "EPUB Location",
-    "epubLocationDescription": "The place where you open and export your EPUB files.",
-    "globalUpdate": "Global update",
-    "gridSize": "Grid size",
-    "gridSizeDesc": "%{num} per row",
-    "itemsPerRow": "Items per row",
-    "itemsPerRowLibrary": "Items per row in library",
-    "jumpToLastReadChapter": "Jump to last read chapter in list",
-    "novel": "Novel",
-    "novelBadges": "Novel Badges",
-    "novelSort": "Novel Sort",
-    "refreshMetadata": "Automatically refresh metadata",
-    "refreshMetadataDescription": "Check for new cover and details when updating library",
-    "sortOrder": "Sort Order",
-    "updateLibrary": "Update library on launch",
-    "updateLibraryDesc": "Not recommended for low devices",
-    "updateOngoing": "Only update ongoing novels",
-    "updateTime": "Show last update time",
-    "useFAB": "Use FAB in Library"
-  },
-  "readerSettings": {
-    "autoScrollInterval": "Auto scroll interval (in seconds)",
-    "autoScrollOffset": "Auto scroll offset (screen height by default)",
-    "backgroundColor": "Background color",
-    "backgroundColorModal": "Reader background color",
-    "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-    "clearCustomJS": "Are you sure? Your custom JS would be reset.",
-    "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-    "customCSS": "Custom CSS",
-    "customJS": "Custom JS",
-    "deleteCustomTheme": "Delete custom theme",
-    "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-    "notSaved": "Not saved",
-    "openCSSFile": "Open CSS file",
-    "openJSFile": "Open JS file",
-    "preset": "Preset",
-    "readerTheme": "Reader theme",
-    "saveCustomTheme": "Save custom theme",
-    "textColor": "Text color",
-    "textColorModal": "Reader text color",
-    "title": "Reader",
-    "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar"
-  },
-  "browseSettingsScreen": {
-    "languages": "Languages",
-    "onlyShowPinnedSources": "Only show pinned sources",
-    "searchAllSources": "Search all sources",
-    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
   }
 }

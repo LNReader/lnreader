@@ -36,7 +36,7 @@ const GeneralSettings: React.FC = () => {
   return (
     <>
       <List.SubHeader theme={theme}>
-        {getString('moreScreen.settingsScreen.generalSettings')}
+        {getString('generalSettings')}
       </List.SubHeader>
 
       {/* will add this later xD */}

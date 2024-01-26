@@ -86,7 +86,7 @@ const StatsScreen = () => {
         contentContainerStyle={styles.contentCtn}
       >
         <Text style={[styles.header, { color: theme.onSurfaceVariant }]}>
-          {getString('moreScreen.settingsScreen.generalSettings')}
+          {getString('generalSettings')}
         </Text>
         <Row style={styles.statsRow}>
           <StatsCard

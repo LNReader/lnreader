@@ -142,7 +142,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       },
       {
         key: 'generalTab',
-        title: getString('moreScreen.settingsScreen.generalSettings'),
+        title: getString('generalSettings'),
       },
     ],
     [],

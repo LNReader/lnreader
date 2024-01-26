@@ -1,5 +1,5 @@
 {
-  "advancedSettings": {
+  "advancedSettingsScreen": {
     "deleteReadChapters": "Olvasott fejezetek törlése",
     "deleteReadChaptersDialogTitle": "Biztos vagy benne? Az összes olvasottnak jelölt fejezet törölve lesz."
   },
@@ -14,6 +14,13 @@
     "pinned": "Rögzített",
     "removeFromLibrary": "Eltávolítva a könyvtárból",
     "searchbar": "Források keresése"
+  },
+  "browseSettings": "Browse Settings",
+  "browseSettingsScreen": {
+    "languages": "Nyelvek",
+    "onlyShowPinnedSources": "Only show pinned sources",
+    "searchAllSources": "Keresés az összes forrásban",
+    "searchAllWarning": "Nagyszámú forrásban való keresés lefagyaszthatja az alkalmazást amíg be nem fejeződik a keresés."
   },
   "categories": {
     "addCategories": "Kategória hozzáadása",
@@ -50,6 +57,7 @@
     "search": "Keresés",
     "searchFor": "Keresés a következőre",
     "searchResults": "Keresési eredmények",
+    "settings": "Beállítások",
     "sort": "Rendezés",
     "submit": "Küldés"
   },
@@ -66,6 +74,33 @@
     "downloadChapters": "letöltött fejezetek",
     "downloadsLower": "letöltések",
     "noDownloads": "Nincsenek letöltések"
+  },
+  "generalSettings": "Általános",
+  "generalSettingsScreen": {
+    "asc": "(Növekvő)",
+    "autoDownload": "Automatikus letöltés",
+    "bySource": "Forrás szerint",
+    "chapterSort": "Default chapter sort",
+    "desc": "(Csökkenő)",
+    "disableHapticFeedback": "Haptikus visszajelzés kikapcsolása",
+    "displayMode": "Megjelenítési mód",
+    "downloadNewChapters": "Új fejezetek letöltése",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Globális frissítés",
+    "itemsPerRow": "Soronkénti elemek",
+    "itemsPerRowLibrary": "Soronkénti elemek a könyvtárban",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Regény",
+    "novelBadges": "Novel Badges",
+    "novelSort": "Novel Sort",
+    "refreshMetadata": "Metaadatok automatikus frissítése",
+    "refreshMetadataDescription": "Új borító és leírás keresése a könyvtár frissítésekor",
+    "updateLibrary": "Könyvtár frissítése indításkor",
+    "updateOngoing": "Only update ongoing novels",
+    "updateTime": "Utolsó frissítés idejének mutatása",
+    "useFAB": "Use FAB in Library"
   },
   "globalSearch": {
     "allSources": "összes forrás",
@@ -113,16 +148,10 @@
   "more": "Több",
   "moreScreen": {
     "downloadOnly": "Csak a letöltöttek",
-    "incognitoMode": "Inkognitó mód",
-    "settings": "Beállítások",
-    "settingsScreen": {
-      "browseSettings": "Browse Settings",
-      "generalSettings": "Általános"
-    }
+    "incognitoMode": "Inkognitó mód"
   },
   "novelScreen": {
     "addToLibaray": "Hozzáadás a könyvtárhoz",
-    "bottomSheet": {},
     "chapters": "fejezetek",
     "continueReading": "Olvasás folytatása",
     "convertToEpubModal": {
@@ -179,53 +208,6 @@
     "finished": "Befejezett",
     "noNextChapter": "Nincs következő fejezet"
   },
-  "sourceScreen": {
-    "noResultsFound": "Nincs találat"
-  },
-  "statsScreen": {
-    "downloadedChapters": "Letöltött fejezetek",
-    "genreDistribution": "Genre distribution",
-    "readChapters": "Olvasott fejezetek",
-    "statusDistribution": "Status distribution",
-    "title": "Statisztikák",
-    "titlesInLibrary": "Címek a könyvtárban",
-    "totalChapters": "Összes fejezetek száma",
-    "unreadChapters": "Olvasatlan fejezetek"
-  },
-  "updates": "Frissítések",
-  "updatesScreen": {
-    "emptyView": "Nincsenek új frissítések",
-    "lastUpdatedAt": "Könyvtár utoljára frissítve:",
-    "newChapters": "új fejezetek",
-    "searchbar": "Frissítések keresése",
-    "updatesLower": "frissítések"
-  },
-  "generalSettingsScreen": {
-    "asc": "(Növekvő)",
-    "autoDownload": "Automatikus letöltés",
-    "bySource": "Forrás szerint",
-    "chapterSort": "Default chapter sort",
-    "desc": "(Csökkenő)",
-    "disableHapticFeedback": "Haptikus visszajelzés kikapcsolása",
-    "displayMode": "Megjelenítési mód",
-    "downloadNewChapters": "Új fejezetek letöltése",
-    "epub": "EPUB",
-    "epubLocation": "EPUB Location",
-    "epubLocationDescription": "The place where you open and export your EPUB files.",
-    "globalUpdate": "Globális frissítés",
-    "itemsPerRow": "Soronkénti elemek",
-    "itemsPerRowLibrary": "Soronkénti elemek a könyvtárban",
-    "jumpToLastReadChapter": "Jump to last read chapter in list",
-    "novel": "Regény",
-    "novelBadges": "Novel Badges",
-    "novelSort": "Novel Sort",
-    "refreshMetadata": "Metaadatok automatikus frissítése",
-    "refreshMetadataDescription": "Új borító és leírás keresése a könyvtár frissítésekor",
-    "updateLibrary": "Könyvtár frissítése indításkor",
-    "updateOngoing": "Only update ongoing novels",
-    "updateTime": "Utolsó frissítés idejének mutatása",
-    "useFAB": "Use FAB in Library"
-  },
   "readerSettings": {
     "autoScrollInterval": "Auto scroll interval (in seconds)",
     "autoScrollOffset": "Auto scroll offset (screen height by default)",
@@ -249,10 +231,25 @@
     "title": "Olvasó",
     "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar"
   },
-  "browseSettingsScreen": {
-    "languages": "Nyelvek",
-    "onlyShowPinnedSources": "Only show pinned sources",
-    "searchAllSources": "Keresés az összes forrásban",
-    "searchAllWarning": "Nagyszámú forrásban való keresés lefagyaszthatja az alkalmazást amíg be nem fejeződik a keresés."
+  "sourceScreen": {
+    "noResultsFound": "Nincs találat"
+  },
+  "statsScreen": {
+    "downloadedChapters": "Letöltött fejezetek",
+    "genreDistribution": "Genre distribution",
+    "readChapters": "Olvasott fejezetek",
+    "statusDistribution": "Status distribution",
+    "title": "Statisztikák",
+    "titlesInLibrary": "Címek a könyvtárban",
+    "totalChapters": "Összes fejezetek száma",
+    "unreadChapters": "Olvasatlan fejezetek"
+  },
+  "updates": "Frissítések",
+  "updatesScreen": {
+    "emptyView": "Nincsenek új frissítések",
+    "lastUpdatedAt": "Könyvtár utoljára frissítve:",
+    "newChapters": "új fejezetek",
+    "searchbar": "Frissítések keresése",
+    "updatesLower": "frissítések"
   }
 }

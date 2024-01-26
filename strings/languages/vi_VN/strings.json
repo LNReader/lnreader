@@ -1,5 +1,5 @@
 {
-  "advancedSettings": {
+  "advancedSettingsScreen": {
     "deleteReadChapters": "Xóa chương đã đọc",
     "deleteReadChaptersDialogTitle": "Bạn có chắc không? Toàn bộ chương được đánh đã đọc sẽ bị xoá."
   },
@@ -14,6 +14,13 @@
     "pinned": "Đã ghim",
     "removeFromLibrary": "Đã xoá khỏi thư viện",
     "searchbar": "Tìm nguồn truyện"
+  },
+  "browseSettings": "Cài đặt trình tìm kiếm",
+  "browseSettingsScreen": {
+    "languages": "Ngôn ngữ",
+    "onlyShowPinnedSources": "Chỉ hiện nguồn được ghim",
+    "searchAllSources": "Tìm trên tất cả các nguồn",
+    "searchAllWarning": "Tìm kiếm với lượng lớn nguồn có thể đóng băng ứng dụng cho đến khi tìm kiếm hoàn thành."
   },
   "categories": {
     "addCategories": "Tạo Danh mục",
@@ -50,6 +57,7 @@
     "search": "Tìm kiếm",
     "searchFor": "Tìm kiếm",
     "searchResults": "Kết quả tìm kiếm",
+    "settings": "Cài đặt",
     "sort": "Sắp xếp",
     "submit": "Gửi"
   },
@@ -66,6 +74,33 @@
     "downloadChapters": "chương đã tải về",
     "downloadsLower": "tải xuống",
     "noDownloads": "Không có tải xuống"
+  },
+  "generalSettings": "Chung",
+  "generalSettingsScreen": {
+    "asc": "(Tăng dần)",
+    "autoDownload": "Tự động tải xuống",
+    "bySource": "Theo nguồn",
+    "chapterSort": "Sắp xếp mặc định",
+    "desc": "(Giảm dần)",
+    "disableHapticFeedback": "Tắt phản hồi xúc giác",
+    "displayMode": "Chế độ Hiển thị",
+    "downloadNewChapters": "Tải chương mới",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Cập nhật toàn bộ",
+    "itemsPerRow": "Truyện trên hàng",
+    "itemsPerRowLibrary": "Số truyện trên hàng trong thư viện",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Tiểu thuyết",
+    "novelBadges": "Nhãn tiểu thuyết",
+    "novelSort": "Sắp xếp truyện",
+    "refreshMetadata": "Tự động làm mới metadata",
+    "refreshMetadataDescription": "Kiểm tra ảnh bìa và mô tả khi cập nhật thự viện",
+    "updateLibrary": "Cập nhật thư viện khi khởi động",
+    "updateOngoing": "Chỉ cập nhật truyện đang thực hiện",
+    "updateTime": "Hiện lần cập nhật trước",
+    "useFAB": "Sử dụng FAB trong thư viện"
   },
   "globalSearch": {
     "allSources": "toàn bộ nguồn",
@@ -113,16 +148,10 @@
   "more": "Khác",
   "moreScreen": {
     "downloadOnly": "Chỉ tải xuống",
-    "incognitoMode": "Chế độ ẩn danh",
-    "settings": "Cài đặt",
-    "settingsScreen": {
-      "browseSettings": "Cài đặt trình tìm kiếm",
-      "generalSettings": "Chung"
-    }
+    "incognitoMode": "Chế độ ẩn danh"
   },
   "novelScreen": {
     "addToLibaray": "Thêm vào thư viện",
-    "bottomSheet": {},
     "chapters": "chương",
     "continueReading": "Tiếp tục đọc",
     "convertToEpubModal": {
@@ -179,53 +208,6 @@
     "finished": "Đã xong",
     "noNextChapter": "Không có chương kế tiếp"
   },
-  "sourceScreen": {
-    "noResultsFound": "Không tìm thấy kết quả"
-  },
-  "statsScreen": {
-    "downloadedChapters": "Chương đã tải về",
-    "genreDistribution": "Thể loại",
-    "readChapters": "Chương đã đọc",
-    "statusDistribution": "Trạng thái",
-    "title": "Thống kê",
-    "titlesInLibrary": "Tiêu đề",
-    "totalChapters": "Chương",
-    "unreadChapters": "Chương chưa đọc"
-  },
-  "updates": "Cập nhật",
-  "updatesScreen": {
-    "emptyView": "Chưa cập nhật mới",
-    "lastUpdatedAt": "Lần cập nhật thư viện gần nhất:",
-    "newChapters": "chương mới",
-    "searchbar": "Tìm kiếm bản cập nhật",
-    "updatesLower": "cập nhập"
-  },
-  "generalSettingsScreen": {
-    "asc": "(Tăng dần)",
-    "autoDownload": "Tự động tải xuống",
-    "bySource": "Theo nguồn",
-    "chapterSort": "Sắp xếp mặc định",
-    "desc": "(Giảm dần)",
-    "disableHapticFeedback": "Tắt phản hồi xúc giác",
-    "displayMode": "Chế độ Hiển thị",
-    "downloadNewChapters": "Tải chương mới",
-    "epub": "EPUB",
-    "epubLocation": "EPUB Location",
-    "epubLocationDescription": "The place where you open and export your EPUB files.",
-    "globalUpdate": "Cập nhật toàn bộ",
-    "itemsPerRow": "Truyện trên hàng",
-    "itemsPerRowLibrary": "Số truyện trên hàng trong thư viện",
-    "jumpToLastReadChapter": "Jump to last read chapter in list",
-    "novel": "Tiểu thuyết",
-    "novelBadges": "Nhãn tiểu thuyết",
-    "novelSort": "Sắp xếp truyện",
-    "refreshMetadata": "Tự động làm mới metadata",
-    "refreshMetadataDescription": "Kiểm tra ảnh bìa và mô tả khi cập nhật thự viện",
-    "updateLibrary": "Cập nhật thư viện khi khởi động",
-    "updateOngoing": "Chỉ cập nhật truyện đang thực hiện",
-    "updateTime": "Hiện lần cập nhật trước",
-    "useFAB": "Sử dụng FAB trong thư viện"
-  },
   "readerSettings": {
     "autoScrollInterval": "Thời gian tự động cuộn (giây)",
     "autoScrollOffset": "Khoảng cách tự động cuộn (mặc định chiều cao màn hình)",
@@ -249,10 +231,25 @@
     "title": "Trang đọc",
     "verticalSeekbarDesc": "Chuyển hướng thanh trạng thái dọc hoặc ngang"
   },
-  "browseSettingsScreen": {
-    "languages": "Ngôn ngữ",
-    "onlyShowPinnedSources": "Chỉ hiện nguồn được ghim",
-    "searchAllSources": "Tìm trên tất cả các nguồn",
-    "searchAllWarning": "Tìm kiếm với lượng lớn nguồn có thể đóng băng ứng dụng cho đến khi tìm kiếm hoàn thành."
+  "sourceScreen": {
+    "noResultsFound": "Không tìm thấy kết quả"
+  },
+  "statsScreen": {
+    "downloadedChapters": "Chương đã tải về",
+    "genreDistribution": "Thể loại",
+    "readChapters": "Chương đã đọc",
+    "statusDistribution": "Trạng thái",
+    "title": "Thống kê",
+    "titlesInLibrary": "Tiêu đề",
+    "totalChapters": "Chương",
+    "unreadChapters": "Chương chưa đọc"
+  },
+  "updates": "Cập nhật",
+  "updatesScreen": {
+    "emptyView": "Chưa cập nhật mới",
+    "lastUpdatedAt": "Lần cập nhật thư viện gần nhất:",
+    "newChapters": "chương mới",
+    "searchbar": "Tìm kiếm bản cập nhật",
+    "updatesLower": "cập nhập"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "advancedSettings": {
+  "advancedSettingsScreen": {
     "deleteReadChapters": "حذف الفصول المقروءة",
     "deleteReadChaptersDialogTitle": "هل أنت متأكد؟ سيتم حذف جميع الفصول المعلَّمة كمقروءة."
   },
@@ -14,6 +14,13 @@
     "pinned": "مثبت",
     "removeFromLibrary": "تمت إزالته من المكتبة",
     "searchbar": "البحث في المصادر"
+  },
+  "browseSettings": "تصفح الإعدادات",
+  "browseSettingsScreen": {
+    "languages": "اللغات",
+    "onlyShowPinnedSources": "إظهار المصادر المثبتة فقط",
+    "searchAllSources": "البحث في جميع المصادر",
+    "searchAllWarning": "البحث عن عدد كبير من المصادر قد يجمد التطبيق حتى الانتهاء من البحث."
   },
   "categories": {
     "addCategories": "إضافة تصنيف",
@@ -50,6 +57,7 @@
     "search": "بحث",
     "searchFor": "بحث عن",
     "searchResults": "نتائج البحث",
+    "settings": "الإعدادات",
     "sort": "الفرز",
     "submit": "إرسال"
   },
@@ -66,6 +74,33 @@
     "downloadChapters": "الفصول المحملة",
     "downloadsLower": "تم التنزيل",
     "noDownloads": "لا توجد تحميلات"
+  },
+  "generalSettings": "العامة",
+  "generalSettingsScreen": {
+    "asc": "ترتيب تصاعدي",
+    "autoDownload": "التحميل التلقائي",
+    "bySource": "حسب المصدر",
+    "chapterSort": "الفرز الافتراضي للفصول",
+    "desc": "ترتيب تنازلي",
+    "disableHapticFeedback": "تعطيل الاهتزاز",
+    "displayMode": "وضع العرض",
+    "downloadNewChapters": "تحميل فصول جديدة",
+    "epub": "EPUB",
+    "epubLocation": "موقع EPUB",
+    "epubLocationDescription": "مكان لحفظ ملفات EPUB وتصديرها.",
+    "globalUpdate": "التحديث الشامل",
+    "itemsPerRow": "العناصر في كل صف",
+    "itemsPerRowLibrary": "العناصر لكل صف في المكتبة",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "رواية",
+    "novelBadges": "شارات الرواية",
+    "novelSort": "فرز الروايات",
+    "refreshMetadata": "تحديث البيانات الوصفية تلقائيًا",
+    "refreshMetadataDescription": "تحقق من الغلاف الجديد ",
+    "updateLibrary": "تحديث المكتبة عند تشغيل التطبيق",
+    "updateOngoing": "تحديث الروايات الجارية فقط",
+    "updateTime": "وقت آخر تحديث",
+    "useFAB": "استخدام FAB في المكتبة"
   },
   "globalSearch": {
     "allSources": "جميع المصادر",
@@ -113,16 +148,10 @@
   "more": "المزيد",
   "moreScreen": {
     "downloadOnly": "التنزيلات فقط",
-    "incognitoMode": "الوضع المخفي",
-    "settings": "الإعدادات",
-    "settingsScreen": {
-      "browseSettings": "تصفح الإعدادات",
-      "generalSettings": "العامة"
-    }
+    "incognitoMode": "الوضع المخفي"
   },
   "novelScreen": {
     "addToLibaray": "إضافة إلى المكتبة",
-    "bottomSheet": {},
     "chapters": "الفصول",
     "continueReading": "متابعة القراءة",
     "convertToEpubModal": {
@@ -179,53 +208,6 @@
     "finished": "انتهى",
     "noNextChapter": "لا يوجد فصل اخر"
   },
-  "sourceScreen": {
-    "noResultsFound": "لم يتم العثور على أي نتائج"
-  },
-  "statsScreen": {
-    "downloadedChapters": "الفصول المحملة",
-    "genreDistribution": "توزيع الأنواع",
-    "readChapters": "الفصول المقروء",
-    "statusDistribution": "توزيع الحالات",
-    "title": "الإحصائيات",
-    "titlesInLibrary": "العناوين في المكتبة",
-    "totalChapters": "مجموع الفصول",
-    "unreadChapters": "الفصول الغير مقروء"
-  },
-  "updates": "التحديثات",
-  "updatesScreen": {
-    "emptyView": "لا توجد تحديثات",
-    "lastUpdatedAt": "آخر تحديث للمكتبة:",
-    "newChapters": "فصول جديدة",
-    "searchbar": "البحث في التحديثات",
-    "updatesLower": "التحديثات"
-  },
-  "generalSettingsScreen": {
-    "asc": "ترتيب تصاعدي",
-    "autoDownload": "التحميل التلقائي",
-    "bySource": "حسب المصدر",
-    "chapterSort": "الفرز الافتراضي للفصول",
-    "desc": "ترتيب تنازلي",
-    "disableHapticFeedback": "تعطيل الاهتزاز",
-    "displayMode": "وضع العرض",
-    "downloadNewChapters": "تحميل فصول جديدة",
-    "epub": "EPUB",
-    "epubLocation": "موقع EPUB",
-    "epubLocationDescription": "مكان لحفظ ملفات EPUB وتصديرها.",
-    "globalUpdate": "التحديث الشامل",
-    "itemsPerRow": "العناصر في كل صف",
-    "itemsPerRowLibrary": "العناصر لكل صف في المكتبة",
-    "jumpToLastReadChapter": "Jump to last read chapter in list",
-    "novel": "رواية",
-    "novelBadges": "شارات الرواية",
-    "novelSort": "فرز الروايات",
-    "refreshMetadata": "تحديث البيانات الوصفية تلقائيًا",
-    "refreshMetadataDescription": "تحقق من الغلاف الجديد ",
-    "updateLibrary": "تحديث المكتبة عند تشغيل التطبيق",
-    "updateOngoing": "تحديث الروايات الجارية فقط",
-    "updateTime": "وقت آخر تحديث",
-    "useFAB": "استخدام FAB في المكتبة"
-  },
   "readerSettings": {
     "autoScrollInterval": "فترة التمرير التلقائي (بالثواني)",
     "autoScrollOffset": "تمرير إزاحة تلقائية (ارتفاع الشاشة افتراضي)",
@@ -249,10 +231,25 @@
     "title": "القارئ",
     "verticalSeekbarDesc": "التبديل بين شريط البحث العمودي والأفقي"
   },
-  "browseSettingsScreen": {
-    "languages": "اللغات",
-    "onlyShowPinnedSources": "إظهار المصادر المثبتة فقط",
-    "searchAllSources": "البحث في جميع المصادر",
-    "searchAllWarning": "البحث عن عدد كبير من المصادر قد يجمد التطبيق حتى الانتهاء من البحث."
+  "sourceScreen": {
+    "noResultsFound": "لم يتم العثور على أي نتائج"
+  },
+  "statsScreen": {
+    "downloadedChapters": "الفصول المحملة",
+    "genreDistribution": "توزيع الأنواع",
+    "readChapters": "الفصول المقروء",
+    "statusDistribution": "توزيع الحالات",
+    "title": "الإحصائيات",
+    "titlesInLibrary": "العناوين في المكتبة",
+    "totalChapters": "مجموع الفصول",
+    "unreadChapters": "الفصول الغير مقروء"
+  },
+  "updates": "التحديثات",
+  "updatesScreen": {
+    "emptyView": "لا توجد تحديثات",
+    "lastUpdatedAt": "آخر تحديث للمكتبة:",
+    "newChapters": "فصول جديدة",
+    "searchbar": "البحث في التحديثات",
+    "updatesLower": "التحديثات"
   }
 }

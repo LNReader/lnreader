@@ -175,7 +175,8 @@ export const deleteCachedNovels = async () => {
     tx.executeSql(
       'DELETE FROM Novel WHERE inLibrary = 0',
       [],
-      () => showToast(getString('advancedSettings.cachedNovelsDeletedToast')),
+      () =>
+        showToast(getString('advancedSettingsScreen.cachedNovelsDeletedToast')),
       txnErrorCallback,
     );
   });

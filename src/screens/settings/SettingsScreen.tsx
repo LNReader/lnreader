@@ -13,13 +13,13 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
   return (
     <>
       <Appbar
-        title={getString('moreScreen.settings')}
+        title={getString('common.settings')}
         handleGoBack={navigation.goBack}
         theme={theme}
       />
       <View style={{ flex: 1, backgroundColor: theme.background }}>
         <List.Item
-          title={getString('moreScreen.settingsScreen.generalSettings')}
+          title={getString('generalSettings')}
           icon="tune"
           onPress={() =>
             navigation.navigate('SettingsStack', {
@@ -79,7 +79,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           theme={theme}
         />
         <List.Item
-          title={getString('moreScreen.settingsScreen.advanced')}
+          title={getString('advancedSettings')}
           icon="code-tags"
           onPress={() =>
             navigation.navigate('SettingsStack', {

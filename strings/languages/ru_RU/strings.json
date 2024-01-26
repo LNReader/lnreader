@@ -1,5 +1,5 @@
 {
-  "advancedSettings": {
+  "advancedSettingsScreen": {
     "deleteReadChapters": "Удалять прочитанные главы",
     "deleteReadChaptersDialogTitle": "Вы уверены? Все главы, помеченные как прочитанные, будут удалены."
   },
@@ -14,6 +14,13 @@
     "pinned": "Закреплено",
     "removeFromLibrary": "Удалено из библиотеки",
     "searchbar": "Поиск источника"
+  },
+  "browseSettings": "Настройки обзора",
+  "browseSettingsScreen": {
+    "languages": "Языки",
+    "onlyShowPinnedSources": "Показывать только закрепленные источники",
+    "searchAllSources": "Поиск по всем источникам",
+    "searchAllWarning": "Поиск по большому количеству источников может привести к зависанию приложения, пока поиск не завершится."
   },
   "categories": {
     "addCategories": "Добавить категорию",
@@ -50,6 +57,7 @@
     "search": "Поиск",
     "searchFor": "Искать",
     "searchResults": "Результаты поиска",
+    "settings": "Настройки",
     "sort": "Сортировка",
     "submit": "Продолжить"
   },
@@ -66,6 +74,33 @@
     "downloadChapters": "загруженные главы",
     "downloadsLower": "Загруженное",
     "noDownloads": "Ничего не загружено"
+  },
+  "generalSettings": "Основные",
+  "generalSettingsScreen": {
+    "asc": "(По возрастанию)",
+    "autoDownload": "Автозагрузка",
+    "bySource": "По источникам",
+    "chapterSort": "Сортировка глав по умолчанию",
+    "desc": "(По убыванию)",
+    "disableHapticFeedback": "Отключить виброотклик",
+    "displayMode": "Режим Отображения",
+    "downloadNewChapters": "Скачивать новые главы",
+    "epub": "EPUB",
+    "epubLocation": "Расположение EPUB",
+    "epubLocationDescription": "Место открытия и экспорта файлов EPUB.",
+    "globalUpdate": "Обновить всё",
+    "itemsPerRow": "элемента в ряду",
+    "itemsPerRowLibrary": "Количество элементов в ряду",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Тайтл",
+    "novelBadges": "Иконки тайтлов",
+    "novelSort": "Сортировка тайтлов",
+    "refreshMetadata": "Автоматически обновлять метаданные",
+    "refreshMetadataDescription": "Проверять наличие новой обложки и описания при обновлении библиотеки",
+    "updateLibrary": "Обновлять библиотеку при запуске",
+    "updateOngoing": "Обновлять только онгоинги",
+    "updateTime": "Показать время последнего обновления",
+    "useFAB": "Использовать FAB в библиотеке"
   },
   "globalSearch": {
     "allSources": "все источники",
@@ -113,16 +148,10 @@
   "more": "Ещё",
   "moreScreen": {
     "downloadOnly": "Только загруженные главы",
-    "incognitoMode": "Режим инкогнито",
-    "settings": "Настройки",
-    "settingsScreen": {
-      "browseSettings": "Настройки обзора",
-      "generalSettings": "Основные"
-    }
+    "incognitoMode": "Режим инкогнито"
   },
   "novelScreen": {
     "addToLibaray": "Добавить в библиотеку",
-    "bottomSheet": {},
     "chapters": "главы",
     "continueReading": "Продолжить чтение",
     "convertToEpubModal": {
@@ -179,53 +208,6 @@
     "finished": "Завершено",
     "noNextChapter": "Следующей главы нет"
   },
-  "sourceScreen": {
-    "noResultsFound": "Ничего не найдено"
-  },
-  "statsScreen": {
-    "downloadedChapters": "Загруженные главы",
-    "genreDistribution": "Распределение по жанру",
-    "readChapters": "Прочитанные главы",
-    "statusDistribution": "Распределение статуса",
-    "title": "Статистика",
-    "titlesInLibrary": "Названия в библиотеке",
-    "totalChapters": "Всего глав",
-    "unreadChapters": "Непрочитанные главы"
-  },
-  "updates": "Обновления",
-  "updatesScreen": {
-    "emptyView": "Нет последних обновлений",
-    "lastUpdatedAt": "Последнее обновление библиотеки:",
-    "newChapters": "новые главы",
-    "searchbar": "Поиск в обновлениях",
-    "updatesLower": "обновлено"
-  },
-  "generalSettingsScreen": {
-    "asc": "(По возрастанию)",
-    "autoDownload": "Автозагрузка",
-    "bySource": "По источникам",
-    "chapterSort": "Сортировка глав по умолчанию",
-    "desc": "(По убыванию)",
-    "disableHapticFeedback": "Отключить виброотклик",
-    "displayMode": "Режим Отображения",
-    "downloadNewChapters": "Скачивать новые главы",
-    "epub": "EPUB",
-    "epubLocation": "Расположение EPUB",
-    "epubLocationDescription": "Место открытия и экспорта файлов EPUB.",
-    "globalUpdate": "Обновить всё",
-    "itemsPerRow": "элемента в ряду",
-    "itemsPerRowLibrary": "Количество элементов в ряду",
-    "jumpToLastReadChapter": "Jump to last read chapter in list",
-    "novel": "Тайтл",
-    "novelBadges": "Иконки тайтлов",
-    "novelSort": "Сортировка тайтлов",
-    "refreshMetadata": "Автоматически обновлять метаданные",
-    "refreshMetadataDescription": "Проверять наличие новой обложки и описания при обновлении библиотеки",
-    "updateLibrary": "Обновлять библиотеку при запуске",
-    "updateOngoing": "Обновлять только онгоинги",
-    "updateTime": "Показать время последнего обновления",
-    "useFAB": "Использовать FAB в библиотеке"
-  },
   "readerSettings": {
     "autoScrollInterval": "Интервал автопрокрутки (в секундах)",
     "autoScrollOffset": "Смещение автопрокрутки (высота экрана по умолчанию)",
@@ -249,10 +231,25 @@
     "title": "Чтение",
     "verticalSeekbarDesc": "Переключение между вертикальной и горизонтальной панелями навигации"
   },
-  "browseSettingsScreen": {
-    "languages": "Языки",
-    "onlyShowPinnedSources": "Показывать только закрепленные источники",
-    "searchAllSources": "Поиск по всем источникам",
-    "searchAllWarning": "Поиск по большому количеству источников может привести к зависанию приложения, пока поиск не завершится."
+  "sourceScreen": {
+    "noResultsFound": "Ничего не найдено"
+  },
+  "statsScreen": {
+    "downloadedChapters": "Загруженные главы",
+    "genreDistribution": "Распределение по жанру",
+    "readChapters": "Прочитанные главы",
+    "statusDistribution": "Распределение статуса",
+    "title": "Статистика",
+    "titlesInLibrary": "Названия в библиотеке",
+    "totalChapters": "Всего глав",
+    "unreadChapters": "Непрочитанные главы"
+  },
+  "updates": "Обновления",
+  "updatesScreen": {
+    "emptyView": "Нет последних обновлений",
+    "lastUpdatedAt": "Последнее обновление библиотеки:",
+    "newChapters": "новые главы",
+    "searchbar": "Поиск в обновлениях",
+    "updatesLower": "обновлено"
   }
 }

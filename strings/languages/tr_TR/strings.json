@@ -1,5 +1,5 @@
 {
-  "advancedSettings": {
+  "advancedSettingsScreen": {
     "deleteReadChapters": "Okunmuş bölümleri sil",
     "deleteReadChaptersDialogTitle": "Emin misiniz? Okunmuş olarak işaretlenmiş olan tüm bölümler silinecektir."
   },
@@ -14,6 +14,13 @@
     "pinned": "Sabitlenmiş",
     "removeFromLibrary": "Kitaplıktan kaldırıldı",
     "searchbar": "Kaynak ara"
+  },
+  "browseSettings": "Göz Atma Seçenekleri",
+  "browseSettingsScreen": {
+    "languages": "Diller",
+    "onlyShowPinnedSources": "Yalnızca sabitlenmiş kaynakları göster",
+    "searchAllSources": "Tüm kaynaklarda ara",
+    "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
   },
   "categories": {
     "addCategories": "Kategori ekle",
@@ -50,6 +57,7 @@
     "search": "Ara",
     "searchFor": "Şunu ara",
     "searchResults": "Arama sonuçları",
+    "settings": "Ayarlar",
     "sort": "Sırala",
     "submit": "Gönder"
   },
@@ -66,6 +74,33 @@
     "downloadChapters": "İndirilen bölümler",
     "downloadsLower": "İndirilenler",
     "noDownloads": "İndirme yok"
+  },
+  "generalSettings": "Genel",
+  "generalSettingsScreen": {
+    "asc": "(Artan)",
+    "autoDownload": "Otomatik İndirme",
+    "bySource": "Kaynağa göre",
+    "chapterSort": "Varsayılan bölüm sıralaması",
+    "desc": "(Azalan)",
+    "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak",
+    "displayMode": "Görünüm Modu",
+    "downloadNewChapters": "Yeni bölümleri indir",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Konumu",
+    "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
+    "globalUpdate": "Global güncelleme",
+    "itemsPerRow": "Satır başına düşen öge",
+    "itemsPerRowLibrary": "Kitaplıkta satır başına düşen öge",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel",
+    "novelBadges": "Novel Rozetleri",
+    "novelSort": "Novel Sıralaması",
+    "refreshMetadata": "Üst veriyi otomatik olarak yenile",
+    "refreshMetadataDescription": "Kitaplığı güncellerken yeni kapak ve ayrıntıları denetle",
+    "updateLibrary": "Açılışta kitaplığı güncelle",
+    "updateOngoing": "Yalnızca devam eden novel'leri güncelle",
+    "updateTime": "Son güncelleme süresini göster",
+    "useFAB": "Kitaplıkta FAB kullan"
   },
   "globalSearch": {
     "allSources": "tüm kaynaklarda",
@@ -113,16 +148,10 @@
   "more": "Daha fazla",
   "moreScreen": {
     "downloadOnly": "Yalnızca indirilenler",
-    "incognitoMode": "Gizli mod",
-    "settings": "Ayarlar",
-    "settingsScreen": {
-      "browseSettings": "Göz Atma Seçenekleri",
-      "generalSettings": "Genel"
-    }
+    "incognitoMode": "Gizli mod"
   },
   "novelScreen": {
     "addToLibaray": "Kitaplığa ekle",
-    "bottomSheet": {},
     "chapters": "bölüm",
     "continueReading": "Okumaya devam et",
     "convertToEpubModal": {
@@ -179,53 +208,6 @@
     "finished": "Biten",
     "noNextChapter": "Başka bölüm yok"
   },
-  "sourceScreen": {
-    "noResultsFound": "Sonuç bulunamadı"
-  },
-  "statsScreen": {
-    "downloadedChapters": "İndirilmiş bölüm",
-    "genreDistribution": "Tür dağılımı",
-    "readChapters": "Okunan bölüm",
-    "statusDistribution": "Durum dağılımı",
-    "title": "İstatistikler",
-    "titlesInLibrary": "Kitaplıktaki başlık",
-    "totalChapters": "Toplam bölüm",
-    "unreadChapters": "Okunmamış bölüm"
-  },
-  "updates": "Güncellemeler",
-  "updatesScreen": {
-    "emptyView": "Güncelleme yok",
-    "lastUpdatedAt": "Kitaplık son güncelleme:",
-    "newChapters": "Yeni bölüm",
-    "searchbar": "Güncellemelerde ara",
-    "updatesLower": "güncellemeler"
-  },
-  "generalSettingsScreen": {
-    "asc": "(Artan)",
-    "autoDownload": "Otomatik İndirme",
-    "bySource": "Kaynağa göre",
-    "chapterSort": "Varsayılan bölüm sıralaması",
-    "desc": "(Azalan)",
-    "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak",
-    "displayMode": "Görünüm Modu",
-    "downloadNewChapters": "Yeni bölümleri indir",
-    "epub": "EPUB",
-    "epubLocation": "EPUB Konumu",
-    "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
-    "globalUpdate": "Global güncelleme",
-    "itemsPerRow": "Satır başına düşen öge",
-    "itemsPerRowLibrary": "Kitaplıkta satır başına düşen öge",
-    "jumpToLastReadChapter": "Jump to last read chapter in list",
-    "novel": "Novel",
-    "novelBadges": "Novel Rozetleri",
-    "novelSort": "Novel Sıralaması",
-    "refreshMetadata": "Üst veriyi otomatik olarak yenile",
-    "refreshMetadataDescription": "Kitaplığı güncellerken yeni kapak ve ayrıntıları denetle",
-    "updateLibrary": "Açılışta kitaplığı güncelle",
-    "updateOngoing": "Yalnızca devam eden novel'leri güncelle",
-    "updateTime": "Son güncelleme süresini göster",
-    "useFAB": "Kitaplıkta FAB kullan"
-  },
   "readerSettings": {
     "autoScrollInterval": "Otomatik kaydırma süresi (saniye olarak)",
     "autoScrollOffset": "Otomatik kaydırma konumu (varsayılan olarak ekran yüksekliği)",
@@ -249,10 +231,25 @@
     "title": "Okuyucu",
     "verticalSeekbarDesc": "Dikey ve yatay arama çubuğu arasında geçiş yap"
   },
-  "browseSettingsScreen": {
-    "languages": "Diller",
-    "onlyShowPinnedSources": "Yalnızca sabitlenmiş kaynakları göster",
-    "searchAllSources": "Tüm kaynaklarda ara",
-    "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
+  "sourceScreen": {
+    "noResultsFound": "Sonuç bulunamadı"
+  },
+  "statsScreen": {
+    "downloadedChapters": "İndirilmiş bölüm",
+    "genreDistribution": "Tür dağılımı",
+    "readChapters": "Okunan bölüm",
+    "statusDistribution": "Durum dağılımı",
+    "title": "İstatistikler",
+    "titlesInLibrary": "Kitaplıktaki başlık",
+    "totalChapters": "Toplam bölüm",
+    "unreadChapters": "Okunmamış bölüm"
+  },
+  "updates": "Güncellemeler",
+  "updatesScreen": {
+    "emptyView": "Güncelleme yok",
+    "lastUpdatedAt": "Kitaplık son güncelleme:",
+    "newChapters": "Yeni bölüm",
+    "searchbar": "Güncellemelerde ara",
+    "updatesLower": "güncellemeler"
   }
 }

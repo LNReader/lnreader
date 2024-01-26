@@ -148,7 +148,7 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
           />
           <List.Divider theme={theme} />
           <List.Item
-            title={getString('moreScreen.settings')}
+            title={getString('common.settings')}
             icon="cog-outline"
             onPress={() =>
               navigation.navigate('MoreStack', {
@@ -161,7 +161,7 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
             theme={theme}
           />
           <List.Item
-            title={getString('moreScreen.about')}
+            title={getString('common.about')}
             icon="information-outline"
             onPress={() =>
               navigation.navigate('MoreStack', {

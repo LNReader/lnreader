@@ -61,39 +61,41 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   return (
     <>
       <Appbar
-        title={getString('moreScreen.settingsScreen.advanced')}
+        title={getString('advancedSettings')}
         handleGoBack={() => navigation.goBack()}
         theme={theme}
       />
       <List.Section>
         <List.SubHeader theme={theme}>
-          {getString('advancedSettings.dataManagement')}
+          {getString('advancedSettingsScreen.dataManagement')}
         </List.SubHeader>
         <List.Item
-          title={getString('advancedSettings.clearCachedNovels')}
-          description={getString('advancedSettings.clearCachedNovelsDesc')}
+          title={getString('advancedSettingsScreen.clearCachedNovels')}
+          description={getString(
+            'advancedSettingsScreen.clearCachedNovelsDesc',
+          )}
           onPress={showClearDatabaseDialog}
           theme={theme}
         />
         <List.Item
-          title={getString('advancedSettings.clearUpdatesTab')}
-          description={getString('advancedSettings.clearupdatesTabDesc')}
+          title={getString('advancedSettingsScreen.clearUpdatesTab')}
+          description={getString('advancedSettingsScreen.clearupdatesTabDesc')}
           onPress={showClearUpdatesDialog}
           theme={theme}
         />
         <List.Item
-          title={getString('advancedSettings.deleteReadChapters')}
+          title={getString('advancedSettingsScreen.deleteReadChapters')}
           onPress={showDeleteReadChaptersDialog}
           theme={theme}
         />
         <List.Item
-          title={getString('advancedSettings.importEpub')}
+          title={getString('advancedSettingsScreen.importEpub')}
           onPress={importEpub}
           theme={theme}
           disabled={Boolean(hasAction)}
         />
         <List.Item
-          title={getString('advancedSettings.userAgent')}
+          title={getString('advancedSettingsScreen.userAgent')}
           description={userAgent}
           onPress={showUserAgentModal}
           theme={theme}
@@ -101,7 +103,9 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
       </List.Section>
       <Portal>
         <ConfirmationDialog
-          title={getString('advancedSettings.deleteReadChaptersDialogTitle')}
+          title={getString(
+            'advancedSettingsScreen.deleteReadChaptersDialogTitle',
+          )}
           visible={deleteReadChaptersDialog}
           onSubmit={deleteReadChaptersFromDb}
           onDismiss={hideDeleteReadChaptersDialog}
@@ -123,7 +127,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
               color: theme.onSurface,
             }}
           >
-            {getString('advancedSettings.clearDatabaseWarning')}
+            {getString('advancedSettingsScreen.clearDatabaseWarning')}
           </Dialog.Title>
           <Dialog.Actions>
             <Button onPress={hideClearDatabaseDialog}>
@@ -155,7 +159,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
               color: theme.onSurface,
             }}
           >
-            {getString('advancedSettings.clearUpdatesWarning')}
+            {getString('advancedSettingsScreen.clearUpdatesWarning')}
           </Dialog.Title>
           <Dialog.Actions>
             <Button onPress={hideClearUpdatesDialog}>
@@ -164,7 +168,9 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
             <Button
               onPress={() => {
                 clearUpdates();
-                showToast(getString('advancedSettings.clearUpdatesMessage'));
+                showToast(
+                  getString('advancedSettingsScreen.clearUpdatesMessage'),
+                );
                 hideClearUpdatesDialog();
               }}
             >
@@ -181,7 +187,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
           ]}
         >
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-            {getString('advancedSettings.userAgent')}
+            {getString('advancedSettingsScreen.userAgent')}
           </Text>
           <Text style={[{ color: theme.onSurfaceVariant }]}>{userAgent}</Text>
           <TextInput

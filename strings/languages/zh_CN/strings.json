@@ -7,7 +7,8 @@
     "version": "版本",
     "whatsNew": "新增内容"
   },
-  "advancedSettings": {
+  "advancedSettings": "高级",
+  "advancedSettingsScreen": {
     "cachedNovelsDeletedToast": "缓存的小说已删除",
     "clearCachedNovels": "清除缓存的小说",
     "clearCachedNovelsDesc": "删除不在您的书库中的缓存小说",
@@ -123,6 +124,13 @@
     "uninstalledPlugin": "已卸载 %{name}",
     "updatedTo": "已更新至 %{version}"
   },
+  "browseSettings": "浏览设置",
+  "browseSettingsScreen": {
+    "languages": "语言",
+    "onlyShowPinnedSources": "仅显示已经置顶的源",
+    "searchAllSources": "搜索所有源",
+    "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
+  },
   "categories": {
     "addCategories": "添加分类",
     "cantDeleteDefault": "您不能删除默认分类",
@@ -139,6 +147,7 @@
     "setModalEmptyMsg": "您目前还没有分类。点击编辑按钮来创建一个分类以组织您的书库"
   },
   "common": {
+    "about": "关于",
     "add": "添加",
     "all": "全部",
     "backup": "备份",
@@ -173,6 +182,7 @@
     "search": "搜索",
     "searchFor": "搜索",
     "searchResults": "搜索结果",
+    "settings": "设置",
     "show": "显示",
     "signIn": "登录",
     "signOut": "登出",
@@ -204,6 +214,37 @@
     "pluginNotFound": "找不到插件！",
     "removeDownloadsWarning": "您确定吗？所有已下载章节都将被删除。",
     "serviceRunning": "另一个服务正在运行。已加入队列"
+  },
+  "generalSettings": "常规",
+  "generalSettingsScreen": {
+    "asc": "(递增)",
+    "autoDownload": "自动下载",
+    "bySource": "按源",
+    "chapterSort": "默认章节排序",
+    "desc": "(递减)",
+    "disableHapticFeedback": "禁用振动反馈",
+    "displayMode": "显示模式",
+    "downloadNewChapters": "下载新章节",
+    "epub": "EPUB",
+    "epubLocation": "EPUB 位置",
+    "epubLocationDescription": "打开或导入您的 EPUB 文件的位置。",
+    "globalUpdate": "全局更新",
+    "gridSize": "网格尺寸",
+    "gridSizeDesc": "每行 %{num} 列",
+    "itemsPerRow": "每行的项目数",
+    "itemsPerRowLibrary": "每行的项目数 (书库)",
+    "jumpToLastReadChapter": "跳到最后阅读的位置",
+    "novel": "小说",
+    "novelBadges": "小说徽章",
+    "novelSort": "小说排序",
+    "refreshMetadata": "自动更新元数据",
+    "refreshMetadataDescription": "更新书库时同时更新封面和详情",
+    "sortOrder": "排序",
+    "updateLibrary": "打开应用时更新书库",
+    "updateLibraryDesc": "不推荐在低端设备上启用",
+    "updateOngoing": "仅更新连载小说",
+    "updateTime": "显示上次更新时间",
+    "useFAB": "在书库中使用浮动操作按钮"
   },
   "globalSearch": {
     "allSources": "所有源",
@@ -256,18 +297,11 @@
   },
   "more": "更多",
   "moreScreen": {
-    "about": "关于",
     "downloadOnly": "仅已下载",
     "downloadOnlyDesc": "过滤您书库中的所有小说",
     "downloadQueue": "下载队列",
     "incognitoMode": "无痕模式",
-    "incognitoModeDesc": "暂停阅读历史记录",
-    "settings": "设置",
-    "settingsScreen": {
-      "advanced": "高级",
-      "browseSettings": "浏览设置",
-      "generalSettings": "常规"
-    }
+    "incognitoModeDesc": "暂停阅读历史记录"
   },
   "novelScreen": {
     "addToLibaray": "添加到书库",
@@ -383,6 +417,29 @@
     "noNextChapter": "没有下一章节",
     "noPreviousChapter": "没有上一章节"
   },
+  "readerSettings": {
+    "autoScrollInterval": "自动滚动间隔 (以秒计)",
+    "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
+    "backgroundColor": "背景颜色",
+    "backgroundColorModal": "阅读器背景颜色",
+    "clearCustomCSS": "您确定吗？您的自定义 CSS 都将被重置。",
+    "clearCustomJS": "您确定吗？您的自定义 JS 都将被重置。",
+    "cssHint": "提示: 您可以创建源相关的 CSS 配置. (#sourceId-[SOURCEID])",
+    "customCSS": "自定义 CSS",
+    "customJS": "自定义 JS",
+    "deleteCustomTheme": "删除自定义主题",
+    "jsHint": "提示: 您可以访问以下变量: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "未保存",
+    "openCSSFile": "打开 CSS 文件",
+    "openJSFile": "打开 JS 文件",
+    "preset": "预设值",
+    "readerTheme": "阅读器主题",
+    "saveCustomTheme": "保存自定义主题",
+    "textColor": "文字颜色",
+    "textColorModal": "阅读器文本颜色",
+    "title": "阅读器",
+    "verticalSeekbarDesc": "切换垂直和水平进度条"
+  },
   "sourceScreen": {
     "noResultsFound": "未找到相应结果"
   },
@@ -414,64 +471,5 @@
     "searchbar": "搜索更新",
     "updatesLower": "更新",
     "updatingLibrary": "更新书库"
-  },
-  "generalSettingsScreen": {
-    "asc": "(递增)",
-    "autoDownload": "自动下载",
-    "bySource": "按源",
-    "chapterSort": "默认章节排序",
-    "desc": "(递减)",
-    "disableHapticFeedback": "禁用振动反馈",
-    "displayMode": "显示模式",
-    "downloadNewChapters": "下载新章节",
-    "epub": "EPUB",
-    "epubLocation": "EPUB 位置",
-    "epubLocationDescription": "打开或导入您的 EPUB 文件的位置。",
-    "globalUpdate": "全局更新",
-    "gridSize": "网格尺寸",
-    "gridSizeDesc": "每行 %{num} 列",
-    "itemsPerRow": "每行的项目数",
-    "itemsPerRowLibrary": "每行的项目数 (书库)",
-    "jumpToLastReadChapter": "跳到最后阅读的位置",
-    "novel": "小说",
-    "novelBadges": "小说徽章",
-    "novelSort": "小说排序",
-    "refreshMetadata": "自动更新元数据",
-    "refreshMetadataDescription": "更新书库时同时更新封面和详情",
-    "sortOrder": "排序",
-    "updateLibrary": "打开应用时更新书库",
-    "updateLibraryDesc": "不推荐在低端设备上启用",
-    "updateOngoing": "仅更新连载小说",
-    "updateTime": "显示上次更新时间",
-    "useFAB": "在书库中使用浮动操作按钮"
-  },
-  "readerSettings": {
-    "autoScrollInterval": "自动滚动间隔 (以秒计)",
-    "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
-    "backgroundColor": "背景颜色",
-    "backgroundColorModal": "阅读器背景颜色",
-    "clearCustomCSS": "您确定吗？您的自定义 CSS 都将被重置。",
-    "clearCustomJS": "您确定吗？您的自定义 JS 都将被重置。",
-    "cssHint": "提示: 您可以创建源相关的 CSS 配置. (#sourceId-[SOURCEID])",
-    "customCSS": "自定义 CSS",
-    "customJS": "自定义 JS",
-    "deleteCustomTheme": "删除自定义主题",
-    "jsHint": "提示: 您可以访问以下变量: html, novelName, chapterName, sourceId, chapterId, novelId",
-    "notSaved": "未保存",
-    "openCSSFile": "打开 CSS 文件",
-    "openJSFile": "打开 JS 文件",
-    "preset": "预设值",
-    "readerTheme": "阅读器主题",
-    "saveCustomTheme": "保存自定义主题",
-    "textColor": "文字颜色",
-    "textColorModal": "阅读器文本颜色",
-    "title": "阅读器",
-    "verticalSeekbarDesc": "切换垂直和水平进度条"
-  },
-  "browseSettingsScreen": {
-    "languages": "语言",
-    "onlyShowPinnedSources": "仅显示已经置顶的源",
-    "searchAllSources": "搜索所有源",
-    "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
   }
 }

@@ -18,7 +18,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
   return (
     <>
       <Appbar
-        title={getString('moreScreen.settingsScreen.browseSettings')}
+        title={getString('browseSettings')}
         handleGoBack={goBack}
         theme={theme}
       />

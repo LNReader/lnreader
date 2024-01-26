@@ -1,5 +1,5 @@
 {
-  "advancedSettings": {
+  "advancedSettingsScreen": {
     "deleteReadChapters": "Supprimer les chapitres lus",
     "deleteReadChaptersDialogTitle": "Êtes-vous sûr? Tous les chapitres marqués comme lus seront supprimés"
   },
@@ -14,6 +14,13 @@
     "pinned": "Épinglé",
     "removeFromLibrary": "Supprimé de la bibliothèque",
     "searchbar": "Rechercher des sources"
+  },
+  "browseSettings": "Parcourir les paramètres",
+  "browseSettingsScreen": {
+    "languages": "Langues",
+    "onlyShowPinnedSources": "Afficher uniquement les sources épinglées",
+    "searchAllSources": "Rechercher toutes les sources",
+    "searchAllWarning": "La recherche d'un grand nombre de sources peut bloquer l'application jusqu'à la fin de la recherche.."
   },
   "categories": {
     "addCategories": "Ajouter une catégorie",
@@ -50,6 +57,7 @@
     "search": "Recherchez",
     "searchFor": "Rechercher",
     "searchResults": "Résultats de la recherche",
+    "settings": "Paramètres",
     "sort": "Trier",
     "submit": "Soumettre"
   },
@@ -66,6 +74,33 @@
     "downloadChapters": "chapitres téléchargés",
     "downloadsLower": "télécharger",
     "noDownloads": "Aucun téléchargement"
+  },
+  "generalSettings": "Général",
+  "generalSettingsScreen": {
+    "asc": "(Ascendant)",
+    "autoDownload": "Téléchargement automatique",
+    "bySource": "Par Source",
+    "chapterSort": "Tri des chapitres par défaut",
+    "desc": "(Descendant)",
+    "disableHapticFeedback": "Désactiver le retour haptique",
+    "displayMode": "Mode d'affichage",
+    "downloadNewChapters": "Télécharger les nouveaux chapitres",
+    "epub": "EPUB",
+    "epubLocation": "Localisation EPUB",
+    "epubLocationDescription": "L'endroit où vous ouvrez et exportez vos fichiers EPUB.",
+    "globalUpdate": "Mise à jour globale",
+    "itemsPerRow": "Élément par ligne",
+    "itemsPerRowLibrary": "Éléments par ligne dans la bibliothèque",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Roman",
+    "novelBadges": "Badges de Novel",
+    "novelSort": "Trier les romans",
+    "refreshMetadata": "Rafraîchir automatiquement les métadonnées",
+    "refreshMetadataDescription": "Vérifier la nouvelle couverture et les détails lors de la mise à jour de la bibliothèque",
+    "updateLibrary": "Mettre à jour la bibliothèque au lancement",
+    "updateOngoing": "Ne mettre à jour que les romans en cours",
+    "updateTime": "Afficher la date de dernière mise à jour",
+    "useFAB": "Utiliser FAB dans la bibliothèque"
   },
   "globalSearch": {
     "allSources": "toutes les sources",
@@ -113,16 +148,10 @@
   "more": "Suite",
   "moreScreen": {
     "downloadOnly": "Téléchargés seulement",
-    "incognitoMode": "Navigation privée",
-    "settings": "Paramètres",
-    "settingsScreen": {
-      "browseSettings": "Parcourir les paramètres",
-      "generalSettings": "Général"
-    }
+    "incognitoMode": "Navigation privée"
   },
   "novelScreen": {
     "addToLibaray": "Ajouter à la bibliothèque",
-    "bottomSheet": {},
     "chapters": "chapitres",
     "continueReading": "Continuer la lecture",
     "convertToEpubModal": {
@@ -179,53 +208,6 @@
     "finished": "Terminé",
     "noNextChapter": "Il n'y a pas de prochain chapitre"
   },
-  "sourceScreen": {
-    "noResultsFound": "Aucun résultat trouvé"
-  },
-  "statsScreen": {
-    "downloadedChapters": "Chapitres téléchargés",
-    "genreDistribution": "Répartition par genres",
-    "readChapters": "Chapitres Lu",
-    "statusDistribution": "Répartition de l'état",
-    "title": "Statistiques",
-    "titlesInLibrary": "Titres dans la bibliothèque",
-    "totalChapters": "Nombre total de chapitres",
-    "unreadChapters": "Chapitres non lus"
-  },
-  "updates": "Mises à jour",
-  "updatesScreen": {
-    "emptyView": "Pas de mise à jour récente",
-    "lastUpdatedAt": "Dernière mise à jour de la bibliothèque :",
-    "newChapters": "nouveaux Chapitres",
-    "searchbar": "Rechercher des mises à jour",
-    "updatesLower": "mises à jour"
-  },
-  "generalSettingsScreen": {
-    "asc": "(Ascendant)",
-    "autoDownload": "Téléchargement automatique",
-    "bySource": "Par Source",
-    "chapterSort": "Tri des chapitres par défaut",
-    "desc": "(Descendant)",
-    "disableHapticFeedback": "Désactiver le retour haptique",
-    "displayMode": "Mode d'affichage",
-    "downloadNewChapters": "Télécharger les nouveaux chapitres",
-    "epub": "EPUB",
-    "epubLocation": "Localisation EPUB",
-    "epubLocationDescription": "L'endroit où vous ouvrez et exportez vos fichiers EPUB.",
-    "globalUpdate": "Mise à jour globale",
-    "itemsPerRow": "Élément par ligne",
-    "itemsPerRowLibrary": "Éléments par ligne dans la bibliothèque",
-    "jumpToLastReadChapter": "Jump to last read chapter in list",
-    "novel": "Roman",
-    "novelBadges": "Badges de Novel",
-    "novelSort": "Trier les romans",
-    "refreshMetadata": "Rafraîchir automatiquement les métadonnées",
-    "refreshMetadataDescription": "Vérifier la nouvelle couverture et les détails lors de la mise à jour de la bibliothèque",
-    "updateLibrary": "Mettre à jour la bibliothèque au lancement",
-    "updateOngoing": "Ne mettre à jour que les romans en cours",
-    "updateTime": "Afficher la date de dernière mise à jour",
-    "useFAB": "Utiliser FAB dans la bibliothèque"
-  },
   "readerSettings": {
     "autoScrollInterval": "Intervalle du scroll automatique (en secondes)",
     "autoScrollOffset": "Valeur du scroll automatique (hauteur de l'écran par défaut)",
@@ -249,10 +231,25 @@
     "title": "Lecteur",
     "verticalSeekbarDesc": "Basculer de la barre de recherche verticale à horizontale"
   },
-  "browseSettingsScreen": {
-    "languages": "Langues",
-    "onlyShowPinnedSources": "Afficher uniquement les sources épinglées",
-    "searchAllSources": "Rechercher toutes les sources",
-    "searchAllWarning": "La recherche d'un grand nombre de sources peut bloquer l'application jusqu'à la fin de la recherche.."
+  "sourceScreen": {
+    "noResultsFound": "Aucun résultat trouvé"
+  },
+  "statsScreen": {
+    "downloadedChapters": "Chapitres téléchargés",
+    "genreDistribution": "Répartition par genres",
+    "readChapters": "Chapitres Lu",
+    "statusDistribution": "Répartition de l'état",
+    "title": "Statistiques",
+    "titlesInLibrary": "Titres dans la bibliothèque",
+    "totalChapters": "Nombre total de chapitres",
+    "unreadChapters": "Chapitres non lus"
+  },
+  "updates": "Mises à jour",
+  "updatesScreen": {
+    "emptyView": "Pas de mise à jour récente",
+    "lastUpdatedAt": "Dernière mise à jour de la bibliothèque :",
+    "newChapters": "nouveaux Chapitres",
+    "searchbar": "Rechercher des mises à jour",
+    "updatesLower": "mises à jour"
   }
 }

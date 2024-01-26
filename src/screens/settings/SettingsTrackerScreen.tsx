@@ -69,7 +69,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
               <>
                 <List.Divider theme={theme} />
                 <List.SubHeader theme={theme}>
-                  {getString('moreScreen.settings')}
+                  {getString('common.settings')}
                 </List.SubHeader>
                 <List.Item
                   title={getString('trackingScreen.revalidateMyanimelist')}

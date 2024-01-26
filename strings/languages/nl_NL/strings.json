@@ -1,5 +1,5 @@
 {
-  "advancedSettings": {
+  "advancedSettingsScreen": {
     "deleteReadChapters": "Verwijder gelezen hoofdstukken",
     "deleteReadChaptersDialogTitle": "Weet je het zeker? Alle hoofdstukken die zijn gemarkeerd als gelezen worden verwijderd."
   },
@@ -14,6 +14,13 @@
     "pinned": "Vastgepind",
     "removeFromLibrary": "Verwijderd uit bibliotheek",
     "searchbar": "Zoek bronnen"
+  },
+  "browseSettings": "Blader instellingen",
+  "browseSettingsScreen": {
+    "languages": "Talen",
+    "onlyShowPinnedSources": "Alleen vastgepinde bronnen weergeven",
+    "searchAllSources": "Zoek in alle Bronnen",
+    "searchAllWarning": "Het zoeken van een groot aantal bronnen kan de app bevriezen tot het zoeken is voltooid."
   },
   "categories": {
     "addCategories": "Categorie toevoegen",
@@ -50,6 +57,7 @@
     "search": "Zoeken",
     "searchFor": "Zoek naar",
     "searchResults": "Zoekresultaten",
+    "settings": "Instellingen",
     "sort": "Sorteer",
     "submit": "Submit"
   },
@@ -66,6 +74,33 @@
     "downloadChapters": "downloaded Chapters",
     "downloadsLower": "downloads",
     "noDownloads": "No downloads"
+  },
+  "generalSettings": "Algemeen",
+  "generalSettingsScreen": {
+    "asc": "(Ascending)",
+    "autoDownload": "Auto-download",
+    "bySource": "By source",
+    "chapterSort": "Default chapter sort",
+    "desc": "(Descending)",
+    "disableHapticFeedback": "Disable haptic feedback",
+    "displayMode": "Display Mode",
+    "downloadNewChapters": "Download new chapters",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Global update",
+    "itemsPerRow": "Items per row",
+    "itemsPerRowLibrary": "Items per row in library",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel",
+    "novelBadges": "Novel Badges",
+    "novelSort": "Novel Sort",
+    "refreshMetadata": "Automatically refresh metadata",
+    "refreshMetadataDescription": "Check for new cover and details when updating library",
+    "updateLibrary": "Update library on launch",
+    "updateOngoing": "Only update ongoing novels",
+    "updateTime": "Show last update time",
+    "useFAB": "Use FAB in Library"
   },
   "globalSearch": {
     "allSources": "alle bronnen",
@@ -113,16 +148,10 @@
   "more": "Meer",
   "moreScreen": {
     "downloadOnly": "Alleen gedownloaden",
-    "incognitoMode": "Incognito modus",
-    "settings": "Instellingen",
-    "settingsScreen": {
-      "browseSettings": "Blader instellingen",
-      "generalSettings": "Algemeen"
-    }
+    "incognitoMode": "Incognito modus"
   },
   "novelScreen": {
     "addToLibaray": "Toevoegen aan bibliotheek",
-    "bottomSheet": {},
     "chapters": "hoofdstukken",
     "continueReading": "Verder lezen",
     "convertToEpubModal": {
@@ -179,53 +208,6 @@
     "finished": "Voltooid",
     "noNextChapter": "Er is geen volgend hoofdstuk"
   },
-  "sourceScreen": {
-    "noResultsFound": "Geen resultaten gevonden"
-  },
-  "statsScreen": {
-    "downloadedChapters": "Gedownloade hoofdstukken",
-    "genreDistribution": "Genre verdeling",
-    "readChapters": "Lees hoofdstukken",
-    "statusDistribution": "Status verdeling",
-    "title": "Statistieken",
-    "titlesInLibrary": "Titels in bibliotheek",
-    "totalChapters": "Total chapters",
-    "unreadChapters": "Ongelezen hoofdstukken"
-  },
-  "updates": "Updates",
-  "updatesScreen": {
-    "emptyView": "No recent updates",
-    "lastUpdatedAt": "Bibliotheek laatst bijgewerkt:",
-    "newChapters": "new Chapters",
-    "searchbar": "Updates zoeken",
-    "updatesLower": "updates"
-  },
-  "generalSettingsScreen": {
-    "asc": "(Ascending)",
-    "autoDownload": "Auto-download",
-    "bySource": "By source",
-    "chapterSort": "Default chapter sort",
-    "desc": "(Descending)",
-    "disableHapticFeedback": "Disable haptic feedback",
-    "displayMode": "Display Mode",
-    "downloadNewChapters": "Download new chapters",
-    "epub": "EPUB",
-    "epubLocation": "EPUB Location",
-    "epubLocationDescription": "The place where you open and export your EPUB files.",
-    "globalUpdate": "Global update",
-    "itemsPerRow": "Items per row",
-    "itemsPerRowLibrary": "Items per row in library",
-    "jumpToLastReadChapter": "Jump to last read chapter in list",
-    "novel": "Novel",
-    "novelBadges": "Novel Badges",
-    "novelSort": "Novel Sort",
-    "refreshMetadata": "Automatically refresh metadata",
-    "refreshMetadataDescription": "Check for new cover and details when updating library",
-    "updateLibrary": "Update library on launch",
-    "updateOngoing": "Only update ongoing novels",
-    "updateTime": "Show last update time",
-    "useFAB": "Use FAB in Library"
-  },
   "readerSettings": {
     "autoScrollInterval": "Auto scroll interval (in seconden)",
     "autoScrollOffset": "Auto scroll verschuiving (schermhoogte standaard)",
@@ -249,10 +231,25 @@
     "title": "Lezer",
     "verticalSeekbarDesc": "Schakel tussen verticale en horizontale zoekbalk"
   },
-  "browseSettingsScreen": {
-    "languages": "Talen",
-    "onlyShowPinnedSources": "Alleen vastgepinde bronnen weergeven",
-    "searchAllSources": "Zoek in alle Bronnen",
-    "searchAllWarning": "Het zoeken van een groot aantal bronnen kan de app bevriezen tot het zoeken is voltooid."
+  "sourceScreen": {
+    "noResultsFound": "Geen resultaten gevonden"
+  },
+  "statsScreen": {
+    "downloadedChapters": "Gedownloade hoofdstukken",
+    "genreDistribution": "Genre verdeling",
+    "readChapters": "Lees hoofdstukken",
+    "statusDistribution": "Status verdeling",
+    "title": "Statistieken",
+    "titlesInLibrary": "Titels in bibliotheek",
+    "totalChapters": "Total chapters",
+    "unreadChapters": "Ongelezen hoofdstukken"
+  },
+  "updates": "Updates",
+  "updatesScreen": {
+    "emptyView": "No recent updates",
+    "lastUpdatedAt": "Bibliotheek laatst bijgewerkt:",
+    "newChapters": "new Chapters",
+    "searchbar": "Updates zoeken",
+    "updatesLower": "updates"
   }
 }
