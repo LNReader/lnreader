@@ -116,9 +116,13 @@ export default function usePlugins() {
           plg => plg.id !== plugin.id,
         );
 
+        const actualPlugin: PluginItem = {
+          ...plugin,
+          version: _plg.version,
+        };
         // safe
         if (!installedPlugins.some(_plg => _plg.id === plugin.id)) {
-          setMMKVObject(INSTALLED_PLUGINS, [...installedPlugins, plugin]);
+          setMMKVObject(INSTALLED_PLUGINS, [...installedPlugins, actualPlugin]);
         }
         setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
         filterPlugins(languagesFilter);
@@ -156,6 +160,9 @@ export default function usePlugins() {
 
   const updatePlugin = (plugin: PluginItem) => {
     return _update(plugin).then(_plg => {
+      if (plugin.version === _plg?.version) {
+        throw new Error('Try again in a moment.');
+      }
       if (_plg) {
         const installedPlugins =
           getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
@@ -181,7 +188,7 @@ export default function usePlugins() {
         filterPlugins(languagesFilter);
         return _plg.version;
       } else {
-        throw Error('Failed to update');
+        throw Error('Failed to update.');
       }
     });
   };
