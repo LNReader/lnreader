@@ -8,6 +8,7 @@ import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 import { MigrationScreenProps } from '@navigators/types';
 import { PluginItem } from '@plugins/types';
+import { getString } from '@strings/translations';
 
 const Migration = ({ navigation }: MigrationScreenProps) => {
   const theme = useTheme();
@@ -33,14 +34,14 @@ const Migration = ({ navigation }: MigrationScreenProps) => {
 
   const ListHeaderComponent = (
     <Text style={[{ color: theme.onSurfaceVariant }, styles.listHeader]}>
-      Select a Source To Migrate From
+      {getString('browseScreen.migration.selectSourceDesc')}
     </Text>
   );
 
   return (
     <View style={[styles.container]}>
       <Appbar
-        title="Select Source"
+        title={getString('browseScreen.migration.selectSource')}
         handleGoBack={navigation.goBack}
         theme={theme}
       />

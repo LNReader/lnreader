@@ -120,7 +120,11 @@ const UpdatesScreen = () => {
                   chapter.novelId,
                   chapter.id,
                 ).then(() => {
-                  showToast(`Delete ${chapter.name}`);
+                  showToast(
+                    getString('common.deleted', {
+                      name: chapter.name,
+                    }),
+                  );
                   getUpdates();
                 });
               }}

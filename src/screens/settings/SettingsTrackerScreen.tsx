@@ -5,6 +5,7 @@ import { Modal, Portal, Text, Button, Provider } from 'react-native-paper';
 import { getTracker, useTheme, useTracker } from '@hooks/persisted';
 import { Appbar, List } from '@components';
 import { TrackerSettingsScreenProps } from '@navigators/types';
+import { getString } from '@strings/translations';
 
 const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
   const theme = useTheme();
@@ -18,7 +19,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
   return (
     <Provider>
       <Appbar
-        title="Tracking"
+        title={getString('tracking')}
         handleGoBack={() => navigation.goBack()}
         theme={theme}
       />
@@ -30,7 +31,9 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
         }}
       >
         <List.Section>
-          <List.SubHeader theme={theme}>Services</List.SubHeader>
+          <List.SubHeader theme={theme}>
+            {getString('trackingScreen.services')}
+          </List.SubHeader>
           <List.Item
             title="AniList"
             onPress={async () => {
@@ -65,9 +68,13 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
             tracker?.auth.expiresAt < new Date(Date.now()) && (
               <>
                 <List.Divider theme={theme} />
-                <List.SubHeader theme={theme}>Settings</List.SubHeader>
+                <List.SubHeader theme={theme}>
+                  {getString('common.settings')}
+                </List.SubHeader>
                 <List.Item
-                  title="Revalidate MyAnimeList"
+                  title={
+                    getString('trackingScreen.revalidate') + ' Myanimelist'
+                  }
                   onPress={async () => {
                     const revalidate = getTracker('MyAnimeList')?.revalidate;
                     if (revalidate) {
@@ -98,7 +105,9 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
                 fontSize: 18,
               }}
             >
-              Log out from {tracker?.name}?
+              {getString('trackingScreen.logOutMessage', {
+                name: tracker?.name,
+              })}
             </Text>
             <View
               style={{
@@ -115,7 +124,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
                 }}
                 onPress={hideModal}
               >
-                Cancel
+                {getString('common.cancel')}
               </Button>
               <Button
                 style={{ marginTop: 30 }}
@@ -129,7 +138,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
                   hideModal();
                 }}
               >
-                Logout
+                {getString('common.logout')}
               </Button>
             </View>
           </Modal>

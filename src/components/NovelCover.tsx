@@ -19,6 +19,7 @@ import { NovelItem } from '@plugins/types';
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
+import { getString } from '@strings/translations';
 
 interface UnreadBadgeProps {
   chaptersDownloaded: number;
@@ -234,7 +235,7 @@ const InLibraryBadge = ({ theme }: { theme: ThemeColors }) => (
       },
     ]}
   >
-    In library
+    {getString('novelScreen.inLibaray')}
   </Text>
 );
 

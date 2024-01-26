@@ -11,6 +11,7 @@ import { txnErrorCallback } from '@database/utils/helpers';
 import { Plugin } from '@plugins/types';
 import { Update } from '../types';
 import { noop } from 'lodash-es';
+import { getString } from '@strings/translations';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -107,7 +108,7 @@ export const getPrevChapter = (
         (_txObj, results) =>
           resolve(results.rows.item(results.rows.length - 1)),
         () => {
-          showToast("There's no previous chapter");
+          showToast(getString('readerScreen.noPreviousChapter'));
           return false;
         },
       );
@@ -137,7 +138,7 @@ export const getNextChapter = (
         [novelId, chapterId],
         (_txObj, results) => resolve(results.rows.item(0)),
         () => {
-          showToast("There's no next Chapter");
+          showToast(getString('readerScreen.noNextChapter'));
           return false;
         },
       );
@@ -255,7 +256,7 @@ export const downloadChapter = async (
   try {
     const plugin = getPlugin(pluginId);
     if (!plugin) {
-      throw new Error('Plugin not found!');
+      throw new Error(getString('downloadScreen.pluginNotFound'));
     }
     const chapterText = await plugin.parseChapter(chapterUrl);
     if (chapterText && chapterText.length) {
@@ -267,7 +268,7 @@ export const downloadChapter = async (
         );
       });
     } else {
-      throw new Error("Either chapter is empty or the app couldn't scrape it");
+      throw new Error(getString('downloadScreen.chapterEmptyOrScrapeError'));
     }
   } catch (error) {
     throw error;
@@ -291,7 +292,7 @@ const deleteDownloadedFiles = async (
     }
     await RNFS.unlink(path);
   } catch (error) {
-    throw new Error('Cant delete chapter chapter folder');
+    throw new Error(getString('novelScreen.deleteChapterError'));
   }
 };
 
@@ -348,7 +349,7 @@ export const deleteDownloads = async (chapters: DownloadedChapter[]) => {
   );
   db.transaction(tx => {
     tx.executeSql('UPDATE Chapter SET isDownloaded = 0', [], () =>
-      showToast('Deleted all Downloads'),
+      showToast(getString('novelScreen.deletedAllDownloads')),
     );
   });
 };
@@ -383,7 +384,7 @@ export const deleteReadChaptersFromDb = async () => {
   db.transaction(tx => {
     tx.executeSql(updateIsDownloadedQuery, [], noop, txnErrorCallback);
   });
-  showToast('Read chapters deleted');
+  showToast(getString('novelScreen.readChaptersDeleted'));
 };
 
 const bookmarkChapterQuery = 'UPDATE Chapter SET bookmark = ? WHERE id = ?';

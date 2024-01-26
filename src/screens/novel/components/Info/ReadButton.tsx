@@ -32,7 +32,9 @@ const ReadButton = ({
         title={
           lastRead
             ? `${getString('novelScreen.continueReading')} ${lastRead.name}`
-            : `Start reading ${chapters[0].name}`
+            : getString('novelScreen.startReadingChapters', {
+                name: chapters[0].name,
+              })
         }
         style={{ margin: 16 }}
         onPress={navigateToLastReadChapter}

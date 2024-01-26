@@ -5,6 +5,7 @@ import { noop } from 'lodash-es';
 const db = SQLite.openDatabase('lnreader.db');
 
 import { showToast } from '../../utils/showToast';
+import { getString } from '@strings/translations';
 
 const getHistoryQuery = `
     SELECT 
@@ -57,5 +58,5 @@ export const deleteAllHistory = async () => {
   db.transaction(tx => {
     tx.executeSql('UPDATE CHAPTER SET readTime = NULL');
   });
-  showToast('History deleted.');
+  showToast(getString('historyScreen.deleted'));
 };

@@ -29,6 +29,8 @@ import { NovelScreenProps } from '@navigators/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { UseBooleanReturnType } from '@hooks';
 import { useAppSettings } from '@hooks/persisted';
+import { NovelStatus } from '@plugins/types';
+import { translateNovelStatus } from '@utils/translateEnum';
 
 interface NovelInfoHeaderProps {
   novel: NovelData;
@@ -62,10 +64,10 @@ const NovelInfoHeader = ({
   const { hideBackdrop = false } = useAppSettings();
 
   const getStatusIcon = useCallback((status?: string) => {
-    if (status === 'Ongoing') {
+    if (status === NovelStatus.Ongoing) {
       return 'clock-outline';
     }
-    if (status === 'Completed') {
+    if (status === NovelStatus.Completed) {
       return 'check-all';
     }
     return 'help';
@@ -94,7 +96,11 @@ const NovelInfoHeader = ({
                 }
                 onLongPress={() => {
                   Clipboard.setStringAsync(novel.name).then(() =>
-                    showToast('Copied to clipboard: ' + novel.name),
+                    showToast(
+                      getString('common.copiedToClipboard', {
+                        name: novel.name,
+                      }),
+                    ),
                   );
                 }}
               >
@@ -131,7 +137,10 @@ const NovelInfoHeader = ({
                 style={{ marginRight: 4 }}
               />
               <NovelInfo theme={theme}>
-                {(novel.status || 'Unknown status') + ' • ' + novel.pluginId}
+                {(translateNovelStatus(novel.status) ||
+                  getString('novelScreen.unknownStatus')) +
+                  ' • ' +
+                  novel.pluginId}
               </NovelInfo>
             </Row>
           </View>
@@ -153,7 +162,7 @@ const NovelInfoHeader = ({
           theme={theme}
         />
         <NovelSummary
-          summary={novel.summary || 'No summary'}
+          summary={novel.summary || getString('novelScreen.noSummary')}
           isExpanded={!novel.inLibrary}
           theme={theme}
         />

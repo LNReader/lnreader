@@ -23,6 +23,7 @@ import {
 } from 'react-native-mmkv';
 import { Appbar, List } from '@components';
 import { AppearanceSettingsScreenProps } from '@navigators/types';
+import { getString } from '@strings/translations';
 
 const lightThemes = [
   defaultTheme.light,
@@ -69,7 +70,7 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
   return (
     <>
       <Appbar
-        title="Appearance"
+        title={getString('appearance')}
         handleGoBack={navigation.goBack}
         theme={theme}
       />
@@ -78,7 +79,9 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
         contentContainerStyle={{ paddingBottom: 40 }}
       >
         <List.Section>
-          <List.SubHeader theme={theme}>App theme</List.SubHeader>
+          <List.SubHeader theme={theme}>
+            {getString('appearanceScreen.appTheme')}
+          </List.SubHeader>
           <Text
             style={{
               color: theme.onSurface,
@@ -86,7 +89,7 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
               paddingVertical: 8,
             }}
           >
-            Light Theme
+            {getString('appearanceScreen.lightTheme')}
           </Text>
           <ScrollView
             contentContainerStyle={{
@@ -116,7 +119,7 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
               paddingVertical: 8,
             }}
           >
-            Dark Theme
+            {getString('appearanceScreen.darkTheme')}
           </Text>
           <ScrollView
             contentContainerStyle={{
@@ -141,28 +144,30 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
           </ScrollView>
           {theme.isDark && (
             <SwitchSetting
-              label="Pure black dark mode"
+              label={getString('appearanceScreen.pureBlackDarkMode')}
               value={isAmoledBlack}
               onPress={() => setAmoledBlack(prevVal => !prevVal)}
               theme={theme}
             />
           )}
           <List.ColorItem
-            title="Accent Color"
+            title={getString('appearanceScreen.accentColor')}
             description={theme.primary.toUpperCase()}
             onPress={showAccentColorModal}
             theme={theme}
           />
           <List.Divider theme={theme} />
-          <List.SubHeader theme={theme}>Novel info</List.SubHeader>
+          <List.SubHeader theme={theme}>
+            {getString('appearanceScreen.novelInfo')}
+          </List.SubHeader>
           <SwitchSetting
-            label="Hide backdrop"
+            label={getString('appearanceScreen.hideBackdrop')}
             value={hideBackdrop}
             onPress={() => setAppSettings({ hideBackdrop: !hideBackdrop })}
             theme={theme}
           />
           <SwitchSetting
-            label="Use FAB instead of button"
+            label={getString('advancedSettingsScreen.useFAB')}
             value={useFabForContinueReading}
             onPress={() =>
               setAppSettings({
@@ -172,21 +177,23 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
             theme={theme}
           />
           <List.Divider theme={theme} />
-          <List.SubHeader theme={theme}>Navbar</List.SubHeader>
+          <List.SubHeader theme={theme}>
+            {getString('appearanceScreen.navbar')}
+          </List.SubHeader>
           <SwitchSetting
-            label="Show updates in the nav"
+            label={getString('appearanceScreen.showUpdatesInTheNav')}
             value={showUpdatesTab}
             onPress={() => setAppSettings({ showUpdatesTab: !showUpdatesTab })}
             theme={theme}
           />
           <SwitchSetting
-            label="Show history in the nav"
+            label={getString('appearanceScreen.showHistoryInTheNav')}
             value={showHistoryTab}
             onPress={() => setAppSettings({ showHistoryTab: !showHistoryTab })}
             theme={theme}
           />
           <SwitchSetting
-            label="Always show nav labels"
+            label={getString('appearanceScreen.alwaysShowNavLabels')}
             value={showLabelsInNav}
             onPress={() =>
               setAppSettings({ showLabelsInNav: !showLabelsInNav })
@@ -197,7 +204,7 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
       </ScrollView>
 
       <ColorPickerModal
-        title="Accent color"
+        title={getString('appearanceScreen.accentColor')}
         visible={accentColorModal}
         closeModal={hideAccentColorModal}
         color={theme.primary}

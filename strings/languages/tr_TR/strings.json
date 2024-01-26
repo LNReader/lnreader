@@ -1,262 +1,255 @@
 {
-  "common": {
-    "cancel": "İptal",
-    "ok": "Tamam",
-    "save": "Kaydet",
-    "clear": "Temizle",
-    "reset": "Sıfırla",
-    "search": "Ara",
-    "install": "Yükle",
-    "newUpdateAvailable": "Yeni güncelleme var",
-    "categories": "Kategoriler",
-    "add": "Ekle",
-    "edit": "Düzenle",
-    "name": "Ad",
-    "searchFor": "Şunu ara",
-    "globally": "global olarak",
-    "searchResults": "Arama sonuçları",
-    "chapters": "Bölüm",
-    "submit": "Gönder",
-    "retry": "Yeniden dene"
-  },
-  "library": "Kitaplık",
-  "libraryScreen": {
-    "searchbar": "Kitaplıkta ara",
-    "empty": "Kitaplığın boş. Göz at yerinden kitaplığına light novel ekleyebilirsin.",
-    "bottomSheet": {
-      "filters": {
-        "downloaded": "İndirilen",
-        "unread": "Okunmamış",
-        "completed": "Tamamlanmış",
-        "started": "Başlanmış"
-      },
-      "sortOrders": {
-        "dateAdded": "Eklendiği tarih",
-        "alphabetically": "Alfabetik",
-        "totalChapters": "Toplam bölüm",
-        "download": "İndirilenler",
-        "unread": "Okunmamışlar",
-        "lastRead": "Son okunma",
-        "lastUpdated": "Son güncellenme"
-      },
-      "display": {
-        "displayMode": "Görüntüleme modu",
-        "compact": "Kompakt ızgara",
-        "comfortable": "Rahat ızgara",
-        "noTitle": "Yalnızca kapak ızgara",
-        "list": "Liste",
-        "badges": "Rozetler",
-        "downloadBadges": "İndirilen LN'ler için rozet göster",
-        "unreadBadges": "Okunmamış LN'ler için rozet göster",
-        "showNoOfItems": "Öğelerin sayısını göster"
-      }
-    }
-  },
-  "updates": "Güncellemeler",
-  "updatesScreen": {
-    "searchbar": "Güncellemelerde ara",
-    "lastUpdatedAt": "Kitaplık son güncelleme:",
-    "newChapters": "Yeni bölüm",
-    "emptyView": "Güncelleme yok",
-    "updatesLower": "güncellemeler"
-  },
-  "history": "Geçmiş",
-  "historyScreen": {
-    "searchbar": "Geçmişte ara",
-    "clearHistorWarning": "Emin misin? Tüm geçmiş kaybolacak."
+  "advancedSettingsScreen": {
+    "deleteReadChapters": "Okunmuş bölümleri sil",
+    "deleteReadChaptersDialogTitle": "Emin misiniz? Okunmuş olarak işaretlenmiş olan tüm bölümler silinecektir."
   },
   "browse": "Göz at",
   "browseScreen": {
-    "discover": "Keşfet",
-    "searchbar": "Kaynak ara",
-    "globalSearch": "Genel arama",
-    "listEmpty": "Ayarlardan dilleri etkinleştirin",
-    "lastUsed": "Son kullanılan",
-    "pinned": "Sabitlenmiş",
-    "all": "Tümü",
-    "latest": "En son",
     "addedToLibrary": "Kitaplığa eklendi",
-    "removeFromLibrary": "Kitaplıktan kaldırıldı"
+    "discover": "Keşfet",
+    "globalSearch": "Genel arama",
+    "lastUsed": "Son kullanılan",
+    "latest": "En son",
+    "listEmpty": "Ayarlardan dilleri etkinleştirin",
+    "pinned": "Sabitlenmiş",
+    "removeFromLibrary": "Kitaplıktan kaldırıldı",
+    "searchbar": "Kaynak ara"
   },
-  "readerScreen": {
-    "finished": "Biten",
-    "noNextChapter": "Başka bölüm yok",
-    "bottomSheet": {
-      "textSize": "Yazı boyutu",
-      "color": "Renk",
-      "textAlign": "Yazı Hızası",
-      "lineHeight": "Satır Yüksekliği",
-      "fontStyle": "Yazı tipi",
-      "fullscreen": "Tam ekran",
-      "bionicReading": "Biyonik Okuma",
-      "renderHml": "HTML'yi Render'le",
-      "autoscroll": "Otomatik Kaydırma",
-      "verticalSeekbar": "Dikey Arama Çubuğu",
-      "showBatteryAndTime": "Pili ve saati göster",
-      "showProgressPercentage": "İlerleme yüzdesini göster",
-      "swipeGestures": "Bölümler arası gezinmek için sol veya sağa doğru kaydırın",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
-      "allowTextSelection": "Yazı seçmeye izin ver",
-      "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın",
-      "removeExtraSpacing": "Ekstra paragraf boşluklarını kaldır",
-      "volumeButtonsScroll": "Ses butonlarıyla kaydırma",
-      "scrollAmount": "Kaydırma miktarı (varsayılan olarak ekran yüksekliği)",
-      "showSwipeMargins": "Kaydırma kenar boşluklarını göster"
+  "browseSettings": "Göz Atma Seçenekleri",
+  "browseSettingsScreen": {
+    "languages": "Diller",
+    "onlyShowPinnedSources": "Yalnızca sabitlenmiş kaynakları göster",
+    "searchAllSources": "Tüm kaynaklarda ara",
+    "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
+  },
+  "categories": {
+    "addCategories": "Kategori ekle",
+    "defaultCategory": "Varsayılan kategori",
+    "deleteModal": {
+      "desc": "Şu kategoriyi silmek istiyor musunuz:",
+      "header": "Kategoriyi sil"
     },
-    "drawer": {
-      "scrollToCurrentChapter": "Mevcut bölüme kaydır",
-      "scrollToTop": "Yukarı kaydır",
-      "scrollToBottom": "Alta kaydır"
+    "duplicateError": "Bu ada sahip bir kategori zaten var!",
+    "editCategories": "Kategoriyi yeniden adlandır",
+    "emptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek için bir tane oluşturmak için artı butonuna basın",
+    "header": "Kategorileri düzenle",
+    "setCategories": "Kategorileri ayarla",
+    "setModalEmptyMsg": "Hiç kategoriniz yok. Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle düğmesine dokunun."
+  },
+  "common": {
+    "add": "Ekle",
+    "all": "Tümü",
+    "cancel": "İptal",
+    "categories": "Kategoriler",
+    "chapters": "Bölüm",
+    "clear": "Temizle",
+    "display": "Görünüm",
+    "edit": "Düzenle",
+    "filter": "Filtre",
+    "globally": "global olarak",
+    "install": "Yükle",
+    "name": "Ad",
+    "newUpdateAvailable": "Yeni güncelleme var",
+    "ok": "Tamam",
+    "reset": "Sıfırla",
+    "retry": "Yeniden dene",
+    "save": "Kaydet",
+    "search": "Ara",
+    "searchFor": "Şunu ara",
+    "searchResults": "Arama sonuçları",
+    "settings": "Ayarlar",
+    "sort": "Sırala",
+    "submit": "Gönder"
+  },
+  "date": {
+    "calendar": {
+      "lastDay": "[Dün]",
+      "lastWeek": "[Geçen] dddd",
+      "nextDay": "[Yarın]",
+      "sameDay": "[Bugün]"
     }
+  },
+  "downloadScreen": {
+    "dbInfo": "İndirilenler bir SQLite Veritabanında kaydedilmektedir.",
+    "downloadChapters": "İndirilen bölümler",
+    "downloadsLower": "İndirilenler",
+    "noDownloads": "İndirme yok"
+  },
+  "generalSettings": "Genel",
+  "generalSettingsScreen": {
+    "asc": "(Artan)",
+    "autoDownload": "Otomatik İndirme",
+    "bySource": "Kaynağa göre",
+    "chapterSort": "Varsayılan bölüm sıralaması",
+    "desc": "(Azalan)",
+    "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak",
+    "displayMode": "Görünüm Modu",
+    "downloadNewChapters": "Yeni bölümleri indir",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Konumu",
+    "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
+    "globalUpdate": "Global güncelleme",
+    "itemsPerRow": "Satır başına düşen öge",
+    "itemsPerRowLibrary": "Kitaplıkta satır başına düşen öge",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel",
+    "novelBadges": "Novel Rozetleri",
+    "novelSort": "Novel Sıralaması",
+    "refreshMetadata": "Üst veriyi otomatik olarak yenile",
+    "refreshMetadataDescription": "Kitaplığı güncellerken yeni kapak ve ayrıntıları denetle",
+    "updateLibrary": "Açılışta kitaplığı güncelle",
+    "updateOngoing": "Yalnızca devam eden novel'leri güncelle",
+    "updateTime": "Son güncelleme süresini göster",
+    "useFAB": "Kitaplıkta FAB kullan"
+  },
+  "globalSearch": {
+    "allSources": "tüm kaynaklarda",
+    "pinnedSources": "sabitlenmiş kaynaklarda",
+    "searchIn": "Şurada bir novel arayın"
+  },
+  "history": "Geçmiş",
+  "historyScreen": {
+    "clearHistorWarning": "Emin misin? Tüm geçmiş kaybolacak.",
+    "searchbar": "Geçmişte ara"
+  },
+  "library": "Kitaplık",
+  "libraryScreen": {
+    "bottomSheet": {
+      "display": {
+        "badges": "Rozetler",
+        "comfortable": "Rahat ızgara",
+        "compact": "Kompakt ızgara",
+        "displayMode": "Görüntüleme modu",
+        "downloadBadges": "İndirilen LN'ler için rozet göster",
+        "list": "Liste",
+        "noTitle": "Yalnızca kapak ızgara",
+        "showNoOfItems": "Öğelerin sayısını göster",
+        "unreadBadges": "Okunmamış LN'ler için rozet göster"
+      },
+      "filters": {
+        "completed": "Tamamlanmış",
+        "downloaded": "İndirilen",
+        "started": "Başlanmış",
+        "unread": "Okunmamış"
+      },
+      "sortOrders": {
+        "alphabetically": "Alfabetik",
+        "dateAdded": "Eklendiği tarih",
+        "download": "İndirilenler",
+        "lastRead": "Son okunma",
+        "lastUpdated": "Son güncellenme",
+        "totalChapters": "Toplam bölüm",
+        "unread": "Okunmamışlar"
+      }
+    },
+    "empty": "Kitaplığın boş. Göz at yerinden kitaplığına light novel ekleyebilirsin.",
+    "searchbar": "Kitaplıkta ara"
+  },
+  "more": "Daha fazla",
+  "moreScreen": {
+    "downloadOnly": "Yalnızca indirilenler",
+    "incognitoMode": "Gizli mod"
   },
   "novelScreen": {
     "addToLibaray": "Kitaplığa ekle",
-    "inLibaray": "Kitaplıkta",
-    "continueReading": "Okumaya devam et",
     "chapters": "bölüm",
-    "migrate": "Taşın",
-    "noSummary": "Özet bilgisi yok",
-    "bottomSheet": {
-      "filter": "Filtre",
-      "sort": "Sırala",
-      "display": "Ekran"
+    "continueReading": "Okumaya devam et",
+    "convertToEpubModal": {
+      "chaptersWarning": "EPUB'da yalnızca, indirilen bölümler dahil edilir",
+      "chooseLocation": "EPUB depolama dizinini seç",
+      "pathToFolder": "EPUB dosyalarını kaydetme klasörünün yolu",
+      "useCustomCSS": "Özel CSS kullan",
+      "useCustomJS": "Özel JS kullan",
+      "useCustomJSWarning": "Tüm EPUB okuyucuları tarafından desteklenmeyebilir",
+      "useReaderTheme": "Okuyucu temasını kullan"
     },
+    "inLibaray": "Kitaplıkta",
     "jumpToChapterModal": {
-      "jumpToChapter": "Bölüme Atla",
-      "openChapter": "Bölümü Aç",
       "chapterName": "Bölüm Adı",
       "chapterNumber": "Bölüm Sayısı",
       "error": {
         "validChapterName": "Geçerli bir bölüm adı girin",
         "validChapterNumber": "Geçerli bir bölüm sayısı girin"
-      }
+      },
+      "jumpToChapter": "Bölüme Atla",
+      "openChapter": "Bölümü Aç"
     },
-    "convertToEpubModal": {
-      "chooseLocation": "EPUB depolama dizinini seç",
-      "pathToFolder": "EPUB dosyalarını kaydetme klasörünün yolu",
-      "useReaderTheme": "Okuyucu temasını kullan",
-      "useCustomCSS": "Özel CSS kullan",
-      "useCustomJS": "Özel JS kullan",
-      "useCustomJSWarning": "Tüm EPUB okuyucuları tarafından desteklenmeyebilir",
-      "chaptersWarning": "EPUB'da yalnızca, indirilen bölümler dahil edilir"
-    }
+    "migrate": "Taşın",
+    "noSummary": "Özet bilgisi yok"
   },
-  "more": "Daha fazla",
-  "moreScreen": {
-    "settings": "Ayarlar",
-    "settingsScreen": {
-      "generalSettings": "Genel",
-      "generalSettingsScreen": {
-        "display": "Görünüm",
-        "displayMode": "Görünüm Modu",
-        "itemsPerRow": "Satır başına düşen öge",
-        "itemsPerRowLibrary": "Kitaplıkta satır başına düşen öge",
-        "novelBadges": "Novel Rozetleri",
-        "novelSort": "Novel Sıralaması",
-        "updateLibrary": "Açılışta kitaplığı güncelle",
-        "useFAB": "Kitaplıkta FAB kullan",
-        "novel": "Novel",
-        "chapterSort": "Varsayılan bölüm sıralaması",
-        "bySource": "Kaynağa göre",
-        "asc": "(Artan)",
-        "desc": "(Azalan)",
-        "globalUpdate": "Global güncelleme",
-        "updateOngoing": "Yalnızca devam eden novel'leri güncelle",
-        "refreshMetadata": "Üst veriyi otomatik olarak yenile",
-        "refreshMetadataDescription": "Kitaplığı güncellerken yeni kapak ve ayrıntıları denetle",
-        "updateTime": "Son güncelleme süresini göster",
-        "autoDownload": "Otomatik İndirme",
-        "epub": "EPUB",
-        "epubLocation": "EPUB Konumu",
-        "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
-        "downloadNewChapters": "Yeni bölümleri indir",
-        "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
-      },
-      "readerSettings": {
-        "title": "Okuyucu",
-        "readerTheme": "Okuyucu teması",
-        "preset": "Öntanımlı",
-        "backgroundColor": "Arka plan rengi",
-        "textColor": "Yazı rengi",
-        "backgroundColorModal": "Okuyucu arka plan rengi",
-        "textColorModal": "Okuyucu yazı rengi",
-        "verticalSeekbarDesc": "Dikey ve yatay arama çubuğu arasında geçiş yap",
-        "autoScrollInterval": "Otomatik kaydırma süresi (saniye olarak)",
-        "autoScrollOffset": "Otomatik kaydırma konumu (varsayılan olarak ekran yüksekliği)",
-        "saveCustomTheme": "Özel temayı kaydet",
-        "deleteCustomTheme": "Özel temayı sil",
-        "customCSS": "Özel CSS",
-        "customJS": "Özel JS",
-        "openCSSFile": "CSS dosyası aç",
-        "openJSFile": "JS dosyası aç",
-        "notSaved": "Kaydedilmedi",
-        "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[KAYNAKID])",
-        "jsHint": "İpucu: Aşağıdaki değişkenlere erişiminiz bulunmakta:\nhtml, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "Emin misiniz? Özel CSS'niz sıfırlanır.",
-        "clearCustomJS": "Emin misiniz? Özel JS kodlarınız sıfırlanır."
-      },
-      "browseSettings": "Göz Atma Seçenekleri",
-      "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Yalnızca sabitlenmiş kaynakları göster",
-        "languages": "Diller",
-        "searchAllSources": "Tüm kaynaklarda ara",
-        "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
-      }
-    }
+  "readerScreen": {
+    "bottomSheet": {
+      "allowTextSelection": "Yazı seçmeye izin ver",
+      "autoscroll": "Otomatik Kaydırma",
+      "bionicReading": "Biyonik Okuma",
+      "color": "Renk",
+      "fontStyle": "Yazı tipi",
+      "fullscreen": "Tam ekran",
+      "lineHeight": "Satır Yüksekliği",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "removeExtraSpacing": "Ekstra paragraf boşluklarını kaldır",
+      "renderHml": "HTML'yi Render'le",
+      "scrollAmount": "Kaydırma miktarı (varsayılan olarak ekran yüksekliği)",
+      "showBatteryAndTime": "Pili ve saati göster",
+      "showProgressPercentage": "İlerleme yüzdesini göster",
+      "showSwipeMargins": "Kaydırma kenar boşluklarını göster",
+      "swipeGestures": "Bölümler arası gezinmek için sol veya sağa doğru kaydırın",
+      "textAlign": "Yazı Hızası",
+      "textSize": "Yazı boyutu",
+      "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın",
+      "verticalSeekbar": "Dikey Arama Çubuğu",
+      "volumeButtonsScroll": "Ses butonlarıyla kaydırma"
+    },
+    "drawer": {
+      "scrollToBottom": "Alta kaydır",
+      "scrollToCurrentChapter": "Mevcut bölüme kaydır",
+      "scrollToTop": "Yukarı kaydır"
+    },
+    "finished": "Biten",
+    "noNextChapter": "Başka bölüm yok"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Otomatik kaydırma süresi (saniye olarak)",
+    "autoScrollOffset": "Otomatik kaydırma konumu (varsayılan olarak ekran yüksekliği)",
+    "backgroundColor": "Arka plan rengi",
+    "backgroundColorModal": "Okuyucu arka plan rengi",
+    "clearCustomCSS": "Emin misiniz? Özel CSS'niz sıfırlanır.",
+    "clearCustomJS": "Emin misiniz? Özel JS kodlarınız sıfırlanır.",
+    "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[KAYNAKID])",
+    "customCSS": "Özel CSS",
+    "customJS": "Özel JS",
+    "deleteCustomTheme": "Özel temayı sil",
+    "jsHint": "İpucu: Aşağıdaki değişkenlere erişiminiz bulunmakta:\nhtml, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Kaydedilmedi",
+    "openCSSFile": "CSS dosyası aç",
+    "openJSFile": "JS dosyası aç",
+    "preset": "Öntanımlı",
+    "readerTheme": "Okuyucu teması",
+    "saveCustomTheme": "Özel temayı kaydet",
+    "textColor": "Yazı rengi",
+    "textColorModal": "Okuyucu yazı rengi",
+    "title": "Okuyucu",
+    "verticalSeekbarDesc": "Dikey ve yatay arama çubuğu arasında geçiş yap"
   },
   "sourceScreen": {
     "noResultsFound": "Sonuç bulunamadı"
   },
   "statsScreen": {
+    "downloadedChapters": "İndirilmiş bölüm",
+    "genreDistribution": "Tür dağılımı",
+    "readChapters": "Okunan bölüm",
+    "statusDistribution": "Durum dağılımı",
     "title": "İstatistikler",
     "titlesInLibrary": "Kitaplıktaki başlık",
     "totalChapters": "Toplam bölüm",
-    "readChapters": "Okunan bölüm",
-    "unreadChapters": "Okunmamış bölüm",
-    "downloadedChapters": "İndirilmiş bölüm",
-    "genreDistribution": "Tür dağılımı",
-    "statusDistribution": "Durum dağılımı"
+    "unreadChapters": "Okunmamış bölüm"
   },
-  "globalSearch": {
-    "searchIn": "Şurada bir novel arayın",
-    "allSources": "tüm kaynaklarda",
-    "pinnedSources": "sabitlenmiş kaynaklarda"
-  },
-  "advancedSettings": {
-    "deleteReadChapters": "Okunmuş bölümleri sil",
-    "deleteReadChaptersDialogTitle": "Emin misiniz? Okunmuş olarak işaretlenmiş olan tüm bölümler silinecektir."
-  },
-  "date": {
-    "calendar": {
-      "sameDay": "[Bugün]",
-      "nextDay": "[Yarın]",
-      "lastDay": "[Dün]",
-      "lastWeek": "[Geçen] dddd"
-    }
-  },
-  "categories": {
-    "addCategories": "Kategori ekle",
-    "editCategories": "Kategoriyi yeniden adlandır",
-    "setCategories": "Kategorileri ayarla",
-    "header": "Kategorileri düzenle",
-    "emptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek için bir tane oluşturmak için artı butonuna basın",
-    "setModalEmptyMsg": "Hiç kategoriniz yok. Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle düğmesine dokunun.",
-    "deleteModal": {
-      "header": "Kategoriyi sil",
-      "desc": "Şu kategoriyi silmek istiyor musunuz:"
-    },
-    "duplicateError": "Bu ada sahip bir kategori zaten var!",
-    "defaultCategory": "Varsayılan kategori"
-  },
-  "settings": {
-    "icognitoMode": "Gizli mod",
-    "downloadedOnly": "Yalnızca indirilenler"
-  },
-  "downloadScreen": {
-    "dbInfo": "İndirilenler bir SQLite Veritabanında kaydedilmektedir.",
-    "downloadChapters": "İndirilen bölümler",
-    "noDownloads": "İndirme yok",
-    "downloadsLower": "İndirilenler"
+  "updates": "Güncellemeler",
+  "updatesScreen": {
+    "emptyView": "Güncelleme yok",
+    "lastUpdatedAt": "Kitaplık son güncelleme:",
+    "newChapters": "Yeni bölüm",
+    "searchbar": "Güncellemelerde ara",
+    "updatesLower": "güncellemeler"
   }
 }

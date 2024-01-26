@@ -17,6 +17,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useBoolean } from '@hooks';
 import { overlay } from 'react-native-paper';
 import { getValueFor } from './filterUtils';
+import { getString } from '@strings/translations';
 
 const insertOrRemoveIntoArray = (array: string[], val: string): string[] =>
   array.indexOf(val) > -1 ? array.filter(ele => ele !== val) : [...array, val];
@@ -249,14 +250,14 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
           style={[styles.buttonContainer, { borderBottomColor: theme.outline }]}
         >
           <Button
-            title={'Reset'}
+            title={getString('common.reset')}
             onPress={() => {
               setSelectedFilters(filters);
               clearFilters(filters);
             }}
           />
           <Button
-            title={'Filter'}
+            title={getString('common.filter')}
             textColor={theme.onSurface}
             onPress={() => {
               setFilters(selectedFilters);

@@ -167,14 +167,14 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
       {downloadedOnlyMode && (
         <Banner
           icon="cloud-off-outline"
-          label={getString('settings.downloadedOnly')}
+          label={getString('moreScreen.downloadOnly')}
           theme={theme}
         />
       )}
       {incognitoMode && (
         <Banner
           icon="incognito"
-          label={getString('settings.icognitoMode')}
+          label={getString('moreScreen.incognitoMode')}
           theme={theme}
           backgroundColor={theme.tertiary}
           textColor={theme.onTertiary}
@@ -234,7 +234,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
             ]}
             color={theme.onPrimary}
             uppercase={false}
-            label={'Resume'}
+            label={getString('common.resume')}
             icon="play"
             onPress={() => {
               navigation.navigate('Chapter', {

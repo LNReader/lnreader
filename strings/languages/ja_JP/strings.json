@@ -1,262 +1,255 @@
 {
-  "common": {
-    "cancel": "キャンセル",
-    "ok": "Ok",
-    "save": "保存",
-    "clear": "Clear",
-    "reset": "リセット",
-    "search": "検索",
-    "install": "インストール",
-    "newUpdateAvailable": "新しいアップデートが見つかりました",
-    "categories": "カテゴリー",
-    "add": "追加",
-    "edit": "編集",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "検索結果",
-    "chapters": "Chapters",
-    "submit": "Submit",
-    "retry": "Retry"
-  },
-  "library": "ライブラリ",
-  "libraryScreen": {
-    "searchbar": "ライブラリを検索",
-    "empty": "Your library is empty. Add series to your library from Browse.",
-    "bottomSheet": {
-      "filters": {
-        "downloaded": "ダウンロード",
-        "unread": "未読",
-        "completed": "完成",
-        "started": "読み始めた"
-      },
-      "sortOrders": {
-        "dateAdded": "追加日",
-        "alphabetically": "アルファベット順",
-        "totalChapters": "合計章数",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last read",
-        "lastUpdated": "Last updated"
-      },
-      "display": {
-        "displayMode": "表示モード",
-        "compact": "コンパクトグリッド",
-        "comfortable": "快適グリッド",
-        "noTitle": "カバーだけグリッド",
-        "list": "一覧",
-        "badges": "バッジ",
-        "downloadBadges": "ダウンロードバッジ",
-        "unreadBadges": "未読バッジ",
-        "showNoOfItems": "アイテム数を表示"
-      }
-    }
-  },
-  "updates": "更新",
-  "updatesScreen": {
-    "searchbar": "更新を検索",
-    "lastUpdatedAt": "ライブラリの最終更新日",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates",
-    "updatesLower": "updates"
-  },
-  "history": "履歴",
-  "historyScreen": {
-    "searchbar": "閲覧履歴",
-    "clearHistorWarning": "本当によろしいですか？すべての履歴は失われます。"
+  "advancedSettingsScreen": {
+    "deleteReadChapters": "Delete read chapters",
+    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
   },
   "browse": "閲覧",
   "browseScreen": {
-    "discover": "Discover",
-    "searchbar": "ソースを検索",
-    "globalSearch": "グローバル検索",
-    "listEmpty": "設定から言語を有効にする",
-    "lastUsed": "Last used",
-    "pinned": "ピン留め",
-    "all": "All",
-    "latest": "Latest",
     "addedToLibrary": "ライブラリに追加",
-    "removeFromLibrary": "ライブラリから削除"
+    "discover": "Discover",
+    "globalSearch": "グローバル検索",
+    "lastUsed": "Last used",
+    "latest": "Latest",
+    "listEmpty": "設定から言語を有効にする",
+    "pinned": "ピン留め",
+    "removeFromLibrary": "ライブラリから削除",
+    "searchbar": "ソースを検索"
   },
-  "readerScreen": {
-    "finished": "Finished",
-    "noNextChapter": "次の章はありません",
-    "bottomSheet": {
-      "textSize": "文字サイズ",
-      "color": "Color",
-      "textAlign": "Text align",
-      "lineHeight": "Line Height",
-      "fontStyle": "フォントスタイル",
-      "fullscreen": "全画面",
-      "bionicReading": "Bionic Reading",
-      "renderHml": "HTMLをレンダリング",
-      "autoscroll": "自動スクロール",
-      "verticalSeekbar": "垂直シークバー",
-      "showBatteryAndTime": "バッテリーと時間を表示",
-      "showProgressPercentage": "進捗率を表示",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
-      "allowTextSelection": "テキスト選択を許可",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
-      "scrollAmount": "Scroll amount (screen height by default)",
-      "showSwipeMargins": "Show swipe margins"
+  "browseSettings": "Browse Settings",
+  "browseSettingsScreen": {
+    "languages": "Languages",
+    "onlyShowPinnedSources": "Only show pinned sources",
+    "searchAllSources": "Search all sources",
+    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+  },
+  "categories": {
+    "addCategories": "カテゴリーを追加",
+    "defaultCategory": "デフォルトカテゴリー",
+    "deleteModal": {
+      "desc": "カテゴリーを削除しますか?",
+      "header": "カテゴリーを削除"
     },
-    "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+    "duplicateError": "この名前のカテゴリーはすでに存在します。",
+    "editCategories": "カテゴリー名を変更",
+    "emptyMsg": "カテゴリーがありません。ライブラリを整理したい場合、プラスボタンをタップしてカテゴリーを作成してください。",
+    "header": "カテゴリーを編集",
+    "setCategories": "カテゴリーを設定",
+    "setModalEmptyMsg": "カテゴリーがありません。ライブラリを整理したい場合、プラスボタンをタップしてカテゴリーを作成してください。"
+  },
+  "common": {
+    "add": "追加",
+    "all": "All",
+    "cancel": "キャンセル",
+    "categories": "カテゴリー",
+    "chapters": "Chapters",
+    "clear": "Clear",
+    "display": "Display",
+    "edit": "編集",
+    "filter": "Filter",
+    "globally": "globally",
+    "install": "インストール",
+    "name": "Name",
+    "newUpdateAvailable": "新しいアップデートが見つかりました",
+    "ok": "Ok",
+    "reset": "リセット",
+    "retry": "Retry",
+    "save": "保存",
+    "search": "検索",
+    "searchFor": "Search for",
+    "searchResults": "検索結果",
+    "settings": "Settings",
+    "sort": "Sort",
+    "submit": "Submit"
+  },
+  "date": {
+    "calendar": {
+      "lastDay": "[Yesterday]",
+      "lastWeek": "[Last] dddd",
+      "nextDay": "[Tomorrow]",
+      "sameDay": "[Today]"
     }
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "downloadsLower": "downloads",
+    "noDownloads": "No downloads"
+  },
+  "generalSettings": "General",
+  "generalSettingsScreen": {
+    "asc": "(Ascending)",
+    "autoDownload": "Auto-download",
+    "bySource": "By source",
+    "chapterSort": "Default chapter sort",
+    "desc": "(Descending)",
+    "disableHapticFeedback": "Disable haptic feedback",
+    "displayMode": "Display Mode",
+    "downloadNewChapters": "Download new chapters",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Global update",
+    "itemsPerRow": "Items per row",
+    "itemsPerRowLibrary": "Items per row in library",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel",
+    "novelBadges": "Novel Badges",
+    "novelSort": "Novel Sort",
+    "refreshMetadata": "Automatically refresh metadata",
+    "refreshMetadataDescription": "Check for new cover and details when updating library",
+    "updateLibrary": "Update library on launch",
+    "updateOngoing": "Only update ongoing novels",
+    "updateTime": "Show last update time",
+    "useFAB": "Use FAB in Library"
+  },
+  "globalSearch": {
+    "allSources": "all sources",
+    "pinnedSources": "pinned sources",
+    "searchIn": "Search a novel in"
+  },
+  "history": "履歴",
+  "historyScreen": {
+    "clearHistorWarning": "本当によろしいですか？すべての履歴は失われます。",
+    "searchbar": "閲覧履歴"
+  },
+  "library": "ライブラリ",
+  "libraryScreen": {
+    "bottomSheet": {
+      "display": {
+        "badges": "バッジ",
+        "comfortable": "快適グリッド",
+        "compact": "コンパクトグリッド",
+        "displayMode": "表示モード",
+        "downloadBadges": "ダウンロードバッジ",
+        "list": "一覧",
+        "noTitle": "カバーだけグリッド",
+        "showNoOfItems": "アイテム数を表示",
+        "unreadBadges": "未読バッジ"
+      },
+      "filters": {
+        "completed": "完成",
+        "downloaded": "ダウンロード",
+        "started": "読み始めた",
+        "unread": "未読"
+      },
+      "sortOrders": {
+        "alphabetically": "アルファベット順",
+        "dateAdded": "追加日",
+        "download": "Downloaded",
+        "lastRead": "Last read",
+        "lastUpdated": "Last updated",
+        "totalChapters": "合計章数",
+        "unread": "Unread"
+      }
+    },
+    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "ライブラリを検索"
+  },
+  "more": "More",
+  "moreScreen": {
+    "downloadOnly": "ダウンロードのみ",
+    "incognitoMode": "シークレットモード"
   },
   "novelScreen": {
     "addToLibaray": "ライブラリに追加",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
     "chapters": "章",
-    "migrate": "移行",
-    "noSummary": "No summary",
-    "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+    "continueReading": "Continue reading",
+    "convertToEpubModal": {
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB",
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "Path to EPUB save folder",
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers",
+      "useReaderTheme": "Use reader theme"
     },
+    "inLibaray": "In library",
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
       "chapterName": "Chapter Name",
       "chapterNumber": "Chapter Number",
       "error": {
         "validChapterName": "Enter a valid chapter name",
         "validChapterNumber": "Enter a valid chapter number"
-      }
+      },
+      "jumpToChapter": "Jump to Chapter",
+      "openChapter": "Open Chapter"
     },
-    "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
-      "pathToFolder": "Path to EPUB save folder",
-      "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use custom CSS",
-      "useCustomJS": "Use custom JS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers",
-      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
-    }
+    "migrate": "移行",
+    "noSummary": "No summary"
   },
-  "more": "More",
-  "moreScreen": {
-    "settings": "Settings",
-    "settingsScreen": {
-      "generalSettings": "General",
-      "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
-        "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
-      },
-      "readerSettings": {
-        "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS",
-        "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset."
-      },
-      "browseSettings": "Browse Settings",
-      "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
-      }
-    }
+  "readerScreen": {
+    "bottomSheet": {
+      "allowTextSelection": "テキスト選択を許可",
+      "autoscroll": "自動スクロール",
+      "bionicReading": "Bionic Reading",
+      "color": "Color",
+      "fontStyle": "フォントスタイル",
+      "fullscreen": "全画面",
+      "lineHeight": "Line Height",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "removeExtraSpacing": "Remove extra paragraph spacing",
+      "renderHml": "HTMLをレンダリング",
+      "scrollAmount": "Scroll amount (screen height by default)",
+      "showBatteryAndTime": "バッテリーと時間を表示",
+      "showProgressPercentage": "進捗率を表示",
+      "showSwipeMargins": "Show swipe margins",
+      "swipeGestures": "Swipe left or right to navigate between chapters",
+      "textAlign": "Text align",
+      "textSize": "文字サイズ",
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
+      "verticalSeekbar": "垂直シークバー",
+      "volumeButtonsScroll": "Volume buttons scroll"
+    },
+    "drawer": {
+      "scrollToBottom": "Scroll to bottom",
+      "scrollToCurrentChapter": "Scroll to current chapter",
+      "scrollToTop": "Scroll to top"
+    },
+    "finished": "Finished",
+    "noNextChapter": "次の章はありません"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Auto scroll interval (in seconds)",
+    "autoScrollOffset": "Auto scroll offset (screen height by default)",
+    "backgroundColor": "Background color",
+    "backgroundColorModal": "Reader background color",
+    "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+    "clearCustomJS": "Are you sure? Your custom JS would be reset.",
+    "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+    "customCSS": "Custom CSS",
+    "customJS": "Custom JS",
+    "deleteCustomTheme": "Delete custom theme",
+    "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Not saved",
+    "openCSSFile": "Open CSS file",
+    "openJSFile": "Open JS file",
+    "preset": "Preset",
+    "readerTheme": "Reader theme",
+    "saveCustomTheme": "Save custom theme",
+    "textColor": "Text color",
+    "textColorModal": "Reader text color",
+    "title": "Reader",
+    "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar"
   },
   "sourceScreen": {
     "noResultsFound": "No results found"
   },
   "statsScreen": {
+    "downloadedChapters": "Downloaded chapters",
+    "genreDistribution": "Genre distribution",
+    "readChapters": "Read chapters",
+    "statusDistribution": "Status distribution",
     "title": "Statistics",
     "titlesInLibrary": "Titles in library",
     "totalChapters": "Total chapters",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "unreadChapters": "Unread chapters"
   },
-  "globalSearch": {
-    "searchIn": "Search a novel in",
-    "allSources": "all sources",
-    "pinnedSources": "pinned sources"
-  },
-  "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
-  },
-  "date": {
-    "calendar": {
-      "sameDay": "[Today]",
-      "nextDay": "[Tomorrow]",
-      "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd"
-    }
-  },
-  "categories": {
-    "addCategories": "カテゴリーを追加",
-    "editCategories": "カテゴリー名を変更",
-    "setCategories": "カテゴリーを設定",
-    "header": "カテゴリーを編集",
-    "emptyMsg": "カテゴリーがありません。ライブラリを整理したい場合、プラスボタンをタップしてカテゴリーを作成してください。",
-    "setModalEmptyMsg": "カテゴリーがありません。ライブラリを整理したい場合、プラスボタンをタップしてカテゴリーを作成してください。",
-    "deleteModal": {
-      "header": "カテゴリーを削除",
-      "desc": "カテゴリーを削除しますか?"
-    },
-    "duplicateError": "この名前のカテゴリーはすでに存在します。",
-    "defaultCategory": "デフォルトカテゴリー"
-  },
-  "settings": {
-    "icognitoMode": "シークレットモード",
-    "downloadedOnly": "ダウンロードのみ"
-  },
-  "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads",
-    "downloadsLower": "downloads"
+  "updates": "更新",
+  "updatesScreen": {
+    "emptyView": "No recent updates",
+    "lastUpdatedAt": "ライブラリの最終更新日",
+    "newChapters": "new Chapters",
+    "searchbar": "更新を検索",
+    "updatesLower": "updates"
   }
 }

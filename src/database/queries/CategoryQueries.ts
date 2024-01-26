@@ -3,6 +3,7 @@ import { noop } from 'lodash-es';
 import { BackupCategory, Category, NovelCategory, CCategory } from '../types';
 import { showToast } from '@utils/showToast';
 import { txnErrorCallback } from '../utils/helpers';
+import { getString } from '@strings/translations';
 const db = SQLite.openDatabase('lnreader.db');
 
 const getCategoriesQuery = `
@@ -69,7 +70,7 @@ const deleteCategoryQuery = 'DELETE FROM Category WHERE id = ?';
 
 export const deleteCategoryById = (category: Category): void => {
   if (category.sort <= 2) {
-    return showToast('You cant delete default category');
+    return showToast(getString('categories.cantDeleteDefault'));
   }
   db.transaction(tx => {
     tx.executeSql(

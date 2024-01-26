@@ -19,6 +19,7 @@ import {
 } from '@database/queries/StatsQueries';
 import { Row } from '@components/Common';
 import { overlay } from 'react-native-paper';
+import { translateNovelStatus } from '@utils/translateEnum';
 
 const StatsScreen = () => {
   const theme = useTheme();
@@ -85,7 +86,7 @@ const StatsScreen = () => {
         contentContainerStyle={styles.contentCtn}
       >
         <Text style={[styles.header, { color: theme.onSurfaceVariant }]}>
-          {getString('moreScreen.settingsScreen.generalSettings')}
+          {getString('generalSettings')}
         </Text>
         <Row style={styles.statsRow}>
           <StatsCard
@@ -112,7 +113,10 @@ const StatsScreen = () => {
           />
         </Row>
         <Row style={styles.statsRow}>
-          <StatsCard label="Sources" value={stats.sourcesCount} />
+          <StatsCard
+            label={getString('statsScreen.sources')}
+            value={stats.sourcesCount}
+          />
         </Row>
         <Text style={[styles.header, { color: theme.onSurfaceVariant }]}>
           {getString('statsScreen.genreDistribution')}
@@ -127,7 +131,11 @@ const StatsScreen = () => {
         </Text>
         <Row style={[styles.statsRow, styles.genreRow]}>
           {Object.entries(stats.status || {}).map(item => (
-            <StatsCard key={item[0]} label={item[0]} value={item[1]} />
+            <StatsCard
+              key={item[0]}
+              label={translateNovelStatus(item[0])}
+              value={item[1]}
+            />
           ))}
         </Row>
       </ScrollView>

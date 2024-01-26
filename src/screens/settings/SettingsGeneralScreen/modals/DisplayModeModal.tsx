@@ -10,6 +10,7 @@ import { Portal, Modal, overlay } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
+import { getString } from '@strings/translations';
 
 interface DisplayModeModalProps {
   displayMode: DisplayModes;
@@ -37,7 +38,7 @@ const DisplayModeModal: React.FC<DisplayModeModalProps> = ({
         ]}
       >
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
-          Display Mode
+          {getString('generalSettingsScreen.displayMode')}
         </Text>
         {displayModesList.map(mode => (
           <RadioButton

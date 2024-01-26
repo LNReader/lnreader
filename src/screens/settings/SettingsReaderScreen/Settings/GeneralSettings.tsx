@@ -36,14 +36,14 @@ const GeneralSettings: React.FC = () => {
   return (
     <>
       <List.SubHeader theme={theme}>
-        {getString('moreScreen.settingsScreen.generalSettings')}
+        {getString('generalSettings')}
       </List.SubHeader>
 
       {/* will add this later xD */}
       {/* <SwitchItem
         label={getString('readerScreen.bottomSheet.verticalSeekbar')}
         description={getString(
-          'moreScreen.settingsScreen.readerSettings.verticalSeekbarDesc',
+          'readerSettings.verticalSeekbarDesc',
         )}
         value={verticalSeekbar}
         onPress={() =>
@@ -81,9 +81,7 @@ const GeneralSettings: React.FC = () => {
           </List.SubHeader>
           <View style={styles.autoScrollInterval}>
             <Text style={[labelStyle, styles.paddingRightM]} numberOfLines={2}>
-              {getString(
-                'moreScreen.settingsScreen.readerSettings.autoScrollInterval',
-              )}
+              {getString('readerSettings.autoScrollInterval')}
             </Text>
             <TextInput
               style={labelStyle}
@@ -100,9 +98,7 @@ const GeneralSettings: React.FC = () => {
           </View>
           <View style={styles.autoScrollInterval}>
             <Text style={[labelStyle, styles.paddingRightM]} numberOfLines={2}>
-              {getString(
-                'moreScreen.settingsScreen.readerSettings.autoScrollOffset',
-              )}
+              {getString('readerSettings.autoScrollOffset')}
             </Text>
             <TextInput
               style={labelStyle}

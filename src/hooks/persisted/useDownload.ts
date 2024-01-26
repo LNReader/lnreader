@@ -2,6 +2,7 @@ import { ChapterInfo, NovelInfo } from '@database/types';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import { showToast } from '@utils/showToast';
+import { getString } from '@strings/translations';
 import BackgroundService from 'react-native-background-actions';
 import { useMMKVObject } from 'react-native-mmkv';
 import * as Notifications from 'expo-notifications';
@@ -27,8 +28,12 @@ const downloadChapterAction = async (taskData?: TaskData) => {
     while (queue.length > 0) {
       const { novel, chapter } = queue[0];
       await BackgroundService.updateNotification({
-        taskTitle: `Downloading: ${novel.name}`,
-        taskDesc: `Chapter: ${chapter.name}`,
+        taskTitle: getString('downloadScreen.downloadingNovel', {
+          name: novel.name,
+        }),
+        taskDesc: getString('downloadScreen.chapterName', {
+          name: chapter.name,
+        }),
       });
       await downloadChapter(
         novel.pluginId,
@@ -39,7 +44,9 @@ const downloadChapterAction = async (taskData?: TaskData) => {
         Notifications.scheduleNotificationAsync({
           content: {
             title: chapter.name,
-            body: `Download failed: ${error.message}`,
+            body: getString('downloadScreen.failed', {
+              message: error.message,
+            }),
           },
           trigger: null,
         }),
@@ -56,8 +63,8 @@ const downloadChapterAction = async (taskData?: TaskData) => {
     MMKVStorage.delete(BACKGROUND_ACTION);
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Downloader',
-        body: 'Download completed',
+        title: getString('downloadScreen.downloader'),
+        body: getString('downloadScreen.completed'),
       },
       trigger: null,
     });
@@ -91,8 +98,8 @@ export default function useDownload() {
       if (!BackgroundService.isRunning()) {
         BackgroundService.start(downloadChapterAction, {
           taskName: 'Download chapters',
-          taskTitle: 'Downloading',
-          taskDesc: 'Preparing',
+          taskTitle: getString('downloadScreen.downloading'),
+          taskDesc: getString('common.preparing'),
           taskIcon: { name: 'notification_icon', type: 'drawable' },
           color: '#00adb5',
           parameters: { delay: 1000 },
@@ -100,7 +107,7 @@ export default function useDownload() {
         });
       }
     } else {
-      showToast('Another service is running. Queued chapters');
+      showToast(getString('downloadScreen.serviceRunning'));
     }
   };
 

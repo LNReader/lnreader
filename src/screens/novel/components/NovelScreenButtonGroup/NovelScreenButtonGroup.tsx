@@ -88,7 +88,9 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
                 size={24}
               />
               <Text style={[styles.buttonLabel, { color: trackerButtonColor }]}>
-                {trackedNovel ? 'Tracked' : 'Tracking'}
+                {trackedNovel
+                  ? getString('novelScreen.tracked')
+                  : getString('novelScreen.tracking')}
               </Text>
             </Pressable>
           </View>

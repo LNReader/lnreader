@@ -58,7 +58,7 @@ const MigrationNovelList = ({
 
   const showModal = (url: string, name: string) => {
     if (inLibrary(url)) {
-      showToast('Novel already in library');
+      showToast(getString('browseScreen.migration.novelAlreadyInLibrary'));
     } else {
       setSelectedNovel({ url, name });
       showMigrateNovelDialog();
@@ -81,7 +81,7 @@ const MigrationNovelList = ({
               paddingVertical: 4,
             }}
           >
-            No results found
+            {getString('sourceScreen.noResultsFound')}
           </Text>
         }
       />
@@ -103,7 +103,9 @@ const MigrationNovelList = ({
               marginBottom: 16,
             }}
           >
-            {`Migrate ${selectedNovel.url}?`}
+            {getString('browseScreen.migration.dialogMessage', {
+              url: selectedNovel.url,
+            })}
           </Text>
           <View
             style={{

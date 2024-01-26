@@ -65,13 +65,13 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
   const generateNovelBadgesDescription = () => {
     let res = [];
     if (showDownloadBadges) {
-      res.push('Download');
+      res.push(getString('libraryScreen.bottomSheet.display.download'));
     }
     if (showUnreadBadges) {
-      res.push('Unread');
+      res.push(getString('libraryScreen.bottomSheet.display.unread'));
     }
     if (showNumberOfNovels) {
-      res.push('Number of Items');
+      res.push(getString('libraryScreen.bottomSheet.display.numberOfItems'));
     }
     return res.join(', ');
   };
@@ -102,7 +102,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
   return (
     <>
       <Appbar
-        title={getString('moreScreen.settingsScreen.generalSettings')}
+        title={getString('generalSettings')}
         // @ts-ignore
         handleGoBack={navigation.goBack}
         theme={theme}
@@ -110,45 +110,33 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
       <ScrollView contentContainerStyle={{ paddingBottom: 32 }}>
         <List.Section>
           <List.SubHeader theme={theme}>
-            {getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.display',
-            )}
+            {getString('common.display')}
           </List.SubHeader>
           <List.Item
-            title={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.displayMode',
-            )}
+            title={getString('generalSettingsScreen.displayMode')}
             description={displayModesList[displayMode].label}
             onPress={displayModalRef.setTrue}
             theme={theme}
           />
           <List.Item
-            title={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.itemsPerRowLibrary',
-            )}
+            title={getString('generalSettingsScreen.itemsPerRowLibrary')}
             description={
               novelsPerRow +
               ' ' +
-              getString(
-                'moreScreen.settingsScreen.generalSettingsScreen.itemsPerRow',
-              )
+              getString('generalSettingsScreen.itemsPerRow')
             }
             onPress={gridSizeModalRef.setTrue}
             theme={theme}
           />
           <List.Item
-            title={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.novelBadges',
-            )}
+            title={getString('generalSettingsScreen.novelBadges')}
             // @ts-ignore
             description={novelBadgesDescription}
             onPress={novelBadgesModalRef.setTrue}
             theme={theme}
           />
           <List.Item
-            title={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.novelSort',
-            )}
+            title={getString('generalSettingsScreen.novelSort')}
             description={
               // @ts-ignore
               getString(sortOrderNameMap.get(sortOrderDisplay[0])) +
@@ -161,10 +149,8 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
           <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>{getString('library')}</List.SubHeader>
           <SwitchSetting
-            label={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.updateLibrary',
-            )}
-            description={'Not recommended for low devices'}
+            label={getString('generalSettingsScreen.updateLibrary')}
+            description={getString('generalSettingsScreen.updateLibraryDesc')}
             value={updateLibraryOnLaunch}
             onPress={() =>
               setAppSettings({ updateLibraryOnLaunch: !updateLibraryOnLaunch })
@@ -172,43 +158,31 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             theme={theme}
           />
           <SwitchSetting
-            label={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.useFAB',
-            )}
+            label={getString('generalSettingsScreen.useFAB')}
             value={useLibraryFAB}
             onPress={() => setAppSettings({ useLibraryFAB: !useLibraryFAB })}
             theme={theme}
           />
           <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>
-            {getString('moreScreen.settingsScreen.generalSettingsScreen.novel')}
+            {getString('generalSettingsScreen.novel')}
           </List.SubHeader>
           <List.Item
-            title={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.chapterSort',
-            )}
-            description={`By source ${
+            title={getString('generalSettingsScreen.chapterSort')}
+            description={`${getString('generalSettingsScreen.bySource')} ${
               defaultChapterSort === 'ORDER BY id ASC'
-                ? getString(
-                    'moreScreen.settingsScreen.generalSettingsScreen.asc',
-                  )
-                : getString(
-                    'moreScreen.settingsScreen.generalSettingsScreen.desc',
-                  )
+                ? getString('generalSettingsScreen.asc')
+                : getString('generalSettingsScreen.desc')
             }`}
             onPress={defaultChapterSortModal.setTrue}
             theme={theme}
           />
           <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>
-            {getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.globalUpdate',
-            )}
+            {getString('generalSettingsScreen.globalUpdate')}
           </List.SubHeader>
           <SwitchSetting
-            label={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.updateOngoing',
-            )}
+            label={getString('generalSettingsScreen.updateOngoing')}
             value={onlyUpdateOngoingNovels}
             onPress={() =>
               setAppSettings({
@@ -218,11 +192,9 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             theme={theme}
           />
           <SwitchSetting
-            label={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.refreshMetadata',
-            )}
+            label={getString('generalSettingsScreen.refreshMetadata')}
             description={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.refreshMetadataDescription',
+              'generalSettingsScreen.refreshMetadataDescription',
             )}
             value={refreshNovelMetadata}
             onPress={() =>
@@ -231,23 +203,17 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             theme={theme}
           />
           <SwitchSetting
-            label={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.updateTime',
-            )}
+            label={getString('generalSettingsScreen.updateTime')}
             value={showLastUpdateTime}
             onPress={() => setShowLastUpdateTime(!showLastUpdateTime)}
             theme={theme}
           />
           <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>
-            {getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.autoDownload',
-            )}
+            {getString('generalSettingsScreen.autoDownload')}
           </List.SubHeader>
           <SwitchSetting
-            label={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.downloadNewChapters',
-            )}
+            label={getString('generalSettingsScreen.downloadNewChapters')}
             value={downloadNewChapters}
             onPress={() =>
               setAppSettings({ downloadNewChapters: !downloadNewChapters })
@@ -256,12 +222,10 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
           />
           <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>
-            {getString('moreScreen.settingsScreen.generalSettings')}
+            {getString('generalSettings')}
           </List.SubHeader>
           <SwitchSetting
-            label={getString(
-              'moreScreen.settingsScreen.generalSettingsScreen.disableHapticFeedback',
-            )}
+            label={getString('generalSettingsScreen.disableHapticFeedback')}
             value={disableHapticFeedback}
             onPress={() =>
               setAppSettings({ disableHapticFeedback: !disableHapticFeedback })
