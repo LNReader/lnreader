@@ -123,30 +123,7 @@
         "searchAllSources": "Zoek in alle Bronnen",
         "searchAllWarning": "Het zoeken van een groot aantal bronnen kan de app bevriezen tot het zoeken is voltooid."
       },
-      "generalSettings": "Algemeen",
-      "readerSettings": {
-        "autoScrollInterval": "Auto scroll interval (in seconden)",
-        "autoScrollOffset": "Auto scroll verschuiving (schermhoogte standaard)",
-        "backgroundColor": "Achtergrondkleur",
-        "backgroundColorModal": "Lezer achtergrondkleur",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset.",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "customCSS": "Aangepaste CSS",
-        "customJS": "Custom JS",
-        "deleteCustomTheme": "Aangepaste thema verwijderen",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "notSaved": "Not saved",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "preset": "Voorinstelling",
-        "readerTheme": "Lezer thema",
-        "saveCustomTheme": "Aangepaste thema opslaan",
-        "textColor": "Tekstkleur",
-        "textColorModal": "Lezer tekstkleur",
-        "title": "Lezer",
-        "verticalSeekbarDesc": "Schakel tussen verticale en horizontale zoekbalk"
-      }
+      "generalSettings": "Algemeen"
     }
   },
   "novelScreen": {
@@ -254,5 +231,28 @@
     "updateOngoing": "Only update ongoing novels",
     "updateTime": "Show last update time",
     "useFAB": "Use FAB in Library"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Auto scroll interval (in seconden)",
+    "autoScrollOffset": "Auto scroll verschuiving (schermhoogte standaard)",
+    "backgroundColor": "Achtergrondkleur",
+    "backgroundColorModal": "Lezer achtergrondkleur",
+    "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+    "clearCustomJS": "Are you sure? Your custom JS would be reset.",
+    "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+    "customCSS": "Aangepaste CSS",
+    "customJS": "Custom JS",
+    "deleteCustomTheme": "Aangepaste thema verwijderen",
+    "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Not saved",
+    "openCSSFile": "Open CSS file",
+    "openJSFile": "Open JS file",
+    "preset": "Voorinstelling",
+    "readerTheme": "Lezer thema",
+    "saveCustomTheme": "Aangepaste thema opslaan",
+    "textColor": "Tekstkleur",
+    "textColorModal": "Lezer tekstkleur",
+    "title": "Lezer",
+    "verticalSeekbarDesc": "Schakel tussen verticale en horizontale zoekbalk"
   }
 }

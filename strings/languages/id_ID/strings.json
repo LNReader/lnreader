@@ -123,30 +123,7 @@
         "searchAllSources": "Cari semua sumber\n",
         "searchAllWarning": "Mencari dari banyak sumber mungkin akan membuat aplikasi hang sampai pencarian selesai.\n"
       },
-      "generalSettings": "Umum\n",
-      "readerSettings": {
-        "autoScrollInterval": "Interval menggulir otomatis (dalam detik)\n",
-        "autoScrollOffset": "Offset gulir otomatis (tinggi layar secara default)\n",
-        "backgroundColor": "Warna latar belakang\n",
-        "backgroundColorModal": "Warna latar belakang pembaca\n",
-        "clearCustomCSS": "Apa anda yakin? Custom CSS anda akan disetel ulang.\n",
-        "clearCustomJS": "Apa anda yakin? Custom JS anda akan disetel ulang.\n",
-        "cssHint": "Petunjuk: Anda dapat membuat konfigurasi CSS khusus sumber dengan ID sumber. (#sourceId-[SOURCEID])\n",
-        "customCSS": "Kostumisasi CSS\n",
-        "customJS": "JS Khusus\n",
-        "deleteCustomTheme": "Hapus kostumisasi tema\n",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId\n",
-        "notSaved": "Tidak tersimpan\n",
-        "openCSSFile": "Buka file CSS\n",
-        "openJSFile": "Buka file JS\n",
-        "preset": "Prasetel\n",
-        "readerTheme": "Tema pembaca\n",
-        "saveCustomTheme": "Simpan kostumisasi tema\n",
-        "textColor": "Warna teks\n",
-        "textColorModal": "Warna teks pembaca\n",
-        "title": "Pembaca\n",
-        "verticalSeekbarDesc": "Beralih antara bar pencarian vertikal dan horizontal\n"
-      }
+      "generalSettings": "Umum\n"
     }
   },
   "novelScreen": {
@@ -254,5 +231,28 @@
     "updateOngoing": "Hanya memperbarui novel yang sedang berlangsung\n",
     "updateTime": "Perlihatkan waktu pembaruan terakhir\n",
     "useFAB": "Gunakan FAB di perpustakaan\n"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Interval menggulir otomatis (dalam detik)\n",
+    "autoScrollOffset": "Offset gulir otomatis (tinggi layar secara default)\n",
+    "backgroundColor": "Warna latar belakang\n",
+    "backgroundColorModal": "Warna latar belakang pembaca\n",
+    "clearCustomCSS": "Apa anda yakin? Custom CSS anda akan disetel ulang.\n",
+    "clearCustomJS": "Apa anda yakin? Custom JS anda akan disetel ulang.\n",
+    "cssHint": "Petunjuk: Anda dapat membuat konfigurasi CSS khusus sumber dengan ID sumber. (#sourceId-[SOURCEID])\n",
+    "customCSS": "Kostumisasi CSS\n",
+    "customJS": "JS Khusus\n",
+    "deleteCustomTheme": "Hapus kostumisasi tema\n",
+    "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId\n",
+    "notSaved": "Tidak tersimpan\n",
+    "openCSSFile": "Buka file CSS\n",
+    "openJSFile": "Buka file JS\n",
+    "preset": "Prasetel\n",
+    "readerTheme": "Tema pembaca\n",
+    "saveCustomTheme": "Simpan kostumisasi tema\n",
+    "textColor": "Warna teks\n",
+    "textColorModal": "Warna teks pembaca\n",
+    "title": "Pembaca\n",
+    "verticalSeekbarDesc": "Beralih antara bar pencarian vertikal dan horizontal\n"
   }
 }

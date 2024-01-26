@@ -23,7 +23,7 @@ const CustomCSSSettings = () => {
     <>
       <View style={styles.header}>
         <List.SubHeader theme={theme}>
-          {getString('moreScreen.settingsScreen.readerSettings.customCSS')}
+          {getString('readerSettings.customCSS')}
         </List.SubHeader>
       </View>
       <View style={styles.customCSSContainer}>
@@ -51,24 +51,16 @@ const CustomCSSSettings = () => {
           onDismiss={cssModal.setFalse}
           defaultValue={customCSS}
           mimeType="text/css"
-          title={getString(
-            'moreScreen.settingsScreen.readerSettings.customCSS',
-          )}
-          description={getString(
-            'moreScreen.settingsScreen.readerSettings.cssHint',
-          )}
+          title={getString('readerSettings.customCSS')}
+          description={getString('readerSettings.cssHint')}
           placeholder={`${getString(
             'common.example',
           )}: ${customCSSPlaceholder}`}
-          openFileLabel={getString(
-            'moreScreen.settingsScreen.readerSettings.openCSSFile',
-          )}
+          openFileLabel={getString('readerSettings.openCSSFile')}
           onSave={text => setChapterReaderSettings({ customCSS: text })}
         />
         <ConfirmationDialog
-          title={getString(
-            'moreScreen.settingsScreen.readerSettings.clearCustomCSS',
-          )}
+          title={getString('readerSettings.clearCustomCSS')}
           visible={clearCSSModal.value}
           onSubmit={() => {
             setChapterReaderSettings({ customCSS: '' });

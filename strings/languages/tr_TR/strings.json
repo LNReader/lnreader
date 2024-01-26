@@ -123,30 +123,7 @@
         "searchAllSources": "Tüm kaynaklarda ara",
         "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
       },
-      "generalSettings": "Genel",
-      "readerSettings": {
-        "autoScrollInterval": "Otomatik kaydırma süresi (saniye olarak)",
-        "autoScrollOffset": "Otomatik kaydırma konumu (varsayılan olarak ekran yüksekliği)",
-        "backgroundColor": "Arka plan rengi",
-        "backgroundColorModal": "Okuyucu arka plan rengi",
-        "clearCustomCSS": "Emin misiniz? Özel CSS'niz sıfırlanır.",
-        "clearCustomJS": "Emin misiniz? Özel JS kodlarınız sıfırlanır.",
-        "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[KAYNAKID])",
-        "customCSS": "Özel CSS",
-        "customJS": "Özel JS",
-        "deleteCustomTheme": "Özel temayı sil",
-        "jsHint": "İpucu: Aşağıdaki değişkenlere erişiminiz bulunmakta:\nhtml, novelName, chapterName, sourceId, chapterId, novelId",
-        "notSaved": "Kaydedilmedi",
-        "openCSSFile": "CSS dosyası aç",
-        "openJSFile": "JS dosyası aç",
-        "preset": "Öntanımlı",
-        "readerTheme": "Okuyucu teması",
-        "saveCustomTheme": "Özel temayı kaydet",
-        "textColor": "Yazı rengi",
-        "textColorModal": "Okuyucu yazı rengi",
-        "title": "Okuyucu",
-        "verticalSeekbarDesc": "Dikey ve yatay arama çubuğu arasında geçiş yap"
-      }
+      "generalSettings": "Genel"
     }
   },
   "novelScreen": {
@@ -254,5 +231,28 @@
     "updateOngoing": "Yalnızca devam eden novel'leri güncelle",
     "updateTime": "Son güncelleme süresini göster",
     "useFAB": "Kitaplıkta FAB kullan"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Otomatik kaydırma süresi (saniye olarak)",
+    "autoScrollOffset": "Otomatik kaydırma konumu (varsayılan olarak ekran yüksekliği)",
+    "backgroundColor": "Arka plan rengi",
+    "backgroundColorModal": "Okuyucu arka plan rengi",
+    "clearCustomCSS": "Emin misiniz? Özel CSS'niz sıfırlanır.",
+    "clearCustomJS": "Emin misiniz? Özel JS kodlarınız sıfırlanır.",
+    "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[KAYNAKID])",
+    "customCSS": "Özel CSS",
+    "customJS": "Özel JS",
+    "deleteCustomTheme": "Özel temayı sil",
+    "jsHint": "İpucu: Aşağıdaki değişkenlere erişiminiz bulunmakta:\nhtml, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Kaydedilmedi",
+    "openCSSFile": "CSS dosyası aç",
+    "openJSFile": "JS dosyası aç",
+    "preset": "Öntanımlı",
+    "readerTheme": "Okuyucu teması",
+    "saveCustomTheme": "Özel temayı kaydet",
+    "textColor": "Yazı rengi",
+    "textColorModal": "Okuyucu yazı rengi",
+    "title": "Okuyucu",
+    "verticalSeekbarDesc": "Dikey ve yatay arama çubuğu arasında geçiş yap"
   }
 }

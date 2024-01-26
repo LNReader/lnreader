@@ -123,30 +123,7 @@
         "searchAllSources": "Поиск по всем источникам",
         "searchAllWarning": "Поиск по большому количеству источников может привести к зависанию приложения, пока поиск не завершится."
       },
-      "generalSettings": "Основные",
-      "readerSettings": {
-        "autoScrollInterval": "Интервал автопрокрутки (в секундах)",
-        "autoScrollOffset": "Смещение автопрокрутки (высота экрана по умолчанию)",
-        "backgroundColor": "Цвет фона",
-        "backgroundColorModal": "Цвет фона при чтении",
-        "clearCustomCSS": "Вы уверены? Ваш пользовательский CSS будет сброшен.",
-        "clearCustomJS": "Вы уверены? Ваш пользовательский JS будет сброшен.",
-        "cssHint": "Подсказка: Вы можете создать исходный код конфигурации с исходным ID. (#sourceId-[SOURCEID])",
-        "customCSS": "Пользовательские CSS",
-        "customJS": "Пользовательский JS",
-        "deleteCustomTheme": "Удалить пользовательскую тему",
-        "jsHint": "Подсказка: У вас есть доступ к следующим переменным: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "notSaved": "Не сохранено",
-        "openCSSFile": "Открыть CSS-файл",
-        "openJSFile": "Открыть JS-файл",
-        "preset": "Предустановка",
-        "readerTheme": "Тема при чтении",
-        "saveCustomTheme": "Сохранить пользовательскую тему",
-        "textColor": "Цвет текста",
-        "textColorModal": "Цвет текста при чтении",
-        "title": "Чтение",
-        "verticalSeekbarDesc": "Переключение между вертикальной и горизонтальной панелями навигации"
-      }
+      "generalSettings": "Основные"
     }
   },
   "novelScreen": {
@@ -254,5 +231,28 @@
     "updateOngoing": "Обновлять только онгоинги",
     "updateTime": "Показать время последнего обновления",
     "useFAB": "Использовать FAB в библиотеке"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Интервал автопрокрутки (в секундах)",
+    "autoScrollOffset": "Смещение автопрокрутки (высота экрана по умолчанию)",
+    "backgroundColor": "Цвет фона",
+    "backgroundColorModal": "Цвет фона при чтении",
+    "clearCustomCSS": "Вы уверены? Ваш пользовательский CSS будет сброшен.",
+    "clearCustomJS": "Вы уверены? Ваш пользовательский JS будет сброшен.",
+    "cssHint": "Подсказка: Вы можете создать исходный код конфигурации с исходным ID. (#sourceId-[SOURCEID])",
+    "customCSS": "Пользовательские CSS",
+    "customJS": "Пользовательский JS",
+    "deleteCustomTheme": "Удалить пользовательскую тему",
+    "jsHint": "Подсказка: У вас есть доступ к следующим переменным: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Не сохранено",
+    "openCSSFile": "Открыть CSS-файл",
+    "openJSFile": "Открыть JS-файл",
+    "preset": "Предустановка",
+    "readerTheme": "Тема при чтении",
+    "saveCustomTheme": "Сохранить пользовательскую тему",
+    "textColor": "Цвет текста",
+    "textColorModal": "Цвет текста при чтении",
+    "title": "Чтение",
+    "verticalSeekbarDesc": "Переключение между вертикальной и горизонтальной панелями навигации"
   }
 }

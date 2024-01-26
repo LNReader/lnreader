@@ -272,30 +272,7 @@
         "searchAllSources": "搜索所有源",
         "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
       },
-      "generalSettings": "常规",
-      "readerSettings": {
-        "autoScrollInterval": "自动滚动间隔 (以秒计)",
-        "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
-        "backgroundColor": "背景颜色",
-        "backgroundColorModal": "阅读器背景颜色",
-        "clearCustomCSS": "您确定吗？您的自定义 CSS 都将被重置。",
-        "clearCustomJS": "您确定吗？您的自定义 JS 都将被重置。",
-        "cssHint": "提示: 您可以创建源相关的 CSS 配置. (#sourceId-[SOURCEID])",
-        "customCSS": "自定义 CSS",
-        "customJS": "自定义 JS",
-        "deleteCustomTheme": "删除自定义主题",
-        "jsHint": "提示: 您可以访问以下变量: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "notSaved": "未保存",
-        "openCSSFile": "打开 CSS 文件",
-        "openJSFile": "打开 JS 文件",
-        "preset": "预设值",
-        "readerTheme": "阅读器主题",
-        "saveCustomTheme": "保存自定义主题",
-        "textColor": "文字颜色",
-        "textColorModal": "阅读器文本颜色",
-        "title": "阅读器",
-        "verticalSeekbarDesc": "切换垂直和水平进度条"
-      }
+      "generalSettings": "常规"
     }
   },
   "novelScreen": {
@@ -473,5 +450,28 @@
     "updateOngoing": "仅更新连载小说",
     "updateTime": "显示上次更新时间",
     "useFAB": "在书库中使用浮动操作按钮"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "自动滚动间隔 (以秒计)",
+    "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
+    "backgroundColor": "背景颜色",
+    "backgroundColorModal": "阅读器背景颜色",
+    "clearCustomCSS": "您确定吗？您的自定义 CSS 都将被重置。",
+    "clearCustomJS": "您确定吗？您的自定义 JS 都将被重置。",
+    "cssHint": "提示: 您可以创建源相关的 CSS 配置. (#sourceId-[SOURCEID])",
+    "customCSS": "自定义 CSS",
+    "customJS": "自定义 JS",
+    "deleteCustomTheme": "删除自定义主题",
+    "jsHint": "提示: 您可以访问以下变量: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "未保存",
+    "openCSSFile": "打开 CSS 文件",
+    "openJSFile": "打开 JS 文件",
+    "preset": "预设值",
+    "readerTheme": "阅读器主题",
+    "saveCustomTheme": "保存自定义主题",
+    "textColor": "文字颜色",
+    "textColorModal": "阅读器文本颜色",
+    "title": "阅读器",
+    "verticalSeekbarDesc": "切换垂直和水平进度条"
   }
 }

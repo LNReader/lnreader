@@ -138,7 +138,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
     () => [
       {
         key: 'readerTab',
-        title: getString('moreScreen.settingsScreen.readerSettings.title'),
+        title: getString('readerSettings.title'),
       },
       {
         key: 'generalTab',

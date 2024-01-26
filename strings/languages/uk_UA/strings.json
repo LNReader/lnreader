@@ -123,30 +123,7 @@
         "searchAllSources": "Шукати у всіх джерелах",
         "searchAllWarning": "Пошук у великій кількості джерел може викликати зависання програми до закінчення пошуку."
       },
-      "generalSettings": "Загальне",
-      "readerSettings": {
-        "autoScrollInterval": "Інтервал автопрокрутки (в секундах)",
-        "autoScrollOffset": "Зсув автоматичної прокрутки (висота екрану за замовчуванням)",
-        "backgroundColor": "Колір тла",
-        "backgroundColorModal": "Колір фону при читанні",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset.",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "customCSS": "Довільний CSS",
-        "customJS": "Custom JS",
-        "deleteCustomTheme": "Видалити тему",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "notSaved": "Not saved",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "preset": "Передустановка",
-        "readerTheme": "Тема читання",
-        "saveCustomTheme": "Зберегти тему",
-        "textColor": "Колір тексту",
-        "textColorModal": "Колір тексту при читанні",
-        "title": "Тайтл",
-        "verticalSeekbarDesc": "Перемикання між вертикальною та горизонтальною панелями навігації"
-      }
+      "generalSettings": "Загальне"
     }
   },
   "novelScreen": {
@@ -254,5 +231,28 @@
     "updateOngoing": "Only update ongoing novels",
     "updateTime": "Show last update time",
     "useFAB": "Use FAB in Library"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Інтервал автопрокрутки (в секундах)",
+    "autoScrollOffset": "Зсув автоматичної прокрутки (висота екрану за замовчуванням)",
+    "backgroundColor": "Колір тла",
+    "backgroundColorModal": "Колір фону при читанні",
+    "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+    "clearCustomJS": "Are you sure? Your custom JS would be reset.",
+    "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+    "customCSS": "Довільний CSS",
+    "customJS": "Custom JS",
+    "deleteCustomTheme": "Видалити тему",
+    "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Not saved",
+    "openCSSFile": "Open CSS file",
+    "openJSFile": "Open JS file",
+    "preset": "Передустановка",
+    "readerTheme": "Тема читання",
+    "saveCustomTheme": "Зберегти тему",
+    "textColor": "Колір тексту",
+    "textColorModal": "Колір тексту при читанні",
+    "title": "Тайтл",
+    "verticalSeekbarDesc": "Перемикання між вертикальною та горизонтальною панелями навігації"
   }
 }

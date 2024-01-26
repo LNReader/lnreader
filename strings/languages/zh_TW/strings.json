@@ -123,30 +123,7 @@
         "searchAllSources": "搜索所有源",
         "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
       },
-      "generalSettings": "常规",
-      "readerSettings": {
-        "autoScrollInterval": "自动滚动间隔(以秒计)",
-        "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
-        "backgroundColor": "背景颜色",
-        "backgroundColorModal": "阅读器背景颜色",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset.",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "customCSS": "自定义 CSS",
-        "customJS": "Custom JS",
-        "deleteCustomTheme": "删除自定义主题",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "notSaved": "Not saved",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "preset": "预设值",
-        "readerTheme": "阅读器主题",
-        "saveCustomTheme": "保存自定义主题",
-        "textColor": "文字颜色",
-        "textColorModal": "阅读器文本颜色",
-        "title": "阅读器",
-        "verticalSeekbarDesc": "切换垂直和水平进度条"
-      }
+      "generalSettings": "常规"
     }
   },
   "novelScreen": {
@@ -254,5 +231,28 @@
     "updateOngoing": "Only update ongoing novels",
     "updateTime": "Show last update time",
     "useFAB": "Use FAB in Library"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "自动滚动间隔(以秒计)",
+    "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
+    "backgroundColor": "背景颜色",
+    "backgroundColorModal": "阅读器背景颜色",
+    "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+    "clearCustomJS": "Are you sure? Your custom JS would be reset.",
+    "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+    "customCSS": "自定义 CSS",
+    "customJS": "Custom JS",
+    "deleteCustomTheme": "删除自定义主题",
+    "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Not saved",
+    "openCSSFile": "Open CSS file",
+    "openJSFile": "Open JS file",
+    "preset": "预设值",
+    "readerTheme": "阅读器主题",
+    "saveCustomTheme": "保存自定义主题",
+    "textColor": "文字颜色",
+    "textColorModal": "阅读器文本颜色",
+    "title": "阅读器",
+    "verticalSeekbarDesc": "切换垂直和水平进度条"
   }
 }

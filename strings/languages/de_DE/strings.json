@@ -123,30 +123,7 @@
         "searchAllSources": "Alle Quellen durchsuchen",
         "searchAllWarning": "Das Durchsuchen einer großen Anzahl an Quellen kann die App einfrieren, bis die Suche beendet wurde."
       },
-      "generalSettings": "Allgemein",
-      "readerSettings": {
-        "autoScrollInterval": "AutoScroll Intervall (in Sekunden)",
-        "autoScrollOffset": "AutoScroll Versatz (standardmäßig Bildschirmhöhe)",
-        "backgroundColor": "Hintergrundfarbe",
-        "backgroundColorModal": "Reader Hintergrundfarbe",
-        "clearCustomCSS": "Sind Sie sicher? Ihr benutzerdefiniertes CSS wird zurückgesetzt.",
-        "clearCustomJS": "Sind Sie sicher? Ihr benutzerdefiniertes JS wird zurückgesetzt.",
-        "cssHint": "Hinweis: Sie können eine quellspezifische CSS-Konfiguration mit der Quell-ID erstellen. (#sourceId-[SOURCEID])",
-        "customCSS": "Benutzerdefiniertes CSS",
-        "customJS": "Benutzerdefiniertes CSS",
-        "deleteCustomTheme": "Benutzerdefiniertes Theme löschen",
-        "jsHint": "Hinweis: Sie haben Zugriff auf folgende Variablen: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "notSaved": "Nicht gespeichert",
-        "openCSSFile": "CSS-Datei öffnen",
-        "openJSFile": "JS-Datei öffnen",
-        "preset": "Vorlage",
-        "readerTheme": "Reader Theme",
-        "saveCustomTheme": "Benutzerdefiniertes Theme speichern",
-        "textColor": "Textfarbe",
-        "textColorModal": "Reader Textfarbe",
-        "title": "Reader",
-        "verticalSeekbarDesc": "Zwischen vertikaler und horizontaler Suchleiste wechseln"
-      }
+      "generalSettings": "Allgemein"
     }
   },
   "novelScreen": {
@@ -254,5 +231,28 @@
     "updateOngoing": "Nur laufende Bücher aktualisieren",
     "updateTime": "Zeige den Zeitpunkt der letzten Aktualisierung",
     "useFAB": "FAB in der Bibliothek verwenden"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "AutoScroll Intervall (in Sekunden)",
+    "autoScrollOffset": "AutoScroll Versatz (standardmäßig Bildschirmhöhe)",
+    "backgroundColor": "Hintergrundfarbe",
+    "backgroundColorModal": "Reader Hintergrundfarbe",
+    "clearCustomCSS": "Sind Sie sicher? Ihr benutzerdefiniertes CSS wird zurückgesetzt.",
+    "clearCustomJS": "Sind Sie sicher? Ihr benutzerdefiniertes JS wird zurückgesetzt.",
+    "cssHint": "Hinweis: Sie können eine quellspezifische CSS-Konfiguration mit der Quell-ID erstellen. (#sourceId-[SOURCEID])",
+    "customCSS": "Benutzerdefiniertes CSS",
+    "customJS": "Benutzerdefiniertes CSS",
+    "deleteCustomTheme": "Benutzerdefiniertes Theme löschen",
+    "jsHint": "Hinweis: Sie haben Zugriff auf folgende Variablen: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Nicht gespeichert",
+    "openCSSFile": "CSS-Datei öffnen",
+    "openJSFile": "JS-Datei öffnen",
+    "preset": "Vorlage",
+    "readerTheme": "Reader Theme",
+    "saveCustomTheme": "Benutzerdefiniertes Theme speichern",
+    "textColor": "Textfarbe",
+    "textColorModal": "Reader Textfarbe",
+    "title": "Reader",
+    "verticalSeekbarDesc": "Zwischen vertikaler und horizontaler Suchleiste wechseln"
   }
 }

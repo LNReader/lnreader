@@ -123,30 +123,7 @@
         "searchAllSources": "Tìm trên tất cả các nguồn",
         "searchAllWarning": "Tìm kiếm với lượng lớn nguồn có thể đóng băng ứng dụng cho đến khi tìm kiếm hoàn thành."
       },
-      "generalSettings": "Chung",
-      "readerSettings": {
-        "autoScrollInterval": "Thời gian tự động cuộn (giây)",
-        "autoScrollOffset": "Khoảng cách tự động cuộn (mặc định chiều cao màn hình)",
-        "backgroundColor": "Màu nền",
-        "backgroundColorModal": "Màu nền của trang đọc",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset.",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "customCSS": "CSS Tùy chỉnh",
-        "customJS": "Custom JS",
-        "deleteCustomTheme": "Xoá tuỳ chỉnh giao diện",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "notSaved": "Not saved",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "preset": "Mẫu sẵn có",
-        "readerTheme": "Giao diện đọc",
-        "saveCustomTheme": "Lưu tùy chỉnh giao diện",
-        "textColor": "Màu chữ",
-        "textColorModal": "Màu chữ trang đọc",
-        "title": "Trang đọc",
-        "verticalSeekbarDesc": "Chuyển hướng thanh trạng thái dọc hoặc ngang"
-      }
+      "generalSettings": "Chung"
     }
   },
   "novelScreen": {
@@ -254,5 +231,28 @@
     "updateOngoing": "Chỉ cập nhật truyện đang thực hiện",
     "updateTime": "Hiện lần cập nhật trước",
     "useFAB": "Sử dụng FAB trong thư viện"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Thời gian tự động cuộn (giây)",
+    "autoScrollOffset": "Khoảng cách tự động cuộn (mặc định chiều cao màn hình)",
+    "backgroundColor": "Màu nền",
+    "backgroundColorModal": "Màu nền của trang đọc",
+    "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+    "clearCustomJS": "Are you sure? Your custom JS would be reset.",
+    "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+    "customCSS": "CSS Tùy chỉnh",
+    "customJS": "Custom JS",
+    "deleteCustomTheme": "Xoá tuỳ chỉnh giao diện",
+    "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Not saved",
+    "openCSSFile": "Open CSS file",
+    "openJSFile": "Open JS file",
+    "preset": "Mẫu sẵn có",
+    "readerTheme": "Giao diện đọc",
+    "saveCustomTheme": "Lưu tùy chỉnh giao diện",
+    "textColor": "Màu chữ",
+    "textColorModal": "Màu chữ trang đọc",
+    "title": "Trang đọc",
+    "verticalSeekbarDesc": "Chuyển hướng thanh trạng thái dọc hoặc ngang"
   }
 }

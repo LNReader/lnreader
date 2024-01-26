@@ -123,30 +123,7 @@
         "searchAllSources": "Buscar en todas las fuentes",
         "searchAllWarning": "Buscar un gran número de fuentes puede congelar la aplicación hasta que la búsqueda haya finalizado."
       },
-      "generalSettings": "General",
-      "readerSettings": {
-        "autoScrollInterval": "Intervalo de desplazamiento automático (en segundos)",
-        "autoScrollOffset": "Desplazamiento automático de desplazamiento (altura de pantalla por defecto)",
-        "backgroundColor": "Color de fondo",
-        "backgroundColorModal": "Color de fondo del lector",
-        "clearCustomCSS": "¿Estás seguro? Se restablecería tu CSS personalizado.",
-        "clearCustomJS": "¿Estás seguro? Tu JS personalizado se restablecería.",
-        "cssHint": "Sugerencia: Puedes crear una configuración CSS específica de origen con el ID de origen. (#sourceId-[SOURCEID])",
-        "customCSS": "CSS personalizado",
-        "customJS": "JS Personalizado",
-        "deleteCustomTheme": "Eliminar tema personalizado",
-        "jsHint": "Sugerencia: Tiene acceso a las siguientes variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "notSaved": "No guardado",
-        "openCSSFile": "Abrir archivo CSS",
-        "openJSFile": "Abrir archivo JS",
-        "preset": "Preajuste",
-        "readerTheme": "Tema del lector",
-        "saveCustomTheme": "Guardar tema personalizado",
-        "textColor": "Color del texto",
-        "textColorModal": "Color del texto del lector",
-        "title": "Lector",
-        "verticalSeekbarDesc": "Cambiar entre barra de búsqueda vertical y horizontal"
-      }
+      "generalSettings": "General"
     }
   },
   "novelScreen": {
@@ -254,5 +231,28 @@
     "updateOngoing": "Solo actualizar novelas en curso",
     "updateTime": "Mostrar la última actualización",
     "useFAB": "Usar FAB en la biblioteca"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Intervalo de desplazamiento automático (en segundos)",
+    "autoScrollOffset": "Desplazamiento automático de desplazamiento (altura de pantalla por defecto)",
+    "backgroundColor": "Color de fondo",
+    "backgroundColorModal": "Color de fondo del lector",
+    "clearCustomCSS": "¿Estás seguro? Se restablecería tu CSS personalizado.",
+    "clearCustomJS": "¿Estás seguro? Tu JS personalizado se restablecería.",
+    "cssHint": "Sugerencia: Puedes crear una configuración CSS específica de origen con el ID de origen. (#sourceId-[SOURCEID])",
+    "customCSS": "CSS personalizado",
+    "customJS": "JS Personalizado",
+    "deleteCustomTheme": "Eliminar tema personalizado",
+    "jsHint": "Sugerencia: Tiene acceso a las siguientes variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "No guardado",
+    "openCSSFile": "Abrir archivo CSS",
+    "openJSFile": "Abrir archivo JS",
+    "preset": "Preajuste",
+    "readerTheme": "Tema del lector",
+    "saveCustomTheme": "Guardar tema personalizado",
+    "textColor": "Color del texto",
+    "textColorModal": "Color del texto del lector",
+    "title": "Lector",
+    "verticalSeekbarDesc": "Cambiar entre barra de búsqueda vertical y horizontal"
   }
 }

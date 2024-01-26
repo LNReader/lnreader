@@ -123,30 +123,7 @@
         "searchAllSources": "Cerca in tutte le fonti",
         "searchAllWarning": "La ricerca in un gran numero di fonti può rallentare l'applicazione fino a quando la ricerca è terminata."
       },
-      "generalSettings": "Generale",
-      "readerSettings": {
-        "autoScrollInterval": "Intervallo di scorrimento automatico (in secondi)",
-        "autoScrollOffset": "Quantità di scorrimento (altezza schermo di default)",
-        "backgroundColor": "Colore dello sfondo",
-        "backgroundColorModal": "Colore sfondo del lettore",
-        "clearCustomCSS": "Sei sicuro? Il CSS personalizzato verrebbe resettato.",
-        "clearCustomJS": "Sei sicuro? Il tuo JS personalizzato verrebbe resettato.",
-        "cssHint": "Consiglio: è possibile creare una configurazione CSS specifica con l'ID sorgente. (#sourceId-[SOURCEID])",
-        "customCSS": "CSS personalizzato",
-        "customJS": "JS personalizzato",
-        "deleteCustomTheme": "Elimina tema personalizzato",
-        "jsHint": "Consiglio: Hai accesso alle variabili seguenti: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "notSaved": "Non salvato",
-        "openCSSFile": "Apri file CSS",
-        "openJSFile": "Apri file JS",
-        "preset": "Predefinito",
-        "readerTheme": "Tema del lettore",
-        "saveCustomTheme": "Salva tema personalizzato",
-        "textColor": "Colore del testo",
-        "textColorModal": "Colore testo del lettore",
-        "title": "Lettore",
-        "verticalSeekbarDesc": "Passa dalla barra verticale a quella orizzontale"
-      }
+      "generalSettings": "Generale"
     }
   },
   "novelScreen": {
@@ -254,5 +231,28 @@
     "updateOngoing": "Aggiorna solo le novel in corso",
     "updateTime": "Mostra l'orario dell'ultimo aggiornamento",
     "useFAB": "Usa FAB nella libreria"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Intervallo di scorrimento automatico (in secondi)",
+    "autoScrollOffset": "Quantità di scorrimento (altezza schermo di default)",
+    "backgroundColor": "Colore dello sfondo",
+    "backgroundColorModal": "Colore sfondo del lettore",
+    "clearCustomCSS": "Sei sicuro? Il CSS personalizzato verrebbe resettato.",
+    "clearCustomJS": "Sei sicuro? Il tuo JS personalizzato verrebbe resettato.",
+    "cssHint": "Consiglio: è possibile creare una configurazione CSS specifica con l'ID sorgente. (#sourceId-[SOURCEID])",
+    "customCSS": "CSS personalizzato",
+    "customJS": "JS personalizzato",
+    "deleteCustomTheme": "Elimina tema personalizzato",
+    "jsHint": "Consiglio: Hai accesso alle variabili seguenti: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Non salvato",
+    "openCSSFile": "Apri file CSS",
+    "openJSFile": "Apri file JS",
+    "preset": "Predefinito",
+    "readerTheme": "Tema del lettore",
+    "saveCustomTheme": "Salva tema personalizzato",
+    "textColor": "Colore del testo",
+    "textColorModal": "Colore testo del lettore",
+    "title": "Lettore",
+    "verticalSeekbarDesc": "Passa dalla barra verticale a quella orizzontale"
   }
 }

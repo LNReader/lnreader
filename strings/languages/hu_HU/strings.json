@@ -123,30 +123,7 @@
         "searchAllSources": "Keresés az összes forrásban",
         "searchAllWarning": "Nagyszámú forrásban való keresés lefagyaszthatja az alkalmazást amíg be nem fejeződik a keresés."
       },
-      "generalSettings": "Általános",
-      "readerSettings": {
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "backgroundColor": "Háttérszín",
-        "backgroundColorModal": "Olvasó háttérszín",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset.",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "customCSS": "Egyéni CSS",
-        "customJS": "Egyéni JS",
-        "deleteCustomTheme": "Egyéni téma törlése",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "notSaved": "Nem mentett",
-        "openCSSFile": "CSS fájl megnyitása",
-        "openJSFile": "JS fájl megnyitása",
-        "preset": "Előbeállítás",
-        "readerTheme": "Olvasó téma",
-        "saveCustomTheme": "Egyéni téma mentése",
-        "textColor": "Betűszín",
-        "textColorModal": "Olvasó betűszín",
-        "title": "Olvasó",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar"
-      }
+      "generalSettings": "Általános"
     }
   },
   "novelScreen": {
@@ -254,5 +231,28 @@
     "updateOngoing": "Only update ongoing novels",
     "updateTime": "Utolsó frissítés idejének mutatása",
     "useFAB": "Use FAB in Library"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Auto scroll interval (in seconds)",
+    "autoScrollOffset": "Auto scroll offset (screen height by default)",
+    "backgroundColor": "Háttérszín",
+    "backgroundColorModal": "Olvasó háttérszín",
+    "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+    "clearCustomJS": "Are you sure? Your custom JS would be reset.",
+    "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+    "customCSS": "Egyéni CSS",
+    "customJS": "Egyéni JS",
+    "deleteCustomTheme": "Egyéni téma törlése",
+    "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Nem mentett",
+    "openCSSFile": "CSS fájl megnyitása",
+    "openJSFile": "JS fájl megnyitása",
+    "preset": "Előbeállítás",
+    "readerTheme": "Olvasó téma",
+    "saveCustomTheme": "Egyéni téma mentése",
+    "textColor": "Betűszín",
+    "textColorModal": "Olvasó betűszín",
+    "title": "Olvasó",
+    "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar"
   }
 }

@@ -22,7 +22,7 @@ const CustomJSSettings = () => {
     <>
       <View style={styles.header}>
         <List.SubHeader theme={theme}>
-          {getString('moreScreen.settingsScreen.readerSettings.customJS')}
+          {getString('readerSettings.customJS')}
         </List.SubHeader>
       </View>
       <View style={styles.customJSContainer}>
@@ -49,20 +49,14 @@ const CustomJSSettings = () => {
           onDismiss={jsModal.setFalse}
           defaultValue={customJS}
           mimeType="application/javascript"
-          title={getString('moreScreen.settingsScreen.readerSettings.customJS')}
-          description={getString(
-            'moreScreen.settingsScreen.readerSettings.jsHint',
-          )}
+          title={getString('readerSettings.customJS')}
+          description={getString('readerSettings.jsHint')}
           placeholder={`${getString('common.example')}: ${customJSPlaceholder}`}
-          openFileLabel={getString(
-            'moreScreen.settingsScreen.readerSettings.openJSFile',
-          )}
+          openFileLabel={getString('readerSettings.openJSFile')}
           onSave={text => setChapterReaderSettings({ customJS: text })}
         />
         <ConfirmationDialog
-          title={getString(
-            'moreScreen.settingsScreen.readerSettings.clearCustomJS',
-          )}
+          title={getString('readerSettings.clearCustomJS')}
           visible={clearJSModal.value}
           onSubmit={() => {
             setChapterReaderSettings({ customJS: '' });

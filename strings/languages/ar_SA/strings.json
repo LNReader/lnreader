@@ -123,30 +123,7 @@
         "searchAllSources": "البحث في جميع المصادر",
         "searchAllWarning": "البحث عن عدد كبير من المصادر قد يجمد التطبيق حتى الانتهاء من البحث."
       },
-      "generalSettings": "العامة",
-      "readerSettings": {
-        "autoScrollInterval": "فترة التمرير التلقائي (بالثواني)",
-        "autoScrollOffset": "تمرير إزاحة تلقائية (ارتفاع الشاشة افتراضي)",
-        "backgroundColor": "لون الخلفية",
-        "backgroundColorModal": "لون خلفية القراءة",
-        "clearCustomCSS": "هل أنت متأكد؟ سيتم إعادة CSS الخاص بك إلي الحالة الافتراضية.",
-        "clearCustomJS": "هل أنت متأكد؟ سيتم إعادة JS الخاص بك إلي الحالة الافتراضية.",
-        "cssHint": "تلميح: يمكنك إنشاء تضبيطات CSS مخصصة لمصدر محدد باستخدام معرفه. (#sourceId-[SOURCEID])",
-        "customCSS": "تنسيقات CSS مخصصة",
-        "customJS": "JS حسب التفضيل",
-        "deleteCustomTheme": "حذف السمة المخصصة",
-        "jsHint": "تلميح: يمكنك الوصول إلى المتغيرات التالية واستخدامها: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "notSaved": "لم يُحفظ",
-        "openCSSFile": "افتح ملف CSS",
-        "openJSFile": "فتح ملف JS",
-        "preset": "اعدادات جاهزة",
-        "readerTheme": "سمة القارئ",
-        "saveCustomTheme": "حفظ السمة المخصصة",
-        "textColor": "لون النص",
-        "textColorModal": "لون نص القراءة",
-        "title": "القارئ",
-        "verticalSeekbarDesc": "التبديل بين شريط البحث العمودي والأفقي"
-      }
+      "generalSettings": "العامة"
     }
   },
   "novelScreen": {
@@ -254,5 +231,28 @@
     "updateOngoing": "تحديث الروايات الجارية فقط",
     "updateTime": "وقت آخر تحديث",
     "useFAB": "استخدام FAB في المكتبة"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "فترة التمرير التلقائي (بالثواني)",
+    "autoScrollOffset": "تمرير إزاحة تلقائية (ارتفاع الشاشة افتراضي)",
+    "backgroundColor": "لون الخلفية",
+    "backgroundColorModal": "لون خلفية القراءة",
+    "clearCustomCSS": "هل أنت متأكد؟ سيتم إعادة CSS الخاص بك إلي الحالة الافتراضية.",
+    "clearCustomJS": "هل أنت متأكد؟ سيتم إعادة JS الخاص بك إلي الحالة الافتراضية.",
+    "cssHint": "تلميح: يمكنك إنشاء تضبيطات CSS مخصصة لمصدر محدد باستخدام معرفه. (#sourceId-[SOURCEID])",
+    "customCSS": "تنسيقات CSS مخصصة",
+    "customJS": "JS حسب التفضيل",
+    "deleteCustomTheme": "حذف السمة المخصصة",
+    "jsHint": "تلميح: يمكنك الوصول إلى المتغيرات التالية واستخدامها: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "لم يُحفظ",
+    "openCSSFile": "افتح ملف CSS",
+    "openJSFile": "فتح ملف JS",
+    "preset": "اعدادات جاهزة",
+    "readerTheme": "سمة القارئ",
+    "saveCustomTheme": "حفظ السمة المخصصة",
+    "textColor": "لون النص",
+    "textColorModal": "لون نص القراءة",
+    "title": "القارئ",
+    "verticalSeekbarDesc": "التبديل بين شريط البحث العمودي والأفقي"
   }
 }
