@@ -20,11 +20,7 @@ export const LAST_USED_PLUGIN = 'LAST_USED_PLUGIN';
 export const FILTERED_AVAILABLE_PLUGINS = 'FILTERED_AVAILABLE_PLUGINS';
 export const FILTERED_INSTALLED_PLUGINS = 'FILTERED_INSTALLED_PLUGINS';
 
-const defaultLangCode = Object.keys(languagesMapping).find(code =>
-  locale.toLowerCase().includes(code),
-);
-const defaultLang =
-  languagesMapping[defaultLangCode || 'en'] || Language.English;
+const defaultLang = languagesMapping[locale.split('-')[0]] || 'English';
 
 export type PluginsMap = Record<Language, PluginItem[] | undefined>;
 
