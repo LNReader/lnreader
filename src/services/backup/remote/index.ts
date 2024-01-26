@@ -18,6 +18,7 @@ import {
   retoreDownload,
 } from './restoreTasks';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
+import { getString } from '@strings/translations';
 
 interface TaskData {
   delay: number;
@@ -50,7 +51,9 @@ const remoteBackupAction = async (taskData?: TaskData) => {
       const { taskType, subtasks } = await taskList[i];
       for (let j = 0; j < subtasks.length; j++) {
         await BackgroundService.updateNotification({
-          taskDesc: `Backup ${taskType} (${j}/${subtasks.length})`,
+          taskDesc: `${getString('common.backup')} ${taskType} (${j}/${
+            subtasks.length
+          })`,
           progressBar: {
             max: subtasks.length,
             value: j,
@@ -66,8 +69,8 @@ const remoteBackupAction = async (taskData?: TaskData) => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Self Host Backup',
-        body: 'Done',
+        title: getString('backupScreen.remote.backup'),
+        body: getString('common.done'),
       },
       trigger: null,
     });
@@ -75,7 +78,7 @@ const remoteBackupAction = async (taskData?: TaskData) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Self Host Backup Interruped',
+          title: getString('backupScreen.remote.backupInterruped'),
           body: error.message,
         },
         trigger: null,
@@ -90,8 +93,8 @@ const remoteBackupAction = async (taskData?: TaskData) => {
 export const createBackup = async (host: string, backupFolder: string) => {
   return BackgroundService.start(remoteBackupAction, {
     taskName: 'Self Host Backup',
-    taskTitle: 'Self Host Backup',
-    taskDesc: 'Preparing',
+    taskTitle: getString('backupScreen.remote.backup'),
+    taskDesc: getString('common.preparing'),
     taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',
     parameters: { delay: 200, backupFolder, host },
@@ -99,7 +102,7 @@ export const createBackup = async (host: string, backupFolder: string) => {
   }).catch((e: Error) => {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Self Host Backup Interruped',
+        title: getString('backupScreen.remote.backupInterruped'),
         body: e.message,
       },
       trigger: null,
@@ -136,7 +139,9 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       const { taskType, subtasks } = await taskList[i]();
       for (let j = 0; j < subtasks.length; j++) {
         await BackgroundService.updateNotification({
-          taskDesc: `Restore ${taskType} (${j}/${subtasks.length})`,
+          taskDesc: `${getString('common.restore')} ${taskType} (${j}/${
+            subtasks.length
+          })`,
           progressBar: {
             max: subtasks.length,
             value: j,
@@ -151,8 +156,8 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Self Host Restore',
-        body: 'Done',
+        title: getString('backupScreen.remote.restore'),
+        body: getString('common.done'),
       },
       trigger: null,
     });
@@ -160,7 +165,7 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Self Host Restore Interruped',
+          title: getString('backupScreen.remote.restoreInterruped'),
           body: error.message,
         },
         trigger: null,
@@ -184,7 +189,7 @@ export const remoteRestore = async (host: string, backupFolder: string) => {
   }).catch((e: Error) => {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Self Host Restore Interruped',
+        title: getString('backupScreen.remote.restoreInterruped'),
         body: e.message,
       },
       trigger: null,

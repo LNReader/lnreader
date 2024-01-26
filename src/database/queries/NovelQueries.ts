@@ -155,7 +155,7 @@ export const removeNovelsFromLibrary = (novelIds: Array<number>) => {
       `DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(', ')});`,
     );
   });
-  showToast('Removed from Library');
+  showToast(getString('browseScreen.removeFromLibrary'));
 };
 
 export const getCachedNovels = (): Promise<NovelInfo[]> => {
@@ -175,7 +175,8 @@ export const deleteCachedNovels = async () => {
     tx.executeSql(
       'DELETE FROM Novel WHERE inLibrary = 0',
       [],
-      () => showToast('Cached novels deleted'),
+      () =>
+        showToast(getString('advancedSettingsScreen.cachedNovelsDeletedToast')),
       txnErrorCallback,
     );
   });

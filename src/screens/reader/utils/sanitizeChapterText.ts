@@ -1,3 +1,4 @@
+import { getString } from '@strings/translations';
 import sanitizeHtml from 'sanitize-html';
 
 interface Options {
@@ -45,8 +46,7 @@ export const sanitizeChapterText = (
       )
       .replace(ttsHandlerRegex, '<t-t-s>$1</t-t-s>');
   } else {
-    text =
-      "Chapter is empty.\n\nReport on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>github</a> if it's available in webview.";
+    text = getString('readerScreen.emptyChapterMessage');
   }
   return text;
 };

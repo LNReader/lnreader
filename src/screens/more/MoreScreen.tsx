@@ -31,7 +31,11 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
 
   return (
     <>
-      <MoreHeader title="More" navigation={navigation} theme={theme} />
+      <MoreHeader
+        title={getString('more')}
+        navigation={navigation}
+        theme={theme}
+      />
       <ScrollView style={{ flex: 1 }}>
         <List.Section>
           <Pressable
@@ -53,10 +57,10 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
                     fontSize: 16,
                   }}
                 >
-                  Downloaded only
+                  {getString('moreScreen.downloadOnly')}
                 </Text>
                 <Text style={{ color: theme.onSurfaceVariant }}>
-                  Filters all novels in your library
+                  {getString('moreScreen.downloadOnlyDesc')}
                 </Text>
               </View>
             </View>
@@ -86,10 +90,10 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
                     fontSize: 16,
                   }}
                 >
-                  Incognito mode
+                  {getString('moreScreen.incognitoMode')}
                 </Text>
                 <Text style={{ color: theme.onSurfaceVariant }}>
-                  Pauses reading history
+                  {getString('moreScreen.incognitoModeDesc')}
                 </Text>
               </View>
             </View>
@@ -102,7 +106,7 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
           </Pressable>
           <List.Divider theme={theme} />
           <List.Item
-            title="Download queue"
+            title={getString('moreScreen.downloadQueue')}
             description={queue.length > 0 ? queue.length + ' remaining' : ''}
             icon="progress-download"
             onPress={() =>
@@ -113,7 +117,7 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
             theme={theme}
           />
           <List.Item
-            title="Downloads"
+            title={getString('common.downloads')}
             icon="folder-download"
             onPress={() =>
               navigation.navigate('MoreStack', {
@@ -144,7 +148,7 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
           />
           <List.Divider theme={theme} />
           <List.Item
-            title={getString('moreScreen.settings')}
+            title={getString('common.settings')}
             icon="cog-outline"
             onPress={() =>
               navigation.navigate('MoreStack', {
@@ -157,7 +161,7 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
             theme={theme}
           />
           <List.Item
-            title="About"
+            title={getString('common.about')}
             icon="information-outline"
             onPress={() =>
               navigation.navigate('MoreStack', {

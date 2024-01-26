@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { Button, IconButton, Modal, Portal } from 'react-native-paper';
 import { ThemeColors } from '@theme/types';
 import { ChapterInfo, NovelInfo } from '@database/types';
+import { getString } from '@strings/translations';
 
 interface DownloadCustomChapterModalProps {
   theme: ThemeColors;
@@ -56,7 +57,7 @@ const DownloadCustomChapterModal = ({
         ]}
       >
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-          Download custom amount
+          {getString('novelScreen.download.customAmount')}
         </Text>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <IconButton
@@ -100,7 +101,7 @@ const DownloadCustomChapterModal = ({
           textColor={theme.onPrimary}
           buttonColor={theme.primary}
         >
-          Download
+          {getString('libraryScreen.bottomSheet.display.download')}
         </Button>
       </Modal>
     </Portal>

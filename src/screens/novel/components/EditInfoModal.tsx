@@ -16,6 +16,8 @@ import { getString } from '@strings/translations';
 import { Button } from '@components';
 import { ThemeColors } from '@theme/types';
 import { NovelInfo } from '@database/types';
+import { NovelStatus } from '@plugins/types';
+import { translateNovelStatus } from '@utils/translateEnum';
 
 interface EditInfoModalProps {
   theme: ThemeColors;
@@ -38,7 +40,13 @@ const EditInfoModal = ({
     setNovel({ ...novel, genres: tags?.join(',') });
   };
 
-  const status = ['Ongoing', 'Hiatus', 'Completed', 'Unknown', 'Cancelled'];
+  const status = [
+    NovelStatus.Ongoing,
+    NovelStatus.OnHiatus,
+    NovelStatus.Completed,
+    NovelStatus.Unknown,
+    NovelStatus.Cancelled,
+  ];
 
   return (
     <Portal>
@@ -51,7 +59,7 @@ const EditInfoModal = ({
         ]}
       >
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-          Edit info
+          {getString('novelScreen.edit.info')}
         </Text>
         <View
           style={{
@@ -60,7 +68,9 @@ const EditInfoModal = ({
             alignItems: 'center',
           }}
         >
-          <Text style={{ color: theme.onSurfaceVariant }}>Status:</Text>
+          <Text style={{ color: theme.onSurfaceVariant }}>
+            {getString('novelScreen.edit.status')}
+          </Text>
           <ScrollView
             style={{ marginLeft: 8 }}
             horizontal
@@ -91,7 +101,7 @@ const EditInfoModal = ({
                           : theme.onSurfaceVariant,
                     }}
                   >
-                    {item}
+                    {translateNovelStatus(item)}
                   </Text>
                 </Pressable>
               </View>
@@ -99,7 +109,9 @@ const EditInfoModal = ({
           </ScrollView>
         </View>
         <TextInput
-          placeholder={`Title: ${novel.name}`}
+          placeholder={getString('novelScreen.edit.title', {
+            title: novel.name,
+          })}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
@@ -108,7 +120,9 @@ const EditInfoModal = ({
           dense
         />
         <TextInput
-          placeholder={`Author: ${novel.author}`}
+          placeholder={getString('novelScreen.edit.author', {
+            author: novel.author,
+          })}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
@@ -117,7 +131,9 @@ const EditInfoModal = ({
           dense
         />
         <TextInput
-          placeholder={`Description: ${novel.summary?.substring(0, 16)}...`}
+          placeholder={getString('novelScreen.edit.summary', {
+            summary: novel.summary?.substring(0, 16),
+          })}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
@@ -127,7 +143,7 @@ const EditInfoModal = ({
         />
 
         <TextInput
-          placeholder={'Add Tag'}
+          placeholder={getString('novelScreen.edit.addTag')}
           style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"

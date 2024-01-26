@@ -17,16 +17,19 @@ const CustomCSSSettings = () => {
   const cssModal = useBoolean();
   const clearCSSModal = useBoolean();
 
+  const customCSSPlaceholder = 'body {margin: 10px;}';
+
   return (
     <>
       <View style={styles.header}>
         <List.SubHeader theme={theme}>
-          {getString('moreScreen.settingsScreen.readerSettings.customCSS')}
+          {getString('readerSettings.customCSS')}
         </List.SubHeader>
       </View>
       <View style={styles.customCSSContainer}>
         <Text numberOfLines={3} style={[{ color: theme.onSurface }]}>
-          {customCSS || 'Example: body {margin: 10px;}'}
+          {customCSS ||
+            `${getString('common.example')}: ${customCSSPlaceholder}`}
         </Text>
         <View style={styles.customCSSButtons}>
           <Button
@@ -48,22 +51,16 @@ const CustomCSSSettings = () => {
           onDismiss={cssModal.setFalse}
           defaultValue={customCSS}
           mimeType="text/css"
-          title={getString(
-            'moreScreen.settingsScreen.readerSettings.customCSS',
-          )}
-          description={getString(
-            'moreScreen.settingsScreen.readerSettings.cssHint',
-          )}
-          placeholder="Example: body {margin: 10px;}"
-          openFileLabel={getString(
-            'moreScreen.settingsScreen.readerSettings.openCSSFile',
-          )}
+          title={getString('readerSettings.customCSS')}
+          description={getString('readerSettings.cssHint')}
+          placeholder={`${getString(
+            'common.example',
+          )}: ${customCSSPlaceholder}`}
+          openFileLabel={getString('readerSettings.openCSSFile')}
           onSave={text => setChapterReaderSettings({ customCSS: text })}
         />
         <ConfirmationDialog
-          title={getString(
-            'moreScreen.settingsScreen.readerSettings.clearCustomCSS',
-          )}
+          title={getString('readerSettings.clearCustomCSS')}
           visible={clearCSSModal.value}
           onSubmit={() => {
             setChapterReaderSettings({ customCSS: '' });

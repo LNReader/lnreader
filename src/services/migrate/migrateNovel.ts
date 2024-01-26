@@ -24,6 +24,7 @@ import {
   PROGRESS_PREFIX,
 } from '@hooks/persisted/useNovel';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
+import { getString } from '@strings/translations';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -59,7 +60,7 @@ export const migrateNovel = async (
 ) => {
   const currentAction = MMKVStorage.getString(BACKGROUND_ACTION);
   if (currentAction) {
-    showToast('Another service is running');
+    showToast(getString('browseScreen.migration.anotherServiceIsRunning'));
     return;
   }
   try {
@@ -80,7 +81,9 @@ export const migrateNovel = async (
 
     const options = {
       taskName: 'Migration',
-      taskTitle: `Migrating ${fromNovel.name} to new source`,
+      taskTitle: getString('browseScreen.migration.migratingToNewSource', {
+        name: fromNovel.name,
+      }),
       taskDesc: '(0/' + fromChapters.length + ')',
       taskIcon: {
         name: 'notification_icon',
@@ -216,7 +219,7 @@ export const migrateNovel = async (
             setProgress(toProgresss);
             Notifications.scheduleNotificationAsync({
               content: {
-                title: 'Novel Migrated',
+                title: getString('browseScreen.migration.novelMigrated'),
                 body: fromNovel.name,
               },
               trigger: null,
@@ -232,7 +235,7 @@ export const migrateNovel = async (
   } catch (error: any) {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Migration error',
+        title: getString('browseScreen.migration.migrationError'),
         body: error.message,
       },
       trigger: null,

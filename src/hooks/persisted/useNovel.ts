@@ -27,6 +27,7 @@ import { showToast } from '@utils/showToast';
 import { useCallback } from 'react';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
+import { getString } from '@strings/translations';
 
 // store key: PREFIX + '_' + novel.url,
 
@@ -301,7 +302,7 @@ export const useNovel = (url: string, pluginId: string) => {
             };
           }),
         );
-        showToast(`Deleted ${_chapter.name}`);
+        showToast(getString('common.deleted', { name: _chapter.name }));
       });
     }
   };
@@ -310,7 +311,11 @@ export const useNovel = (url: string, pluginId: string) => {
     (_chaters: ChapterInfo[]) => {
       if (novel) {
         _deleteChapters(novel.pluginId, novel.id, _chaters).then(() => {
-          showToast(`Deleted ${_chaters.length} chapters`);
+          showToast(
+            getString('updatesScreen.deletedChapters', {
+              num: _chaters.length,
+            }),
+          );
           setChapters(
             chapters.map(chapter => {
               if (_chaters.some(_c => _c.id === chapter.id)) {

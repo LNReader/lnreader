@@ -18,6 +18,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Chip } from '../../../../components';
 import { coverPlaceholderColor } from '../../../../theme/colors';
 import { ThemeColors } from '@theme/types';
+import { getString } from '@strings/translations';
 
 interface CoverImageProps {
   children: React.ReactNode;
@@ -199,7 +200,9 @@ const FollowButton = ({
           color: followed ? theme.primary : theme.outline,
         }}
       >
-        {followed ? 'In Library' : 'Add to library'}
+        {followed
+          ? getString('novelScreen.inLibaray')
+          : getString('novelScreen.addToLibaray')}
       </Text>
     </Pressable>
   </View>
@@ -239,7 +242,9 @@ const TrackerButton = ({
           color: isTracked ? theme.primary : theme.outline,
         }}
       >
-        {isTracked ? 'Tracked' : 'Tracking'}
+        {isTracked
+          ? getString('novelScreen.tracked')
+          : getString('novelScreen.tracking')}
       </Text>
     </Pressable>
   </View>

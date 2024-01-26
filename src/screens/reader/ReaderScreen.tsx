@@ -49,6 +49,7 @@ import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import { NovelDownloadFolder } from '@utils/constants/download';
+import { getString } from '@strings/translations';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
@@ -267,8 +268,8 @@ export const ChapterContent = ({
         })
       : showToast(
           actionName === 'SWIPE_LEFT'
-            ? "There's no next chapter"
-            : "There's no previous chapter",
+            ? getString('readerScreen.noNextChapter')
+            : getString('readerScreen.noPreviousChapter'),
         );
   };
 

@@ -103,7 +103,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
         });
       }
       list.push({
-        header: 'Installed plugins',
+        header: getString('browseScreen.installedPlugins'),
         data: filteredInstalledPlugins,
       });
     }
@@ -112,8 +112,8 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'installedRoute', title: 'Installed' },
-    { key: 'availableRoute', title: 'Available' },
+    { key: 'installedRoute', title: getString('browseScreen.installed') },
+    { key: 'availableRoute', title: getString('browseScreen.available') },
   ]);
 
   return (

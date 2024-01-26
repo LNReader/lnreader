@@ -15,6 +15,7 @@ import {
   openChapterNovelTypes,
   openNovelProps,
 } from '@utils/handleNavigateParams';
+import { getString } from '@strings/translations';
 
 interface HistoryCardProps {
   history: History;
@@ -48,9 +49,10 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   } = history;
   const chapterNoAndTime = useMemo(
     () =>
-      `Chapter ${parseChapterNumber(novelName, chapterName)} • ${dayjs(readTime)
-        .format('LT')
-        .toUpperCase()}`,
+      `${getString('historyScreen.chapter')} ${parseChapterNumber(
+        novelName,
+        chapterName,
+      )} • ${dayjs(readTime).format('LT').toUpperCase()}`,
     [chapterName, readTime],
   );
 

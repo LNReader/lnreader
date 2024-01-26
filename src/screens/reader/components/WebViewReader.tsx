@@ -169,7 +169,9 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                     ${
                       nextChapter
                         ? `<button class="nextButton" onclick="reader.post({type:'next'})">
-                            Next: ${nextChapter.name}
+                            ${getString('readerScreen.nextChapter', {
+                              name: nextChapter.name,
+                            })}
                           </button>`
                         : `<div class="infoText">
                           ${getString('readerScreen.noNextChapter')}

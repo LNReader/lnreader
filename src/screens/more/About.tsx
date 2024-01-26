@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native';
 
 import * as Linking from 'expo-linking';
 
+import { getString } from '@strings/translations';
 import { ScreenContainer } from '@components/Common';
 import { MoreHeader } from './components/MoreHeader';
 import { appVersion, releaseDate } from '@utils/versionUtils';
@@ -16,7 +17,7 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
   return (
     <ScreenContainer theme={theme}>
       <MoreHeader
-        title="About"
+        title={getString('common.about')}
         navigation={navigation}
         theme={theme}
         goBack={true}
@@ -24,12 +25,12 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
       <ScrollView style={{ flex: 1 }}>
         <List.Section>
           <List.Item
-            title="Version"
+            title={getString('aboutScreen.version')}
             description={`Stable ${appVersion} (${releaseDate})`}
             theme={theme}
           />
           <List.Item
-            title="What's new"
+            title={getString('aboutScreen.whatsNew')}
             onPress={() =>
               Linking.openURL(
                 `https://github.com/LNReader/lnreader/releases/tag/v${appVersion}`,
@@ -39,13 +40,13 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
           />
           <List.Divider theme={theme} />
           <List.Item
-            title="Discord"
+            title={getString('aboutScreen.discord')}
             description="https://discord.gg/QdcWN4MD63"
             onPress={() => Linking.openURL('https://discord.gg/QdcWN4MD63')}
             theme={theme}
           />
           <List.Item
-            title="Github"
+            title={getString('aboutScreen.github')}
             description="https://github.com/LNReader/lnreader"
             onPress={() =>
               Linking.openURL('https://github.com/LNReader/lnreader')
@@ -53,7 +54,7 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
             theme={theme}
           />
           <List.Item
-            title="Sources"
+            title={getString('aboutScreen.sources')}
             description="https://github.com/LNReader/lnreader-sources"
             onPress={() =>
               Linking.openURL('https://github.com/LNReader/lnreader-sources')
@@ -61,7 +62,7 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
             theme={theme}
           />
           <List.Item
-            title="Help translate"
+            title={getString('aboutScreen.helpTranslate')}
             description="https://crowdin.com/project/lnreader"
             onPress={() =>
               Linking.openURL('https://crowdin.com/project/lnreader')
