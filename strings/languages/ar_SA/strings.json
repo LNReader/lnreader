@@ -124,32 +124,6 @@
         "searchAllWarning": "البحث عن عدد كبير من المصادر قد يجمد التطبيق حتى الانتهاء من البحث."
       },
       "generalSettings": "العامة",
-      "generalSettingsScreen": {
-        "asc": "ترتيب تصاعدي",
-        "autoDownload": "التحميل التلقائي",
-        "bySource": "حسب المصدر",
-        "chapterSort": "الفرز الافتراضي للفصول",
-        "desc": "ترتيب تنازلي",
-        "disableHapticFeedback": "تعطيل الاهتزاز",
-        "displayMode": "وضع العرض",
-        "downloadNewChapters": "تحميل فصول جديدة",
-        "epub": "EPUB",
-        "epubLocation": "موقع EPUB",
-        "epubLocationDescription": "مكان لحفظ ملفات EPUB وتصديرها.",
-        "globalUpdate": "التحديث الشامل",
-        "itemsPerRow": "العناصر في كل صف",
-        "itemsPerRowLibrary": "العناصر لكل صف في المكتبة",
-        "jumpToLastReadChapter": "Jump to last read chapter in list",
-        "novel": "رواية",
-        "novelBadges": "شارات الرواية",
-        "novelSort": "فرز الروايات",
-        "refreshMetadata": "تحديث البيانات الوصفية تلقائيًا",
-        "refreshMetadataDescription": "تحقق من الغلاف الجديد ",
-        "updateLibrary": "تحديث المكتبة عند تشغيل التطبيق",
-        "updateOngoing": "تحديث الروايات الجارية فقط",
-        "updateTime": "وقت آخر تحديث",
-        "useFAB": "استخدام FAB في المكتبة"
-      },
       "readerSettings": {
         "autoScrollInterval": "فترة التمرير التلقائي (بالثواني)",
         "autoScrollOffset": "تمرير إزاحة تلقائية (ارتفاع الشاشة افتراضي)",
@@ -177,8 +151,7 @@
   },
   "novelScreen": {
     "addToLibaray": "إضافة إلى المكتبة",
-    "bottomSheet": {
-    },
+    "bottomSheet": {},
     "chapters": "الفصول",
     "continueReading": "متابعة القراءة",
     "convertToEpubModal": {
@@ -255,5 +228,31 @@
     "newChapters": "فصول جديدة",
     "searchbar": "البحث في التحديثات",
     "updatesLower": "التحديثات"
+  },
+  "generalSettingsScreen": {
+    "asc": "ترتيب تصاعدي",
+    "autoDownload": "التحميل التلقائي",
+    "bySource": "حسب المصدر",
+    "chapterSort": "الفرز الافتراضي للفصول",
+    "desc": "ترتيب تنازلي",
+    "disableHapticFeedback": "تعطيل الاهتزاز",
+    "displayMode": "وضع العرض",
+    "downloadNewChapters": "تحميل فصول جديدة",
+    "epub": "EPUB",
+    "epubLocation": "موقع EPUB",
+    "epubLocationDescription": "مكان لحفظ ملفات EPUB وتصديرها.",
+    "globalUpdate": "التحديث الشامل",
+    "itemsPerRow": "العناصر في كل صف",
+    "itemsPerRowLibrary": "العناصر لكل صف في المكتبة",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "رواية",
+    "novelBadges": "شارات الرواية",
+    "novelSort": "فرز الروايات",
+    "refreshMetadata": "تحديث البيانات الوصفية تلقائيًا",
+    "refreshMetadataDescription": "تحقق من الغلاف الجديد ",
+    "updateLibrary": "تحديث المكتبة عند تشغيل التطبيق",
+    "updateOngoing": "تحديث الروايات الجارية فقط",
+    "updateTime": "وقت آخر تحديث",
+    "useFAB": "استخدام FAB في المكتبة"
   }
 }

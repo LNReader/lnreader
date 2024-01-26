@@ -34,9 +34,7 @@ const DefaultChapterSortModal = ({
         ]}
       >
         <SortItem
-          label={getString(
-            'moreScreen.settingsScreen.generalSettingsScreen.bySource',
-          )}
+          label={getString('generalSettingsScreen.bySource')}
           theme={theme}
           status={defaultChapterSort === 'ORDER BY id ASC' ? 'asc' : 'desc'}
           onPress={() =>

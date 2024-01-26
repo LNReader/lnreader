@@ -124,32 +124,6 @@
         "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
       },
       "generalSettings": "常规",
-      "generalSettingsScreen": {
-        "asc": "(Ascending)",
-        "autoDownload": "Auto-download",
-        "bySource": "By source",
-        "chapterSort": "Default chapter sort",
-        "desc": "(Descending)",
-        "disableHapticFeedback": "Disable haptic feedback",
-        "displayMode": "Display Mode",
-        "downloadNewChapters": "Download new chapters",
-        "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
-        "globalUpdate": "Global update",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "jumpToLastReadChapter": "Jump to last read chapter in list",
-        "novel": "Novel",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateLibrary": "Update library on launch",
-        "updateOngoing": "Only update ongoing novels",
-        "updateTime": "Show last update time",
-        "useFAB": "Use FAB in Library"
-      },
       "readerSettings": {
         "autoScrollInterval": "自动滚动间隔(以秒计)",
         "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
@@ -177,8 +151,7 @@
   },
   "novelScreen": {
     "addToLibaray": "添加到书库",
-    "bottomSheet": {
-    },
+    "bottomSheet": {},
     "chapters": "章节",
     "continueReading": "继续阅读",
     "convertToEpubModal": {
@@ -255,5 +228,31 @@
     "newChapters": "new Chapters",
     "searchbar": "搜索更新",
     "updatesLower": "updates"
+  },
+  "generalSettingsScreen": {
+    "asc": "(Ascending)",
+    "autoDownload": "Auto-download",
+    "bySource": "By source",
+    "chapterSort": "Default chapter sort",
+    "desc": "(Descending)",
+    "disableHapticFeedback": "Disable haptic feedback",
+    "displayMode": "Display Mode",
+    "downloadNewChapters": "Download new chapters",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Global update",
+    "itemsPerRow": "Items per row",
+    "itemsPerRowLibrary": "Items per row in library",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel",
+    "novelBadges": "Novel Badges",
+    "novelSort": "Novel Sort",
+    "refreshMetadata": "Automatically refresh metadata",
+    "refreshMetadataDescription": "Check for new cover and details when updating library",
+    "updateLibrary": "Update library on launch",
+    "updateOngoing": "Only update ongoing novels",
+    "updateTime": "Show last update time",
+    "useFAB": "Use FAB in Library"
   }
 }

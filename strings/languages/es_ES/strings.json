@@ -124,32 +124,6 @@
         "searchAllWarning": "Buscar un gran número de fuentes puede congelar la aplicación hasta que la búsqueda haya finalizado."
       },
       "generalSettings": "General",
-      "generalSettingsScreen": {
-        "asc": "(Ascendente)",
-        "autoDownload": "Descarga automática",
-        "bySource": "Por fuente",
-        "chapterSort": "Orden de capítulo por defecto",
-        "desc": "(Descendente)",
-        "disableHapticFeedback": "Deshabilitar la respuesta háptica",
-        "displayMode": "Modo de visualización",
-        "downloadNewChapters": "Descargar nuevos capítulos",
-        "epub": "EPUB",
-        "epubLocation": "Ubicación EPUB",
-        "epubLocationDescription": "El lugar donde se abren y exportan sus archivos EPUB.",
-        "globalUpdate": "Actualización global",
-        "itemsPerRow": "Elementos por fila",
-        "itemsPerRowLibrary": "Elementos por fila en la biblioteca",
-        "jumpToLastReadChapter": "Jump to last read chapter in list",
-        "novel": "Novela",
-        "novelBadges": "Insignia de novelas",
-        "novelSort": "Ordenar novela",
-        "refreshMetadata": "Actualizar automáticamente los metadatos",
-        "refreshMetadataDescription": "Buscar nueva portada y detalles al actualizar la biblioteca",
-        "updateLibrary": "Actualizar biblioteca al iniciar",
-        "updateOngoing": "Solo actualizar novelas en curso",
-        "updateTime": "Mostrar la última actualización",
-        "useFAB": "Usar FAB en la biblioteca"
-      },
       "readerSettings": {
         "autoScrollInterval": "Intervalo de desplazamiento automático (en segundos)",
         "autoScrollOffset": "Desplazamiento automático de desplazamiento (altura de pantalla por defecto)",
@@ -177,8 +151,7 @@
   },
   "novelScreen": {
     "addToLibaray": "Añadir a la biblioteca",
-    "bottomSheet": {
-    },
+    "bottomSheet": {},
     "chapters": "capítulos",
     "continueReading": "Continuar leyendo",
     "convertToEpubModal": {
@@ -255,5 +228,31 @@
     "newChapters": "Nuevos capítulos",
     "searchbar": "Buscar actualizaciones",
     "updatesLower": "actualizaciones"
+  },
+  "generalSettingsScreen": {
+    "asc": "(Ascendente)",
+    "autoDownload": "Descarga automática",
+    "bySource": "Por fuente",
+    "chapterSort": "Orden de capítulo por defecto",
+    "desc": "(Descendente)",
+    "disableHapticFeedback": "Deshabilitar la respuesta háptica",
+    "displayMode": "Modo de visualización",
+    "downloadNewChapters": "Descargar nuevos capítulos",
+    "epub": "EPUB",
+    "epubLocation": "Ubicación EPUB",
+    "epubLocationDescription": "El lugar donde se abren y exportan sus archivos EPUB.",
+    "globalUpdate": "Actualización global",
+    "itemsPerRow": "Elementos por fila",
+    "itemsPerRowLibrary": "Elementos por fila en la biblioteca",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novela",
+    "novelBadges": "Insignia de novelas",
+    "novelSort": "Ordenar novela",
+    "refreshMetadata": "Actualizar automáticamente los metadatos",
+    "refreshMetadataDescription": "Buscar nueva portada y detalles al actualizar la biblioteca",
+    "updateLibrary": "Actualizar biblioteca al iniciar",
+    "updateOngoing": "Solo actualizar novelas en curso",
+    "updateTime": "Mostrar la última actualización",
+    "useFAB": "Usar FAB en la biblioteca"
   }
 }

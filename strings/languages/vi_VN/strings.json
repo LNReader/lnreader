@@ -124,32 +124,6 @@
         "searchAllWarning": "Tìm kiếm với lượng lớn nguồn có thể đóng băng ứng dụng cho đến khi tìm kiếm hoàn thành."
       },
       "generalSettings": "Chung",
-      "generalSettingsScreen": {
-        "asc": "(Tăng dần)",
-        "autoDownload": "Tự động tải xuống",
-        "bySource": "Theo nguồn",
-        "chapterSort": "Sắp xếp mặc định",
-        "desc": "(Giảm dần)",
-        "disableHapticFeedback": "Tắt phản hồi xúc giác",
-        "displayMode": "Chế độ Hiển thị",
-        "downloadNewChapters": "Tải chương mới",
-        "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
-        "globalUpdate": "Cập nhật toàn bộ",
-        "itemsPerRow": "Truyện trên hàng",
-        "itemsPerRowLibrary": "Số truyện trên hàng trong thư viện",
-        "jumpToLastReadChapter": "Jump to last read chapter in list",
-        "novel": "Tiểu thuyết",
-        "novelBadges": "Nhãn tiểu thuyết",
-        "novelSort": "Sắp xếp truyện",
-        "refreshMetadata": "Tự động làm mới metadata",
-        "refreshMetadataDescription": "Kiểm tra ảnh bìa và mô tả khi cập nhật thự viện",
-        "updateLibrary": "Cập nhật thư viện khi khởi động",
-        "updateOngoing": "Chỉ cập nhật truyện đang thực hiện",
-        "updateTime": "Hiện lần cập nhật trước",
-        "useFAB": "Sử dụng FAB trong thư viện"
-      },
       "readerSettings": {
         "autoScrollInterval": "Thời gian tự động cuộn (giây)",
         "autoScrollOffset": "Khoảng cách tự động cuộn (mặc định chiều cao màn hình)",
@@ -177,8 +151,7 @@
   },
   "novelScreen": {
     "addToLibaray": "Thêm vào thư viện",
-    "bottomSheet": {
-    },
+    "bottomSheet": {},
     "chapters": "chương",
     "continueReading": "Tiếp tục đọc",
     "convertToEpubModal": {
@@ -255,5 +228,31 @@
     "newChapters": "chương mới",
     "searchbar": "Tìm kiếm bản cập nhật",
     "updatesLower": "cập nhập"
+  },
+  "generalSettingsScreen": {
+    "asc": "(Tăng dần)",
+    "autoDownload": "Tự động tải xuống",
+    "bySource": "Theo nguồn",
+    "chapterSort": "Sắp xếp mặc định",
+    "desc": "(Giảm dần)",
+    "disableHapticFeedback": "Tắt phản hồi xúc giác",
+    "displayMode": "Chế độ Hiển thị",
+    "downloadNewChapters": "Tải chương mới",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Cập nhật toàn bộ",
+    "itemsPerRow": "Truyện trên hàng",
+    "itemsPerRowLibrary": "Số truyện trên hàng trong thư viện",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Tiểu thuyết",
+    "novelBadges": "Nhãn tiểu thuyết",
+    "novelSort": "Sắp xếp truyện",
+    "refreshMetadata": "Tự động làm mới metadata",
+    "refreshMetadataDescription": "Kiểm tra ảnh bìa và mô tả khi cập nhật thự viện",
+    "updateLibrary": "Cập nhật thư viện khi khởi động",
+    "updateOngoing": "Chỉ cập nhật truyện đang thực hiện",
+    "updateTime": "Hiện lần cập nhật trước",
+    "useFAB": "Sử dụng FAB trong thư viện"
   }
 }

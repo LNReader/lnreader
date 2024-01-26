@@ -124,32 +124,6 @@
         "searchAllWarning": "Поиск по большому количеству источников может привести к зависанию приложения, пока поиск не завершится."
       },
       "generalSettings": "Основные",
-      "generalSettingsScreen": {
-        "asc": "(По возрастанию)",
-        "autoDownload": "Автозагрузка",
-        "bySource": "По источникам",
-        "chapterSort": "Сортировка глав по умолчанию",
-        "desc": "(По убыванию)",
-        "disableHapticFeedback": "Отключить виброотклик",
-        "displayMode": "Режим Отображения",
-        "downloadNewChapters": "Скачивать новые главы",
-        "epub": "EPUB",
-        "epubLocation": "Расположение EPUB",
-        "epubLocationDescription": "Место открытия и экспорта файлов EPUB.",
-        "globalUpdate": "Обновить всё",
-        "itemsPerRow": "элемента в ряду",
-        "itemsPerRowLibrary": "Количество элементов в ряду",
-        "jumpToLastReadChapter": "Jump to last read chapter in list",
-        "novel": "Тайтл",
-        "novelBadges": "Иконки тайтлов",
-        "novelSort": "Сортировка тайтлов",
-        "refreshMetadata": "Автоматически обновлять метаданные",
-        "refreshMetadataDescription": "Проверять наличие новой обложки и описания при обновлении библиотеки",
-        "updateLibrary": "Обновлять библиотеку при запуске",
-        "updateOngoing": "Обновлять только онгоинги",
-        "updateTime": "Показать время последнего обновления",
-        "useFAB": "Использовать FAB в библиотеке"
-      },
       "readerSettings": {
         "autoScrollInterval": "Интервал автопрокрутки (в секундах)",
         "autoScrollOffset": "Смещение автопрокрутки (высота экрана по умолчанию)",
@@ -177,8 +151,7 @@
   },
   "novelScreen": {
     "addToLibaray": "Добавить в библиотеку",
-    "bottomSheet": {
-    },
+    "bottomSheet": {},
     "chapters": "главы",
     "continueReading": "Продолжить чтение",
     "convertToEpubModal": {
@@ -255,5 +228,31 @@
     "newChapters": "новые главы",
     "searchbar": "Поиск в обновлениях",
     "updatesLower": "обновлено"
+  },
+  "generalSettingsScreen": {
+    "asc": "(По возрастанию)",
+    "autoDownload": "Автозагрузка",
+    "bySource": "По источникам",
+    "chapterSort": "Сортировка глав по умолчанию",
+    "desc": "(По убыванию)",
+    "disableHapticFeedback": "Отключить виброотклик",
+    "displayMode": "Режим Отображения",
+    "downloadNewChapters": "Скачивать новые главы",
+    "epub": "EPUB",
+    "epubLocation": "Расположение EPUB",
+    "epubLocationDescription": "Место открытия и экспорта файлов EPUB.",
+    "globalUpdate": "Обновить всё",
+    "itemsPerRow": "элемента в ряду",
+    "itemsPerRowLibrary": "Количество элементов в ряду",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Тайтл",
+    "novelBadges": "Иконки тайтлов",
+    "novelSort": "Сортировка тайтлов",
+    "refreshMetadata": "Автоматически обновлять метаданные",
+    "refreshMetadataDescription": "Проверять наличие новой обложки и описания при обновлении библиотеки",
+    "updateLibrary": "Обновлять библиотеку при запуске",
+    "updateOngoing": "Обновлять только онгоинги",
+    "updateTime": "Показать время последнего обновления",
+    "useFAB": "Использовать FAB в библиотеке"
   }
 }

@@ -124,32 +124,6 @@
         "searchAllWarning": "Mencari dari banyak sumber mungkin akan membuat aplikasi hang sampai pencarian selesai.\n"
       },
       "generalSettings": "Umum\n",
-      "generalSettingsScreen": {
-        "asc": "(Naik)\n",
-        "autoDownload": "Unduh otomatis\n",
-        "bySource": "Berdasarkan sumber\n",
-        "chapterSort": "Pengurutan Bab bawaan\n",
-        "desc": "(Menurun)\n",
-        "disableHapticFeedback": "Nonaktifkan umpan balik haptic\n",
-        "displayMode": "Mode tampilan\n",
-        "downloadNewChapters": "Unduh bab terbaru\n",
-        "epub": "EPUB\n",
-        "epubLocation": "Lokasi EPUB\n",
-        "epubLocationDescription": "Lokasi dimana anda membuka dan mengekspor file EPUB anda.\n",
-        "globalUpdate": "Pembaruan global\n",
-        "itemsPerRow": "Barang-barang per baris\n",
-        "itemsPerRowLibrary": "Barang-barang per baris di perpustakaan\n",
-        "jumpToLastReadChapter": "Jump to last read chapter in list",
-        "novel": "Novel\n",
-        "novelBadges": "Lencana Novel",
-        "novelSort": "Urutkan Novel",
-        "refreshMetadata": "Memperbarui metadata secara otomatis\n",
-        "refreshMetadataDescription": "Periksa sampul dan detail baru saat memperbarui perpustakaan\n",
-        "updateLibrary": "Perbarui perpustakaan saat diluncurkan\n",
-        "updateOngoing": "Hanya memperbarui novel yang sedang berlangsung\n",
-        "updateTime": "Perlihatkan waktu pembaruan terakhir\n",
-        "useFAB": "Gunakan FAB di perpustakaan\n"
-      },
       "readerSettings": {
         "autoScrollInterval": "Interval menggulir otomatis (dalam detik)\n",
         "autoScrollOffset": "Offset gulir otomatis (tinggi layar secara default)\n",
@@ -177,8 +151,7 @@
   },
   "novelScreen": {
     "addToLibaray": "Tambahkan ke koleksi\n",
-    "bottomSheet": {
-    },
+    "bottomSheet": {},
     "chapters": "bab\n",
     "continueReading": "Lanjutkan membaca\n",
     "convertToEpubModal": {
@@ -255,5 +228,31 @@
     "newChapters": "Bab baru\n",
     "searchbar": "Cari di pembaruan\n",
     "updatesLower": "Pembaruan\n"
+  },
+  "generalSettingsScreen": {
+    "asc": "(Naik)\n",
+    "autoDownload": "Unduh otomatis\n",
+    "bySource": "Berdasarkan sumber\n",
+    "chapterSort": "Pengurutan Bab bawaan\n",
+    "desc": "(Menurun)\n",
+    "disableHapticFeedback": "Nonaktifkan umpan balik haptic\n",
+    "displayMode": "Mode tampilan\n",
+    "downloadNewChapters": "Unduh bab terbaru\n",
+    "epub": "EPUB\n",
+    "epubLocation": "Lokasi EPUB\n",
+    "epubLocationDescription": "Lokasi dimana anda membuka dan mengekspor file EPUB anda.\n",
+    "globalUpdate": "Pembaruan global\n",
+    "itemsPerRow": "Barang-barang per baris\n",
+    "itemsPerRowLibrary": "Barang-barang per baris di perpustakaan\n",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel\n",
+    "novelBadges": "Lencana Novel",
+    "novelSort": "Urutkan Novel",
+    "refreshMetadata": "Memperbarui metadata secara otomatis\n",
+    "refreshMetadataDescription": "Periksa sampul dan detail baru saat memperbarui perpustakaan\n",
+    "updateLibrary": "Perbarui perpustakaan saat diluncurkan\n",
+    "updateOngoing": "Hanya memperbarui novel yang sedang berlangsung\n",
+    "updateTime": "Perlihatkan waktu pembaruan terakhir\n",
+    "useFAB": "Gunakan FAB di perpustakaan\n"
   }
 }

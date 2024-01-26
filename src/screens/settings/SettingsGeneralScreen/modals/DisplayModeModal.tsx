@@ -38,9 +38,7 @@ const DisplayModeModal: React.FC<DisplayModeModalProps> = ({
         ]}
       >
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
-          {getString(
-            'moreScreen.settingsScreen.generalSettingsScreen.displayMode',
-          )}
+          {getString('generalSettingsScreen.displayMode')}
         </Text>
         {displayModesList.map(mode => (
           <RadioButton

@@ -124,32 +124,6 @@
         "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
       },
       "generalSettings": "Genel",
-      "generalSettingsScreen": {
-        "asc": "(Artan)",
-        "autoDownload": "Otomatik İndirme",
-        "bySource": "Kaynağa göre",
-        "chapterSort": "Varsayılan bölüm sıralaması",
-        "desc": "(Azalan)",
-        "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak",
-        "displayMode": "Görünüm Modu",
-        "downloadNewChapters": "Yeni bölümleri indir",
-        "epub": "EPUB",
-        "epubLocation": "EPUB Konumu",
-        "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
-        "globalUpdate": "Global güncelleme",
-        "itemsPerRow": "Satır başına düşen öge",
-        "itemsPerRowLibrary": "Kitaplıkta satır başına düşen öge",
-        "jumpToLastReadChapter": "Jump to last read chapter in list",
-        "novel": "Novel",
-        "novelBadges": "Novel Rozetleri",
-        "novelSort": "Novel Sıralaması",
-        "refreshMetadata": "Üst veriyi otomatik olarak yenile",
-        "refreshMetadataDescription": "Kitaplığı güncellerken yeni kapak ve ayrıntıları denetle",
-        "updateLibrary": "Açılışta kitaplığı güncelle",
-        "updateOngoing": "Yalnızca devam eden novel'leri güncelle",
-        "updateTime": "Son güncelleme süresini göster",
-        "useFAB": "Kitaplıkta FAB kullan"
-      },
       "readerSettings": {
         "autoScrollInterval": "Otomatik kaydırma süresi (saniye olarak)",
         "autoScrollOffset": "Otomatik kaydırma konumu (varsayılan olarak ekran yüksekliği)",
@@ -177,8 +151,7 @@
   },
   "novelScreen": {
     "addToLibaray": "Kitaplığa ekle",
-    "bottomSheet": {
-    },
+    "bottomSheet": {},
     "chapters": "bölüm",
     "continueReading": "Okumaya devam et",
     "convertToEpubModal": {
@@ -255,5 +228,31 @@
     "newChapters": "Yeni bölüm",
     "searchbar": "Güncellemelerde ara",
     "updatesLower": "güncellemeler"
+  },
+  "generalSettingsScreen": {
+    "asc": "(Artan)",
+    "autoDownload": "Otomatik İndirme",
+    "bySource": "Kaynağa göre",
+    "chapterSort": "Varsayılan bölüm sıralaması",
+    "desc": "(Azalan)",
+    "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak",
+    "displayMode": "Görünüm Modu",
+    "downloadNewChapters": "Yeni bölümleri indir",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Konumu",
+    "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
+    "globalUpdate": "Global güncelleme",
+    "itemsPerRow": "Satır başına düşen öge",
+    "itemsPerRowLibrary": "Kitaplıkta satır başına düşen öge",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel",
+    "novelBadges": "Novel Rozetleri",
+    "novelSort": "Novel Sıralaması",
+    "refreshMetadata": "Üst veriyi otomatik olarak yenile",
+    "refreshMetadataDescription": "Kitaplığı güncellerken yeni kapak ve ayrıntıları denetle",
+    "updateLibrary": "Açılışta kitaplığı güncelle",
+    "updateOngoing": "Yalnızca devam eden novel'leri güncelle",
+    "updateTime": "Son güncelleme süresini göster",
+    "useFAB": "Kitaplıkta FAB kullan"
   }
 }

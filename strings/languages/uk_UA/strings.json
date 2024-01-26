@@ -124,32 +124,6 @@
         "searchAllWarning": "Пошук у великій кількості джерел може викликати зависання програми до закінчення пошуку."
       },
       "generalSettings": "Загальне",
-      "generalSettingsScreen": {
-        "asc": "(Ascending)",
-        "autoDownload": "Auto-download",
-        "bySource": "By source",
-        "chapterSort": "Default chapter sort",
-        "desc": "(Descending)",
-        "disableHapticFeedback": "Disable haptic feedback",
-        "displayMode": "Display Mode",
-        "downloadNewChapters": "Download new chapters",
-        "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
-        "globalUpdate": "Global update",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "jumpToLastReadChapter": "Jump to last read chapter in list",
-        "novel": "Novel",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateLibrary": "Update library on launch",
-        "updateOngoing": "Only update ongoing novels",
-        "updateTime": "Show last update time",
-        "useFAB": "Use FAB in Library"
-      },
       "readerSettings": {
         "autoScrollInterval": "Інтервал автопрокрутки (в секундах)",
         "autoScrollOffset": "Зсув автоматичної прокрутки (висота екрану за замовчуванням)",
@@ -177,8 +151,7 @@
   },
   "novelScreen": {
     "addToLibaray": "Додати до бібліотеки",
-    "bottomSheet": {
-    },
+    "bottomSheet": {},
     "chapters": "розділи",
     "continueReading": "Продовжити читання",
     "convertToEpubModal": {
@@ -255,5 +228,31 @@
     "newChapters": "new Chapters",
     "searchbar": "Пошук оновлень",
     "updatesLower": "updates"
+  },
+  "generalSettingsScreen": {
+    "asc": "(Ascending)",
+    "autoDownload": "Auto-download",
+    "bySource": "By source",
+    "chapterSort": "Default chapter sort",
+    "desc": "(Descending)",
+    "disableHapticFeedback": "Disable haptic feedback",
+    "displayMode": "Display Mode",
+    "downloadNewChapters": "Download new chapters",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Global update",
+    "itemsPerRow": "Items per row",
+    "itemsPerRowLibrary": "Items per row in library",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel",
+    "novelBadges": "Novel Badges",
+    "novelSort": "Novel Sort",
+    "refreshMetadata": "Automatically refresh metadata",
+    "refreshMetadataDescription": "Check for new cover and details when updating library",
+    "updateLibrary": "Update library on launch",
+    "updateOngoing": "Only update ongoing novels",
+    "updateTime": "Show last update time",
+    "useFAB": "Use FAB in Library"
   }
 }
