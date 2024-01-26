@@ -12,6 +12,7 @@ import { newer } from '@utils/compareVersion';
 import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import { showToast } from '@utils/showToast';
 import { useCallback } from 'react';
+import { getString } from '@strings/translations';
 
 export const AVAILABLE_PLUGINS = 'AVAILABLE_PLUGINS';
 export const INSTALLED_PLUGINS = 'INSTALL_PLUGINS';
@@ -123,7 +124,9 @@ export default function usePlugins() {
         setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
         filterPlugins(languagesFilter);
       } else {
-        throw new Error(`Failed to installed ${plugin.name}`);
+        throw new Error(
+          getString('browseScreen.installFailed', { name: plugin.name }),
+        );
       }
     });
   };
@@ -157,7 +160,7 @@ export default function usePlugins() {
   const updatePlugin = (plugin: PluginItem) => {
     return _update(plugin).then(_plg => {
       if (plugin.version === _plg?.version) {
-        throw new Error('Try again in a moment.');
+        throw new Error(getString('browseScreen.tryAgain'));
       }
       if (_plg) {
         const installedPlugins =
@@ -184,7 +187,7 @@ export default function usePlugins() {
         filterPlugins(languagesFilter);
         return _plg.version;
       } else {
-        throw Error('Failed to update.');
+        throw Error(getString('browseScreen.updateFailed'));
       }
     });
   };

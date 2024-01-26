@@ -90,6 +90,7 @@ export interface StringMap {
   'browseScreen.installed': 'string';
   'browseScreen.installedPlugin': 'string';
   'browseScreen.installedPlugins': 'string';
+  'browseScreen.installFailed': 'string';
   'browseScreen.lastUsed': 'string';
   'browseScreen.latest': 'string';
   'browseScreen.listEmpty': 'string';
@@ -106,8 +107,10 @@ export interface StringMap {
   'browseScreen.removeFromLibrary': 'string';
   'browseScreen.searchbar': 'string';
   'browseScreen.selectNovel': 'string';
+  'browseScreen.tryAgain': 'string';
   'browseScreen.uninstalledPlugin': 'string';
   'browseScreen.updatedTo': 'string';
+  'browseScreen.updateFailed': 'string';
   'browseSettings': 'string';
   'browseSettingsScreen.languages': 'string';
   'browseSettingsScreen.onlyShowPinnedSources': 'string';
@@ -116,7 +119,6 @@ export interface StringMap {
   'categories.addCategories': 'string';
   'categories.cantDeleteDefault': 'string';
   'categories.default': 'string';
-  'categories.local': 'string';
   'categories.defaultCategory': 'string';
   'categories.deleteModal.desc': 'string';
   'categories.deleteModal.header': 'string';
@@ -124,6 +126,7 @@ export interface StringMap {
   'categories.editCategories': 'string';
   'categories.emptyMsg': 'string';
   'categories.header': 'string';
+  'categories.local': 'string';
   'categories.setCategories': 'string';
   'categories.setModalEmptyMsg': 'string';
   'common.about': 'string';
