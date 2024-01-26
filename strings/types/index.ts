@@ -66,7 +66,7 @@ export interface StringMap {
   'backupScreen.legacy.novelsRestoredError': 'string';
   'backupScreen.legacy.pluginNotExist': 'string';
   'backupScreen.legacyBackup': 'string';
-  'backupScreen.noBackupFounded': 'string';
+  'backupScreen.noBackupFound': 'string';
   'backupScreen.remote.backup': 'string';
   'backupScreen.remote.backupInterruped': 'string';
   'backupScreen.remote.host': 'string';
@@ -256,6 +256,13 @@ export interface StringMap {
   'moreScreen.incognitoMode': 'string';
   'moreScreen.incognitoModeDesc': 'string';
   'novelScreen.addToLibaray': 'string';
+  'novelScreen.bottomSheet.displays.chapterNumber': 'string';
+  'novelScreen.bottomSheet.displays.sourceTitle': 'string';
+  'novelScreen.bottomSheet.filters.bookmarked': 'string';
+  'novelScreen.bottomSheet.filters.downloaded': 'string';
+  'novelScreen.bottomSheet.filters.unread': 'string';
+  'novelScreen.bottomSheet.order.byChapterName': 'string';
+  'novelScreen.bottomSheet.order.bySource': 'string';
   'novelScreen.chapterChapnum': 'string';
   'novelScreen.chapters': 'string';
   'novelScreen.continueReading': 'string';
@@ -367,7 +374,7 @@ export interface StringMap {
   'statsScreen.unreadChapters': 'string';
   'tracking': 'string';
   'trackingScreen.logOutMessage': 'string';
-  'trackingScreen.revalidateMyanimelist': 'string';
+  'trackingScreen.revalidate': 'string';
   'trackingScreen.services': 'string';
   'updates': 'string';
   'updatesScreen.deletedChapters': 'string';

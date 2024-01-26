@@ -75,7 +75,7 @@
       "pluginNotExist": "Plugin with id %{id} doenst exist!"
     },
     "legacyBackup": "Legacy Backup",
-    "noBackupFounded": "No backup founded",
+    "noBackupFound": "No backup found",
     "remote": {
       "backup": "Self Host Backup",
       "backupInterruped": "Self Host Backup Interruped",
@@ -457,7 +457,7 @@
   "tracking": "Tracking",
   "trackingScreen": {
     "logOutMessage": "Log out from %{name}?",
-    "revalidateMyanimelist": "Revalidate MyAnimeList",
+    "revalidate": "Revalidate",
     "services": "Services"
   },
   "updates": "Updates",

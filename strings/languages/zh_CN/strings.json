@@ -75,7 +75,7 @@
       "pluginNotExist": "ID 为 %{id} 的插件不存在！"
     },
     "legacyBackup": "旧版备份",
-    "noBackupFounded": "没有找到备份",
+    "noBackupFound": "没有找到备份",
     "remote": {
       "backup": "自托管备份",
       "backupInterruped": "自托管备份中断",
@@ -457,7 +457,7 @@
   "tracking": "进度记录",
   "trackingScreen": {
     "logOutMessage": "从 %{name} 注销？",
-    "revalidateMyanimelist": "重新认证 MyAnimeList",
+    "revalidate": "重新认证",
     "services": "服务"
   },
   "updates": "更新",

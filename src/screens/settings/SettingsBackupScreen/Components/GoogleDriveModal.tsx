@@ -189,7 +189,7 @@ function RestoreBackup({
         )}
         ListEmptyComponent={() => (
           <EmptyView
-            description={getString('backupScreen.noBackupFounded')}
+            description={getString('backupScreen.noBackupFound')}
             theme={theme}
           />
         )}

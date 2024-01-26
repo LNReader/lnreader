@@ -72,7 +72,9 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
                   {getString('common.settings')}
                 </List.SubHeader>
                 <List.Item
-                  title={getString('trackingScreen.revalidateMyanimelist')}
+                  title={
+                    getString('trackingScreen.revalidate') + ' Myanimelist'
+                  }
                   onPress={async () => {
                     const revalidate = getTracker('MyAnimeList')?.revalidate;
                     if (revalidate) {
