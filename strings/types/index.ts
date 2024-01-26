@@ -222,10 +222,6 @@ export interface StringMap {
   'moreScreen.settings': 'string';
   'moreScreen.settingsScreen.advanced': 'string';
   'moreScreen.settingsScreen.browseSettings': 'string';
-  'moreScreen.settingsScreen.browseSettingsScreen.languages': 'string';
-  'moreScreen.settingsScreen.browseSettingsScreen.onlyShowPinnedSources': 'string';
-  'moreScreen.settingsScreen.browseSettingsScreen.searchAllSources': 'string';
-  'moreScreen.settingsScreen.browseSettingsScreen.searchAllWarning': 'string';
   'moreScreen.settingsScreen.generalSettings': 'string';
   'novelScreen.addToLibaray': 'string';
   'novelScreen.bottomSheet.displays.chapterNumber': 'string';
@@ -386,4 +382,8 @@ export interface StringMap {
   'readerSettings.textColorModal': 'string';
   'readerSettings.title': 'string';
   'readerSettings.verticalSeekbarDesc': 'string';
+  'browseSettingsScreen.languages': 'string';
+  'browseSettingsScreen.onlyShowPinnedSources': 'string';
+  'browseSettingsScreen.searchAllSources': 'string';
+  'browseSettingsScreen.searchAllWarning': 'string';
 }

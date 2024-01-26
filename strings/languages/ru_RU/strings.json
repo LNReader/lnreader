@@ -117,12 +117,6 @@
     "settings": "Настройки",
     "settingsScreen": {
       "browseSettings": "Настройки обзора",
-      "browseSettingsScreen": {
-        "languages": "Языки",
-        "onlyShowPinnedSources": "Показывать только закрепленные источники",
-        "searchAllSources": "Поиск по всем источникам",
-        "searchAllWarning": "Поиск по большому количеству источников может привести к зависанию приложения, пока поиск не завершится."
-      },
       "generalSettings": "Основные"
     }
   },
@@ -254,5 +248,11 @@
     "textColorModal": "Цвет текста при чтении",
     "title": "Чтение",
     "verticalSeekbarDesc": "Переключение между вертикальной и горизонтальной панелями навигации"
+  },
+  "browseSettingsScreen": {
+    "languages": "Языки",
+    "onlyShowPinnedSources": "Показывать только закрепленные источники",
+    "searchAllSources": "Поиск по всем источникам",
+    "searchAllWarning": "Поиск по большому количеству источников может привести к зависанию приложения, пока поиск не завершится."
   }
 }

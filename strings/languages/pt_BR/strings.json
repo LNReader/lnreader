@@ -117,12 +117,6 @@
     "settings": "Configurações",
     "settingsScreen": {
       "browseSettings": "Configurações de navegação",
-      "browseSettingsScreen": {
-        "languages": "Idiomas",
-        "onlyShowPinnedSources": "Mostrar apenas fontes fixadas",
-        "searchAllSources": "Pesquisar em todas as fontes",
-        "searchAllWarning": "Procurar em um grande número de fontes pode congelar o aplicativo até que a procura termine."
-      },
       "generalSettings": "Geral"
     }
   },
@@ -254,5 +248,11 @@
     "textColorModal": "Cor do texto do leitor",
     "title": "Leitor",
     "verticalSeekbarDesc": "Alternar entre barra de busca vertical e horizontal"
+  },
+  "browseSettingsScreen": {
+    "languages": "Idiomas",
+    "onlyShowPinnedSources": "Mostrar apenas fontes fixadas",
+    "searchAllSources": "Pesquisar em todas as fontes",
+    "searchAllWarning": "Procurar em um grande número de fontes pode congelar o aplicativo até que a procura termine."
   }
 }

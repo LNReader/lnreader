@@ -266,12 +266,6 @@
     "settingsScreen": {
       "advanced": "Advanced",
       "browseSettings": "Browse Settings",
-      "browseSettingsScreen": {
-        "languages": "Languages",
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
-      },
       "generalSettings": "General"
     }
   },
@@ -473,5 +467,11 @@
     "textColorModal": "Reader text color",
     "title": "Reader",
     "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar"
+  },
+  "browseSettingsScreen": {
+    "languages": "Languages",
+    "onlyShowPinnedSources": "Only show pinned sources",
+    "searchAllSources": "Search all sources",
+    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
   }
 }

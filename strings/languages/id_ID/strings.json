@@ -117,12 +117,6 @@
     "settings": "Pengaturan",
     "settingsScreen": {
       "browseSettings": "Pengaturan Setelan\n",
-      "browseSettingsScreen": {
-        "languages": "Bahasa\n",
-        "onlyShowPinnedSources": "Hanya tampilkan sumber disematkan\n",
-        "searchAllSources": "Cari semua sumber\n",
-        "searchAllWarning": "Mencari dari banyak sumber mungkin akan membuat aplikasi hang sampai pencarian selesai.\n"
-      },
       "generalSettings": "Umum\n"
     }
   },
@@ -254,5 +248,11 @@
     "textColorModal": "Warna teks pembaca\n",
     "title": "Pembaca\n",
     "verticalSeekbarDesc": "Beralih antara bar pencarian vertikal dan horizontal\n"
+  },
+  "browseSettingsScreen": {
+    "languages": "Bahasa\n",
+    "onlyShowPinnedSources": "Hanya tampilkan sumber disematkan\n",
+    "searchAllSources": "Cari semua sumber\n",
+    "searchAllWarning": "Mencari dari banyak sumber mungkin akan membuat aplikasi hang sampai pencarian selesai.\n"
   }
 }

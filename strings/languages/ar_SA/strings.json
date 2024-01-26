@@ -117,12 +117,6 @@
     "settings": "الإعدادات",
     "settingsScreen": {
       "browseSettings": "تصفح الإعدادات",
-      "browseSettingsScreen": {
-        "languages": "اللغات",
-        "onlyShowPinnedSources": "إظهار المصادر المثبتة فقط",
-        "searchAllSources": "البحث في جميع المصادر",
-        "searchAllWarning": "البحث عن عدد كبير من المصادر قد يجمد التطبيق حتى الانتهاء من البحث."
-      },
       "generalSettings": "العامة"
     }
   },
@@ -254,5 +248,11 @@
     "textColorModal": "لون نص القراءة",
     "title": "القارئ",
     "verticalSeekbarDesc": "التبديل بين شريط البحث العمودي والأفقي"
+  },
+  "browseSettingsScreen": {
+    "languages": "اللغات",
+    "onlyShowPinnedSources": "إظهار المصادر المثبتة فقط",
+    "searchAllSources": "البحث في جميع المصادر",
+    "searchAllWarning": "البحث عن عدد كبير من المصادر قد يجمد التطبيق حتى الانتهاء من البحث."
   }
 }

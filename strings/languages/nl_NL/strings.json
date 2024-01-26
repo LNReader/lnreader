@@ -117,12 +117,6 @@
     "settings": "Instellingen",
     "settingsScreen": {
       "browseSettings": "Blader instellingen",
-      "browseSettingsScreen": {
-        "languages": "Talen",
-        "onlyShowPinnedSources": "Alleen vastgepinde bronnen weergeven",
-        "searchAllSources": "Zoek in alle Bronnen",
-        "searchAllWarning": "Het zoeken van een groot aantal bronnen kan de app bevriezen tot het zoeken is voltooid."
-      },
       "generalSettings": "Algemeen"
     }
   },
@@ -254,5 +248,11 @@
     "textColorModal": "Lezer tekstkleur",
     "title": "Lezer",
     "verticalSeekbarDesc": "Schakel tussen verticale en horizontale zoekbalk"
+  },
+  "browseSettingsScreen": {
+    "languages": "Talen",
+    "onlyShowPinnedSources": "Alleen vastgepinde bronnen weergeven",
+    "searchAllSources": "Zoek in alle Bronnen",
+    "searchAllWarning": "Het zoeken van een groot aantal bronnen kan de app bevriezen tot het zoeken is voltooid."
   }
 }

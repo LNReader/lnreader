@@ -117,12 +117,6 @@
     "settings": "Налаштування",
     "settingsScreen": {
       "browseSettings": "Налаштування джерел",
-      "browseSettingsScreen": {
-        "languages": "Мови",
-        "onlyShowPinnedSources": "Відображати лише закріплені джерела",
-        "searchAllSources": "Шукати у всіх джерелах",
-        "searchAllWarning": "Пошук у великій кількості джерел може викликати зависання програми до закінчення пошуку."
-      },
       "generalSettings": "Загальне"
     }
   },
@@ -254,5 +248,11 @@
     "textColorModal": "Колір тексту при читанні",
     "title": "Тайтл",
     "verticalSeekbarDesc": "Перемикання між вертикальною та горизонтальною панелями навігації"
+  },
+  "browseSettingsScreen": {
+    "languages": "Мови",
+    "onlyShowPinnedSources": "Відображати лише закріплені джерела",
+    "searchAllSources": "Шукати у всіх джерелах",
+    "searchAllWarning": "Пошук у великій кількості джерел може викликати зависання програми до закінчення пошуку."
   }
 }

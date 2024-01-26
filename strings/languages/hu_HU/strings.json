@@ -117,12 +117,6 @@
     "settings": "Beállítások",
     "settingsScreen": {
       "browseSettings": "Browse Settings",
-      "browseSettingsScreen": {
-        "languages": "Nyelvek",
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "searchAllSources": "Keresés az összes forrásban",
-        "searchAllWarning": "Nagyszámú forrásban való keresés lefagyaszthatja az alkalmazást amíg be nem fejeződik a keresés."
-      },
       "generalSettings": "Általános"
     }
   },
@@ -254,5 +248,11 @@
     "textColorModal": "Olvasó betűszín",
     "title": "Olvasó",
     "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar"
+  },
+  "browseSettingsScreen": {
+    "languages": "Nyelvek",
+    "onlyShowPinnedSources": "Only show pinned sources",
+    "searchAllSources": "Keresés az összes forrásban",
+    "searchAllWarning": "Nagyszámú forrásban való keresés lefagyaszthatja az alkalmazást amíg be nem fejeződik a keresés."
   }
 }

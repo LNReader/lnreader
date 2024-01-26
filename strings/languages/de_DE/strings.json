@@ -117,12 +117,6 @@
     "settings": "Einstellungen",
     "settingsScreen": {
       "browseSettings": "Einstellungen durchsuchen",
-      "browseSettingsScreen": {
-        "languages": "Sprachen",
-        "onlyShowPinnedSources": "Nur angepinnte Quellen anzeigen",
-        "searchAllSources": "Alle Quellen durchsuchen",
-        "searchAllWarning": "Das Durchsuchen einer großen Anzahl an Quellen kann die App einfrieren, bis die Suche beendet wurde."
-      },
       "generalSettings": "Allgemein"
     }
   },
@@ -254,5 +248,11 @@
     "textColorModal": "Reader Textfarbe",
     "title": "Reader",
     "verticalSeekbarDesc": "Zwischen vertikaler und horizontaler Suchleiste wechseln"
+  },
+  "browseSettingsScreen": {
+    "languages": "Sprachen",
+    "onlyShowPinnedSources": "Nur angepinnte Quellen anzeigen",
+    "searchAllSources": "Alle Quellen durchsuchen",
+    "searchAllWarning": "Das Durchsuchen einer großen Anzahl an Quellen kann die App einfrieren, bis die Suche beendet wurde."
   }
 }

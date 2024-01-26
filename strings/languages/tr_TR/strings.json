@@ -117,12 +117,6 @@
     "settings": "Ayarlar",
     "settingsScreen": {
       "browseSettings": "Göz Atma Seçenekleri",
-      "browseSettingsScreen": {
-        "languages": "Diller",
-        "onlyShowPinnedSources": "Yalnızca sabitlenmiş kaynakları göster",
-        "searchAllSources": "Tüm kaynaklarda ara",
-        "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
-      },
       "generalSettings": "Genel"
     }
   },
@@ -254,5 +248,11 @@
     "textColorModal": "Okuyucu yazı rengi",
     "title": "Okuyucu",
     "verticalSeekbarDesc": "Dikey ve yatay arama çubuğu arasında geçiş yap"
+  },
+  "browseSettingsScreen": {
+    "languages": "Diller",
+    "onlyShowPinnedSources": "Yalnızca sabitlenmiş kaynakları göster",
+    "searchAllSources": "Tüm kaynaklarda ara",
+    "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
   }
 }

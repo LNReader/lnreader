@@ -117,12 +117,6 @@
     "settings": "设置",
     "settingsScreen": {
       "browseSettings": "浏览设置",
-      "browseSettingsScreen": {
-        "languages": "语言",
-        "onlyShowPinnedSources": "仅显示已经置顶的源",
-        "searchAllSources": "搜索所有源",
-        "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
-      },
       "generalSettings": "常规"
     }
   },
@@ -254,5 +248,11 @@
     "textColorModal": "阅读器文本颜色",
     "title": "阅读器",
     "verticalSeekbarDesc": "切换垂直和水平进度条"
+  },
+  "browseSettingsScreen": {
+    "languages": "语言",
+    "onlyShowPinnedSources": "仅显示已经置顶的源",
+    "searchAllSources": "搜索所有源",
+    "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
   }
 }

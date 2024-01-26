@@ -30,9 +30,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
               {getString('browseScreen.globalSearch')}
             </List.SubHeader>
             <List.InfoItem
-              title={getString(
-                'moreScreen.settingsScreen.browseSettingsScreen.searchAllWarning',
-              )}
+              title={getString('browseSettingsScreen.searchAllWarning')}
               icon="information-outline"
               theme={theme}
             />
@@ -56,9 +54,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
             />
             <List.Divider theme={theme} />
             <List.SubHeader theme={theme}>
-              {getString(
-                'moreScreen.settingsScreen.browseSettingsScreen.languages',
-              )}
+              {getString('browseSettingsScreen.languages')}
             </List.SubHeader>
           </>
         }
