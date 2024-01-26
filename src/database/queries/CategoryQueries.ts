@@ -68,7 +68,7 @@ const beforeDeleteCategoryQuery = `
 const deleteCategoryQuery = 'DELETE FROM Category WHERE id = ?';
 
 export const deleteCategoryById = (category: Category): void => {
-  if (category.sort <= 2) {
+  if (category.sort === 1 || category.id === 2) {
     return showToast('You cant delete default category');
   }
   db.transaction(tx => {
@@ -123,7 +123,7 @@ const updateCategoryOrderQuery = 'UPDATE Category SET sort = ? WHERE id = ?';
 
 export const updateCategoryOrderInDb = (categories: Category[]): void => {
   // Do not set local as default one
-  if (categories.length && categories[0].id == 2) {
+  if (categories.length && categories[0].id === 2) {
     return;
   }
   db.transaction(tx => {
@@ -153,7 +153,10 @@ export const getAllNovelCategories = (): Promise<NovelCategory[]> => {
 
 export const _restoreCategory = (category: BackupCategory) => {
   db.transaction(tx => {
-    tx.executeSql('DELETE FROM Category WHERE id = ?', [category.id]);
+    tx.executeSql('DELETE FROM Category WHERE id = ? OR sort = ?', [
+      category.id,
+      category.sort,
+    ]);
     tx.executeSql('INSERT INTO Category (id, name, sort) VALUES (?, ?, ?)', [
       category.id,
       category.name,
