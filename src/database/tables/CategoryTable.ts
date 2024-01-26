@@ -1,3 +1,5 @@
+import { getString } from '@strings/translations';
+
 export const createCategoriesTableQuery = `
   CREATE TABLE IF NOT EXISTS Category (
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -13,8 +15,10 @@ export const createCategoryTriggerQuery = `
   END;
 `;
 
-export const createCategoryDefaultQuery =
-  'INSERT OR IGNORE INTO Category (id, name, sort) VALUES (1, "Default", 1)';
+export const createCategoryDefaultQuery = `INSERT OR IGNORE INTO Category (id, name, sort) VALUES (1, "${getString(
+  'categories.default',
+)}", 1)`;
 
-export const createCategoryLocalQuery =
-  'INSERT OR IGNORE INTO Category (id, name, sort) VALUES (2, "Local", 2)';
+export const createCategoryLocalQuery = `INSERT OR IGNORE INTO Category (id, name, sort) VALUES (2, "${getString(
+  'categories.local',
+)}", 2)`;

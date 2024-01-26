@@ -115,6 +115,8 @@ export interface StringMap {
   'browseSettingsScreen.searchAllWarning': 'string';
   'categories.addCategories': 'string';
   'categories.cantDeleteDefault': 'string';
+  'categories.default': 'string';
+  'categories.local': 'string';
   'categories.defaultCategory': 'string';
   'categories.deleteModal.desc': 'string';
   'categories.deleteModal.header': 'string';

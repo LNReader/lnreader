@@ -134,6 +134,7 @@
   "categories": {
     "addCategories": "添加分类",
     "cantDeleteDefault": "您不能删除默认分类",
+    "default": "默认",
     "defaultCategory": "默认分类",
     "deleteModal": {
       "desc": "您想要删除此分类吗",
@@ -143,6 +144,7 @@
     "editCategories": "重命名分类",
     "emptyMsg": "您目前还没有分类。点击加号按钮来创建一个分类以组织您的书库",
     "header": "编辑分类",
+    "local": "本地",
     "setCategories": "设置分类",
     "setModalEmptyMsg": "您目前还没有分类。点击编辑按钮来创建一个分类以组织您的书库"
   },

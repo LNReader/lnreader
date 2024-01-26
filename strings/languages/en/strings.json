@@ -134,6 +134,7 @@
   "categories": {
     "addCategories": "Add category",
     "cantDeleteDefault": "You cant delete default category",
+    "default": "Default",
     "defaultCategory": "Default category",
     "deleteModal": {
       "desc": "Do you wish to delete category",
@@ -143,6 +144,7 @@
     "editCategories": "Rename category",
     "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
     "header": "Edit categories",
+    "local": "Local",
     "setCategories": "Set categories",
     "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library"
   },
