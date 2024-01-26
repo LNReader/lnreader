@@ -18,6 +18,6 @@ export const translateNovelStatus = (status?: NovelStatus | string) => {
     case NovelStatus.PublishingFinished:
       return getString('novelScreen.status.publishingFinished');
     default:
-      return status;
+      return status ?? '';
   }
 };

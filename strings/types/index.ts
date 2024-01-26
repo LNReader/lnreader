@@ -137,6 +137,7 @@ export interface StringMap {
   'common.ok': 'string';
   'common.pause': 'string';
   'common.preparing': 'string';
+  'common.remove': 'string';
   'common.reset': 'string';
   'common.restore': 'string';
   'common.resume': 'string';
@@ -263,7 +264,6 @@ export interface StringMap {
   'moreScreen.settingsScreen.readerSettings.cssHint': 'string';
   'moreScreen.settingsScreen.readerSettings.customCSS': 'string';
   'moreScreen.settingsScreen.readerSettings.customJS': 'string';
-  'moreScreen.settingsScreen.readerSettings.customJSPlaceholder': 'string';
   'moreScreen.settingsScreen.readerSettings.deleteCustomTheme': 'string';
   'moreScreen.settingsScreen.readerSettings.jsHint': 'string';
   'moreScreen.settingsScreen.readerSettings.notSaved': 'string';
@@ -277,7 +277,6 @@ export interface StringMap {
   'moreScreen.settingsScreen.readerSettings.title': 'string';
   'moreScreen.settingsScreen.readerSettings.verticalSeekbarDesc': 'string';
   'novelScreen.addToLibaray': 'string';
-  'novelScreen.bottomSheet.byChapterName': 'string';
   'novelScreen.bottomSheet.displays.chapterNumber': 'string';
   'novelScreen.bottomSheet.displays.sourceTitle': 'string';
   'novelScreen.bottomSheet.filters.bookmarked': 'string';

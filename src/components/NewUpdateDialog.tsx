@@ -34,9 +34,7 @@ const NewUpdateDialog: React.FC<NewUpdateDialogProps> = ({ newVersion }) => {
         ]}
       >
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
-          {getString('common.newUpdateAvailable', {
-            tagName: newVersion.tag_name,
-          })}
+          {`${getString('common.newUpdateAvailable')} ${newVersion.tag_name}`}
         </Text>
         <ScrollView style={{ height: modalHeight }}>
           <Text style={[styles.body, { color: theme.onSurfaceVariant }]}>

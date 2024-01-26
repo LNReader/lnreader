@@ -6,6 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import color from 'color';
 import { Button } from '@components';
 import { getTracker } from '@hooks/persisted';
+import { getString } from '@strings/translations';
 
 const TrackSearchDialog = ({
   tracker,
@@ -136,9 +137,13 @@ const TrackSearchDialog = ({
           marginTop: 30,
         }}
       >
-        <Button onPress={() => setSelectedNovel(null)}>Remove</Button>
+        <Button onPress={() => setSelectedNovel(null)}>
+          {getString('common.remove')}
+        </Button>
         <View style={{ flexDirection: 'row' }}>
-          <Button onPress={() => setTrackSearchDialog(false)}>Cancel</Button>
+          <Button onPress={() => setTrackSearchDialog(false)}>
+            {getString('common.cancel')}
+          </Button>
           <Button
             onPress={async () => {
               if (selectedNovel) {

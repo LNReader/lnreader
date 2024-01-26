@@ -243,7 +243,7 @@ export const importEpub = async () => {
       copyToCacheDirectory: true,
     });
     if (epubFile.type === 'cancel') {
-      throw new Error('Cancel');
+      throw new Error(getString('common.cancel'));
     }
     const epubFilePath = RNFS.ExternalCachesDirectoryPath + '/novel.epub';
     await RNFS.moveFile(epubFile.uri, epubFilePath).catch(e => {
