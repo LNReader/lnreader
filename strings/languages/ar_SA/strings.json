@@ -95,7 +95,7 @@
       "showBatteryAndTime": "اضهر البطارية والوقت",
       "showProgressPercentage": "النسبة المئوية للتقدم",
       "swipeGestures": "اسحب لليسار أو لليمين للتنقل بين الفصول",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "readerPages": "انقر يمينا أو يساراً للتنقل بين صفحات القارئ (تجريبي)",
       "allowTextSelection": "السماح باختيار النص",
       "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية",
       "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
@@ -171,7 +171,7 @@
         "epubLocationDescription": "مكان لحفظ ملفات EPUB وتصديرها.",
         "downloadNewChapters": "تحميل فصول جديدة",
         "disableHapticFeedback": "تعطيل الاهتزاز",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
+        "jumpToLastReadChapter": "اقفز لأخر حلقة مقروء في القائمة"
       },
       "readerSettings": {
         "title": "القارئ",
