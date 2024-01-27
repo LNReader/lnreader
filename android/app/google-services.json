@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "1093792259511",
-    "project_id": "lnreader-test",
-    "storage_bucket": "lnreader-test.appspot.com"
+    "project_number": "523872485654",
+    "project_id": "lnreader-backup",
+    "storage_bucket": "lnreader-backup.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1093792259511:android:aab0078285720642369c32",
+        "mobilesdk_app_id": "1:523872485654:android:169cd062458db962ce1037",
         "android_client_info": {
           "package_name": "com.rajarsheechatterjee.LNReader"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1093792259511-9kftu28l4ku1k3cco7pn83jbrlsc4fr5.apps.googleusercontent.com",
+          "client_id": "523872485654-14jtut8orr7dbrk2chea279d7k8889sr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.rajarsheechatterjee.LNReader",
@@ -22,20 +22,20 @@
           }
         },
         {
-          "client_id": "1093792259511-ml5ko1gmnvihqb2j9nnteehoeom2umnt.apps.googleusercontent.com",
+          "client_id": "523872485654-liarmq8nl0g5an2cki3bpg9jc0d8a21j.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDuumsGzm6iE4u7E8pkk8FcNH9wL5GzoI8"
+          "current_key": "AIzaSyBH_j-0Jyo9aFJ_KV8Nr3te2hs_L_ZYhrE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1093792259511-ml5ko1gmnvihqb2j9nnteehoeom2umnt.apps.googleusercontent.com",
+              "client_id": "523872485654-liarmq8nl0g5an2cki3bpg9jc0d8a21j.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
