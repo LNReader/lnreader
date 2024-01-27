@@ -103,6 +103,7 @@
     "installed": "Installed",
     "installedPlugin": "Installed %{name}",
     "installedPlugins": "Installed plugins",
+    "installFailed": "Installation failed: %{name}",
     "lastUsed": "Last used",
     "latest": "Latest",
     "listEmpty": "Enable languages from settings",
@@ -121,8 +122,10 @@
     "removeFromLibrary": "Removed from Library",
     "searchbar": "Search sources",
     "selectNovel": "Select Novel",
+    "tryAgain": "Try again in a moment",
     "uninstalledPlugin": "Uninstalled %{name}",
-    "updatedTo": "Updated to %{version}"
+    "updatedTo": "Updated to %{version}",
+    "updateFailed": "Update failed"
   },
   "browseSettings": "Browse Settings",
   "browseSettingsScreen": {

@@ -12,6 +12,7 @@ import { newer } from '@utils/compareVersion';
 import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import { showToast } from '@utils/showToast';
 import { useCallback } from 'react';
+import { getString } from '@strings/translations';
 
 export const AVAILABLE_PLUGINS = 'AVAILABLE_PLUGINS';
 export const INSTALLED_PLUGINS = 'INSTALL_PLUGINS';
@@ -20,11 +21,7 @@ export const LAST_USED_PLUGIN = 'LAST_USED_PLUGIN';
 export const FILTERED_AVAILABLE_PLUGINS = 'FILTERED_AVAILABLE_PLUGINS';
 export const FILTERED_INSTALLED_PLUGINS = 'FILTERED_INSTALLED_PLUGINS';
 
-const defaultLangCode = Object.keys(languagesMapping).find(code =>
-  locale.toLowerCase().includes(code),
-);
-const defaultLang =
-  languagesMapping[defaultLangCode || 'en'] || Language.English;
+const defaultLang = languagesMapping[locale.split('-')[0]] || 'English';
 
 export type PluginsMap = Record<Language, PluginItem[] | undefined>;
 
@@ -116,14 +113,20 @@ export default function usePlugins() {
           plg => plg.id !== plugin.id,
         );
 
+        const actualPlugin: PluginItem = {
+          ...plugin,
+          version: _plg.version,
+        };
         // safe
         if (!installedPlugins.some(_plg => _plg.id === plugin.id)) {
-          setMMKVObject(INSTALLED_PLUGINS, [...installedPlugins, plugin]);
+          setMMKVObject(INSTALLED_PLUGINS, [...installedPlugins, actualPlugin]);
         }
         setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
         filterPlugins(languagesFilter);
       } else {
-        throw new Error(`Failed to installed ${plugin.name}`);
+        throw new Error(
+          getString('browseScreen.installFailed', { name: plugin.name }),
+        );
       }
     });
   };
@@ -156,6 +159,9 @@ export default function usePlugins() {
 
   const updatePlugin = (plugin: PluginItem) => {
     return _update(plugin).then(_plg => {
+      if (plugin.version === _plg?.version) {
+        throw new Error(getString('browseScreen.tryAgain'));
+      }
       if (_plg) {
         const installedPlugins =
           getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
@@ -181,7 +187,7 @@ export default function usePlugins() {
         filterPlugins(languagesFilter);
         return _plg.version;
       } else {
-        throw Error('Failed to update');
+        throw Error(getString('browseScreen.updateFailed'));
       }
     });
   };

@@ -4,7 +4,7 @@ import { Appbar, List, SwitchItem } from '@components';
 
 import { useBrowseSettings, usePlugins, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
-import { availableLanguages } from '@utils/constants/languages';
+import { availableLanguages, languages } from '@utils/constants/languages';
 import { BrowseSettingsScreenProp } from '@navigators/types';
 
 const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
@@ -62,7 +62,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
         data={availableLanguages}
         renderItem={({ item }) => (
           <SwitchItem
-            label={item}
+            label={languages[item]}
             value={languagesFilter.includes(item)}
             onPress={() => toggleLanguageFilter(item)}
             theme={theme}
