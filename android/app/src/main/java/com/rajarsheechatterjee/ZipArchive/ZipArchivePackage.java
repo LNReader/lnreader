@@ -1,4 +1,4 @@
-package com.rajarsheechatterjee.EpubParser;
+package com.rajarsheechatterjee.ZipArchive;
 
 import androidx.annotation.NonNull;
 
