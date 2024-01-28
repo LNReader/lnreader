@@ -1,2 +1,2 @@
-export const appVersion = '1.1.18';
-export const releaseDate = '09/10/23 11:00 AM';
+export const appVersion = '1.1.19';
+export const releaseDate = '28/01/24 07:00 PM';
