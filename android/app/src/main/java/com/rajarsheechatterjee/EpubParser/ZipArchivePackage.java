@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class EpubParserPackage implements ReactPackage {
+public class ZipArchivePackage implements ReactPackage {
     @NonNull
     @Override
     public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactApplicationContext) {
         List<NativeModule> modules = new ArrayList<>();
         try {
-            modules.add(new EpubParser(reactApplicationContext));
+            modules.add(new ZipArchive(reactApplicationContext));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
