@@ -58,7 +58,9 @@ const insertLocalNovel = (
             });
             resolve(resultSet.insertId);
           } else {
-            reject(new Error('novel insert failed'));
+            reject(
+              new Error(getString('advancedSettingsScreen.novelInsertFailed')),
+            );
           }
         },
         (txObj, error) => {
@@ -112,7 +114,11 @@ const insertLocalChapter = (
             );
             resolve(staticPaths);
           } else {
-            reject(new Error('chapter insert failed'));
+            reject(
+              new Error(
+                getString('advancedSettingsScreen.chapterInsertFailed'),
+              ),
+            );
           }
         },
         (txObj, error) => {
@@ -211,7 +217,7 @@ const parseNovelAndChapters = async (
 const importEpubAction = async (taskData?: TaskData) => {
   try {
     if (!taskData) {
-      throw new Error('No data provided');
+      throw new Error(getString('backupScreen.noDataProvided'));
     }
     const epubFilePath = RNFS.ExternalCachesDirectoryPath + '/novel.epub';
     await RNFS.copyFile(taskData.sourceUri, epubFilePath);
@@ -333,8 +339,8 @@ export const importEpub = async () => {
     }
     await BackgroundService.start<TaskData>(importEpubAction, {
       taskName: 'Import Epub',
-      taskTitle: 'Parse Epub',
-      taskDesc: 'Parsing',
+      taskTitle: getString('advancedSettingsScreen.parseEpub'),
+      taskDesc: getString('common.parsing'),
       taskIcon: { name: 'notification_icon', type: 'drawable' },
       color: '#00adb5',
       parameters: { delay: 500, sourceUri: epubFile.uri },

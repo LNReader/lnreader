@@ -2,7 +2,7 @@
   "aboutScreen": {
     "discord": "Discord",
     "github": "Github",
-    "helpTranslate": "帮助翻译",
+    "helpTranslate": "协助翻译",
     "sources": "源",
     "version": "版本",
     "whatsNew": "新增内容"
@@ -10,6 +10,7 @@
   "advancedSettings": "高级",
   "advancedSettingsScreen": {
     "cachedNovelsDeletedToast": "缓存的小说已删除",
+    "chapterInsertFailed": "章节插入失败",
     "clearCachedNovels": "清除缓存的小说",
     "clearCachedNovelsDesc": "删除不在您的书库中的缓存小说",
     "clearDatabaseWarning": "您确定吗？非书库小说的阅读，已下载章节和进度将会丢失。",
@@ -24,6 +25,8 @@
     "importError": "导入出错",
     "importNovel": "导入小说",
     "importStaticFiles": "导入静态文件",
+    "novelInsertFailed": "小说插入失败",
+    "parseEpub": "解析 EPUB",
     "useFAB": "使用浮动操作按钮",
     "userAgent": "用户代理"
   },
@@ -38,7 +41,7 @@
     "navbar": "导航栏",
     "novelInfo": "小说信息",
     "pureBlackDarkMode": "纯黑深色模式",
-    "showHistoryInTheNav": "在导航中显示历史记录",
+    "showHistoryInTheNav": "在导航中显示历史",
     "showUpdatesInTheNav": "在导航中显示更新",
     "theme": {
       "default": "默认",
@@ -56,6 +59,8 @@
     "createBackup": "创建备份",
     "createBackupDesc": "可用于恢复当前书库",
     "createBackupWarning": "创建备份可能无法在 Android 9 或更低版本的设备上运行。",
+    "downloadingData": "下载数据",
+    "downloadingDownloadedFiles": "下载已下载文件",
     "drive": {
       "backup": "云端硬盘备份",
       "backupInterruped": "云端硬盘备份中断",
@@ -65,6 +70,7 @@
     },
     "googeDrive": "Google 云端硬盘",
     "googeDriveDesc": "备份到您的 Google 云端硬盘",
+    "invalidBackupFolder": "备份文件夹有误",
     "legacy": {
       "backupCreated": "备份已创建 %{fileName}",
       "libraryRestored": "书库已恢复",
@@ -76,6 +82,8 @@
     },
     "legacyBackup": "旧版备份",
     "noBackupFound": "没有找到备份",
+    "noDataProvided": "未提供数据",
+    "preparingData": "准备数据",
     "remote": {
       "backup": "自托管备份",
       "backupInterruped": "自托管备份中断",
@@ -91,8 +99,11 @@
     "restoreErrorDesc": "用这个来恢复剩余的。节省您的时间。",
     "restoreLargeBackupsWarning": "恢复大量备份可能会冻结应用程序，直到恢复完成",
     "restorinBackup": "恢复备份",
+    "restoringData": "恢复数据",
     "selfHost": "自托管",
-    "selfHostDesc": "备份到您的服务器"
+    "selfHostDesc": "备份到您的服务器",
+    "uploadingData": "上传数据",
+    "uploadingDownloadedFiles": "上传已下载文件"
   },
   "browse": "浏览",
   "browseScreen": {
@@ -100,6 +111,7 @@
     "available": "可用",
     "discover": "发现",
     "globalSearch": "全局搜索",
+    "installFailed": "安装失败：%{name}",
     "installed": "已安装",
     "installedPlugin": "已安装 %{name}",
     "installedPlugins": "已安装插件",
@@ -118,10 +130,13 @@
     },
     "noSource": "您的图书馆没有该源的任何小说",
     "pinned": "已固定",
+    "pluginsHostError": "获取插件列表失败",
     "removeFromLibrary": "已从书库中删除",
     "searchbar": "搜索资源",
     "selectNovel": "选择小说",
+    "tryAgain": "请稍后再试",
     "uninstalledPlugin": "已卸载 %{name}",
+    "updateFailed": "更新失败",
     "updatedTo": "已更新至 %{version}"
   },
   "browseSettings": "浏览设置",
@@ -173,6 +188,7 @@
     "name": "名称",
     "newUpdateAvailable": "新版本可用",
     "ok": "确定",
+    "parsing": "解析",
     "pause": "暂停",
     "preparing": "准备中",
     "remove": "移除",
@@ -273,8 +289,8 @@
         "downloadBadges": "下载徽章",
         "list": "列表",
         "noTitle": "仅封面网格",
-        "numberOfItems": "条目数量",
-        "showNoOfItems": "显示条目数量",
+        "numberOfItems": "小说数",
+        "showNoOfItems": "显示小说数",
         "unread": "未读",
         "unreadBadges": "未读徽章"
       },
@@ -294,13 +310,13 @@
         "unread": "未读"
       }
     },
-    "empty": "您的库是空的。从浏览添加丛书到您的库里。",
+    "empty": "您的书库是空的。请从浏览将小说添加到您的书库中。",
     "searchbar": "搜索书库"
   },
   "more": "更多",
   "moreScreen": {
     "downloadOnly": "仅已下载",
-    "downloadOnlyDesc": "过滤您书库中的所有小说",
+    "downloadOnlyDesc": "筛选您书库中的全部小说",
     "downloadQueue": "下载队列",
     "incognitoMode": "无痕模式",
     "incognitoModeDesc": "暂停阅读历史记录"
@@ -471,6 +487,7 @@
     "newChapters": "新章节",
     "novelsUpdated": "已更新 %{num} 部小说",
     "searchbar": "搜索更新",
+    "unableToGetNovel": "无法获取小说",
     "updatesLower": "更新",
     "updatingLibrary": "更新书库"
   }

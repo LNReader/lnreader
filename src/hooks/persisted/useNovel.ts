@@ -150,7 +150,7 @@ export const useNovel = (url: string, pluginId: string) => {
             novelSettings?.filter,
           ).then(chapters => setChapters(chapters));
         } else {
-          throw new Error('Unable to get novel');
+          throw new Error(getString('updatesScreen.unableToGetNovel'));
         }
       });
   };

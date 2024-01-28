@@ -19,11 +19,11 @@ const remoteBackupAction = async (taskData?: TaskData) => {
   try {
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
     if (!taskData) {
-      throw new Error('No data provided');
+      throw new Error(getString('backupScreen.noDataProvided'));
     }
     const { delay, backupFolder, host } = taskData;
     await BackgroundService.updateNotification({
-      taskDesc: 'Preparing Data',
+      taskDesc: getString('backupScreen.preparingData'),
       progressBar: {
         indeterminate: true,
         value: 0,
@@ -33,7 +33,7 @@ const remoteBackupAction = async (taskData?: TaskData) => {
       .then(() => prepareBackupData(CACHE_DIR_PATH))
       .then(() =>
         BackgroundService.updateNotification({
-          taskDesc: 'Uploading Data',
+          taskDesc: getString('backupScreen.uploadingData'),
           progressBar: {
             indeterminate: true,
             value: 1,
@@ -47,7 +47,7 @@ const remoteBackupAction = async (taskData?: TaskData) => {
       )
       .then(() =>
         BackgroundService.updateNotification({
-          taskDesc: 'Uploading Downloaded files',
+          taskDesc: getString('backupScreen.uploadingDownloadedFiles'),
           progressBar: {
             indeterminate: true,
             value: 2,
@@ -112,11 +112,11 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
   try {
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
     if (!taskData) {
-      throw new Error('No data provided');
+      throw new Error(getString('backupScreen.noDataProvided'));
     }
     const { delay, backupFolder, host } = taskData;
     await BackgroundService.updateNotification({
-      taskDesc: 'Downloading Data',
+      taskDesc: getString('backupScreen.downloadingData'),
       progressBar: {
         indeterminate: true,
         value: 0,
@@ -128,7 +128,7 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       )
       .then(() =>
         BackgroundService.updateNotification({
-          taskDesc: 'Restoring Data',
+          taskDesc: getString('backupScreen.restoringData'),
           progressBar: {
             indeterminate: true,
             value: 1,
@@ -140,7 +140,7 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       .then(() => restoreData(CACHE_DIR_PATH))
       .then(() =>
         BackgroundService.updateNotification({
-          taskDesc: 'Downloading Downloaded files',
+          taskDesc: getString('backupScreen.downloadingDownloadedFiles'),
           progressBar: {
             indeterminate: true,
             value: 2,
@@ -183,8 +183,8 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
 export const remoteRestore = async (host: string, backupFolder: string) => {
   return BackgroundService.start(remoteRestoreAction, {
     taskName: 'Self Host Restore',
-    taskTitle: 'Self Host Restore',
-    taskDesc: 'Preparing',
+    taskTitle: getString('backupScreen.remote.restore'),
+    taskDesc: getString('common.preparing'),
     taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',
     parameters: { delay: 200, backupFolder, host },
