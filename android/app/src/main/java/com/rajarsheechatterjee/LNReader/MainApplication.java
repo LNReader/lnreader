@@ -14,7 +14,7 @@ import com.facebook.soloader.SoLoader;
 
 import com.rajarsheechatterjee.NavigationBarColor.NavigationBarColorPackage;
 import com.rajarsheechatterjee.VolumeButtonListener.VolumeButtonListenerPackage;
-import com.rajarsheechatterjee.EpubParser.ZipArchivePackage;
+import com.rajarsheechatterjee.ZipArchive.ZipArchivePackage;
 
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
