@@ -1,262 +1,255 @@
 {
-  "common": {
-    "cancel": "取消",
-    "ok": "确定",
-    "save": "保存",
-    "clear": "清除",
-    "reset": "重置",
-    "search": "搜索",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results",
-    "chapters": "Chapters",
-    "submit": "Submit",
-    "retry": "Retry"
-  },
-  "library": "书库",
-  "libraryScreen": {
-    "searchbar": "搜索书库",
-    "empty": "您的库是空的。从浏览添加丛书到您的库里。",
-    "bottomSheet": {
-      "filters": {
-        "downloaded": "已下载",
-        "unread": "未读",
-        "completed": "已完成",
-        "started": "Started"
-      },
-      "sortOrders": {
-        "dateAdded": "日期已添加",
-        "alphabetically": "按字母排序",
-        "totalChapters": "章节总数",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last read",
-        "lastUpdated": "Last updated"
-      },
-      "display": {
-        "displayMode": "显示模式",
-        "compact": "紧凑网格",
-        "comfortable": "可变网格",
-        "noTitle": "Cover only grid",
-        "list": "列表",
-        "badges": "徽章",
-        "downloadBadges": "下载徽章",
-        "unreadBadges": "未读徽章",
-        "showNoOfItems": "显示条目数量"
-      }
-    }
-  },
-  "updates": "更新",
-  "updatesScreen": {
-    "searchbar": "搜索更新",
-    "lastUpdatedAt": "最近更新的库：",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates",
-    "updatesLower": "updates"
-  },
-  "history": "历史",
-  "historyScreen": {
-    "searchbar": "搜索历史记录",
-    "clearHistorWarning": "您确定吗？所有历史记录都将删除。"
+  "advancedSettingsScreen": {
+    "deleteReadChapters": "Delete read chapters",
+    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
   },
   "browse": "浏览",
   "browseScreen": {
-    "discover": "发现",
-    "searchbar": "搜索资源",
-    "globalSearch": "全局搜索",
-    "listEmpty": "从设置中启用语言",
-    "lastUsed": "最近使用",
-    "pinned": "已固定",
-    "all": "全部",
-    "latest": "最新",
     "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "discover": "发现",
+    "globalSearch": "全局搜索",
+    "lastUsed": "最近使用",
+    "latest": "最新",
+    "listEmpty": "从设置中启用语言",
+    "pinned": "已固定",
+    "removeFromLibrary": "Removed from library",
+    "searchbar": "搜索资源"
   },
-  "readerScreen": {
-    "finished": "已完成",
-    "noNextChapter": "没有下一章节",
-    "bottomSheet": {
-      "textSize": "文本大小",
-      "color": "颜色",
-      "textAlign": "文本对齐",
-      "lineHeight": "行高",
-      "fontStyle": "字体样式",
-      "fullscreen": "全屏",
-      "bionicReading": "Bionic Reading",
-      "renderHml": "渲染HTML",
-      "autoscroll": "自动滚动",
-      "verticalSeekbar": "垂直进度条",
-      "showBatteryAndTime": "显示电池和时间",
-      "showProgressPercentage": "显示进度百分比",
-      "swipeGestures": "向左或向右滑动以导航章节",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
-      "allowTextSelection": "允许选择文本",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
-      "scrollAmount": "Scroll amount (screen height by default)",
-      "showSwipeMargins": "Show swipe margins"
+  "browseSettings": "浏览设置",
+  "browseSettingsScreen": {
+    "languages": "语言",
+    "onlyShowPinnedSources": "仅显示已经置顶的源",
+    "searchAllSources": "搜索所有源",
+    "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
+  },
+  "categories": {
+    "addCategories": "Add category",
+    "defaultCategory": "Default category",
+    "deleteModal": {
+      "desc": "Do you wish to delete category",
+      "header": "Delete category"
     },
-    "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+    "duplicateError": "A category with this name already exists!",
+    "editCategories": "Rename category",
+    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
+    "header": "Edit categories",
+    "setCategories": "Set categories",
+    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library"
+  },
+  "common": {
+    "add": "Add",
+    "all": "全部",
+    "cancel": "取消",
+    "categories": "Categories",
+    "chapters": "Chapters",
+    "clear": "清除",
+    "display": "Display",
+    "edit": "Edit",
+    "filter": "筛选",
+    "globally": "globally",
+    "install": "Install",
+    "name": "Name",
+    "newUpdateAvailable": "New update available",
+    "ok": "确定",
+    "reset": "重置",
+    "retry": "Retry",
+    "save": "保存",
+    "search": "搜索",
+    "searchFor": "Search for",
+    "searchResults": "Search results",
+    "settings": "设置",
+    "sort": "排序",
+    "submit": "Submit"
+  },
+  "date": {
+    "calendar": {
+      "lastDay": "[Yesterday]",
+      "lastWeek": "[Last] dddd",
+      "nextDay": "[Tomorrow]",
+      "sameDay": "[Today]"
     }
+  },
+  "downloadScreen": {
+    "dbInfo": "Downloads are saved in a SQLite Database.",
+    "downloadChapters": "downloaded Chapters",
+    "downloadsLower": "downloads",
+    "noDownloads": "No downloads"
+  },
+  "generalSettings": "常规",
+  "generalSettingsScreen": {
+    "asc": "(Ascending)",
+    "autoDownload": "Auto-download",
+    "bySource": "By source",
+    "chapterSort": "Default chapter sort",
+    "desc": "(Descending)",
+    "disableHapticFeedback": "Disable haptic feedback",
+    "displayMode": "Display Mode",
+    "downloadNewChapters": "Download new chapters",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Global update",
+    "itemsPerRow": "Items per row",
+    "itemsPerRowLibrary": "Items per row in library",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel",
+    "novelBadges": "Novel Badges",
+    "novelSort": "Novel Sort",
+    "refreshMetadata": "Automatically refresh metadata",
+    "refreshMetadataDescription": "Check for new cover and details when updating library",
+    "updateLibrary": "Update library on launch",
+    "updateOngoing": "Only update ongoing novels",
+    "updateTime": "Show last update time",
+    "useFAB": "Use FAB in Library"
+  },
+  "globalSearch": {
+    "allSources": "所有源",
+    "pinnedSources": "置顶的源",
+    "searchIn": "搜索小说在"
+  },
+  "history": "历史",
+  "historyScreen": {
+    "clearHistorWarning": "您确定吗？所有历史记录都将删除。",
+    "searchbar": "搜索历史记录"
+  },
+  "library": "书库",
+  "libraryScreen": {
+    "bottomSheet": {
+      "display": {
+        "badges": "徽章",
+        "comfortable": "可变网格",
+        "compact": "紧凑网格",
+        "displayMode": "显示模式",
+        "downloadBadges": "下载徽章",
+        "list": "列表",
+        "noTitle": "Cover only grid",
+        "showNoOfItems": "显示条目数量",
+        "unreadBadges": "未读徽章"
+      },
+      "filters": {
+        "completed": "已完成",
+        "downloaded": "已下载",
+        "started": "Started",
+        "unread": "未读"
+      },
+      "sortOrders": {
+        "alphabetically": "按字母排序",
+        "dateAdded": "日期已添加",
+        "download": "Downloaded",
+        "lastRead": "Last read",
+        "lastUpdated": "Last updated",
+        "totalChapters": "章节总数",
+        "unread": "Unread"
+      }
+    },
+    "empty": "您的库是空的。从浏览添加丛书到您的库里。",
+    "searchbar": "搜索书库"
+  },
+  "more": "更多",
+  "moreScreen": {
+    "downloadOnly": "Downloaded only",
+    "incognitoMode": "Incognito mode"
   },
   "novelScreen": {
     "addToLibaray": "添加到书库",
-    "inLibaray": "在书库中",
-    "continueReading": "继续阅读",
     "chapters": "章节",
-    "migrate": "迁移",
-    "noSummary": "No summary",
-    "bottomSheet": {
-      "filter": "筛选",
-      "sort": "排序",
-      "display": "显示"
+    "continueReading": "继续阅读",
+    "convertToEpubModal": {
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB",
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "Path to EPUB save folder",
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers",
+      "useReaderTheme": "Use reader theme"
     },
+    "inLibaray": "在书库中",
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
       "chapterName": "Chapter Name",
       "chapterNumber": "Chapter Number",
       "error": {
         "validChapterName": "Enter a valid chapter name",
         "validChapterNumber": "Enter a valid chapter number"
-      }
+      },
+      "jumpToChapter": "Jump to Chapter",
+      "openChapter": "Open Chapter"
     },
-    "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
-      "pathToFolder": "Path to EPUB save folder",
-      "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use custom CSS",
-      "useCustomJS": "Use custom JS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers",
-      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
-    }
+    "migrate": "迁移",
+    "noSummary": "No summary"
   },
-  "more": "更多",
-  "moreScreen": {
-    "settings": "设置",
-    "settingsScreen": {
-      "generalSettings": "常规",
-      "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
-        "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
-      },
-      "readerSettings": {
-        "title": "阅读器",
-        "readerTheme": "阅读器主题",
-        "preset": "预设值",
-        "backgroundColor": "背景颜色",
-        "textColor": "文字颜色",
-        "backgroundColorModal": "阅读器背景颜色",
-        "textColorModal": "阅读器文本颜色",
-        "verticalSeekbarDesc": "切换垂直和水平进度条",
-        "autoScrollInterval": "自动滚动间隔(以秒计)",
-        "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
-        "saveCustomTheme": "保存自定义主题",
-        "deleteCustomTheme": "删除自定义主题",
-        "customCSS": "自定义 CSS",
-        "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset."
-      },
-      "browseSettings": "浏览设置",
-      "browseSettingsScreen": {
-        "onlyShowPinnedSources": "仅显示已经置顶的源",
-        "languages": "语言",
-        "searchAllSources": "搜索所有源",
-        "searchAllWarning": "搜索大量的源可能会在搜索完成之前程序无法操作。"
-      }
-    }
+  "readerScreen": {
+    "bottomSheet": {
+      "allowTextSelection": "允许选择文本",
+      "autoscroll": "自动滚动",
+      "bionicReading": "Bionic Reading",
+      "color": "颜色",
+      "fontStyle": "字体样式",
+      "fullscreen": "全屏",
+      "lineHeight": "行高",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "removeExtraSpacing": "Remove extra paragraph spacing",
+      "renderHml": "渲染HTML",
+      "scrollAmount": "Scroll amount (screen height by default)",
+      "showBatteryAndTime": "显示电池和时间",
+      "showProgressPercentage": "显示进度百分比",
+      "showSwipeMargins": "Show swipe margins",
+      "swipeGestures": "向左或向右滑动以导航章节",
+      "textAlign": "文本对齐",
+      "textSize": "文本大小",
+      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
+      "verticalSeekbar": "垂直进度条",
+      "volumeButtonsScroll": "Volume buttons scroll"
+    },
+    "drawer": {
+      "scrollToBottom": "Scroll to bottom",
+      "scrollToCurrentChapter": "Scroll to current chapter",
+      "scrollToTop": "Scroll to top"
+    },
+    "finished": "已完成",
+    "noNextChapter": "没有下一章节"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "自动滚动间隔(以秒计)",
+    "autoScrollOffset": "自动滚动偏移(默认屏幕高度)",
+    "backgroundColor": "背景颜色",
+    "backgroundColorModal": "阅读器背景颜色",
+    "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+    "clearCustomJS": "Are you sure? Your custom JS would be reset.",
+    "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+    "customCSS": "自定义 CSS",
+    "customJS": "Custom JS",
+    "deleteCustomTheme": "删除自定义主题",
+    "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Not saved",
+    "openCSSFile": "Open CSS file",
+    "openJSFile": "Open JS file",
+    "preset": "预设值",
+    "readerTheme": "阅读器主题",
+    "saveCustomTheme": "保存自定义主题",
+    "textColor": "文字颜色",
+    "textColorModal": "阅读器文本颜色",
+    "title": "阅读器",
+    "verticalSeekbarDesc": "切换垂直和水平进度条"
   },
   "sourceScreen": {
     "noResultsFound": "未找到相应结果"
   },
   "statsScreen": {
+    "downloadedChapters": "Downloaded chapters",
+    "genreDistribution": "Genre distribution",
+    "readChapters": "Read chapters",
+    "statusDistribution": "Status distribution",
     "title": "Statistics",
     "titlesInLibrary": "Titles in library",
     "totalChapters": "Total chapters",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "unreadChapters": "Unread chapters"
   },
-  "globalSearch": {
-    "searchIn": "搜索小说在",
-    "allSources": "所有源",
-    "pinnedSources": "置顶的源"
-  },
-  "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
-  },
-  "date": {
-    "calendar": {
-      "sameDay": "[Today]",
-      "nextDay": "[Tomorrow]",
-      "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd"
-    }
-  },
-  "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit categories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
-    "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
-    },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
-  },
-  "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
-  },
-  "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads",
-    "downloadsLower": "downloads"
+  "updates": "更新",
+  "updatesScreen": {
+    "emptyView": "No recent updates",
+    "lastUpdatedAt": "最近更新的库：",
+    "newChapters": "new Chapters",
+    "searchbar": "搜索更新",
+    "updatesLower": "updates"
   }
 }

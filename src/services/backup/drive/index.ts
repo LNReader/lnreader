@@ -18,6 +18,7 @@ import {
   retoreDownload,
 } from './restoreTasks';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
+import { getString } from '@strings/translations';
 
 interface TaskData {
   delay: number;
@@ -49,7 +50,9 @@ const driveBackupAction = async (taskData?: TaskData) => {
       const { taskType, subtasks } = await taskList[i];
       for (let j = 0; j < subtasks.length; j++) {
         await BackgroundService.updateNotification({
-          taskDesc: `Backup ${taskType} (${j}/${subtasks.length})`,
+          taskDesc: `${getString('common.backup')} ${taskType} (${j}/${
+            subtasks.length
+          })`,
           progressBar: {
             max: subtasks.length,
             value: j,
@@ -73,8 +76,8 @@ const driveBackupAction = async (taskData?: TaskData) => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Drive Backup',
-        body: 'Done',
+        title: getString('backupScreen.drive.backup'),
+        body: getString('common.done'),
       },
       trigger: null,
     });
@@ -82,7 +85,7 @@ const driveBackupAction = async (taskData?: TaskData) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Drive Backup Interruped',
+          title: getString('backupScreen.drive.backupInterruped'),
           body: error.message,
         },
         trigger: null,
@@ -97,8 +100,8 @@ const driveBackupAction = async (taskData?: TaskData) => {
 export const createBackup = async (backupFolder: DriveFile) => {
   return BackgroundService.start(driveBackupAction, {
     taskName: 'Drive Backup',
-    taskTitle: 'Drive Backup',
-    taskDesc: 'Preparing',
+    taskTitle: getString('backupScreen.drive.backup'),
+    taskDesc: getString('common.preparing'),
     taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',
     parameters: { delay: 500, backupFolder },
@@ -106,7 +109,7 @@ export const createBackup = async (backupFolder: DriveFile) => {
   }).catch(async (error: Error) => {
     Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Drive Backup Interruped',
+        title: getString('backupScreen.drive.backupInterruped'),
         body: error.message,
       },
       trigger: null,
@@ -142,7 +145,9 @@ const driveRestoreAction = async (taskData?: TaskData) => {
       const { taskType, subtasks } = await taskList[i]();
       for (let j = 0; j < subtasks.length; j++) {
         await BackgroundService.updateNotification({
-          taskDesc: `Restore ${taskType} (${j}/${subtasks.length})`,
+          taskDesc: `${getString('common.restore')} ${taskType} (${j}/${
+            subtasks.length
+          })`,
           progressBar: {
             max: subtasks.length,
             value: j,
@@ -158,8 +163,8 @@ const driveRestoreAction = async (taskData?: TaskData) => {
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Drive Restore',
-        body: 'Done',
+        title: getString('backupScreen.drive.restore'),
+        body: getString('common.done'),
       },
       trigger: null,
     });
@@ -167,7 +172,7 @@ const driveRestoreAction = async (taskData?: TaskData) => {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Drive Restore Interruped',
+          title: getString('backupScreen.drive.restoreInterruped'),
           body: error.message,
         },
         trigger: null,
@@ -191,7 +196,7 @@ export const driveRestore = async (backupFolder: DriveFile) => {
   }).catch(async (e: Error) => {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Drive Restore Interruped',
+        title: getString('backupScreen.drive.restoreInterruped'),
         body: e.message,
       },
       trigger: null,

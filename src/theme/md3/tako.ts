@@ -1,7 +1,9 @@
+import { getString } from '@strings/translations';
+
 export const takoTheme = {
   light: {
     id: 18,
-    name: 'Tako',
+    name: getString('appearanceScreen.theme.tako'),
     isDark: false,
     primary: '#66577E',
     onPrimary: 'rgb(255, 255, 255)',
@@ -38,7 +40,7 @@ export const takoTheme = {
   },
   dark: {
     id: 19,
-    name: 'Tako',
+    name: getString('appearanceScreen.theme.tako'),
     isDark: true,
     primary: '#F3B375',
     onPrimary: 'rgb(61, 28, 111)',

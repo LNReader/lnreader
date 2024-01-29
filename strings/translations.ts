@@ -62,7 +62,10 @@ i18n.translations = {
 i18n.locale = Localization.locale;
 dayjs.locale(Localization.locale);
 export const localization = Localization.locale;
-export const getString = (stringKey: keyof StringMap) => i18n.t(stringKey);
+export const getString = (
+  stringKey: keyof StringMap,
+  options?: i18n.TranslateOptions,
+) => i18n.t(stringKey, options);
 
 dayjs.Ls[dayjs.locale()].calendar = {
   sameDay: getString('date.calendar.sameDay'),

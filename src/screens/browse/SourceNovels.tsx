@@ -7,6 +7,7 @@ import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 import { SourceNovelsScreenProps } from '@navigators/types';
 import { NovelInfo } from '@database/types';
+import { getString } from '@strings/translations';
 
 const SourceNovels = ({ navigation, route }: SourceNovelsScreenProps) => {
   const pluginId = route.params.pluginId;
@@ -30,7 +31,7 @@ const SourceNovels = ({ navigation, route }: SourceNovelsScreenProps) => {
   return (
     <View style={[styles.container]}>
       <Appbar
-        title="Select Novel"
+        title={getString('browseScreen.selectNovel')}
         handleGoBack={navigation.goBack}
         theme={theme}
       />
@@ -46,7 +47,7 @@ const SourceNovels = ({ navigation, route }: SourceNovelsScreenProps) => {
               textAlign: 'center',
             }}
           >
-            Your library does not have any novels from this source
+            {getString('browseScreen.noSource')}
           </Text>
         }
       />

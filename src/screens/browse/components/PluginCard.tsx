@@ -41,7 +41,9 @@ const PluginCard: React.FC<Props> = ({
         onLongPress={() => {
           setIsLoading(true);
           updatePlugin(plugin)
-            .then(version => showToast(`Updated to ${version}`))
+            .then(version =>
+              showToast(getString('browseScreen.updatedTo', { version })),
+            )
             .catch((error: Error) => showToast(error.message))
             .finally(() => setIsLoading(false));
         }}
@@ -93,11 +95,23 @@ const PluginCard: React.FC<Props> = ({
                 setIsLoading(true);
                 if (installed) {
                   uninstallPlugin(plugin)
-                    .then(() => showToast(`Uninstalled ${plugin.name}`))
+                    .then(() =>
+                      showToast(
+                        getString('browseScreen.uninstalledPlugin', {
+                          name: plugin.name,
+                        }),
+                      ),
+                    )
                     .finally(() => setIsLoading(false));
                 } else {
                   installPlugin(plugin)
-                    .then(() => showToast(`Installed ${plugin.name}`))
+                    .then(() =>
+                      showToast(
+                        getString('browseScreen.installedPlugin', {
+                          name: plugin.name,
+                        }),
+                      ),
+                    )
                     .catch((error: Error) => showToast(error.message))
                     .finally(() => setIsLoading(false));
                 }

@@ -1,262 +1,255 @@
 {
-  "common": {
-    "cancel": "Hủy",
-    "ok": "Ok",
-    "save": "Lưu",
-    "clear": "Xóa",
-    "reset": "Đặt lại",
-    "search": "Tìm kiếm",
-    "install": "Tải về",
-    "newUpdateAvailable": "Đã có bản cập nhật mới",
-    "categories": "Danh mục",
-    "add": "Thêm",
-    "edit": "Sửa",
-    "name": "Tên",
-    "searchFor": "Tìm kiếm",
-    "globally": "toàn cầu",
-    "searchResults": "Kết quả tìm kiếm",
-    "chapters": "Chương",
-    "submit": "Gửi",
-    "retry": "Thử lại"
-  },
-  "library": "Thư viện",
-  "libraryScreen": {
-    "searchbar": "Tìm trong Thư viện",
-    "empty": "Không có gì cả. Hãy thêm truyện vào thư viện từ mục Tìm kiếm.",
-    "bottomSheet": {
-      "filters": {
-        "downloaded": "Đã tải về",
-        "unread": "Chưa đọc",
-        "completed": "Đã hoàn thành",
-        "started": "Đã bắt đầu"
-      },
-      "sortOrders": {
-        "dateAdded": "Ngày được thêm",
-        "alphabetically": "Theo thứ tự từ điển",
-        "totalChapters": "Toàn bộ chương",
-        "download": "Đã tải xuống",
-        "unread": "Chưa đọc",
-        "lastRead": "Lần đọc trước",
-        "lastUpdated": "Lân cập nhật trước"
-      },
-      "display": {
-        "displayMode": "Chế độ Hiển thị",
-        "compact": "Thu gọn",
-        "comfortable": "Tiện dụng",
-        "noTitle": "Ảnh bìa",
-        "list": "Danh sách",
-        "badges": "Nhãn",
-        "downloadBadges": "Nhãn tải xuống",
-        "unreadBadges": "Nhãn chưa đọc",
-        "showNoOfItems": "Hiện số lượng"
-      }
-    }
-  },
-  "updates": "Cập nhật",
-  "updatesScreen": {
-    "searchbar": "Tìm kiếm bản cập nhật",
-    "lastUpdatedAt": "Lần cập nhật thư viện gần nhất:",
-    "newChapters": "chương mới",
-    "emptyView": "Chưa cập nhật mới",
-    "updatesLower": "cập nhập"
-  },
-  "history": "Lịch sử",
-  "historyScreen": {
-    "searchbar": "Tìm trong lịch sử",
-    "clearHistorWarning": "Bạn có chắc không? Toàn bộ lịch sử sẽ bị xoá."
+  "advancedSettingsScreen": {
+    "deleteReadChapters": "Xóa chương đã đọc",
+    "deleteReadChaptersDialogTitle": "Bạn có chắc không? Toàn bộ chương được đánh đã đọc sẽ bị xoá."
   },
   "browse": "Tìm kiếm",
   "browseScreen": {
-    "discover": "Khám phá",
-    "searchbar": "Tìm nguồn truyện",
-    "globalSearch": "Tìm kiếm mở rộng",
-    "listEmpty": "Chọn ngôn ngữ",
-    "lastUsed": "Lần sử dụng trước",
-    "pinned": "Đã ghim",
-    "all": "Tất cả",
-    "latest": "Mới nhất",
     "addedToLibrary": "Đã thêm vào Thư viện",
-    "removeFromLibrary": "Đã xoá khỏi thư viện"
+    "discover": "Khám phá",
+    "globalSearch": "Tìm kiếm mở rộng",
+    "lastUsed": "Lần sử dụng trước",
+    "latest": "Mới nhất",
+    "listEmpty": "Chọn ngôn ngữ",
+    "pinned": "Đã ghim",
+    "removeFromLibrary": "Đã xoá khỏi thư viện",
+    "searchbar": "Tìm nguồn truyện"
   },
-  "readerScreen": {
-    "finished": "Đã xong",
-    "noNextChapter": "Không có chương kế tiếp",
-    "bottomSheet": {
-      "textSize": "Cỡ chữ",
-      "color": "Màu chữ",
-      "textAlign": "Căn lề",
-      "lineHeight": "Chiều cao dòng",
-      "fontStyle": "Phông chữ",
-      "fullscreen": "Toàn màn hình",
-      "bionicReading": "Bionic Reading",
-      "renderHml": "WebView",
-      "autoscroll": "Cuộn tự động",
-      "verticalSeekbar": "Thanh trạng thái dọc",
-      "showBatteryAndTime": "Hiển thị pin và giờ",
-      "showProgressPercentage": "Hiện tiến trình",
-      "swipeGestures": "Vuốt để đổi chương",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
-      "allowTextSelection": "Cho phép bôi đen chữ",
-      "useChapterDrawerSwipeNavigation": "Vuốt phải để hiện danh sách",
-      "removeExtraSpacing": "Xoá khoảng trống thừa",
-      "volumeButtonsScroll": "Cuộn bằng nút âm lượng",
-      "scrollAmount": "Scroll amount (screen height by default)",
-      "showSwipeMargins": "Hiện khoảng vuốt"
+  "browseSettings": "Cài đặt trình tìm kiếm",
+  "browseSettingsScreen": {
+    "languages": "Ngôn ngữ",
+    "onlyShowPinnedSources": "Chỉ hiện nguồn được ghim",
+    "searchAllSources": "Tìm trên tất cả các nguồn",
+    "searchAllWarning": "Tìm kiếm với lượng lớn nguồn có thể đóng băng ứng dụng cho đến khi tìm kiếm hoàn thành."
+  },
+  "categories": {
+    "addCategories": "Tạo Danh mục",
+    "defaultCategory": "Danh mục mặc định",
+    "deleteModal": {
+      "desc": "Bạn có muốn xóa danh mục này",
+      "header": "Xóa danh mục"
     },
-    "drawer": {
-      "scrollToCurrentChapter": "Chương hiện tại",
-      "scrollToTop": "Lên đầu",
-      "scrollToBottom": "Xuống cuối"
+    "duplicateError": "Danh mục với tên này đã tồn tại!",
+    "editCategories": "Đổi tên danh mục",
+    "emptyMsg": "Bạn không có danh mục nào. Hãy ấn vào nút thêm để tạo danh mục mới",
+    "header": "Chỉnh sửa danh mục",
+    "setCategories": "Đặt danh mục",
+    "setModalEmptyMsg": "Bạn không có danh mục nào. Hãy ấn vào nút chỉnh sửa để tạo danh mục mới"
+  },
+  "common": {
+    "add": "Thêm",
+    "all": "Tất cả",
+    "cancel": "Hủy",
+    "categories": "Danh mục",
+    "chapters": "Chương",
+    "clear": "Xóa",
+    "display": "Hiển thị",
+    "edit": "Sửa",
+    "filter": "Bộ lọc",
+    "globally": "toàn cầu",
+    "install": "Tải về",
+    "name": "Tên",
+    "newUpdateAvailable": "Đã có bản cập nhật mới",
+    "ok": "Ok",
+    "reset": "Đặt lại",
+    "retry": "Thử lại",
+    "save": "Lưu",
+    "search": "Tìm kiếm",
+    "searchFor": "Tìm kiếm",
+    "searchResults": "Kết quả tìm kiếm",
+    "settings": "Cài đặt",
+    "sort": "Sắp xếp",
+    "submit": "Gửi"
+  },
+  "date": {
+    "calendar": {
+      "lastDay": "[Hôm qua]",
+      "lastWeek": "[Gần nhất] dddd",
+      "nextDay": "[Ngày mai]",
+      "sameDay": "[Hôm nay]"
     }
+  },
+  "downloadScreen": {
+    "dbInfo": "Các chương tải về sẽ được lưu trong cơ sở dữ liệu SQLite.",
+    "downloadChapters": "chương đã tải về",
+    "downloadsLower": "tải xuống",
+    "noDownloads": "Không có tải xuống"
+  },
+  "generalSettings": "Chung",
+  "generalSettingsScreen": {
+    "asc": "(Tăng dần)",
+    "autoDownload": "Tự động tải xuống",
+    "bySource": "Theo nguồn",
+    "chapterSort": "Sắp xếp mặc định",
+    "desc": "(Giảm dần)",
+    "disableHapticFeedback": "Tắt phản hồi xúc giác",
+    "displayMode": "Chế độ Hiển thị",
+    "downloadNewChapters": "Tải chương mới",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Cập nhật toàn bộ",
+    "itemsPerRow": "Truyện trên hàng",
+    "itemsPerRowLibrary": "Số truyện trên hàng trong thư viện",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Tiểu thuyết",
+    "novelBadges": "Nhãn tiểu thuyết",
+    "novelSort": "Sắp xếp truyện",
+    "refreshMetadata": "Tự động làm mới metadata",
+    "refreshMetadataDescription": "Kiểm tra ảnh bìa và mô tả khi cập nhật thự viện",
+    "updateLibrary": "Cập nhật thư viện khi khởi động",
+    "updateOngoing": "Chỉ cập nhật truyện đang thực hiện",
+    "updateTime": "Hiện lần cập nhật trước",
+    "useFAB": "Sử dụng FAB trong thư viện"
+  },
+  "globalSearch": {
+    "allSources": "toàn bộ nguồn",
+    "pinnedSources": "nguồn được ghim",
+    "searchIn": "Tìm truyện ở"
+  },
+  "history": "Lịch sử",
+  "historyScreen": {
+    "clearHistorWarning": "Bạn có chắc không? Toàn bộ lịch sử sẽ bị xoá.",
+    "searchbar": "Tìm trong lịch sử"
+  },
+  "library": "Thư viện",
+  "libraryScreen": {
+    "bottomSheet": {
+      "display": {
+        "badges": "Nhãn",
+        "comfortable": "Tiện dụng",
+        "compact": "Thu gọn",
+        "displayMode": "Chế độ Hiển thị",
+        "downloadBadges": "Nhãn tải xuống",
+        "list": "Danh sách",
+        "noTitle": "Ảnh bìa",
+        "showNoOfItems": "Hiện số lượng",
+        "unreadBadges": "Nhãn chưa đọc"
+      },
+      "filters": {
+        "completed": "Đã hoàn thành",
+        "downloaded": "Đã tải về",
+        "started": "Đã bắt đầu",
+        "unread": "Chưa đọc"
+      },
+      "sortOrders": {
+        "alphabetically": "Theo thứ tự từ điển",
+        "dateAdded": "Ngày được thêm",
+        "download": "Đã tải xuống",
+        "lastRead": "Lần đọc trước",
+        "lastUpdated": "Lân cập nhật trước",
+        "totalChapters": "Toàn bộ chương",
+        "unread": "Chưa đọc"
+      }
+    },
+    "empty": "Không có gì cả. Hãy thêm truyện vào thư viện từ mục Tìm kiếm.",
+    "searchbar": "Tìm trong Thư viện"
+  },
+  "more": "Khác",
+  "moreScreen": {
+    "downloadOnly": "Chỉ tải xuống",
+    "incognitoMode": "Chế độ ẩn danh"
   },
   "novelScreen": {
     "addToLibaray": "Thêm vào thư viện",
-    "inLibaray": "Trong thư viện",
-    "continueReading": "Tiếp tục đọc",
     "chapters": "chương",
-    "migrate": "Đồng bộ",
-    "noSummary": "Không có tóm tắt",
-    "bottomSheet": {
-      "filter": "Bộ lọc",
-      "sort": "Sắp xếp",
-      "display": "Hiển thị"
+    "continueReading": "Tiếp tục đọc",
+    "convertToEpubModal": {
+      "chaptersWarning": "Only downloaded chapters are included in the EPUB",
+      "chooseLocation": "Select EPUB storage directory",
+      "pathToFolder": "Path to EPUB save folder",
+      "useCustomCSS": "Use custom CSS",
+      "useCustomJS": "Use custom JS",
+      "useCustomJSWarning": "May not be supported by all EPUB readers",
+      "useReaderTheme": "Use reader theme"
     },
+    "inLibaray": "Trong thư viện",
     "jumpToChapterModal": {
-      "jumpToChapter": "Đi tới Chương",
-      "openChapter": "Đọc luôn",
       "chapterName": "Tên Chương",
       "chapterNumber": "Chương Số",
       "error": {
         "validChapterName": "Vui lòng nhập tên chương hợp lệ",
         "validChapterNumber": "Vui lòng nhập số chương hợp lệ"
-      }
+      },
+      "jumpToChapter": "Đi tới Chương",
+      "openChapter": "Đọc luôn"
     },
-    "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
-      "pathToFolder": "Path to EPUB save folder",
-      "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use custom CSS",
-      "useCustomJS": "Use custom JS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers",
-      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
-    }
+    "migrate": "Đồng bộ",
+    "noSummary": "Không có tóm tắt"
   },
-  "more": "Khác",
-  "moreScreen": {
-    "settings": "Cài đặt",
-    "settingsScreen": {
-      "generalSettings": "Chung",
-      "generalSettingsScreen": {
-        "display": "Hiển thị",
-        "displayMode": "Chế độ Hiển thị",
-        "itemsPerRow": "Truyện trên hàng",
-        "itemsPerRowLibrary": "Số truyện trên hàng trong thư viện",
-        "novelBadges": "Nhãn tiểu thuyết",
-        "novelSort": "Sắp xếp truyện",
-        "updateLibrary": "Cập nhật thư viện khi khởi động",
-        "useFAB": "Sử dụng FAB trong thư viện",
-        "novel": "Tiểu thuyết",
-        "chapterSort": "Sắp xếp mặc định",
-        "bySource": "Theo nguồn",
-        "asc": "(Tăng dần)",
-        "desc": "(Giảm dần)",
-        "globalUpdate": "Cập nhật toàn bộ",
-        "updateOngoing": "Chỉ cập nhật truyện đang thực hiện",
-        "refreshMetadata": "Tự động làm mới metadata",
-        "refreshMetadataDescription": "Kiểm tra ảnh bìa và mô tả khi cập nhật thự viện",
-        "updateTime": "Hiện lần cập nhật trước",
-        "autoDownload": "Tự động tải xuống",
-        "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
-        "downloadNewChapters": "Tải chương mới",
-        "disableHapticFeedback": "Tắt phản hồi xúc giác",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
-      },
-      "readerSettings": {
-        "title": "Trang đọc",
-        "readerTheme": "Giao diện đọc",
-        "preset": "Mẫu sẵn có",
-        "backgroundColor": "Màu nền",
-        "textColor": "Màu chữ",
-        "backgroundColorModal": "Màu nền của trang đọc",
-        "textColorModal": "Màu chữ trang đọc",
-        "verticalSeekbarDesc": "Chuyển hướng thanh trạng thái dọc hoặc ngang",
-        "autoScrollInterval": "Thời gian tự động cuộn (giây)",
-        "autoScrollOffset": "Khoảng cách tự động cuộn (mặc định chiều cao màn hình)",
-        "saveCustomTheme": "Lưu tùy chỉnh giao diện",
-        "deleteCustomTheme": "Xoá tuỳ chỉnh giao diện",
-        "customCSS": "CSS Tùy chỉnh",
-        "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset."
-      },
-      "browseSettings": "Cài đặt trình tìm kiếm",
-      "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Chỉ hiện nguồn được ghim",
-        "languages": "Ngôn ngữ",
-        "searchAllSources": "Tìm trên tất cả các nguồn",
-        "searchAllWarning": "Tìm kiếm với lượng lớn nguồn có thể đóng băng ứng dụng cho đến khi tìm kiếm hoàn thành."
-      }
-    }
+  "readerScreen": {
+    "bottomSheet": {
+      "allowTextSelection": "Cho phép bôi đen chữ",
+      "autoscroll": "Cuộn tự động",
+      "bionicReading": "Bionic Reading",
+      "color": "Màu chữ",
+      "fontStyle": "Phông chữ",
+      "fullscreen": "Toàn màn hình",
+      "lineHeight": "Chiều cao dòng",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "removeExtraSpacing": "Xoá khoảng trống thừa",
+      "renderHml": "WebView",
+      "scrollAmount": "Scroll amount (screen height by default)",
+      "showBatteryAndTime": "Hiển thị pin và giờ",
+      "showProgressPercentage": "Hiện tiến trình",
+      "showSwipeMargins": "Hiện khoảng vuốt",
+      "swipeGestures": "Vuốt để đổi chương",
+      "textAlign": "Căn lề",
+      "textSize": "Cỡ chữ",
+      "useChapterDrawerSwipeNavigation": "Vuốt phải để hiện danh sách",
+      "verticalSeekbar": "Thanh trạng thái dọc",
+      "volumeButtonsScroll": "Cuộn bằng nút âm lượng"
+    },
+    "drawer": {
+      "scrollToBottom": "Xuống cuối",
+      "scrollToCurrentChapter": "Chương hiện tại",
+      "scrollToTop": "Lên đầu"
+    },
+    "finished": "Đã xong",
+    "noNextChapter": "Không có chương kế tiếp"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Thời gian tự động cuộn (giây)",
+    "autoScrollOffset": "Khoảng cách tự động cuộn (mặc định chiều cao màn hình)",
+    "backgroundColor": "Màu nền",
+    "backgroundColorModal": "Màu nền của trang đọc",
+    "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+    "clearCustomJS": "Are you sure? Your custom JS would be reset.",
+    "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+    "customCSS": "CSS Tùy chỉnh",
+    "customJS": "Custom JS",
+    "deleteCustomTheme": "Xoá tuỳ chỉnh giao diện",
+    "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Not saved",
+    "openCSSFile": "Open CSS file",
+    "openJSFile": "Open JS file",
+    "preset": "Mẫu sẵn có",
+    "readerTheme": "Giao diện đọc",
+    "saveCustomTheme": "Lưu tùy chỉnh giao diện",
+    "textColor": "Màu chữ",
+    "textColorModal": "Màu chữ trang đọc",
+    "title": "Trang đọc",
+    "verticalSeekbarDesc": "Chuyển hướng thanh trạng thái dọc hoặc ngang"
   },
   "sourceScreen": {
     "noResultsFound": "Không tìm thấy kết quả"
   },
   "statsScreen": {
+    "downloadedChapters": "Chương đã tải về",
+    "genreDistribution": "Thể loại",
+    "readChapters": "Chương đã đọc",
+    "statusDistribution": "Trạng thái",
     "title": "Thống kê",
     "titlesInLibrary": "Tiêu đề",
     "totalChapters": "Chương",
-    "readChapters": "Chương đã đọc",
-    "unreadChapters": "Chương chưa đọc",
-    "downloadedChapters": "Chương đã tải về",
-    "genreDistribution": "Thể loại",
-    "statusDistribution": "Trạng thái"
+    "unreadChapters": "Chương chưa đọc"
   },
-  "globalSearch": {
-    "searchIn": "Tìm truyện ở",
-    "allSources": "toàn bộ nguồn",
-    "pinnedSources": "nguồn được ghim"
-  },
-  "advancedSettings": {
-    "deleteReadChapters": "Xóa chương đã đọc",
-    "deleteReadChaptersDialogTitle": "Bạn có chắc không? Toàn bộ chương được đánh đã đọc sẽ bị xoá."
-  },
-  "date": {
-    "calendar": {
-      "sameDay": "[Hôm nay]",
-      "nextDay": "[Ngày mai]",
-      "lastDay": "[Hôm qua]",
-      "lastWeek": "[Gần nhất] dddd"
-    }
-  },
-  "categories": {
-    "addCategories": "Tạo Danh mục",
-    "editCategories": "Đổi tên danh mục",
-    "setCategories": "Đặt danh mục",
-    "header": "Chỉnh sửa danh mục",
-    "emptyMsg": "Bạn không có danh mục nào. Hãy ấn vào nút thêm để tạo danh mục mới",
-    "setModalEmptyMsg": "Bạn không có danh mục nào. Hãy ấn vào nút chỉnh sửa để tạo danh mục mới",
-    "deleteModal": {
-      "header": "Xóa danh mục",
-      "desc": "Bạn có muốn xóa danh mục này"
-    },
-    "duplicateError": "Danh mục với tên này đã tồn tại!",
-    "defaultCategory": "Danh mục mặc định"
-  },
-  "settings": {
-    "icognitoMode": "Chế độ ẩn danh",
-    "downloadedOnly": "Chỉ tải xuống"
-  },
-  "downloadScreen": {
-    "dbInfo": "Các chương tải về sẽ được lưu trong cơ sở dữ liệu SQLite.",
-    "downloadChapters": "chương đã tải về",
-    "noDownloads": "Không có tải xuống",
-    "downloadsLower": "tải xuống"
+  "updates": "Cập nhật",
+  "updatesScreen": {
+    "emptyView": "Chưa cập nhật mới",
+    "lastUpdatedAt": "Lần cập nhật thư viện gần nhất:",
+    "newChapters": "chương mới",
+    "searchbar": "Tìm kiếm bản cập nhật",
+    "updatesLower": "cập nhập"
   }
 }

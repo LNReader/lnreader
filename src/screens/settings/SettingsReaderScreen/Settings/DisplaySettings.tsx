@@ -18,7 +18,7 @@ const DisplaySettings: React.FC = () => {
   return (
     <>
       <List.SubHeader theme={theme}>
-        {getString('novelScreen.bottomSheet.display')}
+        {getString('common.display')}
       </List.SubHeader>
       <SwitchItem
         label={getString('readerScreen.bottomSheet.fullscreen')}

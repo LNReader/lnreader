@@ -11,6 +11,7 @@ import { ThemeColors } from '@theme/types';
 import { FlashList } from '@shopify/flash-list';
 import { SortItem } from '@components/Checkbox/Checkbox';
 import { useLibrarySettings } from '@hooks/persisted';
+import { getString } from '@strings/translations';
 
 interface NovelSortModalProps {
   novelSortModalVisible: boolean;
@@ -36,7 +37,7 @@ const NovelSortModal: React.FC<NovelSortModalProps> = ({
         ]}
       >
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
-          Sort Order
+          {getString('generalSettingsScreen.sortOrder')}
         </Text>
         <FlashList
           data={librarySortOrderList}

@@ -40,7 +40,7 @@ const ChaptersSettingsSheet = ({
     <View style={{ flex: 1 }}>
       <Checkbox
         theme={theme}
-        label="Downloaded"
+        label={getString('novelScreen.bottomSheet.filters.downloaded')}
         status={!!filter.match('AND isDownloaded = 1')}
         onPress={() =>
           filter.match('AND isDownloaded = 1')
@@ -50,7 +50,7 @@ const ChaptersSettingsSheet = ({
       />
       <Checkbox
         theme={theme}
-        label="Unread"
+        label={getString('novelScreen.bottomSheet.filters.unread')}
         status={
           filter.match('AND `unread`=1')
             ? true
@@ -72,7 +72,7 @@ const ChaptersSettingsSheet = ({
       />
       <Checkbox
         theme={theme}
-        label="Bookmarked"
+        label={getString('novelScreen.bottomSheet.filters.bookmarked')}
         status={!!filter.match('AND bookmark=1')}
         onPress={() => {
           filter.match('AND bookmark=1')
@@ -86,7 +86,7 @@ const ChaptersSettingsSheet = ({
   const SecondRoute = () => (
     <View style={{ flex: 1 }}>
       <SortItem
-        label="By source"
+        label={getString('novelScreen.bottomSheet.order.bySource')}
         status={
           sort === 'ORDER BY id ASC'
             ? 'asc'
@@ -102,7 +102,7 @@ const ChaptersSettingsSheet = ({
         theme={theme}
       />
       <SortItem
-        label="By chapter name"
+        label={getString('novelScreen.bottomSheet.order.byChapterName')}
         status={
           sort === 'ORDER BY name ASC'
             ? 'asc'
@@ -124,13 +124,13 @@ const ChaptersSettingsSheet = ({
     <View style={{ flex: 1 }}>
       <Checkbox
         status={showChapterTitles}
-        label="Source title"
+        label={getString('novelScreen.bottomSheet.displays.sourceTitle')}
         onPress={() => setShowChapterTitles(true)}
         theme={theme}
       />
       <Checkbox
         status={!showChapterTitles}
-        label="Chapter number"
+        label={getString('novelScreen.bottomSheet.displays.chapterNumber')}
         onPress={() => setShowChapterTitles(false)}
         theme={theme}
       />
@@ -147,9 +147,9 @@ const ChaptersSettingsSheet = ({
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'first', title: getString('novelScreen.bottomSheet.filter') },
-    { key: 'second', title: getString('novelScreen.bottomSheet.sort') },
-    { key: 'third', title: getString('novelScreen.bottomSheet.display') },
+    { key: 'first', title: getString('common.filter') },
+    { key: 'second', title: getString('common.sort') },
+    { key: 'third', title: getString('common.display') },
   ]);
 
   const renderTabBar: TabViewProps<any>['renderTabBar'] = props => (

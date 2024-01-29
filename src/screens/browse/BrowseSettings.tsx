@@ -4,7 +4,7 @@ import { Appbar, List, SwitchItem } from '@components';
 
 import { useBrowseSettings, usePlugins, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
-import { availableLanguages } from '@utils/constants/languages';
+import { availableLanguages, languages } from '@utils/constants/languages';
 import { BrowseSettingsScreenProp } from '@navigators/types';
 
 const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
@@ -18,7 +18,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
   return (
     <>
       <Appbar
-        title={getString('moreScreen.settingsScreen.browseSettings')}
+        title={getString('browseSettings')}
         handleGoBack={goBack}
         theme={theme}
       />
@@ -30,9 +30,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
               {getString('browseScreen.globalSearch')}
             </List.SubHeader>
             <List.InfoItem
-              title={getString(
-                'moreScreen.settingsScreen.browseSettingsScreen.searchAllWarning',
-              )}
+              title={getString('browseSettingsScreen.searchAllWarning')}
               icon="information-outline"
               theme={theme}
             />
@@ -41,13 +39,13 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
               {getString('browseScreen.discover')}
             </List.SubHeader>
             <SwitchItem
-              label="Show AniList"
+              label={`${getString('common.show')} AniList`}
               value={showAniList}
               onPress={() => setBrowseSettings({ showAniList: !showAniList })}
               theme={theme}
             />
             <SwitchItem
-              label="Show MyAnimeList"
+              label={`${getString('common.show')} MyAnimeList`}
               value={showMyAnimeList}
               onPress={() =>
                 setBrowseSettings({ showMyAnimeList: !showMyAnimeList })
@@ -56,9 +54,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
             />
             <List.Divider theme={theme} />
             <List.SubHeader theme={theme}>
-              {getString(
-                'moreScreen.settingsScreen.browseSettingsScreen.languages',
-              )}
+              {getString('browseSettingsScreen.languages')}
             </List.SubHeader>
           </>
         }
@@ -66,7 +62,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
         data={availableLanguages}
         renderItem={({ item }) => (
           <SwitchItem
-            label={item}
+            label={languages[item]}
             value={languagesFilter.includes(item)}
             onPress={() => toggleLanguageFilter(item)}
             theme={theme}

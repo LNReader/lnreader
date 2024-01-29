@@ -11,6 +11,7 @@ import {
 import { useDownload, useTheme } from '@hooks/persisted';
 
 import { showToast } from '../../utils/showToast';
+import { getString } from '@strings/translations';
 import { Appbar, EmptyView } from '@components';
 import { DownloadQueueScreenProps } from '@navigators/types';
 import { useMMKVString } from 'react-native-mmkv';
@@ -31,7 +32,7 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
   return (
     <>
       <Appbar
-        title="Download queue"
+        title={getString('moreScreen.downloadQueue')}
         handleGoBack={navigation.goBack}
         theme={theme}
       >
@@ -52,10 +53,10 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
           <Menu.Item
             onPress={() => {
               cancelDownload();
-              showToast('Downloads cancelled.');
+              showToast(getString('downloadScreen.cancelled'));
               closeMenu();
             }}
-            title="Cancel downloads"
+            title={getString('downloadScreen.cancelDownloads')}
             titleStyle={{ color: theme.onSurface }}
           />
         </Menu>
@@ -79,14 +80,22 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
           </View>
         )}
         ListEmptyComponent={
-          <EmptyView icon="(･o･;)" description="No downloads" theme={theme} />
+          <EmptyView
+            icon="(･o･;)"
+            description={getString('downloadScreen.noDownloads')}
+            theme={theme}
+          />
         }
       />
       {queue.length > 0 && (
         <FAB
           style={[styles.fab, { backgroundColor: theme.primary }]}
           color={theme.onPrimary}
-          label={isDownloading ? 'Pause' : 'Resume'}
+          label={
+            isDownloading
+              ? getString('common.pause')
+              : getString('common.resume')
+          }
           uppercase={false}
           icon={isDownloading ? 'pause' : 'play'}
           onPress={() => {

@@ -13,6 +13,7 @@ import { NovelInfo } from '@database/types';
 import { sleep } from '@utils/sleep';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
+import { getString } from '@strings/translations';
 
 export const createBackup = async () => {
   try {
@@ -44,7 +45,7 @@ export const createBackup = async () => {
         JSON.stringify(novels),
       );
 
-      showToast(`Backup created ${fileName}`);
+      showToast(getString('backupScreen.legacy.backupCreated', { fileName }));
     }
   } catch (error: any) {
     showToast(error.message);
@@ -70,7 +71,7 @@ export const restoreBackup = async (filePath?: string) => {
       novelsString = await StorageAccessFramework.readAsStringAsync(backup.uri);
     } else if (filePath) {
       if (!(await RNFS.exists(filePath))) {
-        showToast("There's no error novel");
+        showToast(getString('backupScreen.legacy.noErrorNovel'));
         return; //neither backup nor error backup
       }
       novelsString = await RNFS.readFile(filePath);
@@ -78,12 +79,12 @@ export const restoreBackup = async (filePath?: string) => {
 
     const novels: NovelInfo[] = await JSON.parse(novelsString);
     if (novels.length === 0) {
-      showToast("There's no available backup");
+      showToast(getString('backupScreen.legacy.noAvailableBackup'));
       return;
     }
     const notificationOptions = {
       taskName: 'Backup Restore',
-      taskTitle: 'Restoring backup',
+      taskTitle: getString('backupScreen.restorinBackup'),
       taskDesc: '(0/' + novels.length + ')',
       taskIcon: { name: 'notification_icon', type: 'drawable' },
       color: '#00adb5',
@@ -104,7 +105,11 @@ export const restoreBackup = async (filePath?: string) => {
             if (BackgroundService.isRunning()) {
               const plugin = getPlugin(novels[i].pluginId);
               if (!plugin) {
-                showToast(`Plugin with id ${novels[i].pluginId} doenst exist!`);
+                showToast(
+                  getString('backupScreen.legacy.pluginNotExist', {
+                    id: novels[i].pluginId,
+                  }),
+                );
                 errorNovels.push(novels[i]);
                 continue;
               }
@@ -118,8 +123,10 @@ export const restoreBackup = async (filePath?: string) => {
               if (novels.length === i + 1) {
                 Notifications.scheduleNotificationAsync({
                   content: {
-                    title: 'Library Restored',
-                    body: novels.length + ' novels restored',
+                    title: getString('backupScreen.legacy.libraryRestored'),
+                    body: getString('backupScreen.legacy.novelsRestored', {
+                      num: novels.length,
+                    }),
                   },
                   trigger: null,
                 });
@@ -147,10 +154,10 @@ export const restoreBackup = async (filePath?: string) => {
           await RNFS.writeFile(errorPath, JSON.stringify(errorNovels));
           Notifications.scheduleNotificationAsync({
             content: {
-              title: 'Library Restored',
-              body:
-                errorNovels.length +
-                ' novels got errors. Please use Restore error backup to try again.',
+              title: getString('backupScreen.legacy.libraryRestored'),
+              body: getString('backupScreen.legacy.novelsRestoredError', {
+                num: errorNovels.length,
+              }),
             },
             trigger: null,
           });

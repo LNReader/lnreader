@@ -1,262 +1,255 @@
 {
-  "common": {
-    "cancel": "الغاء",
-    "ok": "حسنآ",
-    "save": "تثبيت",
-    "clear": "تنظيف",
-    "reset": "إعادة تعيين",
-    "search": "بحث",
-    "install": "تثبيت",
-    "newUpdateAvailable": "تحديث جديد متاح",
-    "categories": "تصنيفات",
-    "add": "إضافة",
-    "edit": "تعديل",
-    "name": "اسم",
-    "searchFor": "بحث عن",
-    "globally": "عالمي",
-    "searchResults": "نتائج البحث",
-    "chapters": "فصول",
-    "submit": "إرسال",
-    "retry": "أعد المحاولة"
-  },
-  "library": "المكتبة",
-  "libraryScreen": {
-    "searchbar": "البحث في المكتبة",
-    "empty": "مكتبتك فارغة، أضف رواية الى مكتبتك من خلال \"تصفح\".",
-    "bottomSheet": {
-      "filters": {
-        "downloaded": "التحميلات",
-        "unread": "غير مقروء",
-        "completed": "مكتمل",
-        "started": "بدأت"
-      },
-      "sortOrders": {
-        "dateAdded": "تاريخ الإضافة",
-        "alphabetically": "حسب الترتيب الأبجدي",
-        "totalChapters": "مجموع الفصول",
-        "download": "منزّل",
-        "unread": "غير مقروء",
-        "lastRead": "آخر قراءة",
-        "lastUpdated": "آخر تحديث"
-      },
-      "display": {
-        "displayMode": "نمط العرض",
-        "compact": "الشبكة المدمجة",
-        "comfortable": "الشبكة المريحة",
-        "noTitle": "تغطية الشبكة فقط",
-        "list": "القائمة",
-        "badges": "الأوسمة",
-        "downloadBadges": "تحميل الاوسمة",
-        "unreadBadges": "شارات الغير مقروء",
-        "showNoOfItems": "إظهار عدد العناصر"
-      }
-    }
-  },
-  "updates": "التحديثات",
-  "updatesScreen": {
-    "searchbar": "البحث في التحديثات",
-    "lastUpdatedAt": "آخر تحديث للمكتبة:",
-    "newChapters": "فصول جديدة",
-    "emptyView": "لا توجد تحديثات",
-    "updatesLower": "التحديثات"
-  },
-  "history": "السجل",
-  "historyScreen": {
-    "searchbar": "سجل البحث",
-    "clearHistorWarning": "هل أنت متأكد؟ سيتم مسح كل التاريخ."
+  "advancedSettingsScreen": {
+    "deleteReadChapters": "حذف الفصول المقروءة",
+    "deleteReadChaptersDialogTitle": "هل أنت متأكد؟ سيتم حذف جميع الفصول المعلَّمة كمقروءة."
   },
   "browse": "تصفح",
   "browseScreen": {
-    "discover": "استكشف",
-    "searchbar": "البحث في المصادر",
-    "globalSearch": "بحث عام",
-    "listEmpty": "تفعيل اللغات من الاعدادات",
-    "lastUsed": "اخر استخدام",
-    "pinned": "مثبت",
-    "all": "الجميع",
-    "latest": "الاخير",
     "addedToLibrary": "تمت الإضافة إلى المكتبة",
-    "removeFromLibrary": "تمت إزالته من المكتبة"
+    "discover": "استكشف",
+    "globalSearch": "بحث عام",
+    "lastUsed": "اخر استخدام",
+    "latest": "الاخير",
+    "listEmpty": "تفعيل اللغات من الاعدادات",
+    "pinned": "مثبت",
+    "removeFromLibrary": "تمت إزالته من المكتبة",
+    "searchbar": "البحث في المصادر"
   },
-  "readerScreen": {
-    "finished": "انتهى",
-    "noNextChapter": "لا يوجد فصل اخر",
-    "bottomSheet": {
-      "textSize": "حجم الخط",
-      "color": "اللون",
-      "textAlign": "اتجاه النص",
-      "lineHeight": "ارتفاع الخط",
-      "fontStyle": "نمط الخط",
-      "fullscreen": "تكبير الشاشة",
-      "bionicReading": "الكلمات ثنائية الخط",
-      "renderHml": "عرض HTML",
-      "autoscroll": "تدوير تلقائي",
-      "verticalSeekbar": "شريط البحث العمودي",
-      "showBatteryAndTime": "اضهر البطارية والوقت",
-      "showProgressPercentage": "النسبة المئوية للتقدم",
-      "swipeGestures": "اسحب لليسار أو لليمين للتنقل بين الفصول",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
-      "allowTextSelection": "السماح باختيار النص",
-      "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية",
-      "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
-      "volumeButtonsScroll": "تمرير أزرار الصوت",
-      "scrollAmount": "مقدار التمرير (افتراضيًا طول الشاشة)",
-      "showSwipeMargins": "إظهار هوامش التمرير"
+  "browseSettings": "تصفح الإعدادات",
+  "browseSettingsScreen": {
+    "languages": "اللغات",
+    "onlyShowPinnedSources": "إظهار المصادر المثبتة فقط",
+    "searchAllSources": "البحث في جميع المصادر",
+    "searchAllWarning": "البحث عن عدد كبير من المصادر قد يجمد التطبيق حتى الانتهاء من البحث."
+  },
+  "categories": {
+    "addCategories": "إضافة تصنيف",
+    "defaultCategory": "التصنيف الافتراضي",
+    "deleteModal": {
+      "desc": "هل ترغب في حذف التصنيف",
+      "header": "حذف التصنيف"
     },
-    "drawer": {
-      "scrollToCurrentChapter": "التمرير إلى الفصل الحالي",
-      "scrollToTop": "التمرير إلى الأعلى",
-      "scrollToBottom": "التمرير للأسفل"
+    "duplicateError": "يوجد تصنيف بهذا الاسم بالفعل!",
+    "editCategories": "إعادة تسمية التصنيف",
+    "emptyMsg": "ليس لديك تصنيف. اضغط على زر علامة الزائد لإنشاء واحد لتنظيم مكتبتك",
+    "header": "تعديل التصنيف",
+    "setCategories": "حدد التصنيف",
+    "setModalEmptyMsg": "ليس لديك تصنيف. اضغط على زر تعديل لإنشاء واحد لتنظيم مكتبتك"
+  },
+  "common": {
+    "add": "إضافة",
+    "all": "الجميع",
+    "cancel": "الغاء",
+    "categories": "تصنيفات",
+    "chapters": "فصول",
+    "clear": "تنظيف",
+    "display": "عرض",
+    "edit": "تعديل",
+    "filter": "التصفية",
+    "globally": "عالمي",
+    "install": "تثبيت",
+    "name": "اسم",
+    "newUpdateAvailable": "تحديث جديد متاح",
+    "ok": "حسنآ",
+    "reset": "إعادة تعيين",
+    "retry": "أعد المحاولة",
+    "save": "تثبيت",
+    "search": "بحث",
+    "searchFor": "بحث عن",
+    "searchResults": "نتائج البحث",
+    "settings": "الإعدادات",
+    "sort": "الفرز",
+    "submit": "إرسال"
+  },
+  "date": {
+    "calendar": {
+      "lastDay": "بالأمس",
+      "lastWeek": "الأسبوع الماضي",
+      "nextDay": "الغد",
+      "sameDay": "اليوم"
     }
+  },
+  "downloadScreen": {
+    "dbInfo": "يتم حفظ التنزيلات في قاعدة بيانات SQLite",
+    "downloadChapters": "الفصول المحملة",
+    "downloadsLower": "تم التنزيل",
+    "noDownloads": "لا توجد تحميلات"
+  },
+  "generalSettings": "العامة",
+  "generalSettingsScreen": {
+    "asc": "ترتيب تصاعدي",
+    "autoDownload": "التحميل التلقائي",
+    "bySource": "حسب المصدر",
+    "chapterSort": "الفرز الافتراضي للفصول",
+    "desc": "ترتيب تنازلي",
+    "disableHapticFeedback": "تعطيل الاهتزاز",
+    "displayMode": "وضع العرض",
+    "downloadNewChapters": "تحميل فصول جديدة",
+    "epub": "EPUB",
+    "epubLocation": "موقع EPUB",
+    "epubLocationDescription": "مكان لحفظ ملفات EPUB وتصديرها.",
+    "globalUpdate": "التحديث الشامل",
+    "itemsPerRow": "العناصر في كل صف",
+    "itemsPerRowLibrary": "العناصر لكل صف في المكتبة",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "رواية",
+    "novelBadges": "شارات الرواية",
+    "novelSort": "فرز الروايات",
+    "refreshMetadata": "تحديث البيانات الوصفية تلقائيًا",
+    "refreshMetadataDescription": "تحقق من الغلاف الجديد ",
+    "updateLibrary": "تحديث المكتبة عند تشغيل التطبيق",
+    "updateOngoing": "تحديث الروايات الجارية فقط",
+    "updateTime": "وقت آخر تحديث",
+    "useFAB": "استخدام FAB في المكتبة"
+  },
+  "globalSearch": {
+    "allSources": "جميع المصادر",
+    "pinnedSources": "المصادر المثبتة",
+    "searchIn": "البحث عن رواية في"
+  },
+  "history": "السجل",
+  "historyScreen": {
+    "clearHistorWarning": "هل أنت متأكد؟ سيتم مسح كل التاريخ.",
+    "searchbar": "سجل البحث"
+  },
+  "library": "المكتبة",
+  "libraryScreen": {
+    "bottomSheet": {
+      "display": {
+        "badges": "الأوسمة",
+        "comfortable": "الشبكة المريحة",
+        "compact": "الشبكة المدمجة",
+        "displayMode": "نمط العرض",
+        "downloadBadges": "تحميل الاوسمة",
+        "list": "القائمة",
+        "noTitle": "تغطية الشبكة فقط",
+        "showNoOfItems": "إظهار عدد العناصر",
+        "unreadBadges": "شارات الغير مقروء"
+      },
+      "filters": {
+        "completed": "مكتمل",
+        "downloaded": "التحميلات",
+        "started": "بدأت",
+        "unread": "غير مقروء"
+      },
+      "sortOrders": {
+        "alphabetically": "حسب الترتيب الأبجدي",
+        "dateAdded": "تاريخ الإضافة",
+        "download": "منزّل",
+        "lastRead": "آخر قراءة",
+        "lastUpdated": "آخر تحديث",
+        "totalChapters": "مجموع الفصول",
+        "unread": "غير مقروء"
+      }
+    },
+    "empty": "مكتبتك فارغة، أضف رواية الى مكتبتك من خلال \"تصفح\".",
+    "searchbar": "البحث في المكتبة"
+  },
+  "more": "المزيد",
+  "moreScreen": {
+    "downloadOnly": "التنزيلات فقط",
+    "incognitoMode": "الوضع المخفي"
   },
   "novelScreen": {
     "addToLibaray": "إضافة إلى المكتبة",
-    "inLibaray": "في المكتبة",
-    "continueReading": "متابعة القراءة",
     "chapters": "الفصول",
-    "migrate": "نقل",
-    "noSummary": "لا يوجد ملخص",
-    "bottomSheet": {
-      "filter": "التصفية",
-      "sort": "الفرز",
-      "display": "العرض"
+    "continueReading": "متابعة القراءة",
+    "convertToEpubModal": {
+      "chaptersWarning": "الفصول التي تم تنزيلها فقط مدرجة في EPUB",
+      "chooseLocation": "حدد مسار تخزين ملفات EPUB",
+      "pathToFolder": "مسار مجلد لحفظ EPUB",
+      "useCustomCSS": "استخدام CSS حسب التفضيل",
+      "useCustomJS": "استخدام JS حسب التفضيل",
+      "useCustomJSWarning": "قد لا يكون مدعوماً من كل قراء EPUB",
+      "useReaderTheme": "استخدام قالب القارئ"
     },
+    "inLibaray": "في المكتبة",
     "jumpToChapterModal": {
-      "jumpToChapter": "انتقل إلى الفصل",
-      "openChapter": "فتح الفصل",
       "chapterName": "اسم الفصل",
       "chapterNumber": "رقم الفصل",
       "error": {
         "validChapterName": "أدخل اسم فصل صحيح",
         "validChapterNumber": "أدخل رَقْم فصل صحيح"
-      }
+      },
+      "jumpToChapter": "انتقل إلى الفصل",
+      "openChapter": "فتح الفصل"
     },
-    "convertToEpubModal": {
-      "chooseLocation": "حدد مسار تخزين ملفات EPUB",
-      "pathToFolder": "مسار مجلد لحفظ EPUB",
-      "useReaderTheme": "استخدام قالب القارئ",
-      "useCustomCSS": "استخدام CSS حسب التفضيل",
-      "useCustomJS": "استخدام JS حسب التفضيل",
-      "useCustomJSWarning": "قد لا يكون مدعوماً من كل قراء EPUB",
-      "chaptersWarning": "الفصول التي تم تنزيلها فقط مدرجة في EPUB"
-    }
+    "migrate": "نقل",
+    "noSummary": "لا يوجد ملخص"
   },
-  "more": "المزيد",
-  "moreScreen": {
-    "settings": "الإعدادات",
-    "settingsScreen": {
-      "generalSettings": "العامة",
-      "generalSettingsScreen": {
-        "display": "عرض",
-        "displayMode": "وضع العرض",
-        "itemsPerRow": "العناصر في كل صف",
-        "itemsPerRowLibrary": "العناصر لكل صف في المكتبة",
-        "novelBadges": "شارات الرواية",
-        "novelSort": "فرز الروايات",
-        "updateLibrary": "تحديث المكتبة عند تشغيل التطبيق",
-        "useFAB": "استخدام FAB في المكتبة",
-        "novel": "رواية",
-        "chapterSort": "الفرز الافتراضي للفصول",
-        "bySource": "حسب المصدر",
-        "asc": "ترتيب تصاعدي",
-        "desc": "ترتيب تنازلي",
-        "globalUpdate": "التحديث الشامل",
-        "updateOngoing": "تحديث الروايات الجارية فقط",
-        "refreshMetadata": "تحديث البيانات الوصفية تلقائيًا",
-        "refreshMetadataDescription": "تحقق من الغلاف الجديد ",
-        "updateTime": "وقت آخر تحديث",
-        "autoDownload": "التحميل التلقائي",
-        "epub": "EPUB",
-        "epubLocation": "موقع EPUB",
-        "epubLocationDescription": "مكان لحفظ ملفات EPUB وتصديرها.",
-        "downloadNewChapters": "تحميل فصول جديدة",
-        "disableHapticFeedback": "تعطيل الاهتزاز",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
-      },
-      "readerSettings": {
-        "title": "القارئ",
-        "readerTheme": "سمة القارئ",
-        "preset": "اعدادات جاهزة",
-        "backgroundColor": "لون الخلفية",
-        "textColor": "لون النص",
-        "backgroundColorModal": "لون خلفية القراءة",
-        "textColorModal": "لون نص القراءة",
-        "verticalSeekbarDesc": "التبديل بين شريط البحث العمودي والأفقي",
-        "autoScrollInterval": "فترة التمرير التلقائي (بالثواني)",
-        "autoScrollOffset": "تمرير إزاحة تلقائية (ارتفاع الشاشة افتراضي)",
-        "saveCustomTheme": "حفظ السمة المخصصة",
-        "deleteCustomTheme": "حذف السمة المخصصة",
-        "customCSS": "تنسيقات CSS مخصصة",
-        "customJS": "JS حسب التفضيل",
-        "openCSSFile": "افتح ملف CSS",
-        "openJSFile": "فتح ملف JS",
-        "notSaved": "لم يُحفظ",
-        "cssHint": "تلميح: يمكنك إنشاء تضبيطات CSS مخصصة لمصدر محدد باستخدام معرفه. (#sourceId-[SOURCEID])",
-        "jsHint": "تلميح: يمكنك الوصول إلى المتغيرات التالية واستخدامها: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "هل أنت متأكد؟ سيتم إعادة CSS الخاص بك إلي الحالة الافتراضية.",
-        "clearCustomJS": "هل أنت متأكد؟ سيتم إعادة JS الخاص بك إلي الحالة الافتراضية."
-      },
-      "browseSettings": "تصفح الإعدادات",
-      "browseSettingsScreen": {
-        "onlyShowPinnedSources": "إظهار المصادر المثبتة فقط",
-        "languages": "اللغات",
-        "searchAllSources": "البحث في جميع المصادر",
-        "searchAllWarning": "البحث عن عدد كبير من المصادر قد يجمد التطبيق حتى الانتهاء من البحث."
-      }
-    }
+  "readerScreen": {
+    "bottomSheet": {
+      "allowTextSelection": "السماح باختيار النص",
+      "autoscroll": "تدوير تلقائي",
+      "bionicReading": "الكلمات ثنائية الخط",
+      "color": "اللون",
+      "fontStyle": "نمط الخط",
+      "fullscreen": "تكبير الشاشة",
+      "lineHeight": "ارتفاع الخط",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
+      "renderHml": "عرض HTML",
+      "scrollAmount": "مقدار التمرير (افتراضيًا طول الشاشة)",
+      "showBatteryAndTime": "اضهر البطارية والوقت",
+      "showProgressPercentage": "النسبة المئوية للتقدم",
+      "showSwipeMargins": "إظهار هوامش التمرير",
+      "swipeGestures": "اسحب لليسار أو لليمين للتنقل بين الفصول",
+      "textAlign": "اتجاه النص",
+      "textSize": "حجم الخط",
+      "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية",
+      "verticalSeekbar": "شريط البحث العمودي",
+      "volumeButtonsScroll": "تمرير أزرار الصوت"
+    },
+    "drawer": {
+      "scrollToBottom": "التمرير للأسفل",
+      "scrollToCurrentChapter": "التمرير إلى الفصل الحالي",
+      "scrollToTop": "التمرير إلى الأعلى"
+    },
+    "finished": "انتهى",
+    "noNextChapter": "لا يوجد فصل اخر"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "فترة التمرير التلقائي (بالثواني)",
+    "autoScrollOffset": "تمرير إزاحة تلقائية (ارتفاع الشاشة افتراضي)",
+    "backgroundColor": "لون الخلفية",
+    "backgroundColorModal": "لون خلفية القراءة",
+    "clearCustomCSS": "هل أنت متأكد؟ سيتم إعادة CSS الخاص بك إلي الحالة الافتراضية.",
+    "clearCustomJS": "هل أنت متأكد؟ سيتم إعادة JS الخاص بك إلي الحالة الافتراضية.",
+    "cssHint": "تلميح: يمكنك إنشاء تضبيطات CSS مخصصة لمصدر محدد باستخدام معرفه. (#sourceId-[SOURCEID])",
+    "customCSS": "تنسيقات CSS مخصصة",
+    "customJS": "JS حسب التفضيل",
+    "deleteCustomTheme": "حذف السمة المخصصة",
+    "jsHint": "تلميح: يمكنك الوصول إلى المتغيرات التالية واستخدامها: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "لم يُحفظ",
+    "openCSSFile": "افتح ملف CSS",
+    "openJSFile": "فتح ملف JS",
+    "preset": "اعدادات جاهزة",
+    "readerTheme": "سمة القارئ",
+    "saveCustomTheme": "حفظ السمة المخصصة",
+    "textColor": "لون النص",
+    "textColorModal": "لون نص القراءة",
+    "title": "القارئ",
+    "verticalSeekbarDesc": "التبديل بين شريط البحث العمودي والأفقي"
   },
   "sourceScreen": {
     "noResultsFound": "لم يتم العثور على أي نتائج"
   },
   "statsScreen": {
+    "downloadedChapters": "الفصول المحملة",
+    "genreDistribution": "توزيع الأنواع",
+    "readChapters": "الفصول المقروء",
+    "statusDistribution": "توزيع الحالات",
     "title": "الإحصائيات",
     "titlesInLibrary": "العناوين في المكتبة",
     "totalChapters": "مجموع الفصول",
-    "readChapters": "الفصول المقروء",
-    "unreadChapters": "الفصول الغير مقروء",
-    "downloadedChapters": "الفصول المحملة",
-    "genreDistribution": "توزيع الأنواع",
-    "statusDistribution": "توزيع الحالات"
+    "unreadChapters": "الفصول الغير مقروء"
   },
-  "globalSearch": {
-    "searchIn": "البحث عن رواية في",
-    "allSources": "جميع المصادر",
-    "pinnedSources": "المصادر المثبتة"
-  },
-  "advancedSettings": {
-    "deleteReadChapters": "حذف الفصول المقروءة",
-    "deleteReadChaptersDialogTitle": "هل أنت متأكد؟ سيتم حذف جميع الفصول المعلَّمة كمقروءة."
-  },
-  "date": {
-    "calendar": {
-      "sameDay": "اليوم",
-      "nextDay": "الغد",
-      "lastDay": "بالأمس",
-      "lastWeek": "الأسبوع الماضي"
-    }
-  },
-  "categories": {
-    "addCategories": "إضافة تصنيف",
-    "editCategories": "إعادة تسمية التصنيف",
-    "setCategories": "حدد التصنيف",
-    "header": "تعديل التصنيف",
-    "emptyMsg": "ليس لديك تصنيف. اضغط على زر علامة الزائد لإنشاء واحد لتنظيم مكتبتك",
-    "setModalEmptyMsg": "ليس لديك تصنيف. اضغط على زر تعديل لإنشاء واحد لتنظيم مكتبتك",
-    "deleteModal": {
-      "header": "حذف التصنيف",
-      "desc": "هل ترغب في حذف التصنيف"
-    },
-    "duplicateError": "يوجد تصنيف بهذا الاسم بالفعل!",
-    "defaultCategory": "التصنيف الافتراضي"
-  },
-  "settings": {
-    "icognitoMode": "الوضع المخفي",
-    "downloadedOnly": "التنزيلات فقط"
-  },
-  "downloadScreen": {
-    "dbInfo": "يتم حفظ التنزيلات في قاعدة بيانات SQLite",
-    "downloadChapters": "الفصول المحملة",
-    "noDownloads": "لا توجد تحميلات",
-    "downloadsLower": "تم التنزيل"
+  "updates": "التحديثات",
+  "updatesScreen": {
+    "emptyView": "لا توجد تحديثات",
+    "lastUpdatedAt": "آخر تحديث للمكتبة:",
+    "newChapters": "فصول جديدة",
+    "searchbar": "البحث في التحديثات",
+    "updatesLower": "التحديثات"
   }
 }

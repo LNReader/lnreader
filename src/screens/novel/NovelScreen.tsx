@@ -44,6 +44,7 @@ import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading
 import { NovelScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import ChapterItem from './components/ChapterItem';
+import { getString } from '@strings/translations';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { name, url, pluginId } = route.params;
@@ -123,7 +124,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const onRefresh = () => {
     setUpdating(true);
     updateNovel()
-      .then(() => showToast(`Updated ${name}`))
+      .then(() => showToast(getString('novelScreen.updatedToast', { name })))
       .finally(() => setUpdating(false));
   };
 
@@ -301,7 +302,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           numberOfLines={1}
         >
           {chapter.releaseTime ? '•  ' : null}
-          {'Progress ' + savedProgress + '%'}
+          {getString('novelScreen.progress', { progress: savedProgress })}
         </Text>
       );
     }
@@ -380,7 +381,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                     contentStyle={{ backgroundColor: theme.surface2 }}
                   >
                     <Menu.Item
-                      title="Next chapter"
+                      title={getString('novelScreen.download.next')}
                       style={{ backgroundColor: theme.surface2 }}
                       titleStyle={{ color: theme.onSurface }}
                       onPress={() => {
@@ -394,7 +395,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                       }}
                     />
                     <Menu.Item
-                      title="Next 5 chapter"
+                      title={getString('novelScreen.download.next5')}
                       style={{ backgroundColor: theme.surface2 }}
                       titleStyle={{
                         color: theme.onSurface,
@@ -415,7 +416,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                       }}
                     />
                     <Menu.Item
-                      title="Next 10 chapter"
+                      title={getString('novelScreen.download.next10')}
                       style={{ backgroundColor: theme.surface2 }}
                       titleStyle={{
                         color: theme.onSurface,
@@ -436,7 +437,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                       }}
                     />
                     <Menu.Item
-                      title="Custom"
+                      title={getString('novelScreen.download.custom')}
                       style={{ backgroundColor: theme.surface2 }}
                       titleStyle={{ color: theme.onSurface }}
                       onPress={() => {
@@ -445,7 +446,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                       }}
                     />
                     <Menu.Item
-                      title="Unread"
+                      title={getString('novelScreen.download.unread')}
                       style={{ backgroundColor: theme.surface2 }}
                       titleStyle={{
                         color: theme.onSurface,
@@ -461,7 +462,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                       }}
                     />
                     <Menu.Item
-                      title="All"
+                      title={getString('common.all')}
                       style={{ backgroundColor: theme.surface2 }}
                       titleStyle={{
                         color: theme.onSurface,
@@ -474,7 +475,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                       }}
                     />
                     <Menu.Item
-                      title="Delete downloads"
+                      title={getString('novelScreen.download.delete')}
                       style={{ backgroundColor: theme.surface2 }}
                       titleStyle={{
                         color: theme.onSurface,
@@ -507,7 +508,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   }}
                 >
                   <Menu.Item
-                    title="Edit info"
+                    title={getString('novelScreen.edit.info')}
                     style={{ backgroundColor: theme.surface2 }}
                     titleStyle={{
                       color: theme.onSurface,
@@ -518,7 +519,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                     }}
                   />
                   <Menu.Item
-                    title="Edit cover"
+                    title={getString('novelScreen.edit.cover')}
                     style={{ backgroundColor: theme.surface2 }}
                     titleStyle={{
                       color: theme.onSurface,
@@ -619,7 +620,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
             extended={isFabExtended}
             color={theme.onPrimary}
             uppercase={false}
-            label="Resume"
+            label={getString('common.resume')}
             icon="play"
             onPress={() => {
               if (lastRead) {
@@ -637,7 +638,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
             visible={deleteDownloadsSnackbar.value}
             onDismiss={deleteDownloadsSnackbar.setFalse}
             action={{
-              label: 'Delete',
+              label: getString('common.delete'),
               onPress: () => {
                 deleteChapters(chapters.filter(c => c.isDownloaded));
               },
@@ -646,7 +647,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
             style={{ backgroundColor: theme.surface, marginBottom: 32 }}
           >
             <Text style={{ color: theme.onSurface }}>
-              Delete downloaded chapters?
+              {getString('novelScreen.deleteMessage')}
             </Text>
           </Snackbar>
         </Portal>

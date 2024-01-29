@@ -39,17 +39,17 @@ function Authorized({
   return (
     <>
       <Button
-        title="Backup"
+        title={getString('common.backup')}
         style={[styles.btnOutline, { borderColor: theme.outline }]}
         onPress={() => setBackupModal(BackupModal.CREATE_BACKUP)}
       />
       <Button
-        title="Restore"
+        title={getString('common.restore')}
         style={[styles.btnOutline, { borderColor: theme.outline }]}
         onPress={() => setBackupModal(BackupModal.RESTORE_BACKUP)}
       />
       <Button
-        title="Sign out"
+        title={getString('common.signOut')}
         style={[styles.btnOutline, { borderColor: theme.outline }]}
         onPress={signOut}
       />
@@ -80,7 +80,7 @@ function UnAuthorized({
   };
   return (
     <Button
-      title="Sign in"
+      title={getString('common.signIn')}
       style={[styles.btnOutline, { borderColor: theme.outline }]}
       onPress={signIn}
     />
@@ -118,7 +118,7 @@ function CreateBackup({
     <>
       <TextInput
         value={backupName}
-        placeholder={'Backup name'}
+        placeholder={getString('backupScreen.backupName')}
         onChangeText={setBackupName}
         mode="outlined"
         underlineColor={theme.outline}
@@ -188,7 +188,10 @@ function RestoreBackup({
           </Button>
         )}
         ListEmptyComponent={() => (
-          <EmptyView description="No backup founded" theme={theme} />
+          <EmptyView
+            description={getString('backupScreen.noBackupFound')}
+            theme={theme}
+          />
         )}
       />
       <View style={styles.footerContainer}>
@@ -283,14 +286,18 @@ export default function GoogleDriveModal({
       <>
         <View style={styles.titleContainer}>
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-            Google Drive Backup
+            {getString('backupScreen.drive.googleDriveBackup')}
           </Text>
           <TouchableOpacity
             onLongPress={() => {
               if (user?.user.email) {
                 Clipboard.setStringAsync(user.user.email).then(success => {
                   if (success) {
-                    showToast('Copied to clipboard: ' + user.user.email);
+                    showToast(
+                      getString('common.copiedToClipboard', {
+                        name: user.user.email,
+                      }),
+                    );
                   }
                 });
               }

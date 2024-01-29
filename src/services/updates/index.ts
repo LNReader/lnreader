@@ -15,6 +15,7 @@ import { LAST_UPDATE_TIME } from '@hooks/persisted/useUpdates';
 import dayjs from 'dayjs';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { APP_SETTINGS, AppSettings } from '@hooks/persisted/useSettings';
+import { getString } from '@strings/translations';
 
 interface TaskData {
   delay: number;
@@ -42,7 +43,7 @@ const updateLibrary = async (categoryId?: number) => {
 
   const notificationOptions = {
     taskName: 'Library Update',
-    taskTitle: 'Updating library',
+    taskTitle: getString('updatesScreen.updatingLibrary'),
     taskDesc: '(0/' + libraryNovels.length + ')',
     taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',
@@ -84,8 +85,10 @@ const updateLibrary = async (categoryId?: number) => {
             if (libraryNovels.length === i + 1) {
               Notifications.scheduleNotificationAsync({
                 content: {
-                  title: 'Library Updated',
-                  body: libraryNovels.length + ' novels updated',
+                  title: getString('updatesScreen.libraryUpdated'),
+                  body: getString('updatesScreen.novelsUpdated', {
+                    num: libraryNovels.length,
+                  }),
                 },
                 trigger: null,
               });

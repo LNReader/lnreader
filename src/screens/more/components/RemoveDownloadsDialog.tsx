@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@components';
 import { Dialog, overlay, Portal } from 'react-native-paper';
 import { ThemeColors } from '@theme/types';
+import { getString } from '@strings/translations';
 
 interface RemoveDownloadsDialogProps {
   dialogVisible: boolean;
@@ -34,11 +35,11 @@ const RemoveDownloadsDialog = ({
             color: theme.onSurface,
           }}
         >
-          Are you sure? All downloaded chapters will be deleted.
+          {getString('downloadScreen.removeDownloadsWarning')}
         </Dialog.Title>
         <Dialog.Actions>
-          <Button onPress={hideDialog}>Cancel</Button>
-          <Button onPress={onSubmit}>Ok</Button>
+          <Button onPress={hideDialog}>{getString('common.cancel')}</Button>
+          <Button onPress={onSubmit}>{getString('common.ok')}</Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>

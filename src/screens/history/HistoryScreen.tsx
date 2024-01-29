@@ -131,7 +131,7 @@ const HistoryScreen = () => {
             ListEmptyComponent={
               <EmptyView
                 icon="(˘･_･˘)"
-                description="Nothing read recently"
+                description={getString('historyScreen.nothingReadRecently')}
                 theme={theme}
               />
             }

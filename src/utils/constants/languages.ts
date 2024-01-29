@@ -1,33 +1,39 @@
-//seacrh here https://pastebin.com/raw/ppdMS687
+// references:
+// https://en.wikipedia.org/wiki/IETF_language_tag
+// https://en.wikipedia.org/wiki/List_of_language_names
 
-export enum Language {
-  Arabic = 'العربية',
-  Chinese = '中文, 汉语, 漢語',
-  English = 'English',
-  French = 'français, française',
-  Indonesian = 'Bahasa Indonesia',
-  Japanese = '日本語',
-  Korean = '한국어, 조선말',
-  Portuguese = 'Português',
-  Russian = 'русский язык',
-  Spanish = 'español, castellano',
-  Turkish = 'Türkçe',
-  Vietnamese = 'Tiếng Việt',
-}
+export const languages = {
+  Arabic: 'العربية',
+  Chinese: '中文, 汉语, 漢語',
+  English: 'English',
+  French: 'Français',
+  Indonesian: 'Bahasa Indonesia',
+  Japanese: '日本語',
+  Korean: '조선말, 한국어',
+  Portuguese: 'Português',
+  Russian: 'Русский',
+  Spanish: 'Español',
+  Turkish: 'Türkçe',
+  Ukrainian: 'Українська',
+  Vietnamese: 'Tiếng Việt',
+} as const;
 
-export const languagesMapping: Record<string, Language> = {
-  'ab': Language.Arabic,
-  'zh': Language.Chinese,
-  'en': Language.English,
-  'fr': Language.French,
-  'id': Language.Indonesian,
-  'ja': Language.Japanese,
-  'ko': Language.Korean,
-  'pt': Language.Portuguese,
-  'ru': Language.Russian,
-  'es': Language.Spanish,
-  'tr': Language.Turkish,
-  'vi': Language.Vietnamese,
+export type Language = keyof typeof languages;
+
+export const languagesMapping: Record<string, Language | undefined> = {
+  'ab': 'Arabic',
+  'zh': 'Chinese',
+  'en': 'English',
+  'fr': 'French',
+  'id': 'Indonesian',
+  'ja': 'Japanese',
+  'ko': 'Korean',
+  'pt': 'Portuguese',
+  'ru': 'Russian',
+  'es': 'Spanish',
+  'tr': 'Turkish',
+  'uk': 'Ukrainian',
+  'vi': 'Vietnamese',
 };
 
-export const availableLanguages = Object.values(Language);
+export const availableLanguages = Object.keys(languages) as Language[];

@@ -7,6 +7,7 @@ import { RadioButton } from '@components/RadioButton/RadioButton';
 
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
+import { getString } from '@strings/translations';
 
 interface GridSizeModalProps {
   novelsPerRow: number;
@@ -42,12 +43,14 @@ const GridSizeModal: React.FC<GridSizeModalProps> = ({
         ]}
       >
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
-          Grid size
+          {getString('generalSettingsScreen.gridSize')}
         </Text>
         <Text
           style={[styles.modalDescription, { color: theme.onSurfaceVariant }]}
         >
-          {`${novelsPerRow} per row`}
+          {getString('generalSettingsScreen.gridSizeDesc', {
+            num: novelsPerRow,
+          })}
         </Text>
         {Object.keys(gridSizes).map(item => {
           let it = Number(item);

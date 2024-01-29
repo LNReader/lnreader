@@ -46,22 +46,20 @@ const ReaderThemeSettings = () => {
   return (
     <>
       <List.SubHeader theme={theme}>
-        {getString('moreScreen.settingsScreen.readerSettings.readerTheme')}
+        {getString('readerSettings.readerTheme')}
       </List.SubHeader>
       <ReaderThemeSelector
-        label={getString('moreScreen.settingsScreen.readerSettings.preset')}
+        label={getString('readerSettings.preset')}
         labelStyle={labelStyle}
       />
       <ColorPreferenceItem
-        label={getString(
-          'moreScreen.settingsScreen.readerSettings.backgroundColor',
-        )}
+        label={getString('readerSettings.backgroundColor')}
         description={readerSettings.theme}
         onPress={readerBackgroundModal.setTrue}
         theme={theme}
       />
       <ColorPreferenceItem
-        label={getString('moreScreen.settingsScreen.readerSettings.textColor')}
+        label={getString('readerSettings.textColor')}
         description={readerSettings.textColor}
         onPress={readerTextColorModal.setTrue}
         theme={theme}
@@ -70,9 +68,7 @@ const ReaderThemeSettings = () => {
         <View style={styles.customCSSButtons}>
           <Button
             style={styles.customThemeButton}
-            title={getString(
-              'moreScreen.settingsScreen.readerSettings.deleteCustomTheme',
-            )}
+            title={getString('readerSettings.deleteCustomTheme')}
             onPress={() =>
               readerSettings.deleteCustomReaderTheme({
                 backgroundColor: readerSettings.theme,
@@ -85,9 +81,7 @@ const ReaderThemeSettings = () => {
         <View style={styles.customCSSButtons}>
           <Button
             style={styles.customThemeButton}
-            title={getString(
-              'moreScreen.settingsScreen.readerSettings.saveCustomTheme',
-            )}
+            title={getString('readerSettings.saveCustomTheme')}
             onPress={() =>
               readerSettings.saveCustomReaderTheme({
                 backgroundColor: readerSettings.theme,
@@ -111,9 +105,7 @@ const ReaderThemeSettings = () => {
         */}
       <Portal>
         <ColorPickerModal
-          title={getString(
-            'moreScreen.settingsScreen.readerSettings.backgroundColor',
-          )}
+          title={getString('readerSettings.backgroundColor')}
           visible={readerBackgroundModal.value}
           color={readerSettings.theme}
           closeModal={readerBackgroundModal.setFalse}
@@ -123,9 +115,7 @@ const ReaderThemeSettings = () => {
           }
         />
         <ColorPickerModal
-          title={getString(
-            'moreScreen.settingsScreen.readerSettings.textColor',
-          )}
+          title={getString('readerSettings.textColor')}
           visible={readerTextColorModal.value}
           color={readerSettings.textColor}
           closeModal={readerTextColorModal.setFalse}

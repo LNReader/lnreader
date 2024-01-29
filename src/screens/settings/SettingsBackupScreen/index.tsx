@@ -17,6 +17,7 @@ import {
 } from '@services/backup/legacy';
 import { ScrollView } from 'react-native-gesture-handler';
 import { BACKGROUND_ACTION } from '@services/constants';
+import { getString } from '@strings/translations';
 
 const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
   const theme = useTheme();
@@ -38,57 +39,67 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
     <>
       <ScreenContainer theme={theme}>
         <Appbar
-          title="Backup"
+          title={getString('common.backup')}
           handleGoBack={() => navigation.goBack()}
           theme={theme}
         />
         <ScrollView style={{ paddingBottom: 40 }}>
           <List.Section>
-            <List.SubHeader theme={theme}>Remote Backup</List.SubHeader>
+            <List.SubHeader theme={theme}>
+              {getString('backupScreen.remoteBackup')}
+            </List.SubHeader>
             <List.Item
-              title="Self Host"
-              description="Backup to your server"
+              title={getString('backupScreen.selfHost')}
+              description={getString('backupScreen.selfHostDesc')}
               theme={theme}
               onPress={openSelfHostModal}
               disabled={Boolean(hasAction)}
             />
 
             <List.Item
-              title="Googe Drive"
-              description="Backup to your Google Drive"
+              title={getString('backupScreen.googeDrive')}
+              description={getString('backupScreen.googeDriveDesc')}
               theme={theme}
               onPress={openGoogleDriveModal}
               disabled={Boolean(hasAction)}
             />
-            <List.SubHeader theme={theme}>Legacy Backup</List.SubHeader>
+            <List.SubHeader theme={theme}>
+              {getString('backupScreen.legacyBackup')}
+            </List.SubHeader>
             <List.Item
-              title="Create backup (Deprecated)"
-              description="Can be used to restore current library"
+              title={`${getString('backupScreen.createBackup')} (${getString(
+                'common.deprecated',
+              )})`}
+              description={getString('backupScreen.createBackupDesc')}
               onPress={deprecatedCreateBackup}
               theme={theme}
               disabled={Boolean(hasAction)}
             />
             <List.Item
-              title="Restore backup (Deprecated)"
-              description="Restore library from backup file"
+              title={`${getString('backupScreen.restoreBackup')} (${getString(
+                'common.deprecated',
+              )})`}
+              description={getString('backupScreen.restoreBackupDesc')}
               onPress={() => deprecatedRestoreBackup()}
               theme={theme}
               disabled={Boolean(hasAction)}
             />
             <List.Item
-              title="Restore error (Deprecated)"
-              description="Using this to restore the remaining. Save your time."
+              title={`${getString('backupScreen.restoreError')} (${getString(
+                'common.deprecated',
+              )})`}
+              description={getString('backupScreen.restoreErrorDesc')}
               onPress={deprecatedRestoreError}
               theme={theme}
               disabled={Boolean(hasAction)}
             />
             <List.InfoItem
-              title="Restoring large backups may freeze the app until restoring is finished"
+              title={getString('backupScreen.restoreLargeBackupsWarning')}
               icon="information-outline"
               theme={theme}
             />
             <List.InfoItem
-              title="Create backup may not work on devices with Android 9 or lower."
+              title={getString('backupScreen.createBackupWarning')}
               icon="information-outline"
               theme={theme}
             />

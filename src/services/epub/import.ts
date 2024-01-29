@@ -15,6 +15,7 @@ import {
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
+import { getString } from '@strings/translations';
 import { ChapterItem, SourceNovel } from '@plugins/types';
 import { load as parseXML } from 'cheerio';
 
@@ -241,7 +242,7 @@ const importEpubAction = async (taskData?: TaskData) => {
     const filePathSet = new Set<string>();
     if (novel.chapters) {
       BackgroundService.updateNotification({
-        taskTitle: 'Import Novel',
+        taskTitle: getString('advancedSettingsScreen.importNovel'),
         taskDesc: '0/' + novel.chapters.length,
         progressBar: {
           value: 0,
@@ -276,7 +277,7 @@ const importEpubAction = async (taskData?: TaskData) => {
     // move static files
     const novelDir = NovelDownloadFolder + '/local/' + novelId;
     BackgroundService.updateNotification({
-      taskTitle: 'Import static files',
+      taskTitle: getString('advancedSettingsScreen.importStaticFiles'),
       taskDesc: '0/' + filePathSet.size,
       progressBar: {
         value: 0,
@@ -302,15 +303,15 @@ const importEpubAction = async (taskData?: TaskData) => {
     }
     Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Import Epub',
-        body: 'Done',
+        title: getString('advancedSettingsScreen.importEpub'),
+        body: getString('common.done'),
       },
       trigger: null,
     });
   } catch (e: any) {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Import error',
+        title: getString('advancedSettingsScreen.importError'),
         body: e.message,
       },
       trigger: null,
@@ -328,7 +329,7 @@ export const importEpub = async () => {
       copyToCacheDirectory: false,
     });
     if (epubFile.type === 'cancel') {
-      throw new Error('Cancel');
+      throw new Error(getString('common.cancel'));
     }
     await BackgroundService.start<TaskData>(importEpubAction, {
       taskName: 'Import Epub',
@@ -345,7 +346,7 @@ export const importEpub = async () => {
     // importEpubAction catches itself
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: 'Import error',
+        title: getString('advancedSettingsScreen.importError'),
         body: e.message,
       },
       trigger: null,
