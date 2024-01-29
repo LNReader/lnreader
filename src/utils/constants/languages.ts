@@ -19,6 +19,7 @@ export const languages = {
 } as const;
 
 export type Language = keyof typeof languages;
+export type NativeLanguage = (typeof languages)[Language];
 
 export const languagesMapping: Record<string, Language | undefined> = {
   'ab': 'Arabic',

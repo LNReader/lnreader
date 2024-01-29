@@ -118,7 +118,7 @@ export default function usePlugins() {
           version: _plg.version,
         };
         // safe
-        if (!installedPlugins.some(_plg => _plg.id === plugin.id)) {
+        if (!installedPlugins.some(plg => plg.id === plugin.id)) {
           setMMKVObject(INSTALLED_PLUGINS, [...installedPlugins, actualPlugin]);
         }
         setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
