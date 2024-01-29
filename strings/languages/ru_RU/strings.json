@@ -95,7 +95,7 @@
       "showBatteryAndTime": "Показывать батарею и время",
       "showProgressPercentage": "Показывать процент прогресса",
       "swipeGestures": "Проведите влево или вправо для перехода между главами",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "readerPages": "Нажмите слева или справа для перехода между страницами при чтении (экспериментально)",
       "allowTextSelection": "Разрешить выделение текста",
       "useChapterDrawerSwipeNavigation": "Проведите вправо, чтобы открыть",
       "removeExtraSpacing": "Удалить дополнительный интервал параграфа",
@@ -137,7 +137,7 @@
       "useReaderTheme": "Использовать тему для чтения",
       "useCustomCSS": "Использовать пользовательский CSS",
       "useCustomJS": "Использовать пользовательский JS",
-      "useCustomJSWarning": "Может поддерживаться не всеми читателями EPUB",
+      "useCustomJSWarning": "Может поддерживаться не всеми ридерами EPUB",
       "chaptersWarning": "Включать в EPUB только загруженные главы"
     }
   },
@@ -171,7 +171,7 @@
         "epubLocationDescription": "Место открытия и экспорта файлов EPUB.",
         "downloadNewChapters": "Скачивать новые главы",
         "disableHapticFeedback": "Отключить виброотклик",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
+        "jumpToLastReadChapter": "Перейти к последней прочитанной главе в списке"
       },
       "readerSettings": {
         "title": "Чтение",
