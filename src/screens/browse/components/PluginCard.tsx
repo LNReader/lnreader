@@ -11,6 +11,7 @@ import { Image } from 'react-native';
 import { showToast } from '@utils/showToast';
 import { ActivityIndicator } from 'react-native-paper';
 import { getString } from '@strings/translations';
+import { languages } from '@utils/constants/languages';
 
 interface Props {
   installed: boolean;
@@ -74,7 +75,7 @@ const PluginCard: React.FC<Props> = ({
               numberOfLines={1}
               style={[{ color: theme.onSurfaceVariant }, styles.addition]}
             >
-              {`${plugin.lang} - ${plugin.version}`}
+              {`${languages[plugin.lang]} - ${plugin.version}`}
             </Text>
           </View>
         </View>
