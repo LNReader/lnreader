@@ -11,6 +11,7 @@ export const createNovelTableQuery = `
     status TEXT Default 'Unknown', 
     genres TEXT,
     inLibrary INTEGER DEFAULT 0,
-    isLocal INTERGER DEFAULT 0
+    isLocal INTEGER DEFAULT 0,
+    totalPages INTEGER DEFAULT 1
   );
 `;

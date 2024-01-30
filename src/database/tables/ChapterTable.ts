@@ -11,6 +11,7 @@ export const createChapterTableQuery = `
         isDownloaded INTEGER DEFAULT 0,
         updatedTime TEXT,
         chapterNumber REAL NULL,
+        page INTEGER DEFAULT 1,
         FOREIGN KEY (novelId) REFERENCES Novel(id) ON DELETE CASCADE
     )
 `;
