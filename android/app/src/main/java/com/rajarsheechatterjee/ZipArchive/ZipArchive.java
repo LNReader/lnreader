@@ -147,6 +147,7 @@ public class ZipArchive extends ReactContextBaseJavaModule {
                     }
                     ZipOutputStream zos = new ZipOutputStream(connection.getOutputStream());
                     zipProcess(sourceDirPath, zos);
+                    promise.resolve(null);
                 }catch (Exception e){
                     promise.reject(e.getCause());
                 }

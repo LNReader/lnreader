@@ -4,12 +4,12 @@ interface ZipArchiveInterface {
   remoteUnzip: (
     distDirPath: string,
     url: string,
-    headers?: Record<string, string>,
+    headers: Record<string, string>,
   ) => Promise<void>;
   remoteZip: (
     sourceDirPath: string,
     url: string,
-    headers?: Record<string, string>,
+    headers: Record<string, string>,
   ) => Promise<void>;
 }
 const { ZipArchive } = NativeModules;

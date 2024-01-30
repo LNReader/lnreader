@@ -8,7 +8,6 @@ export enum BackupDataFileName {
   VERSION = 'Version.json',
   CATEGORY = 'Category.json',
   SETTING = 'Setting.json',
-  THEME = 'Theme.json',
 }
 
 export enum TaskType {
@@ -17,7 +16,6 @@ export enum TaskType {
   NOVEL_AND_CHAPTERS = 'Novel and Chapters',
   DOWNLOAD = 'Download',
   SETTING = 'Setting',
-  THEME = 'Theme',
 }
 
 export interface BackupPackage {

@@ -1,30 +1,21 @@
 import { MMKVStorage } from '@utils/mmkv/mmkv';
+import RNFS from 'react-native-fs';
 import { sleep } from '@utils/sleep';
 import BackgroundService from 'react-native-background-actions';
 import * as Notifications from 'expo-notifications';
-import { upload } from '@api/remote';
-import {
-  categoryTask,
-  downloadTask,
-  novelTask,
-  settingTask,
-  versionTask,
-} from './backupTasks';
-
-import {
-  restoreCategory,
-  restoreNovel,
-  restoreSetting,
-  retoreDownload,
-} from './restoreTasks';
+import { download, upload } from '@api/remote';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
+import { prepareBackupData, restoreData } from '../utils';
+import { AppDownloadFolder } from '@utils/constants/download';
 
 interface TaskData {
   delay: number;
   host: string;
   backupFolder: string;
 }
+
+const CACHE_DIR_PATH = RNFS.ExternalCachesDirectoryPath + '/BackupData';
 
 const remoteBackupAction = async (taskData?: TaskData) => {
   try {
@@ -33,47 +24,24 @@ const remoteBackupAction = async (taskData?: TaskData) => {
       throw new Error('No data provided');
     }
     const { delay, backupFolder, host } = taskData;
-    await sleep(delay);
 
-    const dataFolder = [backupFolder, 'Data'];
-    const downloadFolder = [backupFolder, 'Download'];
-    const novelFolder = [backupFolder, 'Data', 'NovelAndChapters'];
-
-    const taskList = [
-      versionTask(dataFolder),
-      novelTask(novelFolder),
-      categoryTask(dataFolder),
-      downloadTask(downloadFolder),
-      settingTask(dataFolder),
-    ];
-
-    for (let i = 0; i < taskList.length; i++) {
-      const { taskType, subtasks } = await taskList[i];
-      for (let j = 0; j < subtasks.length; j++) {
-        await BackgroundService.updateNotification({
-          taskDesc: `${getString('common.backup')} ${taskType} (${j}/${
-            subtasks.length
-          })`,
-          progressBar: {
-            max: subtasks.length,
-            value: j,
+    await prepareBackupData(CACHE_DIR_PATH)
+      .then(() => sleep(delay))
+      .then(() => upload(host, backupFolder, 'data.zip', CACHE_DIR_PATH))
+      .then(() => sleep(delay))
+      .then(() => upload(host, backupFolder, 'download.zip', AppDownloadFolder))
+      .then(() => {
+        return Notifications.scheduleNotificationAsync({
+          content: {
+            title: getString('backupScreen.remote.backup'),
+            body: getString('common.done'),
           },
-        })
-          .then(() => subtasks[j]())
-          .then(backupPackage => upload(host, backupPackage))
-          .catch(error => {
-            throw error;
-          });
-      }
-    }
-
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: getString('backupScreen.remote.backup'),
-        body: getString('common.done'),
-      },
-      trigger: null,
-    });
+          trigger: null,
+        });
+      })
+      .catch(error => {
+        throw error;
+      });
   } catch (error: any) {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
@@ -118,41 +86,11 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       throw new Error('No data provided');
     }
     const { delay, backupFolder, host } = taskData;
+    await download(host, backupFolder, 'data.zip', CACHE_DIR_PATH);
     await sleep(delay);
-
-    const dataFolder = [backupFolder, 'Data'];
-    const downloadFolder = [backupFolder, 'Download'];
-    const novelFolder = [backupFolder, 'Data', 'NovelAndChapters'];
-
-    if (!dataFolder || !downloadFolder || !novelFolder) {
-      throw new Error('Invalid backup folder');
-    }
-
-    const taskList = [
-      restoreNovel(host, novelFolder),
-      restoreCategory(host, dataFolder),
-      retoreDownload(host, downloadFolder),
-      restoreSetting(host, dataFolder),
-    ];
-
-    for (let i = 0; i < taskList.length; i++) {
-      const { taskType, subtasks } = await taskList[i]();
-      for (let j = 0; j < subtasks.length; j++) {
-        await BackgroundService.updateNotification({
-          taskDesc: `${getString('common.restore')} ${taskType} (${j}/${
-            subtasks.length
-          })`,
-          progressBar: {
-            max: subtasks.length,
-            value: j,
-          },
-        })
-          .then(() => subtasks[j]())
-          .catch(error => {
-            throw error;
-          });
-      }
-    }
+    await restoreData(CACHE_DIR_PATH);
+    await sleep(delay);
+    await download(host, backupFolder, 'download.zip', AppDownloadFolder);
 
     await Notifications.scheduleNotificationAsync({
       content: {
