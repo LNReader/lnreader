@@ -10,7 +10,7 @@ interface ZipArchiveInterface {
     sourceDirPath: string,
     url: string,
     headers: Record<string, string>,
-  ) => Promise<void>;
+  ) => Promise<string>; // return response as text
 }
 const { ZipArchive } = NativeModules;
 

@@ -9,9 +9,11 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -54,7 +56,6 @@ public class ZipArchive extends ReactContextBaseJavaModule {
             if(!isWritten) newFile.delete();
         }
         zis.closeEntry();
-        zis.close();
     }
     @ReactMethod
     public void unzip(String sourceFilePath, String distDirPath, Promise promise) {
@@ -64,6 +65,7 @@ public class ZipArchive extends ReactContextBaseJavaModule {
                 try{
                     ZipInputStream zis = new ZipInputStream(new FileInputStream(sourceFilePath));
                     unzipProcess(zis, distDirPath);
+                    zis.close();
                     promise.resolve(null);
                 } catch (Exception e) {
                     promise.reject(e.getCause());
@@ -80,6 +82,7 @@ public class ZipArchive extends ReactContextBaseJavaModule {
                 try {
                     URL url = new URL(_url);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
                     if(headers != null){
                         Iterator<Map.Entry<String, Object>> it = headers.getEntryIterator();
                         while (it.hasNext()){
@@ -89,12 +92,8 @@ public class ZipArchive extends ReactContextBaseJavaModule {
                     }
                     ZipInputStream zis = new ZipInputStream(connection.getInputStream());
                     unzipProcess(zis, distDirPath);
-                    if(connection.getResponseCode() == 200){
-                        connection.disconnect();
-                        promise.resolve(null);
-                    }else{
-                        throw new Exception("Net work request failed");
-                    }
+                    connection.disconnect();
+                    promise.resolve(null);
                 }catch (Exception e){
                     promise.reject(e.getCause());
                 }
@@ -153,10 +152,17 @@ public class ZipArchive extends ReactContextBaseJavaModule {
                     ZipOutputStream zos = new ZipOutputStream(connection.getOutputStream());
                     zipProcess(sourceDirPath, zos);
                     if(connection.getResponseCode() == 200){
+                        InputStream is = connection.getInputStream();
+                        ByteArrayOutputStream result = new ByteArrayOutputStream();
+                        byte[] buffer = new byte[1024];
+                        for (int length; (length = is.read(buffer)) != -1; ) {
+                            result.write(buffer, 0, length);
+                        }
+                        is.close();
                         connection.disconnect();
-                        promise.resolve(null);
+                        promise.resolve(result.toString());
                     }else{
-                        throw new Exception("Net work request failed");
+                        throw new Exception("Network request failed");
                     }
                 }catch (Exception e){
                     promise.reject(e.getCause());
