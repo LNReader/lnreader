@@ -78,7 +78,7 @@ function RestoreBackup({
 }) {
   const [backupList, setBackupList] = useState<string[]>([]);
   useEffect(() => {
-    list(host, []).then(items =>
+    list(host).then(items =>
       setBackupList(items.filter(item => item.endsWith('.backup'))),
     );
   }, []);

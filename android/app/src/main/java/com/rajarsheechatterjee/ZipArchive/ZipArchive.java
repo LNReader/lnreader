@@ -89,7 +89,12 @@ public class ZipArchive extends ReactContextBaseJavaModule {
                     }
                     ZipInputStream zis = new ZipInputStream(connection.getInputStream());
                     unzipProcess(zis, distDirPath);
-                    promise.resolve(null);
+                    if(connection.getResponseCode() == 200){
+                        connection.disconnect();
+                        promise.resolve(null);
+                    }else{
+                        throw new Exception("Net work request failed");
+                    }
                 }catch (Exception e){
                     promise.reject(e.getCause());
                 }
@@ -118,7 +123,7 @@ public class ZipArchive extends ReactContextBaseJavaModule {
         byte[] buffer = new byte[4096];
         int len;
         for(String path: paths){
-            ZipEntry zipEntry = new ZipEntry(path);
+            ZipEntry zipEntry = new ZipEntry(path.replace(sourceDirPath + "/", ""));
             zos.putNextEntry(zipEntry);
             try (FileInputStream fis = new FileInputStream(path)) {
                 while ((len = fis.read(buffer)) > 0) {
@@ -147,7 +152,12 @@ public class ZipArchive extends ReactContextBaseJavaModule {
                     }
                     ZipOutputStream zos = new ZipOutputStream(connection.getOutputStream());
                     zipProcess(sourceDirPath, zos);
-                    promise.resolve(null);
+                    if(connection.getResponseCode() == 200){
+                        connection.disconnect();
+                        promise.resolve(null);
+                    }else{
+                        throw new Exception("Net work request failed");
+                    }
                 }catch (Exception e){
                     promise.reject(e.getCause());
                 }

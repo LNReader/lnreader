@@ -16,21 +16,12 @@ export const upload = (
   sourceDirPath: string,
 ) => {
   const url = `${host}/upload/${backupFolder}${PATH_SEPARATOR}${filename}`;
-  console.log(url);
-
   return ZipArchive.remoteZip(sourceDirPath, url, {});
 };
 
-export const list = (host: string, folderTree: string[]): Promise<string[]> => {
-  const url = host + '/' + 'list';
-  const body = new FormData();
-  body.append('metadata', JSON.stringify({ folderTree }));
-
-  return fetchTimeout(url, {
-    method: 'POST',
-    headers: commonHeaders,
-    body,
-  }).then(res => res.json());
+export const list = (host: string): Promise<string[]> => {
+  const url = host + '/list';
+  return fetchTimeout(url, { headers: commonHeaders }).then(res => res.json());
 };
 
 export const download = async (

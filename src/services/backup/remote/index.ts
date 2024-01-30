@@ -24,7 +24,6 @@ const remoteBackupAction = async (taskData?: TaskData) => {
       throw new Error('No data provided');
     }
     const { delay, backupFolder, host } = taskData;
-
     await prepareBackupData(CACHE_DIR_PATH)
       .then(() => sleep(delay))
       .then(() => upload(host, backupFolder, 'data.zip', CACHE_DIR_PATH))
@@ -86,19 +85,25 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       throw new Error('No data provided');
     }
     const { delay, backupFolder, host } = taskData;
-    await download(host, backupFolder, 'data.zip', CACHE_DIR_PATH);
-    await sleep(delay);
-    await restoreData(CACHE_DIR_PATH);
-    await sleep(delay);
-    await download(host, backupFolder, 'download.zip', AppDownloadFolder);
-
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: getString('backupScreen.remote.restore'),
-        body: getString('common.done'),
-      },
-      trigger: null,
-    });
+    await download(host, backupFolder, 'data.zip', CACHE_DIR_PATH)
+      .then(() => sleep(delay))
+      .then(() => restoreData(CACHE_DIR_PATH))
+      .then(() => sleep(delay))
+      .then(() =>
+        download(host, backupFolder, 'download.zip', AppDownloadFolder),
+      )
+      .then(() => {
+        return Notifications.scheduleNotificationAsync({
+          content: {
+            title: getString('backupScreen.remote.restore'),
+            body: getString('common.done'),
+          },
+          trigger: null,
+        });
+      })
+      .catch(error => {
+        throw error;
+      });
   } catch (error: any) {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
