@@ -3,22 +3,12 @@ import { sleep } from '@utils/sleep';
 import BackgroundService from 'react-native-background-actions';
 import * as Notifications from 'expo-notifications';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
-import { createFile, exists, makeDir } from '@api/drive';
-import {
-  categoryTask,
-  downloadTask,
-  novelTask,
-  settingTask,
-  versionTask,
-} from './backupTasks';
-import {
-  restoreCategory,
-  restoreNovel,
-  restoreSetting,
-  retoreDownload,
-} from './restoreTasks';
+import { exists } from '@api/drive';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
+import { CACHE_DIR_PATH, prepareBackupData } from '../utils';
+import { updateMetadata, uploadMedia } from '@api/drive/request';
+import { AppDownloadFolder } from '@utils/constants/download';
 
 interface TaskData {
   delay: number;
@@ -32,55 +22,41 @@ const driveBackupAction = async (taskData?: TaskData) => {
       throw new Error('No data provided');
     }
     const { delay, backupFolder } = taskData;
-    await sleep(delay);
-
-    const dataFolder = await makeDir('Data', backupFolder.id);
-    const downloadFolder = await makeDir('Download', backupFolder.id);
-    const novelFolder = await makeDir('NovelAndChapters', dataFolder.id);
-
-    const taskList = [
-      versionTask(dataFolder.id),
-      novelTask(novelFolder.id),
-      categoryTask(dataFolder.id),
-      downloadTask(downloadFolder.id),
-      settingTask(dataFolder.id),
-    ];
-
-    for (let i = 0; i < taskList.length; i++) {
-      const { taskType, subtasks } = await taskList[i];
-      for (let j = 0; j < subtasks.length; j++) {
-        await BackgroundService.updateNotification({
-          taskDesc: `${getString('common.backup')} ${taskType} (${j}/${
-            subtasks.length
-          })`,
-          progressBar: {
-            max: subtasks.length,
-            value: j,
+    await prepareBackupData(CACHE_DIR_PATH)
+      .then(() => sleep(delay))
+      .then(() => uploadMedia(CACHE_DIR_PATH))
+      .then(file => {
+        return updateMetadata(
+          file.id,
+          {
+            name: 'data.zip',
+            mimeType: 'application/zip',
+            parents: [backupFolder.id],
           },
-        })
-          .then(() => subtasks[j]())
-          .then(backupPackage =>
-            createFile(
-              backupPackage.name,
-              backupPackage.mimeType,
-              backupPackage.content,
-              backupPackage.folderTree[0],
-            ),
-          )
-          .then(() => sleep(delay))
-          .catch(error => {
-            throw error;
-          });
-      }
-    }
-
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: getString('backupScreen.drive.backup'),
-        body: getString('common.done'),
-      },
-      trigger: null,
-    });
+          file.parents[0],
+        );
+      })
+      .then(() => uploadMedia(AppDownloadFolder))
+      .then(file => {
+        return updateMetadata(
+          file.id,
+          {
+            name: 'download.zip',
+            mimeType: 'application/zip',
+            parents: [backupFolder.id],
+          },
+          file.parents[0],
+        );
+      })
+      .then(() => {
+        return Notifications.scheduleNotificationAsync({
+          content: {
+            title: getString('backupScreen.drive.backup'),
+            body: getString('common.done'),
+          },
+          trigger: null,
+        });
+      });
   } catch (error: any) {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
@@ -132,33 +108,6 @@ const driveRestoreAction = async (taskData?: TaskData) => {
     const novelFolder = await exists('NovelAndChapters', true, dataFolder?.id);
     if (!dataFolder || !downloadFolder || !novelFolder) {
       throw new Error('Invalid backup folder');
-    }
-
-    const taskList = [
-      restoreNovel(novelFolder.id),
-      restoreCategory(dataFolder.id),
-      retoreDownload(downloadFolder.id),
-      restoreSetting(dataFolder.id),
-    ];
-
-    for (let i = 0; i < taskList.length; i++) {
-      const { taskType, subtasks } = await taskList[i]();
-      for (let j = 0; j < subtasks.length; j++) {
-        await BackgroundService.updateNotification({
-          taskDesc: `${getString('common.restore')} ${taskType} (${j}/${
-            subtasks.length
-          })`,
-          progressBar: {
-            max: subtasks.length,
-            value: j,
-          },
-        })
-          .then(() => subtasks[j]())
-          .then(() => sleep(delay))
-          .catch(error => {
-            throw error;
-          });
-      }
     }
 
     await Notifications.scheduleNotificationAsync({

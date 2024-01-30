@@ -17,20 +17,3 @@ export enum TaskType {
   DOWNLOAD = 'Download',
   SETTING = 'Setting',
 }
-
-export interface BackupPackage {
-  folderTree: string[]; // for Drive, it must be [parentId]
-  content: string; // file text content or file uri
-  name: string;
-  mimeType: string;
-}
-
-export interface RestoreTask {
-  taskType: TaskType;
-  subtasks: Array<() => Promise<void>>;
-}
-
-export interface BackupTask {
-  taskType: TaskType; // for notification
-  subtasks: Array<() => Promise<BackupPackage>>;
-}

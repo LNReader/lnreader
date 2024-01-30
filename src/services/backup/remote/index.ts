@@ -1,12 +1,11 @@
 import { MMKVStorage } from '@utils/mmkv/mmkv';
-import RNFS from 'react-native-fs';
 import { sleep } from '@utils/sleep';
 import BackgroundService from 'react-native-background-actions';
 import * as Notifications from 'expo-notifications';
 import { download, upload } from '@api/remote';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
-import { prepareBackupData, restoreData } from '../utils';
+import { CACHE_DIR_PATH, prepareBackupData, restoreData } from '../utils';
 import { AppDownloadFolder } from '@utils/constants/download';
 
 interface TaskData {
@@ -14,8 +13,6 @@ interface TaskData {
   host: string;
   backupFolder: string;
 }
-
-const CACHE_DIR_PATH = RNFS.ExternalCachesDirectoryPath + '/BackupData';
 
 const remoteBackupAction = async (taskData?: TaskData) => {
   try {

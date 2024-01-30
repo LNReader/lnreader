@@ -1,4 +1,4 @@
-import { create, download, getJson, list } from './request';
+import { create, list } from './request';
 import { DriveCreateRequestData, DriveFile } from './types';
 
 const LNREADER_DRIVE_MARK = '(Do not change this!) LNReader-Drive';
@@ -100,12 +100,4 @@ export const readDir = async (parentId: string, marked?: boolean) => {
     fileList = fileList.concat(files);
   }
   return fileList;
-};
-
-export const readFile = async (file: DriveFile, type: 'json' | 'media') => {
-  if (type === 'json') {
-    return getJson(file.id);
-  } else {
-    return download(file);
-  }
 };
