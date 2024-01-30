@@ -6,8 +6,8 @@ import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { exists } from '@api/drive';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
-import { CACHE_DIR_PATH, prepareBackupData } from '../utils';
-import { updateMetadata, uploadMedia } from '@api/drive/request';
+import { CACHE_DIR_PATH, prepareBackupData, restoreData } from '../utils';
+import { download, updateMetadata, uploadMedia } from '@api/drive/request';
 import { AppDownloadFolder } from '@utils/constants/download';
 
 interface TaskData {
@@ -103,20 +103,33 @@ const driveRestoreAction = async (taskData?: TaskData) => {
     const { delay, backupFolder } = taskData;
     await sleep(delay);
 
-    const dataFolder = await exists('Data', true, backupFolder.id);
-    const downloadFolder = await exists('Download', true, backupFolder.id);
-    const novelFolder = await exists('NovelAndChapters', true, dataFolder?.id);
-    if (!dataFolder || !downloadFolder || !novelFolder) {
+    const zipDataFile = await exists('data.zip', false, backupFolder.id);
+    const zipDownloadFile = await exists(
+      'download.zip',
+      false,
+      backupFolder.id,
+    );
+    if (!zipDataFile || !zipDownloadFile) {
       throw new Error('Invalid backup folder');
     }
 
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: getString('backupScreen.drive.restore'),
-        body: getString('common.done'),
-      },
-      trigger: null,
-    });
+    await download(zipDataFile, CACHE_DIR_PATH)
+      .then(() => sleep(delay))
+      .then(() => restoreData(CACHE_DIR_PATH))
+      .then(() => sleep(delay))
+      .then(() => download(zipDownloadFile, AppDownloadFolder))
+      .then(() => {
+        return Notifications.scheduleNotificationAsync({
+          content: {
+            title: getString('backupScreen.drive.restore'),
+            body: getString('common.done'),
+          },
+          trigger: null,
+        });
+      })
+      .catch(error => {
+        throw error;
+      });
   } catch (error: any) {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({

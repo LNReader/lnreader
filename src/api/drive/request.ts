@@ -1,12 +1,10 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { downloadFile, mkdir, exists } from 'react-native-fs';
 import {
   DriveCreateRequestData,
   DriveFile,
   DriveReponse,
   DriveRequestParams,
 } from './types';
-import { AppDownloadFolder } from '@utils/constants/download';
 import { PATH_SEPARATOR } from '@api/constants';
 import ZipArchive from '@native/ZipArchive';
 
@@ -130,24 +128,11 @@ export const uploadMedia = async (
   return JSON.parse(response);
 };
 
-export const download = async (file: DriveFile) => {
+export const download = async (file: DriveFile, distDirPath: string) => {
   const { accessToken } = await GoogleSignin.getTokens();
   const url = BASE_URL + '/' + file.id + '?alt=media';
-  const regex = new RegExp(`${PATH_SEPARATOR}`, 'g');
-  const filePath = AppDownloadFolder + '/' + file.name.replace(regex, '/');
-  const dirPath = filePath.split('/').slice(0, -1).join('/');
-  return exists(filePath).then(existed => {
-    if (!existed) {
-      return mkdir(dirPath).then(() => {
-        return downloadFile({
-          fromUrl: url,
-          toFile: filePath,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            Accept: 'application/json',
-          },
-        });
-      });
-    }
+  return ZipArchive.remoteUnzip(distDirPath, url, {
+    Authorization: `Bearer ${accessToken}`,
+    Accept: 'application/json',
   });
 };
