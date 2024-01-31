@@ -158,6 +158,8 @@ export const _restoreCategory = (category: BackupCategory) => {
       category.id,
       category.sort,
     ]);
+  });
+  db.transaction(tx => {
     tx.executeSql('INSERT INTO Category (id, name, sort) VALUES (?, ?, ?)', [
       category.id,
       category.name,
