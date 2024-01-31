@@ -9,6 +9,7 @@ import { getString } from '@strings/translations';
 import { CACHE_DIR_PATH, prepareBackupData, restoreData } from '../utils';
 import { download, updateMetadata, uploadMedia } from '@api/drive/request';
 import { AppDownloadFolder } from '@utils/constants/download';
+import { ZipBackupName } from '../types';
 
 interface TaskData {
   delay: number;
@@ -47,7 +48,7 @@ const driveBackupAction = async (taskData?: TaskData) => {
         return updateMetadata(
           file.id,
           {
-            name: 'data.zip',
+            name: ZipBackupName.DATA,
             mimeType: 'application/zip',
             parents: [backupFolder.id],
           },
@@ -69,7 +70,7 @@ const driveBackupAction = async (taskData?: TaskData) => {
         return updateMetadata(
           file.id,
           {
-            name: 'download.zip',
+            name: ZipBackupName.DOWNLOAD,
             mimeType: 'application/zip',
             parents: [backupFolder.id],
           },
@@ -131,9 +132,13 @@ const driveRestoreAction = async (taskData?: TaskData) => {
     const { delay, backupFolder } = taskData;
     await sleep(delay);
 
-    const zipDataFile = await exists('data.zip', false, backupFolder.id);
+    const zipDataFile = await exists(
+      ZipBackupName.DATA,
+      false,
+      backupFolder.id,
+    );
     const zipDownloadFile = await exists(
-      'download.zip',
+      ZipBackupName.DOWNLOAD,
       false,
       backupFolder.id,
     );

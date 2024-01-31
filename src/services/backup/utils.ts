@@ -4,7 +4,6 @@ import { TRACKER } from '@hooks/persisted/useTracker';
 import { LAST_UPDATE_TIME } from '@hooks/persisted/useUpdates';
 import { BACKGROUND_ACTION } from '@services/constants';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
-import { BackupDataFileName, BackupFolderName } from './types';
 import { appVersion } from '@utils/versionUtils';
 import {
   _restoreNovelAndChapters,
@@ -17,6 +16,7 @@ import {
   getCategoriesFromDb,
 } from '@database/queries/CategoryQueries';
 import { BackupCategory } from '@database/types';
+import { BackupEntryName } from './types';
 
 export const CACHE_DIR_PATH = RNFS.ExternalCachesDirectoryPath + '/BackupData';
 
@@ -51,7 +51,7 @@ const restoreMMKVData = (data: any) => {
 };
 
 export const prepareBackupData = async (cacheDirPath: string) => {
-  const novelDirPath = cacheDirPath + '/' + BackupFolderName.NOVEL_AND_CHAPTERS;
+  const novelDirPath = cacheDirPath + '/' + BackupEntryName.NOVEL_AND_CHAPTERS;
   if (await RNFS.exists(novelDirPath)) {
     await RNFS.unlink(novelDirPath);
   }
@@ -60,7 +60,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
 
   // version
   await RNFS.writeFile(
-    cacheDirPath + '/' + BackupDataFileName.VERSION,
+    cacheDirPath + '/' + BackupEntryName.VERSION,
     JSON.stringify({ version: appVersion }),
   );
 
@@ -82,7 +82,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   await getCategoriesFromDb().then(categories => {
     return getAllNovelCategories().then(async novelCategories => {
       await RNFS.writeFile(
-        cacheDirPath + '/' + BackupDataFileName.CATEGORY,
+        cacheDirPath + '/' + BackupEntryName.CATEGORY,
         JSON.stringify(
           categories.map(category => {
             return {
@@ -99,13 +99,13 @@ export const prepareBackupData = async (cacheDirPath: string) => {
 
   // settings
   await RNFS.writeFile(
-    cacheDirPath + '/' + BackupDataFileName.SETTING,
+    cacheDirPath + '/' + BackupEntryName.SETTING,
     JSON.stringify(backupMMKVData()),
   );
 };
 
 export const restoreData = async (cacheDirPath: string) => {
-  const novelDirPath = cacheDirPath + '/' + BackupFolderName.NOVEL_AND_CHAPTERS;
+  const novelDirPath = cacheDirPath + '/' + BackupEntryName.NOVEL_AND_CHAPTERS;
 
   // version
   // nothing to do
@@ -122,7 +122,7 @@ export const restoreData = async (cacheDirPath: string) => {
   });
 
   // categories
-  await RNFS.readFile(cacheDirPath + '/' + BackupDataFileName.CATEGORY).then(
+  await RNFS.readFile(cacheDirPath + '/' + BackupEntryName.CATEGORY).then(
     async content => {
       const categories: BackupCategory[] = JSON.parse(content);
       for (const category of categories) {
@@ -132,7 +132,7 @@ export const restoreData = async (cacheDirPath: string) => {
   );
 
   // settings
-  await RNFS.readFile(cacheDirPath + '/' + BackupDataFileName.SETTING).then(
+  await RNFS.readFile(cacheDirPath + '/' + BackupEntryName.SETTING).then(
     content => {
       restoreMMKVData(JSON.parse(content));
     },

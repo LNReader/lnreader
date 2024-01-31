@@ -7,6 +7,7 @@ import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
 import { CACHE_DIR_PATH, prepareBackupData, restoreData } from '../utils';
 import { AppDownloadFolder } from '@utils/constants/download';
+import { ZipBackupName } from '../types';
 
 interface TaskData {
   delay: number;
@@ -41,7 +42,9 @@ const remoteBackupAction = async (taskData?: TaskData) => {
         }),
       )
       .then(() => sleep(delay))
-      .then(() => upload(host, backupFolder, 'data.zip', CACHE_DIR_PATH))
+      .then(() =>
+        upload(host, backupFolder, ZipBackupName.DATA, CACHE_DIR_PATH),
+      )
       .then(() =>
         BackgroundService.updateNotification({
           taskDesc: 'Uploading Downloaded files',
@@ -53,7 +56,9 @@ const remoteBackupAction = async (taskData?: TaskData) => {
         }),
       )
       .then(() => sleep(delay))
-      .then(() => upload(host, backupFolder, 'download.zip', AppDownloadFolder))
+      .then(() =>
+        upload(host, backupFolder, ZipBackupName.DOWNLOAD, AppDownloadFolder),
+      )
       .then(() => {
         return Notifications.scheduleNotificationAsync({
           content: {
@@ -118,7 +123,9 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
         max: 3,
       },
     })
-      .then(() => download(host, backupFolder, 'data.zip', CACHE_DIR_PATH))
+      .then(() =>
+        download(host, backupFolder, ZipBackupName.DATA, CACHE_DIR_PATH),
+      )
       .then(() =>
         BackgroundService.updateNotification({
           taskDesc: 'Restoring Data',
@@ -143,7 +150,7 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       )
       .then(() => sleep(delay))
       .then(() =>
-        download(host, backupFolder, 'download.zip', AppDownloadFolder),
+        download(host, backupFolder, ZipBackupName.DOWNLOAD, AppDownloadFolder),
       )
       .then(() =>
         Notifications.scheduleNotificationAsync({
