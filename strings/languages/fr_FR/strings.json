@@ -95,7 +95,7 @@
       "showBatteryAndTime": "Afficher la batterie et l'heure",
       "showProgressPercentage": "Afficher le pourcentage de progression",
       "swipeGestures": "Balayez vers la gauche ou la droite pour passer d'un chapitre à l'autre.",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "readerPages": "Appuyez à gauche ou à droite pour naviguer dans les pages du lecteur (expérimental)",
       "allowTextSelection": "Permettre la sélection du texte",
       "useChapterDrawerSwipeNavigation": "Balayez vers la droite pour ouvrir le tiroir",
       "removeExtraSpacing": "Supprimer l'espacement de paragraphe supplémentaire",
@@ -171,7 +171,7 @@
         "epubLocationDescription": "L'endroit où vous ouvrez et exportez vos fichiers EPUB.",
         "downloadNewChapters": "Télécharger les nouveaux chapitres",
         "disableHapticFeedback": "Désactiver le retour haptique",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
+        "jumpToLastReadChapter": "Aller au dernier chapitre lu"
       },
       "readerSettings": {
         "title": "Lecteur",
