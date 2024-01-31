@@ -219,7 +219,7 @@ export default function GoogleDriveModal({
   const [user, setUser] = useState<User | null | undefined>(null);
   useEffect(() => {
     GoogleSignin.configure({
-      scopes: ['https://www.googleapis.com/auth/drive'],
+      scopes: ['https://www.googleapis.com/auth/drive.file'],
     });
     GoogleSignin.isSignedIn()
       .then(isSignedIn => {
