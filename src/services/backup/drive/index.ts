@@ -3,22 +3,13 @@ import { sleep } from '@utils/sleep';
 import BackgroundService from 'react-native-background-actions';
 import * as Notifications from 'expo-notifications';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
-import { createFile, exists, makeDir } from '@api/drive';
-import {
-  categoryTask,
-  downloadTask,
-  novelTask,
-  settingTask,
-  versionTask,
-} from './backupTasks';
-import {
-  restoreCategory,
-  restoreNovel,
-  restoreSetting,
-  retoreDownload,
-} from './restoreTasks';
+import { exists } from '@api/drive';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
+import { CACHE_DIR_PATH, prepareBackupData, restoreData } from '../utils';
+import { download, updateMetadata, uploadMedia } from '@api/drive/request';
+import { AppDownloadFolder } from '@utils/constants/download';
+import { ZipBackupName } from '../types';
 
 interface TaskData {
   delay: number;
@@ -32,55 +23,69 @@ const driveBackupAction = async (taskData?: TaskData) => {
       throw new Error('No data provided');
     }
     const { delay, backupFolder } = taskData;
-    await sleep(delay);
-
-    const dataFolder = await makeDir('Data', backupFolder.id);
-    const downloadFolder = await makeDir('Download', backupFolder.id);
-    const novelFolder = await makeDir('NovelAndChapters', dataFolder.id);
-
-    const taskList = [
-      versionTask(dataFolder.id),
-      novelTask(novelFolder.id),
-      categoryTask(dataFolder.id),
-      downloadTask(downloadFolder.id),
-      settingTask(dataFolder.id),
-    ];
-
-    for (let i = 0; i < taskList.length; i++) {
-      const { taskType, subtasks } = await taskList[i];
-      for (let j = 0; j < subtasks.length; j++) {
-        await BackgroundService.updateNotification({
-          taskDesc: `${getString('common.backup')} ${taskType} (${j}/${
-            subtasks.length
-          })`,
-          progressBar: {
-            max: subtasks.length,
-            value: j,
-          },
-        })
-          .then(() => subtasks[j]())
-          .then(backupPackage =>
-            createFile(
-              backupPackage.name,
-              backupPackage.mimeType,
-              backupPackage.content,
-              backupPackage.folderTree[0],
-            ),
-          )
-          .then(() => sleep(delay))
-          .catch(error => {
-            throw error;
-          });
-      }
-    }
-
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: getString('backupScreen.drive.backup'),
-        body: getString('common.done'),
+    await BackgroundService.updateNotification({
+      taskDesc: 'Preparing Data',
+      progressBar: {
+        indeterminate: true,
+        value: 0,
+        max: 3,
       },
-      trigger: null,
-    });
+    })
+      .then(() => prepareBackupData(CACHE_DIR_PATH))
+      .then(() =>
+        BackgroundService.updateNotification({
+          taskDesc: 'Uploading Data',
+          progressBar: {
+            indeterminate: true,
+            value: 1,
+            max: 3,
+          },
+        }),
+      )
+      .then(() => sleep(delay))
+      .then(() => uploadMedia(CACHE_DIR_PATH))
+      .then(file => {
+        return updateMetadata(
+          file.id,
+          {
+            name: ZipBackupName.DATA,
+            mimeType: 'application/zip',
+            parents: [backupFolder.id],
+          },
+          file.parents[0],
+        );
+      })
+      .then(() =>
+        BackgroundService.updateNotification({
+          taskDesc: 'Uploading Downloaded files',
+          progressBar: {
+            indeterminate: true,
+            value: 2,
+            max: 3,
+          },
+        }),
+      )
+      .then(() => uploadMedia(AppDownloadFolder))
+      .then(file => {
+        return updateMetadata(
+          file.id,
+          {
+            name: ZipBackupName.DOWNLOAD,
+            mimeType: 'application/zip',
+            parents: [backupFolder.id],
+          },
+          file.parents[0],
+        );
+      })
+      .then(() => {
+        return Notifications.scheduleNotificationAsync({
+          content: {
+            title: getString('backupScreen.drive.backup'),
+            body: getString('common.done'),
+          },
+          trigger: null,
+        });
+      });
   } catch (error: any) {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({
@@ -127,47 +132,64 @@ const driveRestoreAction = async (taskData?: TaskData) => {
     const { delay, backupFolder } = taskData;
     await sleep(delay);
 
-    const dataFolder = await exists('Data', true, backupFolder.id);
-    const downloadFolder = await exists('Download', true, backupFolder.id);
-    const novelFolder = await exists('NovelAndChapters', true, dataFolder?.id);
-    if (!dataFolder || !downloadFolder || !novelFolder) {
+    const zipDataFile = await exists(
+      ZipBackupName.DATA,
+      false,
+      backupFolder.id,
+    );
+    const zipDownloadFile = await exists(
+      ZipBackupName.DOWNLOAD,
+      false,
+      backupFolder.id,
+    );
+    if (!zipDataFile || !zipDownloadFile) {
       throw new Error('Invalid backup folder');
     }
-
-    const taskList = [
-      restoreNovel(novelFolder.id),
-      restoreCategory(dataFolder.id),
-      retoreDownload(downloadFolder.id),
-      restoreSetting(dataFolder.id),
-    ];
-
-    for (let i = 0; i < taskList.length; i++) {
-      const { taskType, subtasks } = await taskList[i]();
-      for (let j = 0; j < subtasks.length; j++) {
-        await BackgroundService.updateNotification({
-          taskDesc: `${getString('common.restore')} ${taskType} (${j}/${
-            subtasks.length
-          })`,
-          progressBar: {
-            max: subtasks.length,
-            value: j,
-          },
-        })
-          .then(() => subtasks[j]())
-          .then(() => sleep(delay))
-          .catch(error => {
-            throw error;
-          });
-      }
-    }
-
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: getString('backupScreen.drive.restore'),
-        body: getString('common.done'),
+    await BackgroundService.updateNotification({
+      taskDesc: 'Downloading Data',
+      progressBar: {
+        indeterminate: true,
+        value: 0,
+        max: 3,
       },
-      trigger: null,
-    });
+    })
+      .then(() => download(zipDataFile, CACHE_DIR_PATH))
+      .then(() => sleep(delay))
+      .then(() =>
+        BackgroundService.updateNotification({
+          taskDesc: 'Restoring Data',
+          progressBar: {
+            indeterminate: true,
+            value: 1,
+            max: 3,
+          },
+        }),
+      )
+      .then(() => restoreData(CACHE_DIR_PATH))
+      .then(() => sleep(delay))
+      .then(() =>
+        BackgroundService.updateNotification({
+          taskDesc: 'Downloading Downloaded files',
+          progressBar: {
+            indeterminate: true,
+            value: 2,
+            max: 3,
+          },
+        }),
+      )
+      .then(() => download(zipDownloadFile, AppDownloadFolder))
+      .then(() => {
+        return Notifications.scheduleNotificationAsync({
+          content: {
+            title: getString('backupScreen.drive.restore'),
+            body: getString('common.done'),
+          },
+          trigger: null,
+        });
+      })
+      .catch(error => {
+        throw error;
+      });
   } catch (error: any) {
     if (BackgroundService.isRunning()) {
       await Notifications.scheduleNotificationAsync({

@@ -1,8 +1,6 @@
 import { PATH_SEPARATOR } from '@api/constants';
-import { BackupPackage } from '@services/backup/types';
-import { AppDownloadFolder } from '@utils/constants/download';
+import ZipArchive from '@native/ZipArchive';
 import { fetchTimeout } from '@utils/fetch/fetch';
-import { downloadFile, mkdir } from 'react-native-fs';
 
 const commonHeaders = {
   'Connection': 'keep-alive',
@@ -11,80 +9,27 @@ const commonHeaders = {
   'Accept-Encoding': 'gzip, deflate, br',
 };
 
-export const upload = (host: string, data: BackupPackage) => {
-  const url = host + '/' + 'upload';
-  const body = new FormData();
-  data.name = data.name.replace(/\//g, PATH_SEPARATOR);
-  body.append('metadata', JSON.stringify(data));
-  if (data.mimeType === 'application/json') {
-    body.append('media', {
-      string: data.content,
-      type: data.mimeType,
-    });
-  } else {
-    body.append('media', {
-      name: data.name,
-      uri: data.content,
-      type: data.mimeType,
-    });
-  }
-  return fetchTimeout(url, {
-    method: 'POST',
-    headers: commonHeaders,
-    body,
-  });
+export const upload = (
+  host: string,
+  backupFolder: string,
+  filename: string,
+  sourceDirPath: string,
+) => {
+  const url = `${host}/upload/${backupFolder}${PATH_SEPARATOR}${filename}`;
+  return ZipArchive.remoteZip(sourceDirPath, url, {});
 };
 
-export const list = (host: string, folderTree: string[]): Promise<string[]> => {
-  const url = host + '/' + 'list';
-  const body = new FormData();
-  body.append('metadata', JSON.stringify({ folderTree }));
-
-  return fetchTimeout(url, {
-    method: 'POST',
-    headers: commonHeaders,
-    body,
-  }).then(res => res.json());
-};
-
-export const getJson = (host: string, folderTree: string[], name: string) => {
-  const url = host + '/' + 'download' + '/' + folderTree.join('/') + '/' + name;
-  return fetchTimeout(url, {
-    headers: commonHeaders,
-  }).then(res => res.json());
+export const list = (host: string): Promise<string[]> => {
+  const url = host + '/list';
+  return fetchTimeout(url, { headers: commonHeaders }).then(res => res.json());
 };
 
 export const download = async (
   host: string,
-  folderTree: string[],
-  name: string,
+  backupFolder: string,
+  filename: string,
+  distDirPath: string,
 ) => {
-  const url = host + '/' + 'download' + '/' + folderTree.join('/') + '/' + name;
-  const regex = new RegExp(`${PATH_SEPARATOR}`, 'g');
-  const filePath = AppDownloadFolder + '/' + name.replace(regex, '/');
-  const dirPath = filePath.split('/').slice(0, -1).join('/');
-  await mkdir(dirPath).then(() => {
-    return downloadFile({
-      fromUrl: url,
-      toFile: filePath,
-      headers: commonHeaders,
-    }).promise;
-  });
-};
-
-export const exists = (
-  host: string,
-  folderTree: string[],
-  name: string,
-): Promise<boolean> => {
-  const url = host + '/' + 'exists';
-  const body = new FormData();
-  body.append('metadata', JSON.stringify({ folderTree, name }));
-  return fetchTimeout(url, {
-    method: 'POST',
-    headers: commonHeaders,
-    body,
-  })
-    .then(res => res.json())
-    .then(data => data.exists);
+  const url = `${host}/download/${backupFolder}${PATH_SEPARATOR}${filename}`;
+  return ZipArchive.remoteUnzip(distDirPath, url, {});
 };

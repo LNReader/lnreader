@@ -180,7 +180,7 @@ function RestoreBackup({
             }}
           >
             <Text style={{ color: theme.primary }}>
-              {item.name.replace(/\.backup$/, ' ')}
+              {item.name?.replace(/\.backup$/, ' ')}
             </Text>
             <Text style={{ color: theme.secondary, fontSize: 12 }}>
               {'(' + dayjs(item.createdTime).format('LL') + ')'}
@@ -219,7 +219,7 @@ export default function GoogleDriveModal({
   const [user, setUser] = useState<User | null | undefined>(null);
   useEffect(() => {
     GoogleSignin.configure({
-      scopes: ['https://www.googleapis.com/auth/drive'],
+      scopes: ['https://www.googleapis.com/auth/drive.file'],
     });
     GoogleSignin.isSignedIn()
       .then(isSignedIn => {
@@ -303,10 +303,12 @@ export default function GoogleDriveModal({
               }
             }}
           >
-            <Image
-              source={{ uri: user?.user.photo || '' }}
-              style={styles.avatar}
-            />
+            {user && (
+              <Image
+                source={{ uri: user?.user.photo || '' }}
+                style={styles.avatar}
+              />
+            )}
           </TouchableOpacity>
         </View>
         {renderModal()}

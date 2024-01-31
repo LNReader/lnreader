@@ -22,6 +22,8 @@ export interface DriveRequestParams {
   fields?: string;
   pageToken?: string;
   uploadType?: string; // only for upload
+  addParents?: string;
+  removeParents?: string;
 }
 
 export interface DriveCreateRequestData {
