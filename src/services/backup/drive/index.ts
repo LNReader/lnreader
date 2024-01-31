@@ -22,7 +22,25 @@ const driveBackupAction = async (taskData?: TaskData) => {
       throw new Error('No data provided');
     }
     const { delay, backupFolder } = taskData;
-    await prepareBackupData(CACHE_DIR_PATH)
+    await BackgroundService.updateNotification({
+      taskDesc: 'Preparing Data',
+      progressBar: {
+        indeterminate: true,
+        value: 0,
+        max: 3,
+      },
+    })
+      .then(() => prepareBackupData(CACHE_DIR_PATH))
+      .then(() =>
+        BackgroundService.updateNotification({
+          taskDesc: 'Uploading Data',
+          progressBar: {
+            indeterminate: true,
+            value: 1,
+            max: 3,
+          },
+        }),
+      )
       .then(() => sleep(delay))
       .then(() => uploadMedia(CACHE_DIR_PATH))
       .then(file => {
@@ -36,6 +54,16 @@ const driveBackupAction = async (taskData?: TaskData) => {
           file.parents[0],
         );
       })
+      .then(() =>
+        BackgroundService.updateNotification({
+          taskDesc: 'Uploading Downloaded files',
+          progressBar: {
+            indeterminate: true,
+            value: 2,
+            max: 3,
+          },
+        }),
+      )
       .then(() => uploadMedia(AppDownloadFolder))
       .then(file => {
         return updateMetadata(
@@ -112,11 +140,38 @@ const driveRestoreAction = async (taskData?: TaskData) => {
     if (!zipDataFile || !zipDownloadFile) {
       throw new Error('Invalid backup folder');
     }
-
-    await download(zipDataFile, CACHE_DIR_PATH)
+    await BackgroundService.updateNotification({
+      taskDesc: 'Downloading Data',
+      progressBar: {
+        indeterminate: true,
+        value: 0,
+        max: 3,
+      },
+    })
+      .then(() => download(zipDataFile, CACHE_DIR_PATH))
       .then(() => sleep(delay))
+      .then(() =>
+        BackgroundService.updateNotification({
+          taskDesc: 'Restoring Data',
+          progressBar: {
+            indeterminate: true,
+            value: 1,
+            max: 3,
+          },
+        }),
+      )
       .then(() => restoreData(CACHE_DIR_PATH))
       .then(() => sleep(delay))
+      .then(() =>
+        BackgroundService.updateNotification({
+          taskDesc: 'Downloading Downloaded files',
+          progressBar: {
+            indeterminate: true,
+            value: 2,
+            max: 3,
+          },
+        }),
+      )
       .then(() => download(zipDownloadFile, AppDownloadFolder))
       .then(() => {
         return Notifications.scheduleNotificationAsync({

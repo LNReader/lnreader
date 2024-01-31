@@ -21,9 +21,37 @@ const remoteBackupAction = async (taskData?: TaskData) => {
       throw new Error('No data provided');
     }
     const { delay, backupFolder, host } = taskData;
-    await prepareBackupData(CACHE_DIR_PATH)
+    await BackgroundService.updateNotification({
+      taskDesc: 'Preparing Data',
+      progressBar: {
+        indeterminate: true,
+        value: 0,
+        max: 3,
+      },
+    })
+      .then(() => prepareBackupData(CACHE_DIR_PATH))
+      .then(() =>
+        BackgroundService.updateNotification({
+          taskDesc: 'Uploading Data',
+          progressBar: {
+            indeterminate: true,
+            value: 1,
+            max: 3,
+          },
+        }),
+      )
       .then(() => sleep(delay))
       .then(() => upload(host, backupFolder, 'data.zip', CACHE_DIR_PATH))
+      .then(() =>
+        BackgroundService.updateNotification({
+          taskDesc: 'Uploading Downloaded files',
+          progressBar: {
+            indeterminate: true,
+            value: 2,
+            max: 3,
+          },
+        }),
+      )
       .then(() => sleep(delay))
       .then(() => upload(host, backupFolder, 'download.zip', AppDownloadFolder))
       .then(() => {
@@ -82,22 +110,50 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       throw new Error('No data provided');
     }
     const { delay, backupFolder, host } = taskData;
-    await download(host, backupFolder, 'data.zip', CACHE_DIR_PATH)
+    await BackgroundService.updateNotification({
+      taskDesc: 'Downloading Data',
+      progressBar: {
+        indeterminate: true,
+        value: 0,
+        max: 3,
+      },
+    })
+      .then(() => download(host, backupFolder, 'data.zip', CACHE_DIR_PATH))
+      .then(() =>
+        BackgroundService.updateNotification({
+          taskDesc: 'Restoring Data',
+          progressBar: {
+            indeterminate: true,
+            value: 1,
+            max: 3,
+          },
+        }),
+      )
       .then(() => sleep(delay))
       .then(() => restoreData(CACHE_DIR_PATH))
+      .then(() =>
+        BackgroundService.updateNotification({
+          taskDesc: 'Downloading Downloaded files',
+          progressBar: {
+            indeterminate: true,
+            value: 2,
+            max: 3,
+          },
+        }),
+      )
       .then(() => sleep(delay))
       .then(() =>
         download(host, backupFolder, 'download.zip', AppDownloadFolder),
       )
-      .then(() => {
-        return Notifications.scheduleNotificationAsync({
+      .then(() =>
+        Notifications.scheduleNotificationAsync({
           content: {
             title: getString('backupScreen.remote.restore'),
             body: getString('common.done'),
           },
           trigger: null,
-        });
-      })
+        }),
+      )
       .catch(error => {
         throw error;
       });
