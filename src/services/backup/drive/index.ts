@@ -20,11 +20,11 @@ const driveBackupAction = async (taskData?: TaskData) => {
   try {
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
     if (!taskData) {
-      throw new Error('No data provided');
+      throw new Error(getString('backupScreen.noDataProvided'));
     }
     const { delay, backupFolder } = taskData;
     await BackgroundService.updateNotification({
-      taskDesc: 'Preparing Data',
+      taskDesc: getString('backupScreen.preparingData'),
       progressBar: {
         indeterminate: true,
         value: 0,
@@ -34,7 +34,7 @@ const driveBackupAction = async (taskData?: TaskData) => {
       .then(() => prepareBackupData(CACHE_DIR_PATH))
       .then(() =>
         BackgroundService.updateNotification({
-          taskDesc: 'Uploading Data',
+          taskDesc: getString('backupScreen.uploadingData'),
           progressBar: {
             indeterminate: true,
             value: 1,
@@ -57,7 +57,7 @@ const driveBackupAction = async (taskData?: TaskData) => {
       })
       .then(() =>
         BackgroundService.updateNotification({
-          taskDesc: 'Uploading Downloaded files',
+          taskDesc: getString('backupScreen.uploadingDownloadedFiles'),
           progressBar: {
             indeterminate: true,
             value: 2,
@@ -127,7 +127,7 @@ const driveRestoreAction = async (taskData?: TaskData) => {
   try {
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
     if (!taskData) {
-      throw new Error('No data provided');
+      throw new Error(getString('backupScreen.noDataProvided'));
     }
     const { delay, backupFolder } = taskData;
     await sleep(delay);
@@ -143,10 +143,10 @@ const driveRestoreAction = async (taskData?: TaskData) => {
       backupFolder.id,
     );
     if (!zipDataFile || !zipDownloadFile) {
-      throw new Error('Invalid backup folder');
+      throw new Error(getString('backupScreen.invalidBackupFolder'));
     }
     await BackgroundService.updateNotification({
-      taskDesc: 'Downloading Data',
+      taskDesc: getString('backupScreen.downloadingData'),
       progressBar: {
         indeterminate: true,
         value: 0,
@@ -157,7 +157,7 @@ const driveRestoreAction = async (taskData?: TaskData) => {
       .then(() => sleep(delay))
       .then(() =>
         BackgroundService.updateNotification({
-          taskDesc: 'Restoring Data',
+          taskDesc: getString('backupScreen.restoringData'),
           progressBar: {
             indeterminate: true,
             value: 1,
@@ -169,7 +169,7 @@ const driveRestoreAction = async (taskData?: TaskData) => {
       .then(() => sleep(delay))
       .then(() =>
         BackgroundService.updateNotification({
-          taskDesc: 'Downloading Downloaded files',
+          taskDesc: getString('backupScreen.downloadingDownloadedFiles'),
           progressBar: {
             indeterminate: true,
             value: 2,
@@ -209,8 +209,8 @@ const driveRestoreAction = async (taskData?: TaskData) => {
 export const driveRestore = async (backupFolder: DriveFile) => {
   return BackgroundService.start(driveRestoreAction, {
     taskName: 'Drive Restore',
-    taskTitle: 'Drive Restore',
-    taskDesc: 'Preparing',
+    taskTitle: getString('backupScreen.drive.restore'),
+    taskDesc: getString('common.preparing'),
     taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',
     parameters: { delay: 500, backupFolder },

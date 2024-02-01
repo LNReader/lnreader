@@ -11,6 +11,7 @@ export interface StringMap {
   'aboutScreen.whatsNew': 'string';
   'advancedSettings': 'string';
   'advancedSettingsScreen.cachedNovelsDeletedToast': 'string';
+  'advancedSettingsScreen.chapterInsertFailed': 'string';
   'advancedSettingsScreen.clearCachedNovels': 'string';
   'advancedSettingsScreen.clearCachedNovelsDesc': 'string';
   'advancedSettingsScreen.clearDatabaseWarning': 'string';
@@ -25,6 +26,8 @@ export interface StringMap {
   'advancedSettingsScreen.importError': 'string';
   'advancedSettingsScreen.importNovel': 'string';
   'advancedSettingsScreen.importStaticFiles': 'string';
+  'advancedSettingsScreen.novelInsertFailed': 'string';
+  'advancedSettingsScreen.parseEpub': 'string';
   'advancedSettingsScreen.useFAB': 'string';
   'advancedSettingsScreen.userAgent': 'string';
   'appearance': 'string';
@@ -51,6 +54,8 @@ export interface StringMap {
   'backupScreen.createBackup': 'string';
   'backupScreen.createBackupDesc': 'string';
   'backupScreen.createBackupWarning': 'string';
+  'backupScreen.downloadingData': 'string';
+  'backupScreen.downloadingDownloadedFiles': 'string';
   'backupScreen.drive.backup': 'string';
   'backupScreen.drive.backupInterruped': 'string';
   'backupScreen.drive.googleDriveBackup': 'string';
@@ -58,6 +63,7 @@ export interface StringMap {
   'backupScreen.drive.restoreInterruped': 'string';
   'backupScreen.googeDrive': 'string';
   'backupScreen.googeDriveDesc': 'string';
+  'backupScreen.invalidBackupFolder': 'string';
   'backupScreen.legacy.backupCreated': 'string';
   'backupScreen.legacy.libraryRestored': 'string';
   'backupScreen.legacy.noAvailableBackup': 'string';
@@ -67,6 +73,8 @@ export interface StringMap {
   'backupScreen.legacy.pluginNotExist': 'string';
   'backupScreen.legacyBackup': 'string';
   'backupScreen.noBackupFound': 'string';
+  'backupScreen.noDataProvided': 'string';
+  'backupScreen.preparingData': 'string';
   'backupScreen.remote.backup': 'string';
   'backupScreen.remote.backupInterruped': 'string';
   'backupScreen.remote.host': 'string';
@@ -80,17 +88,20 @@ export interface StringMap {
   'backupScreen.restoreErrorDesc': 'string';
   'backupScreen.restoreLargeBackupsWarning': 'string';
   'backupScreen.restorinBackup': 'string';
+  'backupScreen.restoringData': 'string';
   'backupScreen.selfHost': 'string';
   'backupScreen.selfHostDesc': 'string';
+  'backupScreen.uploadingData': 'string';
+  'backupScreen.uploadingDownloadedFiles': 'string';
   'browse': 'string';
   'browseScreen.addedToLibrary': 'string';
   'browseScreen.available': 'string';
   'browseScreen.discover': 'string';
   'browseScreen.globalSearch': 'string';
+  'browseScreen.installFailed': 'string';
   'browseScreen.installed': 'string';
   'browseScreen.installedPlugin': 'string';
   'browseScreen.installedPlugins': 'string';
-  'browseScreen.installFailed': 'string';
   'browseScreen.lastUsed': 'string';
   'browseScreen.latest': 'string';
   'browseScreen.listEmpty': 'string';
@@ -104,13 +115,14 @@ export interface StringMap {
   'browseScreen.migration.selectSourceDesc': 'string';
   'browseScreen.noSource': 'string';
   'browseScreen.pinned': 'string';
+  'browseScreen.pluginsHostError': 'string';
   'browseScreen.removeFromLibrary': 'string';
   'browseScreen.searchbar': 'string';
   'browseScreen.selectNovel': 'string';
   'browseScreen.tryAgain': 'string';
   'browseScreen.uninstalledPlugin': 'string';
-  'browseScreen.updatedTo': 'string';
   'browseScreen.updateFailed': 'string';
+  'browseScreen.updatedTo': 'string';
   'browseSettings': 'string';
   'browseSettingsScreen.languages': 'string';
   'browseSettingsScreen.onlyShowPinnedSources': 'string';
@@ -153,6 +165,7 @@ export interface StringMap {
   'common.name': 'string';
   'common.newUpdateAvailable': 'string';
   'common.ok': 'string';
+  'common.parsing': 'string';
   'common.pause': 'string';
   'common.preparing': 'string';
   'common.remove': 'string';
@@ -389,6 +402,7 @@ export interface StringMap {
   'updatesScreen.newChapters': 'string';
   'updatesScreen.novelsUpdated': 'string';
   'updatesScreen.searchbar': 'string';
+  'updatesScreen.unableToGetNovel': 'string';
   'updatesScreen.updatesLower': 'string';
   'updatesScreen.updatingLibrary': 'string';
 }

@@ -12,6 +12,7 @@ import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
 import { fetchApi, fetchFile, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
 import { encode, decode } from 'urlencode';
+import { getString } from '@strings/translations';
 
 const packages: Record<string, any> = {
   'cheerio': { load },
@@ -122,7 +123,9 @@ const fetchPlugins = async () => {
     .then(res => res.json())
     .catch(() => {
       throw new Error(
-        `Plugins host error: ${githubUsername}/${githubRepository}`,
+        `${getString(
+          'browseScreen.pluginsHostError',
+        )}: ${githubUsername}/${githubRepository}`,
       );
     });
   return availablePlugins;

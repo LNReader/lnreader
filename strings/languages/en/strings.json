@@ -10,6 +10,7 @@
   "advancedSettings": "Advanced",
   "advancedSettingsScreen": {
     "cachedNovelsDeletedToast": "Cached novels deleted",
+    "chapterInsertFailed": "chapter insert failed",
     "clearCachedNovels": "Clear cached novels",
     "clearCachedNovelsDesc": "Delete cached novels which not in your library",
     "clearDatabaseWarning": "Are you sure? Read and Downloaded chapters and progress of non-library novels will be lost.",
@@ -24,6 +25,8 @@
     "importError": "Import Error",
     "importNovel": "Import Novel",
     "importStaticFiles": "Import Static Files",
+    "novelInsertFailed": "novel insert failed",
+    "parseEpub": "Parse Epub",
     "useFAB": "Use FAB instead of button",
     "userAgent": "User Agent"
   },
@@ -56,6 +59,8 @@
     "createBackup": "Create backup",
     "createBackupDesc": "Can be used to restore current library",
     "createBackupWarning": "Create backup may not work on devices with Android 9 or lower.",
+    "downloadingData": "Downloading Data",
+    "downloadingDownloadedFiles": "Downloading Downloaded files",
     "drive": {
       "backup": "Drive Backup",
       "backupInterruped": "Drive Backup Interruped",
@@ -65,6 +70,7 @@
     },
     "googeDrive": "Googe Drive",
     "googeDriveDesc": "Backup to your Google Drive",
+    "invalidBackupFolder": "Invalid backup folder",
     "legacy": {
       "backupCreated": "Backup created %{fileName}",
       "libraryRestored": "Library Restored",
@@ -76,6 +82,8 @@
     },
     "legacyBackup": "Legacy Backup",
     "noBackupFound": "No backup found",
+    "noDataProvided": "No data provided",
+    "preparingData": "Preparing Data",
     "remote": {
       "backup": "Self Host Backup",
       "backupInterruped": "Self Host Backup Interruped",
@@ -91,8 +99,11 @@
     "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
     "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
     "restorinBackup": "Restoring backup",
+    "restoringData": "Restoring Data",
     "selfHost": "Self Host",
-    "selfHostDesc": "Backup to your server"
+    "selfHostDesc": "Backup to your server",
+    "uploadingData": "Uploading Data",
+    "uploadingDownloadedFiles": "Uploading Downloaded files"
   },
   "browse": "Browse",
   "browseScreen": {
@@ -100,10 +111,10 @@
     "available": "Available",
     "discover": "Discover",
     "globalSearch": "Global search",
+    "installFailed": "Installation failed: %{name}",
     "installed": "Installed",
     "installedPlugin": "Installed %{name}",
     "installedPlugins": "Installed plugins",
-    "installFailed": "Installation failed: %{name}",
     "lastUsed": "Last used",
     "latest": "Latest",
     "listEmpty": "Enable languages from settings",
@@ -119,13 +130,14 @@
     },
     "noSource": "Your library does not have any novels from this source",
     "pinned": "Pinned",
+    "pluginsHostError": "Plugins host error",
     "removeFromLibrary": "Removed from Library",
     "searchbar": "Search sources",
     "selectNovel": "Select Novel",
     "tryAgain": "Try again in a moment",
     "uninstalledPlugin": "Uninstalled %{name}",
-    "updatedTo": "Updated to %{version}",
-    "updateFailed": "Update failed"
+    "updateFailed": "Update failed",
+    "updatedTo": "Updated to %{version}"
   },
   "browseSettings": "Browse Settings",
   "browseSettingsScreen": {
@@ -176,6 +188,7 @@
     "name": "Name",
     "newUpdateAvailable": "New update available",
     "ok": "Ok",
+    "parsing": "Parsing",
     "pause": "Pause",
     "preparing": "Preparing",
     "remove": "Remove",
@@ -474,6 +487,7 @@
     "newChapters": "new Chapters",
     "novelsUpdated": "%{num} novels updated",
     "searchbar": "Search updates",
+    "unableToGetNovel": "Unable to get novel",
     "updatesLower": "updates",
     "updatingLibrary": "Updating library"
   }
