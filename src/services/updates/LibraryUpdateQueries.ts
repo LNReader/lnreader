@@ -67,7 +67,7 @@ const updateNovel = async (
     novel.chapters?.forEach(chapter => {
       const { name, url, releaseTime } = chapter;
       tx.executeSql(
-        "INSERT OR REPLACE INTO Chapter (url, name, releaseTime, novelId, updatedTime) values (?, ?, ?, ?, datetime('now','localtime'))",
+        "INSERT INTO Chapter (url, name, releaseTime, novelId, updatedTime) values (?, ?, ?, ?, datetime('now','localtime')) ON CONFLICT(url) DO UPDATE SET name=excluded.name, releaseTime=excluded.releaseTime, novelId=excluded.novelId, updatedTime=excluded.updatedTime",
         [url, name, releaseTime || '', novelId],
         (txObj, { insertId }) => {
           if (insertId && downloadNewChapters) {
