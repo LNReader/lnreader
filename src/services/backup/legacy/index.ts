@@ -68,7 +68,7 @@ export const restoreBackup = async (filePath?: string) => {
     let novelsString = '';
 
     if (backup.type === 'success') {
-      novelsString = await StorageAccessFramework.readAsStringAsync(backup.uri);
+      novelsString = await RNFS.readFile(backup.uri);
     } else if (filePath) {
       if (!(await RNFS.exists(filePath))) {
         showToast(getString('backupScreen.legacy.noErrorNovel'));
@@ -105,11 +105,6 @@ export const restoreBackup = async (filePath?: string) => {
             if (BackgroundService.isRunning()) {
               const plugin = getPlugin(novels[i].pluginId);
               if (!plugin) {
-                showToast(
-                  getString('backupScreen.legacy.pluginNotExist', {
-                    id: novels[i].pluginId,
-                  }),
-                );
                 errorNovels.push(novels[i]);
                 continue;
               }
@@ -169,6 +164,9 @@ export const restoreBackup = async (filePath?: string) => {
             }
           });
         }
+      }).finally(() => {
+        MMKVStorage.delete(BACKGROUND_ACTION);
+        BackgroundService.stop();
       });
 
     if (novels.length > 0) {
