@@ -70,7 +70,9 @@ export const migrateNovel = async (
     if (toNovel) {
       toChapters = await getChapters(toNovel.id, '', '');
     } else {
-      const fetchedNovel = await fetchNovel(pluginId, toNovelUrl);
+      const fetchedNovel = await fetchNovel(pluginId, toNovelUrl).catch(e => {
+        throw e;
+      });
       await insertNovelAndChapters(pluginId, fetchedNovel);
       toNovel = await getNovel(toNovelUrl);
       if (!toNovel) {

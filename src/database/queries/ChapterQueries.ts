@@ -16,7 +16,7 @@ import { getString } from '@strings/translations';
 const db = SQLite.openDatabase('lnreader.db');
 
 const insertChapterQuery = `
-INSERT INTO Chapter (
+INSERT OR IGNORE INTO Chapter (
   url, name, releaseTime, novelId, chapterNumber
 ) 
 Values 
@@ -42,7 +42,6 @@ export const insertChapters = async (
           chapter.chapterNumber || null,
         ],
         noop,
-        txnErrorCallback,
       );
     });
   });

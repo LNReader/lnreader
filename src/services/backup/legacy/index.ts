@@ -108,11 +108,13 @@ export const restoreBackup = async (filePath?: string) => {
                 errorNovels.push(novels[i]);
                 continue;
               }
-              await restoreLibrary(novels[i]);
               await BackgroundService.updateNotification({
                 taskTitle: novels[i].name,
                 taskDesc: '(' + (i + 1) + '/' + novels.length + ')',
                 progressBar: { max: novels.length, value: i + 1 },
+              });
+              await restoreLibrary(novels[i]).catch(error => {
+                throw error;
               });
 
               if (novels.length === i + 1) {
@@ -125,7 +127,6 @@ export const restoreBackup = async (filePath?: string) => {
                   },
                   trigger: null,
                 });
-                MMKVStorage.delete(BACKGROUND_ACTION);
                 resolve();
               }
 
@@ -138,8 +139,7 @@ export const restoreBackup = async (filePath?: string) => {
                 await sleep(taskData?.delay || 0);
               }
             }
-          } catch (error: any) {
-            showToast(novels[i].name + ': ' + error.message);
+          } catch (e) {
             errorNovels.push(novels[i]);
             continue;
           }
