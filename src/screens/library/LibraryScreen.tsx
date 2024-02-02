@@ -89,7 +89,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     <TabBar
       {...props}
       scrollEnabled
-      indicatorStyle={{ backgroundColor: theme.primary }}
+      indicatorStyle={{ backgroundColor: theme.primary, height: 3 }}
       style={[
         {
           backgroundColor: theme.surface,
@@ -99,9 +99,11 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
         },
         styles.tabBar,
       ]}
+      tabStyle={{ width: 'auto' }}
+      gap={8}
       renderLabel={({ route, color }) => (
         <Row>
-          <Text style={{ color }}>{route.title}</Text>
+          <Text style={{ color, fontWeight: '600' }}>{route.title}</Text>
           {showNumberOfNovels && (
             <View
               style={[
@@ -120,7 +122,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
       )}
       inactiveColor={theme.secondary}
       activeColor={theme.primary}
-      pressColor={theme.rippleColor}
+      android_ripple={{ color: theme.rippleColor }}
     />
   );
 
@@ -314,7 +316,6 @@ const styles = StyleSheet.create({
   globalSearchBtn: {
     margin: 16,
   },
-
   fab: {
     position: 'absolute',
     margin: 16,
@@ -324,8 +325,9 @@ const styles = StyleSheet.create({
   badgeCtn: {
     position: 'relative',
     borderRadius: 50,
-    marginHorizontal: 6,
+    marginLeft: 2,
     paddingHorizontal: 6,
+    paddingVertical: 2,
   },
   badgetText: {
     fontSize: 12,
