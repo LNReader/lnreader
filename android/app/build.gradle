@@ -98,9 +98,9 @@ android {
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
-    namespace "com.rajarsheechatterjee.LNReaderrr"
+    namespace "com.rajarsheechatterjee.LNReader2"
     defaultConfig {
-        applicationId 'com.rajarsheechatterjee.LNReaderrr'
+        applicationId 'com.rajarsheechatterjee.LNReader2'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         // Generated version code. Supports versions up to 1024.1024.2048
