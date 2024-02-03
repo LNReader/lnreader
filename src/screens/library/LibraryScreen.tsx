@@ -85,44 +85,47 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
 
   const renderTabBar = (
     props: SceneRendererProps & { navigationState: State },
-  ) => (
-    <TabBar
-      {...props}
-      scrollEnabled
-      indicatorStyle={{ backgroundColor: theme.primary }}
-      style={[
-        {
-          backgroundColor: theme.surface,
-          borderBottomColor: color(theme.isDark ? '#FFFFFF' : '#000000')
-            .alpha(0.12)
-            .string(),
-        },
-        styles.tabBar,
-      ]}
-      renderLabel={({ route, color }) => (
-        <Row>
-          <Text style={{ color }}>{route.title}</Text>
-          {showNumberOfNovels && (
-            <View
-              style={[
-                styles.badgeCtn,
-                { backgroundColor: theme.surfaceVariant },
-              ]}
-            >
-              <Text
-                style={[styles.badgetText, { color: theme.onSurfaceVariant }]}
+  ) =>
+    library.length ? (
+      <TabBar
+        {...props}
+        scrollEnabled
+        indicatorStyle={{ backgroundColor: theme.primary, height: 3 }}
+        style={[
+          {
+            backgroundColor: theme.surface,
+            borderBottomColor: color(theme.isDark ? '#FFFFFF' : '#000000')
+              .alpha(0.12)
+              .string(),
+          },
+          styles.tabBar,
+        ]}
+        tabStyle={{ width: 'auto' }}
+        gap={8}
+        renderLabel={({ route, color }) => (
+          <Row>
+            <Text style={{ color, fontWeight: '600' }}>{route.title}</Text>
+            {showNumberOfNovels && (
+              <View
+                style={[
+                  styles.badgeCtn,
+                  { backgroundColor: theme.surfaceVariant },
+                ]}
               >
-                {(route as any)?.novels.length}
-              </Text>
-            </View>
-          )}
-        </Row>
-      )}
-      inactiveColor={theme.secondary}
-      activeColor={theme.primary}
-      pressColor={theme.rippleColor}
-    />
-  );
+                <Text
+                  style={[styles.badgetText, { color: theme.onSurfaceVariant }]}
+                >
+                  {(route as any)?.novels.length}
+                </Text>
+              </View>
+            )}
+          </Row>
+        )}
+        inactiveColor={theme.secondary}
+        activeColor={theme.primary}
+        android_ripple={{ color: theme.rippleColor }}
+      />
+    ) : null;
 
   const searchbarPlaceholder =
     selectedNovelIds.length === 0
@@ -314,7 +317,6 @@ const styles = StyleSheet.create({
   globalSearchBtn: {
     margin: 16,
   },
-
   fab: {
     position: 'absolute',
     margin: 16,
@@ -324,8 +326,9 @@ const styles = StyleSheet.create({
   badgeCtn: {
     position: 'relative',
     borderRadius: 50,
-    marginHorizontal: 6,
+    marginLeft: 2,
     paddingHorizontal: 6,
+    paddingVertical: 2,
   },
   badgetText: {
     fontSize: 12,

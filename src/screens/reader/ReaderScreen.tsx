@@ -165,10 +165,11 @@ export const ChapterContent = ({
       if (await RNFS.exists(filePath)) {
         sourceChapter.chapterText = await RNFS.readFile(filePath);
       } else {
-        sourceChapter.chapterText = await fetchChapter(
-          novel.pluginId,
-          chapter.url,
-        );
+        await fetchChapter(novel.pluginId, chapter.url)
+          .then(res => {
+            sourceChapter.chapterText = res;
+          })
+          .catch(e => setError(e.message));
       }
       const [nextChap, prevChap] = await Promise.all([
         getNextChapter(chapter.novelId, chapter.id),
@@ -276,10 +277,13 @@ export const ChapterContent = ({
   const onWebViewNavigationStateChange = async ({ url }: WebViewNavigation) => {
     if (url !== 'about:blank') {
       setLoading(true);
-      const res = await fetchChapter(novel.pluginId, chapter.url);
-      sourceChapter.chapterText = res;
-      setChapter(sourceChapter);
-      setLoading(false);
+      fetchChapter(novel.pluginId, chapter.url)
+        .then(res => {
+          sourceChapter.chapterText = res;
+          setChapter(sourceChapter);
+        })
+        .catch(e => setError(e.message))
+        .finally(() => setLoading(false));
     }
   };
 

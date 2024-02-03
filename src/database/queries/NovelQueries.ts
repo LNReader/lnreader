@@ -4,7 +4,7 @@ const db = SQLite.openDatabase('lnreader.db');
 import * as DocumentPicker from 'expo-document-picker';
 import * as RNFS from 'react-native-fs';
 
-import { fetchChapters, fetchImage, fetchNovel } from '@services/plugin/fetch';
+import { fetchImage, fetchNovel } from '@services/plugin/fetch';
 import { insertChapters } from './ChapterQueries';
 
 import { showToast } from '@utils/showToast';
@@ -183,15 +183,18 @@ export const deleteCachedNovels = async () => {
 };
 
 const restoreFromBackupQuery =
-  'INSERT INTO Novel (url, name, pluginId, cover, summary, author, artist, status, genres, inLibrary) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT OR REPLACE INTO Novel (url, name, pluginId, cover, summary, author, artist, status, genres) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const restoreLibrary = async (novel: NovelInfo) => {
-  return new Promise(resolve => {
+  const sourceNovel = await fetchNovel(novel.pluginId, novel.url).catch(e => {
+    throw e;
+  });
+  const novelId: number | undefined = await new Promise(resolve => {
     db.transaction(tx =>
       tx.executeSql(
         restoreFromBackupQuery,
         [
-          novel.url,
+          sourceNovel.url,
           novel.name,
           novel.pluginId,
           novel.cover || '',
@@ -200,29 +203,36 @@ export const restoreLibrary = async (novel: NovelInfo) => {
           novel.artist || '',
           novel.status || '',
           novel.genres || '',
-          Number(novel.inLibrary),
         ],
-        async (txObj, { insertId }) => {
-          if (!insertId) {
-            return;
-          }
-          tx.executeSql(
-            'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
-            [insertId],
-            noop,
-            txnErrorCallback,
-          );
-          const chapters = await fetchChapters(novel.pluginId, novel.url);
-
-          if (chapters) {
-            await insertChapters(insertId, chapters);
-            resolve(insertId);
-          }
-        },
-        txnErrorCallback,
+        async (txObj, { insertId }) => resolve(insertId),
       ),
     );
   });
+  if (novelId && novelId > 0) {
+    await new Promise((resolve, reject) => {
+      db.transaction(async tx => {
+        tx.executeSql(
+          'INSERT OR REPLACE INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
+          [novelId],
+          () => {
+            tx.executeSql('UPDATE Novel SET inLibrary = 1 WHERE id = ?', [
+              novelId,
+            ]);
+            resolve(null);
+          },
+          (txObj, err) => {
+            reject(err);
+            return false;
+          },
+        );
+      });
+    }).catch(e => {
+      throw e;
+    });
+    if (sourceNovel.chapters) {
+      await insertChapters(novelId, sourceNovel.chapters);
+    }
+  }
 };
 
 export const updateNovelInfo = async (info: NovelInfo) => {

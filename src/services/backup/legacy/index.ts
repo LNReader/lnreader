@@ -68,7 +68,7 @@ export const restoreBackup = async (filePath?: string) => {
     let novelsString = '';
 
     if (backup.type === 'success') {
-      novelsString = await StorageAccessFramework.readAsStringAsync(backup.uri);
+      novelsString = await RNFS.readFile(backup.uri);
     } else if (filePath) {
       if (!(await RNFS.exists(filePath))) {
         showToast(getString('backupScreen.legacy.noErrorNovel'));
@@ -105,19 +105,16 @@ export const restoreBackup = async (filePath?: string) => {
             if (BackgroundService.isRunning()) {
               const plugin = getPlugin(novels[i].pluginId);
               if (!plugin) {
-                showToast(
-                  getString('backupScreen.legacy.pluginNotExist', {
-                    id: novels[i].pluginId,
-                  }),
-                );
                 errorNovels.push(novels[i]);
                 continue;
               }
-              await restoreLibrary(novels[i]);
               await BackgroundService.updateNotification({
                 taskTitle: novels[i].name,
                 taskDesc: '(' + (i + 1) + '/' + novels.length + ')',
                 progressBar: { max: novels.length, value: i + 1 },
+              });
+              await restoreLibrary(novels[i]).catch(error => {
+                throw error;
               });
 
               if (novels.length === i + 1) {
@@ -130,7 +127,6 @@ export const restoreBackup = async (filePath?: string) => {
                   },
                   trigger: null,
                 });
-                MMKVStorage.delete(BACKGROUND_ACTION);
                 resolve();
               }
 
@@ -143,8 +139,7 @@ export const restoreBackup = async (filePath?: string) => {
                 await sleep(taskData?.delay || 0);
               }
             }
-          } catch (error: any) {
-            showToast(novels[i].name + ': ' + error.message);
+          } catch (e) {
             errorNovels.push(novels[i]);
             continue;
           }
@@ -169,6 +164,9 @@ export const restoreBackup = async (filePath?: string) => {
             }
           });
         }
+      }).finally(() => {
+        MMKVStorage.delete(BACKGROUND_ACTION);
+        BackgroundService.stop();
       });
 
     if (novels.length > 0) {

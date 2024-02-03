@@ -28,14 +28,20 @@ export const useBrowseSource = (
       if (isScreenMounted.current === true) {
         try {
           const plugin = getPlugin(pluginId);
-          const res = await plugin.popularNovels(page, {
-            showLatestNovels,
-            filters,
-          });
-          setNovels(prevState => (page === 1 ? res : [...prevState, ...res]));
-          if (!res.length) {
-            setHasNextPage(false);
-          }
+          await plugin
+            .popularNovels(page, {
+              showLatestNovels,
+              filters,
+            })
+            .then(res => {
+              setNovels(prevState =>
+                page === 1 ? res : [...prevState, ...res],
+              );
+              if (!res.length) {
+                setHasNextPage(false);
+              }
+            })
+            .catch(error => setError(error.message));
           setFilterValues(plugin.filters);
         } catch (err: unknown) {
           setError(`${err}`);

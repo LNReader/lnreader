@@ -120,7 +120,9 @@ const MigrationNovelList = ({
             <Button
               onPress={() => {
                 hideMigrateNovelDialog();
-                migrateNovel(pluginId, fromNovel, selectedNovel.url);
+                migrateNovel(pluginId, fromNovel, selectedNovel.url).catch(
+                  error => showToast(error.message),
+                );
               }}
               title={getString('novelScreen.migrate')}
             />
