@@ -9,6 +9,12 @@ type FetchInit = {
 
 const makeInit = (init?: FetchInit) => {
   const defaultHeaders = {
+    'Connection': 'keep-alive',
+    'Accept': '*/*',
+    'Accept-Language': '*',
+    'Sec-Fetch-Mode': 'cors',
+    'Accept-Encoding': 'gzip, deflate',
+    'Cache-Control': 'max-age=0',
     'User-Agent': getUserAgent(),
   };
   if (init?.headers) {
