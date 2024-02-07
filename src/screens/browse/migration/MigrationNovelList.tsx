@@ -23,7 +23,7 @@ interface MigrationNovelListProps {
 }
 
 interface SelectedNovel {
-  url: string;
+  path: string;
   name: string;
 }
 
@@ -42,25 +42,26 @@ const MigrationNovelList = ({
   const showMigrateNovelDialog = () => setMigrateNovelDialog(true);
   const hideMigrateNovelDialog = () => setMigrateNovelDialog(false);
 
-  const inLibrary = (url: string) => library.some(obj => obj.url === url);
+  const inLibrary = (path: string) =>
+    library.some(obj => obj.pluginId === pluginId && obj.path === path);
 
   const renderItem: FlatListProps<NovelItem>['renderItem'] = ({ item }) => (
     <GlobalSearchNovelCover
       novel={item}
       theme={theme}
-      onPress={() => showModal(item.url, item.name)}
+      onPress={() => showModal(item.path, item.name)}
       onLongPress={() =>
         navigation.push('Novel', { pluginId: pluginId, ...item })
       }
-      inLibrary={inLibrary(item.url)}
+      inLibrary={inLibrary(item.path)}
     />
   );
 
-  const showModal = (url: string, name: string) => {
-    if (inLibrary(url)) {
+  const showModal = (path: string, name: string) => {
+    if (inLibrary(path)) {
       showToast(getString('browseScreen.migration.novelAlreadyInLibrary'));
     } else {
-      setSelectedNovel({ url, name });
+      setSelectedNovel({ path, name });
       showMigrateNovelDialog();
     }
   };
@@ -71,7 +72,7 @@ const MigrationNovelList = ({
         contentContainerStyle={styles.flatListCont}
         horizontal={true}
         data={data.novels}
-        keyExtractor={(item, index) => index + item.url}
+        keyExtractor={(item, index) => index + item.path}
         renderItem={renderItem}
         ListEmptyComponent={
           <Text
@@ -104,7 +105,7 @@ const MigrationNovelList = ({
             }}
           >
             {getString('browseScreen.migration.dialogMessage', {
-              url: selectedNovel.url,
+              url: selectedNovel.path,
             })}
           </Text>
           <View
@@ -120,7 +121,7 @@ const MigrationNovelList = ({
             <Button
               onPress={() => {
                 hideMigrateNovelDialog();
-                migrateNovel(pluginId, fromNovel, selectedNovel.url).catch(
+                migrateNovel(pluginId, fromNovel, selectedNovel.path).catch(
                   error => showToast(error.message),
                 );
               }}

@@ -45,7 +45,7 @@ const NovelList: React.FC<
       ]}
       numColumns={numColumns}
       key={numColumns}
-      keyExtractor={item => item.url}
+      keyExtractor={(item, index) => index + '_' + item.path}
       {...props}
     />
   );

@@ -20,7 +20,7 @@ const ChapterDrawer = ({ route, navigation }: ChapterScreenProps) => {
   const { chapter, novel: novelItem } = route.params;
   const { defaultChapterSort } = useAppSettings();
   const { chapters, novelSettings } = useNovel(
-    novelItem.url,
+    novelItem.path,
     novelItem.pluginId,
   );
   const { sort = defaultChapterSort } = novelSettings;

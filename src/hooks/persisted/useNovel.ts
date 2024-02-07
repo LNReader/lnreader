@@ -29,7 +29,7 @@ import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
 import { getString } from '@strings/translations';
 
-// store key: PREFIX + '_' + novel.url,
+// store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
 
 export const TRACKED_NOVEL_PREFIX = 'TRACKED_NOVEL_PREFIX';
 
@@ -57,9 +57,9 @@ export interface NovelProgress {
   [chapterId: number]: ChapterProgress;
 }
 
-export const useTrackedNovel = (url: string) => {
+export const useTrackedNovel = (pluginId: string, novelPath: string) => {
   const [trackedNovel, setValue] = useMMKVObject<TrackedNovel>(
-    TRACKED_NOVEL_PREFIX + '_' + url,
+    `${TRACKED_NOVEL_PREFIX}_${pluginId}_${novelPath}`,
   );
 
   const trackNovel = (tracker: TrackerMetadata, novel: SearchResult) => {
@@ -112,31 +112,33 @@ export const useTrackedNovel = (url: string) => {
   };
 };
 
-export const useNovel = (url: string, pluginId: string) => {
-  const [novel, setNovel] = useMMKVObject<NovelInfo>(NOVEL_PREFIX + '_' + url);
+export const useNovel = (novelPath: string, pluginId: string) => {
+  const [novel, setNovel] = useMMKVObject<NovelInfo>(
+    `${NOVEL_PREFIX}_${pluginId}_${novelPath}`,
+  );
   const [chapters = [], setChapters] = useMMKVObject<ChapterInfo[]>(
-    NOVEL_CHAPTERS_PREFIX + '_' + url,
+    `${NOVEL_CHAPTERS_PREFIX}_${pluginId}_${novelPath}`,
   );
   const [lastRead, setLastRead] = useMMKVObject<ChapterInfo>(
-    LAST_READ_PREFIX + '_' + url,
+    `${LAST_READ_PREFIX}_${pluginId}_${novelPath}`,
   );
   const [novelSettings = {}, setNovelSettings] = useMMKVObject<NovelSettings>(
-    NOVEL_SETTINSG_PREFIX + '_' + url,
+    `${NOVEL_SETTINSG_PREFIX}_${pluginId}_${novelPath}`,
   );
   const [progress = {}, _setProgress] = useMMKVObject<NovelProgress>(
-    PROGRESS_PREFIX + '_' + url,
+    `${PROGRESS_PREFIX}_${pluginId}_${novelPath}`,
   );
 
   const getNovel = () => {
-    return _getNovel(url)
+    return _getNovel(novelPath, pluginId)
       .then(_novel => {
         if (_novel) {
           return _novel;
         } else {
           // if novel is not in db, fetch it
-          return fetchNovel(pluginId, url).then(sourceNovel =>
+          return fetchNovel(pluginId, novelPath).then(sourceNovel =>
             insertNovelAndChapters(pluginId, sourceNovel).then(() =>
-              _getNovel(url),
+              _getNovel(novelPath, pluginId),
             ),
           );
         }
@@ -182,7 +184,7 @@ export const useNovel = (url: string, pluginId: string) => {
   };
 
   const followNovel = () => {
-    switchNovelToLibrary(url, pluginId).then(() => {
+    switchNovelToLibrary(novelPath, pluginId).then(() => {
       if (novel) {
         setNovel({
           ...novel,
@@ -279,7 +281,7 @@ export const useNovel = (url: string, pluginId: string) => {
   const updateNovel = async () => {
     const settings = getMMKVObject<AppSettings>(APP_SETTINGS);
     if (novel) {
-      await _updateNovel(pluginId, url, novel.id, {
+      await _updateNovel(pluginId, novelPath, novel.id, {
         downloadNewChapters: settings?.downloadNewChapters,
         refreshNovelMetadata: settings?.refreshNovelMetadata,
       }).then(() => {
@@ -377,12 +379,18 @@ export const useNovel = (url: string, pluginId: string) => {
 export const deleteCachedNovels = async () => {
   const cachedNovels = await _getCachedNovels();
   for (let novel of cachedNovels) {
-    MMKVStorage.delete(TRACKED_NOVEL_PREFIX + '_' + novel.url);
-    MMKVStorage.delete(NOVEL_PREFIX + '_' + novel.url);
-    MMKVStorage.delete(NOVEL_CHAPTERS_PREFIX + '_' + novel.url);
-    MMKVStorage.delete(NOVEL_SETTINSG_PREFIX + '_' + novel.url);
-    MMKVStorage.delete(LAST_READ_PREFIX + '_' + novel.url);
-    MMKVStorage.delete(PROGRESS_PREFIX + '_' + novel.url);
+    MMKVStorage.delete(
+      `${TRACKED_NOVEL_PREFIX}_${novel.pluginId}_${novel.path}`,
+    );
+    MMKVStorage.delete(`${NOVEL_PREFIX}_${novel.pluginId}_${novel.path}`);
+    MMKVStorage.delete(
+      `${NOVEL_CHAPTERS_PREFIX}_${novel.pluginId}_${novel.path}`,
+    );
+    MMKVStorage.delete(
+      `${NOVEL_SETTINSG_PREFIX}_${novel.pluginId}_${novel.path}`,
+    );
+    MMKVStorage.delete(`${LAST_READ_PREFIX}_${novel.pluginId}_${novel.path}`);
+    MMKVStorage.delete(`${PROGRESS_PREFIX}_${novel.pluginId}_${novel.path}`);
     const novelDir =
       NovelDownloadFolder + '/' + novel.pluginId + '/' + novel.id;
     if (await RNFS.exists(novelDir)) {

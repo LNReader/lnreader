@@ -63,7 +63,9 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
       </Appbar>
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
-        keyExtractor={item => item.chapter.url.toString()}
+        keyExtractor={item =>
+          item.novel.pluginId + '_' + item.chapter.path.toString()
+        }
         data={queue}
         renderItem={({ item }) => (
           <View style={{ padding: 16 }}>

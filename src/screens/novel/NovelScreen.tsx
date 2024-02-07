@@ -47,7 +47,7 @@ import ChapterItem from './components/ChapterItem';
 import { getString } from '@strings/translations';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
-  const { name, url, pluginId } = route.params;
+  const { name, path, pluginId } = route.params;
   const [updating, setUpdating] = useState(false);
   const {
     progress,
@@ -69,7 +69,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     deleteChapter,
     refreshChapters,
     deleteChapters,
-  } = useNovel(url, pluginId);
+  } = useNovel(path, pluginId);
 
   const [loading, setLoading] = useState(!novel);
 
@@ -159,7 +159,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       list.push({
         icon: 'trash-can-outline',
         onPress: () => {
-          // dispatch(deleteAllChaptersAction(pluginId, novel.id, selected));
           setSelected([]);
         },
       });
@@ -350,7 +349,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   }}
                   onPress={() =>
                     Share.share({
-                      message: novel.url,
+                      message: novel.pluginId + '|' + novel.path,
                     })
                   }
                 />
@@ -687,8 +686,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
         />
         <TrackSheet
           bottomSheetRef={trackerSheetRef}
-          novelUrl={novel.url}
-          novelName={novel.name}
+          novel={novel}
           theme={theme}
         />
       </View>

@@ -41,7 +41,7 @@ export const LibraryView: React.FC<Props> = ({
         } else {
           navigation.navigate('Novel', {
             name: item.name,
-            url: item.url,
+            path: item.path,
             pluginId: item.pluginId,
           });
         }

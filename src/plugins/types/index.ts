@@ -3,13 +3,13 @@ import { Language } from '@utils/constants/languages';
 
 export interface NovelItem {
   name: string;
-  url: string; //must be absoulute
+  path: string; //must be absoulute
   cover?: string;
 }
 
 export interface ChapterItem {
   name: string;
-  url: string; //must be absoulute
+  path: string; //must be absoulute
   chapterNumber?: number;
   releaseTime?: string;
 }
@@ -24,10 +24,7 @@ export enum NovelStatus {
   OnHiatus = 'On Hiatus',
 }
 
-export interface SourceNovel {
-  url: string; //must be absoulute
-  name: string;
-  cover?: string;
+export interface SourceNovel extends NovelItem {
   genres?: string;
   summary?: string;
   author?: string;
@@ -61,10 +58,10 @@ export interface Plugin extends PluginItem {
     options?: PopularNovelsOptions<Filters>,
   ) => Promise<NovelItem[]>;
   parseNovelAndChapters: (
-    novelUrl: string,
+    novelPath: string,
     pageNo?: number,
   ) => Promise<SourceNovel>;
-  parseChapter: (chapterUrl: string) => Promise<string>;
+  parseChapter: (chapterPath: string) => Promise<string>;
   searchNovels: (searchTerm: string, pageNo: number) => Promise<NovelItem[]>;
   fetchImage: (url: string) => Promise<string>;
 }

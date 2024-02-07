@@ -65,7 +65,7 @@ const updateLibrary = async (categoryId?: number) => {
           if (BackgroundService.isRunning()) {
             await updateNovel(
               libraryNovels[i].pluginId,
-              libraryNovels[i].url,
+              libraryNovels[i].path,
               libraryNovels[i].id,
               options,
             );

@@ -62,12 +62,12 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   );
 
   const navigateToChapter = useCallback((chapter: ChapterInfo) => {
-    const { novelUrl, pluginId, novelName } = chapter as
+    const { novelPath, pluginId, novelName } = chapter as
       | Update
       | DownloadedChapter;
     navigate('Chapter', {
       novel: {
-        url: novelUrl,
+        path: novelPath,
         pluginId: pluginId,
         name: novelName,
       } as NovelInfo,
@@ -79,7 +79,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     if (chapterList.length) {
       navigate('Novel', {
         pluginId: chapterList[0].pluginId,
-        url: chapterList[0].novelUrl,
+        path: chapterList[0].novelPath,
         name: chapterList[0].novelName,
       });
     }
