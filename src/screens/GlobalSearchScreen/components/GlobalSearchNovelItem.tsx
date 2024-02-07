@@ -13,7 +13,7 @@ interface Props {
   pluginId: string;
   navigateToNovel: (item: {
     name: string;
-    url: string;
+    path: string;
     pluginId: string;
   }) => void;
   theme: ThemeColors;

@@ -38,7 +38,7 @@ const PluginSection = ({
       navigation.navigate('SourceScreen', {
         pluginId: plugin.id,
         pluginName: plugin.name,
-        pluginUrl: plugin.site,
+        site: plugin.site,
         showLatestNovels,
       });
       setLastUsedPlugin(plugin);

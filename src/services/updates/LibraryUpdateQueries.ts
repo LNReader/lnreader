@@ -49,7 +49,7 @@ export interface UpdateNovelOptions {
 
 const updateNovel = async (
   pluginId: string,
-  novelUrl: string,
+  novelPath: string,
   novelId: number,
   options: UpdateNovelOptions,
 ) => {
@@ -58,29 +58,29 @@ const updateNovel = async (
   }
   const { downloadNewChapters, refreshNovelMetadata } = options;
 
-  let novel = await fetchNovel(pluginId, novelUrl);
+  let novel = await fetchNovel(pluginId, novelPath);
 
   if (refreshNovelMetadata) {
     updateNovelMetadata(pluginId, novelId, novel);
   }
   db.transaction(tx => {
     novel.chapters?.forEach(chapter => {
-      const { name, url, releaseTime } = chapter;
+      const { name, path, releaseTime } = chapter;
       tx.executeSql(
         `
-        INSERT INTO Chapter (url, name, releaseTime, novelId, updatedTime)
+        INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime)
           VALUES (?, ?, ?, ?, datetime('now','localtime'))
-          ON CONFLICT(url) DO UPDATE SET
+          ON CONFLICT(path) DO UPDATE SET
             name=excluded.name,
             releaseTime=excluded.releaseTime,
             updatedTime=excluded.updatedTime
           WHERE Chapter.name != excluded.name
             OR Chapter.releaseTime != excluded.releaseTime;
         `,
-        [url, name, releaseTime || '', novelId],
+        [path, name, releaseTime || '', novelId],
         (txObj, { insertId }) => {
           if (insertId && downloadNewChapters) {
-            downloadChapter(pluginId, novelId, insertId, url);
+            downloadChapter(pluginId, novelId, insertId, path);
           }
         },
       );

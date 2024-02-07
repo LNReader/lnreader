@@ -243,13 +243,13 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
               navigation.navigate('Chapter', {
                 novel: {
                   id: history[0].novelId,
-                  url: history[0].novelUrl,
+                  path: history[0].novelPath,
                   pluginId: history[0].pluginId,
                   name: history[0].novelName,
                 } as NovelInfo,
                 chapter: {
                   id: history[0].id,
-                  url: history[0].chapterUrl,
+                  path: history[0].chapterPath,
                   name: history[0].chapterName,
                   novelId: history[0].novelId,
                 } as ChapterInfo,

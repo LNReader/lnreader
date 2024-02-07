@@ -8,7 +8,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 
 export type RootStackParamList = {
   BottomNavigator: NavigatorScreenParams<BottomNavigatorParamList>;
-  Novel: { name: string; url: string; pluginId: string };
+  Novel: { name: string; path: string; pluginId: string };
   Chapter: {
     novel: NovelInfo;
     chapter: ChapterInfo;
@@ -17,7 +17,7 @@ export type RootStackParamList = {
   SourceScreen: {
     pluginId: string;
     pluginName: string;
-    pluginUrl: string;
+    site: string;
     showLatestNovels?: boolean;
   };
   BrowseMal: undefined;

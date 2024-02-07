@@ -1,7 +1,7 @@
 import { NovelStatus } from '@plugins/types';
 export interface NovelInfo {
   id: number;
-  url: string;
+  path: string;
   pluginId: string;
   name: string;
   cover?: string;
@@ -12,6 +12,7 @@ export interface NovelInfo {
   genres?: string;
   inLibrary: boolean;
   isLocal: boolean;
+  totalPages: number;
 }
 
 export interface LibraryNovelInfo extends NovelInfo {
@@ -23,7 +24,7 @@ export interface LibraryNovelInfo extends NovelInfo {
 export interface ChapterInfo {
   id: number;
   novelId: number;
-  url: string;
+  path: string;
   name: string;
   releaseTime?: string;
   readTime: string | null;
@@ -32,12 +33,13 @@ export interface ChapterInfo {
   isDownloaded: boolean;
   updatedTime: string | null;
   chapterNumber?: number;
+  page: string;
 }
 
 export interface DownloadedChapter extends ChapterInfo {
   pluginId: string;
   novelName: string;
-  novelUrl: string;
+  novelPath: string;
   novelCover: string;
 }
 
@@ -46,10 +48,10 @@ export interface History {
   pluginId: string;
   novelId: number;
   novelName: string;
-  novelUrl: string;
+  novelPath: string;
   novelCover: string;
   chapterName: string;
-  chapterUrl: string;
+  chapterPath: string;
   readTime: string;
   bookmark: number;
 }
@@ -58,7 +60,7 @@ export interface Update extends ChapterInfo {
   updatedTime: string;
   pluginId: string;
   novelName: string;
-  novelUrl: string;
+  novelPath: string;
   novelCover: string;
 }
 

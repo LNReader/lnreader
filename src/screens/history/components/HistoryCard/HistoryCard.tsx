@@ -40,11 +40,11 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
     pluginId,
     novelId,
     novelName,
-    novelUrl,
+    novelPath,
     chapterName,
     novelCover,
     readTime,
-    chapterUrl,
+    chapterPath,
     bookmark,
   } = history;
   const chapterNoAndTime = useMemo(
@@ -62,10 +62,10 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
       android_ripple={{ color: theme.rippleColor }}
       onPress={() =>
         handleNavigateToChapter(
-          { url: novelUrl, pluginId: pluginId, name: novelName },
+          { path: novelPath, pluginId: pluginId, name: novelName },
           {
             id: id,
-            url: chapterUrl,
+            path: chapterPath,
             novelId: novelId,
             name: chapterName,
             bookmark: bookmark,
@@ -79,7 +79,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             handleNavigateToNovel({
               pluginId,
               id: novelId,
-              url: novelUrl,
+              path: novelPath,
               name: novelName,
               cover: novelCover,
             })

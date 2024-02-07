@@ -17,7 +17,7 @@ const db = SQLite.openDatabase('lnreader.db');
 
 const insertChapterQuery = `
 INSERT OR IGNORE INTO Chapter (
-  url, name, releaseTime, novelId, chapterNumber
+  path, name, releaseTime, novelId, chapterNumber
 ) 
 Values 
   (?, ?, ?, ?, ?)
@@ -35,7 +35,7 @@ export const insertChapters = async (
       tx.executeSql(
         insertChapterQuery,
         [
-          chapter.url,
+          chapter.path,
           chapter.name,
           chapter.releaseTime || '',
           novelId,
@@ -250,14 +250,14 @@ export const downloadChapter = async (
   pluginId: string,
   novelId: number,
   chapterId: number,
-  chapterUrl: string,
+  chapterPath: string,
 ) => {
   try {
     const plugin = getPlugin(pluginId);
     if (!plugin) {
       throw new Error(getString('downloadScreen.pluginNotFound'));
     }
-    const chapterText = await plugin.parseChapter(chapterUrl);
+    const chapterText = await plugin.parseChapter(chapterPath);
     if (chapterText && chapterText.length) {
       await downloadFiles(chapterText, plugin, novelId, chapterId);
       db.transaction(tx => {
@@ -445,7 +445,7 @@ export const markPreviousChaptersUnread = async (
 const getDownloadedChaptersQuery = `
     SELECT
       Chapter.*,
-      Novel.pluginId, Novel.name as novelName, Novel.cover as novelCover, Novel.url as novelUrl
+      Novel.pluginId, Novel.name as novelName, Novel.cover as novelCover, Novel.path as novelPath
     FROM Chapter
     JOIN Novel
     ON Chapter.novelId = Novel.id
@@ -473,7 +473,7 @@ export const getDownloadedChapters = (): Promise<DownloadedChapter[]> => {
 const getUpdatesQuery = `
 SELECT
   Chapter.*,
-  pluginId, Novel.id as novelId, Novel.name as novelName, Novel.url as novelUrl, cover as novelCover
+  pluginId, Novel.id as novelId, Novel.name as novelName, Novel.path as novelPath, cover as novelCover
 FROM
   Chapter
 JOIN

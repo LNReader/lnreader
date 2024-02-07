@@ -88,7 +88,7 @@ export const ChapterContent = ({
     bookmarkChapters,
     progress,
     setProgress,
-  } = useNovel(novel.url, novel.pluginId);
+  } = useNovel(novel.path, novel.pluginId);
   const webViewRef = useRef<WebView>(null);
   const readerSheetRef = useRef(null);
 
@@ -110,7 +110,10 @@ export const ChapterContent = ({
   const [hidden, setHidden] = useState(true);
 
   const { tracker } = useTracker();
-  const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.url);
+  const { trackedNovel, updateNovelProgess } = useTrackedNovel(
+    novel.pluginId,
+    novel.path,
+  );
 
   const [sourceChapter, setChapter] = useState({ ...chapter, chapterText: '' });
   const [loading, setLoading] = useState(true);
@@ -165,7 +168,7 @@ export const ChapterContent = ({
       if (await RNFS.exists(filePath)) {
         sourceChapter.chapterText = await RNFS.readFile(filePath);
       } else {
-        await fetchChapter(novel.pluginId, chapter.url)
+        await fetchChapter(novel.pluginId, chapter.path)
           .then(res => {
             sourceChapter.chapterText = res;
           })
@@ -277,7 +280,7 @@ export const ChapterContent = ({
   const onWebViewNavigationStateChange = async ({ url }: WebViewNavigation) => {
     if (url !== 'about:blank') {
       setLoading(true);
-      fetchChapter(novel.pluginId, chapter.url)
+      fetchChapter(novel.pluginId, chapter.path)
         .then(res => {
           sourceChapter.chapterText = res;
           setChapter(sourceChapter);
@@ -349,7 +352,7 @@ export const ChapterContent = ({
           />
           <ReaderFooter
             theme={theme}
-            chapterUrl={chapter.url}
+            chapterUrl={chapter.path}
             nextChapter={nextChapter}
             prevChapter={prevChapter}
             readerSheetRef={readerSheetRef}

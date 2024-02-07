@@ -25,7 +25,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
   const theme = useTheme();
   const previousScreen = usePreviousRouteName();
 
-  const { pluginId, pluginName, pluginUrl, showLatestNovels } = route.params;
+  const { pluginId, pluginName, site, showLatestNovels } = route.params;
 
   const {
     isLoading,
@@ -70,16 +70,17 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
 
   const handleOpenWebView = async () => {
     navigation.navigate('WebviewScreen', {
-      pluginId,
       name: pluginName,
-      url: pluginUrl,
+      url: site,
     });
   };
 
   const { library, setLibrary } = useLibraryNovels();
 
-  const novelInLibrary = (novelUrl: string) =>
-    library?.some(novel => novel.url === novelUrl);
+  const novelInLibrary = (novelPath: string) =>
+    library?.some(
+      novel => novel.pluginId === pluginId && novel.path === novelPath,
+    );
 
   const navigateToNovel = useCallback(
     (item: NovelItem) =>
@@ -115,7 +116,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
         <NovelList
           data={novelList}
           renderItem={({ item }) => {
-            const inLibrary = novelInLibrary(item.url);
+            const inLibrary = novelInLibrary(item.path);
 
             return (
               <NovelCover
@@ -125,17 +126,18 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
                 onPress={() => navigateToNovel(item)}
                 isSelected={false}
                 onLongPress={async () => {
-                  await switchNovelToLibrary(item.url, pluginId);
+                  await switchNovelToLibrary(item.path, pluginId);
                   setLibrary(prevValues => {
                     if (inLibrary) {
                       return [
-                        ...prevValues.filter(novel => novel.url !== item.url),
+                        ...prevValues.filter(novel => novel.path !== item.path),
                       ];
                     } else {
                       return [
                         ...prevValues,
                         {
                           ...item,
+                          pluginId: pluginId,
                           inLibrary: true,
                           isLocal: false,
                         } as NovelInfo,

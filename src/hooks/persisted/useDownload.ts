@@ -39,7 +39,7 @@ const downloadChapterAction = async (taskData?: TaskData) => {
         novel.pluginId,
         novel.id,
         chapter.id,
-        chapter.url,
+        chapter.path,
       ).catch((error: Error) =>
         Notifications.scheduleNotificationAsync({
           content: {

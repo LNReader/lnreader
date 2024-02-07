@@ -1,12 +1,12 @@
 interface oCProps {
   novel: {
-    url: string;
+    path: string;
     pluginId: string;
     name: string;
   };
   chapter: {
     id: number;
-    url: string;
+    path: string;
     novelId: number;
     name: string;
     bookmark: number;
@@ -27,7 +27,7 @@ export function openChapter(
 export interface openNovelProps {
   pluginId: string;
   id?: number;
-  url: string;
+  path: string;
   name: string;
   cover?: string;
 }

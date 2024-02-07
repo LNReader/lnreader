@@ -1,8 +1,8 @@
 import { getPlugin } from '@plugins/pluginManager';
 
-export const fetchNovel = async (pluginId: string, novelUrl: string) => {
+export const fetchNovel = async (pluginId: string, novelPath: string) => {
   const plugin = getPlugin(pluginId);
-  const res = await plugin.parseNovelAndChapters(novelUrl).catch(e => {
+  const res = await plugin.parseNovelAndChapters(novelPath).catch(e => {
     throw e;
   });
   return res;
@@ -16,20 +16,20 @@ export const fetchImage = async (pluginId: string, imageUrl: string) => {
     });
 };
 
-export const fetchChapter = async (pluginId: string, chapterUrl: string) => {
+export const fetchChapter = async (pluginId: string, chapterPath: string) => {
   const plugin = getPlugin(pluginId);
   let chapterText = `Not found plugin with id: ${pluginId}`;
   if (plugin) {
-    chapterText = await plugin.parseChapter(chapterUrl).catch(e => {
+    chapterText = await plugin.parseChapter(chapterPath).catch(e => {
       throw e;
     });
   }
   return chapterText;
 };
 
-export const fetchChapters = async (pluginId: string, novelUrl: string) => {
+export const fetchChapters = async (pluginId: string, novelPath: string) => {
   const plugin = getPlugin(pluginId);
-  const res = await plugin.parseNovelAndChapters(novelUrl).catch(e => {
+  const res = await plugin.parseNovelAndChapters(novelPath).catch(e => {
     throw e;
   });
 
