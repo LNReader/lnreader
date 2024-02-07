@@ -137,6 +137,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
                         ...prevValues,
                         {
                           ...item,
+                          pluginId: pluginId,
                           inLibrary: true,
                           isLocal: false,
                         } as NovelInfo,

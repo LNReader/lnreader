@@ -85,7 +85,7 @@ export const getNovel = async (
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM Novel WHERE path = ? AND plugindId = ?',
+        'SELECT * FROM Novel WHERE path = ? AND pluginId = ?',
         [novelPath, pluginId],
         (txObj, { rows }) => resolve(rows.item(0)),
         txnErrorCallback,
