@@ -9,9 +9,12 @@ import {
 
 const sourceId = 13;
 const sourceName = 'FreeWebNovel';
-const baseUrl = 'https://freewebnovel.com';
+const baseUrl = 'https://libread.com';
 
-const popularNovels = async (page: number, { showLatestNovels }) => {
+const popularNovels = async (
+  page: number,
+  { showLatestNovels }: { showLatestNovels: boolean },
+) => {
   const sort = showLatestNovels
     ? '/latest-release-novels/'
     : '/completed-novels/';
@@ -84,7 +87,7 @@ const parseChapter = async (novelUrl: string, chapterUrl: string) => {
     novelUrl,
     chapterUrl,
     chapterName: loadedCheerio('h1.tit').text(),
-    chapterText: loadedCheerio('div.txt').html(),
+    chapterText: loadedCheerio('div.txt').html() || '',
   };
 
   return chapter;
