@@ -315,28 +315,30 @@ const JaomixScraper = {
   filters,
 };
 
-function  parseDate = (dateString = "") {
-    const months  = {
-      Янв: 1,
-      Фев: 2,
-      Мар: 3,
-      Апр: 4,
-      Май: 5,
-      Июн: 6,
-      Июл: 7,
-      Авг: 8,
-      Сен: 9,
-      Окт: 10,
-      Ноя: 11,
-      Дек: 12,
-    };
-
-    const [time, day, month, year] = dateString.split(" ");
-    if (time && day && months[month] && year) {
-      return dayjs(year + "-" + months[month] + "-" + day + " " + time).format("LLL");
-    }
-
-    return dateString;
+function parseDate(dateString = '') {
+  const months = {
+    Янв: 1,
+    Фев: 2,
+    Мар: 3,
+    Апр: 4,
+    Май: 5,
+    Июн: 6,
+    Июл: 7,
+    Авг: 8,
+    Сен: 9,
+    Окт: 10,
+    Ноя: 11,
+    Дек: 12,
   };
+
+  const [time, day, month, year] = dateString.split(' ');
+  if (time && day && months[month] && year) {
+    return dayjs(year + '-' + months[month] + '-' + day + ' ' + time).format(
+      'LLL',
+    );
+  }
+
+  return dateString;
+}
 
 export default JaomixScraper;
