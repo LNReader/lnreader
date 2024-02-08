@@ -1,5 +1,6 @@
 import { Status } from '../../helpers/constants';
 import * as cheerio from 'cheerio';
+import dayjs from 'dayjs';
 
 class IfreedomScraper {
   constructor(sourceId, baseUrl, sourceName, filters) {
@@ -17,15 +18,12 @@ class IfreedomScraper {
         ? 'По дате обновления'
         : filters?.sort || 'По рейтингу');
 
-    if (filters?.status?.length) {
-      url += filters.status.map(i => '&status[]=' + i).join('');
-    }
-    if (filters?.lang?.length) {
-      url += filters.lang.map(i => '&lang[]=' + i).join('');
-    }
-    if (filters?.genre?.length) {
-      url += filters.genre.map(i => '&genre[]=' + i).join('');
-    }
+    Object.entries(filters || {}).forEach(([type, value]) => {
+      if (value?.length) {
+        url += '&' + type + '[]=' + value.join('&' + type + '[]=');
+      }
+    });
+
     url += '&bpage=' + page;
 
     const body = await fetch(url).then(res => res.text());
@@ -95,12 +93,16 @@ class IfreedomScraper {
         chapterName &&
         chapterUrl
       ) {
-        const releaseDate = loadedCheerio(this)
+        const releaseTime = loadedCheerio(this)
           .find('div.li-col2-ranobe')
           .text()
           .trim();
 
-        chapters.push({ chapterName, releaseDate, chapterUrl });
+        chapters.push({
+          chapterName,
+          releaseDate: parseDate(releaseTime),
+          chapterUrl,
+        });
       }
     });
 
@@ -152,6 +154,37 @@ class IfreedomScraper {
 
     return novels;
   }
+}
+
+function parseDate(dateString = '') {
+  const months = {
+    января: 1,
+    февраля: 2,
+    марта: 3,
+    апреля: 4,
+    мая: 5,
+    июня: 6,
+    июля: 7,
+    августа: 8,
+    сентября: 9,
+    октября: 10,
+    ноября: 11,
+    декабря: 12,
+  };
+
+  if (dateString.includes('.')) {
+    const [day, month, year] = dateString.split('.');
+    if (day && month && year) {
+      return dayjs(year + '-' + month + '-' + day).format('LL');
+    }
+  } else if (dateString.includes(' ')) {
+    const [day, month] = dateString.split(' ');
+    if (day && months[month]) {
+      const year = new Date().getFullYear();
+      return dayjs(year + '-' + months[month] + '-' + day).format('LL');
+    }
+  }
+  return dateString;
 }
 
 export default IfreedomScraper;

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
 import { Status } from '../helpers/constants';
 import { FilterInputs } from '../types/filterTypes';
@@ -88,7 +89,7 @@ const parseNovelAndChapters = async novelUrl => {
   loadedCheerio('.download-chapter div.title').each(function () {
     chapters.push({
       chapterName: loadedCheerio(this).find('a').attr('title'),
-      releaseDate: loadedCheerio(this).find('time').text(),
+      releaseDate: parseDate(loadedCheerio(this).find('time').text()),
       chapterUrl: loadedCheerio(this).find('a').attr('href'),
     });
   });
@@ -313,5 +314,29 @@ const JaomixScraper = {
   searchNovels,
   filters,
 };
+
+function  parseDate = (dateString = "") {
+    const months  = {
+      Янв: 1,
+      Фев: 2,
+      Мар: 3,
+      Апр: 4,
+      Май: 5,
+      Июн: 6,
+      Июл: 7,
+      Авг: 8,
+      Сен: 9,
+      Окт: 10,
+      Ноя: 11,
+      Дек: 12,
+    };
+
+    const [time, day, month, year] = dateString.split(" ");
+    if (time && day && months[month] && year) {
+      return dayjs(year + "-" + months[month] + "-" + day + " " + time).format("LLL");
+    }
+
+    return dateString;
+  };
 
 export default JaomixScraper;

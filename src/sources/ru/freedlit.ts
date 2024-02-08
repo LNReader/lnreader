@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import * as cheerio from 'cheerio';
 import { FilterInputs } from '../types/filterTypes';
 import {
@@ -67,10 +68,14 @@ const parseNovelAndChapters = async novelUrl => {
 
   loadedCheerio('a.chapter-line').each(function () {
     const chapterName = loadedCheerio(this).find('h6').text();
-    const releaseDate = loadedCheerio(this).find('span[class="date"]').text();
     const chapterUrl = loadedCheerio(this).attr('href');
     if (chapterName && chapterUrl) {
-      chapters.push({ chapterName, releaseDate, chapterUrl });
+      const releaseTime = loadedCheerio(this).find('span[class="date"]').text();
+      chapters.push({
+        chapterName,
+        releaseDate: parseDate(releaseTime),
+        chapterUrl,
+      });
     }
   });
 
@@ -248,5 +253,28 @@ const LitSpaceScraper = {
   searchNovels,
   filters,
 };
+
+function parseDate(dateString = '') {
+  const months = {
+    января: 1,
+    февраля: 2,
+    марта: 3,
+    апреля: 4,
+    мая: 5,
+    июня: 6,
+    июля: 7,
+    августа: 8,
+    сентября: 9,
+    октября: 10,
+    ноября: 11,
+    декабря: 12,
+  };
+
+  const [day, month, year] = dateString.split(' ');
+  if (day && months[month] && year) {
+    return dayjs(year + '-' + months[month] + '-' + day).format('LL');
+  }
+  return dateString;
+}
 
 export default LitSpaceScraper;

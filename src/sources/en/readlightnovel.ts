@@ -172,7 +172,7 @@ const parseChapter = async (novelUrl: string, chapterUrl: string) => {
   const chapterText = loadedCheerio('.desc').html() || '';
 
   const chapter: SourceChapter = {
-    sourceId: 2,
+    sourceId,
     novelUrl,
     chapterUrl,
     chapterName,
