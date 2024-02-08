@@ -19,7 +19,7 @@ class IfreedomScraper {
         : filters?.sort || 'По рейтингу');
 
     Object.entries(filters || {}).forEach(([type, value]) => {
-      if (value?.length) {
+      if (value instanceof Array && value.length) {
         url += '&' + type + '[]=' + value.join('&' + type + '[]=');
       }
     });
