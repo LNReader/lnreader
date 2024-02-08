@@ -6,8 +6,8 @@ import { FilterInputs, SourceFilter } from '../types/filterTypes';
 
 const sourceId = 2;
 const sourceName = 'ReadLightNovel';
-const baseUrl = 'https://www.readlightnovel.me';
-const searchUrl = 'https://www.readlightnovel.me/detailed-search-210922';
+const baseUrl = 'https://www.readlightnovel.today';
+const searchUrl = 'https://www.readlightnovel.today/detailed-search-210922';
 
 const popularNovels = async (page: number, options?: SourceOptions) => {
   const url = `${baseUrl}/${
