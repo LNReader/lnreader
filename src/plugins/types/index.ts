@@ -67,7 +67,7 @@ export interface Plugin extends PluginItem {
     pageNo: number,
     options?: PopularNovelsOptions<Filters>,
   ) => Promise<NovelItem[]>;
-  parseNovel: (novelPath: string, pageNo?: number) => Promise<SourceNovel>;
+  parseNovel: (novelPath: string) => Promise<SourceNovel>;
   parsePage: (
     novelPath: string,
     page: string,

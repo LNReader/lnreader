@@ -35,7 +35,7 @@ export const TRACKED_NOVEL_PREFIX = 'TRACKED_NOVEL_PREFIX';
 
 export const NOVEL_PREFIX = 'NOVEL_PREFIX';
 export const NOVEL_CHAPTERS_PREFIX = 'NOVEL_CHAPTERS_PREFIX';
-
+export const NOVEL_PAGES_PREFIX = 'NOVEL_PAGES_PREFIX';
 export const NOVEL_SETTINSG_PREFIX = 'NOVEL_SETTINGS';
 export const LAST_READ_PREFIX = 'LAST_READ_PREFIX';
 export const PROGRESS_PREFIX = 'PROGRESS_PREFIX';
@@ -55,6 +55,11 @@ interface ChapterProgress {
 
 export interface NovelProgress {
   [chapterId: number]: ChapterProgress;
+}
+
+export interface NovelPage {
+  title: string;
+  hasUpdate?: boolean;
 }
 
 export const useTrackedNovel = (pluginId: string, novelPath: string) => {

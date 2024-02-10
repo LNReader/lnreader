@@ -2,7 +2,7 @@ import { getPlugin } from '@plugins/pluginManager';
 
 export const fetchNovel = async (pluginId: string, novelPath: string) => {
   const plugin = getPlugin(pluginId);
-  const res = await plugin.parseNovelAndChapters(novelPath).catch(e => {
+  const res = await plugin.parseNovel(novelPath).catch(e => {
     throw e;
   });
   return res;
@@ -29,7 +29,7 @@ export const fetchChapter = async (pluginId: string, chapterPath: string) => {
 
 export const fetchChapters = async (pluginId: string, novelPath: string) => {
   const plugin = getPlugin(pluginId);
-  const res = await plugin.parseNovelAndChapters(novelPath).catch(e => {
+  const res = await plugin.parseNovel(novelPath).catch(e => {
     throw e;
   });
 

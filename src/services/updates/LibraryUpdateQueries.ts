@@ -65,11 +65,11 @@ const updateNovel = async (
   }
   db.transaction(tx => {
     novel.chapters?.forEach(chapter => {
-      const { name, path, releaseTime } = chapter;
+      const { name, path, releaseTime, page } = chapter;
       tx.executeSql(
         `
-        INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime)
-          VALUES (?, ?, ?, ?, datetime('now','localtime'))
+        INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, page)
+          VALUES (?, ?, ?, ?, datetime('now','localtime'), ?)
           ON CONFLICT(path) DO UPDATE SET
             name=excluded.name,
             releaseTime=excluded.releaseTime,
@@ -77,7 +77,7 @@ const updateNovel = async (
           WHERE Chapter.name != excluded.name
             OR Chapter.releaseTime != excluded.releaseTime;
         `,
-        [path, name, releaseTime || '', novelId],
+        [path, name, releaseTime || '', novelId, page || '1'],
         (txObj, { insertId }) => {
           if (insertId && downloadNewChapters) {
             downloadChapter(pluginId, novelId, insertId, path);
