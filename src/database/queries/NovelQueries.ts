@@ -20,7 +20,7 @@ export const insertNovelAndChapters = async (
   sourceNovel: SourceNovel,
 ): Promise<number | undefined> => {
   const insertNovelQuery =
-    'INSERT INTO Novel (path, pluginId, name, cover, summary, author, artist, status, genres) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    'INSERT INTO Novel (path, pluginId, name, cover, summary, author, artist, status, genres, pageList) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   const novelId: number | undefined = await new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
@@ -35,6 +35,7 @@ export const insertNovelAndChapters = async (
           sourceNovel.artist || null,
           sourceNovel.status || null,
           sourceNovel.genres || null,
+          sourceNovel.pageList ? JSON.stringify(sourceNovel.pageList) : null,
         ],
         async (txObj, resultSet) => resolve(resultSet.insertId),
         txnErrorCallback,
