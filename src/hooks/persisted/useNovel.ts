@@ -18,9 +18,9 @@ import {
   markChapterUnread as _markChapterUnread,
   deleteChapter as _deleteChapter,
   deleteChapters as _deleteChapters,
+  getChapters as _getChapters,
 } from '@database/queries/ChapterQueries';
 import { fetchNovel } from '@services/plugin/fetch';
-import { getChapters } from '@database/queries/ChapterQueries';
 import { updateNovel as _updateNovel } from '@services/updates/LibraryUpdateQueries';
 import { APP_SETTINGS, AppSettings } from './useSettings';
 import { showToast } from '@utils/showToast';
@@ -57,9 +57,12 @@ export interface NovelProgress {
   [chapterId: number]: ChapterProgress;
 }
 
-export interface NovelPage {
-  title: string;
-  hasUpdate?: boolean;
+export interface NovelPages {
+  pages: {
+    title: string;
+    hasUpdate?: boolean;
+  }[];
+  current: number; // index
 }
 
 export const useTrackedNovel = (pluginId: string, novelPath: string) => {
@@ -121,6 +124,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const [novel, setNovel] = useMMKVObject<NovelInfo>(
     `${NOVEL_PREFIX}_${pluginId}_${novelPath}`,
   );
+  const [novelPages = { pages: [], current: 0 }, setNovelPages] =
+    useMMKVObject<NovelPages>(`${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`);
   const [chapters = [], setChapters] = useMMKVObject<ChapterInfo[]>(
     `${NOVEL_CHAPTERS_PREFIX}_${pluginId}_${novelPath}`,
   );
@@ -133,6 +138,18 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const [progress = {}, _setProgress] = useMMKVObject<NovelProgress>(
     `${PROGRESS_PREFIX}_${pluginId}_${novelPath}`,
   );
+
+  const getChapters = async (
+    sort?: string,
+    filter?: string,
+    page: string = '1',
+  ) => {
+    if (novel) {
+      return await _getChapters(novel.id, sort, filter, page);
+    } else {
+      return [];
+    }
+  };
 
   const getNovel = () => {
     return _getNovel(novelPath, pluginId)
@@ -151,10 +168,25 @@ export const useNovel = (novelPath: string, pluginId: string) => {
       .then(async novel => {
         if (novel) {
           setNovel(novel);
+          let pages = novelPages?.pages;
+          if (!novelPages?.pages.length) {
+            const pageList = novel.pageList
+              ? (JSON.parse(novel.pageList) as string[])
+              : ['1'];
+            pages = pageList.map(title => {
+              return {
+                title,
+              };
+            });
+            setNovelPages({
+              pages,
+              current: 0,
+            });
+          }
           return await getChapters(
-            novel.id,
             novelSettings?.sort,
             novelSettings?.filter,
+            pages?.[2].title,
           ).then(chapters => setChapters(chapters));
         } else {
           throw new Error(getString('updatesScreen.unableToGetNovel'));
@@ -164,11 +196,11 @@ export const useNovel = (novelPath: string, pluginId: string) => {
 
   // should call this when only data in db changed.
   const refreshChapters = () => {
-    if (novel) {
-      getChapters(novel.id, novelSettings.sort, novelSettings.filter).then(
-        chapters => setChapters(chapters),
-      );
-    }
+    getChapters(
+      novelSettings.sort,
+      novelSettings.filter,
+      novelPages.pages?.[2]?.title,
+    ).then(chapters => setChapters(chapters));
   };
 
   const sortAndFilterChapters = async (sort?: string, filter?: string) => {
@@ -178,7 +210,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         sort,
         filter,
       });
-      await getChapters(novel.id, sort, filter).then(chapters => {
+      await getChapters(sort, filter).then(chapters => {
         setChapters(chapters);
       });
     }
@@ -388,6 +420,7 @@ export const deleteCachedNovels = async () => {
       `${TRACKED_NOVEL_PREFIX}_${novel.pluginId}_${novel.path}`,
     );
     MMKVStorage.delete(`${NOVEL_PREFIX}_${novel.pluginId}_${novel.path}`);
+    MMKVStorage.delete(`${NOVEL_PAGES_PREFIX}_${novel.pluginId}_${novel.path}`);
     MMKVStorage.delete(
       `${NOVEL_CHAPTERS_PREFIX}_${novel.pluginId}_${novel.path}`,
     );

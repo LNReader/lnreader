@@ -48,18 +48,23 @@ export const insertChapters = async (
   });
 };
 
-const getChaptersQuery = (sort = 'ORDER BY id ASC', filter = '') =>
-  `SELECT * FROM Chapter WHERE novelId = ? ${filter} ${sort}`;
+const getChaptersQuery = (
+  sort = 'ORDER BY pageIndex ASC',
+  filter = '',
+  page = '1',
+) =>
+  `SELECT * FROM Chapter WHERE novelId = ? AND page = '${page}' ${filter} ${sort}`;
 
 export const getChapters = (
   novelId: number,
   sort?: string,
   filter?: string,
+  page?: string,
 ): Promise<ChapterInfo[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getChaptersQuery(sort, filter),
+        getChaptersQuery(sort, filter, page),
         [novelId],
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
