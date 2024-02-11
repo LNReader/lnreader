@@ -24,7 +24,7 @@ import { fetchNovel } from '@services/plugin/fetch';
 import { updateNovel as _updateNovel } from '@services/updates/LibraryUpdateQueries';
 import { APP_SETTINGS, AppSettings } from './useSettings';
 import { showToast } from '@utils/showToast';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
 import { getString } from '@strings/translations';
@@ -139,17 +139,15 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     `${PROGRESS_PREFIX}_${pluginId}_${novelPath}`,
   );
 
-  const getChapters = async (
-    sort?: string,
-    filter?: string,
-    page: string = '1',
-  ) => {
-    if (novel) {
-      return await _getChapters(novel.id, sort, filter, page);
-    } else {
-      return [];
-    }
-  };
+  // const getChapters = async (
+  //   page: string = '1',
+  // ) => {
+  //   if (novel) {
+  //     return await ;
+  //   } else {
+  //     return [];
+  //   }
+  // };
 
   const getNovel = () => {
     return _getNovel(novelPath, pluginId)
@@ -183,35 +181,30 @@ export const useNovel = (novelPath: string, pluginId: string) => {
               current: 0,
             });
           }
-          return await getChapters(
-            novelSettings?.sort,
-            novelSettings?.filter,
-            pages?.[2].title,
-          ).then(chapters => setChapters(chapters));
+          openPage(novelPages.current);
         } else {
           throw new Error(getString('updatesScreen.unableToGetNovel'));
         }
       });
   };
 
-  // should call this when only data in db changed.
+  const openPage = (index: number) => {
+    setNovelPages({
+      ...novelPages,
+      current: index,
+    });
+  };
+
   const refreshChapters = () => {
-    getChapters(
-      novelSettings.sort,
-      novelSettings.filter,
-      novelPages.pages?.[2]?.title,
-    ).then(chapters => setChapters(chapters));
+    openPage(novelPages.current);
   };
 
   const sortAndFilterChapters = async (sort?: string, filter?: string) => {
-    if (novel?.id) {
+    if (novel) {
       setNovelSettings({
         showChapterTitles: novelSettings?.showChapterTitles,
         sort,
         filter,
-      });
-      await getChapters(sort, filter).then(chapters => {
-        setChapters(chapters);
       });
     }
   };
@@ -386,7 +379,19 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     });
   };
 
+  useEffect(() => {
+    if (novel) {
+      _getChapters(
+        novel.id,
+        novelSettings.sort,
+        novelSettings.filter,
+        novelPages.pages[novelPages.current]?.title,
+      ).then(res => setChapters(res));
+    }
+  }, [novelSettings, novelPages]);
+
   return {
+    novelPages,
     progress,
     novel,
     lastRead,
@@ -394,6 +399,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     novelSettings,
     setProgress,
     getNovel,
+    openPage,
     setNovel,
     setLastRead,
     setNovelSettings,
