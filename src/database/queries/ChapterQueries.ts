@@ -61,8 +61,6 @@ export const getChapters = (
   filter?: string,
   page?: string,
 ): Promise<ChapterInfo[]> => {
-  console.log(sort, filter, page);
-
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(

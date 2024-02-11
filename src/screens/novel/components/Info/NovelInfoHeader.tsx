@@ -197,7 +197,7 @@ const NovelInfoHeader = ({
                 numberOfLines={2}
                 style={[{ color: theme.onSurface }, styles.pageTitle]}
               >
-                {page}
+                Page: {page}
               </Text>
             ) : null}
             <Text style={[{ color: theme.onSurface }, styles.chapters]}>

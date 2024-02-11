@@ -1,4 +1,5 @@
 import { getPlugin } from '@plugins/pluginManager';
+import { ChapterItem } from '@plugins/types';
 
 export const fetchNovel = async (pluginId: string, novelPath: string) => {
   const plugin = getPlugin(pluginId);
@@ -36,4 +37,20 @@ export const fetchChapters = async (pluginId: string, novelPath: string) => {
   const chapters = res.chapters;
 
   return chapters;
+};
+
+export const fetchPage = async (
+  pluginId: string,
+  novelPath: string,
+  page: string,
+  firstChapter: ChapterItem,
+) => {
+  const plugin = getPlugin(pluginId);
+  if (!plugin.parsePage) {
+    throw new Error('Cant parse page!');
+  }
+  const res = await plugin.parsePage(novelPath, page, firstChapter).catch(e => {
+    throw e;
+  });
+  return res;
 };

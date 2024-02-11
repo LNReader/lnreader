@@ -19,8 +19,9 @@ import {
   deleteChapter as _deleteChapter,
   deleteChapters as _deleteChapters,
   getChapters as _getChapters,
+  insertChapters,
 } from '@database/queries/ChapterQueries';
-import { fetchNovel } from '@services/plugin/fetch';
+import { fetchNovel, fetchPage } from '@services/plugin/fetch';
 import { updateNovel as _updateNovel } from '@services/updates/LibraryUpdateQueries';
 import { APP_SETTINGS, AppSettings } from './useSettings';
 import { showToast } from '@utils/showToast';
@@ -139,53 +140,36 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     `${PROGRESS_PREFIX}_${pluginId}_${novelPath}`,
   );
 
-  // const getChapters = async (
-  //   page: string = '1',
-  // ) => {
-  //   if (novel) {
-  //     return await ;
-  //   } else {
-  //     return [];
-  //   }
-  // };
-
-  const getNovel = () => {
-    return _getNovel(novelPath, pluginId)
-      .then(_novel => {
-        if (_novel) {
-          return _novel;
-        } else {
-          // if novel is not in db, fetch it
-          return fetchNovel(pluginId, novelPath).then(sourceNovel =>
-            insertNovelAndChapters(pluginId, sourceNovel).then(() =>
-              _getNovel(novelPath, pluginId),
-            ),
-          );
-        }
-      })
-      .then(async novel => {
-        if (novel) {
-          setNovel(novel);
-          let pages = novelPages?.pages;
-          if (!novelPages?.pages.length) {
-            const pageList = novel.pageList
-              ? (JSON.parse(novel.pageList) as string[])
-              : ['1'];
-            pages = pageList.map(title => {
-              return {
-                title,
-              };
-            });
-            setNovelPages({
-              pages,
-              current: 0,
-            });
-          }
-          openPage(novelPages.current);
-        } else {
-          throw new Error(getString('updatesScreen.unableToGetNovel'));
-        }
+  const getNovel = async () => {
+    let novel = await _getNovel(novelPath, pluginId);
+    if (!novel) {
+      const sourceNovel = await fetchNovel(pluginId, novelPath).catch(() => {
+        throw new Error(getString('updatesScreen.unableToGetNovel'));
       });
+      await insertNovelAndChapters(pluginId, sourceNovel);
+      novel = await _getNovel(novelPath, pluginId);
+      if (!novel) {
+        return;
+      }
+    }
+    let pages = novelPages?.pages;
+    if (!pages.length) {
+      const pageList = novel.pageList
+        ? (JSON.parse(novel.pageList) as string[])
+        : Array(novel.totalPages)
+            .fill(0)
+            .map((v, idx) => String(idx + 1));
+      pages = pageList.map(title => {
+        return {
+          title,
+        };
+      });
+      setNovelPages({
+        pages: pages,
+        current: 0,
+      });
+    }
+    setNovel(novel);
   };
 
   const openPage = (index: number) => {
@@ -380,15 +364,41 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   };
 
   useEffect(() => {
-    if (novel) {
-      _getChapters(
-        novel.id,
-        novelSettings.sort,
-        novelSettings.filter,
-        novelPages.pages[novelPages.current]?.title,
-      ).then(res => setChapters(res));
-    }
-  }, [novelSettings, novelPages]);
+    const getChapters = async () => {
+      if (novel) {
+        const page = novelPages.pages[novelPages.current]?.title;
+        let chapters = await _getChapters(
+          novel.id,
+          novelSettings.sort,
+          novelSettings.filter,
+          page,
+        );
+        if (novel.totalPages === 1 || chapters.length) {
+          setChapters(chapters);
+        } else {
+          const sourcePage = await fetchPage(pluginId, novelPath, page, {
+            name: '',
+            path: '',
+          });
+          const sourceChapters = sourcePage.chapters.map(ch => {
+            return {
+              ...ch,
+              page,
+            };
+          });
+          await insertChapters(novel.id, sourceChapters);
+          chapters = await _getChapters(
+            novel.id,
+            novelSettings.sort,
+            novelSettings.filter,
+            page,
+          );
+          setChapters(chapters);
+        }
+      }
+    };
+    getChapters();
+  }, [novel, novelSettings, novelPages]);
 
   return {
     novelPages,

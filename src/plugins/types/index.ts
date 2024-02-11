@@ -33,7 +33,7 @@ export interface SourceNovel extends NovelItem {
   status?: NovelStatus;
   chapters?: ChapterItem[];
   pageList?: string[];
-  totalPage?: number;
+  totalPages?: number;
 }
 
 export interface SourcePage {
@@ -68,7 +68,7 @@ export interface Plugin extends PluginItem {
     options?: PopularNovelsOptions<Filters>,
   ) => Promise<NovelItem[]>;
   parseNovel: (novelPath: string) => Promise<SourceNovel>;
-  parsePage: (
+  parsePage?: (
     novelPath: string,
     page: string,
     _firstChapter: ChapterItem,

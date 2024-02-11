@@ -13,7 +13,17 @@ const updateNovelMetadata = async (
   novelId: number,
   novel: SourceNovel,
 ) => {
-  let { name, cover, summary, author, artist, genres, status } = novel;
+  let {
+    name,
+    cover,
+    summary,
+    author,
+    artist,
+    genres,
+    status,
+    totalPages,
+    pageList,
+  } = novel;
   const novelDir = NovelDownloadFolder + '/' + pluginId + '/' + novelId;
   if (cover) {
     const novelCoverUri = 'file://' + novelDir + '/cover.png';
@@ -27,15 +37,22 @@ const updateNovelMetadata = async (
   }
   db.transaction(tx => {
     tx.executeSql(
-      'UPDATE Novel SET name = ?, cover = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ? WHERE id = ?',
+      `UPDATE Novel SET 
+        name = ?, cover = ?, summary = ?, author = ?, artist = ?, 
+        genres = ?, status = ?,
+        totalPages = ?, pageList = ?
+        WHERE id = ?
+      `,
       [
         name,
         cover || null,
-        summary || '',
+        summary || null,
         author || 'unknown',
-        artist || '',
-        genres || '',
-        status || '',
+        artist || null,
+        genres || null,
+        status || null,
+        totalPages || 1,
+        pageList ? JSON.stringify(pageList) : null,
         novelId,
       ],
     );
