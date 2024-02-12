@@ -615,7 +615,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   novelName={name}
                 />
               )}
-              keyExtractor={(item, index) => 'chapter' + item.id + index}
+              keyExtractor={item => 'chapter_' + item.id}
               contentContainerStyle={{ paddingBottom: 100 }}
               ListHeaderComponent={
                 <NovelInfoHeader

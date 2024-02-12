@@ -173,9 +173,9 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     setNovel(novel);
   };
 
-  const openPage = (index: number) => {
+  const openPage = useCallback((index: number) => {
     setPageIndex(index);
-  };
+  }, []);
 
   const refreshChapters = async () => {
     if (novel) {
@@ -361,17 +361,14 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   useEffect(() => {
     const getChapters = async () => {
       if (novel) {
-        const page = novelPages[pageIndex]?.title;
-        const hasUpdate = novelPages[pageIndex]?.hasUpdate;
+        const { title: page, hasUpdate } = novelPages[pageIndex];
         let chapters = await _getChapters(
           novel.id,
           novelSettings.sort,
           novelSettings.filter,
           page,
         );
-        if (novel.totalPages <= 0 || (chapters.length && !hasUpdate)) {
-          setChapters(chapters);
-        } else {
+        if (hasUpdate || (novel.totalPages > 0 && !chapters.length)) {
           const sourcePage = await fetchPage(pluginId, novelPath, page);
           const sourceChapters = sourcePage.chapters.map(ch => {
             return {
@@ -380,21 +377,31 @@ export const useNovel = (novelPath: string, pluginId: string) => {
             };
           });
           await insertChapters(novel.id, sourceChapters);
-          if (sourcePage.latestChapter) {
-            if (sourcePage.latestChapter.path !== latestChapter?.path) {
-              setLatestChapter(sourcePage.latestChapter);
-              setNovelPages(
-                novelPages.map(p => {
-                  if (p.title !== page) {
-                    return {
-                      ...p,
-                      hasUpdate: true,
-                    };
-                  }
+          if (
+            sourcePage.latestChapter &&
+            sourcePage.latestChapter.path !== latestChapter?.path
+          ) {
+            setLatestChapter(sourcePage.latestChapter);
+            setNovelPages(
+              novelPages.map(p => {
+                return {
+                  ...p,
+                  hasUpdate: p.title === page ? false : true,
+                };
+              }),
+            );
+          } else {
+            setNovelPages(
+              novelPages.map(p => {
+                if (p.title !== page) {
                   return p;
-                }),
-              );
-            }
+                }
+                return {
+                  ...p,
+                  hasUpdate: false,
+                };
+              }),
+            );
           }
           chapters = await _getChapters(
             novel.id,
@@ -402,8 +409,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
             novelSettings.filter,
             page,
           );
-          setChapters(chapters);
         }
+        setChapters(chapters);
       }
     };
     getChapters();
