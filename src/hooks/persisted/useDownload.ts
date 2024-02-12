@@ -51,7 +51,7 @@ const downloadChapterAction = async (taskData?: TaskData) => {
           trigger: null,
         }),
       );
-      // get the newtest queue;
+      // get the newest queue;
       queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
       setMMKVObject(DOWNLOAD_QUEUE, queue.slice(1));
       queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];

@@ -184,8 +184,17 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     });
   };
 
-  const refreshChapters = () => {
-    openPage(novelPages.current);
+  const refreshChapters = async () => {
+    if (novel) {
+      const page = novelPages.pages[novelPages.current]?.title;
+      let chapters = await _getChapters(
+        novel.id,
+        novelSettings.sort,
+        novelSettings.filter,
+        page,
+      );
+      setChapters(chapters);
+    }
   };
 
   const sortAndFilterChapters = async (sort?: string, filter?: string) => {
