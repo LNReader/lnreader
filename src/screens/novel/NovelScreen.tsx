@@ -47,6 +47,7 @@ import { ChapterInfo } from '@database/types';
 import ChapterItem from './components/ChapterItem';
 import { getString } from '@strings/translations';
 import NovelDrawer from './components/NovelDrawer';
+import { updateNovel } from '@services/updates/LibraryUpdateQueries';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { name, path, pluginId } = route.params;
@@ -64,7 +65,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     getNovel,
     sortAndFilterChapters,
     setShowChapterTitles,
-    updateNovel,
     bookmarkChapters,
     markChaptersRead,
     markChaptersUnread,
@@ -104,6 +104,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     useFabForContinueReading,
     defaultChapterSort,
     disableHapticFeedback,
+    downloadNewChapters,
+    refreshNovelMetadata,
   } = useAppSettings();
 
   const {
@@ -127,10 +129,15 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   }, [downloadQueue]);
 
   const onRefresh = () => {
-    setUpdating(true);
-    updateNovel()
-      .then(() => showToast(getString('novelScreen.updatedToast', { name })))
-      .finally(() => setUpdating(false));
+    if (novel) {
+      setUpdating(true);
+      updateNovel(pluginId, novel.path, novel.id, {
+        downloadNewChapters,
+        refreshNovelMetadata,
+      })
+        .then(() => showToast(getString('novelScreen.updatedToast', { name })))
+        .finally(() => setUpdating(false));
+    }
   };
 
   const refreshControl = () => (

@@ -31,7 +31,7 @@ export interface SourceNovel extends NovelItem {
   author?: string;
   artist?: string;
   status?: NovelStatus;
-  chapters?: ChapterItem[];
+  chapters: ChapterItem[];
   totalPages?: number;
 }
 

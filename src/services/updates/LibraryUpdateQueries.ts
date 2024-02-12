@@ -6,6 +6,8 @@ import { SourceNovel } from '@plugins/types';
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
+import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
+import { NOVEL_PAGES_PREFIX, NovelPages } from '@hooks/persisted/useNovel';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = async (
@@ -63,14 +65,12 @@ const updateNovel = async (
     return;
   }
   const { downloadNewChapters, refreshNovelMetadata } = options;
-
-  let novel = await fetchNovel(pluginId, novelPath);
-
+  const novel = await fetchNovel(pluginId, novelPath);
   if (refreshNovelMetadata) {
     updateNovelMetadata(pluginId, novelId, novel);
   }
   db.transaction(tx => {
-    novel.chapters?.forEach(chapter => {
+    novel.chapters.forEach(chapter => {
       const { name, path, releaseTime, page } = chapter;
       tx.executeSql(
         `
@@ -80,6 +80,7 @@ const updateNovel = async (
             name=excluded.name,
             releaseTime=excluded.releaseTime,
             updatedTime=excluded.updatedTime
+            page=excluded.page
           WHERE Chapter.name != excluded.name
             OR Chapter.releaseTime != excluded.releaseTime;
         `,
@@ -92,6 +93,20 @@ const updateNovel = async (
       );
     });
   });
+  const novelPages = getMMKVObject<NovelPages>(
+    `${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`,
+  );
+  if (novelPages) {
+    setMMKVObject(`${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`, {
+      ...novelPages,
+      pages: novelPages.pages.map(p => {
+        return {
+          ...p,
+          hasUpdate: true,
+        };
+      }),
+    });
+  }
 };
 
 export { updateNovel };

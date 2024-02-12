@@ -2,7 +2,7 @@ import { SearchResult, UserListEntry } from '@services/Trackers';
 import { useMMKVObject } from 'react-native-mmkv';
 import { TrackerMetadata, getTracker } from './useTracker';
 import { ChapterInfo, NovelInfo } from '@database/types';
-import { MMKVStorage, getMMKVObject } from '@utils/mmkv/mmkv';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
 import {
   getNovel as _getNovel,
   deleteCachedNovels as _deleteCachedNovels,
@@ -23,8 +23,6 @@ import {
   getCustomPages,
 } from '@database/queries/ChapterQueries';
 import { fetchNovel, fetchPage } from '@services/plugin/fetch';
-import { updateNovel as _updateNovel } from '@services/updates/LibraryUpdateQueries';
-import { APP_SETTINGS, AppSettings } from './useSettings';
 import { showToast } from '@utils/showToast';
 import { useCallback, useEffect } from 'react';
 import { NovelDownloadFolder } from '@utils/constants/download';
@@ -173,8 +171,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
       };
     });
     setNovelPages({
+      ...novelPages,
       pages: pages,
-      current: 0,
     });
     setNovel(novel);
   };
@@ -297,18 +295,6 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         return chapter;
       }),
     );
-  };
-
-  const updateNovel = async () => {
-    const settings = getMMKVObject<AppSettings>(APP_SETTINGS);
-    if (novel) {
-      await _updateNovel(pluginId, novelPath, novel.id, {
-        downloadNewChapters: settings?.downloadNewChapters,
-        refreshNovelMetadata: settings?.refreshNovelMetadata,
-      }).then(() => {
-        getNovel();
-      });
-    }
   };
 
   const deleteChapter = (_chapter: ChapterInfo) => {
@@ -442,7 +428,6 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     markChaptersRead,
     markPreviousChaptersUnread,
     markChaptersUnread,
-    updateNovel,
     setShowChapterTitles,
     markChapterRead,
     refreshChapters,
