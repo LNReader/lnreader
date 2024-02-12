@@ -30,6 +30,7 @@ import { useCallback, useEffect } from 'react';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
 import { getString } from '@strings/translations';
+import { ChapterItem } from '@plugins/types';
 
 // store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
 
@@ -37,6 +38,7 @@ export const TRACKED_NOVEL_PREFIX = 'TRACKED_NOVEL_PREFIX';
 
 export const NOVEL_PREFIX = 'NOVEL_PREFIX';
 export const NOVEL_CHAPTERS_PREFIX = 'NOVEL_CHAPTERS_PREFIX';
+export const NOVEL_LATEST_CHAPTER_PREFIX = 'NOVEL_LATEST_CHAPTER';
 export const NOVEL_PAGES_PREFIX = 'NOVEL_PAGES_PREFIX';
 export const NOVEL_SETTINSG_PREFIX = 'NOVEL_SETTINGS';
 export const LAST_READ_PREFIX = 'LAST_READ_PREFIX';
@@ -125,6 +127,9 @@ export const useTrackedNovel = (pluginId: string, novelPath: string) => {
 export const useNovel = (novelPath: string, pluginId: string) => {
   const [novel, setNovel] = useMMKVObject<NovelInfo>(
     `${NOVEL_PREFIX}_${pluginId}_${novelPath}`,
+  );
+  const [latestChapter, setLatestChapter] = useMMKVObject<ChapterItem>(
+    `${NOVEL_LATEST_CHAPTER_PREFIX}_${pluginId}_${novelPath}`,
   );
   const [novelPages = { pages: [], current: 0 }, setNovelPages] =
     useMMKVObject<NovelPages>(`${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`);
@@ -369,13 +374,14 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     const getChapters = async () => {
       if (novel) {
         const page = novelPages.pages[novelPages.current]?.title;
+        const hasUpdate = novelPages.pages[novelPages.current]?.hasUpdate;
         let chapters = await _getChapters(
           novel.id,
           novelSettings.sort,
           novelSettings.filter,
           page,
         );
-        if (novel.totalPages <= 0 || chapters.length) {
+        if (novel.totalPages <= 0 || (chapters.length && !hasUpdate)) {
           setChapters(chapters);
         } else {
           const sourcePage = await fetchPage(pluginId, novelPath, page);
@@ -386,6 +392,23 @@ export const useNovel = (novelPath: string, pluginId: string) => {
             };
           });
           await insertChapters(novel.id, sourceChapters);
+          if (sourcePage.latestChapter) {
+            if (sourcePage.latestChapter.path !== latestChapter?.path) {
+              setLatestChapter(sourcePage.latestChapter);
+              setNovelPages({
+                ...novelPages,
+                pages: novelPages.pages.map(p => {
+                  if (p.title !== page) {
+                    return {
+                      ...p,
+                      hasUpdate: true,
+                    };
+                  }
+                  return p;
+                }),
+              });
+            }
+          }
           chapters = await _getChapters(
             novel.id,
             novelSettings.sort,

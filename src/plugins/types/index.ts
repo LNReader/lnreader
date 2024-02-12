@@ -37,8 +37,7 @@ export interface SourceNovel extends NovelItem {
 
 export interface SourcePage {
   chapters: ChapterItem[];
-  firstChapter?: ChapterItem;
-  totalPages?: number;
+  latestChapter?: ChapterItem;
 }
 
 export interface PopularNovelsOptions<Q extends Filters> {
