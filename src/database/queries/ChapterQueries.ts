@@ -17,10 +17,10 @@ const db = SQLite.openDatabase('lnreader.db');
 
 const insertChapterQuery = `
 INSERT OR IGNORE INTO Chapter (
-  path, name, releaseTime, novelId, chapterNumber, page
+  path, name, releaseTime, novelId, chapterNumber, page, pageIndex
 ) 
 Values 
-  (?, ?, ?, ?, ?, ?)
+  (?, ?, ?, ?, ?, ?, ?)
 `;
 
 export const insertChapters = async (
@@ -31,7 +31,7 @@ export const insertChapters = async (
     return;
   }
   db.transaction(tx => {
-    chapters.forEach(chapter => {
+    chapters.forEach((chapter, index) => {
       tx.executeSql(
         insertChapterQuery,
         [
@@ -41,6 +41,7 @@ export const insertChapters = async (
           novelId,
           chapter.chapterNumber || null,
           chapter.page || '1',
+          index,
         ],
         noop,
       );
