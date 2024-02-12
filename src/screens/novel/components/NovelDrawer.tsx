@@ -1,4 +1,4 @@
-import { NovelPages } from '@hooks/persisted/useNovel';
+import { NovelPage } from '@hooks/persisted/useNovel';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { ThemeColors } from '@theme/types';
 import color from 'color';
@@ -9,13 +9,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface NovelDrawerProps {
   theme: ThemeColors;
-  novelPages: NovelPages;
+  novelPages: NovelPage[];
+  pageIndex: number;
   openPage: (index: number) => void;
   drawerRef: RefObject<DrawerLayoutAndroid>;
 }
 export default function NovelDrawer({
   theme,
   novelPages,
+  pageIndex,
   openPage,
   drawerRef,
 }: NovelDrawerProps) {
@@ -27,7 +29,7 @@ export default function NovelDrawer({
     <View
       style={[
         styles.drawerElementContainer,
-        index === novelPages.current && {
+        index === pageIndex && {
           backgroundColor: color(theme.primary).alpha(0.12).string(),
         },
       ]}
@@ -62,7 +64,8 @@ export default function NovelDrawer({
         Novel pages
       </Text>
       <FlashList
-        data={novelPages.pages}
+        data={novelPages}
+        extraData={pageIndex}
         renderItem={renderItem}
         estimatedItemSize={60}
       />

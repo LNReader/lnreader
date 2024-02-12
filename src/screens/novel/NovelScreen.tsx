@@ -54,6 +54,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
   const [updating, setUpdating] = useState(false);
   const {
+    pageIndex,
     novelPages,
     progress,
     novel,
@@ -340,6 +341,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           <NovelDrawer
             theme={theme}
             novelPages={novelPages}
+            pageIndex={pageIndex}
             openPage={openPage}
             drawerRef={drawerRef}
           />
@@ -630,8 +632,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   novelBottomSheetRef={novelBottomSheetRef}
                   deleteDownloadsSnackbar={deleteDownloadsSnackbar}
                   page={
-                    novelPages.pages.length > 1
-                      ? novelPages.pages[novelPages.current].title
+                    novelPages.length > 1
+                      ? novelPages[pageIndex].title
                       : undefined
                   }
                   drawerRef={drawerRef}
