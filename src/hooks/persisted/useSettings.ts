@@ -139,7 +139,7 @@ const initialAppSettings: AppSettings = {
    */
 
   hideBackdrop: false,
-  defaultChapterSort: 'ORDER BY pageIndex ASC',
+  defaultChapterSort: 'ORDER BY index ASC',
 };
 
 const initialBrowseSettings: BrowseSettings = {
