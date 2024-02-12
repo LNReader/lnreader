@@ -13,7 +13,6 @@ export interface NovelInfo {
   inLibrary: boolean;
   isLocal: boolean;
   totalPages: number;
-  pageList?: string;
 }
 
 export interface LibraryNovelInfo extends NovelInfo {

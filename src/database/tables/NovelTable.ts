@@ -12,8 +12,7 @@ export const createNovelTableQuery = `
     genres TEXT,
     inLibrary INTEGER DEFAULT 0,
     isLocal INTEGER DEFAULT 0,
-    totalPages INTEGER DEFAULT 1,
-    pageList TEXT,
+    totalPages INTEGER DEFAULT 0,
     UNIQUE(path, pluginId)
   );
 `;

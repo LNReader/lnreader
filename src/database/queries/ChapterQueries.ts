@@ -55,6 +55,20 @@ const getChaptersQuery = (
 ) =>
   `SELECT * FROM Chapter WHERE novelId = ? AND page = '${page}' ${filter} ${sort}`;
 
+export const getCustomPages = (
+  novelId: number,
+): Promise<{ page: string }[]> => {
+  return new Promise(resolve => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT DISTINCT page from Chapter WHERE novelId = ?',
+        [novelId],
+        (txObj, { rows }) => resolve(rows._array),
+      );
+    });
+  });
+};
+
 export const getChapters = (
   novelId: number,
   sort?: string,

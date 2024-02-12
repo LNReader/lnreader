@@ -55,7 +55,7 @@ const insertLocalNovel = (
               name: name,
               inLibrary: true,
               isLocal: true,
-              totalPages: 1,
+              totalPages: 0,
             });
             resolve(resultSet.insertId);
           } else {

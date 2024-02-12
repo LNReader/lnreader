@@ -32,7 +32,6 @@ export interface SourceNovel extends NovelItem {
   artist?: string;
   status?: NovelStatus;
   chapters?: ChapterItem[];
-  pageList?: string[];
   totalPages?: number;
 }
 
@@ -40,7 +39,6 @@ export interface SourcePage {
   chapters: ChapterItem[];
   firstChapter?: ChapterItem;
   totalPages?: number;
-  pageList?: string[];
 }
 
 export interface PopularNovelsOptions<Q extends Filters> {
@@ -68,11 +66,7 @@ export interface Plugin extends PluginItem {
     options?: PopularNovelsOptions<Filters>,
   ) => Promise<NovelItem[]>;
   parseNovel: (novelPath: string) => Promise<SourceNovel>;
-  parsePage?: (
-    novelPath: string,
-    page: string,
-    _firstChapter: ChapterItem,
-  ) => Promise<SourcePage>;
+  parsePage?: (novelPath: string, page: string) => Promise<SourcePage>;
   parseChapter: (chapterPath: string) => Promise<string>;
   searchNovels: (searchTerm: string, pageNo: number) => Promise<NovelItem[]>;
   fetchImage: (url: string) => Promise<string>;

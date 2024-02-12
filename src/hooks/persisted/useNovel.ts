@@ -20,6 +20,7 @@ import {
   deleteChapters as _deleteChapters,
   getChapters as _getChapters,
   insertChapters,
+  getCustomPages,
 } from '@database/queries/ChapterQueries';
 import { fetchNovel, fetchPage } from '@services/plugin/fetch';
 import { updateNovel as _updateNovel } from '@services/updates/LibraryUpdateQueries';
@@ -152,23 +153,24 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         return;
       }
     }
-    let pages = novelPages?.pages;
-    if (!pages.length) {
-      const pageList = novel.pageList
-        ? (JSON.parse(novel.pageList) as string[])
-        : Array(novel.totalPages)
-            .fill(0)
-            .map((v, idx) => String(idx + 1));
-      pages = pageList.map(title => {
-        return {
-          title,
-        };
-      });
-      setNovelPages({
-        pages: pages,
-        current: 0,
-      });
+    let pageList: string[] = [];
+    if (novel.totalPages > 0) {
+      pageList = Array(novel.totalPages)
+        .fill(0)
+        .map((v, idx) => String(idx + 1));
+    } else {
+      pageList = (await getCustomPages(novel.id)).map(n => n.page);
     }
+    const pages = pageList.map(title => {
+      return {
+        title,
+        hasUpdate: novelPages.pages.find(p => p.title === title)?.hasUpdate,
+      };
+    });
+    setNovelPages({
+      pages: pages,
+      current: 0,
+    });
     setNovel(novel);
   };
 
@@ -373,13 +375,10 @@ export const useNovel = (novelPath: string, pluginId: string) => {
           novelSettings.filter,
           page,
         );
-        if (novel.totalPages === 1 || chapters.length) {
+        if (novel.totalPages <= 0 || chapters.length) {
           setChapters(chapters);
         } else {
-          const sourcePage = await fetchPage(pluginId, novelPath, page, {
-            name: '',
-            path: '',
-          });
+          const sourcePage = await fetchPage(pluginId, novelPath, page);
           const sourceChapters = sourcePage.chapters.map(ch => {
             return {
               ...ch,
