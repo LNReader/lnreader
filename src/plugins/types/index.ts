@@ -3,15 +3,16 @@ import { Language } from '@utils/constants/languages';
 
 export interface NovelItem {
   name: string;
-  path: string; //must be absoulute
+  path: string;
   cover?: string;
 }
 
 export interface ChapterItem {
   name: string;
-  path: string; //must be absoulute
+  path: string;
   chapterNumber?: number;
   releaseTime?: string;
+  page?: string;
 }
 
 export enum NovelStatus {
@@ -30,7 +31,13 @@ export interface SourceNovel extends NovelItem {
   author?: string;
   artist?: string;
   status?: NovelStatus;
-  chapters?: ChapterItem[];
+  chapters: ChapterItem[];
+  totalPages?: number;
+}
+
+export interface SourcePage {
+  chapters: ChapterItem[];
+  latestChapter?: ChapterItem;
 }
 
 export interface PopularNovelsOptions<Q extends Filters> {
@@ -57,10 +64,8 @@ export interface Plugin extends PluginItem {
     pageNo: number,
     options?: PopularNovelsOptions<Filters>,
   ) => Promise<NovelItem[]>;
-  parseNovelAndChapters: (
-    novelPath: string,
-    pageNo?: number,
-  ) => Promise<SourceNovel>;
+  parseNovel: (novelPath: string) => Promise<SourceNovel>;
+  parsePage?: (novelPath: string, page: string) => Promise<SourcePage>;
   parseChapter: (chapterPath: string) => Promise<string>;
   searchNovels: (searchTerm: string, pageNo: number) => Promise<NovelItem[]>;
   fetchImage: (url: string) => Promise<string>;

@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import color from 'color';
@@ -19,13 +19,13 @@ const ChapterDrawer = ({ route, navigation }: ChapterScreenProps) => {
   const listRef = useRef<FlashList<ChapterInfo>>(null);
   const { chapter, novel: novelItem } = route.params;
   const { defaultChapterSort } = useAppSettings();
-  const { chapters, novelSettings } = useNovel(
+  const { chapters, novelSettings, setPageIndex, novelPages } = useNovel(
     novelItem.path,
     novelItem.pluginId,
   );
   const { sort = defaultChapterSort } = novelSettings;
 
-  const listAscending = sort === 'ORDER BY id ASC';
+  const listAscending = sort === 'ORDER BY position ASC';
   const scrollToIndex = useMemo(() => {
     if (chapters.length < 1) {
       return 0;
@@ -159,7 +159,13 @@ const ChapterDrawer = ({ route, navigation }: ChapterScreenProps) => {
         });
       }
     };
-
+  useEffect(() => {
+    let pageIndex = novelPages.findIndex(p => p.title === chapter.page);
+    if (pageIndex === -1) {
+      pageIndex = 0;
+    }
+    setPageIndex(pageIndex);
+  }, [chapter]);
   return (
     <View style={styles.drawer}>
       <Text style={styles.headerCtn}>{getString('common.chapters')}</Text>

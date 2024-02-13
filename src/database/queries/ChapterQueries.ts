@@ -17,10 +17,10 @@ const db = SQLite.openDatabase('lnreader.db');
 
 const insertChapterQuery = `
 INSERT OR IGNORE INTO Chapter (
-  path, name, releaseTime, novelId, chapterNumber
+  path, name, releaseTime, novelId, chapterNumber, page, position
 ) 
 Values 
-  (?, ?, ?, ?, ?)
+  (?, ?, ?, ?, ?, ?, ?)
 `;
 
 export const insertChapters = async (
@@ -31,7 +31,7 @@ export const insertChapters = async (
     return;
   }
   db.transaction(tx => {
-    chapters.forEach(chapter => {
+    chapters.forEach((chapter, index) => {
       tx.executeSql(
         insertChapterQuery,
         [
@@ -40,6 +40,8 @@ export const insertChapters = async (
           chapter.releaseTime || '',
           novelId,
           chapter.chapterNumber || null,
+          chapter.page || '1',
+          index,
         ],
         noop,
       );
@@ -47,18 +49,37 @@ export const insertChapters = async (
   });
 };
 
-const getChaptersQuery = (sort = 'ORDER BY id ASC', filter = '') =>
-  `SELECT * FROM Chapter WHERE novelId = ? ${filter} ${sort}`;
+const getChaptersQuery = (
+  sort = 'ORDER BY position ASC',
+  filter = '',
+  page = '1',
+) =>
+  `SELECT * FROM Chapter WHERE novelId = ? AND page = '${page}' ${filter} ${sort}`;
+
+export const getCustomPages = (
+  novelId: number,
+): Promise<{ page: string }[]> => {
+  return new Promise(resolve => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT DISTINCT page from Chapter WHERE novelId = ?',
+        [novelId],
+        (txObj, { rows }) => resolve(rows._array),
+      );
+    });
+  });
+};
 
 export const getChapters = (
   novelId: number,
   sort?: string,
   filter?: string,
+  page?: string,
 ): Promise<ChapterInfo[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getChaptersQuery(sort, filter),
+        getChaptersQuery(sort, filter, page),
         [novelId],
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,

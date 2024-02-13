@@ -37,6 +37,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
 }) => {
   const {
     id,
+    page,
     pluginId,
     novelId,
     novelName,
@@ -69,6 +70,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             novelId: novelId,
             name: chapterName,
             bookmark: bookmark,
+            page,
           },
         )
       }

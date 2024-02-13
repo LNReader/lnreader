@@ -10,6 +10,7 @@ interface oCProps {
     novelId: number;
     name: string;
     bookmark: number;
+    page: string;
   };
 }
 export type openChapterChapterTypes = oCProps['chapter'];

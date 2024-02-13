@@ -1,8 +1,8 @@
 import { SearchResult, UserListEntry } from '@services/Trackers';
-import { useMMKVObject } from 'react-native-mmkv';
+import { useMMKVNumber, useMMKVObject } from 'react-native-mmkv';
 import { TrackerMetadata, getTracker } from './useTracker';
 import { ChapterInfo, NovelInfo } from '@database/types';
-import { MMKVStorage, getMMKVObject } from '@utils/mmkv/mmkv';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
 import {
   getNovel as _getNovel,
   deleteCachedNovels as _deleteCachedNovels,
@@ -18,16 +18,17 @@ import {
   markChapterUnread as _markChapterUnread,
   deleteChapter as _deleteChapter,
   deleteChapters as _deleteChapters,
+  getChapters as _getChapters,
+  insertChapters,
+  getCustomPages,
 } from '@database/queries/ChapterQueries';
-import { fetchNovel } from '@services/plugin/fetch';
-import { getChapters } from '@database/queries/ChapterQueries';
-import { updateNovel as _updateNovel } from '@services/updates/LibraryUpdateQueries';
-import { APP_SETTINGS, AppSettings } from './useSettings';
+import { fetchNovel, fetchPage } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
 import { getString } from '@strings/translations';
+import { ChapterItem } from '@plugins/types';
 
 // store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
 
@@ -35,7 +36,9 @@ export const TRACKED_NOVEL_PREFIX = 'TRACKED_NOVEL_PREFIX';
 
 export const NOVEL_PREFIX = 'NOVEL_PREFIX';
 export const NOVEL_CHAPTERS_PREFIX = 'NOVEL_CHAPTERS_PREFIX';
-
+export const NOVEL_LATEST_CHAPTER_PREFIX = 'NOVEL_LATEST_CHAPTER';
+export const NOVEL_PAGE_INDEX_PREFIX = 'NOVEL_PAGE_INDEX_PREFIX';
+export const NOVEL_PAGES_PREFIX = 'NOVEL_PAGES_PREFIX';
 export const NOVEL_SETTINSG_PREFIX = 'NOVEL_SETTINGS';
 export const LAST_READ_PREFIX = 'LAST_READ_PREFIX';
 export const PROGRESS_PREFIX = 'PROGRESS_PREFIX';
@@ -55,6 +58,11 @@ interface ChapterProgress {
 
 export interface NovelProgress {
   [chapterId: number]: ChapterProgress;
+}
+
+export interface NovelPage {
+  title: string;
+  hasUpdate?: boolean;
 }
 
 export const useTrackedNovel = (pluginId: string, novelPath: string) => {
@@ -116,9 +124,16 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const [novel, setNovel] = useMMKVObject<NovelInfo>(
     `${NOVEL_PREFIX}_${pluginId}_${novelPath}`,
   );
-  const [chapters = [], setChapters] = useMMKVObject<ChapterInfo[]>(
-    `${NOVEL_CHAPTERS_PREFIX}_${pluginId}_${novelPath}`,
+  const [latestChapter, setLatestChapter] = useMMKVObject<ChapterItem>(
+    `${NOVEL_LATEST_CHAPTER_PREFIX}_${pluginId}_${novelPath}`,
   );
+  const [novelPages = [], setNovelPages] = useMMKVObject<NovelPage[]>(
+    `${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`,
+  );
+  const [pageIndex = 0, setPageIndex] = useMMKVNumber(`
+    ${NOVEL_PAGE_INDEX_PREFIX}_${pluginId}_${novelPath}
+  `);
+  const [chapters, setChapters] = useState<ChapterInfo[]>([]);
   const [lastRead, setLastRead] = useMMKVObject<ChapterInfo>(
     `${LAST_READ_PREFIX}_${pluginId}_${novelPath}`,
   );
@@ -129,52 +144,59 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     `${PROGRESS_PREFIX}_${pluginId}_${novelPath}`,
   );
 
-  const getNovel = () => {
-    return _getNovel(novelPath, pluginId)
-      .then(_novel => {
-        if (_novel) {
-          return _novel;
-        } else {
-          // if novel is not in db, fetch it
-          return fetchNovel(pluginId, novelPath).then(sourceNovel =>
-            insertNovelAndChapters(pluginId, sourceNovel).then(() =>
-              _getNovel(novelPath, pluginId),
-            ),
-          );
-        }
-      })
-      .then(async novel => {
-        if (novel) {
-          setNovel(novel);
-          return await getChapters(
-            novel.id,
-            novelSettings?.sort,
-            novelSettings?.filter,
-          ).then(chapters => setChapters(chapters));
-        } else {
-          throw new Error(getString('updatesScreen.unableToGetNovel'));
-        }
+  const getNovel = async () => {
+    let novel = await _getNovel(novelPath, pluginId);
+    if (!novel) {
+      const sourceNovel = await fetchNovel(pluginId, novelPath).catch(() => {
+        throw new Error(getString('updatesScreen.unableToGetNovel'));
       });
+      await insertNovelAndChapters(pluginId, sourceNovel);
+      novel = await _getNovel(novelPath, pluginId);
+      if (!novel) {
+        return;
+      }
+    }
+    let pageList: string[] = [];
+    if (novel.totalPages > 0) {
+      pageList = Array(novel.totalPages)
+        .fill(0)
+        .map((v, idx) => String(idx + 1));
+    } else {
+      pageList = (await getCustomPages(novel.id)).map(n => n.page);
+    }
+    const pages = pageList.map(title => {
+      return {
+        title,
+        hasUpdate: novelPages.find(p => p.title === title)?.hasUpdate,
+      };
+    });
+    setNovelPages(pages);
+    setNovel(novel);
   };
 
-  // should call this when only data in db changed.
-  const refreshChapters = () => {
+  const openPage = useCallback((index: number) => {
+    setPageIndex(index);
+  }, []);
+
+  const refreshChapters = async () => {
     if (novel) {
-      getChapters(novel.id, novelSettings.sort, novelSettings.filter).then(
-        chapters => setChapters(chapters),
+      const page = novelPages[pageIndex]?.title;
+      let chapters = await _getChapters(
+        novel.id,
+        novelSettings.sort,
+        novelSettings.filter,
+        page,
       );
+      setChapters(chapters);
     }
   };
 
   const sortAndFilterChapters = async (sort?: string, filter?: string) => {
-    if (novel?.id) {
+    if (novel) {
       setNovelSettings({
         showChapterTitles: novelSettings?.showChapterTitles,
         sort,
         filter,
-      });
-      await getChapters(novel.id, sort, filter).then(chapters => {
-        setChapters(chapters);
       });
     }
   };
@@ -278,18 +300,6 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     );
   };
 
-  const updateNovel = async () => {
-    const settings = getMMKVObject<AppSettings>(APP_SETTINGS);
-    if (novel) {
-      await _updateNovel(pluginId, novelPath, novel.id, {
-        downloadNewChapters: settings?.downloadNewChapters,
-        refreshNovelMetadata: settings?.refreshNovelMetadata,
-      }).then(() => {
-        getNovel();
-      });
-    }
-  };
-
   const deleteChapter = (_chapter: ChapterInfo) => {
     if (novel) {
       _deleteChapter(novel.pluginId, novel.id, _chapter.id).then(() => {
@@ -349,7 +359,67 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     });
   };
 
+  useEffect(() => {
+    const getChapters = async () => {
+      if (novel) {
+        const { title: page, hasUpdate } = novelPages[pageIndex];
+        let chapters = await _getChapters(
+          novel.id,
+          novelSettings.sort,
+          novelSettings.filter,
+          page,
+        );
+        if (hasUpdate || (novel.totalPages > 0 && !chapters.length)) {
+          const sourcePage = await fetchPage(pluginId, novelPath, page);
+          const sourceChapters = sourcePage.chapters.map(ch => {
+            return {
+              ...ch,
+              page,
+            };
+          });
+          await insertChapters(novel.id, sourceChapters);
+          if (
+            sourcePage.latestChapter &&
+            sourcePage.latestChapter.path !== latestChapter?.path
+          ) {
+            setLatestChapter(sourcePage.latestChapter);
+            setNovelPages(
+              novelPages.map(p => {
+                return {
+                  ...p,
+                  hasUpdate: p.title === page ? false : true,
+                };
+              }),
+            );
+          } else {
+            setNovelPages(
+              novelPages.map(p => {
+                if (p.title !== page) {
+                  return p;
+                }
+                return {
+                  ...p,
+                  hasUpdate: false,
+                };
+              }),
+            );
+          }
+          chapters = await _getChapters(
+            novel.id,
+            novelSettings.sort,
+            novelSettings.filter,
+            page,
+          );
+        }
+        setChapters(chapters);
+      }
+    };
+    getChapters();
+  }, [novel, novelSettings, pageIndex]);
+
   return {
+    pageIndex,
+    novelPages,
     progress,
     novel,
     lastRead,
@@ -357,6 +427,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     novelSettings,
     setProgress,
     getNovel,
+    setPageIndex,
+    openPage,
     setNovel,
     setLastRead,
     setNovelSettings,
@@ -367,7 +439,6 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     markChaptersRead,
     markPreviousChaptersUnread,
     markChaptersUnread,
-    updateNovel,
     setShowChapterTitles,
     markChapterRead,
     refreshChapters,
@@ -383,6 +454,13 @@ export const deleteCachedNovels = async () => {
       `${TRACKED_NOVEL_PREFIX}_${novel.pluginId}_${novel.path}`,
     );
     MMKVStorage.delete(`${NOVEL_PREFIX}_${novel.pluginId}_${novel.path}`);
+    MMKVStorage.delete(
+      `${NOVEL_LATEST_CHAPTER_PREFIX}_${novel.pluginId}_${novel.path}`,
+    );
+    MMKVStorage.delete(
+      `${NOVEL_PAGE_INDEX_PREFIX}_${novel.pluginId}_${novel.path}`,
+    );
+    MMKVStorage.delete(`${NOVEL_PAGES_PREFIX}_${novel.pluginId}_${novel.path}`);
     MMKVStorage.delete(
       `${NOVEL_CHAPTERS_PREFIX}_${novel.pluginId}_${novel.path}`,
     );
