@@ -40,7 +40,7 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
         try {
           const plugin = getPlugin(_plugin.id);
           if (!plugin) {
-            throw new Error(`Unknow plugin: ${_plugin.id}`);
+            throw new Error(`Unknown plugin: ${_plugin.id}`);
           }
           const res = await plugin.searchNovels(searchText, 1);
 

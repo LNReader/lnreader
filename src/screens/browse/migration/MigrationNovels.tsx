@@ -53,7 +53,7 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
         try {
           const source = getPlugin(item.id);
           if (!source) {
-            throw new Error(`Unknow plugin: ${item.id}`);
+            throw new Error(`Unknown plugin: ${item.id}`);
           }
           const data = await source.searchNovels(novel.name, 1);
           setSearchResults(prevState =>

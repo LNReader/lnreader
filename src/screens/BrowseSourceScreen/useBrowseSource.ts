@@ -29,7 +29,7 @@ export const useBrowseSource = (
         try {
           const plugin = getPlugin(pluginId);
           if (!plugin) {
-            throw new Error(`Unknow plugin: ${pluginId}`);
+            throw new Error(`Unknown plugin: ${pluginId}`);
           }
           await plugin
             .popularNovels(page, {
@@ -126,7 +126,7 @@ export const useSearchSource = (pluginId: string) => {
         try {
           const plugin = getPlugin(pluginId);
           if (!plugin) {
-            throw new Error(`Unknow plugin: ${pluginId}`);
+            throw new Error(`Unknown plugin: ${pluginId}`);
           }
           const res = await plugin.searchNovels(searchText, page);
           setSearchResults(prevState =>

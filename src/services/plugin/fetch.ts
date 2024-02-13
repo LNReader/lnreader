@@ -3,7 +3,7 @@ import { getPlugin } from '@plugins/pluginManager';
 export const fetchNovel = async (pluginId: string, novelPath: string) => {
   const plugin = getPlugin(pluginId);
   if (!plugin) {
-    throw new Error(`Unknow plugin: ${pluginId}`);
+    throw new Error(`Unknown plugin: ${pluginId}`);
   }
   const res = await plugin.parseNovel(novelPath).catch(e => {
     throw e;
@@ -14,7 +14,7 @@ export const fetchNovel = async (pluginId: string, novelPath: string) => {
 export const fetchImage = async (pluginId: string, imageUrl: string) => {
   const plugin = getPlugin(pluginId);
   if (!plugin) {
-    throw new Error(`Unknow plugin: ${pluginId}`);
+    throw new Error(`Unknown plugin: ${pluginId}`);
   }
   return plugin.fetchImage(imageUrl).catch(e => {
     throw e;
@@ -35,7 +35,7 @@ export const fetchChapter = async (pluginId: string, chapterPath: string) => {
 export const fetchChapters = async (pluginId: string, novelPath: string) => {
   const plugin = getPlugin(pluginId);
   if (!plugin) {
-    throw new Error(`Unknow plugin: ${pluginId}`);
+    throw new Error(`Unknown plugin: ${pluginId}`);
   }
   const res = await plugin.parseNovel(novelPath).catch(e => {
     throw e;
