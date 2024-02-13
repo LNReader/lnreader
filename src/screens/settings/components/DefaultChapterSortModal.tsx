@@ -37,14 +37,14 @@ const DefaultChapterSortModal = ({
           label={getString('generalSettingsScreen.bySource')}
           theme={theme}
           status={
-            defaultChapterSort === 'ORDER BY pageIndex ASC' ? 'asc' : 'desc'
+            defaultChapterSort === 'ORDER BY position ASC' ? 'asc' : 'desc'
           }
           onPress={() =>
-            defaultChapterSort === 'ORDER BY pageIndex ASC'
+            defaultChapterSort === 'ORDER BY position ASC'
               ? setAppSettings({
-                  defaultChapterSort: 'ORDER BY pageIndex DESC',
+                  defaultChapterSort: 'ORDER BY position DESC',
                 })
-              : setAppSettings({ defaultChapterSort: 'ORDER BY pageIndex ASC' })
+              : setAppSettings({ defaultChapterSort: 'ORDER BY position ASC' })
           }
         />
       </Modal>
