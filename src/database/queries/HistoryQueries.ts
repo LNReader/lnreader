@@ -10,7 +10,7 @@ import { getString } from '@strings/translations';
 const getHistoryQuery = `
     SELECT 
       Chapter.novelId, Novel.pluginId, Novel.name as novelName, Novel.path as novelPath, Novel.cover as novelCover,
-      Chapter.id, Chapter.name as chapterName, Chapter.path as chapterPath, Chapter.bookmark, Chapter.readTime
+      Chapter.id, Chapter.name as chapterName, Chapter.path as chapterPath, Chapter.bookmark, Chapter.readTime, Chapter.page
     FROM Chapter 
     JOIN Novel
     ON Chapter.novelId = Novel.id AND Chapter.readTime IS NOT NULL

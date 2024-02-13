@@ -54,6 +54,7 @@ export interface History {
   chapterPath: string;
   readTime: string;
   bookmark: number;
+  page: string;
 }
 
 export interface Update extends ChapterInfo {

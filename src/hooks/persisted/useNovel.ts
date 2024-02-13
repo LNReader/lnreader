@@ -1,5 +1,5 @@
 import { SearchResult, UserListEntry } from '@services/Trackers';
-import { useMMKVObject } from 'react-native-mmkv';
+import { useMMKVNumber, useMMKVObject } from 'react-native-mmkv';
 import { TrackerMetadata, getTracker } from './useTracker';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
@@ -37,6 +37,7 @@ export const TRACKED_NOVEL_PREFIX = 'TRACKED_NOVEL_PREFIX';
 export const NOVEL_PREFIX = 'NOVEL_PREFIX';
 export const NOVEL_CHAPTERS_PREFIX = 'NOVEL_CHAPTERS_PREFIX';
 export const NOVEL_LATEST_CHAPTER_PREFIX = 'NOVEL_LATEST_CHAPTER';
+export const NOVEL_PAGE_INDEX_PREFIX = 'NOVEL_PAGE_INDEX_PREFIX';
 export const NOVEL_PAGES_PREFIX = 'NOVEL_PAGES_PREFIX';
 export const NOVEL_SETTINSG_PREFIX = 'NOVEL_SETTINGS';
 export const LAST_READ_PREFIX = 'LAST_READ_PREFIX';
@@ -129,10 +130,10 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const [novelPages = [], setNovelPages] = useMMKVObject<NovelPage[]>(
     `${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`,
   );
-  const [pageIndex, setPageIndex] = useState(0);
-  const [chapters = [], setChapters] = useMMKVObject<ChapterInfo[]>(
-    `${NOVEL_CHAPTERS_PREFIX}_${pluginId}_${novelPath}`,
-  );
+  const [pageIndex = 0, setPageIndex] = useMMKVNumber(`
+    ${NOVEL_PAGE_INDEX_PREFIX}_${pluginId}_${novelPath}
+  `);
+  const [chapters, setChapters] = useState<ChapterInfo[]>([]);
   const [lastRead, setLastRead] = useMMKVObject<ChapterInfo>(
     `${LAST_READ_PREFIX}_${pluginId}_${novelPath}`,
   );
@@ -426,6 +427,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     novelSettings,
     setProgress,
     getNovel,
+    setPageIndex,
     openPage,
     setNovel,
     setLastRead,
@@ -454,6 +456,9 @@ export const deleteCachedNovels = async () => {
     MMKVStorage.delete(`${NOVEL_PREFIX}_${novel.pluginId}_${novel.path}`);
     MMKVStorage.delete(
       `${NOVEL_LATEST_CHAPTER_PREFIX}_${novel.pluginId}_${novel.path}`,
+    );
+    MMKVStorage.delete(
+      `${NOVEL_PAGE_INDEX_PREFIX}_${novel.pluginId}_${novel.path}`,
     );
     MMKVStorage.delete(`${NOVEL_PAGES_PREFIX}_${novel.pluginId}_${novel.path}`);
     MMKVStorage.delete(
