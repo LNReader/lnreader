@@ -17,7 +17,7 @@ const db = SQLite.openDatabase('lnreader.db');
 
 const insertChapterQuery = `
 INSERT OR IGNORE INTO Chapter (
-  path, name, releaseTime, novelId, chapterNumber, page, index
+  path, name, releaseTime, novelId, chapterNumber, page, pageIndex
 ) 
 Values 
   (?, ?, ?, ?, ?, ?, ?)
@@ -50,7 +50,7 @@ export const insertChapters = async (
 };
 
 const getChaptersQuery = (
-  sort = 'ORDER BY index ASC',
+  sort = 'ORDER BY pageIndex ASC',
   filter = '',
   page = '1',
 ) =>

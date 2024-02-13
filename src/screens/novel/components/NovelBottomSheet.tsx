@@ -88,16 +88,16 @@ const ChaptersSettingsSheet = ({
       <SortItem
         label={getString('novelScreen.bottomSheet.order.bySource')}
         status={
-          sort === 'ORDER BY index ASC'
+          sort === 'ORDER BY pageIndex ASC'
             ? 'asc'
-            : sort === 'ORDER BY index DESC'
+            : sort === 'ORDER BY pageIndex DESC'
             ? 'desc'
             : undefined
         }
         onPress={() =>
-          sort === 'ORDER BY index ASC'
-            ? sortChapters('ORDER BY index DESC')
-            : sortChapters('ORDER BY index ASC')
+          sort === 'ORDER BY pageIndex ASC'
+            ? sortChapters('ORDER BY pageIndex DESC')
+            : sortChapters('ORDER BY pageIndex ASC')
         }
         theme={theme}
       />

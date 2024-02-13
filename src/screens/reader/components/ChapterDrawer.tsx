@@ -25,7 +25,7 @@ const ChapterDrawer = ({ route, navigation }: ChapterScreenProps) => {
   );
   const { sort = defaultChapterSort } = novelSettings;
 
-  const listAscending = sort === 'ORDER BY index ASC';
+  const listAscending = sort === 'ORDER BY pageIndex ASC';
   const scrollToIndex = useMemo(() => {
     if (chapters.length < 1) {
       return 0;

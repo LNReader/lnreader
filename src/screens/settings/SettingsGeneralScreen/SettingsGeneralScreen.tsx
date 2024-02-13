@@ -170,7 +170,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
           <List.Item
             title={getString('generalSettingsScreen.chapterSort')}
             description={`${getString('generalSettingsScreen.bySource')} ${
-              defaultChapterSort === 'ORDER BY index ASC'
+              defaultChapterSort === 'ORDER BY pageIndex ASC'
                 ? getString('generalSettingsScreen.asc')
                 : getString('generalSettingsScreen.desc')
             }`}
