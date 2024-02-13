@@ -2,6 +2,9 @@ import { getPlugin } from '@plugins/pluginManager';
 
 export const fetchNovel = async (pluginId: string, novelPath: string) => {
   const plugin = getPlugin(pluginId);
+  if (!plugin) {
+    throw new Error(`Unknow plugin: ${pluginId}`);
+  }
   const res = await plugin.parseNovel(novelPath).catch(e => {
     throw e;
   });
@@ -9,16 +12,18 @@ export const fetchNovel = async (pluginId: string, novelPath: string) => {
 };
 
 export const fetchImage = async (pluginId: string, imageUrl: string) => {
-  return getPlugin(pluginId)
-    .fetchImage(imageUrl)
-    .catch(e => {
-      throw e;
-    });
+  const plugin = getPlugin(pluginId);
+  if (!plugin) {
+    throw new Error(`Unknow plugin: ${pluginId}`);
+  }
+  return plugin.fetchImage(imageUrl).catch(e => {
+    throw e;
+  });
 };
 
 export const fetchChapter = async (pluginId: string, chapterPath: string) => {
   const plugin = getPlugin(pluginId);
-  let chapterText = `Not found plugin with id: ${pluginId}`;
+  let chapterText = `Unkown plugin: ${pluginId}`;
   if (plugin) {
     chapterText = await plugin.parseChapter(chapterPath).catch(e => {
       throw e;
@@ -29,13 +34,13 @@ export const fetchChapter = async (pluginId: string, chapterPath: string) => {
 
 export const fetchChapters = async (pluginId: string, novelPath: string) => {
   const plugin = getPlugin(pluginId);
+  if (!plugin) {
+    throw new Error(`Unknow plugin: ${pluginId}`);
+  }
   const res = await plugin.parseNovel(novelPath).catch(e => {
     throw e;
   });
-
-  const chapters = res.chapters;
-
-  return chapters;
+  return res?.chapters;
 };
 
 export const fetchPage = async (
@@ -44,7 +49,7 @@ export const fetchPage = async (
   page: string,
 ) => {
   const plugin = getPlugin(pluginId);
-  if (!plugin.parsePage) {
+  if (!plugin || !plugin.parsePage) {
     throw new Error('Cant parse page!');
   }
   const res = await plugin.parsePage(novelPath, page).catch(e => {
