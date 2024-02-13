@@ -56,7 +56,7 @@ const sortChaptersByNumber = (novelName: string, chapters: ChapterInfo[]) => {
 export const migrateNovel = async (
   pluginId: string,
   fromNovel: NovelInfo,
-  toNovelUrl: string,
+  toNovelPath: string,
 ) => {
   const currentAction = MMKVStorage.getString(BACKGROUND_ACTION);
   if (currentAction) {
@@ -65,16 +65,16 @@ export const migrateNovel = async (
   }
   try {
     let fromChapters = await getChapters(fromNovel.id, '', '');
-    let toNovel = await getNovel(toNovelUrl);
+    let toNovel = await getNovel(toNovelPath, pluginId);
     let toChapters: ChapterInfo[];
     if (toNovel) {
       toChapters = await getChapters(toNovel.id, '', '');
     } else {
-      const fetchedNovel = await fetchNovel(pluginId, toNovelUrl).catch(e => {
+      const fetchedNovel = await fetchNovel(pluginId, toNovelPath).catch(e => {
         throw e;
       });
       await insertNovelAndChapters(pluginId, fetchedNovel);
-      toNovel = await getNovel(toNovelUrl);
+      toNovel = await getNovel(toNovelPath, pluginId);
       if (!toNovel) {
         return;
       }
@@ -132,25 +132,34 @@ export const migrateNovel = async (
             txnErrorCallback,
           );
         });
-        //settings
+
         setMMKVObject(
-          NOVEL_SETTINSG_PREFIX + '_' + toNovel.url,
-          getMMKVObject(NOVEL_SETTINSG_PREFIX + '_' + fromNovel.url),
+          `${NOVEL_SETTINSG_PREFIX}_${toNovel.pluginId}_${toNovel.path}`,
+          getMMKVObject(
+            `${NOVEL_SETTINSG_PREFIX}_${fromNovel.pluginId}_${fromNovel.path}`,
+          ),
         );
 
         const fromProgress =
-          getMMKVObject<NovelProgress>(PROGRESS_PREFIX + '_' + fromNovel.url) ||
-          {};
+          getMMKVObject<NovelProgress>(
+            `${PROGRESS_PREFIX}_${fromNovel.pluginId}_${fromNovel.path}`,
+          ) || {};
         const toProgresss: NovelProgress = {};
         const setProgress = (progress: NovelProgress) => {
-          setMMKVObject(PROGRESS_PREFIX + '_' + toNovel.url, progress);
+          setMMKVObject(
+            `${PROGRESS_PREFIX}_${toNovel.pluginId}_${toNovel.path}`,
+            progress,
+          );
         };
         const lastRead = getMMKVObject<NovelInfo>(
-          LAST_READ_PREFIX + '_' + fromNovel.url,
+          `${LAST_READ_PREFIX}_${fromNovel.pluginId}_${fromNovel.path}`,
         );
 
         const setLastRead = (chapter: ChapterInfo) => {
-          setMMKVObject(LAST_READ_PREFIX + '_' + toNovel.url, chapter);
+          setMMKVObject(
+            `${LAST_READ_PREFIX}_${toNovel.pluginId}_${toNovel.path}`,
+            chapter,
+          );
         };
 
         fromChapters = sortChaptersByNumber(fromNovel.name, fromChapters);
@@ -197,7 +206,7 @@ export const migrateNovel = async (
               pluginId,
               toNovel.id,
               toChapter.id,
-              toChapter.url,
+              toChapter.path,
             );
             await sleep(taskData.delay || 1000);
           }
