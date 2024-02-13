@@ -35,10 +35,14 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
 
     setSearchResults(defaultResult);
 
-    filteredInstalledPlugins.forEach(async plugin => {
+    filteredInstalledPlugins.forEach(async _plugin => {
       if (isMounted.current) {
         try {
-          const res = await getPlugin(plugin.id).searchNovels(searchText, 1);
+          const plugin = getPlugin(_plugin.id);
+          if (!plugin) {
+            throw new Error(`Unknown plugin: ${_plugin.id}`);
+          }
+          const res = await plugin.searchNovels(searchText, 1);
 
           setSearchResults(prevState =>
             prevState.map(prevResult =>
@@ -68,7 +72,7 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
         } catch (error: any) {
           setSearchResults(prevState =>
             prevState.map(prevResult =>
-              prevResult.plugin.id === plugin.id
+              prevResult.plugin.id === _plugin.id
                 ? {
                     ...prevResult,
                     novels: [],

@@ -58,7 +58,6 @@ export interface PluginItem {
 }
 
 export interface Plugin extends PluginItem {
-  path: string; // path in device
   filters?: Filters;
   popularNovels: (
     pageNo: number,
