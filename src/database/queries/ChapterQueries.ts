@@ -16,11 +16,14 @@ import { getString } from '@strings/translations';
 const db = SQLite.openDatabase('lnreader.db');
 
 const insertChapterQuery = `
-INSERT OR IGNORE INTO Chapter (
-  path, name, releaseTime, novelId, chapterNumber, page, position
-) 
-Values 
+INSERT INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
+VALUES
   (?, ?, ?, ?, ?, ?, ?)
+ON CONFLICT(novelId, path) DO UPDATE SET
+  position=excluded.position,
+  page=excluded.page
+WHERE Chapter.page != excluded.page
+OR Chapter.position != excluded.position;
 `;
 
 export const insertChapters = async (
