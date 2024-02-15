@@ -83,12 +83,13 @@ const insertLocalChapter = (
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO Chapter(novelId, name, path, releaseTime) VALUES(?, ?, ?, ?)',
+        'INSERT INTO Chapter(novelId, name, path, releaseTime, position) VALUES(?, ?, ?, ?, ?)',
         [
           novelId,
           name,
           NovelDownloadFolder + '/local/' + novelId + '/' + fakeId,
           releaseTime,
+          fakeId,
         ],
         async (txObj, resultSet) => {
           if (resultSet.insertId) {
