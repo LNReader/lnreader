@@ -53,6 +53,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
   const [updating, setUpdating] = useState(false);
   const {
+    loading,
     pageIndex,
     novelPages,
     progress,
@@ -75,8 +76,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     refreshChapters,
     deleteChapters,
   } = useNovel(path, pluginId);
-
-  const [loading, setLoading] = useState(!novel);
 
   const theme = useTheme();
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
@@ -123,10 +122,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   };
 
   useEffect(() => {
-    getNovel().finally(() => setLoading(false));
-  }, []);
-
-  useEffect(() => {
     refreshChapters();
   }, [downloadQueue]);
 
@@ -137,6 +132,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
         downloadNewChapters,
         refreshNovelMetadata,
       })
+        .then(() => getNovel())
         .then(() => showToast(getString('novelScreen.updatedToast', { name })))
         .finally(() => setUpdating(false));
     }
