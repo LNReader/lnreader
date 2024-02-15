@@ -2,7 +2,7 @@ import { SearchResult, UserListEntry } from '@services/Trackers';
 import { useMMKVNumber, useMMKVObject } from 'react-native-mmkv';
 import { TrackerMetadata, getTracker } from './useTracker';
 import { ChapterInfo, NovelInfo } from '@database/types';
-import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import {
   getNovel as _getNovel,
   deleteCachedNovels as _deleteCachedNovels,
@@ -34,8 +34,6 @@ import { ChapterItem } from '@plugins/types';
 
 export const TRACKED_NOVEL_PREFIX = 'TRACKED_NOVEL_PREFIX';
 
-export const NOVEL_PREFIX = 'NOVEL_PREFIX';
-export const NOVEL_CHAPTERS_PREFIX = 'NOVEL_CHAPTERS_PREFIX';
 export const NOVEL_LATEST_CHAPTER_PREFIX = 'NOVEL_LATEST_CHAPTER';
 export const NOVEL_PAGE_INDEX_PREFIX = 'NOVEL_PAGE_INDEX_PREFIX';
 export const NOVEL_PAGES_PREFIX = 'NOVEL_PAGES_PREFIX';
@@ -66,6 +64,7 @@ export interface NovelPage {
 }
 
 const defaultNovelSettings: NovelSettings = {};
+const defaultNovelPages: NovelPage[] = [];
 const defaultPageIndex = 0;
 const defaultProgress: NovelProgress = {};
 
@@ -127,14 +126,14 @@ export const useTrackedNovel = (pluginId: string, novelPath: string) => {
 export const useNovel = (novelPath: string, pluginId: string) => {
   const [loading, setLoading] = useState(true);
   const [novel, setNovel] = useState<NovelInfo>();
-  const [latestChapter, setLatestChapter] = useMMKVObject<ChapterItem>(
-    `${NOVEL_LATEST_CHAPTER_PREFIX}_${pluginId}_${novelPath}`,
-  );
-  const [novelPages, setNovelPages] = useState<NovelPage[]>([]);
+  const [chapters, setChapters] = useState<ChapterInfo[]>([]);
+  const [novelPages = defaultNovelPages, setNovelPages] = useMMKVObject<
+    NovelPage[]
+  >(`${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`);
+
   const [pageIndex = defaultPageIndex, setPageIndex] = useMMKVNumber(`
     ${NOVEL_PAGE_INDEX_PREFIX}_${pluginId}_${novelPath}
   `);
-  const [chapters, setChapters] = useState<ChapterInfo[]>([]);
   const [lastRead, setLastRead] = useMMKVObject<ChapterInfo>(
     `${LAST_READ_PREFIX}_${pluginId}_${novelPath}`,
   );
@@ -384,11 +383,13 @@ export const useNovel = (novelPath: string, pluginId: string) => {
             };
           });
           await insertChapters(novel.id, sourceChapters);
+          const key = `${NOVEL_LATEST_CHAPTER_PREFIX}_${pluginId}_${novelPath}`;
+          const latestChapter = getMMKVObject<ChapterItem>(key);
           if (
             sourcePage.latestChapter &&
             sourcePage.latestChapter.path !== latestChapter?.path
           ) {
-            setLatestChapter(sourcePage.latestChapter);
+            setMMKVObject(key, sourcePage.latestChapter);
             setNovelPages(
               novelPages.map(p => {
                 return {
@@ -459,7 +460,6 @@ export const deleteCachedNovels = async () => {
     MMKVStorage.delete(
       `${TRACKED_NOVEL_PREFIX}_${novel.pluginId}_${novel.path}`,
     );
-    MMKVStorage.delete(`${NOVEL_PREFIX}_${novel.pluginId}_${novel.path}`);
     MMKVStorage.delete(
       `${NOVEL_LATEST_CHAPTER_PREFIX}_${novel.pluginId}_${novel.path}`,
     );
@@ -467,9 +467,6 @@ export const deleteCachedNovels = async () => {
       `${NOVEL_PAGE_INDEX_PREFIX}_${novel.pluginId}_${novel.path}`,
     );
     MMKVStorage.delete(`${NOVEL_PAGES_PREFIX}_${novel.pluginId}_${novel.path}`);
-    MMKVStorage.delete(
-      `${NOVEL_CHAPTERS_PREFIX}_${novel.pluginId}_${novel.path}`,
-    );
     MMKVStorage.delete(
       `${NOVEL_SETTINSG_PREFIX}_${novel.pluginId}_${novel.path}`,
     );
