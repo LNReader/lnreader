@@ -71,7 +71,7 @@ const getLibraryWithCategoryQuery = `
     ) as NC ON Novel.id = NC.novelId
     WHERE inLibrary = 1
   ) as NIL 
-  JOIN 
+  LEFT JOIN 
   (
     SELECT 
       SUM(unread) as chaptersUnread, SUM(isDownloaded) as chaptersDownloaded, 

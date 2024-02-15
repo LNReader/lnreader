@@ -65,6 +65,8 @@ export interface NovelPage {
   hasUpdate?: boolean;
 }
 
+const defaultNovelSettings: NovelSettings = {};
+
 export const useTrackedNovel = (pluginId: string, novelPath: string) => {
   const [trackedNovel, setValue] = useMMKVObject<TrackedNovel>(
     `${TRACKED_NOVEL_PREFIX}_${pluginId}_${novelPath}`,
@@ -137,9 +139,10 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const [lastRead, setLastRead] = useMMKVObject<ChapterInfo>(
     `${LAST_READ_PREFIX}_${pluginId}_${novelPath}`,
   );
-  const [novelSettings = {}, setNovelSettings] = useMMKVObject<NovelSettings>(
-    `${NOVEL_SETTINSG_PREFIX}_${pluginId}_${novelPath}`,
-  );
+  const [novelSettings = defaultNovelSettings, setNovelSettings] =
+    useMMKVObject<NovelSettings>(
+      `${NOVEL_SETTINSG_PREFIX}_${pluginId}_${novelPath}`,
+    );
   const [progress = {}, _setProgress] = useMMKVObject<NovelProgress>(
     `${PROGRESS_PREFIX}_${pluginId}_${novelPath}`,
   );
@@ -361,8 +364,9 @@ export const useNovel = (novelPath: string, pluginId: string) => {
 
   useEffect(() => {
     const getChapters = async () => {
-      if (novel) {
-        const { title: page, hasUpdate } = novelPages[pageIndex];
+      const page = novelPages[pageIndex]?.title;
+      const hasUpdate = novelPages[pageIndex]?.hasUpdate;
+      if (novel && page) {
         let chapters = await _getChapters(
           novel.id,
           novelSettings.sort,
@@ -431,7 +435,6 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     openPage,
     setNovel,
     setLastRead,
-    setNovelSettings,
     sortAndFilterChapters,
     followNovel,
     bookmarkChapters,

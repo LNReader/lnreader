@@ -7,7 +7,7 @@ import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
 import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
-import { NOVEL_PAGES_PREFIX, NovelPages } from '@hooks/persisted/useNovel';
+import { NOVEL_PAGES_PREFIX, NovelPage } from '@hooks/persisted/useNovel';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = async (
@@ -76,7 +76,7 @@ const updateNovel = async (
         `
         INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, page)
           VALUES (?, ?, ?, ?, datetime('now','localtime'), ?)
-          ON CONFLICT(path) DO UPDATE SET
+          ON CONFLICT(novelId, path) DO UPDATE SET
             name=excluded.name,
             releaseTime=excluded.releaseTime,
             updatedTime=excluded.updatedTime
@@ -93,13 +93,13 @@ const updateNovel = async (
       );
     });
   });
-  const novelPages = getMMKVObject<NovelPages>(
+  const novelPages = getMMKVObject<NovelPage[]>(
     `${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`,
   );
   if (novelPages) {
     setMMKVObject(`${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`, {
       ...novelPages,
-      pages: novelPages.pages.map(p => {
+      pages: novelPages.map(p => {
         return {
           ...p,
           hasUpdate: true,
