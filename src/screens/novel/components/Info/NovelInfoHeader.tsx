@@ -186,7 +186,11 @@ const NovelInfoHeader = ({
         />
         <Pressable
           style={styles.bottomsheet}
-          onPress={() => drawerRef.current?.openDrawer()}
+          onPress={() =>
+            page
+              ? drawerRef.current?.openDrawer()
+              : novelBottomSheetRef.current?.present()
+          }
           android_ripple={{
             color: color(theme.primary).alpha(0.12).string(),
           }}

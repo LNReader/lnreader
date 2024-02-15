@@ -334,6 +334,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   return (
     <DrawerLayoutAndroid
+      drawerLockMode={novelPages.length <= 1 ? 'locked-closed' : 'unlocked'}
       ref={drawerRef}
       drawerPosition="left"
       drawerWidth={300}
