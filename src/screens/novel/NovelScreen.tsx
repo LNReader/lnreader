@@ -117,7 +117,9 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const onPageScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = event.nativeEvent.contentOffset.y;
     const currentScrollPosition = Math.floor(y) ?? 0;
-    setIsFabExtended(currentScrollPosition <= 0);
+    if (useFabForContinueReading && lastRead) {
+      setIsFabExtended(currentScrollPosition <= 0);
+    }
   };
 
   useEffect(() => {
