@@ -21,6 +21,8 @@ interface TaskData {
   delay: number;
 }
 
+const defaultQueue: DownloadData[] = [];
+
 const downloadChapterAction = async (taskData?: TaskData) => {
   try {
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.DOWNLOAD_CHAPTER);
@@ -73,7 +75,8 @@ const downloadChapterAction = async (taskData?: TaskData) => {
 };
 
 export default function useDownload() {
-  const [queue = [], setQueue] = useMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE);
+  const [queue = defaultQueue, setQueue] =
+    useMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE);
 
   const downloadChapter = (novel: NovelInfo, chapter: ChapterInfo) => {
     setQueue([...queue, { novel, chapter }]);

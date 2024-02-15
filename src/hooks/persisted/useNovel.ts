@@ -66,6 +66,9 @@ export interface NovelPage {
 }
 
 const defaultNovelSettings: NovelSettings = {};
+const defaultPageIndex = 0;
+const defaultNovelPages: NovelPage[] = [];
+const defaultProgress: NovelProgress = {};
 
 export const useTrackedNovel = (pluginId: string, novelPath: string) => {
   const [trackedNovel, setValue] = useMMKVObject<TrackedNovel>(
@@ -129,10 +132,10 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const [latestChapter, setLatestChapter] = useMMKVObject<ChapterItem>(
     `${NOVEL_LATEST_CHAPTER_PREFIX}_${pluginId}_${novelPath}`,
   );
-  const [novelPages = [], setNovelPages] = useMMKVObject<NovelPage[]>(
-    `${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`,
-  );
-  const [pageIndex = 0, setPageIndex] = useMMKVNumber(`
+  const [novelPages = defaultNovelPages, setNovelPages] = useMMKVObject<
+    NovelPage[]
+  >(`${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`);
+  const [pageIndex = defaultPageIndex, setPageIndex] = useMMKVNumber(`
     ${NOVEL_PAGE_INDEX_PREFIX}_${pluginId}_${novelPath}
   `);
   const [chapters, setChapters] = useState<ChapterInfo[]>([]);
@@ -143,9 +146,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     useMMKVObject<NovelSettings>(
       `${NOVEL_SETTINSG_PREFIX}_${pluginId}_${novelPath}`,
     );
-  const [progress = {}, _setProgress] = useMMKVObject<NovelProgress>(
-    `${PROGRESS_PREFIX}_${pluginId}_${novelPath}`,
-  );
+  const [progress = defaultProgress, _setProgress] =
+    useMMKVObject<NovelProgress>(`${PROGRESS_PREFIX}_${pluginId}_${novelPath}`);
 
   const getNovel = async () => {
     let novel = await _getNovel(novelPath, pluginId);

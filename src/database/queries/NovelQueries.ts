@@ -125,6 +125,12 @@ export const switchNovelToLibrary = async (
           () => showToast(getString('browseScreen.addedToLibrary')),
           txnErrorCallback,
         );
+        if (novel.pluginId === 'local') {
+          tx.executeSql(
+            'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, 2)',
+            [novel.id],
+          );
+        }
       }
     });
   } else {

@@ -14,7 +14,6 @@ import { FlashList } from '@shopify/flash-list';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import {
-  Provider,
   Portal,
   Appbar,
   IconButton,
@@ -118,7 +117,9 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const onPageScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = event.nativeEvent.contentOffset.y;
     const currentScrollPosition = Math.floor(y) ?? 0;
-    setIsFabExtended(currentScrollPosition <= 0);
+    if (useFabForContinueReading && lastRead) {
+      setIsFabExtended(currentScrollPosition <= 0);
+    }
   };
 
   useEffect(() => {
@@ -332,21 +333,22 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   };
 
   return (
-    <Provider>
-      <DrawerLayoutAndroid
-        ref={drawerRef}
-        drawerPosition="left"
-        drawerWidth={300}
-        renderNavigationView={() => (
-          <NovelDrawer
-            theme={theme}
-            novelPages={novelPages}
-            pageIndex={pageIndex}
-            openPage={openPage}
-            drawerRef={drawerRef}
-          />
-        )}
-      >
+    <DrawerLayoutAndroid
+      drawerLockMode={novelPages.length <= 1 ? 'locked-closed' : 'unlocked'}
+      ref={drawerRef}
+      drawerPosition="left"
+      drawerWidth={300}
+      renderNavigationView={() => (
+        <NovelDrawer
+          theme={theme}
+          novelPages={novelPages}
+          pageIndex={pageIndex}
+          openPage={openPage}
+          drawerRef={drawerRef}
+        />
+      )}
+    >
+      <Portal.Host>
         <View style={[styles.container, { backgroundColor: theme.background }]}>
           <Portal>
             {selected.length === 0 ? (
@@ -723,8 +725,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
             theme={theme}
           />
         </View>
-      </DrawerLayoutAndroid>
-    </Provider>
+      </Portal.Host>
+    </DrawerLayoutAndroid>
   );
 };
 

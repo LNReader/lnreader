@@ -7,7 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useBoolean } from '@hooks';
 import { ThemeColors } from '@theme/types';
 import { getString } from '@strings/translations';
-import { Portal } from 'react-native-paper';
 import SetCategoryModal from '../SetCategoriesModal';
 import { NovelScreenProps } from '@navigators/types';
 import { useTrackedNovel, useTracker } from '@hooks/persisted';
@@ -131,13 +130,11 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
           </View>
         ) : null}
       </View>
-      <Portal>
-        <SetCategoryModal
-          novelIds={[novel.id]}
-          closeModal={closeSetCategoryModal}
-          visible={setCategoryModalVisible}
-        />
-      </Portal>
+      <SetCategoryModal
+        novelIds={[novel.id]}
+        closeModal={closeSetCategoryModal}
+        visible={setCategoryModalVisible}
+      />
     </>
   );
 };
