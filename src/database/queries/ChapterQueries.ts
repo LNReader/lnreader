@@ -52,7 +52,7 @@ export const insertChapters = async (
   });
 };
 
-const getChaptersQuery = (
+const getPageChaptersQuery = (
   sort = 'ORDER BY position ASC',
   filter = '',
   page = '1',
@@ -73,16 +73,11 @@ export const getCustomPages = (
   });
 };
 
-export const getChapters = (
-  novelId: number,
-  sort?: string,
-  filter?: string,
-  page?: string,
-): Promise<ChapterInfo[]> => {
+export const getNovelChapters = (novelId: number): Promise<ChapterInfo[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getChaptersQuery(sort, filter, page),
+        'SELECT * FROM Chapter WHERE novelId = ?',
         [novelId],
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
@@ -91,17 +86,18 @@ export const getChapters = (
   );
 };
 
-// downloaded chapter
-const getChapterQuery =
-  'SELECT chapterText FROM Download WHERE Download.chapterId = ?';
-
-export const getChapterFromDB = (chapterId: number): Promise<string> => {
+export const getPageChapters = (
+  novelId: number,
+  sort?: string,
+  filter?: string,
+  page?: string,
+): Promise<ChapterInfo[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getChapterQuery,
-        [chapterId],
-        (txObj, { rows }) => resolve(rows.item(0)?.chapterText),
+        getPageChaptersQuery(sort, filter, page),
+        [novelId],
+        (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
       );
     }),
@@ -110,7 +106,7 @@ export const getChapterFromDB = (chapterId: number): Promise<string> => {
 
 const getPrevChapterQuery = `
   SELECT
-    id, *
+    *
   FROM
     Chapter
   WHERE
@@ -141,7 +137,7 @@ export const getPrevChapter = (
 
 const getNextChapterQuery = `
   SELECT
-    id, *
+    *
   FROM
     Chapter
   WHERE
@@ -410,19 +406,24 @@ export const deleteReadChaptersFromDb = async () => {
   showToast(getString('novelScreen.readChaptersDeleted'));
 };
 
-const bookmarkChapterQuery = 'UPDATE Chapter SET bookmark = ? WHERE id = ?';
-
-export const bookmarkChapter = async (bookmark: boolean, chapterId: number) => {
+export const updateChapterProgress = async (
+  chapterId: number,
+  progress: number,
+) => {
   db.transaction(tx => {
-    tx.executeSql(
-      bookmarkChapterQuery,
-      [1 - Number(bookmark), chapterId],
-      (_txObj, _res) => {},
-      (_txObj, _error) => {
-        // console.log('Error ', error)
-        return false;
-      },
-    );
+    tx.executeSql('UPDATE Chapter SET progress = ? WHERE id = ?', [
+      progress,
+      chapterId,
+    ]);
+  });
+};
+
+const bookmarkChapterQuery =
+  'UPDATE Chapter SET bookmark = (CASE WHEN bookmark = 0 THEN 1 ELSE 0 END) WHERE id = ?';
+
+export const bookmarkChapter = async (chapterId: number) => {
+  db.transaction(tx => {
+    tx.executeSql(bookmarkChapterQuery, [chapterId]);
   });
 };
 

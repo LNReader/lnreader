@@ -34,6 +34,7 @@ export interface ChapterInfo {
   updatedTime: string | null;
   chapterNumber?: number;
   page: string;
+  progress: number | null;
 }
 
 export interface DownloadedChapter extends ChapterInfo {
@@ -43,18 +44,12 @@ export interface DownloadedChapter extends ChapterInfo {
   novelCover: string;
 }
 
-export interface History {
-  id: number; // chapterId xD
+export interface History extends ChapterInfo {
   pluginId: string;
-  novelId: number;
   novelName: string;
   novelPath: string;
   novelCover: string;
-  chapterName: string;
-  chapterPath: string;
   readTime: string;
-  bookmark: number;
-  page: string;
 }
 
 export interface Update extends ChapterInfo {

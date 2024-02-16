@@ -47,19 +47,31 @@ import ChapterItem from './components/ChapterItem';
 import { getString } from '@strings/translations';
 import NovelDrawer from './components/NovelDrawer';
 import { updateNovel } from '@services/updates/LibraryUpdateQueries';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { name, path, pluginId } = route.params;
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
   const [updating, setUpdating] = useState(false);
   const {
+    useFabForContinueReading,
+    defaultChapterSort,
+    disableHapticFeedback,
+    downloadNewChapters,
+    refreshNovelMetadata,
+  } = useAppSettings();
+  const {
+    loading,
     pageIndex,
     novelPages,
-    progress,
     novel,
     chapters,
     lastRead,
-    novelSettings,
+    novelSettings: {
+      sort = defaultChapterSort,
+      filter = '',
+      showChapterTitles = false,
+    },
     openPage,
     setNovel,
     getNovel,
@@ -75,8 +87,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     refreshChapters,
     deleteChapters,
   } = useNovel(path, pluginId);
-
-  const [loading, setLoading] = useState(!novel);
 
   const theme = useTheme();
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
@@ -100,20 +110,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   const deleteDownloadsSnackbar = useBoolean();
 
-  const {
-    useFabForContinueReading,
-    defaultChapterSort,
-    disableHapticFeedback,
-    downloadNewChapters,
-    refreshNovelMetadata,
-  } = useAppSettings();
-
-  const {
-    sort = defaultChapterSort,
-    filter = '',
-    showChapterTitles = false,
-  } = novelSettings;
-
   const onPageScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = event.nativeEvent.contentOffset.y;
     const currentScrollPosition = Math.floor(y) ?? 0;
@@ -123,12 +119,10 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   };
 
   useEffect(() => {
-    getNovel().finally(() => setLoading(false));
-  }, []);
-
-  useEffect(() => {
     refreshChapters();
   }, [downloadQueue]);
+
+  useFocusEffect(refreshChapters);
 
   const onRefresh = () => {
     if (novel) {
@@ -137,6 +131,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
         downloadNewChapters,
         refreshNovelMetadata,
       })
+        .then(() => getNovel())
         .then(() => showToast(getString('novelScreen.updatedToast', { name })))
         .finally(() => setUpdating(false));
     }
@@ -294,31 +289,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   }
   const navigateToChapter = (chapter: ChapterInfo) => {
     navigation.navigate('Chapter', { novel, chapter });
-  };
-
-  const showProgressPercentage = (chapter: ChapterInfo) => {
-    const savedProgress =
-      progress && progress[chapter.id] && progress[chapter.id].percentage;
-    if (
-      savedProgress &&
-      savedProgress < 97 &&
-      savedProgress > 0 &&
-      chapter.unread
-    ) {
-      return (
-        <Text
-          style={{
-            color: theme.outline,
-            fontSize: 12,
-            marginLeft: chapter.releaseTime ? 5 : 0,
-          }}
-          numberOfLines={1}
-        >
-          {chapter.releaseTime ? '•  ' : null}
-          {getString('novelScreen.progress', { progress: savedProgress })}
-        </Text>
-      );
-    }
   };
 
   const setCustomNovelCover = async () => {
@@ -613,7 +583,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   onSelectPress={onSelectPress}
                   onSelectLongPress={onSelectLongPress}
                   navigateToChapter={navigateToChapter}
-                  showProgressPercentage={showProgressPercentage}
                   novelName={name}
                 />
               )}

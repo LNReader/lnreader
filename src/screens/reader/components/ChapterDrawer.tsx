@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import color from 'color';
-import { useAppSettings, useNovel, useTheme } from '@hooks/persisted';
+import { useAppSettings, useTheme } from '@hooks/persisted';
 import { FlashList, FlashListProps } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,18 +11,29 @@ import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
 import dayjs from 'dayjs';
+import { NovelPage, NovelSettings } from '@hooks/persisted/useNovel';
 
-const ChapterDrawer = ({ route, navigation }: ChapterScreenProps) => {
+type ChapterDrawerProps = ChapterScreenProps & {
+  chapters: ChapterInfo[];
+  novelSettings: NovelSettings;
+  novelPages: NovelPage[];
+  setPageIndex: (value: number) => void;
+};
+
+const ChapterDrawer = ({
+  route,
+  navigation,
+  chapters,
+  novelSettings,
+  novelPages,
+  setPageIndex,
+}: ChapterDrawerProps) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const styles = createStylesheet(theme, insets);
   const listRef = useRef<FlashList<ChapterInfo>>(null);
   const { chapter, novel: novelItem } = route.params;
   const { defaultChapterSort } = useAppSettings();
-  const { chapters, novelSettings, setPageIndex, novelPages } = useNovel(
-    novelItem.path,
-    novelItem.pluginId,
-  );
   const { sort = defaultChapterSort } = novelSettings;
 
   const listAscending = sort === 'ORDER BY position ASC';

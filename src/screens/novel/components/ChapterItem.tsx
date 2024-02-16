@@ -27,7 +27,6 @@ interface ChapterItemProps {
   onSelectPress?: (chapter: ChapterInfo) => void;
   onSelectLongPress?: (chapter: ChapterInfo) => void;
   navigateToChapter: (chapter: ChapterInfo) => void;
-  showProgressPercentage?: (chapter: ChapterInfo) => any;
   left?: ReactNode;
   isLocal: boolean;
   isUpdateCard?: boolean;
@@ -45,13 +44,13 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   onSelectPress,
   onSelectLongPress,
   navigateToChapter,
-  showProgressPercentage,
   isLocal,
   left,
   isUpdateCard,
   novelName,
 }) => {
-  const { id, name, unread, releaseTime, bookmark, chapterNumber } = chapter;
+  const { id, name, unread, releaseTime, bookmark, chapterNumber, progress } =
+    chapter;
   const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
     useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenuVisible(true);
@@ -138,7 +137,19 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                 {parsedTime.isValid() ? parsedTime.format('LL') : releaseTime}
               </Text>
             ) : null}
-            {showProgressPercentage?.(chapter)}
+            {!isUpdateCard && progress && progress > 0 && chapter.unread ? (
+              <Text
+                style={{
+                  color: theme.outline,
+                  fontSize: 12,
+                  marginLeft: chapter.releaseTime ? 5 : 0,
+                }}
+                numberOfLines={1}
+              >
+                {chapter.releaseTime ? '•  ' : null}
+                {getString('novelScreen.progress', { progress })}
+              </Text>
+            ) : null}
           </View>
         </View>
       </Row>
