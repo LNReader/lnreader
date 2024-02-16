@@ -291,29 +291,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     navigation.navigate('Chapter', { novel, chapter });
   };
 
-  const showProgressPercentage = (chapter: ChapterInfo) => {
-    if (
-      chapter.progress &&
-      chapter.progress < 97 &&
-      chapter.progress > 0 &&
-      chapter.unread
-    ) {
-      return (
-        <Text
-          style={{
-            color: theme.outline,
-            fontSize: 12,
-            marginLeft: chapter.releaseTime ? 5 : 0,
-          }}
-          numberOfLines={1}
-        >
-          {chapter.releaseTime ? '•  ' : null}
-          {getString('novelScreen.progress', { progress: chapter.progress })}
-        </Text>
-      );
-    }
-  };
-
   const setCustomNovelCover = async () => {
     showExtraMenu(false);
     const newCover = await pickCustomNovelCover(novel);
@@ -606,7 +583,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   onSelectPress={onSelectPress}
                   onSelectLongPress={onSelectLongPress}
                   navigateToChapter={navigateToChapter}
-                  showProgressPercentage={showProgressPercentage}
                   novelName={name}
                 />
               )}
