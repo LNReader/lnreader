@@ -53,6 +53,13 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
   const [updating, setUpdating] = useState(false);
   const {
+    useFabForContinueReading,
+    defaultChapterSort,
+    disableHapticFeedback,
+    downloadNewChapters,
+    refreshNovelMetadata,
+  } = useAppSettings();
+  const {
     loading,
     pageIndex,
     novelPages,
@@ -60,7 +67,11 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     novel,
     chapters,
     lastRead,
-    novelSettings,
+    novelSettings: {
+      sort = defaultChapterSort,
+      filter = '',
+      showChapterTitles = false,
+    },
     openPage,
     setNovel,
     getNovel,
@@ -98,20 +109,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   let trackerSheetRef = useRef(null);
 
   const deleteDownloadsSnackbar = useBoolean();
-
-  const {
-    useFabForContinueReading,
-    defaultChapterSort,
-    disableHapticFeedback,
-    downloadNewChapters,
-    refreshNovelMetadata,
-  } = useAppSettings();
-
-  const {
-    sort = defaultChapterSort,
-    filter = '',
-    showChapterTitles = false,
-  } = novelSettings;
 
   const onPageScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = event.nativeEvent.contentOffset.y;

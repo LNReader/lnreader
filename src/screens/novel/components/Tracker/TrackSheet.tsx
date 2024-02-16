@@ -23,7 +23,7 @@ interface Props {
 const TrackSheet = ({ bottomSheetRef, novel, theme }: Props) => {
   const { tracker } = useTracker();
   const { trackedNovel, trackNovel, untrackNovel, updateTrackedNovel } =
-    useTrackedNovel(novel.pluginId, novel.path);
+    useTrackedNovel(novel.id);
 
   const [trackSearchDialog, setTrackSearchDialog] = useState(false);
   const [trackStatusDialog, setTrackStatusDialog] = useState(false);

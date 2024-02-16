@@ -414,15 +414,7 @@ const bookmarkChapterQuery = 'UPDATE Chapter SET bookmark = ? WHERE id = ?';
 
 export const bookmarkChapter = async (bookmark: boolean, chapterId: number) => {
   db.transaction(tx => {
-    tx.executeSql(
-      bookmarkChapterQuery,
-      [1 - Number(bookmark), chapterId],
-      (_txObj, _res) => {},
-      (_txObj, _error) => {
-        // console.log('Error ', error)
-        return false;
-      },
-    );
+    tx.executeSql(bookmarkChapterQuery, [1 - Number(bookmark), chapterId]);
   });
 };
 

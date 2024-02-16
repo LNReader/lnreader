@@ -31,6 +31,7 @@ import { getString } from '@strings/translations';
 import { ChapterItem } from '@plugins/types';
 
 // store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
+// store key: '<PREFIX>_<novel.id>',
 
 export const TRACKED_NOVEL_PREFIX = 'TRACKED_NOVEL_PREFIX';
 
@@ -68,9 +69,9 @@ const defaultNovelPages: NovelPage[] = [];
 const defaultPageIndex = 0;
 const defaultProgress: NovelProgress = {};
 
-export const useTrackedNovel = (pluginId: string, novelPath: string) => {
+export const useTrackedNovel = (novelId: number) => {
   const [trackedNovel, setValue] = useMMKVObject<TrackedNovel>(
-    `${TRACKED_NOVEL_PREFIX}_${pluginId}_${novelPath}`,
+    `${TRACKED_NOVEL_PREFIX}_${novelId}`,
   );
 
   const trackNovel = (tracker: TrackerMetadata, novel: SearchResult) => {
@@ -383,7 +384,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
             };
           });
           await insertChapters(novel.id, sourceChapters);
-          const key = `${NOVEL_LATEST_CHAPTER_PREFIX}_${pluginId}_${novelPath}`;
+          const key = `${NOVEL_LATEST_CHAPTER_PREFIX}_${novel.id}`;
           const latestChapter = getMMKVObject<ChapterItem>(key);
           if (
             sourcePage.latestChapter &&
@@ -457,12 +458,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
 export const deleteCachedNovels = async () => {
   const cachedNovels = await _getCachedNovels();
   for (let novel of cachedNovels) {
-    MMKVStorage.delete(
-      `${TRACKED_NOVEL_PREFIX}_${novel.pluginId}_${novel.path}`,
-    );
-    MMKVStorage.delete(
-      `${NOVEL_LATEST_CHAPTER_PREFIX}_${novel.pluginId}_${novel.path}`,
-    );
+    MMKVStorage.delete(`${TRACKED_NOVEL_PREFIX}_${novel.id}`);
+    MMKVStorage.delete(`${NOVEL_LATEST_CHAPTER_PREFIX}_${novel.id}`);
     MMKVStorage.delete(
       `${NOVEL_PAGE_INDEX_PREFIX}_${novel.pluginId}_${novel.path}`,
     );
