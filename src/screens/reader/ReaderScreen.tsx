@@ -19,6 +19,7 @@ import { useKeepAwake } from 'expo-keep-awake';
 import {
   getNextChapter,
   getPrevChapter,
+  markChapterRead,
 } from '@database/queries/ChapterQueries';
 import { fetchChapter } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
@@ -59,9 +60,7 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
     chapters,
     novelSettings,
     novelPages,
-    markChapterRead,
     setLastRead,
-    bookmarkChapters,
     setProgress,
     setPageIndex,
   } = useNovel(route.params.novel.path, route.params.novel.pluginId);
@@ -87,9 +86,7 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
         drawerRef={drawerRef}
         progress={progress}
         setProgress={setProgress}
-        markChapterRead={markChapterRead}
         setLastRead={setLastRead}
-        bookmarkChapters={bookmarkChapters}
       />
     </DrawerLayoutAndroid>
   );
@@ -99,9 +96,7 @@ type ChapterContentProps = ChapterScreenProps & {
   drawerRef: React.RefObject<DrawerLayoutAndroid>;
   progress: NovelProgress;
   setProgress: (chapterId: number, offsetY: number, percentage: number) => void;
-  markChapterRead: (chapterId: number) => void;
   setLastRead: (chapter: ChapterInfo | undefined) => void;
-  bookmarkChapters: (chapters: ChapterInfo[]) => void;
 };
 
 export const ChapterContent = ({
@@ -110,9 +105,7 @@ export const ChapterContent = ({
   drawerRef,
   progress,
   setProgress,
-  markChapterRead,
   setLastRead,
-  bookmarkChapters,
 }: ChapterContentProps) => {
   useKeepAwake();
   const { novel, chapter } = route.params;
@@ -368,7 +361,6 @@ export const ChapterContent = ({
           <ReaderAppbar
             novelName={novel.name}
             chapter={chapter}
-            bookmarkChapters={bookmarkChapters}
             tts={startTts}
             goBack={navigation.goBack}
             textToSpeech={ttsStatus}

@@ -47,6 +47,7 @@ import ChapterItem from './components/ChapterItem';
 import { getString } from '@strings/translations';
 import NovelDrawer from './components/NovelDrawer';
 import { updateNovel } from '@services/updates/LibraryUpdateQueries';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { name, path, pluginId } = route.params;
@@ -121,6 +122,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   useEffect(() => {
     refreshChapters();
   }, [downloadQueue]);
+
+  useFocusEffect(refreshChapters);
 
   const onRefresh = () => {
     if (novel) {

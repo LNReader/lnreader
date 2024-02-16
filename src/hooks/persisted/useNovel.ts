@@ -179,18 +179,17 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     setPageIndex(index);
   }, []);
 
-  const refreshChapters = async () => {
+  const refreshChapters = useCallback(() => {
     if (novel) {
       const page = novelPages[pageIndex]?.title;
-      let chapters = await _getChapters(
+      _getChapters(
         novel.id,
         novelSettings.sort,
         novelSettings.filter,
         page,
-      );
-      setChapters(chapters);
+      ).then(chapters => setChapters(chapters));
     }
-  };
+  }, [novel, pageIndex, novelPages]);
 
   const sortAndFilterChapters = async (sort?: string, filter?: string) => {
     if (novel) {
@@ -219,7 +218,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
 
   const bookmarkChapters = (_chapters: ChapterInfo[]) => {
     _chapters.map(_chapter => {
-      _bookmarkChapter(_chapter.bookmark, _chapter.id);
+      _bookmarkChapter(_chapter.id);
     });
     setChapters(
       chapters.map(chapter => {

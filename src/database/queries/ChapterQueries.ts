@@ -410,11 +410,12 @@ export const deleteReadChaptersFromDb = async () => {
   showToast(getString('novelScreen.readChaptersDeleted'));
 };
 
-const bookmarkChapterQuery = 'UPDATE Chapter SET bookmark = ? WHERE id = ?';
+const bookmarkChapterQuery =
+  'UPDATE Chapter SET bookmark = (CASE WHEN bookmark = 0 THEN 1 ELSE 0 END) WHERE id = ?';
 
-export const bookmarkChapter = async (bookmark: boolean, chapterId: number) => {
+export const bookmarkChapter = async (chapterId: number) => {
   db.transaction(tx => {
-    tx.executeSql(bookmarkChapterQuery, [1 - Number(bookmark), chapterId]);
+    tx.executeSql(bookmarkChapterQuery, [chapterId]);
   });
 };
 
