@@ -20,6 +20,7 @@ import {
   getNextChapter,
   getPrevChapter,
   markChapterRead,
+  updateChapterProgress,
 } from '@database/queries/ChapterQueries';
 import { fetchChapter } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
@@ -51,19 +52,11 @@ import { ChapterInfo } from '@database/types';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import { getString } from '@strings/translations';
-import { NovelProgress } from '@hooks/persisted/useNovel';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
-  const {
-    progress,
-    chapters,
-    novelSettings,
-    novelPages,
-    setLastRead,
-    setProgress,
-    setPageIndex,
-  } = useNovel(route.params.novel.path, route.params.novel.pluginId);
+  const { chapters, novelSettings, novelPages, setLastRead, setPageIndex } =
+    useNovel(route.params.novel.path, route.params.novel.pluginId);
   return (
     <DrawerLayoutAndroid
       ref={drawerRef}
@@ -84,8 +77,6 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
         route={route}
         navigation={navigation}
         drawerRef={drawerRef}
-        progress={progress}
-        setProgress={setProgress}
         setLastRead={setLastRead}
       />
     </DrawerLayoutAndroid>
@@ -94,8 +85,6 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
 
 type ChapterContentProps = ChapterScreenProps & {
   drawerRef: React.RefObject<DrawerLayoutAndroid>;
-  progress: NovelProgress;
-  setProgress: (chapterId: number, offsetY: number, percentage: number) => void;
   setLastRead: (chapter: ChapterInfo | undefined) => void;
 };
 
@@ -103,8 +92,6 @@ export const ChapterContent = ({
   route,
   navigation,
   drawerRef,
-  progress,
-  setProgress,
   setLastRead,
 }: ChapterContentProps) => {
   useKeepAwake();
@@ -247,9 +234,9 @@ export const ChapterContent = ({
   };
 
   const saveProgress = useCallback(
-    async (offsetY: number, percentage: number) => {
+    (percentage: number) => {
       if (!incognitoMode) {
-        setProgress(chapter.id, offsetY, percentage);
+        updateChapterProgress(chapter.id, percentage > 100 ? 100 : percentage);
       }
 
       if (!incognitoMode && percentage >= 97) {
@@ -346,9 +333,6 @@ export const ChapterContent = ({
         saveProgress={saveProgress}
         onLayout={() => {
           useVolumeButtons && onLayout();
-          if (progress[chapter.id]) {
-            scrollTo(progress[chapter.id]?.offsetY || 0);
-          }
         }}
         onPress={hideHeader}
         navigateToChapterBySwipe={navigateToChapterBySwipe}

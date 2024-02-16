@@ -329,53 +329,28 @@ export const updateNovelCategories = async (
   });
 };
 
-export const _restoreNovelAndChapters = (novel: BackupNovel) => {
+const restoreObjectQuery = (table: string, obj: any) => {
+  return `
+  INSERT INTO ${table}
+  (${Object.keys(obj).join(',')})
+  VALUES (${Object.keys(obj)
+    .map(() => '?')
+    .join(',')})
+  `;
+};
+
+export const _restoreNovelAndChapters = (backupNovel: BackupNovel) => {
+  const { chapters, ...novel } = backupNovel;
   db.transaction(tx => {
     tx.executeSql('DELETE FROM Novel WHERE id = ?', [novel.id]);
     tx.executeSql(
-      `INSERT INTO 
-        Novel (
-          id, path, pluginId, name, cover, summary, 
-          author, artist, status, genres, inLibrary, isLocal
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `,
-      [
-        novel.id,
-        novel.path,
-        novel.pluginId,
-        novel.name,
-        novel.cover || null,
-        novel.summary || null,
-        novel.author || null,
-        novel.artist || null,
-        novel.status || null,
-        novel.genres || null,
-        Number(novel.inLibrary),
-        Number(novel.isLocal),
-      ],
+      restoreObjectQuery('Novel', novel),
+      Object.values(novel) as string[] | number[],
     );
-    for (const chapter of novel.chapters) {
+    for (const chapter of chapters) {
       tx.executeSql(
-        `INSERT INTO 
-          Chapter (
-            id, novelId, path, name, releaseTime, bookmark,
-            unread, readTime, isDownloaded, updatedTime
-          )
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `,
-        [
-          chapter.id,
-          chapter.novelId,
-          chapter.path,
-          chapter.name,
-          chapter.releaseTime || null,
-          Number(chapter.bookmark),
-          Number(chapter.unread),
-          chapter.readTime,
-          Number(chapter.isDownloaded),
-          chapter.updatedTime,
-        ],
+        restoreObjectQuery('Chapter', chapter),
+        Object.values(chapter) as string[] | number[],
       );
     }
   });

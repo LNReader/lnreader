@@ -13,6 +13,7 @@ export const createChapterTableQuery = `
         chapterNumber REAL NULL,
         page TEXT DEFAULT "1",
         position INTEGER DEFAULT 0,
+        progress INTEGER,
         UNIQUE(path, novelId),
         FOREIGN KEY (novelId) REFERENCES Novel(id) ON DELETE CASCADE
     )

@@ -64,7 +64,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     loading,
     pageIndex,
     novelPages,
-    progress,
     novel,
     chapters,
     lastRead,
@@ -293,12 +292,10 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   };
 
   const showProgressPercentage = (chapter: ChapterInfo) => {
-    const savedProgress =
-      progress && progress[chapter.id] && progress[chapter.id].percentage;
     if (
-      savedProgress &&
-      savedProgress < 97 &&
-      savedProgress > 0 &&
+      chapter.progress &&
+      chapter.progress < 97 &&
+      chapter.progress > 0 &&
       chapter.unread
     ) {
       return (
@@ -311,7 +308,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           numberOfLines={1}
         >
           {chapter.releaseTime ? '•  ' : null}
-          {getString('novelScreen.progress', { progress: savedProgress })}
+          {getString('novelScreen.progress', { progress: chapter.progress })}
         </Text>
       );
     }

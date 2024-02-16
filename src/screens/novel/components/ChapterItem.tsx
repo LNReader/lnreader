@@ -51,7 +51,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   isUpdateCard,
   novelName,
 }) => {
-  const { id, name, unread, releaseTime, bookmark, chapterNumber } = chapter;
+  const { id, name, unread, releaseTime, bookmark, chapterNumber, progress } =
+    chapter;
   const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
     useState(false);
   const showDeleteChapterMenu = () => setDeleteChapterMenuVisible(true);
@@ -117,7 +118,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             >
               {showChapterTitles
                 ? name
-                : getString('novelScreen.chapterChapnum', { num: chapNum })}
+                : getString('novelScreen.chapterChapnum', { num: chapNum }) +
+                  `${progress && progress > 0 ? ' • ' + progress + '%' : ''}`}
             </Text>
           </Row>
           <View style={styles.textRow}>

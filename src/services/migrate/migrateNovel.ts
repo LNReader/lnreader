@@ -7,7 +7,7 @@ import {
   getNovel,
   insertNovelAndChapters,
 } from '@database/queries/NovelQueries';
-import { getChapters } from '@database/queries/ChapterQueries';
+import { getNovelChapters } from '@database/queries/ChapterQueries';
 import { downloadChapter } from '@database/queries/ChapterQueries';
 
 import { fetchNovel } from '@services/plugin/fetch';
@@ -20,8 +20,6 @@ import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import {
   LAST_READ_PREFIX,
   NOVEL_SETTINSG_PREFIX,
-  NovelProgress,
-  PROGRESS_PREFIX,
 } from '@hooks/persisted/useNovel';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
@@ -31,7 +29,7 @@ const db = SQLite.openDatabase('lnreader.db');
 const migrateNovelMetaDataQuery =
   'UPDATE Novel SET cover = ?, summary = ?, author = ?, artist = ?, status = ?, genres = ?, inLibrary = 1  WHERE id = ?';
 const migrateChapterQuery =
-  'UPDATE Chapter SET bookmark = ?, unread = ?, readTime = ? WHERE id = ?';
+  'UPDATE Chapter SET bookmark = ?, unread = ?, readTime = ?, progress = ? WHERE id = ?';
 
 const sleep = (time: number): any =>
   new Promise(resolve => setTimeout(() => resolve(null), time));
@@ -64,11 +62,11 @@ export const migrateNovel = async (
     return;
   }
   try {
-    let fromChapters = await getChapters(fromNovel.id, '', '');
+    let fromChapters = await getNovelChapters(fromNovel.id);
     let toNovel = await getNovel(toNovelPath, pluginId);
     let toChapters: ChapterInfo[];
     if (toNovel) {
-      toChapters = await getChapters(toNovel.id, '', '');
+      toChapters = await getNovelChapters(toNovel.id);
     } else {
       const fetchedNovel = await fetchNovel(pluginId, toNovelPath).catch(e => {
         throw e;
@@ -78,7 +76,7 @@ export const migrateNovel = async (
       if (!toNovel) {
         return;
       }
-      toChapters = await getChapters(toNovel.id, '', '');
+      toChapters = await getNovelChapters(toNovel.id);
     }
 
     const options = {
@@ -140,17 +138,6 @@ export const migrateNovel = async (
           ),
         );
 
-        const fromProgress =
-          getMMKVObject<NovelProgress>(
-            `${PROGRESS_PREFIX}_${fromNovel.pluginId}_${fromNovel.path}`,
-          ) || {};
-        const toProgresss: NovelProgress = {};
-        const setProgress = (progress: NovelProgress) => {
-          setMMKVObject(
-            `${PROGRESS_PREFIX}_${toNovel.pluginId}_${toNovel.path}`,
-            progress,
-          );
-        };
         const lastRead = getMMKVObject<NovelInfo>(
           `${LAST_READ_PREFIX}_${fromNovel.pluginId}_${fromNovel.path}`,
         );
@@ -188,15 +175,12 @@ export const migrateNovel = async (
             continue;
           }
 
-          if (fromProgress && fromProgress[fromChapter.id]) {
-            toProgresss[toChapter.id] = fromProgress[fromChapter.id];
-          }
-
           db.transaction(tx =>
             tx.executeSql(migrateChapterQuery, [
               Number(fromChapter.bookmark),
               Number(fromChapter.unread),
               fromChapter.readTime,
+              fromChapter.progress,
               toChapter.id,
             ]),
           );
@@ -227,7 +211,6 @@ export const migrateNovel = async (
             fromChapters.length === fromPointer ||
             toChapters.length === toPointer
           ) {
-            setProgress(toProgresss);
             Notifications.scheduleNotificationAsync({
               content: {
                 title: getString('browseScreen.migration.novelMigrated'),

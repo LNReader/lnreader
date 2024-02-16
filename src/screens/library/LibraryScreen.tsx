@@ -36,7 +36,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { Row } from '@components/Common';
 import { LibraryScreenProps } from '@navigators/types';
-import { ChapterInfo, NovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
 
 type State = NavigationState<{
   key: string;
@@ -242,17 +242,11 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
             onPress={() => {
               navigation.navigate('Chapter', {
                 novel: {
-                  id: history[0].novelId,
                   path: history[0].novelPath,
                   pluginId: history[0].pluginId,
                   name: history[0].novelName,
                 } as NovelInfo,
-                chapter: {
-                  id: history[0].id,
-                  path: history[0].chapterPath,
-                  name: history[0].chapterName,
-                  novelId: history[0].novelId,
-                } as ChapterInfo,
+                chapter: history[0],
               });
             }}
           />
