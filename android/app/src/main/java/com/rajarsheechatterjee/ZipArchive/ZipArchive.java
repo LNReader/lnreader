@@ -38,22 +38,18 @@ public class ZipArchive extends ReactContextBaseJavaModule {
         return filePath.replaceAll(":", "\uA789");
     }
 
-    private void unzipProcess(ZipInputStream zis, String distDirPath) throws Exception {
+    public void unzipProcess(ZipInputStream zis, String distDirPath) throws Exception {
         ZipEntry zipEntry;
         int len;
         byte[] buffer = new byte[4096];
         while ((zipEntry = zis.getNextEntry()) != null) {
+            if(zipEntry.getName().endsWith("/")) continue;
             String escapedFilePath = this.escapeFilePath(zipEntry.getName());
             File newFile = new File(distDirPath, escapedFilePath);
             newFile.getParentFile().mkdirs();
             FileOutputStream fos = new FileOutputStream(newFile);
-            boolean isWritten = false; // ignore folder entry;
-            while ((len = zis.read(buffer)) > 0) {
-                isWritten = true;
-                fos.write(buffer, 0, len);
-            }
+            while ((len = zis.read(buffer)) > 0) fos.write(buffer, 0, len);
             fos.close();
-            if(!isWritten) newFile.delete();
         }
         zis.closeEntry();
     }
