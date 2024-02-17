@@ -89,7 +89,7 @@ const updateNovel = async (
               `
                 UPDATE Chapter SET 
                   name = ?, releaseTime = ?, updatedTime = datetime('now','localtime'), page = ?
-                WHERE path = ? AND novelId = ? AND (name != ? OR releaseTime != ? OR page = ?);
+                WHERE path = ? AND novelId = ? AND (name != ? OR releaseTime != ? OR page != ?);
               `,
               [
                 name,
