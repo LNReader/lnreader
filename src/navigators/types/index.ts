@@ -30,6 +30,7 @@ export type RootStackParamList = {
   WebviewScreen: {
     name: string;
     url: string;
+    pluginId?: string;
   };
 };
 

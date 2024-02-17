@@ -36,6 +36,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
     navigate('WebviewScreen', {
       name: novel.pluginId,
       url: novel.path,
+      pluginId: novel.pluginId,
     });
   };
   const handleMigrateNovel = () =>
