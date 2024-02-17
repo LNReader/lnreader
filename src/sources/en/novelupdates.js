@@ -110,9 +110,7 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelName = loadedCheerio('.seriestitlenu').text();
 
-  novel.novelCover =
-    loadedCheerio('.seriesimg > img').attr('src') ||
-    loadedCheerio('.serieseditimg > img').attr('src');
+  novel.novelCover = loadedCheerio('.wpb_wrapper img').attr('src');
 
   novel.author = loadedCheerio('#showauthors').text().trim();
   novel.genre = loadedCheerio('#seriesgenre')
