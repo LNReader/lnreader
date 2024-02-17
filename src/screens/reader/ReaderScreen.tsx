@@ -55,7 +55,7 @@ import { getString } from '@strings/translations';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
-  const { chapters, novelSettings, novelPages, setLastRead, setPageIndex } =
+  const { chapters, novelSettings, pages, setLastRead, setPageIndex } =
     useNovel(route.params.novel.path, route.params.novel.pluginId);
   return (
     <DrawerLayoutAndroid
@@ -68,7 +68,7 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
           navigation={navigation}
           chapters={chapters}
           novelSettings={novelSettings}
-          novelPages={novelPages}
+          pages={pages}
           setPageIndex={setPageIndex}
         />
       )}

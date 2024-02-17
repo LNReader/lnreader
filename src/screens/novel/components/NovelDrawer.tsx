@@ -1,4 +1,3 @@
-import { NovelPage } from '@hooks/persisted/useNovel';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { ThemeColors } from '@theme/types';
 import color from 'color';
@@ -9,23 +8,20 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface NovelDrawerProps {
   theme: ThemeColors;
-  novelPages: NovelPage[];
+  pages: string[];
   pageIndex: number;
   openPage: (index: number) => void;
   drawerRef: RefObject<DrawerLayoutAndroid>;
 }
 export default function NovelDrawer({
   theme,
-  novelPages,
+  pages,
   pageIndex,
   openPage,
   drawerRef,
 }: NovelDrawerProps) {
   const insets = useSafeAreaInsets();
-  const renderItem: ListRenderItem<{ title: string; hasUpdate?: boolean }> = ({
-    item,
-    index,
-  }) => (
+  const renderItem: ListRenderItem<string> = ({ item, index }) => (
     <View
       style={[
         styles.drawerElementContainer,
@@ -43,7 +39,7 @@ export default function NovelDrawer({
         }}
       >
         <View>
-          <Text style={[{ color: theme.onSurfaceVariant }]}>{item.title}</Text>
+          <Text style={[{ color: theme.onSurfaceVariant }]}>{item}</Text>
         </View>
       </Pressable>
     </View>
@@ -64,7 +60,7 @@ export default function NovelDrawer({
         Novel pages
       </Text>
       <FlashList
-        data={novelPages}
+        data={pages}
         extraData={pageIndex}
         renderItem={renderItem}
         estimatedItemSize={60}
