@@ -37,6 +37,7 @@ import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/Source
 import { Row } from '@components/Common';
 import { LibraryScreenProps } from '@navigators/types';
 import { NovelInfo } from '@database/types';
+import { importEpub } from '@services/epub/import';
 
 type State = NavigationState<{
   key: string;
@@ -151,20 +152,28 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
         }}
         onChangeText={onChangeText}
         leftIcon={selectedNovelIds.length ? 'close' : 'magnify'}
-        rightIcons={[
+        rightIcons={
           selectedNovelIds.length
-            ? {
-                iconName: 'select-all',
-                onPress: () =>
-                  setSelectedNovelIds(
-                    library[index].novels.map(novel => novel.id),
-                  ),
-              }
-            : {
-                iconName: 'filter-variant',
-                onPress: () => bottomSheetRef.current?.present(),
-              },
-        ]}
+            ? [
+                {
+                  iconName: 'select-all',
+                  onPress: () =>
+                    setSelectedNovelIds(
+                      library[index].novels.map(novel => novel.id),
+                    ),
+                },
+              ]
+            : [
+                {
+                  iconName: 'book-arrow-up-outline',
+                  onPress: importEpub,
+                },
+                {
+                  iconName: 'filter-variant',
+                  onPress: () => bottomSheetRef.current?.present(),
+                },
+              ]
+        }
         theme={theme}
       />
       {downloadedOnlyMode && (
