@@ -331,6 +331,10 @@ const importEpubAction = async (taskData?: TaskData) => {
 
 export const importEpub = async () => {
   try {
+    const currentAction = MMKVStorage.getString(BACKGROUND_ACTION);
+    if (currentAction) {
+      throw new Error('Another serivce is running');
+    }
     const epubFile = await DocumentPicker.getDocumentAsync({
       type: 'application/epub+zip',
       copyToCacheDirectory: false,

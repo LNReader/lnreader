@@ -11,12 +11,12 @@ import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
 import dayjs from 'dayjs';
-import { NovelPage, NovelSettings } from '@hooks/persisted/useNovel';
+import { NovelSettings } from '@hooks/persisted/useNovel';
 
 type ChapterDrawerProps = ChapterScreenProps & {
   chapters: ChapterInfo[];
   novelSettings: NovelSettings;
-  novelPages: NovelPage[];
+  pages: string[];
   setPageIndex: (value: number) => void;
 };
 
@@ -25,7 +25,7 @@ const ChapterDrawer = ({
   navigation,
   chapters,
   novelSettings,
-  novelPages,
+  pages,
   setPageIndex,
 }: ChapterDrawerProps) => {
   const theme = useTheme();
@@ -171,7 +171,7 @@ const ChapterDrawer = ({
       }
     };
   useEffect(() => {
-    let pageIndex = novelPages.findIndex(p => p.title === chapter.page);
+    let pageIndex = pages.indexOf(chapter.page);
     if (pageIndex === -1) {
       pageIndex = 0;
     }

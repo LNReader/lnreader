@@ -7,7 +7,7 @@ import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
 import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
-import { NOVEL_PAGES_PREFIX, NovelPage } from '@hooks/persisted/useNovel';
+import { NOVEL_PAGE_UPDATES_PREFIX } from '@hooks/persisted/useNovel';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = async (
@@ -74,38 +74,46 @@ const updateNovel = async (
       const { name, path, releaseTime, page } = chapter;
       tx.executeSql(
         `
-        INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, page)
-          VALUES (?, ?, ?, ?, datetime('now','localtime'), ?)
-          ON CONFLICT(novelId, path) DO UPDATE SET
-            name=excluded.name,
-            releaseTime=excluded.releaseTime,
-            updatedTime=excluded.updatedTime
-            page=excluded.page
-          WHERE Chapter.name != excluded.name
-            OR Chapter.releaseTime != excluded.releaseTime;
+          INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, page)
+          SELECT ?, ?, ?, ?, datetime('now','localtime'), ?
+          WHERE NOT EXISTS (SELECT id FROM Chapter WHERE path = ? AND novelId = ?);
         `,
-        [path, name, releaseTime || '', novelId, page || '1'],
+        [path, name, releaseTime || null, novelId, page || '1', path, novelId],
         (txObj, { insertId }) => {
-          if (insertId && downloadNewChapters) {
-            downloadChapter(pluginId, novelId, insertId, path);
+          if (insertId) {
+            if (downloadNewChapters) {
+              downloadChapter(pluginId, novelId, insertId, path);
+            }
+          } else {
+            tx.executeSql(
+              `
+                UPDATE Chapter SET 
+                  name = ?, releaseTime = ?, updatedTime = datetime('now','localtime'), page = ?
+                WHERE path = ? AND novelId = ? AND (name != ? OR releaseTime != ? OR page != ?);
+              `,
+              [
+                name,
+                releaseTime || null,
+                page || '1',
+                path,
+                novelId,
+                name,
+                releaseTime || null,
+                page || '1',
+              ],
+            );
           }
         },
       );
     });
   });
-  const novelPages = getMMKVObject<NovelPage[]>(
-    `${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`,
-  );
-  if (novelPages) {
-    setMMKVObject(`${NOVEL_PAGES_PREFIX}_${pluginId}_${novelPath}`, {
-      ...novelPages,
-      pages: novelPages.map(p => {
-        return {
-          ...p,
-          hasUpdate: true,
-        };
-      }),
-    });
+  const key = `${NOVEL_PAGE_UPDATES_PREFIX}_${novelId}`;
+  const hasUpdates = getMMKVObject<boolean[]>(key);
+  if (hasUpdates) {
+    setMMKVObject(
+      key,
+      hasUpdates.map(() => true),
+    );
   }
 };
 

@@ -85,6 +85,7 @@ img {
     border-radius: 1.2rem;
     background-color: var(--theme-surface-0-9);
     touch-action: none;
+    font-size: 16;
 }
 
 .scrollbar-item {

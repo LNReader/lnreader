@@ -22,10 +22,7 @@ import {
 } from '@database/queries/ChapterQueries';
 
 import { Appbar, Button, List } from '@components';
-import { importEpub } from '@services/epub/import';
 import { AdvancedSettingsScreenProps } from '@navigators/types';
-import { useMMKVString } from 'react-native-mmkv';
-import { BACKGROUND_ACTION } from '@services/constants';
 import { StyleSheet, View } from 'react-native';
 import { getUserAgentSync } from 'react-native-device-info';
 
@@ -56,8 +53,6 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
     setFalse: hideUserAgentModal,
   } = useBoolean();
 
-  const [hasAction] = useMMKVString(BACKGROUND_ACTION);
-
   return (
     <>
       <Appbar
@@ -87,12 +82,6 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
           title={getString('advancedSettingsScreen.deleteReadChapters')}
           onPress={showDeleteReadChaptersDialog}
           theme={theme}
-        />
-        <List.Item
-          title={getString('advancedSettingsScreen.importEpub')}
-          onPress={importEpub}
-          theme={theme}
-          disabled={Boolean(hasAction)}
         />
         <List.Item
           title={getString('advancedSettingsScreen.userAgent')}

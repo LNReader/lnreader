@@ -55,7 +55,7 @@ import { getString } from '@strings/translations';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
-  const { chapters, novelSettings, novelPages, setLastRead, setPageIndex } =
+  const { chapters, novelSettings, pages, setLastRead, setPageIndex } =
     useNovel(route.params.novel.path, route.params.novel.pluginId);
   return (
     <DrawerLayoutAndroid
@@ -68,7 +68,7 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
           navigation={navigation}
           chapters={chapters}
           novelSettings={novelSettings}
-          novelPages={novelPages}
+          pages={pages}
           setPageIndex={setPageIndex}
         />
       )}
@@ -121,7 +121,7 @@ export const ChapterContent = ({
 
   const [sourceChapter, setChapter] = useState({ ...chapter, chapterText: '' });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
+  const [error, setError] = useState<string>();
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
     ChapterInfo[]
   >([]);
@@ -319,7 +319,32 @@ export const ChapterContent = ({
   }
 
   if (error) {
-    return <ErrorScreenV2 error={error} />;
+    return (
+      <ErrorScreenV2
+        error={error}
+        actions={[
+          {
+            iconName: 'refresh',
+            title: getString('common.retry'),
+            onPress: () => {
+              setError('');
+              setLoading(true);
+              getChapter();
+            },
+          },
+          {
+            iconName: 'earth',
+            title: 'WebView',
+            onPress: () =>
+              navigation.navigate('WebviewScreen', {
+                name: `${chapter.name} | ${novel.name}`,
+                url: chapter.path,
+                pluginId: novel.pluginId,
+              }),
+          },
+        ]}
+      />
+    );
   }
 
   return (

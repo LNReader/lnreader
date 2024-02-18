@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { ThemeColors } from '../../../../theme/types';
+import { ThemeColors } from '@theme/types';
 
 interface NovelSummaryProps {
   summary: string;
@@ -17,7 +17,6 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
   theme,
 }) => {
   const textColor = theme.onSurfaceVariant;
-  const iconBackground = `${theme.background}D1`;
 
   const [expanded, setExpanded] = useState(isExpanded);
   const toggleExpanded = () => {
@@ -48,8 +47,9 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
           style={[
             styles.iconContainer,
             {
-              backgroundColor: iconBackground,
+              backgroundColor: theme.background,
               bottom,
+              opacity: expanded ? 1 : 0.7,
             },
           ]}
         >

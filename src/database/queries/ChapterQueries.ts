@@ -16,14 +16,8 @@ import { getString } from '@strings/translations';
 const db = SQLite.openDatabase('lnreader.db');
 
 const insertChapterQuery = `
-INSERT INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
-VALUES
-  (?, ?, ?, ?, ?, ?, ?)
-ON CONFLICT(novelId, path) DO UPDATE SET
-  position=excluded.position,
-  page=excluded.page
-WHERE Chapter.page != excluded.page
-OR Chapter.position != excluded.position;
+INSERT OR IGNORE INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
+VALUES (?, ?, ?, ?, ?, ?, ?)
 `;
 
 export const insertChapters = async (
@@ -46,7 +40,25 @@ export const insertChapters = async (
           chapter.page || '1',
           index,
         ],
-        noop,
+        (txObj, { insertId }) => {
+          if (!insertId) {
+            tx.executeSql(
+              `
+                UPDATE Chapter SET
+                  page = ?, position = ?
+                WHERE path = ? AND novelId = ? (AND page != ? OR position != ?)
+              `,
+              [
+                chapter.page || '1',
+                index,
+                chapter.path,
+                novelId,
+                chapter.page || '1',
+                index,
+              ],
+            );
+          }
+        },
       );
     });
   });

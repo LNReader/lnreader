@@ -63,7 +63,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const {
     loading,
     pageIndex,
-    novelPages,
+    pages,
     novel,
     chapters,
     lastRead,
@@ -304,14 +304,14 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   return (
     <DrawerLayoutAndroid
-      drawerLockMode={novelPages.length <= 1 ? 'locked-closed' : 'unlocked'}
+      drawerLockMode={pages.length <= 1 ? 'locked-closed' : 'unlocked'}
       ref={drawerRef}
       drawerPosition="left"
       drawerWidth={300}
       renderNavigationView={() => (
         <NovelDrawer
           theme={theme}
-          novelPages={novelPages}
+          pages={pages}
           pageIndex={pageIndex}
           openPage={openPage}
           drawerRef={drawerRef}
@@ -602,11 +602,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   trackerSheetRef={trackerSheetRef}
                   novelBottomSheetRef={novelBottomSheetRef}
                   deleteDownloadsSnackbar={deleteDownloadsSnackbar}
-                  page={
-                    novelPages.length > 1
-                      ? novelPages[pageIndex].title
-                      : undefined
-                  }
+                  page={pages.length > 1 ? pages[pageIndex] : undefined}
                   drawerRef={drawerRef}
                 />
               }
