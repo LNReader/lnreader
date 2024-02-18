@@ -63,7 +63,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
                 navigation.navigate('SourceScreen', {
                   pluginId: item.plugin.id,
                   pluginName: item.plugin.name,
-                  site: item.plugin.url,
+                  site: item.plugin.site,
                 })
               }
             >
