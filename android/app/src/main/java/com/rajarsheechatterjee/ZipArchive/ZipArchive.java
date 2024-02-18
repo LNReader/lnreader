@@ -38,7 +38,7 @@ public class ZipArchive extends ReactContextBaseJavaModule {
         return filePath.replaceAll(":", "\uA789");
     }
 
-    public void unzipProcess(ZipInputStream zis, String distDirPath) throws Exception {
+    private void unzipProcess(ZipInputStream zis, String distDirPath) throws Exception {
         ZipEntry zipEntry;
         int len;
         byte[] buffer = new byte[4096];
