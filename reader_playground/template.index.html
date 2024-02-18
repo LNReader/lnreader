@@ -42,6 +42,7 @@
                 }else{
                     scrollHandler.show();
                 }
+                hidden = !hidden;
                 break;
             default:
                 console.log('unsupported event', event.type);
@@ -55,7 +56,6 @@
         var swipeGestures = false;
         var autoSaveInterval = 2222;
     </script>
-    <script defer src="../android/app/src/main/assets/js/index.js"></script>
 </head>
 
 <body>
@@ -67,5 +67,5 @@
         <div id="reader-percentage"></div>
     </div>
 </body>
-</body>
+<script defer src="../android/app/src/main/assets/js/index.js"></script>
 </html>
