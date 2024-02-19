@@ -96,8 +96,8 @@ const parseNovelAndChapters = async novelUrl => {
         const chapterName =
           'Chapter ' +
           loadedCheerio(this).find('.chapter-no').text().trim() +
-          ' - ';
-        loadedCheerio(this).find('.chapter-title').text().trim();
+          ' - ' +
+          loadedCheerio(this).find('.chapter-title').text().trim();
 
         const releaseDate = loadedCheerio(this)
           .find('.chapter-update')
