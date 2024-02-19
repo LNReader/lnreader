@@ -7,7 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useBoolean } from '@hooks';
 import { ThemeColors } from '@theme/types';
 import { getString } from '@strings/translations';
-import { Portal } from 'react-native-paper';
 import SetCategoryModal from '../SetCategoriesModal';
 import { NovelScreenProps } from '@navigators/types';
 import { useTrackedNovel, useTracker } from '@hooks/persisted';
@@ -29,15 +28,15 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
   const { navigate } = useNavigation<NovelScreenProps['navigation']>();
   const followButtonColor = inLibrary ? theme.primary : theme.outline;
   const { tracker } = useTracker();
-  const { trackedNovel } = useTrackedNovel(novel.url);
+  const { trackedNovel } = useTrackedNovel(novel.id);
 
   const trackerButtonColor = trackedNovel ? theme.primary : theme.outline;
 
   const handleOpenWebView = async () => {
     navigate('WebviewScreen', {
-      pluginId: novel.pluginId,
       name: novel.pluginId,
-      url: novel.url,
+      url: novel.path,
+      pluginId: novel.pluginId,
     });
   };
   const handleMigrateNovel = () =>
@@ -132,13 +131,11 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
           </View>
         ) : null}
       </View>
-      <Portal>
-        <SetCategoryModal
-          novelIds={[novel.id]}
-          closeModal={closeSetCategoryModal}
-          visible={setCategoryModalVisible}
-        />
-      </Portal>
+      <SetCategoryModal
+        novelIds={[novel.id]}
+        closeModal={closeSetCategoryModal}
+        visible={setCategoryModalVisible}
+      />
     </>
   );
 };

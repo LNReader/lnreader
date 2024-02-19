@@ -14,7 +14,7 @@ export const useBrowseSource = (
 
   const [currentPage, setCurrentPage] = useState(1);
   const [filterValues, setFilterValues] = useState<Filters | undefined>(
-    getPlugin(pluginId).filters,
+    getPlugin(pluginId)?.filters,
   );
   const [selectedFilters, setSelectedFilters] = useState<
     FilterToValues<Filters> | undefined
@@ -28,6 +28,9 @@ export const useBrowseSource = (
       if (isScreenMounted.current === true) {
         try {
           const plugin = getPlugin(pluginId);
+          if (!plugin) {
+            throw new Error(`Unknown plugin: ${pluginId}`);
+          }
           await plugin
             .popularNovels(page, {
               showLatestNovels,
@@ -122,6 +125,9 @@ export const useSearchSource = (pluginId: string) => {
       if (isScreenMounted.current === true) {
         try {
           const plugin = getPlugin(pluginId);
+          if (!plugin) {
+            throw new Error(`Unknown plugin: ${pluginId}`);
+          }
           const res = await plugin.searchNovels(searchText, page);
           setSearchResults(prevState =>
             page === 1 ? res : [...prevState, ...res],

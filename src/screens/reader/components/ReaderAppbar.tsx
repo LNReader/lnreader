@@ -8,6 +8,7 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { ThemeColors } from '@theme/types';
 import { TextToSpeechStatus } from '@hooks';
 import { ChapterInfo } from '@database/types';
+import { bookmarkChapter } from '@database/queries/ChapterQueries';
 
 interface ReaderAppbarProps {
   novelName: string;
@@ -15,7 +16,6 @@ interface ReaderAppbarProps {
   tts: () => void;
   textToSpeech: TextToSpeechStatus;
   theme: ThemeColors;
-  bookmarkChapters: (chapters: ChapterInfo[]) => void;
   goBack: () => void;
 }
 
@@ -23,7 +23,6 @@ const ReaderAppbar = ({
   novelName,
   chapter,
   tts,
-  bookmarkChapters,
   goBack,
   textToSpeech,
   theme,
@@ -83,8 +82,9 @@ const ReaderAppbar = ({
             name={bookmarked ? 'bookmark' : 'bookmark-outline'}
             size={24}
             onPress={() => {
-              bookmarkChapters([chapter]);
-              setBookmarked(!bookmarked);
+              bookmarkChapter(chapter.id).then(() =>
+                setBookmarked(!bookmarked),
+              );
             }}
             color={theme.onSurface}
             theme={theme}

@@ -21,6 +21,8 @@ interface TaskData {
   delay: number;
 }
 
+const defaultQueue: DownloadData[] = [];
+
 const downloadChapterAction = async (taskData?: TaskData) => {
   try {
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.DOWNLOAD_CHAPTER);
@@ -39,7 +41,7 @@ const downloadChapterAction = async (taskData?: TaskData) => {
         novel.pluginId,
         novel.id,
         chapter.id,
-        chapter.url,
+        chapter.path,
       ).catch((error: Error) =>
         Notifications.scheduleNotificationAsync({
           content: {
@@ -51,7 +53,7 @@ const downloadChapterAction = async (taskData?: TaskData) => {
           trigger: null,
         }),
       );
-      // get the newtest queue;
+      // get the newest queue;
       queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
       setMMKVObject(DOWNLOAD_QUEUE, queue.slice(1));
       queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
@@ -73,7 +75,8 @@ const downloadChapterAction = async (taskData?: TaskData) => {
 };
 
 export default function useDownload() {
-  const [queue = [], setQueue] = useMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE);
+  const [queue = defaultQueue, setQueue] =
+    useMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE);
 
   const downloadChapter = (novel: NovelInfo, chapter: ChapterInfo) => {
     setQueue([...queue, { novel, chapter }]);

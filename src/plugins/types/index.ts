@@ -3,15 +3,16 @@ import { Language } from '@utils/constants/languages';
 
 export interface NovelItem {
   name: string;
-  url: string; //must be absoulute
+  path: string;
   cover?: string;
 }
 
 export interface ChapterItem {
   name: string;
-  url: string; //must be absoulute
+  path: string;
   chapterNumber?: number;
   releaseTime?: string;
+  page?: string;
 }
 
 export enum NovelStatus {
@@ -24,16 +25,19 @@ export enum NovelStatus {
   OnHiatus = 'On Hiatus',
 }
 
-export interface SourceNovel {
-  url: string; //must be absoulute
-  name: string;
-  cover?: string;
+export interface SourceNovel extends NovelItem {
   genres?: string;
   summary?: string;
   author?: string;
   artist?: string;
   status?: NovelStatus;
-  chapters?: ChapterItem[];
+  chapters: ChapterItem[];
+  totalPages?: number;
+}
+
+export interface SourcePage {
+  chapters: ChapterItem[];
+  latestChapter?: ChapterItem;
 }
 
 export interface PopularNovelsOptions<Q extends Filters> {
@@ -54,17 +58,14 @@ export interface PluginItem {
 }
 
 export interface Plugin extends PluginItem {
-  path: string; // path in device
   filters?: Filters;
   popularNovels: (
     pageNo: number,
     options?: PopularNovelsOptions<Filters>,
   ) => Promise<NovelItem[]>;
-  parseNovelAndChapters: (
-    novelUrl: string,
-    pageNo?: number,
-  ) => Promise<SourceNovel>;
-  parseChapter: (chapterUrl: string) => Promise<string>;
+  parseNovel: (novelPath: string) => Promise<SourceNovel>;
+  parsePage?: (novelPath: string, page: string) => Promise<SourcePage>;
+  parseChapter: (chapterPath: string) => Promise<string>;
   searchNovels: (searchTerm: string, pageNo: number) => Promise<NovelItem[]>;
   fetchImage: (url: string) => Promise<string>;
 }

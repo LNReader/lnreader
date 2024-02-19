@@ -1,5 +1,11 @@
-import React, { memo, useCallback } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import React, { RefObject, memo, useCallback } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  DrawerLayoutAndroid,
+} from 'react-native';
 import color from 'color';
 
 import * as Clipboard from 'expo-clipboard';
@@ -45,6 +51,8 @@ interface NovelInfoHeaderProps {
   followNovel: () => void;
   novelBottomSheetRef: React.RefObject<BottomSheetModalMethods>;
   deleteDownloadsSnackbar: UseBooleanReturnType;
+  page?: string;
+  drawerRef: RefObject<DrawerLayoutAndroid>;
 }
 
 const NovelInfoHeader = ({
@@ -60,6 +68,8 @@ const NovelInfoHeader = ({
   followNovel,
   novelBottomSheetRef,
   deleteDownloadsSnackbar,
+  page,
+  drawerRef,
 }: NovelInfoHeaderProps) => {
   const { hideBackdrop = false } = useAppSettings();
 
@@ -176,18 +186,33 @@ const NovelInfoHeader = ({
         />
         <Pressable
           style={styles.bottomsheet}
-          onPress={() => novelBottomSheetRef.current?.present()}
+          onPress={() =>
+            page
+              ? drawerRef.current?.openDrawer()
+              : novelBottomSheetRef.current?.present()
+          }
           android_ripple={{
             color: color(theme.primary).alpha(0.12).string(),
           }}
         >
-          <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-            {`${chapters?.length} ${getString('novelScreen.chapters')}`}
-          </Text>
+          <View style={{ flex: 1 }}>
+            {page ? (
+              <Text
+                numberOfLines={2}
+                style={[{ color: theme.onSurface }, styles.pageTitle]}
+              >
+                Page: {page}
+              </Text>
+            ) : null}
+            <Text style={[{ color: theme.onSurface }, styles.chapters]}>
+              {`${chapters?.length} ${getString('novelScreen.chapters')}`}
+            </Text>
+          </View>
           <IconButton
             icon="filter-variant"
             iconColor={filter ? filterColor(theme.isDark) : theme.onSurface}
             size={24}
+            onPress={() => novelBottomSheetRef.current?.present()}
           />
         </Pressable>
       </>
@@ -205,15 +230,19 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
     justifyContent: 'center',
   },
+  pageTitle: {
+    paddingHorizontal: 16,
+    fontSize: 16,
+  },
   chapters: {
     paddingHorizontal: 16,
-    paddingVertical: 4,
-    fontSize: 16,
+    fontSize: 14,
   },
   bottomsheet: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: 4,
     paddingRight: 12,
   },
   infoItem: {

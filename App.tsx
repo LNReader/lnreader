@@ -14,7 +14,7 @@ import BackgroundService from 'react-native-background-actions';
 
 import { createTables } from '@database/db';
 import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
-import { collectPlugins } from '@plugins/pluginManager';
+import { deserializePlugins } from '@plugins/pluginManager';
 
 import Main from './src/navigators/Main';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -36,7 +36,7 @@ const App = () => {
   const { refreshPlugins } = usePlugins();
   useEffect(() => {
     createTables();
-    collectPlugins().then(() => LottieSplashScreen.hide());
+    deserializePlugins().then(() => LottieSplashScreen.hide());
     refreshPlugins();
     if (!BackgroundService.isRunning()) {
       MMKVStorage.delete(BACKGROUND_ACTION);

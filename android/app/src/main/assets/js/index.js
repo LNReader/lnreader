@@ -17,12 +17,9 @@ class Reader {
       () =>
         this.post({
           type: 'save',
-          data: {
-            offsetY: window.scrollY,
-            percentage: parseInt(
-              ((window.scrollY + this.layoutHeight) / this.chapterHeight) * 100,
-            ),
-          },
+          data: parseInt(
+            ((window.scrollY + this.layoutHeight) / this.chapterHeight) * 100,
+          ),
         }),
       autoSaveInterval,
     );
@@ -175,7 +172,7 @@ class TextToSpeech {
   };
 }
 
-const reader = new Reader();
-const scrollHandler = new ScrollHandler(reader);
-const swipeHandler = new SwipeHandler(reader);
-const tts = new TextToSpeech(reader);
+var reader = new Reader();
+var scrollHandler = new ScrollHandler(reader);
+var swipeHandler = new SwipeHandler(reader);
+var tts = new TextToSpeech(reader);

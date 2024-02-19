@@ -33,13 +33,15 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
   );
   const { library, setLibrary } = useLibraryNovels();
 
-  const novelInLibrary = (novelUrl: string) =>
-    library?.some(novel => novel.url === novelUrl);
+  const novelInLibrary = (pluginId: string, novelPath: string) =>
+    library?.some(
+      novel => novel.pluginId === pluginId && novel.path === novelPath,
+    );
 
   const errorColor = useMemo(() => (theme.isDark ? '#B3261E' : '#F2B8B5'), []);
 
   const navigateToNovel = useCallback(
-    (item: { name: string; url: string; pluginId: string }) =>
+    (item: { name: string; path: string; pluginId: string }) =>
       navigation.push('Novel', item),
     [],
   );
@@ -61,7 +63,7 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
                 navigation.navigate('SourceScreen', {
                   pluginId: item.plugin.id,
                   pluginName: item.plugin.name,
-                  url: item.plugin.url,
+                  site: item.plugin.site,
                 })
               }
             >
@@ -91,7 +93,9 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
               <FlatList
                 horizontal
                 contentContainerStyle={styles.novelsContainer}
-                keyExtractor={novelItem => novelItem.url}
+                keyExtractor={novelItem =>
+                  item.plugin.id + '_' + novelItem.path
+                }
                 data={item.novels}
                 ListEmptyComponent={
                   <Text
@@ -104,7 +108,10 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
                   </Text>
                 }
                 renderItem={({ item: novelItem }) => {
-                  const inLibrary = novelInLibrary(novelItem.url);
+                  const inLibrary = novelInLibrary(
+                    item.plugin.id,
+                    novelItem.path,
+                  );
 
                   return (
                     <GlobalSearchNovelItem
@@ -118,19 +125,19 @@ const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
                           if (inLibrary) {
                             return [
                               ...prevValues.filter(
-                                novel => novel.url !== novelItem.url,
+                                novel => novel.path !== novelItem.path,
                               ),
                             ];
                           } else {
                             return [
                               ...prevValues,
                               {
-                                url: novelItem.url,
+                                path: novelItem.path,
                               } as LibraryNovelInfo,
                             ];
                           }
                         });
-                        switchNovelToLibrary(novelItem.url, item.plugin.id);
+                        switchNovelToLibrary(novelItem.path, item.plugin.id);
                       }}
                     />
                   );

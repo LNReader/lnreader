@@ -5,11 +5,13 @@ import { Appbar } from '@components';
 import { useTheme } from '@hooks/persisted';
 import { WebviewScreenProps } from '@navigators/types';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
+import { isUrlAbsolute } from '@plugins/helpers/isAbsoluteUrl';
+import { getPlugin } from '@plugins/pluginManager';
 
 const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const theme = useTheme();
 
-  const { name, url } = route.params;
+  const { name, url, pluginId } = route.params;
 
   return (
     <>
@@ -22,7 +24,12 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
       <WebView
         startInLoadingState
         userAgent={getUserAgent()}
-        source={{ uri: url }}
+        source={{
+          uri:
+            pluginId && !isUrlAbsolute(url)
+              ? getPlugin(pluginId)?.site + url
+              : url,
+        }}
       />
     </>
   );

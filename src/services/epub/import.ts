@@ -26,15 +26,15 @@ interface TaskData {
 
 const insertLocalNovel = (
   name: string,
-  url: string,
+  path: string,
   cover?: string,
   author?: string,
 ): Promise<number> => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        "INSERT INTO Novel(name, url, cover, author, pluginId, inLibrary, isLocal) VALUES(?, ?, ?, ?, 'local', 1, 1)",
-        [name, url, cover || null, author || null],
+        "INSERT INTO Novel(name, path, cover, author, pluginId, inLibrary, isLocal) VALUES(?, ?, ?, ?, 'local', 1, 1)",
+        [name, path, cover || null, author || null],
         async (txObj, resultSet) => {
           if (resultSet.insertId) {
             await updateNovelCategoryById(resultSet.insertId, [2]);
@@ -50,11 +50,12 @@ const insertLocalNovel = (
               pluginId: LOCAL_PLUGIN_ID,
               id: resultSet.insertId,
               author: author,
-              url: NovelDownloadFolder + '/local/' + resultSet.insertId,
+              path: NovelDownloadFolder + '/local/' + resultSet.insertId,
               cover: newCoverPath,
               name: name,
               inLibrary: true,
               isLocal: true,
+              totalPages: 0,
             });
             resolve(resultSet.insertId);
           } else {
@@ -76,26 +77,26 @@ const insertLocalChapter = (
   novelId: number,
   fakeId: number,
   name: string,
-  url: string,
+  path: string,
   releaseTime: string,
 ): Promise<string[]> => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO Chapter(novelId, name, url, releaseTime) VALUES(?, ?, ?, ?)',
+        'INSERT INTO Chapter(novelId, name, path, releaseTime, position) VALUES(?, ?, ?, ?, ?)',
         [
           novelId,
           name,
-          // use fakeid just for make the url is unique :D
           NovelDownloadFolder + '/local/' + novelId + '/' + fakeId,
           releaseTime,
+          fakeId,
         ],
         async (txObj, resultSet) => {
           if (resultSet.insertId) {
-            let chapterText = await RNFS.readFile(url);
+            let chapterText = await RNFS.readFile(path);
             const staticPaths: string[] = [];
             const novelDir = NovelDownloadFolder + '/local/' + novelId;
-            const epubContentDir = url.replace(/[^\\\/]+$/, '');
+            const epubContentDir = path.replace(/[^\\\/]+$/, '');
             chapterText = chapterText.replace(
               /(href|src)=(["'])(.*?)\2/g,
               ($0, $1, $2, $3: string) => {
@@ -194,7 +195,7 @@ const parseNovelAndChapters = async (
       const href = itemMap[ele.attribs.idref];
       return {
         name: tocMap[href],
-        url: `${contentDir}/${href}`,
+        path: `${contentDir}/${href}`,
       };
     });
   BackgroundService.updateNotification({
@@ -208,7 +209,7 @@ const parseNovelAndChapters = async (
     name: novelName,
     author: author,
     cover: cover,
-    url: contentDir + novelName, // temporary
+    path: contentDir + novelName, // temporary
     chapters: chapters,
   };
   return novel;
@@ -238,7 +239,7 @@ const importEpubAction = async (taskData?: TaskData) => {
     });
     const novelId = await insertLocalNovel(
       novel.name,
-      novel.url,
+      novel.path,
       novel.cover,
       novel.author,
     ).catch(e => {
@@ -265,13 +266,13 @@ const importEpubAction = async (taskData?: TaskData) => {
         });
         const chapter = novel.chapters[i];
         if (!chapter.name) {
-          chapter.name = chapter.url.split(/[\\\/]/).pop() || 'unknown';
+          chapter.name = chapter.path.split(/[\\\/]/).pop() || 'unknown';
         }
         const filePaths = await insertLocalChapter(
           novelId,
           i,
           chapter.name,
-          chapter.url,
+          chapter.path,
           now,
         ).catch(e => {
           throw e;
@@ -330,6 +331,10 @@ const importEpubAction = async (taskData?: TaskData) => {
 
 export const importEpub = async () => {
   try {
+    const currentAction = MMKVStorage.getString(BACKGROUND_ACTION);
+    if (currentAction) {
+      throw new Error('Another serivce is running');
+    }
     const epubFile = await DocumentPicker.getDocumentAsync({
       type: 'application/epub+zip',
       copyToCacheDirectory: false,

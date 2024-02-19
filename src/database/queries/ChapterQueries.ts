@@ -16,11 +16,8 @@ import { getString } from '@strings/translations';
 const db = SQLite.openDatabase('lnreader.db');
 
 const insertChapterQuery = `
-INSERT OR IGNORE INTO Chapter (
-  url, name, releaseTime, novelId, chapterNumber
-) 
-Values 
-  (?, ?, ?, ?, ?)
+INSERT OR IGNORE INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
+VALUES (?, ?, ?, ?, ?, ?, ?)
 `;
 
 export const insertChapters = async (
@@ -31,34 +28,68 @@ export const insertChapters = async (
     return;
   }
   db.transaction(tx => {
-    chapters.forEach(chapter => {
+    chapters.forEach((chapter, index) => {
       tx.executeSql(
         insertChapterQuery,
         [
-          chapter.url,
+          chapter.path,
           chapter.name,
           chapter.releaseTime || '',
           novelId,
           chapter.chapterNumber || null,
+          chapter.page || '1',
+          index,
         ],
-        noop,
+        (txObj, { insertId }) => {
+          if (!insertId) {
+            tx.executeSql(
+              `
+                UPDATE Chapter SET
+                  page = ?, position = ?
+                WHERE path = ? AND novelId = ? (AND page != ? OR position != ?)
+              `,
+              [
+                chapter.page || '1',
+                index,
+                chapter.path,
+                novelId,
+                chapter.page || '1',
+                index,
+              ],
+            );
+          }
+        },
       );
     });
   });
 };
 
-const getChaptersQuery = (sort = 'ORDER BY id ASC', filter = '') =>
-  `SELECT * FROM Chapter WHERE novelId = ? ${filter} ${sort}`;
+const getPageChaptersQuery = (
+  sort = 'ORDER BY position ASC',
+  filter = '',
+  page = '1',
+) =>
+  `SELECT * FROM Chapter WHERE novelId = ? AND page = '${page}' ${filter} ${sort}`;
 
-export const getChapters = (
+export const getCustomPages = (
   novelId: number,
-  sort?: string,
-  filter?: string,
-): Promise<ChapterInfo[]> => {
+): Promise<{ page: string }[]> => {
+  return new Promise(resolve => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT DISTINCT page from Chapter WHERE novelId = ?',
+        [novelId],
+        (txObj, { rows }) => resolve(rows._array),
+      );
+    });
+  });
+};
+
+export const getNovelChapters = (novelId: number): Promise<ChapterInfo[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getChaptersQuery(sort, filter),
+        'SELECT * FROM Chapter WHERE novelId = ?',
         [novelId],
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
@@ -67,17 +98,18 @@ export const getChapters = (
   );
 };
 
-// downloaded chapter
-const getChapterQuery =
-  'SELECT chapterText FROM Download WHERE Download.chapterId = ?';
-
-export const getChapterFromDB = (chapterId: number): Promise<string> => {
+export const getPageChapters = (
+  novelId: number,
+  sort?: string,
+  filter?: string,
+  page?: string,
+): Promise<ChapterInfo[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getChapterQuery,
-        [chapterId],
-        (txObj, { rows }) => resolve(rows.item(0)?.chapterText),
+        getPageChaptersQuery(sort, filter, page),
+        [novelId],
+        (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
       );
     }),
@@ -86,7 +118,7 @@ export const getChapterFromDB = (chapterId: number): Promise<string> => {
 
 const getPrevChapterQuery = `
   SELECT
-    id, *
+    *
   FROM
     Chapter
   WHERE
@@ -117,7 +149,7 @@ export const getPrevChapter = (
 
 const getNextChapterQuery = `
   SELECT
-    id, *
+    *
   FROM
     Chapter
   WHERE
@@ -250,14 +282,14 @@ export const downloadChapter = async (
   pluginId: string,
   novelId: number,
   chapterId: number,
-  chapterUrl: string,
+  chapterPath: string,
 ) => {
   try {
     const plugin = getPlugin(pluginId);
     if (!plugin) {
       throw new Error(getString('downloadScreen.pluginNotFound'));
     }
-    const chapterText = await plugin.parseChapter(chapterUrl);
+    const chapterText = await plugin.parseChapter(chapterPath);
     if (chapterText && chapterText.length) {
       await downloadFiles(chapterText, plugin, novelId, chapterId);
       db.transaction(tx => {
@@ -386,19 +418,24 @@ export const deleteReadChaptersFromDb = async () => {
   showToast(getString('novelScreen.readChaptersDeleted'));
 };
 
-const bookmarkChapterQuery = 'UPDATE Chapter SET bookmark = ? WHERE id = ?';
-
-export const bookmarkChapter = async (bookmark: boolean, chapterId: number) => {
+export const updateChapterProgress = async (
+  chapterId: number,
+  progress: number,
+) => {
   db.transaction(tx => {
-    tx.executeSql(
-      bookmarkChapterQuery,
-      [1 - Number(bookmark), chapterId],
-      (_txObj, _res) => {},
-      (_txObj, _error) => {
-        // console.log('Error ', error)
-        return false;
-      },
-    );
+    tx.executeSql('UPDATE Chapter SET progress = ? WHERE id = ?', [
+      progress,
+      chapterId,
+    ]);
+  });
+};
+
+const bookmarkChapterQuery =
+  'UPDATE Chapter SET bookmark = (CASE WHEN bookmark = 0 THEN 1 ELSE 0 END) WHERE id = ?';
+
+export const bookmarkChapter = async (chapterId: number) => {
+  db.transaction(tx => {
+    tx.executeSql(bookmarkChapterQuery, [chapterId]);
   });
 };
 
@@ -445,7 +482,7 @@ export const markPreviousChaptersUnread = async (
 const getDownloadedChaptersQuery = `
     SELECT
       Chapter.*,
-      Novel.pluginId, Novel.name as novelName, Novel.cover as novelCover, Novel.url as novelUrl
+      Novel.pluginId, Novel.name as novelName, Novel.cover as novelCover, Novel.path as novelPath
     FROM Chapter
     JOIN Novel
     ON Chapter.novelId = Novel.id
@@ -473,7 +510,7 @@ export const getDownloadedChapters = (): Promise<DownloadedChapter[]> => {
 const getUpdatesQuery = `
 SELECT
   Chapter.*,
-  pluginId, Novel.id as novelId, Novel.name as novelName, Novel.url as novelUrl, cover as novelCover
+  pluginId, Novel.id as novelId, Novel.name as novelName, Novel.path as novelPath, cover as novelCover
 FROM
   Chapter
 JOIN

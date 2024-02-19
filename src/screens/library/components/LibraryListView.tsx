@@ -12,6 +12,7 @@ import { getString } from '@strings/translations';
 import { useTheme } from '@hooks/persisted';
 import { updateLibrary } from '@services/updates';
 import { LibraryScreenProps } from '@navigators/types';
+import { importEpub } from '@services/epub/import';
 
 interface Props {
   categoryId: number;
@@ -41,7 +42,7 @@ export const LibraryView: React.FC<Props> = ({
         } else {
           navigation.navigate('Novel', {
             name: item.name,
-            url: item.url,
+            path: item.path,
             pluginId: item.pluginId,
           });
         }
@@ -73,6 +74,19 @@ export const LibraryView: React.FC<Props> = ({
             theme={theme}
             icon="Σ(ಠ_ಠ)"
             description={getString('libraryScreen.empty')}
+            actions={[
+              categoryId !== 2
+                ? {
+                    iconName: 'compass-outline',
+                    title: getString('browse'),
+                    onPress: () => navigation.navigate('Browse'),
+                  }
+                : {
+                    iconName: 'book-arrow-up-outline',
+                    title: getString('advancedSettingsScreen.importEpub'),
+                    onPress: importEpub,
+                  },
+            ]}
           />
         }
         refreshControl={

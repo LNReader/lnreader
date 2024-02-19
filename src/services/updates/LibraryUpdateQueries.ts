@@ -6,6 +6,8 @@ import { SourceNovel } from '@plugins/types';
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
+import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
+import { NOVEL_PAGE_UPDATES_PREFIX } from '@hooks/persisted/useNovel';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = async (
@@ -13,7 +15,8 @@ const updateNovelMetadata = async (
   novelId: number,
   novel: SourceNovel,
 ) => {
-  let { name, cover, summary, author, artist, genres, status } = novel;
+  let { name, cover, summary, author, artist, genres, status, totalPages } =
+    novel;
   const novelDir = NovelDownloadFolder + '/' + pluginId + '/' + novelId;
   if (cover) {
     const novelCoverUri = 'file://' + novelDir + '/cover.png';
@@ -27,15 +30,20 @@ const updateNovelMetadata = async (
   }
   db.transaction(tx => {
     tx.executeSql(
-      'UPDATE Novel SET name = ?, cover = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ? WHERE id = ?',
+      `UPDATE Novel SET 
+        name = ?, cover = ?, summary = ?, author = ?, artist = ?, 
+        genres = ?, status = ?, totalPages = ?
+        WHERE id = ?
+      `,
       [
         name,
         cover || null,
-        summary || '',
+        summary || null,
         author || 'unknown',
-        artist || '',
-        genres || '',
-        status || '',
+        artist || null,
+        genres || null,
+        status || null,
+        totalPages || 0,
         novelId,
       ],
     );
@@ -49,7 +57,7 @@ export interface UpdateNovelOptions {
 
 const updateNovel = async (
   pluginId: string,
-  novelUrl: string,
+  novelPath: string,
   novelId: number,
   options: UpdateNovelOptions,
 ) => {
@@ -57,35 +65,56 @@ const updateNovel = async (
     return;
   }
   const { downloadNewChapters, refreshNovelMetadata } = options;
-
-  let novel = await fetchNovel(pluginId, novelUrl);
-
+  const novel = await fetchNovel(pluginId, novelPath);
   if (refreshNovelMetadata) {
     updateNovelMetadata(pluginId, novelId, novel);
   }
   db.transaction(tx => {
-    novel.chapters?.forEach(chapter => {
-      const { name, url, releaseTime } = chapter;
+    novel.chapters.forEach(chapter => {
+      const { name, path, releaseTime, page } = chapter;
       tx.executeSql(
         `
-        INSERT INTO Chapter (url, name, releaseTime, novelId, updatedTime)
-          VALUES (?, ?, ?, ?, datetime('now','localtime'))
-          ON CONFLICT(url) DO UPDATE SET
-            name=excluded.name,
-            releaseTime=excluded.releaseTime,
-            updatedTime=excluded.updatedTime
-          WHERE Chapter.name != excluded.name
-            OR Chapter.releaseTime != excluded.releaseTime;
+          INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, page)
+          SELECT ?, ?, ?, ?, datetime('now','localtime'), ?
+          WHERE NOT EXISTS (SELECT id FROM Chapter WHERE path = ? AND novelId = ?);
         `,
-        [url, name, releaseTime || '', novelId],
+        [path, name, releaseTime || null, novelId, page || '1', path, novelId],
         (txObj, { insertId }) => {
-          if (insertId && downloadNewChapters) {
-            downloadChapter(pluginId, novelId, insertId, url);
+          if (insertId) {
+            if (downloadNewChapters) {
+              downloadChapter(pluginId, novelId, insertId, path);
+            }
+          } else {
+            tx.executeSql(
+              `
+                UPDATE Chapter SET 
+                  name = ?, releaseTime = ?, updatedTime = datetime('now','localtime'), page = ?
+                WHERE path = ? AND novelId = ? AND (name != ? OR releaseTime != ? OR page != ?);
+              `,
+              [
+                name,
+                releaseTime || null,
+                page || '1',
+                path,
+                novelId,
+                name,
+                releaseTime || null,
+                page || '1',
+              ],
+            );
           }
         },
       );
     });
   });
+  const key = `${NOVEL_PAGE_UPDATES_PREFIX}_${novelId}`;
+  const hasUpdates = getMMKVObject<boolean[]>(key);
+  if (hasUpdates) {
+    setMMKVObject(
+      key,
+      hasUpdates.map(() => true),
+    );
+  }
 };
 
 export { updateNovel };

@@ -36,7 +36,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { Row } from '@components/Common';
 import { LibraryScreenProps } from '@navigators/types';
-import { ChapterInfo, NovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
+import { importEpub } from '@services/epub/import';
 
 type State = NavigationState<{
   key: string;
@@ -151,20 +152,28 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
         }}
         onChangeText={onChangeText}
         leftIcon={selectedNovelIds.length ? 'close' : 'magnify'}
-        rightIcons={[
+        rightIcons={
           selectedNovelIds.length
-            ? {
-                iconName: 'select-all',
-                onPress: () =>
-                  setSelectedNovelIds(
-                    library[index].novels.map(novel => novel.id),
-                  ),
-              }
-            : {
-                iconName: 'filter-variant',
-                onPress: () => bottomSheetRef.current?.present(),
-              },
-        ]}
+            ? [
+                {
+                  iconName: 'select-all',
+                  onPress: () =>
+                    setSelectedNovelIds(
+                      library[index].novels.map(novel => novel.id),
+                    ),
+                },
+              ]
+            : [
+                {
+                  iconName: 'book-arrow-up-outline',
+                  onPress: importEpub,
+                },
+                {
+                  iconName: 'filter-variant',
+                  onPress: () => bottomSheetRef.current?.present(),
+                },
+              ]
+        }
         theme={theme}
       />
       {downloadedOnlyMode && (
@@ -242,17 +251,11 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
             onPress={() => {
               navigation.navigate('Chapter', {
                 novel: {
-                  id: history[0].novelId,
-                  url: history[0].novelUrl,
+                  path: history[0].novelPath,
                   pluginId: history[0].pluginId,
                   name: history[0].novelName,
                 } as NovelInfo,
-                chapter: {
-                  id: history[0].id,
-                  url: history[0].chapterUrl,
-                  name: history[0].chapterName,
-                  novelId: history[0].novelId,
-                } as ChapterInfo,
+                chapter: history[0],
               });
             }}
           />

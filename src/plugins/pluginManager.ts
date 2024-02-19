@@ -14,6 +14,8 @@ import { defaultCover } from './helpers/constants';
 import { encode, decode } from 'urlencode';
 import { getString } from '@strings/translations';
 
+const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
+
 const packages: Record<string, any> = {
   'cheerio': { load },
   'dayjs': dayjs,
@@ -29,7 +31,7 @@ const _require = (packageName: string) => {
   return packages[packageName];
 };
 
-const initPlugin = (rawCode: string, path?: string) => {
+const initPlugin = (rawCode: string) => {
   try {
     /* eslint no-new-func: "off", curly: "error" */
     const plugin: Plugin = Function(
@@ -39,20 +41,46 @@ const initPlugin = (rawCode: string, path?: string) => {
       ${rawCode}; 
       return exports.default`,
     )(_require, {});
-    plugin.path = path || `${PluginDownloadFolder}/${plugin.id}.js`;
     return plugin;
   } catch (e) {
     return undefined;
   }
 };
 
-let plugins: Record<string, Plugin> = {};
+const plugins: Record<string, Plugin | undefined> = {};
 
-// get existing plugin in device
-const setupPlugin = async (path: string) => {
-  const rawCode = await RNFS.readFile(path, 'utf8');
-  const plugin = initPlugin(rawCode, path);
-  return plugin;
+const serializePlugin = async (
+  pluginId: string,
+  rawCode: string,
+  installed: boolean,
+) => {
+  let serializedPlugins: Record<string, string> = {};
+  if (await RNFS.exists(pluginsFilePath)) {
+    const content = await RNFS.readFile(pluginsFilePath);
+    serializedPlugins = JSON.parse(content);
+  }
+  if (installed) {
+    serializedPlugins[pluginId] = rawCode;
+  } else {
+    delete serializedPlugins[pluginId];
+  }
+  if (!(await RNFS.exists(PluginDownloadFolder))) {
+    await RNFS.mkdir(PluginDownloadFolder);
+  }
+  await RNFS.writeFile(pluginsFilePath, JSON.stringify(serializedPlugins));
+};
+
+const deserializePlugins = async () => {
+  if (await RNFS.exists(pluginsFilePath)) {
+    const content = await RNFS.readFile(pluginsFilePath);
+    const serializedPlugins: Record<string, string> = JSON.parse(content);
+    for (const pluginId in serializedPlugins) {
+      const plugin = initPlugin(serializedPlugins[pluginId]);
+      if (plugin) {
+        plugins[pluginId] = plugin;
+      }
+    }
+  }
 };
 
 const installPlugin = async (url: string): Promise<Plugin | undefined> => {
@@ -66,20 +94,13 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
         if (!plugin) {
           return undefined;
         }
-        const oldPlugin = plugins[plugin.id];
-        if (oldPlugin) {
-          if (newer(plugin.version, oldPlugin.version)) {
-            plugins[oldPlugin.id] = plugin;
-            await RNFS.writeFile(plugin.path, rawCode, 'utf8');
-            return plugin;
-          } else {
-            return oldPlugin;
-          }
-        } else {
+        let currentPlugin = plugins[plugin.id];
+        if (!currentPlugin || newer(plugin.version, currentPlugin.version)) {
           plugins[plugin.id] = plugin;
-          await RNFS.writeFile(plugin.path, rawCode, 'utf8');
-          return plugin;
+          currentPlugin = plugin;
+          await serializePlugin(plugin.id, rawCode, true);
         }
+        return currentPlugin;
       });
   } catch (e: any) {
     throw e;
@@ -87,29 +108,12 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
 };
 
 const uninstallPlugin = async (_plugin: PluginItem) => {
-  const plugin = plugins[_plugin.id];
-  if (plugin && (await RNFS.exists(plugin.path))) {
-    delete plugins[plugin.id];
-    await RNFS.unlink(plugin.path);
-  }
+  delete plugins[_plugin.id];
+  serializePlugin(_plugin.id, '', false);
 };
 
 const updatePlugin = async (plugin: PluginItem) => {
   return installPlugin(plugin.url);
-};
-
-const collectPlugins = async () => {
-  if (!(await RNFS.exists(PluginDownloadFolder))) {
-    await RNFS.mkdir(PluginDownloadFolder);
-    return;
-  }
-  const paths = await RNFS.readDir(PluginDownloadFolder);
-  for (let item of paths) {
-    const plugin = await setupPlugin(item.path);
-    if (plugin) {
-      plugins[plugin.id] = plugin;
-    }
-  }
 };
 
 const fetchPlugins = async () => {
@@ -118,7 +122,7 @@ const fetchPlugins = async () => {
   const githubRepository = 'lnreader-sources';
 
   const availablePlugins: Record<Language, Array<PluginItem>> = await fetch(
-    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/dist/.dist/plugins.min.json`,
+    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/beta-dist/.dist/plugins.min.json`,
   )
     .then(res => res.json())
     .catch(() => {
@@ -140,7 +144,7 @@ export {
   installPlugin,
   uninstallPlugin,
   updatePlugin,
-  collectPlugins,
+  deserializePlugins,
   fetchPlugins,
   LOCAL_PLUGIN_ID,
 };

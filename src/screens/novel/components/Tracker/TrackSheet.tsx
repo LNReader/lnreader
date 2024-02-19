@@ -12,18 +12,18 @@ import { ThemeColors } from '@theme/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { useTracker, useTrackedNovel } from '@hooks/persisted';
 import { UserListStatus } from '@services/Trackers';
+import { NovelInfo } from '@database/types';
 
 interface Props {
   bottomSheetRef: React.RefObject<BottomSheetModalMethods>;
-  novelUrl: string;
-  novelName: string;
+  novel: NovelInfo;
   theme: ThemeColors;
 }
 
-const TrackSheet = ({ bottomSheetRef, novelUrl, novelName, theme }: Props) => {
+const TrackSheet = ({ bottomSheetRef, novel, theme }: Props) => {
   const { tracker } = useTracker();
   const { trackedNovel, trackNovel, untrackNovel, updateTrackedNovel } =
-    useTrackedNovel(novelUrl);
+    useTrackedNovel(novel.id);
 
   const [trackSearchDialog, setTrackSearchDialog] = useState(false);
   const [trackStatusDialog, setTrackStatusDialog] = useState(false);
@@ -161,7 +161,7 @@ const TrackSheet = ({ bottomSheetRef, novelUrl, novelName, theme }: Props) => {
             trackNovel={trackNovel}
             trackSearchDialog={trackSearchDialog}
             setTrackSearchDialog={setTrackSearchDialog}
-            novelName={novelName}
+            novelName={novel.name}
             theme={theme}
           />
         )}

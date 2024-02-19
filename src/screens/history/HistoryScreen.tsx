@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, SectionList, Text } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { Portal } from 'react-native-paper';
 
@@ -12,22 +11,14 @@ import { useTheme, useHistory } from '@hooks/persisted';
 
 import { convertDateToISOString } from '@database/utils/convertDateToISOString';
 
-import { History, NovelInfo } from '@database/types';
+import { History } from '@database/types';
 import { getString } from '@strings/translations';
 import ClearHistoryDialog from './components/ClearHistoryDialog';
-import {
-  openChapterChapterTypes,
-  openChapterNovelTypes,
-  openNovel,
-  openNovelProps,
-} from '@utils/handleNavigateParams';
 import HistorySkeletonLoading from './components/HistorySkeletonLoading';
-import { RootStackParamList } from '@navigators/types';
+import { HistoryScreenProps } from '@navigators/types';
 
-const HistoryScreen = () => {
+const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
   const theme = useTheme();
-  const { navigate } = useNavigation<NavigationProp<RootStackParamList>>();
-
   const {
     isLoading,
     history,
@@ -74,14 +65,6 @@ const HistoryScreen = () => {
     return groupedHistory;
   };
 
-  const handleNavigateToChapter = (
-    novel: openChapterNovelTypes,
-    chapter: openChapterChapterTypes,
-  ) => navigate('Chapter', { novel: novel as NovelInfo, chapter: chapter });
-
-  const handleNavigateToNovel = (novel: openNovelProps) =>
-    navigate('Novel', openNovel(novel) as openNovelProps);
-
   const {
     value: clearHistoryDialogVisible,
     setTrue: openClearHistoryDialog,
@@ -122,9 +105,8 @@ const HistoryScreen = () => {
             renderItem={({ item }) => (
               <HistoryCard
                 history={item}
-                handleNavigateToChapter={handleNavigateToChapter}
+                navigation={navigation}
                 handleRemoveFromHistory={removeChapterFromHistory}
-                handleNavigateToNovel={handleNavigateToNovel}
                 theme={theme}
               />
             )}

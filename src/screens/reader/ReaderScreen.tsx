@@ -19,6 +19,8 @@ import { useKeepAwake } from 'expo-keep-awake';
 import {
   getNextChapter,
   getPrevChapter,
+  markChapterRead,
+  updateChapterProgress,
 } from '@database/queries/ChapterQueries';
 import { fetchChapter } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
@@ -53,19 +55,29 @@ import { getString } from '@strings/translations';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
+  const { chapters, novelSettings, pages, setLastRead, setPageIndex } =
+    useNovel(route.params.novel.path, route.params.novel.pluginId);
   return (
     <DrawerLayoutAndroid
       ref={drawerRef}
       drawerWidth={300}
       drawerPosition="left"
       renderNavigationView={() => (
-        <ChapterDrawer route={route} navigation={navigation} />
+        <ChapterDrawer
+          route={route}
+          navigation={navigation}
+          chapters={chapters}
+          novelSettings={novelSettings}
+          pages={pages}
+          setPageIndex={setPageIndex}
+        />
       )}
     >
       <ChapterContent
         route={route}
         navigation={navigation}
         drawerRef={drawerRef}
+        setLastRead={setLastRead}
       />
     </DrawerLayoutAndroid>
   );
@@ -73,22 +85,17 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
 
 type ChapterContentProps = ChapterScreenProps & {
   drawerRef: React.RefObject<DrawerLayoutAndroid>;
+  setLastRead: (chapter: ChapterInfo | undefined) => void;
 };
 
 export const ChapterContent = ({
   route,
   navigation,
   drawerRef,
+  setLastRead,
 }: ChapterContentProps) => {
   useKeepAwake();
   const { novel, chapter } = route.params;
-  const {
-    markChapterRead,
-    setLastRead,
-    bookmarkChapters,
-    progress,
-    setProgress,
-  } = useNovel(novel.url, novel.pluginId);
   const webViewRef = useRef<WebView>(null);
   const readerSheetRef = useRef(null);
 
@@ -110,11 +117,11 @@ export const ChapterContent = ({
   const [hidden, setHidden] = useState(true);
 
   const { tracker } = useTracker();
-  const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.url);
+  const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
 
   const [sourceChapter, setChapter] = useState({ ...chapter, chapterText: '' });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
+  const [error, setError] = useState<string>();
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
     ChapterInfo[]
   >([]);
@@ -165,7 +172,7 @@ export const ChapterContent = ({
       if (await RNFS.exists(filePath)) {
         sourceChapter.chapterText = await RNFS.readFile(filePath);
       } else {
-        await fetchChapter(novel.pluginId, chapter.url)
+        await fetchChapter(novel.pluginId, chapter.path)
           .then(res => {
             sourceChapter.chapterText = res;
           })
@@ -227,9 +234,9 @@ export const ChapterContent = ({
   };
 
   const saveProgress = useCallback(
-    async (offsetY: number, percentage: number) => {
+    (percentage: number) => {
       if (!incognitoMode) {
-        setProgress(chapter.id, offsetY, percentage);
+        updateChapterProgress(chapter.id, percentage > 100 ? 100 : percentage);
       }
 
       if (!incognitoMode && percentage >= 97) {
@@ -277,7 +284,7 @@ export const ChapterContent = ({
   const onWebViewNavigationStateChange = async ({ url }: WebViewNavigation) => {
     if (url !== 'about:blank') {
       setLoading(true);
-      fetchChapter(novel.pluginId, chapter.url)
+      fetchChapter(novel.pluginId, chapter.path)
         .then(res => {
           sourceChapter.chapterText = res;
           setChapter(sourceChapter);
@@ -312,7 +319,32 @@ export const ChapterContent = ({
   }
 
   if (error) {
-    return <ErrorScreenV2 error={error} />;
+    return (
+      <ErrorScreenV2
+        error={error}
+        actions={[
+          {
+            iconName: 'refresh',
+            title: getString('common.retry'),
+            onPress: () => {
+              setError('');
+              setLoading(true);
+              getChapter();
+            },
+          },
+          {
+            iconName: 'earth',
+            title: 'WebView',
+            onPress: () =>
+              navigation.navigate('WebviewScreen', {
+                name: `${chapter.name} | ${novel.name}`,
+                url: chapter.path,
+                pluginId: novel.pluginId,
+              }),
+          },
+        ]}
+      />
+    );
   }
 
   return (
@@ -326,9 +358,6 @@ export const ChapterContent = ({
         saveProgress={saveProgress}
         onLayout={() => {
           useVolumeButtons && onLayout();
-          if (progress[chapter.id]) {
-            scrollTo(progress[chapter.id]?.offsetY || 0);
-          }
         }}
         onPress={hideHeader}
         navigateToChapterBySwipe={navigateToChapterBySwipe}
@@ -341,7 +370,6 @@ export const ChapterContent = ({
           <ReaderAppbar
             novelName={novel.name}
             chapter={chapter}
-            bookmarkChapters={bookmarkChapters}
             tts={startTts}
             goBack={navigation.goBack}
             textToSpeech={ttsStatus}
@@ -349,7 +377,7 @@ export const ChapterContent = ({
           />
           <ReaderFooter
             theme={theme}
-            chapterUrl={chapter.url}
+            chapterUrl={chapter.path}
             nextChapter={nextChapter}
             prevChapter={prevChapter}
             readerSheetRef={readerSheetRef}

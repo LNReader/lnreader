@@ -20,13 +20,13 @@ export const insertNovelAndChapters = async (
   sourceNovel: SourceNovel,
 ): Promise<number | undefined> => {
   const insertNovelQuery =
-    'INSERT INTO Novel (url, pluginId, name, cover, summary, author, artist, status, genres) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    'INSERT INTO Novel (path, pluginId, name, cover, summary, author, artist, status, genres, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   const novelId: number | undefined = await new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
         insertNovelQuery,
         [
-          sourceNovel.url,
+          sourceNovel.path,
           pluginId,
           sourceNovel.name,
           sourceNovel.cover || null,
@@ -35,6 +35,7 @@ export const insertNovelAndChapters = async (
           sourceNovel.artist || null,
           sourceNovel.status || null,
           sourceNovel.genres || null,
+          sourceNovel.totalPages || 0,
         ],
         async (txObj, resultSet) => resolve(resultSet.insertId),
         txnErrorCallback,
@@ -78,12 +79,15 @@ export const getAllNovels = async (): Promise<NovelInfo[]> => {
   );
 };
 
-export const getNovel = async (novelUrl: string): Promise<NovelInfo | null> => {
+export const getNovel = async (
+  novelPath: string,
+  pluginId: string,
+): Promise<NovelInfo | null> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM Novel WHERE url = ?',
-        [novelUrl],
+        'SELECT * FROM Novel WHERE path = ? AND pluginId = ?',
+        [novelPath, pluginId],
         (txObj, { rows }) => resolve(rows.item(0)),
         txnErrorCallback,
       );
@@ -95,10 +99,10 @@ export const getNovel = async (novelUrl: string): Promise<NovelInfo | null> => {
 // else remove all it's categories
 
 export const switchNovelToLibrary = async (
-  novelUrl: string,
+  novelPath: string,
   pluginId: string,
 ) => {
-  const novel = await getNovel(novelUrl);
+  const novel = await getNovel(novelPath, pluginId);
   if (novel) {
     db.transaction(tx => {
       tx.executeSql(
@@ -121,16 +125,22 @@ export const switchNovelToLibrary = async (
           () => showToast(getString('browseScreen.addedToLibrary')),
           txnErrorCallback,
         );
+        if (novel.pluginId === 'local') {
+          tx.executeSql(
+            'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, 2)',
+            [novel.id],
+          );
+        }
       }
     });
   } else {
-    const sourceNovel = await fetchNovel(pluginId, novelUrl);
+    const sourceNovel = await fetchNovel(pluginId, novelPath);
     const novelId = await insertNovelAndChapters(pluginId, sourceNovel);
     if (novelId) {
       db.transaction(tx => {
         tx.executeSql(
-          'UPDATE Novel SET inLibrary = 1 WHERE url = ?',
-          [novelUrl],
+          'UPDATE Novel SET inLibrary = 1 WHERE id = ?',
+          [novelId],
           () => showToast(getString('browseScreen.addedToLibrary')),
           txnErrorCallback,
         );
@@ -183,10 +193,10 @@ export const deleteCachedNovels = async () => {
 };
 
 const restoreFromBackupQuery =
-  'INSERT OR REPLACE INTO Novel (url, name, pluginId, cover, summary, author, artist, status, genres) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT OR REPLACE INTO Novel (path, name, pluginId, cover, summary, author, artist, status, genres) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const restoreLibrary = async (novel: NovelInfo) => {
-  const sourceNovel = await fetchNovel(novel.pluginId, novel.url).catch(e => {
+  const sourceNovel = await fetchNovel(novel.pluginId, novel.path).catch(e => {
     throw e;
   });
   const novelId: number | undefined = await new Promise(resolve => {
@@ -194,7 +204,7 @@ export const restoreLibrary = async (novel: NovelInfo) => {
       tx.executeSql(
         restoreFromBackupQuery,
         [
-          sourceNovel.url,
+          sourceNovel.path,
           novel.name,
           novel.pluginId,
           novel.cover || '',
@@ -238,11 +248,11 @@ export const restoreLibrary = async (novel: NovelInfo) => {
 export const updateNovelInfo = async (info: NovelInfo) => {
   db.transaction(tx => {
     tx.executeSql(
-      'UPDATE Novel SET name = ?, cover = ?, url = ? , summary = ?, author = ?, artist = ?, genres = ?, status = ?, isLocal = ? WHERE id = ?',
+      'UPDATE Novel SET name = ?, cover = ?, path = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ?, isLocal = ? WHERE id = ?',
       [
         info.name,
         info.cover || '',
-        info.url,
+        info.path,
         info.summary || '',
         info.author || '',
         info.artist || '',
@@ -319,53 +329,28 @@ export const updateNovelCategories = async (
   });
 };
 
-export const _restoreNovelAndChapters = (novel: BackupNovel) => {
+const restoreObjectQuery = (table: string, obj: any) => {
+  return `
+  INSERT INTO ${table}
+  (${Object.keys(obj).join(',')})
+  VALUES (${Object.keys(obj)
+    .map(() => '?')
+    .join(',')})
+  `;
+};
+
+export const _restoreNovelAndChapters = (backupNovel: BackupNovel) => {
+  const { chapters, ...novel } = backupNovel;
   db.transaction(tx => {
     tx.executeSql('DELETE FROM Novel WHERE id = ?', [novel.id]);
     tx.executeSql(
-      `INSERT INTO 
-        Novel (
-          id, url, pluginId, name, cover, summary, 
-          author, artist, status, genres, inLibrary, isLocal
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `,
-      [
-        novel.id,
-        novel.url,
-        novel.pluginId,
-        novel.name,
-        novel.cover || null,
-        novel.summary || null,
-        novel.author || null,
-        novel.artist || null,
-        novel.status || null,
-        novel.genres || null,
-        Number(novel.inLibrary),
-        Number(novel.isLocal),
-      ],
+      restoreObjectQuery('Novel', novel),
+      Object.values(novel) as string[] | number[],
     );
-    for (const chapter of novel.chapters) {
+    for (const chapter of chapters) {
       tx.executeSql(
-        `INSERT INTO 
-          Chapter (
-            id, novelId, url, name, releaseTime, bookmark,
-            unread, readTime, isDownloaded, updatedTime
-          )
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `,
-        [
-          chapter.id,
-          chapter.novelId,
-          chapter.url,
-          chapter.name,
-          chapter.releaseTime || null,
-          Number(chapter.bookmark),
-          Number(chapter.unread),
-          chapter.readTime,
-          Number(chapter.isDownloaded),
-          chapter.updatedTime,
-        ],
+        restoreObjectQuery('Chapter', chapter),
+        Object.values(chapter) as string[] | number[],
       );
     }
   });

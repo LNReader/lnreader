@@ -36,11 +36,15 @@ const DefaultChapterSortModal = ({
         <SortItem
           label={getString('generalSettingsScreen.bySource')}
           theme={theme}
-          status={defaultChapterSort === 'ORDER BY id ASC' ? 'asc' : 'desc'}
+          status={
+            defaultChapterSort === 'ORDER BY position ASC' ? 'asc' : 'desc'
+          }
           onPress={() =>
-            defaultChapterSort === 'ORDER BY id ASC'
-              ? setAppSettings({ defaultChapterSort: 'ORDER BY id DESC' })
-              : setAppSettings({ defaultChapterSort: 'ORDER BY id ASC' })
+            defaultChapterSort === 'ORDER BY position ASC'
+              ? setAppSettings({
+                  defaultChapterSort: 'ORDER BY position DESC',
+                })
+              : setAppSettings({ defaultChapterSort: 'ORDER BY position ASC' })
           }
         />
       </Modal>

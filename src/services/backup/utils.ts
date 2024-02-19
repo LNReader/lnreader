@@ -9,7 +9,7 @@ import {
   _restoreNovelAndChapters,
   getAllNovels,
 } from '@database/queries/NovelQueries';
-import { getChapters } from '@database/queries/ChapterQueries';
+import { getNovelChapters } from '@database/queries/ChapterQueries';
 import {
   _restoreCategory,
   getAllNovelCategories,
@@ -67,7 +67,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   // novels
   await getAllNovels().then(async novels => {
     for (const novel of novels) {
-      const chapters = await getChapters(novel.id);
+      const chapters = await getNovelChapters(novel.id);
       await RNFS.writeFile(
         novelDirPath + '/' + novel.id + '.json',
         JSON.stringify({

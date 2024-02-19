@@ -29,7 +29,7 @@ type WebViewReaderProps = {
   swipeGestures: boolean;
   nextChapter: ChapterInfo;
   webViewRef: React.RefObject<WebView>;
-  saveProgress(offsetY: number, percentage: number): Promise<void>;
+  saveProgress(percentage: number): void;
   onPress(): void;
   onLayout(): void;
   navigateToChapterBySwipe(name: string): void;
@@ -90,14 +90,8 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
             }
             break;
           case 'save':
-            if (
-              event.data &&
-              event.data.offsetY &&
-              event.data.percentage &&
-              typeof event.data.offsetY === 'number' &&
-              typeof event.data.percentage === 'number'
-            ) {
-              saveProgress(event.data.offsetY, event.data.percentage);
+            if (event.data && typeof event.data === 'number') {
+              saveProgress(event.data);
             }
             break;
         }
@@ -143,11 +137,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       var swipeGestures = ${swipeGestures};
                       var autoSaveInterval = 2222;
                     </script>
-                    <script defer src="file:///android_asset/js/index.js"></script>
-                    <script defer>
-                      async function fn(){${readerSettings.customJS}}
-                      document.addEventListener("DOMContentLoaded", fn);
-                    </script>
                   </head>
                   <body>
                     <div class="chapterCtn" onclick="reader.post({type:'hide'})">
@@ -178,7 +167,21 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         </div>`
                     }
                     </body>
-                  </body>
+                    <script src="file:///android_asset/js/index.js"></script>
+                    <script>
+                      async function fn(){
+                        ${readerSettings.customJS}
+                        // scroll to saved position
+                        reader.refresh();
+                        window.scrollTo({
+                          top: reader.chapterHeight * ${
+                            chapter.progress
+                          } / 100 - reader.layoutHeight,
+                          behavior: 'smooth',
+                        });
+                      }
+                      document.addEventListener("DOMContentLoaded", fn);
+                    </script>
                 </html>
                 `,
       }}
