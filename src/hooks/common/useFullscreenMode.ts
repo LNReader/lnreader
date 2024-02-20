@@ -15,11 +15,8 @@ import {
 
 const useFullscreenMode = () => {
   const { addListener } = useNavigation();
-  const readerSettings = useChapterReaderSettings();
+  const { theme: backgroundColor } = useChapterReaderSettings();
   const { fullScreenMode } = useChapterGeneralSettings();
-
-  const backgroundColor = readerSettings.theme;
-
   const theme = useTheme();
 
   const setImmersiveMode = useCallback(() => {

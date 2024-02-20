@@ -59,7 +59,7 @@
     "react-native-shimmer-placeholder": "^2.0.9",
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^9.0.0",
-    "react-native-webview": "11.26.0",
+    "react-native-webview": "^13.8.1",
     "sanitize-html": "^2.7.0",
     "urlencode": "^2.0.0"
   },
