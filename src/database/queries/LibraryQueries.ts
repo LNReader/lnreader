@@ -57,28 +57,31 @@ export const getLibraryNovelsFromDb = (
 };
 
 const getLibraryWithCategoryQuery = `
-  SELECT 
-  NIL.*, chaptersUnread, chaptersDownloaded, lastReadAt, lastUpdatedAt
-  FROM 
+  SELECT *
+  FROM
   (
-    SELECT 
-      Novel.*,
-      category,
-      categoryId
-    FROM
-    Novel LEFT JOIN (
-      SELECT NovelId, name as category, categoryId FROM (NovelCategory JOIN Category ON NovelCategory.categoryId = Category.id)
-    ) as NC ON Novel.id = NC.novelId
-    WHERE inLibrary = 1
-  ) as NIL 
-  LEFT JOIN 
-  (
-    SELECT 
-      SUM(unread) as chaptersUnread, SUM(isDownloaded) as chaptersDownloaded, 
-      novelId, MAX(readTime) as lastReadAt, MAX(updatedTime) as lastUpdatedAt
-    FROM Chapter
-    GROUP BY novelId
-  ) as C ON NIL.id = C.novelId
+    SELECT NIL.*, chaptersUnread, chaptersDownloaded, lastReadAt, lastUpdatedAt
+    FROM 
+    (
+      SELECT 
+        Novel.*,
+        category,
+        categoryId
+      FROM
+      Novel LEFT JOIN (
+        SELECT NovelId, name as category, categoryId FROM (NovelCategory JOIN Category ON NovelCategory.categoryId = Category.id)
+      ) as NC ON Novel.id = NC.novelId
+      WHERE inLibrary = 1
+    ) as NIL 
+    LEFT JOIN 
+    (
+      SELECT 
+        SUM(unread) as chaptersUnread, SUM(isDownloaded) as chaptersDownloaded, 
+        novelId, MAX(readTime) as lastReadAt, MAX(updatedTime) as lastUpdatedAt
+      FROM Chapter
+      GROUP BY novelId
+    ) as C ON NIL.id = C.novelId
+  ) WHERE 1 = 1 
 `;
 
 export const getLibraryWithCategory = ({
@@ -107,7 +110,6 @@ export const getLibraryWithCategory = ({
   if (sortOrder) {
     query += ` ORDER BY ${sortOrder} `;
   }
-
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
