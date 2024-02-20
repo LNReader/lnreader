@@ -2,10 +2,10 @@ name: Lint
 on:
   push:
     branches:
-      - master
+      - expandURL
   pull_request:
     branches:
-      - master
+      - expandURL
 
 jobs:
   build:

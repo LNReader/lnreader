@@ -5,7 +5,6 @@ import { Appbar } from '@components';
 import { useTheme } from '@hooks/persisted';
 import { WebviewScreenProps } from '@navigators/types';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
-import { isUrlAbsolute } from '@plugins/helpers/isAbsoluteUrl';
 import { expandURL } from '@services/plugin/fetch';
 
 const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
@@ -25,10 +24,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         startInLoadingState
         userAgent={getUserAgent()}
         source={{
-          uri:
-            pluginId && !isUrlAbsolute(url)
-              ? expandURL(pluginId, type || 'novel', url)
-              : url,
+          uri: pluginId ? expandURL(pluginId, type || 'novel', url) : url,
         }}
       />
     </>
