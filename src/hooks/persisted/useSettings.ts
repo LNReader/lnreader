@@ -147,7 +147,7 @@ const initialBrowseSettings: BrowseSettings = {
   showAniList: true,
 };
 
-const initialChapterGeneralSettings: ChapterGeneralSettings = {
+export const initialChapterGeneralSettings: ChapterGeneralSettings = {
   fullScreenMode: true,
   swipeGestures: false,
   showScrollPercentage: true,

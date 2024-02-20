@@ -52,8 +52,12 @@
     </script>
     <link rel="stylesheet" href="../android/app/src/main/assets/css/index.css">
     <script async>
-        var showScrollPercentage = true;
-        var swipeGestures = false;
+        var initSettings = {
+            showScrollPercentage: true,
+            swipeGestures: false,
+            showBatteryAndTime: true,
+        }
+        var batteryLevel = 0.96;
         var autoSaveInterval = 2222;
     </script>
 </head>
@@ -64,7 +68,13 @@
             ${html}
         </chapter>
         <div class="d-none" id="ScrollBar"></div>
-        <div id="reader-percentage"></div>
+        <div id="reader-footer-wrapper">
+            <div id="reader-footer">
+                <div id="reader-battery" class="reader-footer-item"></div>
+                <div id="reader-percentage" class="reader-footer-item"></div>
+                <div id="reader-time" class="reader-footer-item"></div>
+            </div>
+        </div>
     </div>
 </body>
 <script defer src="../android/app/src/main/assets/js/index.js"></script>

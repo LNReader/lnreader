@@ -77,6 +77,10 @@ img {
     display: none;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 #ScrollBar {
     position: fixed;
     right: 5vw;
@@ -137,18 +141,27 @@ img {
     background-color: var(--theme-primary);
 }
 
-#reader-percentage {
+#reader-footer-wrapper {
     position: fixed;
-    padding-top: 0.5rem;
-    min-height: 2rem;
-    width: 100%;
-    background-color: var(--readerSettings-theme);
-    color: var(--readerSettings-textColor);
     bottom: 0;
     left: 0;
-    right: 0;
+    width: 100%;
+}
+
+#reader-footer {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    min-height: 2rem;
+    padding: 0.5rem 1rem 0 1rem;
+    background-color: var(--readerSettings-theme);
+    color: var(--readerSettings-textColor);
     font-size: 1rem;
     text-align: center;
+}
+
+.reader-footer-item{
+    display: flex;
 }
 
 t-t-s.tts-highlight {
