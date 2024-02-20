@@ -64,11 +64,11 @@ export const expandURL = (
   type: 'novel' | 'chapter',
   slug: string,
 ) => {
+  if (isUrlAbsolute(slug)) return slug;
   const plugin = getPlugin(pluginId);
   if (!plugin) {
     throw new Error(`Unknown plugin: ${pluginId}`);
   }
-  if (isUrlAbsolute(slug)) return slug;
   if (!plugin.expandURL) return plugin.site + slug;
   const res = plugin.expandURL(type, slug).catch(e => {
     throw e;

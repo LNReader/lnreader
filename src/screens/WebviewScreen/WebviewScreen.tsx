@@ -7,7 +7,7 @@ import { WebviewScreenProps } from '@navigators/types';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
 import { expandURL } from '@services/plugin/fetch';
 
-const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
+const WebviewScreen = async ({ route, navigation }: WebviewScreenProps) => {
   const theme = useTheme();
 
   const { name, url, pluginId, type } = route.params;
@@ -24,7 +24,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         startInLoadingState
         userAgent={getUserAgent()}
         source={{
-          uri: pluginId ? expandURL(pluginId, type || 'novel', url) : url,
+          uri: pluginId ? await expandURL(pluginId, type || 'novel', url) : url,
         }}
       />
     </>
