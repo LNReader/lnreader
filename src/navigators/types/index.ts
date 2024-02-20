@@ -31,6 +31,7 @@ export type RootStackParamList = {
     name: string;
     url: string;
     pluginId?: string;
+    type?: 'novel' | 'chapter';
   };
 };
 

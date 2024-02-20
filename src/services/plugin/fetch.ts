@@ -57,3 +57,19 @@ export const fetchPage = async (
   });
   return res;
 };
+
+export const expandURL = async (
+  pluginId: string,
+  type: 'novel' | 'chapter',
+  slug: string,
+) => {
+  const plugin = getPlugin(pluginId);
+  if (!plugin) {
+    throw new Error(`Unknown plugin: ${pluginId}`);
+  }
+  if (!plugin.expandURL) return plugin.site + slug;
+  const res = await plugin.expandURL(type, slug).catch(e => {
+    throw e;
+  });
+  return res;
+};
