@@ -160,7 +160,7 @@ const initialChapterGeneralSettings: ChapterGeneralSettings = {
   removeExtraParagraphSpacing: false,
 };
 
-const initialChapterReaderSettings: ChapterReaderSettings = {
+export const initialChapterReaderSettings: ChapterReaderSettings = {
   theme: '#292832',
   textColor: '#CCCCCC',
   textSize: 16,

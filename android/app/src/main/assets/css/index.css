@@ -11,6 +11,7 @@ body {
     padding-bottom: 40px;
 
     font-size: var(--readerSettings-textSize);
+    background-color: var(--readerSettings-theme);
     color: var(--readerSettings-textColor);
     text-align: var(--readerSettings-textAlign);
     line-height: var(--readerSettings-lineHeight);

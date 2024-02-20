@@ -1,17 +1,19 @@
-import { FC } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { Dimensions, StatusBar } from 'react-native';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import color from 'color';
 
-import {
-  useChapterGeneralSettings,
-  useChapterReaderSettings,
-  useTheme,
-} from '@hooks/persisted';
+import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
 import { ChapterInfo } from '@database/types';
 import { getString } from '@strings/translations';
 
 import { getPlugin } from '@plugins/pluginManager';
+import { MMKVStorage, getMMKVObject } from '@utils/mmkv/mmkv';
+import {
+  CHAPTER_READER_SETTINGS,
+  ChapterReaderSettings,
+  initialChapterReaderSettings,
+} from '@hooks/persisted/useSettings';
 
 type WebViewPostEvent = {
   type: string;
@@ -52,11 +54,34 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
 
   const theme = useTheme();
   const { novel, chapter } = data;
-  const readerSettings = useChapterReaderSettings();
+  const readerSettings = useMemo(
+    () =>
+      getMMKVObject<ChapterReaderSettings>(CHAPTER_READER_SETTINGS) ||
+      initialChapterReaderSettings,
+    [],
+  );
   const { showScrollPercentage } = useChapterGeneralSettings();
 
   const layoutHeight = Dimensions.get('window').height;
   const plugin = getPlugin(novel?.pluginId);
+
+  useEffect(() => {
+    const mmkvListener = MMKVStorage.addOnValueChangedListener(key => {
+      switch (key) {
+        case CHAPTER_READER_SETTINGS:
+          webViewRef.current?.injectJavaScript(
+            `reader.updateReaderSettings(${MMKVStorage.getString(
+              CHAPTER_READER_SETTINGS,
+            )})`,
+          );
+          break;
+      }
+    });
+
+    return () => {
+      mmkvListener.remove();
+    };
+  });
   return (
     <WebView
       ref={webViewRef}

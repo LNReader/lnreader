@@ -29,6 +29,44 @@ class Reader {
     this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
   };
   post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
+  updateReaderSettings = settings => {
+    document.documentElement.style.setProperty(
+      '--readerSettings-theme',
+      settings.theme,
+    );
+    document.documentElement.style.setProperty(
+      '--readerSettings-padding',
+      settings.padding + '%',
+    );
+    document.documentElement.style.setProperty(
+      '--readerSettings-textSize',
+      settings.textSize + 'px',
+    );
+    document.documentElement.style.setProperty(
+      '--readerSettings-textColor',
+      settings.textColor,
+    );
+    document.documentElement.style.setProperty(
+      '--readerSettings-textAlign',
+      settings.textAlign,
+    );
+    document.documentElement.style.setProperty(
+      '--readerSettings-lineHeight',
+      settings.lineHeight,
+    );
+    document.documentElement.style.setProperty(
+      '--readerSettings-fontFamily',
+      settings.fontFamily,
+    );
+    new FontFace(
+      settings.fontFamily,
+      'url("file:///android_asset/fonts/' + settings.fontFamily + '.ttf")',
+    )
+      .load()
+      .then(function (loadedFont) {
+        document.fonts.add(loadedFont);
+      });
+  };
 }
 class ScrollHandler {
   constructor(reader) {
