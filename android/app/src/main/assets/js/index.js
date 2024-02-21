@@ -25,6 +25,10 @@ class Reader {
         }),
       autoSaveInterval,
     );
+    this.time.innerText = new Date().toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
     this.timeInterval = setInterval(() => {
       this.time.innerText = new Date().toLocaleTimeString(undefined, {
         hour: '2-digit',
@@ -97,10 +101,6 @@ class Reader {
       if (this.showBatteryAndTime) {
         this.battery.classList.remove('hidden');
         this.time.classList.remove('hidden');
-        this.time.innerText = new Date().toLocaleTimeString(undefined, {
-          hour: '2-digit',
-          minute: '2-digit',
-        });
       } else {
         this.battery.classList.add('hidden');
         this.time.classList.add('hidden');
