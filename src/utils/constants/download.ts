@@ -1,6 +1,6 @@
 import { ExternalDirectoryPath } from 'react-native-fs';
 
-export const AppDownloadFolder = ExternalDirectoryPath + '/LNReader';
+export const AppDownloadFolder = ExternalDirectoryPath;
 
 export const NovelDownloadFolder = AppDownloadFolder + '/Novels';
 
