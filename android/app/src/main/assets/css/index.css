@@ -153,7 +153,7 @@ img {
     flex: 1;
     justify-content: space-between;
     min-height: 2rem;
-    padding: 0.5rem 1rem 0 1rem;
+    padding: 0.5rem 2rem 0 2rem;
     background-color: var(--readerSettings-theme);
     color: var(--readerSettings-textColor);
     font-size: 1rem;
