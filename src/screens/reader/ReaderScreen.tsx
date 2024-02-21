@@ -51,6 +51,7 @@ import { ChapterInfo } from '@database/types';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import { getString } from '@strings/translations';
+import TextFile from '@native/TextFile';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
@@ -168,7 +169,7 @@ export const ChapterContent = ({
     try {
       const filePath = `${NovelDownloadFolder}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
       if (await RNFS.exists(filePath)) {
-        sourceChapter.chapterText = await RNFS.readFile(filePath);
+        sourceChapter.chapterText = await TextFile.readFile(filePath);
       } else {
         await fetchChapter(novel.pluginId, chapter.path)
           .then(res => {

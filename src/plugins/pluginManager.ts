@@ -13,6 +13,7 @@ import { fetchApi, fetchFile, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
 import { encode, decode } from 'urlencode';
 import { getString } from '@strings/translations';
+import TextFile from '@native/TextFile';
 
 const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
 
@@ -48,39 +49,42 @@ const initPlugin = (rawCode: string) => {
 };
 
 const plugins: Record<string, Plugin | undefined> = {};
+let serializedPlugins: Record<string, string | undefined>;
 
 const serializePlugin = async (
   pluginId: string,
   rawCode: string,
   installed: boolean,
 ) => {
-  let serializedPlugins: Record<string, string> = {};
-  if (await RNFS.exists(pluginsFilePath)) {
-    const content = await RNFS.readFile(pluginsFilePath);
+  if (!serializedPlugins && (await RNFS.exists(pluginsFilePath))) {
+    const content = await TextFile.readFile(pluginsFilePath);
     serializedPlugins = JSON.parse(content);
   }
   if (installed) {
     serializedPlugins[pluginId] = rawCode;
   } else {
-    delete serializedPlugins[pluginId];
+    serializedPlugins[pluginId] = undefined;
   }
   if (!(await RNFS.exists(PluginDownloadFolder))) {
     await RNFS.mkdir(PluginDownloadFolder);
   }
-  await RNFS.writeFile(pluginsFilePath, JSON.stringify(serializedPlugins));
+  await TextFile.writeFile(pluginsFilePath, JSON.stringify(serializedPlugins));
 };
 
 const deserializePlugins = async () => {
-  if (await RNFS.exists(pluginsFilePath)) {
-    const content = await RNFS.readFile(pluginsFilePath);
-    const serializedPlugins: Record<string, string> = JSON.parse(content);
-    for (const pluginId in serializedPlugins) {
-      const plugin = initPlugin(serializedPlugins[pluginId]);
-      if (plugin) {
-        plugins[pluginId] = plugin;
+  await TextFile.readFile(pluginsFilePath)
+    .then(content => {
+      serializedPlugins = JSON.parse(content);
+      for (const script of Object.values(serializedPlugins)) {
+        const plugin = initPlugin(script as string);
+        if (plugin) {
+          plugins[plugin.id] = plugin;
+        }
       }
-    }
-  }
+    })
+    .catch(() => {
+      // nothing to read
+    });
 };
 
 const installPlugin = async (url: string): Promise<Plugin | undefined> => {
@@ -108,8 +112,8 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
 };
 
 const uninstallPlugin = async (_plugin: PluginItem) => {
-  delete plugins[_plugin.id];
-  serializePlugin(_plugin.id, '', false);
+  plugins[_plugin.id] = undefined;
+  return serializePlugin(_plugin.id, '', false);
 };
 
 const updatePlugin = async (plugin: PluginItem) => {

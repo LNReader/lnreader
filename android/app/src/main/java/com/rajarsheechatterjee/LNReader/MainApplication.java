@@ -13,6 +13,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 
 import com.rajarsheechatterjee.NavigationBarColor.NavigationBarColorPackage;
+import com.rajarsheechatterjee.TextFile.TextFilePackage;
 import com.rajarsheechatterjee.VolumeButtonListener.VolumeButtonListenerPackage;
 import com.rajarsheechatterjee.ZipArchive.ZipArchivePackage;
 
@@ -36,6 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
           packages.add(new NavigationBarColorPackage());
           packages.add(new VolumeButtonListenerPackage());
           packages.add(new ZipArchivePackage());
+          packages.add(new TextFilePackage());
           return packages;
         }
 

@@ -17,6 +17,7 @@ import {
 } from '@database/queries/CategoryQueries';
 import { BackupCategory } from '@database/types';
 import { BackupEntryName } from './types';
+import TextFile from '@native/TextFile';
 
 export const CACHE_DIR_PATH = RNFS.ExternalCachesDirectoryPath + '/BackupData';
 
@@ -59,7 +60,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   await RNFS.mkdir(novelDirPath); // this also creates cacheDirPath
 
   // version
-  await RNFS.writeFile(
+  await TextFile.writeFile(
     cacheDirPath + '/' + BackupEntryName.VERSION,
     JSON.stringify({ version: appVersion }),
   );
@@ -68,7 +69,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   await getAllNovels().then(async novels => {
     for (const novel of novels) {
       const chapters = await getNovelChapters(novel.id);
-      await RNFS.writeFile(
+      await TextFile.writeFile(
         novelDirPath + '/' + novel.id + '.json',
         JSON.stringify({
           chapters: chapters,
@@ -81,7 +82,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   // categories
   await getCategoriesFromDb().then(categories => {
     return getAllNovelCategories().then(async novelCategories => {
-      await RNFS.writeFile(
+      await TextFile.writeFile(
         cacheDirPath + '/' + BackupEntryName.CATEGORY,
         JSON.stringify(
           categories.map(category => {
@@ -98,7 +99,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   });
 
   // settings
-  await RNFS.writeFile(
+  await TextFile.writeFile(
     cacheDirPath + '/' + BackupEntryName.SETTING,
     JSON.stringify(backupMMKVData()),
   );
@@ -114,7 +115,7 @@ export const restoreData = async (cacheDirPath: string) => {
   await RNFS.readDir(novelDirPath).then(async items => {
     for (const item of items) {
       if (item.isFile()) {
-        await RNFS.readFile(item.path).then(content =>
+        await TextFile.readFile(item.path).then(content =>
           _restoreNovelAndChapters(JSON.parse(content)),
         );
       }
@@ -122,7 +123,7 @@ export const restoreData = async (cacheDirPath: string) => {
   });
 
   // categories
-  await RNFS.readFile(cacheDirPath + '/' + BackupEntryName.CATEGORY).then(
+  await TextFile.readFile(cacheDirPath + '/' + BackupEntryName.CATEGORY).then(
     async content => {
       const categories: BackupCategory[] = JSON.parse(content);
       for (const category of categories) {
@@ -132,7 +133,7 @@ export const restoreData = async (cacheDirPath: string) => {
   );
 
   // settings
-  await RNFS.readFile(cacheDirPath + '/' + BackupEntryName.SETTING).then(
+  await TextFile.readFile(cacheDirPath + '/' + BackupEntryName.SETTING).then(
     content => {
       restoreMMKVData(JSON.parse(content));
     },

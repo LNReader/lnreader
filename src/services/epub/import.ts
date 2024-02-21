@@ -19,6 +19,7 @@ import { getString } from '@strings/translations';
 import { ChapterItem, SourceNovel } from '@plugins/types';
 import { load as parseXML } from 'cheerio';
 import { showToast } from '@utils/showToast';
+import TextFile from '@native/TextFile';
 
 interface TaskData {
   delay: number;
@@ -94,7 +95,7 @@ const insertLocalChapter = (
         ],
         async (txObj, resultSet) => {
           if (resultSet.insertId) {
-            let chapterText = await RNFS.readFile(path);
+            let chapterText = await TextFile.readFile(path);
             const staticPaths: string[] = [];
             const novelDir = NovelDownloadFolder + '/local/' + novelId;
             const epubContentDir = path.replace(/[^\\\/]+$/, '');
@@ -110,7 +111,7 @@ const insertLocalChapter = (
               },
             );
             await RNFS.mkdir(novelDir + '/' + resultSet.insertId);
-            await RNFS.writeFile(
+            await TextFile.writeFile(
               novelDir + '/' + resultSet.insertId + '/index.html',
               chapterText,
             );
@@ -139,13 +140,13 @@ const getParent = (filePath: string) => {
 const parseNovelAndChapters = async (
   epubDirPath: string,
 ): Promise<SourceNovel> => {
-  const containerText = await RNFS.readFile(
+  const containerText = await TextFile.readFile(
     `${epubDirPath}/META-INF/container.xml`,
   );
   const contentPath =
     epubDirPath + '/' + parseXML(containerText)('rootfile').attr('full-path');
   const contentDir = getParent(contentPath);
-  const contentText = await RNFS.readFile(contentPath);
+  const contentText = await TextFile.readFile(contentPath);
   const parsedContent = parseXML(contentText);
   const novelName = parsedContent('dc\\:title').text().trim();
   const author = parsedContent('dc\\:creator').text().trim();
@@ -164,7 +165,7 @@ const parseNovelAndChapters = async (
   const tocPath = contentDir + '/' + 'toc.ncx';
   const tocMap: Record<string, string> = {};
   if (await RNFS.exists(tocPath)) {
-    const tocText = await RNFS.readFile(tocPath);
+    const tocText = await TextFile.readFile(tocPath);
     const toc = parseXML(tocText);
     toc('navPoint').each(function () {
       const href = toc(this).find('content').attr('src');

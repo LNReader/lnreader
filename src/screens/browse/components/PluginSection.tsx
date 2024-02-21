@@ -96,7 +96,6 @@ const PluginSection = ({
           </>
         ) : null
       }
-      removeClippedSubviews={true}
       keyExtractor={(_, index) => index.toString() + installedTab}
       renderSectionHeader={({ section: { header, data } }) => (
         <Text
