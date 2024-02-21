@@ -108,7 +108,7 @@ class Reader {
     }
   };
   updateBatteryLevel = level => {
-    this.battery.innerText = parseInt(level * 100) + '%';
+    this.battery.innerText = Math.ceil(level * 100) + '%';
   };
 }
 class ScrollHandler {
