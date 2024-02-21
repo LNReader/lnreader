@@ -112,12 +112,17 @@ const parseNovelAndChapters = async novelUrl => {
 
   novel.novelCover = loadedCheerio('.wpb_wrapper img').attr('src');
 
-  novel.author = loadedCheerio('#showauthors').text().trim();
+  novel.author = loadedCheerio('#authtag')
+    .map((i, el) => loadedCheerio(el).text().trim())
+    .toArray()
+    .join(', ');
+
   novel.genre = loadedCheerio('#seriesgenre')
     .children('a')
     .map((i, el) => loadedCheerio(el).text())
     .toArray()
     .join(',');
+
   novel.status = loadedCheerio('#editstatus').text().includes('Ongoing')
     ? 'Ongoing'
     : 'Completed';
@@ -211,6 +216,8 @@ const parseChapter = async (novelUrl, chapterUrl) => {
 
   let isAnomalously = result.url.toLowerCase().includes('anotivereads');
 
+  let kofi = result.url.toLowerCase().includes('ko-fi');
+
   let isBlossomTranslation = result.url
     .toLowerCase()
     .includes('blossomtranslation');
@@ -274,6 +281,10 @@ const parseChapter = async (novelUrl, chapterUrl) => {
     chapterText = loadedCheerio('.manga-child-content').html();
   } else if (isAnomalously) {
     chapterText = loadedCheerio('#comic').html();
+  } else if (kofi) {
+    chapterText = loadedCheerio('script:contains("shadowDom.innerHTML")')
+      .html()
+      .match(/shadowDom\.innerHTML \+= '(<div.*?)';/)[1];
   } else if (isiNovelTranslation) {
     const link = 'https://api.' + result.url.slice(8);
     const json = await fetchApi({
