@@ -18,6 +18,7 @@ import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
 import { ChapterItem, SourceNovel } from '@plugins/types';
 import { load as parseXML } from 'cheerio';
+import { showToast } from '@utils/showToast';
 
 interface TaskData {
   delay: number;
@@ -340,7 +341,8 @@ export const importEpub = async () => {
       copyToCacheDirectory: false,
     });
     if (epubFile.type === 'cancel') {
-      throw new Error(getString('common.cancel'));
+      showToast(getString('common.cancel'));
+      return;
     }
     await BackgroundService.start<TaskData>(importEpubAction, {
       taskName: 'Import Epub',
