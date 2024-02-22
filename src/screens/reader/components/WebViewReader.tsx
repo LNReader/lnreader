@@ -58,6 +58,10 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
     navigateToChapterBySwipe,
     onWebViewNavigationStateChange,
   } = props;
+  const assetsUriPrefix = useMemo(
+    () => (__DEV__ ? 'http://localhost:8081/assets' : 'file:///android_asset'),
+    [],
+  );
   const { RNDeviceInfo } = NativeModules;
   const deviceInfoEmitter = new NativeEventEmitter(RNDeviceInfo);
   const theme = useTheme();
@@ -180,12 +184,12 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       }
                       @font-face {
                         font-family: ${readerSettings.fontFamily};
-                        src: url("file:///android_asset/fonts/${
-                          readerSettings.fontFamily
-                        }.ttf");
+                        src: url("${assetsUriPrefix}/fonts/${
+          readerSettings.fontFamily
+        }.ttf");
                       }
                     </style>
-                    <link rel="stylesheet" href="file:///android_asset/css/index.css">
+                    <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
                     <style>${readerSettings.customCSS}</style>
                     <script async>
                       var initSettings = {
@@ -232,7 +236,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         </div>`
                     }
                     </body>
-                    <script src="file:///android_asset/js/index.js"></script>
+                    <script src="${assetsUriPrefix}/js/index.js"></script>
                     <script>
                       async function fn(){
                         ${readerSettings.customJS}
