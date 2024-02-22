@@ -150,6 +150,7 @@ const parseNovelAndChapters = async (
   const parsedContent = parseXML(contentText);
   const novelName = parsedContent('dc\\:title').text().trim();
   const author = parsedContent('dc\\:creator').text().trim();
+  const description = parsedContent('dc\\:description').text().trim();
   const coverRef = parsedContent('meta[name="cover"]').attr('content');
   let cover = '';
   if (coverRef) {
@@ -213,6 +214,7 @@ const parseNovelAndChapters = async (
     cover: cover,
     path: contentDir + novelName, // temporary
     chapters: chapters,
+    summary: description,
   };
   return novel;
 };
