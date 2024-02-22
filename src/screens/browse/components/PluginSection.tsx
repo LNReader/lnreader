@@ -2,7 +2,13 @@ import React, { memo, useCallback, useState } from 'react';
 import { PluginItem } from '@plugins/types';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
-import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
+import {
+  RefreshControl,
+  SectionList,
+  SectionListRenderItem,
+  StyleSheet,
+  Text,
+} from 'react-native';
 import PluginCard from './PluginCard';
 import { usePlugins } from '@hooks/persisted';
 import { BrowseScreenProps } from '@navigators/types';
@@ -45,6 +51,21 @@ const PluginSection = ({
     },
     [],
   );
+  const renderItem: SectionListRenderItem<PluginItem> = useCallback(
+    ({ item }) => (
+      <PluginCard
+        installed={installedTab}
+        plugin={item}
+        navigateToSource={navigateToSource}
+        installPlugin={installPlugin}
+        uninstallPlugin={uninstallPlugin}
+        updatePlugin={updatePlugin}
+        theme={theme}
+      />
+    ),
+    [],
+  );
+
   return (
     <SectionList
       sections={sections}
@@ -88,17 +109,7 @@ const PluginSection = ({
           {header}
         </Text>
       )}
-      renderItem={({ item }) => (
-        <PluginCard
-          installed={installedTab}
-          plugin={item}
-          navigateToSource={navigateToSource}
-          installPlugin={installPlugin}
-          uninstallPlugin={uninstallPlugin}
-          updatePlugin={updatePlugin}
-          theme={theme}
-        />
-      )}
+      renderItem={renderItem}
       refreshControl={
         installedTab ? (
           <></>

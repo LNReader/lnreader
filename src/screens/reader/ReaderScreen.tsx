@@ -42,7 +42,6 @@ import WebViewReader from './components/WebViewReader';
 import { useFullscreenMode, useTextToSpeech } from '@hooks';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { defaultTo } from 'lodash-es';
-import BottomInfoBar from './components/BottomInfoBar/BottomInfoBar';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import ChapterDrawer from './components/ChapterDrawer';
 import ChapterLoadingScreen from './ChapterLoadingScreen/ChapterLoadingScreen';
@@ -52,6 +51,7 @@ import { ChapterInfo } from '@database/types';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import { getString } from '@strings/translations';
+import TextFile from '@native/TextFile';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
@@ -102,7 +102,6 @@ export const ChapterContent = ({
   const theme = useTheme();
 
   const {
-    swipeGestures,
     useVolumeButtons,
     autoScroll,
     autoScrollInterval,
@@ -170,7 +169,7 @@ export const ChapterContent = ({
     try {
       const filePath = `${NovelDownloadFolder}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
       if (await RNFS.exists(filePath)) {
-        sourceChapter.chapterText = await RNFS.readFile(filePath);
+        sourceChapter.chapterText = await TextFile.readFile(filePath);
       } else {
         await fetchChapter(novel.pluginId, chapter.path)
           .then(res => {
@@ -352,7 +351,6 @@ export const ChapterContent = ({
       <WebViewReader
         data={{ novel, chapter }}
         html={chapterText}
-        swipeGestures={swipeGestures}
         nextChapter={nextChapter}
         webViewRef={webViewRef}
         saveProgress={saveProgress}
@@ -363,7 +361,6 @@ export const ChapterContent = ({
         navigateToChapterBySwipe={navigateToChapterBySwipe}
         onWebViewNavigationStateChange={onWebViewNavigationStateChange}
       />
-      <BottomInfoBar />
       <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       {!hidden && (
         <>

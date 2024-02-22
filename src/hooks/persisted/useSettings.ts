@@ -147,7 +147,7 @@ const initialBrowseSettings: BrowseSettings = {
   showAniList: true,
 };
 
-const initialChapterGeneralSettings: ChapterGeneralSettings = {
+export const initialChapterGeneralSettings: ChapterGeneralSettings = {
   fullScreenMode: true,
   swipeGestures: false,
   showScrollPercentage: true,
@@ -160,7 +160,7 @@ const initialChapterGeneralSettings: ChapterGeneralSettings = {
   removeExtraParagraphSpacing: false,
 };
 
-const initialChapterReaderSettings: ChapterReaderSettings = {
+export const initialChapterReaderSettings: ChapterReaderSettings = {
   theme: '#292832',
   textColor: '#CCCCCC',
   textSize: 16,

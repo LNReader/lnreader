@@ -123,43 +123,6 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     useMMKVObject<NovelSettings>(
       `${NOVEL_SETTINSG_PREFIX}_${pluginId}_${novelPath}`,
     );
-  const getNovel = async () => {
-    let novel = await _getNovel(novelPath, pluginId);
-    if (!novel) {
-      const sourceNovel = await fetchNovel(pluginId, novelPath).catch(() => {
-        throw new Error(getString('updatesScreen.unableToGetNovel'));
-      });
-      await insertNovelAndChapters(pluginId, sourceNovel);
-      novel = await _getNovel(novelPath, pluginId);
-      if (!novel) {
-        return;
-      }
-    }
-    let pages: string[];
-    if (novel.totalPages > 0) {
-      pages = Array(novel.totalPages)
-        .fill(0)
-        .map((v, idx) => String(idx + 1));
-      const key = `${NOVEL_PAGE_UPDATES_PREFIX}_${novel.id}`;
-      const hasUpdates = getMMKVObject<boolean[]>(key);
-      if (hasUpdates) {
-        if (pages.length > hasUpdates.length) {
-          setMMKVObject(
-            key,
-            hasUpdates.concat(
-              Array(pages.length - hasUpdates.length).fill(false),
-            ),
-          );
-        }
-      } else {
-        setMMKVObject(key, Array(novel.totalPages).fill(false));
-      }
-    } else {
-      pages = (await getCustomPages(novel.id)).map(c => c.page);
-    }
-    setPages(pages);
-    setNovel(novel);
-  };
 
   const openPage = useCallback((index: number) => {
     setPageIndex(index);
@@ -330,63 +293,103 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     [novel],
   );
 
-  useEffect(() => {
-    getNovel().then(() => setLoading(false));
+  const getNovel = useCallback(async () => {
+    let novel = await _getNovel(novelPath, pluginId);
+    if (!novel) {
+      const sourceNovel = await fetchNovel(pluginId, novelPath).catch(() => {
+        throw new Error(getString('updatesScreen.unableToGetNovel'));
+      });
+      await insertNovelAndChapters(pluginId, sourceNovel);
+      novel = await _getNovel(novelPath, pluginId);
+      if (!novel) {
+        return;
+      }
+    }
+    let pages: string[];
+    if (novel.totalPages > 0) {
+      pages = Array(novel.totalPages)
+        .fill(0)
+        .map((v, idx) => String(idx + 1));
+      const key = `${NOVEL_PAGE_UPDATES_PREFIX}_${novel.id}`;
+      const hasUpdates = getMMKVObject<boolean[]>(key);
+      if (hasUpdates) {
+        if (pages.length > hasUpdates.length) {
+          setMMKVObject(
+            key,
+            hasUpdates.concat(
+              Array(pages.length - hasUpdates.length).fill(false),
+            ),
+          );
+        }
+      } else {
+        setMMKVObject(key, Array(novel.totalPages).fill(false));
+      }
+    } else {
+      pages = (await getCustomPages(novel.id)).map(c => c.page);
+    }
+    setPages(pages);
+    setNovel(novel);
   }, []);
 
-  useEffect(() => {
-    const getChapters = async () => {
-      const page = pages[pageIndex];
-      if (novel && page) {
-        const hasUpdatesKey = `${NOVEL_PAGE_UPDATES_PREFIX}_${novel.id}`;
-        const hasUpdates = getMMKVObject<boolean[]>(hasUpdatesKey);
-        let chapters = await _getPageChapters(
+  const getChapters = useCallback(async () => {
+    const page = pages[pageIndex];
+    if (novel && page) {
+      const hasUpdatesKey = `${NOVEL_PAGE_UPDATES_PREFIX}_${novel.id}`;
+      const hasUpdates = getMMKVObject<boolean[]>(hasUpdatesKey);
+      let chapters = await _getPageChapters(
+        novel.id,
+        novelSettings.sort,
+        novelSettings.filter,
+        page,
+      );
+      if (hasUpdates && (hasUpdates[pageIndex] || !chapters.length)) {
+        const sourcePage = await fetchPage(pluginId, novelPath, page);
+        const sourceChapters = sourcePage.chapters.map(ch => {
+          return {
+            ...ch,
+            page,
+          };
+        });
+        await insertChapters(novel.id, sourceChapters);
+        const latestChapkey = `${NOVEL_LATEST_CHAPTER_PREFIX}_${novel.id}`;
+        const latestChapter = getMMKVObject<ChapterItem>(latestChapkey);
+        if (
+          sourcePage.latestChapter &&
+          sourcePage.latestChapter.path !== latestChapter?.path
+        ) {
+          setMMKVObject(latestChapkey, sourcePage.latestChapter);
+          setMMKVObject(
+            hasUpdatesKey,
+            hasUpdates?.map((val, idx) => {
+              if (idx !== pageIndex) {
+                return false;
+              }
+              return true;
+            }),
+          );
+        } else {
+          hasUpdates[pageIndex] = false;
+          setMMKVObject(hasUpdatesKey, hasUpdates);
+        }
+        chapters = await _getPageChapters(
           novel.id,
           novelSettings.sort,
           novelSettings.filter,
           page,
         );
-        if (hasUpdates && (hasUpdates[pageIndex] || !chapters.length)) {
-          const sourcePage = await fetchPage(pluginId, novelPath, page);
-          const sourceChapters = sourcePage.chapters.map(ch => {
-            return {
-              ...ch,
-              page,
-            };
-          });
-          await insertChapters(novel.id, sourceChapters);
-          const latestChapkey = `${NOVEL_LATEST_CHAPTER_PREFIX}_${novel.id}`;
-          const latestChapter = getMMKVObject<ChapterItem>(latestChapkey);
-          if (
-            sourcePage.latestChapter &&
-            sourcePage.latestChapter.path !== latestChapter?.path
-          ) {
-            setMMKVObject(latestChapkey, sourcePage.latestChapter);
-            setMMKVObject(
-              hasUpdatesKey,
-              hasUpdates?.map((val, idx) => {
-                if (idx !== pageIndex) {
-                  return false;
-                }
-                return true;
-              }),
-            );
-          } else {
-            hasUpdates[pageIndex] = false;
-            setMMKVObject(hasUpdatesKey, hasUpdates);
-          }
-          chapters = await _getPageChapters(
-            novel.id,
-            novelSettings.sort,
-            novelSettings.filter,
-            page,
-          );
-        }
-        setChapters(chapters);
       }
-    };
-    getChapters();
+      setChapters(chapters);
+      if (loading) {
+        setLoading(false);
+      }
+    }
   }, [novel, novelSettings, pageIndex]);
+  useEffect(() => {
+    getNovel();
+  }, []);
+  useEffect(() => {
+    getChapters();
+  }, [getChapters]);
 
   return {
     loading,

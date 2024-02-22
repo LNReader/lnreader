@@ -176,7 +176,7 @@ const ChapterDrawer = ({
       pageIndex = 0;
     }
     setPageIndex(pageIndex);
-  }, [chapter]);
+  }, [chapter, pages]);
   return (
     <View style={styles.drawer}>
       <Text style={styles.headerCtn}>{getString('common.chapters')}</Text>
