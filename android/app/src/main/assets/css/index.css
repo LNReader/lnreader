@@ -191,11 +191,16 @@ img {
     transition: 0.3s;
 }
 
-.tts.play::before{
+.tts.speak::before{
     height: 0;
     background-color: var(--theme-primary);
 }
 
-.tts.play > svg{
+.tts.speak > svg{
     fill: var(--theme-primary);
+}
+
+tts.highlight {
+    color: var(--theme-onSecondary);
+    background-color: var(--theme-secondary);
 }

@@ -241,43 +241,98 @@ class TextToSpeech {
     this.reader = reader;
     this.$ = document.getElementById('TextToSpeech');
     this.chapter = document.querySelector('chapter');
-
-    // relaceWith
-    // element stack
-    this.elePath = [];
-    // this.
-
-    this.playing = false;
+    (this.leaf = this.chapter), (this.TTSWrapper = null); // swap these 2 elements
+    this.TTSEle = null;
+    this.speaking = false;
     this.icon = this.$.querySelector('.tts');
     this.$.onclick = () => {
-      this.icon.classList.toggle('play');
-      this.play();
+      if (this.speaking) {
+        this.icon.classList.remove('speak');
+        this.stop();
+      } else {
+        this.icon.classList.add('speak');
+        this.next();
+      }
     };
   }
 
-  play = () => {
-    if (this.playing) {
-      this.playing = false;
-      // TO DO stop TTS
-      return;
+  findLeaf() {
+    while (this.leaf.firstChild) {
+      this.leaf = this.leaf.firstChild;
     }
-    this.playing = true;
-    if (this.elePath.length === 0) {
-      this.elePath = [this.chapter];
+  }
+
+  findNextLeaf() {
+    if (this.chapter.isSameNode(this.leaf)) {
+      this.findLeaf();
+    } else if (this.leaf.nextSibling) {
+      this.leaf = this.leaf.nextSibling;
+      this.findLeaf();
+    } else {
+      this.leaf = this.leaf.parentNode;
+      this.findNextLeaf();
     }
+  }
+
+  readable() {
+    return (
+      this.leaf.nodeName === '#text' && /[^\s\n,.?!;":“”]/.test(this.leaf.data)
+    );
+  }
+
+  findNextTextNode() {
+    if (this.leaf && this.TTSWrapper) {
+      this.TTSWrapper.replaceWith(this.leaf);
+    }
+    do {
+      this.findNextLeaf();
+    } while (!this.readable());
+    this.makeLeafSpeakable();
+  }
+
+  makeLeafSpeakable() {
+    this.TTSWrapper = document.createElement('tts-wrapper');
+    this.TTSWrapper.innerHTML = this.leaf.data.replace(
+      /([^\n,.?!;":“”]+)/g,
+      matched => {
+        if (matched.trim().length) {
+          return `<tts>${matched}</tts>`;
+        }
+        return matched;
+      },
+    );
+    this.TTSEle = this.TTSWrapper.firstElementChild;
+    this.leaf.replaceWith(this.TTSWrapper);
+  }
+
+  next = () => {
+    if (this.TTSEle) {
+      this.TTSEle.classList.remove('highlight');
+    }
+    if (this.speaking) {
+      if (this.TTSEle && this.TTSEle.nextElementSibling) {
+        this.TTSEle = this.TTSEle.nextElementSibling;
+      } else {
+        this.findNextTextNode();
+      }
+    } else {
+      if (!this.TTSEle) {
+        this.findNextTextNode();
+      }
+    }
+    this.speaking = true;
+    this.speak();
   };
 
-  // highlight = index => {
-  //   if (index >= 0 && index < this.elements.length) {
-  //     this.elements[index].classList.add('tts-highlight');
-  //   }
-  // };
+  speak = () => {
+    this.TTSEle.classList.add('highlight');
+    this.reader.post({ type: 'speak', data: this.TTSEle?.innerText.trim() });
+  };
 
-  // unhighlight = index => {
-  //   if (index >= 0 && index < this.elements.length) {
-  //     this.elements[index].classList.remove('tts-highlight');
-  //   }
-  // };
+  stop = () => {
+    this.speaking = false;
+    this.reader.post({ type: 'stop-speak' });
+  };
 }
 try {
   var swipeHandler = new SwipeHandler();
