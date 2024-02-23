@@ -6,15 +6,12 @@ import { Appbar, Text } from 'react-native-paper';
 import { IconButtonV2 } from '../../../components';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { ThemeColors } from '@theme/types';
-import { TextToSpeechStatus } from '@hooks';
 import { ChapterInfo } from '@database/types';
 import { bookmarkChapter } from '@database/queries/ChapterQueries';
 
 interface ReaderAppbarProps {
   novelName: string;
   chapter: ChapterInfo;
-  tts: () => void;
-  textToSpeech: TextToSpeechStatus;
   theme: ThemeColors;
   goBack: () => void;
 }
@@ -22,9 +19,7 @@ interface ReaderAppbarProps {
 const ReaderAppbar = ({
   novelName,
   chapter,
-  tts,
   goBack,
-  textToSpeech,
   theme,
 }: ReaderAppbarProps) => {
   const [bookmarked, setBookmarked] = useState(chapter.bookmark);
@@ -63,21 +58,6 @@ const ReaderAppbar = ({
               {chapter.name}
             </Text>
           </View>
-          <Appbar.Action
-            icon={
-              textToSpeech === TextToSpeechStatus.PROGRESS
-                ? 'pause'
-                : 'volume-high'
-            }
-            size={24}
-            onPress={tts}
-            iconColor={
-              textToSpeech === TextToSpeechStatus.PROGRESS
-                ? theme.primary
-                : theme.onSurface
-            }
-          />
-
           <IconButtonV2
             name={bookmarked ? 'bookmark' : 'bookmark-outline'}
             size={24}

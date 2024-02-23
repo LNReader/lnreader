@@ -79,18 +79,22 @@ img {
 
 .hidden {
     visibility: hidden;
+    width: 0;
+}
+
+#ToolWrapper {
+    position: fixed;
+    top: 25vh;
+    right: 5vw;
 }
 
 #ScrollBar {
-    position: fixed;
-    right: 5vw;
-    top: 27.5vh;
-    height: 45vh;
     width: 2.4rem;
+    height: 45vh;
     border-radius: 1.2rem;
     background-color: var(--theme-surface-0-9);
     touch-action: none;
-    font-size: 16;
+    font-size: 16px;
 }
 
 .scrollbar-item {
@@ -164,7 +168,34 @@ img {
     display: flex;
 }
 
-t-t-s.tts-highlight {
-    color: var(--theme-onSecondary);
-    background-color: var(--theme-secondary);
+.tts {
+    position: relative;
+    bottom: 1rem;
+}
+
+.tts > svg {
+    fill: var(--theme-secondary);
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+
+.tts::before{
+    position: absolute;
+    content: '';
+    height: 40px;
+    width: 2px;
+    background-color: var(--theme-secondary);;
+    transform-origin: top right;
+    transform: translate(4px, 4px) rotate(-45deg);
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+}
+
+.tts.play::before{
+    height: 0;
+    background-color: var(--theme-primary);
+}
+
+.tts.play > svg{
+    fill: var(--theme-primary);
 }

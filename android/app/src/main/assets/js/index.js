@@ -111,12 +111,35 @@ class Reader {
     this.battery.innerText = Math.ceil(level * 100) + '%';
   };
 }
+
+class ToolWrapper {
+  constructor() {
+    this.$ = document.getElementById('ToolWrapper');
+    this.$.onclick = e => {
+      e.stopPropagation();
+    };
+    this.tools = [];
+  }
+  hide = () => {
+    this.$.classList.add('d-none');
+    this.visible = false;
+  };
+  show = () => {
+    this.$.classList.remove('d-none');
+    this.visible = true;
+    for (const tool of this.tools) {
+      tool.onShow?.();
+    }
+  };
+}
+
 class ScrollHandler {
-  constructor(reader) {
+  constructor(reader, toolWrapper) {
     this.reader = reader;
+    this.toolWrapper = toolWrapper;
     this.$ = document.getElementById('ScrollBar');
     this.$.innerHTML = `
-        <div class="scrollbar-item scrollbar-text d-none" id="scrollbar-percentage">
+        <div class="scrollbar-item scrollbar-text" id="scrollbar-percentage">
           0
         </div>
         <div class="scrollbar-item" id="scrollbar-slider">
@@ -137,9 +160,8 @@ class ScrollHandler {
     this.thumb = this.$.querySelector('#scrollbar-thumb-wrapper');
     this.slider = this.$.querySelector('#scrollbar-slider');
     this.sliderHeight = this.slider.clientHeight;
-    this.sliderOffsetY = this.slider.offsetTop + this.$.offsetTop;
+    this.sliderOffsetY = this.slider.getBoundingClientRect().top;
     this.lock = false;
-    this.visible = false; // scrollbar
     window.onscroll = () => !this.lock && this.update();
     this.thumb.ontouchstart = () => (this.lock = true);
     this.thumb.ontouchend = () => (this.lock = false);
@@ -158,7 +180,7 @@ class ScrollHandler {
       ratio = 1;
     }
     const percentage = parseInt(ratio * 100);
-    if (this.visible) {
+    if (this.toolWrapper.visible) {
       this.progress.style.height = percentage + '%';
       this.percentage.innerText = percentage;
     }
@@ -174,16 +196,10 @@ class ScrollHandler {
   };
   refresh = () => {
     this.sliderHeight = this.slider.clientHeight;
-    this.sliderOffsetY = this.slider.offsetTop + this.$.offsetTop;
+    this.sliderOffsetY = this.slider.getBoundingClientRect().top;
   };
-  hide = () => {
-    this.$.classList.add('d-none');
-    this.visible = false;
-  };
-  show = () => {
+  onShow = () => {
     this.reader.refresh();
-    this.visible = true;
-    this.$.classList.remove('d-none');
     this.refresh();
     this.update();
   };
@@ -223,33 +239,53 @@ class SwipeHandler {
 class TextToSpeech {
   constructor(reader) {
     this.reader = reader;
-    this.elements = this.reader.chapter.querySelectorAll('t-t-s');
-    this.previous = null;
+    this.$ = document.getElementById('TextToSpeech');
+    this.chapter = document.querySelector('chapter');
+
+    // relaceWith
+    // element stack
+    this.elePath = [];
+    // this.
+
+    this.playing = false;
+    this.icon = this.$.querySelector('.tts');
+    this.$.onclick = () => {
+      this.icon.classList.toggle('play');
+      this.play();
+    };
   }
-  play = index => {
-    if (index >= 0 && index < this.elements.length) {
-      if (this.previous !== null) {
-        this.unhighlight(this.previous);
-      }
-      this.highlight(index);
-      this.previous = index;
+
+  play = () => {
+    if (this.playing) {
+      this.playing = false;
+      // TO DO stop TTS
+      return;
+    }
+    this.playing = true;
+    if (this.elePath.length === 0) {
+      this.elePath = [this.chapter];
     }
   };
 
-  highlight = index => {
-    if (index >= 0 && index < this.elements.length) {
-      this.elements[index].classList.add('tts-highlight');
-    }
-  };
+  // highlight = index => {
+  //   if (index >= 0 && index < this.elements.length) {
+  //     this.elements[index].classList.add('tts-highlight');
+  //   }
+  // };
 
-  unhighlight = index => {
-    if (index >= 0 && index < this.elements.length) {
-      this.elements[index].classList.remove('tts-highlight');
-    }
-  };
+  // unhighlight = index => {
+  //   if (index >= 0 && index < this.elements.length) {
+  //     this.elements[index].classList.remove('tts-highlight');
+  //   }
+  // };
 }
-
-var swipeHandler = new SwipeHandler();
-var reader = new Reader();
-var scrollHandler = new ScrollHandler(reader);
-var tts = new TextToSpeech(reader);
+try {
+  var swipeHandler = new SwipeHandler();
+  var toolWrapper = new ToolWrapper();
+  var reader = new Reader();
+  var scrollHandler = new ScrollHandler(reader, toolWrapper);
+  var tts = new TextToSpeech(reader);
+  toolWrapper.tools = [scrollHandler, tts];
+} catch (e) {
+  alert(e);
+}

@@ -23,6 +23,7 @@ import {
   initialChapterReaderSettings,
 } from '@hooks/persisted/useSettings';
 import { getBatteryLevelSync } from 'react-native-device-info';
+import * as Speech from 'expo-speech';
 
 type WebViewPostEvent = {
   type: string;
@@ -153,6 +154,18 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
               saveProgress(event.data);
             }
             break;
+          case 'speak':
+            if (event.data && typeof event.data === 'string') {
+              Speech.speak(event.data, {
+                onDone() {
+                  webViewRef.current?.injectJavaScript('tts.next?.()');
+                },
+              });
+            }
+            break;
+          case 'stop-speak':
+            Speech.stop();
+            break;
         }
       }}
       source={{
@@ -173,6 +186,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       --theme-primary: ${theme.primary};
                       --theme-onPrimary: ${theme.onPrimary};
                       --theme-secondary: ${theme.secondary};
+                      --theme-tertiary: ${theme.tertiary};
                       --theme-onSecondary: ${theme.onSecondary};
                       --theme-surface: ${theme.surface};
                       --theme-surface-0-9: ${color(theme.surface)
@@ -210,7 +224,15 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       >
                         ${html}
                       </chapter>
-                      <div class="d-none" id="ScrollBar"></div>
+                      <div class="d-none" id="ToolWrapper">
+                          <div id="TextToSpeech" draggable="true">
+                            <span class="tts">
+                              <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40"><path d="M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm440 40v-322q47 22 73.5 66t26.5 96q0 51-26.5 94.5T560-320Z"/></svg>
+                            </span>
+                          </div>
+                          <div id="ScrollBar"></div>
+                      </div>
+
                       <div id="reader-footer-wrapper">
                           <div id="reader-footer">
                               <div id="reader-battery" class="reader-footer-item"></div>
