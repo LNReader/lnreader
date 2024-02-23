@@ -270,6 +270,9 @@ class TextToSpeech {
       this.findLeaf();
     } else {
       this.leaf = this.leaf.parentNode;
+      if (this.chapter.isSameNode(this.leaf)) {
+        return;
+      }
       this.findNextLeaf();
     }
   }
@@ -286,7 +289,10 @@ class TextToSpeech {
     }
     do {
       this.findNextLeaf();
-    } while (!this.readable());
+    } while (!this.readable() && !this.chapter.isSameNode(this.leaf));
+    if (this.chapter.isSameNode(this.leaf)) {
+      return;
+    }
     this.makeLeafSpeakable();
   }
 
@@ -325,6 +331,9 @@ class TextToSpeech {
   };
 
   speak = () => {
+    if (this.chapter.isSameNode(this.leaf)) {
+      return;
+    }
     this.TTSEle.classList.add('highlight');
     this.reader.post({ type: 'speak', data: this.TTSEle?.innerText.trim() });
   };
