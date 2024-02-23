@@ -2,16 +2,17 @@ import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import * as WebBrowser from 'expo-web-browser';
 import color from 'color';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { ThemeColors } from '@theme/types';
-import { ChapterInfo } from '@database/types';
+import { ChapterInfo, NovelInfo } from '@database/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { useNavigation } from '@react-navigation/native';
 
 interface ChapterFooterProps {
   theme: ThemeColors;
-  chapterUrl: string;
+  novel: NovelInfo;
+  chapter: ChapterInfo;
   nextChapter: ChapterInfo;
   prevChapter: ChapterInfo;
   readerSheetRef: React.RefObject<BottomSheetModalMethods>;
@@ -22,7 +23,8 @@ interface ChapterFooterProps {
 
 const ChapterFooter = ({
   theme,
-  chapterUrl,
+  novel,
+  chapter,
   nextChapter,
   prevChapter,
   readerSheetRef,
@@ -37,6 +39,7 @@ const ChapterFooter = ({
   };
 
   const insets = useSafeAreaInsets();
+  const { navigate } = useNavigation();
 
   return (
     <Animated.View
@@ -68,7 +71,14 @@ const ChapterFooter = ({
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
-          onPress={() => WebBrowser.openBrowserAsync(chapterUrl)}
+          onPress={() =>
+            navigate('WebviewScreen', {
+              name: `${chapter.name} | ${novel.name}`,
+              url: chapter.path,
+              pluginId: novel.pluginId,
+              type: 'chapter',
+            })
+          }
         >
           <IconButton icon="earth" size={26} iconColor={theme.onSurface} />
         </Pressable>

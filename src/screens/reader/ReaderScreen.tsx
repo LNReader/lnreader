@@ -378,7 +378,8 @@ export const ChapterContent = ({
           />
           <ReaderFooter
             theme={theme}
-            chapterUrl={chapter.path}
+            chapter={chapter}
+            novel={novel}
             nextChapter={nextChapter}
             prevChapter={prevChapter}
             readerSheetRef={readerSheetRef}
