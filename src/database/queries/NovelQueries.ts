@@ -339,14 +339,19 @@ const restoreObjectQuery = (table: string, obj: any) => {
   `;
 };
 
-export const _restoreNovelAndChapters = (backupNovel: BackupNovel) => {
+export const _restoreNovelAndChapters = async (backupNovel: BackupNovel) => {
   const { chapters, ...novel } = backupNovel;
+  await new Promise(resolve => {
+    db.transaction(tx => {
+      tx.executeSql('DELETE FROM Novel WHERE id = ?', [novel.id]);
+      tx.executeSql(
+        restoreObjectQuery('Novel', novel),
+        Object.values(novel) as string[] | number[],
+        () => resolve(null),
+      );
+    });
+  });
   db.transaction(tx => {
-    tx.executeSql('DELETE FROM Novel WHERE id = ?', [novel.id]);
-    tx.executeSql(
-      restoreObjectQuery('Novel', novel),
-      Object.values(novel) as string[] | number[],
-    );
     for (const chapter of chapters) {
       tx.executeSql(
         restoreObjectQuery('Chapter', chapter),

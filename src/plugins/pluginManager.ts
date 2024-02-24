@@ -12,7 +12,6 @@ import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
 import { fetchApi, fetchFile, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
 import { encode, decode } from 'urlencode';
-import { getString } from '@strings/translations';
 import TextFile from '@native/TextFile';
 
 const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
@@ -131,15 +130,7 @@ const fetchPlugins = async () => {
 
   const availablePlugins: Record<Language, Array<PluginItem>> = await fetch(
     `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/beta-dist/.dist/plugins.min.json`,
-  )
-    .then(res => res.json())
-    .catch(() => {
-      throw new Error(
-        `${getString(
-          'browseScreen.pluginsHostError',
-        )}: ${githubUsername}/${githubRepository}`,
-      );
-    });
+  ).then(res => res.json());
   return availablePlugins;
 };
 

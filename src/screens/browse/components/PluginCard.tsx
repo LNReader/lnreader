@@ -150,7 +150,6 @@ const styles = StyleSheet.create({
   addition: {
     textAlign: 'left',
     fontSize: 12,
-    fontWeight: '300',
   },
   name: {
     fontWeight: 'bold',

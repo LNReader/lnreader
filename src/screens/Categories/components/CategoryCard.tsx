@@ -81,7 +81,9 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
             color={theme.onSurface}
             onPress={() => updateCategorySort(categoryIndex, categoryIndex - 1)}
             theme={theme}
-            disabled={categoryIndex <= 0}
+            disabled={
+              categoryIndex <= 0 || (categoryIndex === 1 && category.id === 2)
+            }
           />
           <IconButton
             name="menu-down"
@@ -99,13 +101,15 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
             onPress={showCategoryModal}
             theme={theme}
           />
-          <IconButton
-            name="delete-outline"
-            color={theme.onSurface}
-            style={styles.manageBtn}
-            onPress={showDeleteCategoryModal}
-            theme={theme}
-          />
+          {categoryIndex !== 0 && category.id !== 2 && (
+            <IconButton
+              name="delete-outline"
+              color={theme.onSurface}
+              style={styles.manageBtn}
+              onPress={showDeleteCategoryModal}
+              theme={theme}
+            />
+          )}
         </View>
       </View>
       <Portal>

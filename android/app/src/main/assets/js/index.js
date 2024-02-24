@@ -251,12 +251,12 @@ class TextToSpeech {
         this.stop();
       } else {
         this.icon.classList.add('speak');
-        const selected = window.getSelection().anchorNode;
-        if (selected) {
+        const selection = window.getSelection();
+        if (selection.type === 'Range') {
           if (this.leaf && this.TTSWrapper) {
             this.TTSWrapper.replaceWith(this.leaf);
           }
-          this.leaf = selected;
+          this.leaf = selection.anchorNode;
           this.makeLeafSpeakable();
           this.speak();
         } else {
