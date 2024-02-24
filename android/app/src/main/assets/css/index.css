@@ -5,6 +5,15 @@ html {
     word-wrap: break-word;
 }
 
+::selection {
+    color: var(--theme-onSecondary);
+    background-color: var(--theme-secondary);
+}
+::-moz-selection {
+    color: var(--theme-onSecondary);
+    background-color: var(--theme-secondary);
+}
+
 body {
     padding-left: var(--readerSettings-padding);
     padding-right: var(--readerSettings-padding);

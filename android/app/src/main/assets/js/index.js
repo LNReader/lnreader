@@ -251,7 +251,17 @@ class TextToSpeech {
         this.stop();
       } else {
         this.icon.classList.add('speak');
-        this.next();
+        const selected = window.getSelection().anchorNode;
+        if (selected) {
+          if (this.leaf && this.TTSWrapper) {
+            this.TTSWrapper.replaceWith(this.leaf);
+          }
+          this.leaf = selected;
+          this.makeLeafSpeakable();
+          this.speak();
+        } else {
+          this.next();
+        }
       }
     };
   }
@@ -286,6 +296,7 @@ class TextToSpeech {
   findNextTextNode() {
     if (this.leaf && this.TTSWrapper) {
       this.TTSWrapper.replaceWith(this.leaf);
+      this.TTSWrapper = null;
     }
     do {
       this.findNextLeaf();
@@ -326,11 +337,11 @@ class TextToSpeech {
         this.findNextTextNode();
       }
     }
-    this.speaking = true;
     this.speak();
   };
 
   speak = () => {
+    this.speaking = true;
     if (this.chapter.isSameNode(this.leaf)) {
       return;
     }
