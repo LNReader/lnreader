@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 //import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ProgressBar, Appbar as PaperAppbar } from 'react-native-paper';
