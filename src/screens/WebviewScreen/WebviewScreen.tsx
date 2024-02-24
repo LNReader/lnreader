@@ -28,19 +28,19 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
 
   return (
     <>
-      <Appbar.Header style={{ backgroundColor: theme.surface }}>
-        <Appbar.BackAction
+      <PaperAppbar.Header style={{ backgroundColor: theme.surface }}>
+        <PaperAppbar.BackAction
           iconColor={theme.onSurface}
           onPress={() => navigation.goBack()}
         />
-        <Appbar.Content title={name} />
-        <Appbar.Action
+        <PaperAppbar.Content title={name} />
+        <PaperAppbar.Action
           icon="arrow-left"
           iconColor={theme.onSurface}
           disabled={!canGoBack}
           onPress={() => webViewRef.current?.goBack()}
         />
-        <Appbar.Action
+        <PaperAppbar.Action
           icon="arrow-right"
           iconColor={theme.onSurface}
           disabled={!canGoForward}
@@ -49,8 +49,8 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
             console.log('goForward');
           }}
         />
-        <Appbar.Action icon="dots-vertical" onPress={() => console.log('1')} />
-      </Appbar.Header>
+        <PaperAppbar.Action icon="dots-vertical" onPress={() => console.log('1')} />
+      </PaperAppbar.Header>
       {progress !== 1 && (
         <ProgressBar color={theme.primary} progress={progress} />
       )}
