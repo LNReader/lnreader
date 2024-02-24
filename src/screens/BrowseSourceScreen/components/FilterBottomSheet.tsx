@@ -258,10 +258,10 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
           />
           <Button
             title={getString('common.filter')}
-            textColor={theme.onSurface}
+            textColor={theme.onPrimary}
             onPress={() => {
               setFilters(selectedFilters);
-              filterSheetRef?.current?.collapse();
+              filterSheetRef?.current?.close();
             }}
             mode="contained"
           />
