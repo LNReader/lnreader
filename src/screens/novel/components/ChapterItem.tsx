@@ -1,16 +1,13 @@
-import React, { memo, ReactNode, useMemo } from 'react';
+import React, { memo, ReactNode } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import color from 'color';
 import {
   ChapterBookmarkButton,
   DownloadButton,
 } from './Chapter/ChapterDownloadButtons';
-import { parseChapterNumber } from '@utils/parseChapterNumber';
-
 import { ThemeColors } from '@theme/types';
 import { ChapterInfo } from '@database/types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import dayjs from 'dayjs';
 import { getString } from '@strings/translations';
 import { useBoolean } from '@hooks';
 
@@ -54,13 +51,6 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
     setTrue: showMenu,
     setFalse: hideMenu,
   } = useBoolean();
-  const chapNum = useMemo(() => {
-    return chapterNumber ? chapterNumber : parseChapterNumber(novelName, name);
-  }, []);
-  const localeTime = useMemo(() => {
-    const parsedTime = dayjs(releaseTime);
-    return parsedTime.isValid() ? parsedTime.format('LL') : releaseTime;
-  }, []);
   return (
     <Pressable
       key={'chapterItem' + id}
@@ -118,11 +108,13 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             >
               {showChapterTitles
                 ? name
-                : getString('novelScreen.chapterChapnum', { num: chapNum })}
+                : getString('novelScreen.chapterChapnum', {
+                    num: chapterNumber,
+                  })}
             </Text>
           </View>
           <View style={styles.textRow}>
-            {localeTime && !isUpdateCard ? (
+            {releaseTime && !isUpdateCard ? (
               <Text
                 style={[
                   {
@@ -136,7 +128,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                 ]}
                 numberOfLines={1}
               >
-                {localeTime}
+                {releaseTime}
               </Text>
             ) : null}
             {!isUpdateCard && progress && progress > 0 && chapter.unread ? (
