@@ -179,7 +179,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
             )}
             inactiveColor={theme.secondary}
             activeColor={theme.primary}
-            pressColor={theme.rippleColor}
+            android_ripple={{ color: theme.rippleColor }}
           />
         )}
       />
