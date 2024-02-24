@@ -6,7 +6,7 @@ import { useTheme } from '@hooks/persisted';
 import { WebviewScreenProps } from '@navigators/types';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
 import { expandURL } from '@services/plugin/fetch';
-import { Appbar } from './components/Appbar';
+import Appbar from './components/Appbar';
 
 const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const { name, url, pluginId, isNovel } = route.params;
