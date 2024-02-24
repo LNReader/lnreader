@@ -56,9 +56,13 @@ const serializePlugin = async (
   rawCode: string,
   installed: boolean,
 ) => {
-  if (!serializedPlugins && (await RNFS.exists(pluginsFilePath))) {
-    const content = await TextFile.readFile(pluginsFilePath);
-    serializedPlugins = JSON.parse(content);
+  if (!serializedPlugins) {
+    if (await RNFS.exists(pluginsFilePath)) {
+      const content = await TextFile.readFile(pluginsFilePath);
+      serializedPlugins = JSON.parse(content);
+    } else {
+      serializedPlugins = {};
+    }
   }
   if (installed) {
     serializedPlugins[pluginId] = rawCode;
@@ -71,8 +75,8 @@ const serializePlugin = async (
   await TextFile.writeFile(pluginsFilePath, JSON.stringify(serializedPlugins));
 };
 
-const deserializePlugins = async () => {
-  await TextFile.readFile(pluginsFilePath)
+const deserializePlugins = () => {
+  return TextFile.readFile(pluginsFilePath)
     .then(content => {
       serializedPlugins = JSON.parse(content);
       for (const script of Object.values(serializedPlugins)) {

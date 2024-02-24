@@ -39,7 +39,7 @@ import ReaderFooter from './components/ReaderFooter';
 
 import { insertHistory } from '@database/queries/HistoryQueries';
 import WebViewReader from './components/WebViewReader';
-import { useFullscreenMode, useTextToSpeech } from '@hooks';
+import { useFullscreenMode } from '@hooks';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { defaultTo } from 'lodash-es';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
@@ -249,10 +249,10 @@ export const ChapterContent = ({
 
   const hideHeader = () => {
     if (!hidden) {
-      webViewRef.current?.injectJavaScript('scrollHandler.hide()');
+      webViewRef.current?.injectJavaScript('toolWrapper.hide()');
       setImmersiveMode();
     } else {
-      webViewRef.current?.injectJavaScript('scrollHandler.show()');
+      webViewRef.current?.injectJavaScript('toolWrapper.show()');
       showStatusAndNavBar();
     }
     setHidden(!hidden);
@@ -300,13 +300,6 @@ export const ChapterContent = ({
       }),
     [sourceChapter.chapterText],
   );
-
-  const [ttsStatus, startTts] = useTextToSpeech(chapterText, webViewRef, () => {
-    if (!incognitoMode) {
-      markChapterRead(chapter.id);
-      updateTracker();
-    }
-  });
 
   const openDrawer = useCallback(() => {
     drawerRef.current?.openDrawer();
@@ -367,9 +360,7 @@ export const ChapterContent = ({
           <ReaderAppbar
             novelName={novel.name}
             chapter={chapter}
-            tts={startTts}
             goBack={navigation.goBack}
-            textToSpeech={ttsStatus}
             theme={theme}
           />
           <ReaderFooter
