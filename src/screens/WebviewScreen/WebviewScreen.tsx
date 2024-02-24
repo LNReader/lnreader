@@ -10,18 +10,18 @@ import Appbar from './components/Appbar';
 
 const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const { name, url, pluginId, isNovel } = route.params;
+  const uri = pluginId ? expandURL(pluginId, isNovel || false, url) : url;
 
   const theme = useTheme();
   const webViewRef = useRef<WebView | null>(null);
 
   const [progress, setProgress] = useState(0);
   const [title, setTitle] = useState(name || '');
-  const [currentUrl, setCurrentUrl] = useState('');
+  const [currentUrl, setCurrentUrl] = useState(uri);
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
 
   const handleNavigation = (e: WebViewNavigation) => {
-    setTitle(e.title);
     setCurrentUrl(e.url);
     setCanGoBack(e.canGoBack);
     setCanGoForward(e.canGoForward);
@@ -47,11 +47,12 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         startInLoadingState
         userAgent={getUserAgent()}
         ref={webViewRef}
-        source={{
-          uri: pluginId ? expandURL(pluginId, isNovel || false, url) : url,
-        }}
+        source={{ uri }}
         onLoadProgress={({ nativeEvent }) => {
           setProgress(nativeEvent.progress);
+        }}
+        onLoadEnd={({ nativeEvent }) => {
+          setTitle(nativeEvent.title);
         }}
         onNavigationStateChange={handleNavigation}
       />

@@ -62,12 +62,12 @@ const Appbar: React.FC<AppbarProps> = ({
         <Menu.Item
           title={getString('webview.refresh')}
           titleStyle={{ color: theme.onSurface }}
-          onPress={() => webViewRef.current?.reload()}
+          onPress={() => webView.current?.reload()}
         />
         <Menu.Item
           title={getString('webview.share')}
           titleStyle={{ color: theme.onSurface }}
-          onPress={() => Share.share(currentUrl)}
+          onPress={() => Share.share({ message: currentUrl })}
         />
         <Menu.Item
           title={getString('webview.openInBrowser')}
