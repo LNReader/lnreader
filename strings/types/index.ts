@@ -115,7 +115,6 @@ export interface StringMap {
   'browseScreen.migration.selectSourceDesc': 'string';
   'browseScreen.noSource': 'string';
   'browseScreen.pinned': 'string';
-  'browseScreen.pluginsHostError': 'string';
   'browseScreen.removeFromLibrary': 'string';
   'browseScreen.searchbar': 'string';
   'browseScreen.selectNovel': 'string';
