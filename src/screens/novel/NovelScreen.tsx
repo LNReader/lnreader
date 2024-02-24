@@ -349,7 +349,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                     }}
                     onPress={() =>
                       Share.share({
-                        message: expandURL(novel.pluginId, 'novel', novel.path),
+                        message: expandURL(novel.pluginId, true, novel.path),
                       })
                     }
                   />

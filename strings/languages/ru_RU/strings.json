@@ -61,6 +61,11 @@
     "sort": "Сортировка",
     "submit": "Продолжить"
   },
+  "webview": {
+    "refresh": "Обновить",
+    "share": "Поделиться",
+    "openInBrowser": "Открыть в браузере"
+  },
   "date": {
     "calendar": {
       "lastDay": "[Вчера]",

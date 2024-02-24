@@ -59,11 +59,7 @@ export const fetchPage = async (
   return res;
 };
 
-export const expandURL = (
-  pluginId: string,
-  type: 'novel' | 'chapter',
-  slug: string,
-) => {
+export const expandURL = (pluginId: string, isNovel: boolean, slug: string) => {
   if (isUrlAbsolute(slug)) {
     return slug;
   }
@@ -75,7 +71,7 @@ export const expandURL = (
     return plugin.site + slug;
   }
   try {
-    const res = plugin.expandURL(type, slug);
+    const res = plugin.expandURL(isNovel, slug);
     return res;
   } catch (e) {
     throw e;

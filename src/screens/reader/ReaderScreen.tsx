@@ -340,7 +340,6 @@ export const ChapterContent = ({
                 name: `${chapter.name} | ${novel.name}`,
                 url: chapter.path,
                 pluginId: novel.pluginId,
-                type: 'chapter',
               }),
           },
         ]}

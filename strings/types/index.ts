@@ -183,6 +183,9 @@ export interface StringMap {
   'common.signOut': 'string';
   'common.sort': 'string';
   'common.submit': 'string';
+  'webview.refresh': 'string';
+  'webview.share': 'string';
+  'webview.openInBrowser': 'string';
   'date.calendar.lastDay': 'string';
   'date.calendar.lastWeek': 'string';
   'date.calendar.nextDay': 'string';
