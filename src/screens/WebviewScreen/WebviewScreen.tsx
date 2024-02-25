@@ -5,12 +5,12 @@ import { ProgressBar } from 'react-native-paper';
 import { useTheme } from '@hooks/persisted';
 import { WebviewScreenProps } from '@navigators/types';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
-import { expandURL } from '@services/plugin/fetch';
+import { resolveUrl } from '@services/plugin/fetch';
 import Appbar from './components/Appbar';
 
 const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const { name, url, pluginId, isNovel } = route.params;
-  const uri = pluginId ? expandURL(pluginId, isNovel || false, url) : url;
+  const uri = pluginId ? resolveUrl(pluginId, url, isNovel) : url;
 
   const theme = useTheme();
   const webViewRef = useRef<WebView | null>(null);

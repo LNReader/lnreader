@@ -59,16 +59,20 @@ export const fetchPage = async (
   return res;
 };
 
-export const expandURL = (pluginId: string, isNovel: boolean, slug: string) => {
-  if (isUrlAbsolute(slug)) {
-    return slug;
+export const resolveUrl = (
+  pluginId: string,
+  path: string,
+  isNovel?: boolean,
+) => {
+  if (isUrlAbsolute(path)) {
+    return path;
   }
   const plugin = getPlugin(pluginId);
   if (!plugin) {
     throw new Error(`Unknown plugin: ${pluginId}`);
   }
   if (!plugin.expandURL) {
-    return plugin.site + slug;
+    return plugin.site + path;
   }
-    return plugin.expandURL(isNovel, slug);
+  return plugin.expandURL(path, isNovel);
 };

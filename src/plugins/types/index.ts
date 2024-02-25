@@ -68,5 +68,5 @@ export interface Plugin extends PluginItem {
   parseChapter: (chapterPath: string) => Promise<string>;
   searchNovels: (searchTerm: string, pageNo: number) => Promise<NovelItem[]>;
   fetchImage: (url: string) => Promise<string>;
-  expandURL?: (isNovel: boolean, slug: string) => string;
+  resolveUrl?: (path: string, isNovel?: boolean) => string;
 }

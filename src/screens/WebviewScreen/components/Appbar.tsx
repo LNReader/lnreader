@@ -78,14 +78,6 @@ const Appbar: React.FC<AppbarProps> = ({
           onPress={() => WebBrowser.openBrowserAsync(currentUrl)}
         />
         <Menu.Item
-          title={getString('webview.clearCookies')}
-          titleStyle={{ color: theme.onSurface }}
-          onPress={() => {
-            CookieManager.clearAll();
-            showToast(getString('webview.cookiesCleared'));
-          }}
-        />
-        <Menu.Item
           title={getString('webview.clearData')}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => {

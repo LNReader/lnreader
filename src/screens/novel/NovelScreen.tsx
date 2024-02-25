@@ -48,7 +48,7 @@ import { getString } from '@strings/translations';
 import NovelDrawer from './components/NovelDrawer';
 import { updateNovel } from '@services/updates/LibraryUpdateQueries';
 import { useFocusEffect } from '@react-navigation/native';
-import { expandURL } from '@services/plugin/fetch';
+import { resolveUrl } from '@services/plugin/fetch';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { name, path, pluginId } = route.params;
@@ -349,7 +349,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                     }}
                     onPress={() =>
                       Share.share({
-                        message: expandURL(novel.pluginId, true, novel.path),
+                        message: resolveUrl(novel.pluginId, novel.path, true),
                       })
                     }
                   />
