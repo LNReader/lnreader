@@ -4,6 +4,7 @@ import { getUpdatesFromDb } from '@database/queries/ChapterQueries';
 import { Update } from '@database/types';
 import { useMMKVBoolean, useMMKVString } from 'react-native-mmkv';
 import dayjs from 'dayjs';
+import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 export const SHOW_LAST_UPDATE_TIME = 'SHOW_LAST_UPDATE_TIME';
 export const LAST_UPDATE_TIME = 'LAST_UPDATE_TIME';
@@ -33,7 +34,20 @@ export const useUpdates = () => {
   const getUpdates = () =>
     getUpdatesFromDb()
       .then(res => {
-        setUpdates(res);
+        setUpdates(
+          res.map(update => {
+            const parsedTime = dayjs(update.releaseTime);
+            return {
+              ...update,
+              releaseTime: parsedTime.isValid()
+                ? parsedTime.format('LL')
+                : update.releaseTime,
+              chapterNumber: update.chapterNumber
+                ? update.chapterNumber
+                : parseChapterNumber(update.novelName, update.name),
+            };
+          }),
+        );
         if (res.length) {
           if (
             !lastUpdateTime ||

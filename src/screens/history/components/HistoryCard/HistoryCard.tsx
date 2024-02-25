@@ -1,11 +1,10 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import dayjs from 'dayjs';
 import { Image } from 'react-native';
 
 import { IconButtonV2 } from '@components';
-import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import { History, NovelInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
@@ -26,20 +25,6 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
   handleRemoveFromHistory,
   theme,
 }) => {
-  const chapterNoAndTime = useMemo(
-    () =>
-      `${getString('historyScreen.chapter')} ${parseChapterNumber(
-        history.novelName,
-        history.name,
-      )} • ${dayjs(history.readTime).format('LT').toUpperCase()}` +
-      `${
-        history.progress && history.progress > 0
-          ? ' • ' + history.progress + '%'
-          : ''
-      }`,
-    [history, history.readTime],
-  );
-
   return (
     <Pressable
       style={styles.container}
@@ -75,7 +60,14 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             {history.novelName}
           </Text>
           <Text style={{ color: theme.onSurfaceVariant }}>
-            {chapterNoAndTime}
+            {`${getString('historyScreen.chapter')} ${
+              history.chapterNumber
+            } • ${dayjs(history.readTime).format('LT').toUpperCase()}` +
+              `${
+                history.progress && history.progress > 0
+                  ? ' • ' + history.progress + '%'
+                  : ''
+              }`}
           </Text>
         </View>
       </View>
