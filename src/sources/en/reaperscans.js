@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import { Status } from '../helpers/constants';
+import { fetchHtml } from '@utils/fetch/fetch';
 
 const baseUrl = 'https://reaperscans.com';
 
@@ -7,28 +8,26 @@ const sourceId = 67;
 const sourceName = 'ReaperScans';
 
 const popularNovels = async page => {
-  let url = `${baseUrl}/all-series/novels/`;
+  let url = `${baseUrl}/novels/`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({
+    url,
+    sourceId,
+    init: { headers: { 'User-Agent': undefined } },
+  });
 
   const loadedCheerio = cheerio.load(body);
 
   let novels = [];
 
-  loadedCheerio('.page-item-detail').each(function () {
-    const novelName = loadedCheerio(this)
-      .find('.item-summary h3')
-      .text()
-      .trim();
-    const novelCover = loadedCheerio(this)
-      .find('.img-responsive')
-      .attr('data-src');
+  loadedCheerio('.flex-1').each(function () {
+    const novelName = loadedCheerio(this).find('a.text-sm').text().trim();
+    const novelCover = loadedCheerio(this).find('a > img').attr('src');
 
     let novelUrl = loadedCheerio(this).find('div > a').attr('href');
 
     if (novelUrl) {
-      novelUrl = novelUrl.replace(`${baseUrl}/series/`, '');
+      novelUrl = novelUrl.replace(`${baseUrl}/novels/`, '');
 
       novels.push({
         sourceId,
@@ -43,10 +42,13 @@ const popularNovels = async page => {
 };
 
 const parseNovelAndChapters = async novelUrl => {
-  const url = `${baseUrl}/series/${novelUrl}`;
+  const url = `${baseUrl}/novels/${novelUrl}`;
 
-  const result = await fetch(url);
-  const body = await result.text();
+  const body = await fetchHtml({
+    url,
+    sourceId,
+    init: { headers: { 'User-Agent': undefined } },
+  });
 
   const loadedCheerio = cheerio.load(body);
 
@@ -57,20 +59,15 @@ const parseNovelAndChapters = async novelUrl => {
     novelUrl,
   };
 
-  loadedCheerio('.post-title > h3 > span').remove();
-
   novel.novelUrl = novelUrl;
 
-  novel.novelName = loadedCheerio('.post-title > h1').text().trim();
+  novel.novelName = loadedCheerio('.p-2 > .container h1').text().trim();
 
-  novel.novelCover = loadedCheerio('.summary_image > a > img').attr('data-src');
+  novel.novelCover = loadedCheerio('.p-2  > .container img').attr('src');
 
-  loadedCheerio('.post-content_item').each(function () {
-    const detailName = loadedCheerio(this)
-      .find('.summary-heading > h5')
-      .text()
-      .trim();
-    const detail = loadedCheerio(this).find('.summary-content').text().trim();
+  loadedCheerio('dl.mt-2 > div.py-2').each(function () {
+    const detailName = loadedCheerio(this).find('dt').text().trim();
+    const detail = loadedCheerio(this).find('dd').text().trim();
 
     switch (detailName) {
       case 'Genre(s)':
@@ -79,38 +76,60 @@ const parseNovelAndChapters = async novelUrl => {
       case 'Author(s)':
         novel.author = detail;
         break;
-      case 'Status':
-        novel.status = detail.includes('OnGoing')
+      case 'Release Status':
+        novel.status = detail.includes('Ongoing')
           ? Status.ONGOING
           : Status.COMPLETED;
         break;
     }
   });
 
-  loadedCheerio('.description-summary > div.summary__content')
-    .find('em')
-    .remove();
-  loadedCheerio('.premium-block').remove();
+  novel.summary = loadedCheerio('div.p-4 > p.prose').text().trim();
 
-  novel.summary = loadedCheerio('div.summary__content').text().trim();
+  let novelLastPage = 1;
+  loadedCheerio('nav span.inline-flex button').each(function () {
+    let number = loadedCheerio(this).text().trim();
+    if (!isNaN(number) && Number(number) > novelLastPage) {
+      novelLastPage = Number(number);
+    }
+  });
 
   let novelChapters = [];
 
-  loadedCheerio('.wp-manga-chapter').each(function () {
-    loadedCheerio('i').remove();
+  let tableOfContents = [];
+  tableOfContents.push(loadedCheerio);
 
-    const chapterName = loadedCheerio(this).find('a').text().trim();
-    const releaseDate = null;
+  for (let i = 2; i <= novelLastPage; i++) {
+    let pUrl = url + '?page=' + i;
+    let pResult = await fetch(pUrl);
+    let pBody = await pResult.text();
 
-    const chapterUrl = loadedCheerio(this)
-      .find('a')
-      .attr('href')
-      .replace(url, '');
+    tableOfContents.push(cheerio.load(pBody));
+  }
 
-    const chapter = { chapterName, releaseDate, chapterUrl };
+  for (let page of tableOfContents) {
+    page('.mt-6 > .pb-4 li').each(function () {
+      const chapterName = page(this)
+        .find('div.text-sm > p.truncate')
+        .text()
+        .trim();
+      const releaseDate = page(this)
+        .find('div.mt-2 p')
+        .text()
+        .trim()
+        .replace('Released', '')
+        .trim();
 
-    novelChapters.push(chapter);
-  });
+      const chapterUrl = page(this)
+        .find('a')
+        .attr('href')
+        .replace(url + '/chapters/', '');
+
+      const chapter = { chapterName, releaseDate, chapterUrl };
+
+      novelChapters.push(chapter);
+    });
+  }
 
   novel.chapters = novelChapters.reverse();
 
@@ -118,15 +137,15 @@ const parseNovelAndChapters = async novelUrl => {
 };
 
 const parseChapter = async (novelUrl, chapterUrl) => {
-  const url = `${baseUrl}/series/${novelUrl}/${chapterUrl}`;
+  const url = `${baseUrl}/novels/${novelUrl}/chapters/${chapterUrl}`;
 
   const result = await fetch(url);
   const body = await result.text();
 
   const loadedCheerio = cheerio.load(body);
 
-  const chapterName = loadedCheerio('#chapter-heading').text();
-  let chapterText = loadedCheerio('.reading-content').html();
+  const chapterName = loadedCheerio('nav.px-4 > div.mb-2').text();
+  let chapterText = loadedCheerio('article').html();
   const chapter = {
     sourceId,
     novelUrl,
@@ -149,10 +168,7 @@ const searchNovels = async searchTerm => {
   let novels = [];
 
   loadedCheerio('.c-tabs-item__content').each(function () {
-    const novelName = loadedCheerio(this)
-      .find('.post-title > h3')
-      .text()
-      .trim();
+    const novelName = loadedCheerio(this).find('.container > h3').text().trim();
     const novelCover = loadedCheerio(this)
       .find('div > div > a > img')
       .attr('data-src');
