@@ -193,7 +193,7 @@ export const deleteCachedNovels = async () => {
 };
 
 const restoreFromBackupQuery =
-  'INSERT OR REPLACE INTO Novel (path, name, pluginId, cover, summary, author, artist, status, genres) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT OR REPLACE INTO Novel (path, name, pluginId, cover, summary, author, artist, status, genres, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const restoreLibrary = async (novel: NovelInfo) => {
   const sourceNovel = await fetchNovel(novel.pluginId, novel.path).catch(e => {
@@ -213,6 +213,7 @@ export const restoreLibrary = async (novel: NovelInfo) => {
           novel.artist || '',
           novel.status || '',
           novel.genres || '',
+          sourceNovel.totalPages || 0,
         ],
         async (txObj, { insertId }) => resolve(insertId),
       ),
