@@ -115,7 +115,7 @@ const initialAppSettings: AppSettings = {
 
   showHistoryTab: true,
   showUpdatesTab: true,
-  showLabelsInNav: false,
+  showLabelsInNav: true,
   useFabForContinueReading: false,
 
   /**
