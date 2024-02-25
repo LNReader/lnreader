@@ -25,6 +25,7 @@ import { Appbar, Button, List } from '@components';
 import { AdvancedSettingsScreenProps } from '@navigators/types';
 import { StyleSheet, View } from 'react-native';
 import { getUserAgentSync } from 'react-native-device-info';
+import CookieManager from '@react-native-cookies/cookies';
 
 const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   const theme = useTheme();
