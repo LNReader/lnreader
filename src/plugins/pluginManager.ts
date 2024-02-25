@@ -129,7 +129,7 @@ const fetchPlugins = (): Promise<Record<Language, Array<PluginItem>>> => {
   const githubRepository = 'lnreader-sources';
 
   return fetch(
-    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/beta-dist/.dist/plugins.min.json`,
+    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/dist/.dist/plugins.min.json`,
   ).then(res => res.json());
 };
 
