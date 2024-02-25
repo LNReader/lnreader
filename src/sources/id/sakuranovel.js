@@ -101,7 +101,7 @@ const parseChapter = async (novelUrl, chapterUrl) => {
   let loadedCheerio = cheerio.load(body);
 
   const chapterName = loadedCheerio('.title-chapter').text();
-  const chapterText = loadedCheerio('.reader-setting').next().next().html();
+  const chapterText = loadedCheerio('div:contains("Daftar Isi")').next().html();
 
   const chapter = {
     sourceId,
