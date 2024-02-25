@@ -28,6 +28,11 @@ import { getUserAgentSync } from 'react-native-device-info';
 
 const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   const theme = useTheme();
+  const clearCookies = () => {
+    CookieManager.clearAll();
+    showToast(getString('webview.cookiesCleared'));
+  };
+
   const { userAgent, setUserAgent } = useUserAgent();
   const [userAgentInput, setUserAgentInput] = useState(userAgent);
   /**
@@ -81,6 +86,11 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
         <List.Item
           title={getString('advancedSettingsScreen.deleteReadChapters')}
           onPress={showDeleteReadChaptersDialog}
+          theme={theme}
+        />
+        <List.Item
+          title={getString('webview.clearCookies')}
+          onPress={clearCookies}
           theme={theme}
         />
         <List.Item

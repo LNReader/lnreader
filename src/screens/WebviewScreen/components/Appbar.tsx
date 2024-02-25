@@ -3,10 +3,12 @@ import { Share } from 'react-native';
 import WebView from 'react-native-webview';
 import { Appbar as PaperAppbar, Menu } from 'react-native-paper';
 import * as WebBrowser from 'expo-web-browser';
+import CookieManager from '@react-native-cookies/cookies';
 
 import { WebviewScreenProps } from '@navigators/types';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
+import { showToast } from '@utils/showToast';
 
 interface AppbarProps {
   title: string;
@@ -32,6 +34,7 @@ const Appbar: React.FC<AppbarProps> = ({
   return (
     <PaperAppbar.Header style={{ backgroundColor: theme.surface }}>
       <PaperAppbar.BackAction
+        icon="close"
         iconColor={theme.onSurface}
         onPress={() => navigation.goBack()}
       />
@@ -73,6 +76,22 @@ const Appbar: React.FC<AppbarProps> = ({
           title={getString('webview.openInBrowser')}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => WebBrowser.openBrowserAsync(currentUrl)}
+        />
+        <Menu.Item
+          title={getString('webview.clearCookies')}
+          titleStyle={{ color: theme.onSurface }}
+          onPress={() => {
+            CookieManager.clearAll();
+            showToast(getString('webview.cookiesCleared'));
+          }}
+        />
+        <Menu.Item
+          title={getString('webview.clearData')}
+          titleStyle={{ color: theme.onSurface }}
+          onPress={() => {
+            webView.current?.clearCache(true);
+            showToast(getString('webview.dataDeleted'));
+          }}
         />
       </Menu>
     </PaperAppbar.Header>
