@@ -70,10 +70,5 @@ export const expandURL = (pluginId: string, isNovel: boolean, slug: string) => {
   if (!plugin.expandURL) {
     return plugin.site + slug;
   }
-  try {
-    const res = plugin.expandURL(isNovel, slug);
-    return res;
-  } catch (e) {
-    throw e;
-  }
+    return plugin.expandURL(isNovel, slug);
 };
