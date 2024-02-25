@@ -6,8 +6,8 @@ import { FilterInputs, SourceFilter } from '../types/filterTypes';
 
 const sourceId = 2;
 const sourceName = 'ReadLightNovel';
-const baseUrl = 'https://www.readlightnovel.me';
-const searchUrl = 'https://www.readlightnovel.me/detailed-search-210922';
+const baseUrl = 'https://www.readlightnovel.today';
+const searchUrl = 'https://www.readlightnovel.today/detailed-search-210922';
 
 const popularNovels = async (page: number, options?: SourceOptions) => {
   const url = `${baseUrl}/${
@@ -91,37 +91,22 @@ const parseNovelAndChapters = async (novelUrl: string) => {
     }
   });
 
-  let chapters: SourceChapterItem[] = [];
+  const chapters: SourceChapterItem[] = [];
 
-  loadedCheerio('.panel').each(function () {
-    let volumeName = loadedCheerio(this).find('h4.panel-title').text();
+  loadedCheerio('ul.chapter-chs > li > a').each(function () {
+    const chapterUrl = loadedCheerio(this)
+      .attr('href')
+      ?.replace?.(`${baseUrl}/${novelUrl}/`, '');
 
-    loadedCheerio(this)
-      .find('ul.chapter-chs > li')
-      .each(function () {
-        const chapterUrl = loadedCheerio(this)
-          .find('a')
-          .attr('href')
-          ?.replace(`${baseUrl}/${novelUrl}/`, '');
+    if (chapterUrl) {
+      const chapterName = loadedCheerio(this).text();
 
-        if (chapterUrl) {
-          let chapterName = loadedCheerio(this).find('a').text();
-
-          const releaseDate = null;
-
-          if (volumeName.includes('Volume')) {
-            chapterName = volumeName + ' ' + chapterName;
-          }
-
-          const chapter = {
-            chapterName,
-            releaseDate,
-            chapterUrl,
-          };
-
-          chapters.push(chapter);
-        }
+      chapters.push({
+        chapterName,
+        releaseDate: null,
+        chapterUrl,
       });
+    }
   });
 
   novel = {
@@ -172,7 +157,7 @@ const parseChapter = async (novelUrl: string, chapterUrl: string) => {
   const chapterText = loadedCheerio('.desc').html() || '';
 
   const chapter: SourceChapter = {
-    sourceId: 2,
+    sourceId,
     novelUrl,
     chapterUrl,
     chapterName,

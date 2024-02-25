@@ -64,7 +64,7 @@ const parseNovelAndChapters = async novelUrl => {
       chapters.push({
         chapterName: chapter.name,
         releaseDate: dayjs(
-          chapter?.firstPublishedAt || chapter.createdAt,
+          chapter.firstPublishedAt || chapter.createdAt || undefined,
         ).format('LLL'),
         chapterUrl: baseUrl + '/reader/' + book.slug + '/' + chapter.chapterId,
       });

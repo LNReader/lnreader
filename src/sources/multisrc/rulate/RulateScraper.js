@@ -2,6 +2,7 @@ import { FilterInputs } from '../../types/filterTypes';
 import { htmlToText } from '../../helpers/htmlToText';
 import { Status } from '../../helpers/constants';
 import * as cheerio from 'cheerio';
+import dayjs from 'dayjs';
 
 class RulateScraper {
   constructor(sourceId, baseUrl, sourceName, filter) {
@@ -204,7 +205,7 @@ class RulateScraper {
         .find('td[class="t"] > a')
         .text()
         .trim();
-      const releaseDate = loadedCheerio(this)
+      const releaseTime = loadedCheerio(this)
         .find('td > span')
         .attr('title')
         ?.trim();
@@ -214,9 +215,13 @@ class RulateScraper {
 
       if (
         !loadedCheerio(this).find('td > span[class="disabled"]').length &&
-        releaseDate
+        releaseTime
       ) {
-        chapters.push({ chapterName, releaseDate, chapterUrl });
+        chapters.push({
+          chapterName,
+          releaseDate: parseDate(releaseTime),
+          chapterUrl,
+        });
       }
     });
 
@@ -285,6 +290,30 @@ class RulateScraper {
 
     return novels;
   }
+}
+
+function parseDate(dateString = '') {
+  const months = {
+    'янв.': 1,
+    'февр.': 2,
+    'мар.': 3,
+    'апр.': 4,
+    мая: 5,
+    'июн.': 6,
+    'июл.': 7,
+    'авг.': 8,
+    'сент.': 9,
+    'окт.': 10,
+    'нояб.': 11,
+    'дек.': 12,
+  };
+  const [day, month, year, , time] = dateString.split(' ');
+  if (day && months[month] && year && time) {
+    return dayjs(year + '-' + months[month] + '-' + day + ' ' + time).format(
+      'LLL',
+    );
+  }
+  return dateString;
 }
 
 export default RulateScraper;
