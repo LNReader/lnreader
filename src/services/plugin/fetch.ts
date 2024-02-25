@@ -71,8 +71,8 @@ export const resolveUrl = (
   if (!plugin) {
     throw new Error(`Unknown plugin: ${pluginId}`);
   }
-  if (!plugin.expandURL) {
+  if (!plugin.resolveUrl) {
     return plugin.site + path;
   }
-  return plugin.expandURL(path, isNovel);
+  return plugin.resolveUrl(path, isNovel);
 };
