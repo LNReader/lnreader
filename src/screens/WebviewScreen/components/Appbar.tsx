@@ -3,7 +3,6 @@ import { Share } from 'react-native';
 import WebView from 'react-native-webview';
 import { Appbar as PaperAppbar, Menu } from 'react-native-paper';
 import * as WebBrowser from 'expo-web-browser';
-import CookieManager from '@react-native-cookies/cookies';
 
 import { WebviewScreenProps } from '@navigators/types';
 import { getString } from '@strings/translations';
