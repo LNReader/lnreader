@@ -359,7 +359,8 @@ export const ChapterContent = ({
         <>
           <ReaderAppbar
             novelName={novel.name}
-            chapter={chapter}
+            chapter={sourceChapter}
+            setChapter={setChapter}
             goBack={navigation.goBack}
             theme={theme}
           />

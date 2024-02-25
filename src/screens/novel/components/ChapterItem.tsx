@@ -1,20 +1,15 @@
-import React, { memo, ReactNode, useState } from 'react';
+import React, { memo, ReactNode } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import color from 'color';
-
-import { Row } from '@components/Common';
-
 import {
   ChapterBookmarkButton,
   DownloadButton,
 } from './Chapter/ChapterDownloadButtons';
-import { parseChapterNumber } from '@utils/parseChapterNumber';
-
 import { ThemeColors } from '@theme/types';
 import { ChapterInfo } from '@database/types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import dayjs from 'dayjs';
 import { getString } from '@strings/translations';
+import { useBoolean } from '@hooks';
 
 interface ChapterItemProps {
   isDownloading?: boolean;
@@ -51,14 +46,11 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
 }) => {
   const { id, name, unread, releaseTime, bookmark, chapterNumber, progress } =
     chapter;
-  const [deleteChapterMenuVisible, setDeleteChapterMenuVisible] =
-    useState(false);
-  const showDeleteChapterMenu = () => setDeleteChapterMenuVisible(true);
-  const hideDeleteChapterMenu = () => setDeleteChapterMenuVisible(false);
-  const chapNum = chapterNumber
-    ? chapterNumber
-    : parseChapterNumber(novelName, name);
-  const parsedTime = dayjs(releaseTime);
+  const {
+    value: isMenuVisible,
+    setTrue: showMenu,
+    setFalse: hideMenu,
+  } = useBoolean();
   return (
     <Pressable
       key={'chapterItem' + id}
@@ -74,9 +66,9 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       onLongPress={() => onSelectLongPress?.(chapter)}
       android_ripple={{ color: theme.rippleColor }}
     >
-      <Row style={styles.row}>
+      <View style={styles.row}>
         {left}
-        {!!bookmark && <ChapterBookmarkButton theme={theme} />}
+        {bookmark ? <ChapterBookmarkButton theme={theme} /> : null}
         <View style={{ flex: 1 }}>
           {isUpdateCard && (
             <Text
@@ -91,7 +83,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               {novelName}
             </Text>
           )}
-          <Row style={styles.row}>
+          <View style={styles.row}>
             {unread ? (
               <MaterialCommunityIcons
                 name="circle"
@@ -116,9 +108,11 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             >
               {showChapterTitles
                 ? name
-                : getString('novelScreen.chapterChapnum', { num: chapNum })}
+                : getString('novelScreen.chapterChapnum', {
+                    num: chapterNumber,
+                  })}
             </Text>
-          </Row>
+          </View>
           <View style={styles.textRow}>
             {releaseTime && !isUpdateCard ? (
               <Text
@@ -134,7 +128,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                 ]}
                 numberOfLines={1}
               >
-                {parsedTime.isValid() ? parsedTime.format('LL') : releaseTime}
+                {releaseTime}
               </Text>
             ) : null}
             {!isUpdateCard && progress && progress > 0 && chapter.unread ? (
@@ -152,7 +146,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             ) : null}
           </View>
         </View>
-      </Row>
+      </View>
       {!isLocal && (
         <DownloadButton
           isDownloading={isDownloading}
@@ -160,9 +154,9 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
           theme={theme}
           deleteChapter={deleteChapter}
           downloadChapter={downloadChapter}
-          hideDeleteChapterMenu={hideDeleteChapterMenu}
-          showDeleteChapterMenu={showDeleteChapterMenu}
-          deleteChapterMenuVisible={deleteChapterMenuVisible}
+          hideDeleteChapterMenu={hideMenu}
+          showDeleteChapterMenu={showMenu}
+          deleteChapterMenuVisible={isMenuVisible}
         />
       )}
     </Pressable>
@@ -187,7 +181,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 5,
   },
-  row: { flex: 1, overflow: 'hidden' },
+  row: { flex: 1, flexDirection: 'row', alignItems: 'center' },
   unreadIcon: {
     marginRight: 4,
   },

@@ -10,7 +10,6 @@ import { getString } from '@strings/translations';
 import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
-import dayjs from 'dayjs';
 import { NovelSettings } from '@hooks/persisted/useNovel';
 
 type ChapterDrawerProps = ChapterScreenProps & {
@@ -73,7 +72,6 @@ const ChapterDrawer = ({
     });
   };
   const renderItem: FlashListProps<ChapterInfo>['renderItem'] = ({ item }) => {
-    const parsedTime = dayjs(item.releaseTime);
     return (
       <View
         style={[
@@ -88,12 +86,25 @@ const ChapterDrawer = ({
           onPress={() => changeChapter(item)}
           style={styles.chapterCtn}
         >
-          <Text numberOfLines={1} style={styles.chapterNameCtn}>
+          <Text
+            numberOfLines={1}
+            style={[
+              styles.chapterNameCtn,
+              { color: item.unread ? theme.onSurface : theme.outline },
+            ]}
+          >
             {item.name}
           </Text>
-          <Text style={styles.releaseDateCtn}>
-            {parsedTime.isValid() ? parsedTime.format('LL') : item.readTime}
-          </Text>
+          {item.releaseTime ? (
+            <Text
+              style={[
+                styles.releaseDateCtn,
+                { color: item.unread ? theme.onSurfaceVariant : theme.outline },
+              ]}
+            >
+              {item.releaseTime}
+            </Text>
+          ) : null}
         </Pressable>
       </View>
     );

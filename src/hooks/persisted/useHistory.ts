@@ -8,6 +8,8 @@ import {
   deleteChapterHistory,
   getHistoryFromDb,
 } from '@database/queries/HistoryQueries';
+import dayjs from 'dayjs';
+import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 const useHistory = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -16,7 +18,22 @@ const useHistory = () => {
 
   const getHistory = () =>
     getHistoryFromDb()
-      .then(res => setHistory(res))
+      .then(res =>
+        setHistory(
+          res.map(history => {
+            const parsedTime = dayjs(history.releaseTime);
+            return {
+              ...history,
+              releaseTime: parsedTime.isValid()
+                ? parsedTime.format('LL')
+                : history.releaseTime,
+              chapterNumber: history.chapterNumber
+                ? history.chapterNumber
+                : parseChapterNumber(history.novelName, history.name),
+            };
+          }),
+        ),
+      )
       .catch((err: Error) => setError(err.message))
       .finally(() => setIsLoading(false));
 

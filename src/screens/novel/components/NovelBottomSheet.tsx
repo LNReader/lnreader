@@ -41,12 +41,24 @@ const ChaptersSettingsSheet = ({
       <Checkbox
         theme={theme}
         label={getString('novelScreen.bottomSheet.filters.downloaded')}
-        status={!!filter.match('AND isDownloaded = 1')}
-        onPress={() =>
-          filter.match('AND isDownloaded = 1')
-            ? filterChapters(filter.replace(' AND isDownloaded = 1', ''))
-            : filterChapters(filter + ' AND isDownloaded = 1')
+        status={
+          filter.match('AND isDownloaded=1')
+            ? true
+            : filter.match('AND isDownloaded=0')
+            ? 'indeterminate'
+            : false
         }
+        onPress={() => {
+          if (filter.match('AND isDownloaded=1')) {
+            filterChapters(
+              filter.replace(' AND isDownloaded=1', ' AND isDownloaded=0'),
+            );
+          } else if (filter.match('AND isDownloaded=0')) {
+            filterChapters(filter.replace(' AND isDownloaded=0', ''));
+          } else {
+            filterChapters(filter + ' AND isDownloaded=1');
+          }
+        }}
       />
       <Checkbox
         theme={theme}

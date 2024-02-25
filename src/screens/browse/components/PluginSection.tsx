@@ -7,6 +7,7 @@ import PluginCard from './PluginCard';
 import { usePlugins } from '@hooks/persisted';
 import { BrowseScreenProps } from '@navigators/types';
 import TrackerCard from '../discover/TrackerCard';
+import { showToast } from '@utils/showToast';
 
 interface PluginSectionProps {
   sections: { header: string; data: PluginItem[] }[];
@@ -108,7 +109,11 @@ const PluginSection = ({
             refreshing={refreshing}
             onRefresh={() => {
               setRefreshing(true);
-              refreshPlugins().finally(() => setRefreshing(false));
+              refreshPlugins()
+                .finally(() => setRefreshing(false))
+                .catch(e => {
+                  showToast(e);
+                });
             }}
             colors={[theme.onPrimary]}
             progressBackgroundColor={theme.primary}

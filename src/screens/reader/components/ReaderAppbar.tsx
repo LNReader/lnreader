@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import color from 'color';
 
@@ -11,9 +11,10 @@ import { bookmarkChapter } from '@database/queries/ChapterQueries';
 
 interface ReaderAppbarProps {
   novelName: string;
-  chapter: ChapterInfo;
+  chapter: ChapterInfo & { chapterText: string };
   theme: ThemeColors;
   goBack: () => void;
+  setChapter: (chapter: ChapterInfo & { chapterText: string }) => void;
 }
 
 const ReaderAppbar = ({
@@ -21,9 +22,8 @@ const ReaderAppbar = ({
   chapter,
   goBack,
   theme,
+  setChapter,
 }: ReaderAppbarProps) => {
-  const [bookmarked, setBookmarked] = useState(chapter.bookmark);
-
   return (
     <Animated.View
       entering={FadeIn.duration(150)}
@@ -59,11 +59,14 @@ const ReaderAppbar = ({
             </Text>
           </View>
           <IconButtonV2
-            name={bookmarked ? 'bookmark' : 'bookmark-outline'}
+            name={chapter.bookmark ? 'bookmark' : 'bookmark-outline'}
             size={24}
             onPress={() => {
               bookmarkChapter(chapter.id).then(() =>
-                setBookmarked(!bookmarked),
+                setChapter({
+                  ...chapter,
+                  bookmark: !chapter.bookmark,
+                }),
               );
             }}
             color={theme.onSurface}

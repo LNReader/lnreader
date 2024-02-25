@@ -29,6 +29,8 @@ import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
 import { getString } from '@strings/translations';
 import { ChapterItem } from '@plugins/types';
+import dayjs from 'dayjs';
+import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 // store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
 // store key: '<PREFIX>_<novel.id>',
@@ -110,9 +112,29 @@ export const useTrackedNovel = (novelId: number) => {
 export const useNovel = (novelPath: string, pluginId: string) => {
   const [loading, setLoading] = useState(true);
   const [novel, setNovel] = useState<NovelInfo>();
-  const [chapters, setChapters] = useState<ChapterInfo[]>([]);
+  const [chapters, _setChapters] = useState<ChapterInfo[]>([]);
   const [pages, setPages] = useState<string[]>([]);
-
+  const setChapters = useCallback(
+    (chapters: ChapterInfo[]) => {
+      if (novel) {
+        _setChapters(
+          chapters.map(chapter => {
+            const parsedTime = dayjs(chapter.releaseTime);
+            return {
+              ...chapter,
+              releaseTime: parsedTime.isValid()
+                ? parsedTime.format('LL')
+                : chapter.releaseTime,
+              chapterNumber: chapter.chapterNumber
+                ? chapter.chapterNumber
+                : parseChapterNumber(novel.name, chapter.name),
+            };
+          }),
+        );
+      }
+    },
+    [novel, _setChapters],
+  );
   const [pageIndex = defaultPageIndex, setPageIndex] = useMMKVNumber(`
     ${NOVEL_PAGE_INDEX_PREFIX}_${pluginId}_${novelPath}
   `);

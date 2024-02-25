@@ -158,7 +158,10 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
         icon: 'download-outline',
         onPress: () => {
           if (novel) {
-            downloadChapters(novel, selected);
+            downloadChapters(
+              novel,
+              selected.filter(chapter => !chapter.isDownloaded),
+            );
           }
           setSelected([]);
         },
@@ -168,6 +171,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       list.push({
         icon: 'trash-can-outline',
         onPress: () => {
+          deleteChapters(selected.filter(chapter => chapter.isDownloaded));
           setSelected([]);
         },
       });
@@ -454,7 +458,10 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                           if (novel) {
                             downloadChapters(
                               novel,
-                              chapters.filter(chapter => chapter.unread),
+                              chapters.filter(
+                                chapter =>
+                                  chapter.unread && !chapter.isDownloaded,
+                              ),
                             );
                           }
                         }}
@@ -467,7 +474,10 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                         }}
                         onPress={() => {
                           if (novel) {
-                            downloadChapters(novel, chapters);
+                            downloadChapters(
+                              novel,
+                              chapters.filter(chapter => !chapter.isDownloaded),
+                            );
                           }
                           showDownloadMenu(false);
                         }}

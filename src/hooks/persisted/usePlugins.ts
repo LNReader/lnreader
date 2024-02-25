@@ -10,7 +10,6 @@ import {
 } from '@plugins/pluginManager';
 import { newer } from '@utils/compareVersion';
 import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
-import { showToast } from '@utils/showToast';
 import { useCallback } from 'react';
 import { getString } from '@strings/translations';
 
@@ -60,31 +59,29 @@ export default function usePlugins() {
   const refreshPlugins = useCallback(() => {
     const installedPlugins =
       getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
-    return fetchPlugins()
-      .then(fetchedPluginsMap => {
-        for (const key in fetchedPluginsMap) {
-          const lang = key as Language;
-          fetchedPluginsMap[lang] = fetchedPluginsMap[lang].filter(plg => {
-            const finded = installedPlugins.find(v => v.id === plg.id);
-            if (finded) {
-              if (newer(plg.version, finded.version)) {
-                finded.hasUpdate = true;
-                finded.iconUrl = plg.iconUrl;
-                finded.url = plg.url;
-                if (finded.id === lastUsedPlugin?.id) {
-                  setLastUsedPlugin(finded);
-                }
+    return fetchPlugins().then(fetchedPluginsMap => {
+      for (const key in fetchedPluginsMap) {
+        const lang = key as Language;
+        fetchedPluginsMap[lang] = fetchedPluginsMap[lang].filter(plg => {
+          const finded = installedPlugins.find(v => v.id === plg.id);
+          if (finded) {
+            if (newer(plg.version, finded.version)) {
+              finded.hasUpdate = true;
+              finded.iconUrl = plg.iconUrl;
+              finded.url = plg.url;
+              if (finded.id === lastUsedPlugin?.id) {
+                setLastUsedPlugin(finded);
               }
-              return false;
             }
-            return true;
-          });
-          setMMKVObject(INSTALLED_PLUGINS, installedPlugins);
-          setMMKVObject(AVAILABLE_PLUGINS, fetchedPluginsMap);
-          filterPlugins(languagesFilter);
-        }
-      })
-      .catch((error: Error) => showToast(error.message));
+            return false;
+          }
+          return true;
+        });
+        setMMKVObject(INSTALLED_PLUGINS, installedPlugins);
+        setMMKVObject(AVAILABLE_PLUGINS, fetchedPluginsMap);
+        filterPlugins(languagesFilter);
+      }
+    });
   }, [languagesFilter]);
 
   const toggleLanguageFilter = (lang: Language) => {
