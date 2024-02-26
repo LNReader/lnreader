@@ -340,19 +340,21 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   onPress={() => navigation.goBack()}
                 />
                 <Row>
-                  <IconButton
-                    icon="share-variant"
-                    iconColor={theme.onBackground}
-                    size={21}
-                    style={{
-                      marginTop: (StatusBar.currentHeight || 0) + 8,
-                    }}
-                    onPress={() =>
-                      Share.share({
-                        message: resolveUrl(novel.pluginId, novel.path, true),
-                      })
-                    }
-                  />
+                  {!novel.isLocal && (
+                    <IconButton
+                      icon="share-variant"
+                      iconColor={theme.onBackground}
+                      size={21}
+                      style={{
+                        marginTop: (StatusBar.currentHeight || 0) + 8,
+                      }}
+                      onPress={() =>
+                        Share.share({
+                          message: resolveUrl(novel.pluginId, novel.path, true),
+                        })
+                      }
+                    />
+                  )}
                   <IconButton
                     icon="text-box-search-outline"
                     iconColor={theme.onBackground}
