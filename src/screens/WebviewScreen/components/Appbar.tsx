@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Share, View, Text } from 'react-native';
-import { Menu } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Menu } from 'react-native-paper';
 import WebView from 'react-native-webview';
 import * as Linking from 'expo-linking';
 
@@ -37,47 +37,39 @@ const Appbar: React.FC<AppbarProps> = ({
     <View
       style={{
         paddingTop: insets.top,
-        paddingBottom: insets.bottom,
-        paddingHorizontal: insets.left || insets.right ? insets.left : 10,
+        paddingHorizontal: insets.left || insets.right || 10,
         backgroundColor: theme.surface,
-        flexDirection: 'column',
-        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between',
       }}
     >
       <IconButtonV2
         icon="close"
-        color={theme.onBackground}
+        color={theme.onSurface}
         onPress={() => navigation.goBack()}
         theme={theme}
       />
 
-      <View style={{ alignItems: 'center' }}>
-        <Text
-          numberOfLines={1}
-          style={{ color: theme.onSurface, fontWeight: 'bold', fontSize: 16 }}
-        >
-          {title}
-        </Text>
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        <Text style={{ color: theme.onSurface }}>{title}</Text>
       </View>
 
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <IconButtonV2
-          icon="arrow-left"
-          color={theme.onBackground}
-          disabled={!canGoBack}
-          onPress={() => webView.current?.goBack()}
-          theme={theme}
-        />
+      <IconButtonV2
+        icon="arrow-left"
+        color={theme.onSurface}
+        disabled={!canGoBack}
+        onPress={() => webView.current?.goBack()}
+        theme={theme}
+      />
 
-        <IconButtonV2
-          icon="arrow-right"
-          color={theme.onBackground}
-          disabled={!canGoForward}
-          onPress={() => webView.current?.goForward()}
-          theme={theme}
-        />
-      </View>
+      <IconButtonV2
+        icon="arrow-right"
+        color={theme.onSurface}
+        disabled={!canGoForward}
+        onPress={() => webView.current?.goForward()}
+        theme={theme}
+      />
 
       <Menu
         visible={menuVisible}
@@ -91,7 +83,7 @@ const Appbar: React.FC<AppbarProps> = ({
           />
         }
         style={{ backgroundColor: theme.surface2 }}
-        titleStyle={{ color: theme.onSurface }}
+        contentStyle={{ backgroundColor: theme.surface2 }}
       >
         <Menu.Item
           title={getString('webview.refresh')}
