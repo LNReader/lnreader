@@ -37,7 +37,10 @@ const Appbar: React.FC<AppbarProps> = ({
         iconColor={theme.onSurface}
         onPress={() => navigation.goBack()}
       />
-      <PaperAppbar.Content title={title} />
+      <PaperAppbar.Content
+        title={title}
+        titleStyle={{ color: theme.onSurface }}
+      />
       <PaperAppbar.Action
         icon="arrow-left"
         iconColor={theme.onSurface}
@@ -63,21 +66,25 @@ const Appbar: React.FC<AppbarProps> = ({
       >
         <Menu.Item
           title={getString('webview.refresh')}
+          style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => webView.current?.reload()}
         />
         <Menu.Item
           title={getString('webview.share')}
+          style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => Share.share({ message: currentUrl })}
         />
         <Menu.Item
           title={getString('webview.openInBrowser')}
+          style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => WebBrowser.openBrowserAsync(currentUrl)}
         />
         <Menu.Item
           title={getString('webview.clearData')}
+          style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => {
             webView.current?.clearCache(true);
