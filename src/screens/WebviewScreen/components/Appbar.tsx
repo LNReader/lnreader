@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Share } from 'react-native';
 import WebView from 'react-native-webview';
 import { Appbar as PaperAppbar, Menu } from 'react-native-paper';
-import * as WebBrowser from 'expo-web-browser';
+import * as Linking from 'expo-linking';
 
 import { WebviewScreenProps } from '@navigators/types';
 import { getString } from '@strings/translations';
@@ -34,7 +34,7 @@ const Appbar: React.FC<AppbarProps> = ({
     <PaperAppbar.Header style={{ backgroundColor: theme.surface }}>
       <PaperAppbar.BackAction
         icon="close"
-        iconColor={theme.onSurface}
+        iconColor={theme.onBackground}
         onPress={() => navigation.goBack()}
       />
       <PaperAppbar.Content
@@ -43,13 +43,13 @@ const Appbar: React.FC<AppbarProps> = ({
       />
       <PaperAppbar.Action
         icon="arrow-left"
-        iconColor={theme.onSurface}
+        iconColor={theme.onBackground}
         disabled={!canGoBack}
         onPress={() => webView.current?.goBack()}
       />
       <PaperAppbar.Action
         icon="arrow-right"
-        iconColor={theme.onSurface}
+        iconColor={theme.onBackground}
         disabled={!canGoForward}
         onPress={() => webView.current?.goForward()}
       />
@@ -59,28 +59,39 @@ const Appbar: React.FC<AppbarProps> = ({
         anchor={
           <PaperAppbar.Action
             icon="dots-vertical"
-            iconColor={theme.onSurface}
+            iconColor={theme.onBackground}
             onPress={() => setVisible(true)}
           />
         }
+        style={{ backgroundColor: theme.surface2 }}
+        titleStyle={{ color: theme.onSurface }}
       >
         <Menu.Item
           title={getString('webview.refresh')}
           style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
-          onPress={() => webView.current?.reload()}
+          onPress={() => {
+            webView.current?.reload()
+            setVisible(false)
+          }}
         />
         <Menu.Item
           title={getString('webview.share')}
           style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
-          onPress={() => Share.share({ message: currentUrl })}
+          onPress={() => { 
+            Share.share({ message: currentUrl }
+            setVisible(false)
+          })}
         />
         <Menu.Item
           title={getString('webview.openInBrowser')}
           style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
-          onPress={() => WebBrowser.openBrowserAsync(currentUrl)}
+          onPress={() => {
+            Linking.openURL(newVersion.downloadUrl)
+            setVisible(false)
+          }}
         />
         <Menu.Item
           title={getString('webview.clearData')}
@@ -88,7 +99,9 @@ const Appbar: React.FC<AppbarProps> = ({
           titleStyle={{ color: theme.onSurface }}
           onPress={() => {
             webView.current?.clearCache(true);
+            webView.current?.reload()
             showToast(getString('webview.dataDeleted'));
+            setVisible(false)
           }}
         />
       </Menu>
