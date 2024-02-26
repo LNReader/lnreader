@@ -68,11 +68,15 @@ export const resolveUrl = (
     return path;
   }
   const plugin = getPlugin(pluginId);
-  if (!plugin) {
-    throw new Error(`Unknown plugin: ${pluginId}`);
+  try {
+    if (!plugin) {
+      throw new Error(`Unknown plugin: ${pluginId}`);
+    }
+    if (plugin.resolveUrl) {
+      return plugin.resolveUrl(path, isNovel);
+    }
+  } catch (e) {
+    throw e;
   }
-  if (!plugin.resolveUrl) {
-    return plugin.site + path;
-  }
-  return plugin.resolveUrl(path, isNovel);
+  return plugin.site + path;
 };

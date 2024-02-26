@@ -7,7 +7,7 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { ThemeColors } from '@theme/types';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { useNavigation } from '@react-navigation/native';
+import { ChapterScreenProps } from '@navigators/types';
 
 interface ChapterFooterProps {
   theme: ThemeColors;
@@ -18,6 +18,7 @@ interface ChapterFooterProps {
   readerSheetRef: React.RefObject<BottomSheetModalMethods>;
   scrollTo: (offsetY: number) => void;
   navigateToChapterBySwipe: (actionName: string) => void;
+  navigation: ChapterScreenProps['navigation'];
   openDrawer: () => void;
 }
 
@@ -30,6 +31,7 @@ const ChapterFooter = ({
   readerSheetRef,
   scrollTo,
   navigateToChapterBySwipe,
+  navigation,
   openDrawer,
 }: ChapterFooterProps) => {
   const rippleConfig = {
@@ -39,7 +41,6 @@ const ChapterFooter = ({
   };
 
   const insets = useSafeAreaInsets();
-  const { navigate } = useNavigation();
 
   return (
     <Animated.View
@@ -68,19 +69,21 @@ const ChapterFooter = ({
             iconColor={theme.onSurface}
           />
         </Pressable>
-        <Pressable
-          android_ripple={rippleConfig}
-          style={styles.buttonStyles}
-          onPress={() =>
-            navigate('WebviewScreen', {
-              name: `${chapter.name} | ${novel.name}`,
-              url: chapter.path,
-              pluginId: novel.pluginId,
-            })
-          }
-        >
-          <IconButton icon="earth" size={26} iconColor={theme.onSurface} />
-        </Pressable>
+        {!novel.isLocal && (
+          <Pressable
+            android_ripple={rippleConfig}
+            style={styles.buttonStyles}
+            onPress={() =>
+              navigation.navigate('WebviewScreen', {
+                name: `${chapter.name} | ${novel.name}`,
+                url: chapter.path,
+                pluginId: novel.pluginId,
+              })
+            }
+          >
+            <IconButton icon="earth" size={26} iconColor={theme.onSurface} />
+          </Pressable>
+        )}
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}

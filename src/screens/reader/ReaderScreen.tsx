@@ -384,6 +384,7 @@ export const ChapterContent = ({
             readerSheetRef={readerSheetRef}
             scrollTo={scrollTo}
             navigateToChapterBySwipe={navigateToChapterBySwipe}
+            navigation={navigation}
             openDrawer={openDrawer}
           />
         </>
