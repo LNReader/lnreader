@@ -1,5 +1,6 @@
 import { locale } from 'expo-localization';
 import { Language, languagesMapping } from '@utils/constants/languages';
+import { orderBy } from 'lodash-es';
 import { useMMKVObject } from 'react-native-mmkv';
 import { PluginItem } from '@plugins/types';
 import {
@@ -50,7 +51,7 @@ export default function usePlugins() {
     );
     setFilteredAvailablePlugins(
       filter.reduce((pre, cur) => {
-        pre[cur] = availablePlugins[cur];
+        pre[cur] = orderBy(availablePlugins[cur], 'name');
         return pre;
       }, {} as PluginsMap),
     );

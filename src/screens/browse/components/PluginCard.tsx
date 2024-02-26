@@ -120,7 +120,11 @@ const PluginCard: React.FC<Props> = ({
               theme={theme}
             />
           ) : (
-            <ActivityIndicator color={theme.primary} size={22} />
+            <ActivityIndicator
+              color={theme.primary}
+              size={22}
+              style={styles.spinner}
+            />
           )}
         </View>
       </Pressable>
@@ -135,7 +139,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
+    paddingHorizontal: 16,
     paddingVertical: 12,
   },
   icon: {
@@ -148,7 +152,6 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   addition: {
-    textAlign: 'left',
     fontSize: 12,
   },
   name: {
@@ -157,12 +160,12 @@ const styles = StyleSheet.create({
   flexRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 7,
   },
   buttonGroup: {
-    flex: 3,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+  },
+  spinner: {
+    marginRight: 12,
+    marginLeft: 4,
   },
 });
