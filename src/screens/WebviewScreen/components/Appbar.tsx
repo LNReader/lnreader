@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Share } from 'react-native';
+import { Share, View, Text } from 'react-native';
+import { Menu } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import WebView from 'react-native-webview';
-import { Appbar as PaperAppbar, Menu } from 'react-native-paper';
 import * as Linking from 'expo-linking';
 
+import IconButtonV2 from '@components/IconButtonV2/IconButtonV2';
 import { WebviewScreenProps } from '@navigators/types';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
@@ -13,8 +15,8 @@ interface AppbarProps {
   title: string;
   theme: ThemeColors;
   currentUrl: string;
-  canGoBack: Boolean;
-  canGoForward: Boolean;
+  canGoBack: boolean;
+  canGoForward: boolean;
   webView: WebView;
   navigation: WebviewScreenProps['navigation'];
 }
@@ -28,39 +30,64 @@ const Appbar: React.FC<AppbarProps> = ({
   webView,
   navigation,
 }) => {
-  const [visible, setVisible] = useState(false);
+  const insets = useSafeAreaInsets();
+  const [menuVisible, setMenuVisible] = useState(false);
 
   return (
-    <PaperAppbar.Header style={{ backgroundColor: theme.surface }}>
-      <PaperAppbar.BackAction
+    <View
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingHorizontal: insets.left || insets.right ? insets.left : 10,
+        backgroundColor: theme.surface,
+        flexDirection: 'column',
+        flex: 1,
+        justifyContent: 'space-between',
+      }}
+    >
+      <IconButtonV2
         icon="close"
-        iconColor={theme.onBackground}
+        color={theme.onBackground}
         onPress={() => navigation.goBack()}
+        theme={theme}
       />
-      <PaperAppbar.Content
-        title={title}
-        titleStyle={{ color: theme.onSurface }}
-      />
-      <PaperAppbar.Action
-        icon="arrow-left"
-        iconColor={theme.onBackground}
-        disabled={!canGoBack}
-        onPress={() => webView.current?.goBack()}
-      />
-      <PaperAppbar.Action
-        icon="arrow-right"
-        iconColor={theme.onBackground}
-        disabled={!canGoForward}
-        onPress={() => webView.current?.goForward()}
-      />
+
+      <View style={{ alignItems: 'center' }}>
+        <Text
+          numberOfLines={1}
+          style={{ color: theme.onSurface, fontWeight: 'bold', fontSize: 16 }}
+        >
+          {title}
+        </Text>
+      </View>
+
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <IconButtonV2
+          icon="arrow-left"
+          color={theme.onBackground}
+          disabled={!canGoBack}
+          onPress={() => webView.current?.goBack()}
+          theme={theme}
+        />
+
+        <IconButtonV2
+          icon="arrow-right"
+          color={theme.onBackground}
+          disabled={!canGoForward}
+          onPress={() => webView.current?.goForward()}
+          theme={theme}
+        />
+      </View>
+
       <Menu
-        visible={visible}
-        onDismiss={() => setVisible(false)}
+        visible={menuVisible}
+        onDismiss={() => setMenuVisible(false)}
         anchor={
-          <PaperAppbar.Action
+          <IconButtonV2
             icon="dots-vertical"
-            iconColor={theme.onBackground}
-            onPress={() => setVisible(true)}
+            color={theme.onSurface}
+            onPress={() => setMenuVisible(true)}
+            theme={theme}
           />
         }
         style={{ backgroundColor: theme.surface2 }}
@@ -71,7 +98,7 @@ const Appbar: React.FC<AppbarProps> = ({
           style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => {
-            setVisible(false);
+            setMenuVisible(false);
             webView.current?.reload();
           }}
         />
@@ -80,7 +107,7 @@ const Appbar: React.FC<AppbarProps> = ({
           style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => {
-            setVisible(false);
+            setMenuVisible(false);
             Share.share({ message: currentUrl });
           }}
         />
@@ -89,7 +116,7 @@ const Appbar: React.FC<AppbarProps> = ({
           style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => {
-            setVisible(false);
+            setMenuVisible(false);
             Linking.openURL(currentUrl);
           }}
         />
@@ -98,14 +125,14 @@ const Appbar: React.FC<AppbarProps> = ({
           style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => {
-            setVisible(false);
+            setMenuVisible(false);
             webView.current?.clearCache(true);
             webView.current?.reload();
             showToast(getString('webview.dataDeleted'));
           }}
         />
       </Menu>
-    </PaperAppbar.Header>
+    </View>
   );
 };
 
