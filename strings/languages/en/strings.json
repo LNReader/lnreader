@@ -207,6 +207,15 @@
     "sort": "Sort",
     "submit": "Submit"
   },
+  "webview": {
+    "refresh": "Refresh",
+    "share": "Share",
+    "openInBrowser": "Open in browser",
+    "clearCookies": "Clear cookies",
+    "cookiesCleared": "Cookies cleared",
+    "clearData": "Clear WebView data",
+    "dataDeleted": "WebView data cleared"
+  },
   "date": {
     "calendar": {
       "lastDay": "[Yesterday]",

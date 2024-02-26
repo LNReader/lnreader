@@ -61,6 +61,7 @@ i18n.translations = {
 };
 i18n.locale = Localization.locale;
 dayjs.locale(Localization.locale);
+
 export const localization = Localization.locale;
 export const getString = (
   stringKey: keyof StringMap,

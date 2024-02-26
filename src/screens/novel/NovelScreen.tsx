@@ -48,6 +48,7 @@ import { getString } from '@strings/translations';
 import NovelDrawer from './components/NovelDrawer';
 import { updateNovel } from '@services/updates/LibraryUpdateQueries';
 import { useFocusEffect } from '@react-navigation/native';
+import { resolveUrl } from '@services/plugin/fetch';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { name, path, pluginId } = route.params;
@@ -343,19 +344,21 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   onPress={() => navigation.goBack()}
                 />
                 <Row>
-                  <IconButton
-                    icon="share-variant"
-                    iconColor={theme.onBackground}
-                    size={21}
-                    style={{
-                      marginTop: (StatusBar.currentHeight || 0) + 8,
-                    }}
-                    onPress={() =>
-                      Share.share({
-                        message: novel.pluginId + '|' + novel.path,
-                      })
-                    }
-                  />
+                  {!novel.isLocal && (
+                    <IconButton
+                      icon="share-variant"
+                      iconColor={theme.onBackground}
+                      size={21}
+                      style={{
+                        marginTop: (StatusBar.currentHeight || 0) + 8,
+                      }}
+                      onPress={() =>
+                        Share.share({
+                          message: resolveUrl(novel.pluginId, novel.path, true),
+                        })
+                      }
+                    />
+                  )}
                   <IconButton
                     icon="text-box-search-outline"
                     iconColor={theme.onBackground}

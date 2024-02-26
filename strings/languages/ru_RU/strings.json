@@ -61,6 +61,15 @@
     "sort": "Сортировка",
     "submit": "Продолжить"
   },
+  "webview": {
+    "refresh": "Обновить",
+    "share": "Поделиться",
+    "openInBrowser": "Открыть в браузере",
+    "clearCookies": "Очистить cookies",
+    "cookiesCleared": "Cookies очищены",
+    "clearData": "Очистить данные WebView",
+    "dataDeleted": "Данные WebView очищены"
+  },
   "date": {
     "calendar": {
       "lastDay": "[Вчера]",
