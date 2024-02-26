@@ -71,26 +71,26 @@ const Appbar: React.FC<AppbarProps> = ({
           style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => {
-            webView.current?.reload()
-            setVisible(false)
+            setVisible(false);
+            webView.current?.reload();
           }}
         />
         <Menu.Item
           title={getString('webview.share')}
           style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
-          onPress={() => { 
-            Share.share({ message: currentUrl }
-            setVisible(false)
-          })}
+          onPress={() => {
+            setVisible(false);
+            Share.share({ message: currentUrl });
+          }}
         />
         <Menu.Item
           title={getString('webview.openInBrowser')}
           style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => {
-            Linking.openURL(newVersion.downloadUrl)
-            setVisible(false)
+            setVisible(false);
+            Linking.openURL(currentUrl);
           }}
         />
         <Menu.Item
@@ -98,10 +98,10 @@ const Appbar: React.FC<AppbarProps> = ({
           style={{ backgroundColor: theme.surface2 }}
           titleStyle={{ color: theme.onSurface }}
           onPress={() => {
+            setVisible(false);
             webView.current?.clearCache(true);
-            webView.current?.reload()
+            webView.current?.reload();
             showToast(getString('webview.dataDeleted'));
-            setVisible(false)
           }}
         />
       </Menu>
