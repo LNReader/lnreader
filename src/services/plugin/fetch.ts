@@ -76,7 +76,7 @@ export const resolveUrl = (
       return plugin.resolveUrl(path, isNovel);
     }
   } catch (e) {
-    throw e;
+    return path;
   }
   return plugin.site + path;
 };
