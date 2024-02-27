@@ -39,8 +39,6 @@ const Appbar: React.FC<AppbarProps> = ({
         paddingHorizontal: insets.left || insets.right || 5,
         backgroundColor: theme.surface,
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
       }}
     >
       <IconButton
@@ -50,7 +48,7 @@ const Appbar: React.FC<AppbarProps> = ({
         theme={{ colors: { ...theme } }}
       />
 
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text
           style={{
             color: theme.onSurface,
