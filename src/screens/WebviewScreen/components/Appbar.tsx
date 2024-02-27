@@ -29,14 +29,13 @@ const Appbar: React.FC<AppbarProps> = ({
   webView,
   navigation,
 }) => {
-  const insets = useSafeAreaInsets();
+  const { top } = useSafeAreaInsets();
   const [menuVisible, setMenuVisible] = useState(false);
 
   return (
     <View
       style={{
-        paddingTop: insets.top,
-        paddingHorizontal: insets.left || insets.right || 5,
+        paddingTop: top,
         backgroundColor: theme.surface,
         flexDirection: 'row',
       }}
