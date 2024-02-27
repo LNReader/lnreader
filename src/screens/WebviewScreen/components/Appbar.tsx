@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Share, View, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Menu } from 'react-native-paper';
+import { IconButton, Menu } from 'react-native-paper';
 import WebView from 'react-native-webview';
 import * as Linking from 'expo-linking';
 
-import IconButtonV2 from '@components/IconButtonV2/IconButtonV2';
 import { WebviewScreenProps } from '@navigators/types';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
@@ -37,93 +36,103 @@ const Appbar: React.FC<AppbarProps> = ({
     <View
       style={{
         paddingTop: insets.top,
-        paddingHorizontal: insets.left || insets.right || 10,
+        paddingHorizontal: insets.left || insets.right || 5,
         backgroundColor: theme.surface,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
       }}
     >
-      <IconButtonV2
+      <IconButton
         icon="close"
-        color={theme.onSurface}
+        iconColor={theme.onSurface}
         onPress={() => navigation.goBack()}
-        theme={theme}
+        theme={{ colors: { ...theme } }}
       />
 
-      <View style={{ flex: 1, alignItems: 'center' }}>
-        <Text style={{ color: theme.onSurface }}>{title}</Text>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text
+          style={{
+            color: theme.onSurface,
+            textAlign: 'center',
+          }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {title}
+        </Text>
       </View>
+      <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+        <IconButton
+          icon="arrow-left"
+          iconColor={theme.onSurface}
+          disabled={!canGoBack}
+          onPress={() => webView.current?.goBack()}
+          theme={{ colors: { ...theme } }}
+        />
 
-      <IconButtonV2
-        icon="arrow-left"
-        color={theme.onSurface}
-        disabled={!canGoBack}
-        onPress={() => webView.current?.goBack()}
-        theme={theme}
-      />
+        <IconButton
+          icon="arrow-right"
+          iconColor={theme.onSurface}
+          disabled={!canGoForward}
+          onPress={() => webView.current?.goForward()}
+          theme={{ colors: { ...theme } }}
+        />
 
-      <IconButtonV2
-        icon="arrow-right"
-        color={theme.onSurface}
-        disabled={!canGoForward}
-        onPress={() => webView.current?.goForward()}
-        theme={theme}
-      />
-
-      <Menu
-        visible={menuVisible}
-        onDismiss={() => setMenuVisible(false)}
-        anchor={
-          <IconButtonV2
-            icon="dots-vertical"
-            color={theme.onSurface}
-            onPress={() => setMenuVisible(true)}
-            theme={theme}
+        <Menu
+          visible={menuVisible}
+          onDismiss={() => setMenuVisible(false)}
+          anchor={
+            <IconButton
+              icon="dots-vertical"
+              iconColor={theme.onSurface}
+              onPress={() => setMenuVisible(true)}
+              theme={{ colors: { ...theme } }}
+            />
+          }
+          style={{ backgroundColor: theme.surface2 }}
+          contentStyle={{ backgroundColor: theme.surface2 }}
+        >
+          <Menu.Item
+            title={getString('webview.refresh')}
+            style={{ backgroundColor: theme.surface2 }}
+            titleStyle={{ color: theme.onSurface }}
+            onPress={() => {
+              setMenuVisible(false);
+              webView.current?.reload();
+            }}
           />
-        }
-        style={{ backgroundColor: theme.surface2 }}
-        contentStyle={{ backgroundColor: theme.surface2 }}
-      >
-        <Menu.Item
-          title={getString('webview.refresh')}
-          style={{ backgroundColor: theme.surface2 }}
-          titleStyle={{ color: theme.onSurface }}
-          onPress={() => {
-            setMenuVisible(false);
-            webView.current?.reload();
-          }}
-        />
-        <Menu.Item
-          title={getString('webview.share')}
-          style={{ backgroundColor: theme.surface2 }}
-          titleStyle={{ color: theme.onSurface }}
-          onPress={() => {
-            setMenuVisible(false);
-            Share.share({ message: currentUrl });
-          }}
-        />
-        <Menu.Item
-          title={getString('webview.openInBrowser')}
-          style={{ backgroundColor: theme.surface2 }}
-          titleStyle={{ color: theme.onSurface }}
-          onPress={() => {
-            setMenuVisible(false);
-            Linking.openURL(currentUrl);
-          }}
-        />
-        <Menu.Item
-          title={getString('webview.clearData')}
-          style={{ backgroundColor: theme.surface2 }}
-          titleStyle={{ color: theme.onSurface }}
-          onPress={() => {
-            setMenuVisible(false);
-            webView.current?.clearCache(true);
-            webView.current?.reload();
-            showToast(getString('webview.dataDeleted'));
-          }}
-        />
-      </Menu>
+          <Menu.Item
+            title={getString('webview.share')}
+            style={{ backgroundColor: theme.surface2 }}
+            titleStyle={{ color: theme.onSurface }}
+            onPress={() => {
+              setMenuVisible(false);
+              Share.share({ message: currentUrl });
+            }}
+          />
+          <Menu.Item
+            title={getString('webview.openInBrowser')}
+            style={{ backgroundColor: theme.surface2 }}
+            titleStyle={{ color: theme.onSurface }}
+            onPress={() => {
+              setMenuVisible(false);
+              Linking.openURL(currentUrl);
+            }}
+          />
+          <Menu.Item
+            title={getString('webview.clearData')}
+            style={{ backgroundColor: theme.surface2 }}
+            titleStyle={{ color: theme.onSurface }}
+            onPress={() => {
+              setMenuVisible(false);
+              webView.current?.clearCache(true);
+              webView.current?.reload();
+              showToast(getString('webview.dataDeleted'));
+            }}
+          />
+        </Menu>
+      </View>
     </View>
   );
 };
