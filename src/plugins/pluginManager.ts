@@ -6,6 +6,7 @@ import { Language } from '@utils/constants/languages';
 // packages for plugins
 import { load } from 'cheerio';
 import dayjs from 'dayjs';
+import qs from 'qs';
 import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
@@ -19,6 +20,7 @@ const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
 const packages: Record<string, any> = {
   'cheerio': { load },
   'dayjs': dayjs,
+  'qs': qs,
   'urlencode': { encode, decode },
   '@libs/novelStatus': { NovelStatus },
   '@libs/fetch': { fetchApi, fetchFile, fetchText },

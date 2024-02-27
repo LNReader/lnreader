@@ -1,4 +1,5 @@
 import { getPlugin } from '@plugins/pluginManager';
+import { isUrlAbsolute } from '@plugins/helpers/isAbsoluteUrl';
 
 export const fetchNovel = async (pluginId: string, novelPath: string) => {
   const plugin = getPlugin(pluginId);
@@ -56,4 +57,26 @@ export const fetchPage = async (
     throw e;
   });
   return res;
+};
+
+export const resolveUrl = (
+  pluginId: string,
+  path: string,
+  isNovel?: boolean,
+) => {
+  if (isUrlAbsolute(path)) {
+    return path;
+  }
+  const plugin = getPlugin(pluginId);
+  try {
+    if (!plugin) {
+      throw new Error(`Unknown plugin: ${pluginId}`);
+    }
+    if (plugin.resolveUrl) {
+      return plugin.resolveUrl(path, isNovel);
+    }
+  } catch (e) {
+    return path;
+  }
+  return plugin.site + path;
 };

@@ -37,6 +37,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
       name: novel.pluginId,
       url: novel.path,
       pluginId: novel.pluginId,
+      isNovel: true,
     });
   };
   const handleMigrateNovel = () =>

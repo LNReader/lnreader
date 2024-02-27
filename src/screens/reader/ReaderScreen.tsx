@@ -366,12 +366,14 @@ export const ChapterContent = ({
           />
           <ReaderFooter
             theme={theme}
-            chapterUrl={chapter.path}
+            chapter={chapter}
+            novel={novel}
             nextChapter={nextChapter}
             prevChapter={prevChapter}
             readerSheetRef={readerSheetRef}
             scrollTo={scrollTo}
             navigateToChapterBySwipe={navigateToChapterBySwipe}
+            navigation={navigation}
             openDrawer={openDrawer}
           />
         </>
