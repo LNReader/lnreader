@@ -158,6 +158,8 @@ dependencies {
     implementation 'com.facebook.soloader:soloader:0.10.5+'
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+    implementation project(':react-native-lottie-splash-screen')
+
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";

@@ -5,21 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/splashscreen_background"
     android:gravity="center"
     android:orientation="vertical"
     android:scaleType="centerCrop"
     android:navigationBarColor="#333333"
     tools:context=".MainActivity">
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:paddingLeft="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="130dp"
+        app:lottie_rawRes="@raw/loading"
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
-        app:lottie_rawRes="@raw/loading" />
+        />
 </LinearLayout>
