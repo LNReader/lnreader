@@ -16,7 +16,7 @@ interface AppbarProps {
   currentUrl: string;
   canGoBack: boolean;
   canGoForward: boolean;
-  webView: WebView;
+  webView: RefObject<WebView>;
   navigation: WebviewScreenProps['navigation'];
 }
 
