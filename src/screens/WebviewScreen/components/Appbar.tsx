@@ -123,7 +123,7 @@ const Appbar: React.FC<AppbarProps> = ({
             titleStyle={{ color: theme.onSurface }}
             onPress={() => {
               setMenuVisible(false);
-              webView.current?.clearCache(true);
+              webView.current?.clearCache?.(true);
               webView.current?.reload();
               showToast(getString('webview.dataDeleted'));
             }}
