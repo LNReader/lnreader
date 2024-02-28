@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Share } from 'react-native';
+import { Share, View, Text } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { IconButton, Menu } from 'react-native-paper';
 import WebView from 'react-native-webview';
-import { Appbar as PaperAppbar, Menu } from 'react-native-paper';
-import * as WebBrowser from 'expo-web-browser';
+import * as Linking from 'expo-linking';
 
 import { WebviewScreenProps } from '@navigators/types';
 import { getString } from '@strings/translations';
@@ -13,9 +14,9 @@ interface AppbarProps {
   title: string;
   theme: ThemeColors;
   currentUrl: string;
-  canGoBack: Boolean;
-  canGoForward: Boolean;
-  webView: WebView;
+  canGoBack: boolean;
+  canGoForward: boolean;
+  webView: RefObject<WebView>;
   navigation: WebviewScreenProps['navigation'];
 }
 
@@ -28,64 +29,108 @@ const Appbar: React.FC<AppbarProps> = ({
   webView,
   navigation,
 }) => {
-  const [visible, setVisible] = useState(false);
+  const { top } = useSafeAreaInsets();
+  const [menuVisible, setMenuVisible] = useState(false);
 
   return (
-    <PaperAppbar.Header style={{ backgroundColor: theme.surface }}>
-      <PaperAppbar.BackAction
+    <View
+      style={{
+        paddingTop: top,
+        backgroundColor: theme.surface,
+        flexDirection: 'row',
+      }}
+    >
+      <IconButton
         icon="close"
         iconColor={theme.onSurface}
         onPress={() => navigation.goBack()}
+        theme={{ colors: { ...theme } }}
       />
-      <PaperAppbar.Content title={title} />
-      <PaperAppbar.Action
-        icon="arrow-left"
-        iconColor={theme.onSurface}
-        disabled={!canGoBack}
-        onPress={() => webView.current?.goBack()}
-      />
-      <PaperAppbar.Action
-        icon="arrow-right"
-        iconColor={theme.onSurface}
-        disabled={!canGoForward}
-        onPress={() => webView.current?.goForward()}
-      />
-      <Menu
-        visible={visible}
-        onDismiss={() => setVisible(false)}
-        anchor={
-          <PaperAppbar.Action
-            icon="dots-vertical"
-            iconColor={theme.onSurface}
-            onPress={() => setVisible(true)}
-          />
-        }
-      >
-        <Menu.Item
-          title={getString('webview.refresh')}
-          titleStyle={{ color: theme.onSurface }}
-          onPress={() => webView.current?.reload()}
-        />
-        <Menu.Item
-          title={getString('webview.share')}
-          titleStyle={{ color: theme.onSurface }}
-          onPress={() => Share.share({ message: currentUrl })}
-        />
-        <Menu.Item
-          title={getString('webview.openInBrowser')}
-          titleStyle={{ color: theme.onSurface }}
-          onPress={() => WebBrowser.openBrowserAsync(currentUrl)}
-        />
-        <Menu.Item
-          title={getString('webview.clearData')}
-          titleStyle={{ color: theme.onSurface }}
-          onPress={() => {
-            webView.current?.clearCache(true);
-            showToast(getString('webview.dataDeleted'));
+
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text
+          style={{
+            color: theme.onSurface,
+            textAlign: 'center',
           }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {title}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+        <IconButton
+          icon="arrow-left"
+          iconColor={theme.onSurface}
+          disabled={!canGoBack}
+          onPress={() => webView.current?.goBack()}
+          theme={{ colors: { ...theme } }}
         />
-      </Menu>
-    </PaperAppbar.Header>
+
+        <IconButton
+          icon="arrow-right"
+          iconColor={theme.onSurface}
+          disabled={!canGoForward}
+          onPress={() => webView.current?.goForward()}
+          theme={{ colors: { ...theme } }}
+        />
+
+        <Menu
+          visible={menuVisible}
+          onDismiss={() => setMenuVisible(false)}
+          anchor={
+            <IconButton
+              icon="dots-vertical"
+              iconColor={theme.onSurface}
+              onPress={() => setMenuVisible(true)}
+              theme={{ colors: { ...theme } }}
+            />
+          }
+          style={{ backgroundColor: theme.surface2 }}
+          contentStyle={{ backgroundColor: theme.surface2 }}
+        >
+          <Menu.Item
+            title={getString('webview.refresh')}
+            style={{ backgroundColor: theme.surface2 }}
+            titleStyle={{ color: theme.onSurface }}
+            onPress={() => {
+              setMenuVisible(false);
+              webView.current?.reload();
+            }}
+          />
+          <Menu.Item
+            title={getString('webview.share')}
+            style={{ backgroundColor: theme.surface2 }}
+            titleStyle={{ color: theme.onSurface }}
+            onPress={() => {
+              setMenuVisible(false);
+              Share.share({ message: currentUrl });
+            }}
+          />
+          <Menu.Item
+            title={getString('webview.openInBrowser')}
+            style={{ backgroundColor: theme.surface2 }}
+            titleStyle={{ color: theme.onSurface }}
+            onPress={() => {
+              setMenuVisible(false);
+              Linking.openURL(currentUrl);
+            }}
+          />
+          <Menu.Item
+            title={getString('webview.clearData')}
+            style={{ backgroundColor: theme.surface2 }}
+            titleStyle={{ color: theme.onSurface }}
+            onPress={() => {
+              setMenuVisible(false);
+              webView.current?.clearCache?.(true);
+              webView.current?.reload();
+              showToast(getString('webview.dataDeleted'));
+            }}
+          />
+        </Menu>
+      </View>
+    </View>
   );
 };
 

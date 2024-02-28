@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import { ProgressBar } from 'react-native-paper';
 
+import { useBackHandler } from '@hooks';
 import { useTheme } from '@hooks/persisted';
 import { WebviewScreenProps } from '@navigators/types';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
@@ -27,6 +28,14 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
     setCanGoForward(e.canGoForward);
   };
 
+  useBackHandler(() => {
+    if (canGoBack) {
+      webViewRef.current?.goBack();
+      return true;
+    }
+    return false;
+  });
+
   return (
     <>
       <Appbar
@@ -44,7 +53,6 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         visible={progress !== 1}
       />
       <WebView
-        startInLoadingState
         userAgent={getUserAgent()}
         ref={webViewRef}
         source={{ uri }}
