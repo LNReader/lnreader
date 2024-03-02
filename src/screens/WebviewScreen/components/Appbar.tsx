@@ -32,52 +32,49 @@ const Appbar: React.FC<AppbarProps> = ({
   const [menuVisible, setMenuVisible] = useState(false);
 
   return (
-    <Portal.Host>
-      <View
-        style={{
-          paddingTop: top,
-          backgroundColor: theme.surface,
-          flexDirection: 'row',
-        }}
-      >
+    <View
+      style={{
+        paddingTop: top,
+        backgroundColor: theme.surface,
+        flexDirection: 'row',
+      }}
+    >
+      <IconButton
+        icon="close"
+        iconColor={theme.onSurface}
+        onPress={goBack}
+        theme={{ colors: { ...theme } }}
+      />
+
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text
+          style={{
+            color: theme.onSurface,
+            textAlign: 'center',
+          }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {title}
+        </Text>
+      </View>
+      <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
         <IconButton
-          icon="close"
+          icon="arrow-left"
           iconColor={theme.onSurface}
-          onPress={goBack}
+          disabled={!canGoBack}
+          onPress={() => webView.current?.goBack()}
           theme={{ colors: { ...theme } }}
         />
 
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-        >
-          <Text
-            style={{
-              color: theme.onSurface,
-              textAlign: 'center',
-            }}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {title}
-          </Text>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-          <IconButton
-            icon="arrow-left"
-            iconColor={theme.onSurface}
-            disabled={!canGoBack}
-            onPress={() => webView.current?.goBack()}
-            theme={{ colors: { ...theme } }}
-          />
-
-          <IconButton
-            icon="arrow-right"
-            iconColor={theme.onSurface}
-            disabled={!canGoForward}
-            onPress={() => webView.current?.goForward()}
-            theme={{ colors: { ...theme } }}
-          />
-
+        <IconButton
+          icon="arrow-right"
+          iconColor={theme.onSurface}
+          disabled={!canGoForward}
+          onPress={() => webView.current?.goForward()}
+          theme={{ colors: { ...theme } }}
+        />
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
           <Menu
             visible={menuVisible}
             onDismiss={() => setMenuVisible(false)}
@@ -133,7 +130,7 @@ const Appbar: React.FC<AppbarProps> = ({
           </Menu>
         </View>
       </View>
-    </Portal.Host>
+    </View>
   );
 };
 

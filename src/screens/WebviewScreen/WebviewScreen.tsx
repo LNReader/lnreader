@@ -18,6 +18,7 @@ type StorageData = {
 const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const { name, url, pluginId, isNovel } = route.params;
   const uri = resolveUrl(pluginId, url, isNovel);
+  console.log('pluginId', pluginId, storage);
 
   const theme = useTheme();
   const webViewRef = useRef<WebView | null>(null);
@@ -38,13 +39,13 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const saveData = () => {
     if (pluginId && tempData) {
       if (tempData?.localStorage) {
-        storageRaw.setString(
+        storageRaw.set(
           `${pluginId}_LocalStorage`,
           JSON.stringify(tempData.localStorage),
         );
       }
       if (tempData?.sessionStorage) {
-        storageRaw.setString(
+        storageRaw.set(
           `${pluginId}_SessionStorage`,
           JSON.stringify(tempData.sessionStorage),
         );

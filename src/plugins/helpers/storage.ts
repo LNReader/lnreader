@@ -26,7 +26,7 @@ class Storage {
       value,
       expires: expires instanceof Date ? expires.getTime() : expires,
     };
-    this.mmkv.setString(`${pluginID}_DB_${key}`, JSON.stringify(item));
+    this.mmkv.set(`${pluginID}_DB_${key}`, JSON.stringify(item));
     return true;
   }
 
