@@ -1,7 +1,9 @@
+import { getString } from '@strings/translations';
+
 export const midnightDusk = {
   light: {
     id: 10,
-    name: 'Daybreak Bloom',
+    name: getString('appearanceScreen.theme.daybreakBloom'),
     isDark: false,
     primary: 'rgb(240, 36, 117)',
     onPrimary: 'rgb(255, 255, 255)',
@@ -38,7 +40,7 @@ export const midnightDusk = {
   },
   dark: {
     id: 11,
-    name: 'Midnight Dusk',
+    name: getString('appearanceScreen.theme.midnightDusk'),
     isDark: true,
     primary: 'rgb(240, 36, 117)',
     onPrimary: 'rgb(255, 255, 255)',
