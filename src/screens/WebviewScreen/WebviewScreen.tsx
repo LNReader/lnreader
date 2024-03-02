@@ -18,7 +18,6 @@ type StorageData = {
 const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const { name, url, pluginId, isNovel } = route.params;
   const uri = resolveUrl(pluginId, url, isNovel);
-  console.log('pluginId', pluginId);
 
   const theme = useTheme();
   const webViewRef = useRef<WebView | null>(null);
