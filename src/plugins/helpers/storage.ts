@@ -22,7 +22,7 @@ class Storage {
     expires?: Date | number,
   ): boolean {
     const item: StoredItem = {
-      created: Date.now(),
+      created: new Date(),
       value,
       expires: expires instanceof Date ? expires.getTime() : expires,
     };
@@ -34,9 +34,14 @@ class Storage {
     const storedItem = this.mmkv.getString(`${pluginID}_DB_${key}`);
     if (storedItem) {
       const item: StoredItem = JSON.parse(storedItem);
-      if (item.expires && Date.now() > item.expires) {
-        this.delete(pluginID, key);
-        return undefined;
+      if (item.expires) {
+        if (Date.now() > item.expires) {
+          this.delete(pluginID, key);
+          return undefined;
+        }
+        if (raw) {
+          item.expires = new Date(item.expires);
+        }
       }
       return raw ? item : item.value;
     }
