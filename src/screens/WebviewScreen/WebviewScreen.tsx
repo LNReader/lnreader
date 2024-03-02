@@ -9,6 +9,7 @@ import { getUserAgent } from '@hooks/persisted/useUserAgent';
 import { resolveUrl } from '@services/plugin/fetch';
 import { storageRaw } from '@plugins/helpers/storage';
 import Appbar from './components/Appbar';
+import Menu from './components/menu';
 
 type StorageData = {
   localStorage?: Record<string, any>;
@@ -28,6 +29,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
   const [tempData, setTempData] = useState<StorageData>();
+  const [menuVisible, setMenuVisible] = useState(false);
 
   const handleNavigation = (e: WebViewNavigation) => {
     setCurrentUrl(e.url);
@@ -69,14 +71,21 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
       <Appbar
         title={title}
         theme={theme}
-        currentUrl={currentUrl}
         canGoBack={canGoBack}
         canGoForward={canGoForward}
         webView={webViewRef}
+        setMenuVisible={setMenuVisible}
         goBack={() => {
           saveData();
           navigation.goBack();
         }}
+      />
+      <Menu
+        theme={theme}
+        currentUrl={currentUrl}
+        webView={webViewRef}
+        visible={menuVisible}
+        setMenuVisible={setMenuVisible}
       />
       <ProgressBar
         color={theme.primary}
