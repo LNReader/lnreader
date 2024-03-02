@@ -9,7 +9,7 @@ import { getUserAgent } from '@hooks/persisted/useUserAgent';
 import { resolveUrl } from '@services/plugin/fetch';
 import { storageRaw } from '@plugins/helpers/storage';
 import Appbar from './components/Appbar';
-import Menu from './components/menu';
+import Menu from './components/Menu';
 
 type StorageData = {
   localStorage?: Record<string, any>;
