@@ -27,7 +27,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const [currentUrl, setCurrentUrl] = useState(uri);
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
-  const [storageDataRaw, setStorageData] = useState(null);
+  const [tempData, setTempData] = useState<StorageData>();
 
   const handleNavigation = (e: WebViewNavigation) => {
     setCurrentUrl(e.url);
@@ -36,18 +36,17 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   };
 
   const saveData = () => {
-    if (pluginId && storageDataRaw) {
-      const storageData: StorageData = JSON.parse(storageDataRaw);
-      if (storageData?.localStorage) {
+    if (pluginId && tempData) {
+      if (tempData?.localStorage) {
         storageRaw.setString(
-          `${pluginID}_LocalStorage`,
-          JSON.stringify(storageData.localStorage),
+          `${pluginId}_LocalStorage`,
+          JSON.stringify(tempData.localStorage),
         );
       }
-      if (storageData?.sessionStorage) {
+      if (tempData?.sessionStorage) {
         storageRaw.setString(
-          `${pluginID}_SessionStorage`,
-          JSON.stringify(storageData.sessionStorage),
+          `${pluginId}_SessionStorage`,
+          JSON.stringify(tempData.sessionStorage),
         );
       }
     }
@@ -92,7 +91,9 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         onLoadEnd={({ nativeEvent }) => setTitle(nativeEvent.title)}
         onNavigationStateChange={handleNavigation}
         injectedJavaScript={injectJavaScriptCode}
-        onMessage={({ nativeEvent }) => setStorageData(nativeEvent.data)}
+        onMessage={({ nativeEvent }) =>
+          setTempData(JSON.parse(nativeEvent.data))
+        }
       />
     </>
   );

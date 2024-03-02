@@ -11,7 +11,12 @@ import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
 import { fetchApi, fetchFile, fetchText } from './helpers/fetch';
-import { storage, localStorage, sessionStorage } from './helpers/storage';
+import {
+  storageRaw,
+  storage,
+  localStorage,
+  sessionStorage,
+} from './helpers/storage';
 import { defaultCover } from './helpers/constants';
 import { encode, decode } from 'urlencode';
 import TextFile from '@native/TextFile';
@@ -120,6 +125,11 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
 
 const uninstallPlugin = async (_plugin: PluginItem) => {
   plugins[_plugin.id] = undefined;
+  storageRaw.getAllKeys().forEach(key => {
+    if (key.startsWith(_plugin.id) {
+      storageRaw.delete(key);
+    }
+  });
   return serializePlugin(_plugin.id, '', false);
 };
 

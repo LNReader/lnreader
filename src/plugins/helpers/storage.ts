@@ -50,14 +50,15 @@ class Storage {
 
   clearAll(pluginID: string): boolean {
     const keysToRemove = this.getAllKeys(pluginID);
-    keysToRemove.forEach(key => this.mmkv.delete(key));
+    keysToRemove.forEach(key => this.delete(pluginID, key));
     return true;
   }
 
   getAllKeys(pluginID: string): string[] {
     const keys = this.mmkv
       .getAllKeys()
-      .filter(key => key.startsWith(`${pluginID}_DB`));
+      .filter(key => key.startsWith(`${pluginID}_DB_`))
+      .map(key => key.replace(`${pluginID}_DB_`, ''));
     return keys;
   }
 }

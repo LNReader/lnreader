@@ -5,7 +5,6 @@ import { Portal, IconButton, Menu } from 'react-native-paper';
 import WebView from 'react-native-webview';
 import * as Linking from 'expo-linking';
 
-import { WebviewScreenProps } from '@navigators/types';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import { showToast } from '@utils/showToast';
