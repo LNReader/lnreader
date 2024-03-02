@@ -61,7 +61,7 @@
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "^13.8.1",
-    "sanitize-html": "^2.7.0",
+    "sanitize-html": "^2.12.1",
     "urlencode": "^2.0.0"
   },
   "devDependencies": {
