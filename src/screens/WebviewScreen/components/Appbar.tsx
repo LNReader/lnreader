@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Share, View, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Portal, IconButton, Menu } from 'react-native-paper';
+import { IconButton, Menu } from 'react-native-paper';
 import WebView from 'react-native-webview';
 import * as Linking from 'expo-linking';
 
