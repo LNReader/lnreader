@@ -126,7 +126,7 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
 const uninstallPlugin = async (_plugin: PluginItem) => {
   plugins[_plugin.id] = undefined;
   storageRaw.getAllKeys().forEach(key => {
-    if (key.startsWith(_plugin.id) {
+    if (key.startsWith(_plugin.id)) {
       storageRaw.delete(key);
     }
   });
