@@ -1,6 +1,6 @@
 import { MMKV } from 'react-native-mmkv';
 
-const storage = new MMKV({ id: 'plugin_db' });
+const store = new MMKV({ id: 'plugin_db' });
 
 interface StoredItem {
   created: Date;
@@ -12,7 +12,7 @@ class Storage {
   mmkv: MMKV;
 
   constructor() {
-    this.mmkv = storage;
+    this.mmkv = store;
   }
 
   set(
@@ -71,7 +71,7 @@ class LocalStorage {
   private mmkv: MMKV;
 
   constructor() {
-    this.mmkv = storage;
+    this.mmkv = store;
   }
 
   get(pluginID: string): StoredItem.value | undefined {
@@ -85,7 +85,7 @@ class SessionStorage {
   private mmkv: MMKV;
 
   constructor() {
-    this.mmkv = storage;
+    this.mmkv = store;
   }
 
   get(pluginID: string): StoredItem.value | undefined {
