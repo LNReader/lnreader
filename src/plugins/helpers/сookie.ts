@@ -18,20 +18,20 @@ class CookieManager {
 
   async delete(url: string, cookieName: string): Promise<void> {
     const allCookies = await this.get(url);
-    allCookies.forEach(cookie => {
+    for (const cookie of allCookies) {
       if (cookie.key === cookieName) {
         cookie.expires = new Date(0).toISOString(); // Expire the cookie to delete it
         await this.set(url, cookie as CookieObject);
       }
-    });
+    }
   }
 
   async clearAll(url: string): Promise<void> {
     const allCookies = await this.get(url);
-    allCookies.forEach(cookie => {
+    for (const cookie of allCookies) {
       cookie.expires = new Date(0).toISOString(); // Expire each cookie to delete it
       await this.set(url, cookie as CookieObject);
-    });
+    }
   }
 }
 
