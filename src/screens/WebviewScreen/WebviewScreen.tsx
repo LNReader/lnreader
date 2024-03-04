@@ -32,28 +32,24 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const [menuVisible, setMenuVisible] = useState(false);
 
   const handleNavigation = (e: WebViewNavigation) => {
-    setCurrentUrl(e.url);
-    setCanGoBack(e.canGoBack);
-    setCanGoForward(e.canGoForward);
     if (!e.loading) {
       setTitle(e.title);
     }
+    setCurrentUrl(e.url);
+    setCanGoBack(e.canGoBack);
+    setCanGoForward(e.canGoForward);
   };
 
   const saveData = () => {
     if (pluginId && tempData) {
-      if (tempData?.localStorage) {
-        storage.mmkv.set(
-          `${pluginId}_LocalStorage`,
-          JSON.stringify(tempData.localStorage),
-        );
-      }
-      if (tempData?.sessionStorage) {
-        storage.mmkv.set(
-          `${pluginId}_SessionStorage`,
-          JSON.stringify(tempData.sessionStorage),
-        );
-      }
+      storage.mmkv.set(
+        pluginId + '_LocalStorage',
+        JSON.stringify(tempData?.localStorage || {}),
+      );
+      storage.mmkv.set(
+        pluginId + '_SessionStorage',
+        JSON.stringify(tempData?.sessionStorage || {}),
+      );
     }
   };
 
@@ -67,7 +63,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   });
 
   const injectJavaScriptCode =
-    'window.ReactNativeWebView.postMessage(JSON.stringify({localStorage,sessionStorage}))';
+    'window.ReactNativeWebView.postMessage(JSON.stringify({localStorage, sessionStorage}))';
 
   return (
     <>
@@ -81,6 +77,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
       <Appbar
         title={title}
         theme={theme}
+        currentUrl={currentUrl}
         canGoBack={canGoBack}
         canGoForward={canGoForward}
         webView={webViewRef}
@@ -102,6 +99,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         onLoadProgress={({ nativeEvent }) => setProgress(nativeEvent.progress)}
         onNavigationStateChange={handleNavigation}
         injectedJavaScript={injectJavaScriptCode}
+        setDisplayZoomControls={true}
         onMessage={({ nativeEvent }) =>
           setTempData(JSON.parse(nativeEvent.data))
         }
