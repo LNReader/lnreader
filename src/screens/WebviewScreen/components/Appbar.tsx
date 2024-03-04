@@ -57,9 +57,10 @@ const Appbar: React.FC<AppbarProps> = ({
         </Text>
         <MarqueeText
           style={{ color: theme.onSurface, textAlign: 'left' }}
-          speed={2}
+          speed={1}
           marqueeOnStart={true}
           loop={true}
+          consecutive={true}
           delay={2000}
         >
           {currentUrl}
