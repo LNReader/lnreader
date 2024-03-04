@@ -1,6 +1,6 @@
 import { MMKV } from 'react-native-mmkv';
 
-export const storageRaw = new MMKV({ id: 'plugin_db' });
+const storage = new MMKV({ id: 'plugin_db' });
 
 interface StoredItem {
   created: Date;
@@ -12,7 +12,7 @@ class Storage {
   mmkv: MMKV;
 
   constructor() {
-    this.mmkv = storageRaw;
+    this.mmkv = storage;
   }
 
   set(
@@ -20,14 +20,13 @@ class Storage {
     key: string,
     value: any,
     expires?: Date | number,
-  ): boolean {
+  ): void {
     const item: StoredItem = {
       created: new Date(),
       value,
       expires: expires instanceof Date ? expires.getTime() : expires,
     };
     this.mmkv.set(`${pluginID}_DB_${key}`, JSON.stringify(item));
-    return true;
   }
 
   get(pluginID: string, key: string, raw?: boolean): any {
@@ -48,15 +47,13 @@ class Storage {
     return undefined;
   }
 
-  delete(pluginID: string, key: string): boolean {
+  delete(pluginID: string, key: string): void {
     this.mmkv.delete(`${pluginID}_DB_${key}`);
-    return true;
   }
 
-  clearAll(pluginID: string): boolean {
+  clearAll(pluginID: string): void {
     const keysToRemove = this.getAllKeys(pluginID);
     keysToRemove.forEach(key => this.delete(pluginID, key));
-    return true;
   }
 
   getAllKeys(pluginID: string): string[] {
@@ -71,10 +68,10 @@ class Storage {
 export const storage = new Storage();
 
 class LocalStorage {
-  mmkv: MMKV;
+  private mmkv: MMKV;
 
   constructor() {
-    this.mmkv = storageRaw;
+    this.mmkv = storage;
   }
 
   get(pluginID: string): StoredItem.value | undefined {
@@ -85,10 +82,10 @@ class LocalStorage {
 export const localStorage = new LocalStorage();
 
 class SessionStorage {
-  mmkv: MMKV;
+  private mmkv: MMKV;
 
   constructor() {
-    this.mmkv = storageRaw;
+    this.mmkv = storage;
   }
 
   get(pluginID: string): StoredItem.value | undefined {

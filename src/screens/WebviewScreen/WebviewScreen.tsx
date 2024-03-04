@@ -7,7 +7,7 @@ import { useTheme } from '@hooks/persisted';
 import { WebviewScreenProps } from '@navigators/types';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
 import { resolveUrl } from '@services/plugin/fetch';
-import { storageRaw } from '@plugins/helpers/storage';
+import { storage } from '@plugins/helpers/storage';
 import Appbar from './components/Appbar';
 import Menu from './components/Menu';
 
@@ -40,13 +40,13 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const saveData = () => {
     if (pluginId && tempData) {
       if (tempData?.localStorage) {
-        storageRaw.set(
+        storage.mmkv.set(
           `${pluginId}_LocalStorage`,
           JSON.stringify(tempData.localStorage),
         );
       }
       if (tempData?.sessionStorage) {
-        storageRaw.set(
+        storage.mmkv.set(
           `${pluginId}_SessionStorage`,
           JSON.stringify(tempData.sessionStorage),
         );
@@ -68,6 +68,13 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
 
   return (
     <>
+      <Menu
+        theme={theme}
+        currentUrl={currentUrl}
+        webView={webViewRef}
+        visible={menuVisible}
+        setMenuVisible={setMenuVisible}
+      />
       <Appbar
         title={title}
         theme={theme}
@@ -79,13 +86,6 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
           saveData();
           navigation.goBack();
         }}
-      />
-      <Menu
-        theme={theme}
-        currentUrl={currentUrl}
-        webView={webViewRef}
-        visible={menuVisible}
-        setMenuVisible={setMenuVisible}
       />
       <ProgressBar
         color={theme.primary}

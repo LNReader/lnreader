@@ -11,12 +11,8 @@ import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
 import { fetchApi, fetchFile, fetchText } from './helpers/fetch';
-import {
-  storageRaw,
-  storage,
-  localStorage,
-  sessionStorage,
-} from './helpers/storage';
+import { storage, localStorage, sessionStorage } from './helpers/storage';
+import { cookieManager } from './helpers/сookie';
 import { defaultCover } from './helpers/constants';
 import { encode, decode } from 'urlencode';
 import TextFile from '@native/TextFile';
@@ -34,6 +30,7 @@ const packages: Record<string, any> = {
   '@libs/filterInputs': { FilterTypes },
   '@libs/defaultCover': { defaultCover },
   '@libs/storage': { storage, localStorage, sessionStorage },
+  '@libs/сookie': { cookieManager },
 };
 
 const _require = (packageName: string) => {
@@ -125,9 +122,9 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
 
 const uninstallPlugin = async (_plugin: PluginItem) => {
   plugins[_plugin.id] = undefined;
-  storageRaw.getAllKeys().forEach(key => {
+  storage.mmkv.getAllKeys().forEach(key => {
     if (key.startsWith(_plugin.id)) {
-      storageRaw.delete(key);
+      storage.mmkv.delete(key);
     }
   });
   return serializePlugin(_plugin.id, '', false);
