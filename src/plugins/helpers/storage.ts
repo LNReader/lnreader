@@ -93,4 +93,5 @@ class SessionStorage {
     return data ? JSON.parse(data) : undefined;
   }
 }
+
 export const sessionStorage = new SessionStorage();

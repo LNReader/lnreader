@@ -35,6 +35,9 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
     setCurrentUrl(e.url);
     setCanGoBack(e.canGoBack);
     setCanGoForward(e.canGoForward);
+    if (!e.loading) {
+      setTitle(e.title);
+    }
   };
 
   const saveData = () => {
@@ -97,7 +100,6 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         ref={webViewRef}
         source={{ uri }}
         onLoadProgress={({ nativeEvent }) => setProgress(nativeEvent.progress)}
-        onLoadEnd={({ nativeEvent }) => setTitle(nativeEvent.title)}
         onNavigationStateChange={handleNavigation}
         injectedJavaScript={injectJavaScriptCode}
         onMessage={({ nativeEvent }) =>

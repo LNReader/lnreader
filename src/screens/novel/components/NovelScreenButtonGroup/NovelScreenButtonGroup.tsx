@@ -34,7 +34,7 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
 
   const handleOpenWebView = async () => {
     navigate('WebviewScreen', {
-      name: novel.pluginId,
+      name: novel.name,
       url: novel.path,
       pluginId: novel.pluginId,
       isNovel: true,

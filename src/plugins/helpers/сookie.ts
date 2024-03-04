@@ -17,19 +17,22 @@ class CookieManager {
   setFromResponse = CookieStore.setFromResponse;
 
   async delete(url: string, cookieName: string): Promise<void> {
-    const allCookies = await this.get(url);
-    for (const cookie of allCookies) {
-      if (cookie.key === cookieName) {
-        cookie.expires = new Date(0).toISOString(); // Expire the cookie to delete it
-        await this.set(url, cookie as CookieObject);
-      }
-    }
+    /*
+    taken from the discussion
+    https://github.com/react-native-cookies/cookies/issues/100#issuecomment-1525881404
+    */
+    await this.set(url, {
+      name: cookieName,
+      value: '', //To delete cookies, you need to set the value to an empty string
+      expires: new Date(0).toISOString(), //or specify a past date in expires
+    });
   }
 
   async clearAll(url: string): Promise<void> {
     const allCookies = await this.get(url);
     for (const cookie of allCookies) {
-      cookie.expires = new Date(0).toISOString(); // Expire each cookie to delete it
+      cookie.value = '';
+      cookie.expires = new Date(0).toISOString(); //expire each cookie to delete it
       await this.set(url, cookie as CookieObject);
     }
   }
