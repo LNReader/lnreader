@@ -18,7 +18,6 @@
     "@react-native-community/slider": "4.4.2",
     "@react-native-cookies/cookies": "^6.2.1",
     "@react-native-google-signin/google-signin": "^11.0.0",
-    "@react-navigation/material-bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.0.11",
     "@shopify/flash-list": "1.4.3",
