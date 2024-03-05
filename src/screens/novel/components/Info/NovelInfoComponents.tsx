@@ -12,7 +12,6 @@ import {
 import color from 'color';
 import { IconButton, Portal } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
-import { easeGradient } from 'react-native-easing-gradient';
 import { Image, ImageURISource } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Chip } from '../../../../components';
@@ -50,13 +49,6 @@ const CoverImage = ({
   theme,
   hideBackdrop,
 }: CoverImageProps) => {
-  const { colors, locations } = easeGradient({
-    colorStops: {
-      0: { color: 'rgba(0,0,0,0)' },
-      1: { color: theme.background },
-    },
-  });
-
   if (hideBackdrop) {
     return <View>{children}</View>;
   } else {
@@ -70,8 +62,8 @@ const CoverImage = ({
         >
           {source.uri ? (
             <LinearGradient
-              colors={colors}
-              locations={locations}
+              colors={['rgba(0,0,0,0)', theme.background]}
+              locations={[0, 1]}
               style={styles.linearGradient}
             >
               {children}

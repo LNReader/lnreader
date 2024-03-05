@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
@@ -11,13 +17,14 @@ import {
   Filters,
 } from '@plugins/types/filterTypes';
 import { FlatList } from 'react-native-gesture-handler';
-import { Button, IconButtonV2 } from '@components/index';
+import { Button } from '@components/index';
 import { Checkbox } from '@components/Checkbox/Checkbox';
-import { Picker } from '@react-native-picker/picker';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useBoolean } from '@hooks';
-import { overlay } from 'react-native-paper';
+import { Menu, TextInput, overlay } from 'react-native-paper';
 import { getValueFor } from './filterUtils';
 import { getString } from '@strings/translations';
+import { ThemeColors } from '@theme/types';
 
 const insertOrRemoveIntoArray = (array: string[], val: string): string[] =>
   array.indexOf(val) > -1 ? array.filter(ele => ele !== val) : [...array, val];
@@ -25,6 +32,7 @@ const insertOrRemoveIntoArray = (array: string[], val: string): string[] =>
 type SelectedFilters = FilterToValues<Filters>;
 
 interface FilterItemProps {
+  theme: ThemeColors;
   filter: Filters[string];
   filterKey: keyof Filters;
   selectedFilters: SelectedFilters;
@@ -32,14 +40,18 @@ interface FilterItemProps {
 }
 
 const FilterItem: React.FC<FilterItemProps> = ({
+  theme,
   filter,
   filterKey,
   selectedFilters,
   setSelectedFilters,
 }) => {
-  const theme = useTheme();
-
-  const { value: isVisible, toggle: toggleCard } = useBoolean();
+  const {
+    value: isVisible,
+    toggle: toggleCard,
+    setFalse: closeCard,
+  } = useBoolean();
+  const { width: screenWidth } = useWindowDimensions();
   if (filter.type === FilterTypes.Picker) {
     const value = getValueFor<(typeof filter)['type']>(
       filter,
@@ -47,37 +59,63 @@ const FilterItem: React.FC<FilterItemProps> = ({
     );
     return (
       <View style={styles.pickerContainer}>
-        <Text style={[styles.pickerLabel, { color: theme.onSurfaceVariant }]}>
-          {filter.label}
-        </Text>
-        <Picker
-          style={[styles.picker, { color: theme.onSurface }]}
-          mode="dropdown"
-          selectedValue={value}
-          dropdownIconRippleColor={theme.primary}
-          onValueChange={(itemValue: string) =>
-            setSelectedFilters(prevFilters => ({
-              ...prevFilters,
-              [filterKey]: { value: itemValue, type: FilterTypes.Picker },
-            }))
+        <Menu
+          style={{ flex: 1 }}
+          visible={isVisible}
+          anchor={
+            <Pressable
+              style={{ flex: 1, width: screenWidth - 48 }}
+              onPress={toggleCard}
+            >
+              <TextInput
+                mode="outlined"
+                label={
+                  <Text
+                    style={[
+                      styles.label,
+                      {
+                        color: isVisible ? theme.primary : theme.onSurface,
+                        backgroundColor: theme.surface,
+                      },
+                    ]}
+                  >
+                    {filter.label}
+                  </Text>
+                }
+                value={value || 'whatever'}
+                editable={false}
+                outlineColor={isVisible ? theme.primary : theme.outline}
+                textColor={isVisible ? theme.primary : theme.outline}
+                right={
+                  <TextInput.Icon
+                    icon={isVisible ? 'chevron-up' : 'chevron-down'}
+                    color={isVisible ? theme.primary : theme.outline}
+                  />
+                }
+              />
+            </Pressable>
           }
-          placeholder={filter.label}
-          dropdownIconColor={theme.onSurface}
+          onDismiss={closeCard}
         >
           {filter.options.map(val => {
             return (
-              <Picker.Item
+              <Menu.Item
                 key={val.label}
-                label={val.label}
-                value={val.value}
+                title={val.label}
+                onPress={() => {
+                  closeCard();
+                  setSelectedFilters(prevFilters => ({
+                    ...prevFilters,
+                    [filterKey]: { value: val.value, type: FilterTypes.Picker },
+                  }));
+                }}
               />
             );
           })}
-        </Picker>
+        </Menu>
       </View>
     );
   }
-
   if (filter.type === FilterTypes.CheckboxGroup) {
     const value = getValueFor<(typeof filter)['type']>(
       filter,
@@ -90,13 +128,13 @@ const FilterItem: React.FC<FilterItemProps> = ({
           onPress={toggleCard}
           android_ripple={{ color: theme.rippleColor }}
         >
-          <Text style={[styles.filterLabel, { color: theme.onSurfaceVariant }]}>
+          <Text style={[styles.label, { color: theme.onSurfaceVariant }]}>
             {filter.label}
           </Text>
-          <IconButtonV2
+          <MaterialCommunityIcons
             name={isVisible ? 'chevron-up' : 'chevron-down'}
-            onPress={toggleCard}
-            theme={theme}
+            color={theme.onSurface}
+            size={24}
           />
         </Pressable>
         {isVisible
@@ -123,7 +161,6 @@ const FilterItem: React.FC<FilterItemProps> = ({
       </View>
     );
   }
-
   if (filter.type === FilterTypes.ExcludableCheckboxGroup) {
     const value = getValueFor<(typeof filter)['type']>(
       filter,
@@ -136,13 +173,13 @@ const FilterItem: React.FC<FilterItemProps> = ({
           onPress={toggleCard}
           android_ripple={{ color: theme.rippleColor }}
         >
-          <Text style={[styles.filterLabel, { color: theme.onSurfaceVariant }]}>
+          <Text style={[styles.label, { color: theme.onSurfaceVariant }]}>
             {filter.label}
           </Text>
-          <IconButtonV2
+          <MaterialCommunityIcons
             name={isVisible ? 'chevron-up' : 'chevron-down'}
-            onPress={toggleCard}
-            theme={theme}
+            color={theme.onSurface}
+            size={24}
           />
         </Pressable>
         {isVisible
@@ -216,7 +253,6 @@ const FilterItem: React.FC<FilterItemProps> = ({
       </View>
     );
   }
-
   return <></>;
 };
 
@@ -272,6 +308,7 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
           keyExtractor={item => 'filter' + item[0]}
           renderItem={({ item }) => (
             <FilterItem
+              theme={theme}
               filter={item[1]}
               filterKey={item[0]}
               selectedFilters={selectedFilters}
@@ -292,29 +329,29 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
   },
+  label: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 6,
+    paddingBottom: 6,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
   },
   filterContainer: {
     paddingVertical: 16,
-  },
-  filterLabel: {
-    paddingHorizontal: 16,
-    marginVertical: 16,
-  },
-  pickerLabel: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
   },
   pickerContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginVertical: 8,
   },
   picker: {
     width: 200,
@@ -323,6 +360,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingRight: 16,
+    paddingVertical: 16,
   },
 });
