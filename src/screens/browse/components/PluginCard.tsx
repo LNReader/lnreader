@@ -127,7 +127,7 @@ const PluginCard: React.FC<Props> = ({
           ) : (
             <ActivityIndicator
               color={theme.primary}
-              size={22}
+              size={27}
               style={styles.spinner}
               renderToHardwareTextureAndroid={true}
             />
@@ -172,6 +172,6 @@ const styles = StyleSheet.create({
   },
   spinner: {
     marginRight: 12,
-    marginLeft: 4,
+    marginLeft: -1,
   },
 });
