@@ -1,10 +1,10 @@
 import { ChapterInfo, NovelInfo } from '@database/types';
-import { MaterialBottomTabScreenProps } from '@react-navigation/material-bottom-tabs';
 import {
   CompositeScreenProps,
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { MaterialBottomTabScreenProps } from 'react-native-paper';
 
 export type RootStackParamList = {
   BottomNavigator: NavigatorScreenParams<BottomNavigatorParamList>;

@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ActivityIndicator,
+} from 'react-native';
 
 import { Button, IconButtonV2 } from '@components';
 
@@ -9,7 +15,6 @@ import { ThemeColors } from '@theme/types';
 import { PluginItem } from '@plugins/types';
 import { Image } from 'react-native';
 import { showToast } from '@utils/showToast';
-import { ActivityIndicator } from 'react-native-paper';
 import { getString } from '@strings/translations';
 import { languages } from '@utils/constants/languages';
 
@@ -122,8 +127,9 @@ const PluginCard: React.FC<Props> = ({
           ) : (
             <ActivityIndicator
               color={theme.primary}
-              size={22}
+              size={27}
               style={styles.spinner}
+              renderToHardwareTextureAndroid={true}
             />
           )}
         </View>
@@ -166,6 +172,6 @@ const styles = StyleSheet.create({
   },
   spinner: {
     marginRight: 12,
-    marginLeft: 4,
+    marginLeft: -1,
   },
 });

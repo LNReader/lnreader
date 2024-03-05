@@ -354,7 +354,7 @@ export const importEpub = async () => {
       type: 'application/epub+zip',
       copyToCacheDirectory: false,
     });
-    if (epubFile.type === 'cancel') {
+    if (epubFile.canceled) {
       showToast(getString('common.cancel'));
       return;
     }
@@ -364,7 +364,7 @@ export const importEpub = async () => {
       taskDesc: getString('common.parsing'),
       taskIcon: { name: 'notification_icon', type: 'drawable' },
       color: '#00adb5',
-      parameters: { delay: 500, sourceUri: epubFile.uri },
+      parameters: { delay: 500, sourceUri: epubFile.assets[0].uri },
       progressBar: { value: 0, max: 4 },
     });
   } catch (e: any) {
