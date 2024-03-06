@@ -35,6 +35,7 @@ export const languagesMapping: Record<string, Language | undefined> = {
   'pt': 'Portuguese',
   'ru': 'Russian',
   'es': 'Spanish',
+  'th': 'Thai',
   'tr': 'Turkish',
   'uk': 'Ukrainian',
   'vi': 'Vietnamese',
