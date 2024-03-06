@@ -32,15 +32,16 @@ Notifications.setNotificationHandler({
   },
 });
 
+createTables();
+deserializePlugins().then(() => LottieSplashScreen.hide());
+if (!BackgroundService.isRunning()) {
+  MMKVStorage.delete(BACKGROUND_ACTION);
+}
+
 const App = () => {
   const { refreshPlugins } = usePlugins();
   useEffect(() => {
-    createTables();
-    deserializePlugins().then(() => LottieSplashScreen.hide());
     refreshPlugins();
-    if (!BackgroundService.isRunning()) {
-      MMKVStorage.delete(BACKGROUND_ACTION);
-    }
   }, []);
 
   return (
