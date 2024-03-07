@@ -27,6 +27,8 @@ const JumpToChapterModal = ({
   novel,
   chapterListRef,
 }: JumpToChapterModalProps) => {
+  const minNumber = Math.min(...chapters.map(c => c.chapterNumber || -1));
+  const maxNumber = Math.max(...chapters.map(c => c.chapterNumber || -1));
   const theme = useTheme();
   const [mode, setMode] = useState(false);
   const [openChapter, setOpenChapter] = useState(false);
@@ -100,15 +102,20 @@ const JumpToChapterModal = ({
   const onSubmit = () => {
     if (!mode) {
       const num = Number(text);
-      if (num && num > 0 && num <= chapters.length) {
+      if (num && num >= minNumber && num <= maxNumber) {
         if (openChapter) {
-          return navigateToChapter(chapters[num - 1]);
+          const chapter = chapters.find(c => c.chapterNumber === num);
+          if (chapter) {
+            return navigateToChapter(chapter);
+          }
+        } else {
+          const index = chapters.findIndex(c => c.chapterNumber === num);
+          return scrollToIndex(index);
         }
-        return scrollToIndex(num - 1);
       }
       return setError(
         getString('novelScreen.jumpToChapterModal.error.validChapterNumber') +
-          ` (${num <= 0 ? '≤ 0' : '≤ ' + chapters.length})`,
+          ` (${num < minNumber ? '≥ ' + minNumber : '≤ ' + maxNumber})`,
       );
     } else {
       const searchedChapters = chapters.filter(chap =>
@@ -160,7 +167,7 @@ const JumpToChapterModal = ({
               mode
                 ? getString('novelScreen.jumpToChapterModal.chapterName')
                 : getString('novelScreen.jumpToChapterModal.chapterNumber') +
-                  ` (≤ ${chapters.length})`
+                  ` (≥ ${minNumber},  ≤ ${maxNumber})`
             }
             onChangeText={onChangeText}
             onSubmitEditing={onSubmit}
