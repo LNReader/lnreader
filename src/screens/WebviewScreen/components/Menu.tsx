@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, Share, View, Text } from 'react-native';
+import { Pressable, Share, View, Text, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 import * as Linking from 'expo-linking';
@@ -24,21 +24,10 @@ const Menu: React.FC<MenuProps> = ({
   const insets = useSafeAreaInsets();
 
   return (
-    <Pressable
-      onPress={() => setMenuVisible(false)}
-      style={{
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <View style={{ position: 'absolute', right: 0, top: insets.top }}>
+    <Pressable onPress={() => setMenuVisible(false)} style={styles.container}>
+      <View style={[styles.menuContainer, { top: insets.top }]}>
         <Pressable
-          style={{ backgroundColor: theme.surface2, padding: 15 }}
+          style={[styles.menuButton, { backgroundColor: theme.surface2 }]}
           onPress={() => {
             setMenuVisible(false);
             webView.current?.reload();
@@ -50,7 +39,7 @@ const Menu: React.FC<MenuProps> = ({
         </Pressable>
 
         <Pressable
-          style={{ backgroundColor: theme.surface2, padding: 15 }}
+          style={[styles.menuButton, { backgroundColor: theme.surface2 }]}
           onPress={() => {
             setMenuVisible(false);
             Share.share({ message: currentUrl });
@@ -62,7 +51,7 @@ const Menu: React.FC<MenuProps> = ({
         </Pressable>
 
         <Pressable
-          style={{ backgroundColor: theme.surface2, padding: 15 }}
+          style={[styles.menuButton, { backgroundColor: theme.surface2 }]}
           onPress={() => {
             setMenuVisible(false);
             Linking.openURL(currentUrl);
@@ -74,7 +63,7 @@ const Menu: React.FC<MenuProps> = ({
         </Pressable>
 
         <Pressable
-          style={{ backgroundColor: theme.surface2, padding: 15 }}
+          style={[styles.menuButton, { backgroundColor: theme.surface2 }]}
           onPress={() => {
             setMenuVisible(false);
             webView.current?.clearCache?.(true);
@@ -92,3 +81,23 @@ const Menu: React.FC<MenuProps> = ({
 };
 
 export default Menu;
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuContainer: {
+    position: 'absolute',
+    right: 0,
+  },
+  menuButton: {
+    padding: 15,
+    marginVertical: 5,
+  },
+});

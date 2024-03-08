@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import TextTicker from 'react-native-text-ticker';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -33,11 +33,10 @@ const Appbar: React.FC<AppbarProps> = ({
 
   return (
     <View
-      style={{
-        paddingTop: top,
-        backgroundColor: theme.surface,
-        flexDirection: 'row',
-      }}
+      style={[
+        styles.container,
+        { paddingTop: top, backgroundColor: theme.surface },
+      ]}
     >
       <IconButtonV2
         name="close"
@@ -45,19 +44,15 @@ const Appbar: React.FC<AppbarProps> = ({
         onPress={goBack}
         theme={theme}
       />
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={styles.titleContainer}>
         <Text
-          style={{
-            paddingLeft: 2,
-            color: theme.onSurface,
-            fontSize: 18,
-          }}
+          style={[styles.title, { color: theme.onSurface }]}
           numberOfLines={1}
         >
           {title}
         </Text>
         <TextTicker
-          style={{ color: theme.outline, fontSize: 16 }}
+          style={[styles.url, { color: theme.onSurfaceVariant }]}
           loop
           scrollSpeed={45}
           bounceSpeed={100}
@@ -69,12 +64,7 @@ const Appbar: React.FC<AppbarProps> = ({
           {currentUrl}
         </TextTicker>
       </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-        }}
-      >
+      <View style={styles.iconContainer}>
         <IconButtonV2
           name="arrow-left"
           color={theme.onSurface}
@@ -103,3 +93,24 @@ const Appbar: React.FC<AppbarProps> = ({
 };
 
 export default Appbar;
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+  },
+  titleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  title: {
+    paddingLeft: 2,
+    fontSize: 18,
+  },
+  url: {
+    fontSize: 16,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+});

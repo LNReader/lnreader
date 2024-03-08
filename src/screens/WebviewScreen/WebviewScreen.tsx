@@ -32,12 +32,11 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const [tempData, setTempData] = useState<StorageData>();
   const [menuVisible, setMenuVisible] = useState(false);
 
-  console.log(loading, loading && progress !== 1, progress !== 1);
-
   const handleNavigation = (e: WebViewNavigation) => {
     if (!e.loading) {
       setTitle(e.title);
     }
+    setLoading(e.loading);
     setCurrentUrl(e.url);
     setCanGoBack(e.canGoBack);
     setCanGoForward(e.canGoForward);
@@ -76,7 +75,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
       <Appbar
         title={title}
         theme={theme}
-        loading={loading}
+        loading={loading && progress !== 1}
         currentUrl={currentUrl}
         canGoBack={canGoBack}
         canGoForward={canGoForward}
@@ -90,7 +89,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
       <ProgressBar
         color={theme.primary}
         progress={progress}
-        visible={loading}
+        visible={loading && progress !== 1}
       />
       <WebView
         userAgent={getUserAgent()}
@@ -101,9 +100,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         setSupportMultipleWindows={false}
         injectedJavaScript={injectJavaScriptCode}
         onNavigationStateChange={handleNavigation}
-        onLoadStart={({ nativeEvent }) => setLoading(nativeEvent.loading)}
         onLoadProgress={({ nativeEvent }) => setProgress(nativeEvent.progress)}
-        onLoadEnd={({ nativeEvent }) => setLoading(nativeEvent.loading)}
         onMessage={({ nativeEvent }) =>
           setTempData(JSON.parse(nativeEvent.data))
         }
