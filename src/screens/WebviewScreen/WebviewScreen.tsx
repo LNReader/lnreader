@@ -23,6 +23,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const theme = useTheme();
   const webViewRef = useRef<WebView | null>(null);
 
+  const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [title, setTitle] = useState(name || '');
   const [currentUrl, setCurrentUrl] = useState(uri);
@@ -30,6 +31,8 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const [canGoForward, setCanGoForward] = useState(false);
   const [tempData, setTempData] = useState<StorageData>();
   const [menuVisible, setMenuVisible] = useState(false);
+
+  console.log(loading, loading && progress !== 1, progress !== 1);
 
   const handleNavigation = (e: WebViewNavigation) => {
     if (!e.loading) {
@@ -54,7 +57,10 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   };
 
   useBackHandler(() => {
-    if (canGoBack) {
+    if (menuVisible) {
+      setMenuVisible(false);
+      return true;
+    } else if (canGoBack) {
       webViewRef.current?.goBack();
       return true;
     }
@@ -67,16 +73,10 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
 
   return (
     <>
-      <Menu
-        theme={theme}
-        currentUrl={currentUrl}
-        webView={webViewRef}
-        visible={menuVisible}
-        setMenuVisible={setMenuVisible}
-      />
       <Appbar
         title={title}
         theme={theme}
+        loading={loading}
         currentUrl={currentUrl}
         canGoBack={canGoBack}
         canGoForward={canGoForward}
@@ -90,20 +90,32 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
       <ProgressBar
         color={theme.primary}
         progress={progress}
-        visible={progress !== 1}
+        visible={loading}
       />
       <WebView
         userAgent={getUserAgent()}
         ref={webViewRef}
         source={{ uri }}
-        onLoadProgress={({ nativeEvent }) => setProgress(nativeEvent.progress)}
-        onNavigationStateChange={handleNavigation}
-        injectedJavaScript={injectJavaScriptCode}
         setDisplayZoomControls={true}
+        setBuiltInZoomControls={false}
+        setSupportMultipleWindows={false}
+        injectedJavaScript={injectJavaScriptCode}
+        onNavigationStateChange={handleNavigation}
+        onLoadStart={({ nativeEvent }) => setLoading(nativeEvent.loading)}
+        onLoadProgress={({ nativeEvent }) => setProgress(nativeEvent.progress)}
+        onLoadEnd={({ nativeEvent }) => setLoading(nativeEvent.loading)}
         onMessage={({ nativeEvent }) =>
           setTempData(JSON.parse(nativeEvent.data))
         }
       />
+      {menuVisible ? (
+        <Menu
+          theme={theme}
+          currentUrl={currentUrl}
+          webView={webViewRef}
+          setMenuVisible={setMenuVisible}
+        />
+      ) : null}
     </>
   );
 };

@@ -2,10 +2,10 @@ name: Lint
 on:
   push:
     branches:
-      - db
+      - db-test
   pull_request:
     branches:
-      - db
+      - db-test
 
 jobs:
   build:
