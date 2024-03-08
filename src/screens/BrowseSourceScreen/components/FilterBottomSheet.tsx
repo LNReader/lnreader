@@ -62,6 +62,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
         <Menu
           style={{ flex: 1 }}
           visible={isVisible}
+          contentStyle={{ backgroundColor: theme.surfaceVariant }}
           anchor={
             <Pressable
               style={{ flex: 1, width: screenWidth - 48 }}
@@ -79,17 +80,18 @@ const FilterItem: React.FC<FilterItemProps> = ({
                       },
                     ]}
                   >
-                    {filter.label}
+                    {` ${filter.label} `}
                   </Text>
                 }
                 value={value || 'whatever'}
                 editable={false}
-                outlineColor={isVisible ? theme.primary : theme.outline}
-                textColor={isVisible ? theme.primary : theme.outline}
+                theme={{ colors: { background: 'transparent' } }}
+                outlineColor={isVisible ? theme.primary : theme.onSurface}
+                textColor={isVisible ? theme.primary : theme.onSurface}
                 right={
                   <TextInput.Icon
                     icon={isVisible ? 'chevron-up' : 'chevron-down'}
-                    color={isVisible ? theme.primary : theme.outline}
+                    color={isVisible ? theme.primary : theme.onSurface}
                   />
                 }
               />
@@ -102,6 +104,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
               <Menu.Item
                 key={val.label}
                 title={val.label}
+                titleStyle={{ color: theme.onSurfaceVariant }}
                 onPress={() => {
                   closeCard();
                   setSelectedFilters(prevFilters => ({

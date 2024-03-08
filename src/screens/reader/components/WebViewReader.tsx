@@ -24,6 +24,8 @@ import {
 } from '@hooks/persisted/useSettings';
 import { getBatteryLevelSync } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
+import * as Clipboard from 'expo-clipboard';
+import { showToast } from '@utils/showToast';
 
 type WebViewPostEvent = {
   type: string;
@@ -166,6 +168,13 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
           case 'stop-speak':
             Speech.stop();
             break;
+          case 'copy':
+            if (event.data && typeof event.data === 'string') {
+              Clipboard.setStringAsync(event.data).then(() => {
+                showToast(getString('common.copiedToClipboard', { name: '' }));
+              });
+            }
+            break;
         }
       }}
       source={{
@@ -187,20 +196,24 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       --theme-onPrimary: ${theme.onPrimary};
                       --theme-secondary: ${theme.secondary};
                       --theme-tertiary: ${theme.tertiary};
+                      --theme-onTertiary: ${theme.onTertiary};
                       --theme-onSecondary: ${theme.onSecondary};
                       --theme-surface: ${theme.surface};
                       --theme-surface-0-9: ${color(theme.surface)
                         .alpha(0.9)
                         .toString()};
-                      --theme-onSurface:${theme.onSurface};
+                      --theme-onSurface: ${theme.onSurface};
+                      --theme-surfaceVariant: ${theme.surfaceVariant};
+                      --theme-onSurfaceVariant: ${theme.onSurfaceVariant};
                       --theme-outline: ${theme.outline};
+                      --theme-rippleColor: ${theme.rippleColor};
                       --chapterCtn-height: ${layoutHeight - 140};
                       }
                       @font-face {
                         font-family: ${readerSettings.fontFamily};
-                        src: url("${assetsUriPrefix}/fonts/${
-          readerSettings.fontFamily
-        }.ttf");
+                        src: url("file:///android_asset/fonts/${
+                          readerSettings.fontFamily
+                        }.ttf");
                       }
                     </style>
                     <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
@@ -224,15 +237,10 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       >
                         ${html}
                       </chapter>
-                      <div class="d-none" id="ToolWrapper">
-                          <div id="TextToSpeech" draggable="true">
-                            <span class="tts">
-                              <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40"><path d="M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm440 40v-322q47 22 73.5 66t26.5 96q0 51-26.5 94.5T560-320Z"/></svg>
-                            </span>
-                          </div>
+                      <div class="hidden" id="ToolWrapper">
+                          <div id="TTS-Controller"></div>
                           <div id="ScrollBar"></div>
                       </div>
-
                       <div id="reader-footer-wrapper">
                           <div id="reader-footer">
                               <div id="reader-battery" class="reader-footer-item"></div>

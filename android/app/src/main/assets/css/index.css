@@ -9,6 +9,7 @@ html {
     color: var(--theme-onSecondary);
     background-color: var(--theme-secondary);
 }
+
 ::-moz-selection {
     color: var(--theme-onSecondary);
     background-color: var(--theme-secondary);
@@ -57,6 +58,7 @@ img {
     font-family: var(--readerSettings-fontFamily);
     font-size: 16px;
     border-width: 0;
+    user-select: none;
 }
 
 .nextButton {
@@ -86,24 +88,40 @@ img {
     display: none;
 }
 
-.hidden {
-    visibility: hidden;
-    width: 0;
-}
-
 #ToolWrapper {
     position: fixed;
     top: 25vh;
     right: 5vw;
+    transition: 150ms;
+}
+
+#ToolWrapper.hidden {
+    opacity: 0;
+    right: 0;
+}
+
+#TTS-Controller {
+    display: block;
+}
+
+#TTS-Controller button{
+    background: var(--theme-surface-0-9);
+    border: 0;
+}
+
+#TTS-Controller svg {
+    fill: var(--theme-onSurface);
 }
 
 #ScrollBar {
+    margin-top: 8px;
     width: 2.4rem;
     height: 45vh;
     border-radius: 1.2rem;
     background-color: var(--theme-surface-0-9);
     touch-action: none;
     font-size: 16px;
+    user-select: none;
 }
 
 .scrollbar-item {
@@ -132,7 +150,6 @@ img {
     width: 0.1rem;
     height: 0;
     background-color: var(--theme-primary);
-    transform: translateX(-0.1rem);
 }
 
 #scrollbar-thumb-wrapper {
@@ -171,45 +188,119 @@ img {
     color: var(--readerSettings-textColor);
     font-size: 1rem;
     text-align: center;
+    user-select: none;
 }
 
-.reader-footer-item{
+.reader-footer-item {
     display: flex;
-}
-
-.tts {
-    position: relative;
-    bottom: 1rem;
-}
-
-.tts > svg {
-    fill: var(--theme-secondary);
-    -webkit-transition: 0.3s;
-    transition: 0.3s;
-}
-
-.tts::before{
-    position: absolute;
-    content: '';
-    height: 40px;
-    width: 2px;
-    background-color: var(--theme-secondary);;
-    transform-origin: top right;
-    transform: translate(4px, 4px) rotate(-45deg);
-    -webkit-transition: 0.3s;
-    transition: 0.3s;
-}
-
-.tts.speak::before{
-    height: 0;
-    background-color: var(--theme-primary);
-}
-
-.tts.speak > svg{
-    fill: var(--theme-primary);
 }
 
 tts.highlight {
     color: var(--theme-onSecondary);
     background-color: var(--theme-secondary);
+}
+
+.contextMenu {
+    position: absolute;
+    height: 0;
+    overflow: hidden;
+    background: var(--theme-surface-0-9);
+    -webkit-backdrop-filter: blur(1px);
+    backdrop-filter: blur(1px);
+    position: fixed;
+    top: var(--top);
+    left: var(--left);
+    -webkit-animation: menuAnimation 0.4s 0s both;
+    animation: menuAnimation 0.4s 0s both;
+    transform-origin: left;
+    list-style: none;
+    margin: 4px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 999999999;
+}
+
+.contextMenu-item {
+    padding: 4px,
+}
+
+.contextMenu-button {
+    color: var(--theme-onSurface);
+    background: 0;
+    border: 0;
+    white-space: nowrap;
+    width: 100%;
+    border-radius: 4px;
+    padding: 6px 24px 6px 7px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    width: 100%;
+    -webkit-animation: menuItemAnimation 0.2s 0s both;
+    animation: menuItemAnimation 0.2s 0s both;
+    font-family: var(--readerSettings-fontFamily);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: var(--theme-rippleColor);
+}
+
+.contextMenu-button svg {
+    fill: var(--theme-onSurface);
+}
+.contextMenu-button span {
+    margin-left: 4px;
+}
+
+@-webkit-keyframes menuAnimation {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    100% {
+        height: var(--height);
+        opacity: 1;
+        border-radius: 8px;
+        transform: scale(1);
+    }
+}
+
+@keyframes menuAnimation {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    100% {
+        height: var(--height);
+        opacity: 1;
+        border-radius: 8px;
+        transform: scale(1);
+    }
+}
+
+@-webkit-keyframes menuItemAnimation {
+    0% {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes menuItemAnimation {
+    0% {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

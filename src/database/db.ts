@@ -21,14 +21,12 @@ export const createTables = () => {
   db.exec([{ sql: 'PRAGMA foreign_keys = ON', args: [] }], false, () => {});
   db.transaction(tx => {
     tx.executeSql(createNovelTableQuery);
-    tx.executeSql(createCategoriesTableQuery, [], () => {
-      tx.executeSql(createCategoryDefaultQuery);
-      tx.executeSql(createCategoryTriggerQuery);
-    });
+    tx.executeSql(createCategoriesTableQuery);
+    tx.executeSql(createCategoryDefaultQuery);
+    tx.executeSql(createCategoryTriggerQuery);
     tx.executeSql(createNovelCategoryTableQuery);
-    tx.executeSql(createChapterTableQuery, [], () => {
-      tx.executeSql(createChapterNovelIdIndexQuery);
-    });
+    tx.executeSql(createChapterTableQuery);
+    tx.executeSql(createChapterNovelIdIndexQuery);
   });
 };
 
