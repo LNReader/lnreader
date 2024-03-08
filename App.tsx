@@ -3,7 +3,7 @@ import { enableFreeze } from 'react-native-screens';
 
 enableFreeze(true);
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StatusBar } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LottieSplashScreen from 'react-native-lottie-splash-screen';
@@ -18,7 +18,6 @@ import { deserializePlugins } from '@plugins/pluginManager';
 
 import Main from './src/navigators/Main';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { usePlugins } from '@hooks/persisted';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { BACKGROUND_ACTION } from '@services/constants';
 
@@ -39,11 +38,6 @@ if (!BackgroundService.isRunning()) {
 }
 
 const App = () => {
-  const { refreshPlugins } = usePlugins();
-  useEffect(() => {
-    refreshPlugins();
-  }, []);
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <AppErrorBoundary>
