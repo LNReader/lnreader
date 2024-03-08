@@ -12,8 +12,13 @@ const selectAllIcon =
 const translateIcon =
   '<svg height="24" viewBox="0 -960 960 960" width="24"><path d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"/></svg>';
 const resumeIcon =
-  '<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M240-240v-480h80v480h-80Zm160 0 400-240-400-240v480Z"/></svg>';
-
+  '<svg height="24" viewBox="0 -960 960 960" width="24"><path d="M240-240v-480h80v480h-80Zm160 0 400-240-400-240v480Z"/></svg>';
+const pauseIcon =
+  '<svg height="24" viewBox="0 -960 960 960" width="24"><path d="M560-200v-560h160v560H560Zm-320 0v-560h160v560H240Z"/></svg>';
+const stopIcon =
+  '<svg height="24" viewBox="0 -960 960 960" width="24"><path d="M320-320h320v-320H320v320ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg>';
+const selectVolumeIcon =
+  '<svg height="24" viewBox="0 -960 960 960" width="24"><path d="M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 127-78 224.5T560-131Zm-80-29L280-360H120v-240h160l200-200v640Zm80-160v-322q47 22 73.5 66t26.5 96q0 51-26.5 94.5T560-320ZM40-680v-240h240v80H120v160H40ZM680-40v-80h160v-160h80v240H680Z"/></svg>';
 /**
  * @type {import("./type").Reader}
  */
@@ -141,11 +146,11 @@ class ToolWrapper {
     this.tools = [];
   }
   hide = () => {
-    this.$.classList.add('d-none');
+    this.$.classList.add('hidden');
     this.visible = false;
   };
   show = () => {
-    this.$.classList.remove('d-none');
+    this.$.classList.remove('hidden');
     this.visible = true;
     for (const tool of this.tools) {
       tool.onShow?.();
@@ -164,12 +169,13 @@ class ScrollHandler {
         </div>
         <div class="scrollbar-item" id="scrollbar-slider">
           <div id="scrollbar-track">
-          </div>
-          <div id="scrollbar-progress">
-            <div id="scrollbar-thumb-wrapper"> 
-              <div id="scrollbar-thumb"></div>
+            <div id="scrollbar-progress">
+              <div id="scrollbar-thumb-wrapper"> 
+                <div id="scrollbar-thumb"></div>
+              </div>
             </div>
           </div>
+          
         </div>
         <div class="scrollbar-item scrollbar-text">
           100
@@ -256,32 +262,52 @@ class SwipeHandler {
   };
 }
 
+/**
+ * @type {import('./type').TextToSpeech}
+ */
 class TextToSpeech {
-  /**
-   * @param {import("./type").Reader} reader
-   */
   constructor(reader) {
     this.reader = reader;
     (this.leaf = this.reader.chapter), (this.TTSWrapper = null); // swap these 2 elements
     this.TTSEle = null;
-    this.speaking = false;
+    this.reading = false;
+    this.$ = document.getElementById('TTS-Controller');
+    this.$.classList.add('d-none');
+    this.$.onclick = () => {
+      if (this.reading) {
+        this.pause();
+      } else {
+        this.resume();
+      }
+    };
   }
 
-  toggle = () => {
-    if (this.speaking) {
-      this.stop();
-    } else {
-      if (this.reader.selection.type === 'Range') {
-        if (this.leaf && this.TTSWrapper) {
-          this.TTSWrapper.replaceWith(this.leaf);
-        }
-        this.leaf = this.reader.selection.anchorNode;
-        this.makeLeafSpeakable();
-        this.speak();
-      } else {
-        this.next();
+  start = () => {
+    this.$.innerHTML = `<button>${pauseIcon}</button>`;
+    this.$.classList.remove('d-none');
+    this.stop();
+    this.next();
+  };
+
+  startHere = () => {
+    this.$.innerHTML = `<button>${pauseIcon}</button>`;
+    this.$.classList.remove('d-none');
+    this.stop();
+    if (this.reader.selection.type === 'Range') {
+      if (this.leaf && this.TTSWrapper) {
+        this.TTSWrapper.replaceWith(this.leaf);
       }
+      this.leaf = this.reader.selection.anchorNode;
+      this.makeLeafSpeakable();
+      this.speak();
+    } else {
+      this.next();
     }
+  };
+
+  resume = () => {
+    this.$.innerHTML = `<button>${pauseIcon}</button>`;
+    this.next();
   };
 
   findLeaf() {
@@ -341,35 +367,54 @@ class TextToSpeech {
   }
 
   next = () => {
-    if (this.TTSEle) {
-      this.TTSEle.classList.remove('highlight');
-    }
-    if (this.speaking) {
-      if (this.TTSEle && this.TTSEle.nextElementSibling) {
-        this.TTSEle = this.TTSEle.nextElementSibling;
+    try {
+      if (this.TTSEle) {
+        this.TTSEle.classList.remove('highlight');
+      }
+      if (this.reading) {
+        if (this.TTSEle && this.TTSEle.nextElementSibling) {
+          this.TTSEle = this.TTSEle.nextElementSibling;
+        } else {
+          this.findNextTextNode();
+        }
       } else {
-        this.findNextTextNode();
+        if (!this.TTSEle) {
+          this.findNextTextNode();
+        }
       }
-    } else {
-      if (!this.TTSEle) {
-        this.findNextTextNode();
-      }
+      this.speak();
+    } catch (e) {
+      alert(e);
     }
-    this.speak();
   };
 
+  stop = () => {
+    this.$.classList.add('d-none');
+    this.reading = false;
+    if (this.leaf && this.TTSWrapper) {
+      this.TTSWrapper.replaceWith(this.leaf);
+      this.TTSWrapper = null;
+      this.TTSEle = null;
+      this.leaf = this.reader.chapter;
+    }
+    this.reader.post({ type: 'stop-speak' });
+  };
+
+  pause = () => {
+    this.$.innerHTML = `<button>${resumeIcon}</button>`;
+    this.reading = false;
+    this.reader.post({ type: 'stop-speak' });
+  };
+
+  started = () => this.TTSWrapper !== null;
+
   speak = () => {
-    this.speaking = true;
+    this.reading = true;
     if (this.reader.chapter.isSameNode(this.leaf)) {
       return;
     }
     this.TTSEle.classList.add('highlight');
     this.reader.post({ type: 'speak', data: this.TTSEle?.innerText.trim() });
-  };
-
-  stop = () => {
-    this.speaking = false;
-    this.reader.post({ type: 'stop-speak' });
   };
 }
 
@@ -387,15 +432,15 @@ class ContextMenu {
         name: 'Start Reading',
         icon: volumeIcon,
         action: () => {
-          tts.toggle();
+          tts.start();
           this.closeMenu();
         },
       }),
-      CONTINUE_READING: this.renderItem({
-        name: 'Continue Reading',
-        icon: resumeIcon,
+      START_HERE: this.renderItem({
+        name: 'Start Here',
+        icon: selectVolumeIcon,
         action: () => {
-          tts.toggle();
+          tts.startHere();
           this.closeMenu();
         },
       }),
@@ -420,6 +465,7 @@ class ContextMenu {
         },
       }),
     };
+    this.commonItems = [this.items.COPY, this.items.SELECT_ALL];
     this.contextMenu = document.createElement('ul');
     this.contextMenu.classList.add('contextMenu');
     this.isOpened = false;
@@ -445,7 +491,7 @@ class ContextMenu {
 
   renderMenu(items) {
     this.contextMenu.innerHTML = '';
-    items.forEach((item, index) => {
+    items.concat(this.commonItems).forEach((item, index) => {
       item.firstChild.setAttribute('style', `animation-delay: ${index * 0.1}s`);
       this.contextMenu.appendChild(item);
     });
@@ -466,17 +512,9 @@ class ContextMenu {
       e.preventDefault();
       this.isOpened = true;
       if (this.reader.selection.type === 'Range') {
-        this.renderMenu([
-          this.items.CONTINUE_READING,
-          this.items.COPY,
-          this.items.SELECT_ALL,
-        ]);
+        this.renderMenu([this.items.START_HERE, this.items.START_READING]);
       } else {
-        this.renderMenu([
-          this.items.START_READING,
-          this.items.COPY,
-          this.items.SELECT_ALL,
-        ]);
+        this.renderMenu([this.items.START_READING]);
       }
       const { clientX, clientY } = e;
       document.body.appendChild(this.contextMenu);

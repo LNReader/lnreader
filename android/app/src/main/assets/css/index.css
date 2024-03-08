@@ -58,6 +58,7 @@ img {
     font-family: var(--readerSettings-fontFamily);
     font-size: 16px;
     border-width: 0;
+    user-select: none;
 }
 
 .nextButton {
@@ -87,24 +88,40 @@ img {
     display: none;
 }
 
-.hidden {
-    visibility: hidden;
-    width: 0;
-}
-
 #ToolWrapper {
     position: fixed;
     top: 25vh;
     right: 5vw;
+    transition: 150ms;
+}
+
+#ToolWrapper.hidden {
+    opacity: 0;
+    right: 0;
+}
+
+#TTS-Controller {
+    display: block;
+}
+
+#TTS-Controller button{
+    background: var(--theme-surface-0-9);
+    border: 0;
+}
+
+#TTS-Controller svg {
+    fill: var(--theme-onSurface);
 }
 
 #ScrollBar {
+    margin-top: 8px;
     width: 2.4rem;
     height: 45vh;
     border-radius: 1.2rem;
     background-color: var(--theme-surface-0-9);
     touch-action: none;
     font-size: 16px;
+    user-select: none;
 }
 
 .scrollbar-item {
@@ -133,7 +150,6 @@ img {
     width: 0.1rem;
     height: 0;
     background-color: var(--theme-primary);
-    transform: translateX(-0.1rem);
 }
 
 #scrollbar-thumb-wrapper {
@@ -172,6 +188,7 @@ img {
     color: var(--readerSettings-textColor);
     font-size: 1rem;
     text-align: center;
+    user-select: none;
 }
 
 .reader-footer-item {

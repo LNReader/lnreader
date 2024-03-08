@@ -62,7 +62,8 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
     onWebViewNavigationStateChange,
   } = props;
   const assetsUriPrefix = useMemo(
-    () => (__DEV__ ? 'http://localhost:8081/assets' : 'file:///android_asset'),
+    () =>
+      __DEV__ ? 'http://192.168.98.105:8081/assets' : 'file:///android_asset',
     [],
   );
   const { RNDeviceInfo } = NativeModules;
@@ -196,6 +197,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       --theme-onPrimary: ${theme.onPrimary};
                       --theme-secondary: ${theme.secondary};
                       --theme-tertiary: ${theme.tertiary};
+                      --theme-onTertiary: ${theme.onTertiary};
                       --theme-onSecondary: ${theme.onSecondary};
                       --theme-surface: ${theme.surface};
                       --theme-surface-0-9: ${color(theme.surface)
@@ -236,10 +238,10 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       >
                         ${html}
                       </chapter>
-                      <div class="d-none" id="ToolWrapper">
+                      <div class="hidden" id="ToolWrapper">
+                          <div id="TTS-Controller"></div>
                           <div id="ScrollBar"></div>
                       </div>
-
                       <div id="reader-footer-wrapper">
                           <div id="reader-footer">
                               <div id="reader-battery" class="reader-footer-item"></div>

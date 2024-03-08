@@ -27,9 +27,23 @@ interface Reader {
   updateBatteryLevel: (level: number) => void;
 }
 
+interface TextToSpeech {
+  reader: Reader;
+  leaf: HTMLElement;
+  TTSWrapper: HTMLElement;
+  TTSEle: HTMLElement;
+  reading: boolean;
+  start: () => void;
+  startHere: () => void;
+  resume: () => void;
+  pause: () => void;
+  stop: () => void;
+  started: () => boolean;
+}
+
 export enum ContextMenuItem {
   START_READING = 'START_READING',
-  CONTINUE_READING = 'CONTINUE_READING',
+  START_HERE = 'START_HERE',
   COPY = 'COPY',
   SELECT_ALL = 'SELECT_ALL',
 }
