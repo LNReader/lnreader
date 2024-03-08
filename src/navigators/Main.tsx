@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { setBarColor } from '@theme/utils/setBarColor';
-import { useAppSettings, useTheme } from '@hooks/persisted';
+import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
 /**
@@ -37,6 +37,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const MainNavigator = () => {
   const theme = useTheme();
   const { updateLibraryOnLaunch } = useAppSettings();
+  const { refreshPlugins } = usePlugins();
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -52,6 +53,7 @@ const MainNavigator = () => {
     if (updateLibraryOnLaunch) {
       updateLibrary();
     }
+    refreshPlugins();
   }, []);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
