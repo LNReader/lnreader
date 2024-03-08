@@ -137,7 +137,7 @@
       "useReaderTheme": "Использовать тему для чтения",
       "useCustomCSS": "Использовать пользовательский CSS",
       "useCustomJS": "Использовать пользовательский JS",
-      "useCustomJSWarning": "Может поддерживаться не всеми ридерами EPUB",
+      "useCustomJSWarning": "Может не поддерживаться всеми ридерами EPUB",
       "chaptersWarning": "Включать в EPUB только загруженные главы"
     }
   },
