@@ -62,8 +62,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
     onWebViewNavigationStateChange,
   } = props;
   const assetsUriPrefix = useMemo(
-    () =>
-      __DEV__ ? 'http://192.168.98.105:8081/assets' : 'file:///android_asset',
+    () => (__DEV__ ? 'http://localhost:8081/assets' : 'file:///android_asset'),
     [],
   );
   const { RNDeviceInfo } = NativeModules;
