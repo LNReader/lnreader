@@ -154,7 +154,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const actions = useMemo(() => {
     const list = [];
 
-    if (selected.some(obj => !obj.isDownloaded)) {
+    if (!novel?.isLocal && selected.some(obj => !obj.isDownloaded)) {
       list.push({
         icon: 'download-outline',
         onPress: () => {
@@ -168,7 +168,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
         },
       });
     }
-    if (selected.some(obj => obj.isDownloaded)) {
+    if (!novel?.isLocal && selected.some(obj => obj.isDownloaded)) {
       list.push({
         icon: 'trash-can-outline',
         onPress: () => {
