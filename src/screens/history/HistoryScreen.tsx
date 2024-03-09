@@ -43,12 +43,23 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
     const dateGroups = rawHistory.reduce<Record<string, History[]>>(
       (groups, item) => {
         const date = convertDateToISOString(item.readTime);
-
         if (!groups[date]) {
           groups[date] = [];
         }
+        const lastNovel = groups[date][groups[date].length - 1];
 
-        groups[date].push(item);
+        if (
+          (lastNovel?.novelId === item.novelId && lastNovel.startChapter) ??
+          lastNovel.chapterNumber === (item.chapterNumber ?? 0) + 1
+        ) {
+          groups[date][groups[date].length - 1] = {
+            ...lastNovel,
+            endChapter: lastNovel.endChapter ?? lastNovel.chapterNumber,
+            startChapter: item.chapterNumber,
+          };
+        } else {
+          groups[date].push(item);
+        }
 
         return groups;
       },
@@ -61,6 +72,7 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
         data: dateGroups[date],
       };
     });
+    // console.log(JSON.stringify(groupedHistory, null, 2));
 
     return groupedHistory;
   };
