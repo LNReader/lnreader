@@ -1,0 +1,430 @@
+import React, { useCallback, useMemo, useState } from 'react';
+import {
+  Pressable,
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  SectionList,
+  RefreshControl,
+  ListRenderItem,
+} from 'react-native';
+import { useBrowseSettings, usePlugins } from '@hooks/persisted';
+import { PluginItem } from '@plugins/types';
+import {
+  FlashList,
+  ListRenderItem as FlashListRenderItem,
+  ListRenderItemInfo,
+} from '@shopify/flash-list';
+import { coverPlaceholderColor } from '@theme/colors';
+import { ThemeColors } from '@theme/types';
+import { Swipeable } from 'react-native-gesture-handler';
+import { languages } from '@utils/constants/languages';
+import { getString } from '@strings/translations';
+import { BrowseScreenProps } from '@navigators/types';
+import { Button, IconButtonV2 } from '@components';
+import TrackerCard from '../discover/TrackerCard';
+import { showToast } from '@utils/showToast';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+
+interface AvailableTabProps {
+  searchText: string;
+  theme: ThemeColors;
+}
+
+interface InstalledTabProps {
+  navigation: BrowseScreenProps['navigation'];
+  theme: ThemeColors;
+  searchText: string;
+}
+
+export function InstalledTab({
+  navigation,
+  theme,
+  searchText,
+}: InstalledTabProps) {
+  const {
+    filteredInstalledPlugins,
+    lastUsedPlugin,
+    setLastUsedPlugin,
+    uninstallPlugin,
+    updatePlugin,
+  } = usePlugins();
+  const { showMyAnimeList, showAniList } = useBrowseSettings();
+  const navigateToSource = useCallback(
+    (plugin: PluginItem, showLatestNovels?: boolean) => {
+      navigation.navigate('SourceScreen', {
+        pluginId: plugin.id,
+        pluginName: plugin.name,
+        site: plugin.site,
+        showLatestNovels,
+      });
+      setLastUsedPlugin(plugin);
+    },
+    [],
+  );
+
+  const searchedPlugins = useMemo(() => {
+    if (searchText) {
+      return filteredInstalledPlugins.filter(plg =>
+        plg.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()),
+      );
+    } else {
+      return filteredInstalledPlugins;
+    }
+  }, [searchText, filteredInstalledPlugins]);
+
+  const renderItem: FlashListRenderItem<PluginItem> = ({ item }) => {
+    return (
+      <Swipeable
+        renderLeftActions={(progress, dragX, ref) => {
+          return (
+            <View
+              style={[
+                styles.buttonGroup,
+                { backgroundColor: theme.surfaceVariant },
+              ]}
+            >
+              <IconButtonV2
+                name="update"
+                size={22}
+                color={theme.onSurfaceVariant}
+                onPress={() => {
+                  ref.close();
+                  updatePlugin(item)
+                    .then(version =>
+                      showToast(
+                        getString('browseScreen.updatedTo', { version }),
+                      ),
+                    )
+                    .catch((error: Error) => showToast(error.message));
+                }}
+                theme={theme}
+              />
+              <IconButtonV2
+                name="earth"
+                size={22}
+                color={theme.onSurfaceVariant}
+                onPress={() => {
+                  ref.close();
+                  navigation.navigate('WebviewScreen', {
+                    name: item.name,
+                    url: item.site,
+                    pluginId: item.id,
+                  });
+                }}
+                theme={theme}
+              />
+            </View>
+          );
+        }}
+        renderRightActions={(progress, dragX, ref) => (
+          <View style={[styles.buttonGroup, { backgroundColor: theme.error }]}>
+            <IconButtonV2
+              name="delete"
+              size={22}
+              color={theme.onError}
+              onPress={() => {
+                ref.close();
+                uninstallPlugin(item).then(() =>
+                  showToast(
+                    getString('browseScreen.uninstalledPlugin', {
+                      name: item.name,
+                    }),
+                  ),
+                );
+              }}
+              theme={theme}
+            />
+          </View>
+        )}
+      >
+        <Pressable
+          style={[styles.container, { backgroundColor: theme.surface }]}
+          android_ripple={{ color: theme.rippleColor }}
+          onPress={() => navigateToSource(item)}
+        >
+          <View style={{ flexDirection: 'row' }}>
+            <Image source={{ uri: item.iconUrl }} style={styles.icon} />
+            <View style={styles.details}>
+              <Text
+                numberOfLines={1}
+                style={[
+                  {
+                    color: item.hasUpdate
+                      ? theme.onSurfaceDisabled
+                      : theme.onSurface,
+                  },
+                  styles.name,
+                ]}
+              >
+                {item.name}
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={[{ color: theme.onSurfaceVariant }, styles.addition]}
+              >
+                {`${languages[item.lang]} - ${item.version}`}
+              </Text>
+            </View>
+          </View>
+          <Button
+            title={getString('browseScreen.latest')}
+            textColor={theme.primary}
+            onPress={() => navigateToSource(item, true)}
+          />
+        </Pressable>
+      </Swipeable>
+    );
+  };
+
+  return (
+    <FlashList
+      estimatedItemSize={64}
+      data={searchedPlugins}
+      extraData={theme}
+      renderItem={renderItem}
+      removeClippedSubviews={true}
+      showsVerticalScrollIndicator={false}
+      ListHeaderComponent={
+        <>
+          {showMyAnimeList || showAniList ? (
+            <>
+              <Text
+                style={[styles.listHeader, { color: theme.onSurfaceVariant }]}
+              >
+                {getString('browseScreen.discover')}
+              </Text>
+              {showAniList ? (
+                <TrackerCard
+                  theme={theme}
+                  icon={require('../../../../assets/anilist.png')}
+                  trackerName="Anilist"
+                  onPress={() => navigation.navigate('BrowseAL')}
+                />
+              ) : null}
+              {showMyAnimeList ? (
+                <TrackerCard
+                  theme={theme}
+                  icon={require('../../../../assets/mal.png')}
+                  trackerName="MyAnimeList"
+                  onPress={() => navigation.navigate('BrowseMal')}
+                />
+              ) : null}
+            </>
+          ) : null}
+          {lastUsedPlugin ? (
+            <>
+              <Text
+                style={[styles.listHeader, { color: theme.onSurfaceVariant }]}
+              >
+                {getString('browseScreen.lastUsed')}
+              </Text>
+              {renderItem({
+                item: lastUsedPlugin,
+                index: 0,
+              } as ListRenderItemInfo<PluginItem>)}
+            </>
+          ) : null}
+          <Text style={[styles.listHeader, { color: theme.onSurfaceVariant }]}>
+            {getString('browseScreen.installedPlugins')}
+          </Text>
+        </>
+      }
+    />
+  );
+}
+
+interface AvailablePluginCardProps {
+  plugin: PluginItem;
+  theme: ThemeColors;
+  installPlugin: (plugin: PluginItem) => Promise<void>;
+}
+
+const AvailablePluginCard = ({
+  plugin,
+  theme,
+  installPlugin,
+}: AvailablePluginCardProps) => {
+  const ratio = useSharedValue(1);
+  const imageStyles = useAnimatedStyle(() => ({
+    height: ratio.value * 40,
+  }));
+  const viewStyles = useAnimatedStyle(() => ({
+    height: ratio.value * 64,
+    paddingVertical: ratio.value * 12,
+  }));
+  const textStyles = useAnimatedStyle(() => ({
+    lineHeight: ratio.value * 20,
+  }));
+  return (
+    <Animated.View
+      style={[styles.container, { backgroundColor: theme.surface }, viewStyles]}
+    >
+      <Animated.View style={{ flexDirection: 'row' }}>
+        <Animated.Image
+          source={{ uri: plugin.iconUrl }}
+          style={[styles.icon, imageStyles]}
+        />
+        <Animated.View style={styles.details}>
+          <Animated.Text
+            numberOfLines={1}
+            style={[
+              {
+                color: theme.onSurface,
+              },
+              styles.name,
+              textStyles,
+            ]}
+          >
+            {plugin.name}
+          </Animated.Text>
+          <Animated.Text
+            numberOfLines={1}
+            style={[
+              { color: theme.onSurfaceVariant },
+              styles.addition,
+              textStyles,
+            ]}
+          >
+            {`${languages[plugin.lang]} - ${plugin.version}`}
+          </Animated.Text>
+        </Animated.View>
+      </Animated.View>
+      <IconButtonV2
+        name="download"
+        color={theme.primary}
+        onPress={() => {
+          ratio.value = withTiming(0, { duration: 500 });
+          installPlugin(plugin)
+            .then(() => {
+              showToast(
+                getString('browseScreen.installedPlugin', {
+                  name: plugin.name,
+                }),
+              );
+            })
+            .catch((error: Error) => {
+              showToast(error.message);
+              ratio.value = 1;
+            });
+        }}
+        size={22}
+        theme={theme}
+      />
+    </Animated.View>
+  );
+};
+
+export function AvailableTab({ searchText, theme }: AvailableTabProps) {
+  const [refreshing, setRefreshing] = useState(false);
+  const {
+    filteredAvailablePlugins,
+    languagesFilter,
+    refreshPlugins,
+    installPlugin,
+  } = usePlugins();
+
+  const sections = useMemo(() => {
+    const list = [];
+    for (const language of languagesFilter) {
+      if (filteredAvailablePlugins[language]) {
+        const plugins = filteredAvailablePlugins[language]?.filter(plg =>
+          plg.name.toLocaleLowerCase().includes(searchText.toLowerCase()),
+        );
+        if (plugins) {
+          list.push({
+            header: language,
+            data: plugins,
+          });
+        }
+      }
+    }
+    return list;
+  }, [searchText, filteredAvailablePlugins]);
+
+  const renderItem: ListRenderItem<PluginItem> = ({ item }) => {
+    return (
+      <AvailablePluginCard
+        plugin={item}
+        theme={theme}
+        installPlugin={installPlugin}
+      />
+    );
+  };
+
+  return (
+    <SectionList
+      sections={sections}
+      removeClippedSubviews={true}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => {
+            setRefreshing(true);
+            refreshPlugins()
+              .finally(() => setRefreshing(false))
+              .catch(e => {
+                showToast(e);
+              });
+          }}
+          colors={[theme.onPrimary]}
+          progressBackgroundColor={theme.primary}
+        />
+      }
+      renderItem={renderItem}
+      renderSectionHeader={({ section: { header, data } }) =>
+        data.length ? (
+          <Text style={[styles.listHeader, { color: theme.onSurfaceVariant }]}>
+            {header}
+          </Text>
+        ) : null
+      }
+    />
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    justifyContent: 'space-between',
+  },
+  listHeader: {
+    fontSize: 14,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  icon: {
+    height: 40,
+    width: 40,
+    borderRadius: 4,
+    backgroundColor: coverPlaceholderColor,
+  },
+  details: {
+    marginLeft: 16,
+  },
+  addition: {
+    fontSize: 12,
+    lineHeight: 20,
+  },
+  name: {
+    fontWeight: 'bold',
+    lineHeight: 20,
+  },
+  buttonGroup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+  },
+  spinner: {
+    marginRight: 12,
+    marginLeft: -1,
+  },
+});

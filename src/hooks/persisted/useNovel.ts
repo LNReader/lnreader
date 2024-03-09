@@ -312,7 +312,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         });
       }
     },
-    [novel],
+    [novel, chapters],
   );
 
   const getNovel = useCallback(async () => {
