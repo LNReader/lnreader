@@ -74,12 +74,6 @@ const PluginCard: React.FC<Props> = ({
               numberOfLines={1}
               style={[{ color: theme.onSurfaceVariant }, styles.addition]}
             >
-              {`ID: ${plugin.id}`}
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={[{ color: theme.onSurfaceVariant }, styles.addition]}
-            >
               {`${languages[plugin.lang]} - ${plugin.version}`}
             </Text>
           </View>
