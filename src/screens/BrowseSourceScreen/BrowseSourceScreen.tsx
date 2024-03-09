@@ -16,7 +16,7 @@ import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { switchNovelToLibrary } from '@database/queries/NovelQueries';
-import { NovelInfo } from '@database/types';
+import { LibraryNovelInfo, NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BrowseSourceScreenProps } from '@navigators/types';
@@ -120,12 +120,13 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
       ) : (
         <NovelList
           data={novelList}
+          inSource
           renderItem={({ item }) => {
             const inLibrary = novelInLibrary(item.path);
 
             return (
               <NovelCover
-                item={item}
+                item={item as LibraryNovelInfo}
                 theme={theme}
                 libraryStatus={inLibrary}
                 onPress={() => navigateToNovel(item)}
@@ -163,6 +164,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
               fetchNextPage();
             }
           }}
+          onEndReachedThreshold={1.5}
           ListFooterComponent={
             (hasNextPage && !searchText) ||
             (hasNextSearchPage && searchText) ? (

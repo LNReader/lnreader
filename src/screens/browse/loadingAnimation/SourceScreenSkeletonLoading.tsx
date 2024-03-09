@@ -9,9 +9,13 @@ import { useDeviceOrientation } from '@hooks';
 
 interface Props {
   theme: ThemeColors;
+  completeRow?: number;
 }
 
-const SourceScreenSkeletonLoading: React.FC<Props> = ({ theme }) => {
+const SourceScreenSkeletonLoading: React.FC<Props> = ({
+  theme,
+  completeRow,
+}) => {
   const [highlightColor, backgroundColor] = getLoadingColors(theme);
 
   const { displayMode = DisplayModes.Comfortable, novelsPerRow = 3 } =
@@ -62,6 +66,16 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({ theme }) => {
     );
   };
   let items: Array<number> = [];
+
+  if (completeRow) {
+    for (let i = -1; i >= completeRow; i--) {
+      items.push(i);
+    }
+    return (
+      <View style={styles.completeRow}>{items.map(renderLoadingNovel)}</View>
+    );
+  }
+
   if (displayMode === DisplayModes.List) {
     items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   } else {
@@ -69,7 +83,12 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({ theme }) => {
       items.push(i);
     }
   }
-  return <View style={styles.container}>{items.map(renderLoading)}</View>;
+
+  return (
+    <View style={[styles.container, { flex: 1 / numColumns }]}>
+      {items.map(renderLoading)}
+    </View>
+  );
 };
 
 const createStyleSheet = () => {
@@ -83,8 +102,16 @@ const createStyleSheet = () => {
     },
     row: {
       flexDirection: 'row',
+      // justifyContent: 'space-around',
+      paddingHorizontal: 1,
+    },
+    completeRow: {
+      flexDirection: 'row',
       justifyContent: 'space-around',
       paddingHorizontal: 1,
+      marginBottom: 8,
+      position: 'absolute',
+      right: 0,
     },
   });
 };
