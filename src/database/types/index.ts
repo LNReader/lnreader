@@ -50,6 +50,8 @@ export interface History extends ChapterInfo {
   novelPath: string;
   novelCover: string;
   readTime: string;
+  startChapter?: number;
+  endChapter?: number;
 }
 
 export interface Update extends ChapterInfo {

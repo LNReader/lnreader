@@ -61,7 +61,9 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
           </Text>
           <Text style={{ color: theme.onSurfaceVariant }}>
             {`${getString('historyScreen.chapter')} ${
-              history.chapterNumber
+              history?.startChapter
+                ? history.startChapter + ' - ' + history.endChapter
+                : history.chapterNumber
             } • ${dayjs(history.readTime).format('LT').toUpperCase()}` +
               `${
                 history.progress && history.progress > 0
