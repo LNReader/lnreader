@@ -517,7 +517,7 @@ class ContextMenu {
         this.renderMenu([this.items.START_READING]);
       }
       const { clientX, clientY } = e;
-      document.body.appendChild(this.contextMenu);
+      e.target.appendChild(this.contextMenu);
       const positionY =
         clientY + this.contextMenu.scrollHeight >= window.innerHeight
           ? window.innerHeight - this.contextMenu.scrollHeight - 20
