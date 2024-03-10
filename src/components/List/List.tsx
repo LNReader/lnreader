@@ -44,9 +44,12 @@ const Item: React.FC<ListItemProps> = ({
     title={title}
     titleStyle={{ color: disabled ? theme.onSurfaceDisabled : theme.onSurface }}
     description={description}
-    descriptionStyle={{
-      color: disabled ? theme.onSurfaceDisabled : theme.onSurfaceVariant,
-    }}
+    descriptionStyle={[
+      styles.description,
+      {
+        color: disabled ? theme.onSurfaceDisabled : theme.onSurfaceVariant,
+      },
+    ]}
     left={
       icon
         ? () => (
@@ -167,5 +170,9 @@ const styles = StyleSheet.create({
   },
   listItemCtn: {
     paddingVertical: 12,
+  },
+  description: {
+    fontSize: 12,
+    lineHeight: 20,
   },
 });

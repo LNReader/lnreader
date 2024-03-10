@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState, memo } from 'react';
 import {
   Pressable,
   Image,
@@ -42,202 +42,208 @@ interface InstalledTabProps {
   searchText: string;
 }
 
-export function InstalledTab({
-  navigation,
-  theme,
-  searchText,
-}: InstalledTabProps) {
-  const {
-    filteredInstalledPlugins,
-    lastUsedPlugin,
-    setLastUsedPlugin,
-    uninstallPlugin,
-    updatePlugin,
-  } = usePlugins();
-  const { showMyAnimeList, showAniList } = useBrowseSettings();
-  const navigateToSource = useCallback(
-    (plugin: PluginItem, showLatestNovels?: boolean) => {
-      navigation.navigate('SourceScreen', {
-        pluginId: plugin.id,
-        pluginName: plugin.name,
-        site: plugin.site,
-        showLatestNovels,
-      });
-      setLastUsedPlugin(plugin);
-    },
-    [],
-  );
-
-  const searchedPlugins = useMemo(() => {
-    if (searchText) {
-      return filteredInstalledPlugins.filter(plg =>
-        plg.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()),
-      );
-    } else {
-      return filteredInstalledPlugins;
-    }
-  }, [searchText, filteredInstalledPlugins]);
-
-  const renderItem: FlashListRenderItem<PluginItem> = ({ item }) => {
-    return (
-      <Swipeable
-        renderLeftActions={(progress, dragX, ref) => {
-          return (
-            <View
-              style={[
-                styles.buttonGroup,
-                { backgroundColor: theme.surfaceVariant },
-              ]}
-            >
-              <IconButtonV2
-                name="update"
-                size={22}
-                color={theme.onSurfaceVariant}
-                onPress={() => {
-                  ref.close();
-                  updatePlugin(item)
-                    .then(version =>
-                      showToast(
-                        getString('browseScreen.updatedTo', { version }),
-                      ),
-                    )
-                    .catch((error: Error) => showToast(error.message));
-                }}
-                theme={theme}
-              />
-              <IconButtonV2
-                name="earth"
-                size={22}
-                color={theme.onSurfaceVariant}
-                onPress={() => {
-                  ref.close();
-                  navigation.navigate('WebviewScreen', {
-                    name: item.name,
-                    url: item.site,
-                    pluginId: item.id,
-                  });
-                }}
-                theme={theme}
-              />
-            </View>
-          );
-        }}
-        renderRightActions={(progress, dragX, ref) => (
-          <View style={[styles.buttonGroup, { backgroundColor: theme.error }]}>
-            <IconButtonV2
-              name="delete"
-              size={22}
-              color={theme.onError}
-              onPress={() => {
-                ref.close();
-                uninstallPlugin(item).then(() =>
-                  showToast(
-                    getString('browseScreen.uninstalledPlugin', {
-                      name: item.name,
-                    }),
-                  ),
-                );
-              }}
-              theme={theme}
-            />
-          </View>
-        )}
-      >
-        <Pressable
-          style={[styles.container, { backgroundColor: theme.surface }]}
-          android_ripple={{ color: theme.rippleColor }}
-          onPress={() => navigateToSource(item)}
-        >
-          <View style={{ flexDirection: 'row' }}>
-            <Image source={{ uri: item.iconUrl }} style={styles.icon} />
-            <View style={styles.details}>
-              <Text
-                numberOfLines={1}
-                style={[
-                  {
-                    color: item.hasUpdate
-                      ? theme.onSurfaceDisabled
-                      : theme.onSurface,
-                  },
-                  styles.name,
-                ]}
-              >
-                {item.name}
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={[{ color: theme.onSurfaceVariant }, styles.addition]}
-              >
-                {`${languages[item.lang]} - ${item.version}`}
-              </Text>
-            </View>
-          </View>
-          <Button
-            title={getString('browseScreen.latest')}
-            textColor={theme.primary}
-            onPress={() => navigateToSource(item, true)}
-          />
-        </Pressable>
-      </Swipeable>
+export const InstalledTab = memo(
+  ({ navigation, theme, searchText }: InstalledTabProps) => {
+    const {
+      filteredInstalledPlugins,
+      lastUsedPlugin,
+      setLastUsedPlugin,
+      uninstallPlugin,
+      updatePlugin,
+    } = usePlugins();
+    const { showMyAnimeList, showAniList } = useBrowseSettings();
+    const navigateToSource = useCallback(
+      (plugin: PluginItem, showLatestNovels?: boolean) => {
+        navigation.navigate('SourceScreen', {
+          pluginId: plugin.id,
+          pluginName: plugin.name,
+          site: plugin.site,
+          showLatestNovels,
+        });
+        setLastUsedPlugin(plugin);
+      },
+      [],
     );
-  };
 
-  return (
-    <FlashList
-      estimatedItemSize={64}
-      data={searchedPlugins}
-      extraData={theme}
-      renderItem={renderItem}
-      removeClippedSubviews={true}
-      showsVerticalScrollIndicator={false}
-      ListHeaderComponent={
-        <>
-          {showMyAnimeList || showAniList ? (
-            <>
-              <Text
-                style={[styles.listHeader, { color: theme.onSurfaceVariant }]}
-              >
-                {getString('browseScreen.discover')}
-              </Text>
-              {showAniList ? (
-                <TrackerCard
-                  theme={theme}
-                  icon={require('../../../../assets/anilist.png')}
-                  trackerName="Anilist"
-                  onPress={() => navigation.navigate('BrowseAL')}
-                />
-              ) : null}
-              {showMyAnimeList ? (
-                <TrackerCard
-                  theme={theme}
-                  icon={require('../../../../assets/mal.png')}
-                  trackerName="MyAnimeList"
-                  onPress={() => navigation.navigate('BrowseMal')}
-                />
-              ) : null}
-            </>
-          ) : null}
-          {lastUsedPlugin ? (
-            <>
-              <Text
-                style={[styles.listHeader, { color: theme.onSurfaceVariant }]}
-              >
-                {getString('browseScreen.lastUsed')}
-              </Text>
-              {renderItem({
-                item: lastUsedPlugin,
-                index: 0,
-              } as ListRenderItemInfo<PluginItem>)}
-            </>
-          ) : null}
-          <Text style={[styles.listHeader, { color: theme.onSurfaceVariant }]}>
-            {getString('browseScreen.installedPlugins')}
-          </Text>
-        </>
+    const searchedPlugins = useMemo(() => {
+      if (searchText) {
+        return filteredInstalledPlugins.filter(plg =>
+          plg.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()),
+        );
+      } else {
+        return filteredInstalledPlugins;
       }
-    />
-  );
-}
+    }, [searchText, filteredInstalledPlugins]);
+
+    const renderItem: FlashListRenderItem<PluginItem> = useCallback(
+      ({ item }) => {
+        return (
+          <Swipeable
+            renderLeftActions={(progress, dragX, ref) => {
+              return (
+                <View
+                  style={[
+                    styles.buttonGroup,
+                    { backgroundColor: theme.inverseSurface },
+                  ]}
+                >
+                  <IconButtonV2
+                    name="update"
+                    size={22}
+                    color={theme.inverseOnSurface}
+                    onPress={() => {
+                      ref.close();
+                      updatePlugin(item)
+                        .then(version =>
+                          showToast(
+                            getString('browseScreen.updatedTo', { version }),
+                          ),
+                        )
+                        .catch((error: Error) => showToast(error.message));
+                    }}
+                    theme={theme}
+                  />
+                  <IconButtonV2
+                    name="earth"
+                    size={22}
+                    color={theme.inverseOnSurface}
+                    onPress={() => {
+                      ref.close();
+                      navigation.navigate('WebviewScreen', {
+                        name: item.name,
+                        url: item.site,
+                        pluginId: item.id,
+                      });
+                    }}
+                    theme={theme}
+                  />
+                </View>
+              );
+            }}
+            renderRightActions={(progress, dragX, ref) => (
+              <View
+                style={[styles.buttonGroup, { backgroundColor: theme.error }]}
+              >
+                <IconButtonV2
+                  name="delete"
+                  size={22}
+                  color={theme.onError}
+                  onPress={() => {
+                    ref.close();
+                    uninstallPlugin(item).then(() =>
+                      showToast(
+                        getString('browseScreen.uninstalledPlugin', {
+                          name: item.name,
+                        }),
+                      ),
+                    );
+                  }}
+                  theme={theme}
+                />
+              </View>
+            )}
+          >
+            <Pressable
+              style={[styles.container, { backgroundColor: theme.surface }]}
+              android_ripple={{ color: theme.rippleColor }}
+              onPress={() => navigateToSource(item)}
+            >
+              <View style={{ flexDirection: 'row' }}>
+                <Image source={{ uri: item.iconUrl }} style={styles.icon} />
+                <View style={styles.details}>
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      {
+                        color: item.hasUpdate
+                          ? theme.onSurfaceDisabled
+                          : theme.onSurface,
+                      },
+                      styles.name,
+                    ]}
+                  >
+                    {item.name}
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={[{ color: theme.onSurfaceVariant }, styles.addition]}
+                  >
+                    {`${languages[item.lang]} - ${item.version}`}
+                  </Text>
+                </View>
+              </View>
+              <Button
+                title={getString('browseScreen.latest')}
+                textColor={theme.primary}
+                onPress={() => navigateToSource(item, true)}
+              />
+            </Pressable>
+          </Swipeable>
+        );
+      },
+      [theme.primary],
+    );
+
+    return (
+      <FlashList
+        estimatedItemSize={64}
+        data={searchedPlugins}
+        extraData={theme}
+        renderItem={renderItem}
+        removeClippedSubviews={true}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={item => item.id + '_installed'}
+        ListHeaderComponent={
+          <>
+            {showMyAnimeList || showAniList ? (
+              <>
+                <Text
+                  style={[styles.listHeader, { color: theme.onSurfaceVariant }]}
+                >
+                  {getString('browseScreen.discover')}
+                </Text>
+                {showAniList ? (
+                  <TrackerCard
+                    theme={theme}
+                    icon={require('../../../../assets/anilist.png')}
+                    trackerName="Anilist"
+                    onPress={() => navigation.navigate('BrowseAL')}
+                  />
+                ) : null}
+                {showMyAnimeList ? (
+                  <TrackerCard
+                    theme={theme}
+                    icon={require('../../../../assets/mal.png')}
+                    trackerName="MyAnimeList"
+                    onPress={() => navigation.navigate('BrowseMal')}
+                  />
+                ) : null}
+              </>
+            ) : null}
+            {lastUsedPlugin ? (
+              <>
+                <Text
+                  style={[styles.listHeader, { color: theme.onSurfaceVariant }]}
+                >
+                  {getString('browseScreen.lastUsed')}
+                </Text>
+                {renderItem({
+                  item: lastUsedPlugin,
+                  index: 0,
+                } as ListRenderItemInfo<PluginItem>)}
+              </>
+            ) : null}
+            <Text
+              style={[styles.listHeader, { color: theme.onSurfaceVariant }]}
+            >
+              {getString('browseScreen.installedPlugins')}
+            </Text>
+          </>
+        }
+      />
+    );
+  },
+);
 
 interface AvailablePluginCardProps {
   plugin: PluginItem;
@@ -320,7 +326,7 @@ const AvailablePluginCard = ({
   );
 };
 
-export function AvailableTab({ searchText, theme }: AvailableTabProps) {
+export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
   const [refreshing, setRefreshing] = useState(false);
   const {
     filteredAvailablePlugins,
@@ -333,10 +339,15 @@ export function AvailableTab({ searchText, theme }: AvailableTabProps) {
     const list = [];
     for (const language of languagesFilter) {
       if (filteredAvailablePlugins[language]) {
-        const plugins = filteredAvailablePlugins[language]?.filter(plg =>
-          plg.name.toLocaleLowerCase().includes(searchText.toLowerCase()),
-        );
-        if (plugins) {
+        let plugins;
+        if (searchText) {
+          plugins = filteredAvailablePlugins[language]?.filter(plg =>
+            plg.name.toLocaleLowerCase().includes(searchText.toLowerCase()),
+          );
+        } else {
+          plugins = filteredAvailablePlugins[language];
+        }
+        if (plugins && plugins.length) {
           list.push({
             header: language,
             data: plugins,
@@ -347,20 +358,25 @@ export function AvailableTab({ searchText, theme }: AvailableTabProps) {
     return list;
   }, [searchText, filteredAvailablePlugins]);
 
-  const renderItem: ListRenderItem<PluginItem> = ({ item }) => {
-    return (
-      <AvailablePluginCard
-        plugin={item}
-        theme={theme}
-        installPlugin={installPlugin}
-      />
-    );
-  };
+  const renderItem: ListRenderItem<PluginItem> = useCallback(
+    ({ item }) => {
+      return (
+        <AvailablePluginCard
+          plugin={item}
+          theme={theme}
+          installPlugin={installPlugin}
+        />
+      );
+    },
+    [theme.primary],
+  );
 
   return (
     <SectionList
       sections={sections}
+      showsVerticalScrollIndicator={false}
       removeClippedSubviews={true}
+      keyExtractor={item => item.id + '_available'}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -386,7 +402,7 @@ export function AvailableTab({ searchText, theme }: AvailableTabProps) {
       }
     />
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -400,6 +416,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingVertical: 8,
     paddingHorizontal: 16,
+    fontWeight: '600',
   },
   icon: {
     height: 40,
