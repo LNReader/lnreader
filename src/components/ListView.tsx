@@ -6,10 +6,10 @@ import { coverPlaceholderColor } from '../theme/colors';
 
 import color from 'color';
 import { ThemeColors } from '@theme/types';
-import { NovelInfo } from '@database/types';
+import { NovelItem } from '@plugins/types';
 
 interface ListViewProps {
-  item: NovelInfo;
+  item: NovelItem;
   downloadBadge?: React.ReactNode;
   unreadBadge?: React.ReactNode;
   inLibraryBadge?: React.ReactNode;
