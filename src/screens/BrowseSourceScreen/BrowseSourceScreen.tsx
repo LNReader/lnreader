@@ -16,7 +16,7 @@ import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { switchNovelToLibrary } from '@database/queries/NovelQueries';
-import { LibraryNovelInfo, NovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BrowseSourceScreenProps } from '@navigators/types';
@@ -46,7 +46,6 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     clearSearchResults,
     searchError,
   } = useSearchSource(pluginId);
-
   const novelList = searchResults.length > 0 ? searchResults : novels;
   const errorMessage = error || searchError;
 
@@ -126,7 +125,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
 
             return (
               <NovelCover
-                item={item as LibraryNovelInfo}
+                item={item}
                 theme={theme}
                 libraryStatus={inLibrary}
                 onPress={() => navigateToNovel(item)}
