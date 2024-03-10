@@ -36,7 +36,34 @@ interface DownloadBadgeProps {
   theme: ThemeColors;
 }
 
-function NovelCover<TNovel extends NovelItem | NovelInfo | LibraryNovelInfo>({
+type coverItemLibrary =
+  | LibraryNovelInfo & {
+      completeRow?: number;
+    };
+
+type coverItemPlugin =
+  | (NovelInfo | NovelItem) & {
+      completeRow?: number;
+    };
+
+function NovelCover<TNovel extends coverItemPlugin>({
+  item,
+  onPress,
+  libraryStatus,
+  theme,
+  isSelected,
+  onLongPress,
+  selectedNovelIds,
+}: {
+  item: TNovel;
+  onPress: () => void;
+  libraryStatus: boolean;
+  theme: ThemeColors;
+  isSelected: boolean;
+  onLongPress: (item: TNovel) => void;
+  selectedNovelIds: number[];
+}): React.ReactNode;
+function NovelCover<TNovel extends coverItemLibrary>({
   item,
   onPress,
   libraryStatus,
@@ -78,8 +105,8 @@ function NovelCover<TNovel extends NovelItem | NovelInfo | LibraryNovelInfo>({
   const selectNovel = () => onLongPress(item);
 
   const uri = item.cover;
-  return item.sourceId < 0 ? (
-    <SourceScreenSkeletonLoading theme={theme} completeRow={item.sourceId} />
+  return item.completeRow ? (
+    <SourceScreenSkeletonLoading theme={theme} completeRow={item.completeRow} />
   ) : displayMode !== DisplayModes.List ? (
     <View
       style={[
