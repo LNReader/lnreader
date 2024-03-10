@@ -37,7 +37,9 @@ const SwitchItem: React.FC<SwitchItemProps> = ({
     <View style={styles.labelContainer}>
       <Text style={[{ color: theme.onSurface }, styles.label]}>{label}</Text>
       {description ? (
-        <Text style={{ color: theme.onSurfaceVariant }}>{description}</Text>
+        <Text style={[styles.description, { color: theme.onSurfaceVariant }]}>
+          {description}
+        </Text>
       ) : null}
     </View>
     <Switch
@@ -65,6 +67,10 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
+  },
+  description: {
+    fontSize: 12,
+    lineHeight: 20,
   },
   switch: {
     marginLeft: 8,
