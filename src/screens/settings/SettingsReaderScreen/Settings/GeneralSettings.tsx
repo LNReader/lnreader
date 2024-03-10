@@ -9,10 +9,11 @@ import React from 'react';
 
 import { defaultTo } from 'lodash-es';
 
-import { Button, List, SwitchItem } from '@components/index';
+import { Button, List } from '@components/index';
 
 import { useTheme, useChapterGeneralSettings } from '@hooks/persisted';
 import { getString } from '@strings/translations';
+import SettingSwitch from '../../components/SettingSwitch';
 
 const GeneralSettings: React.FC = () => {
   const theme = useTheme();
@@ -40,7 +41,7 @@ const GeneralSettings: React.FC = () => {
       </List.SubHeader>
 
       {/* will add this later xD */}
-      {/* <SwitchItem
+      {/* <SettingSwitch
         label={getString('readerScreen.bottomSheet.verticalSeekbar')}
         description={getString(
           'readerSettings.verticalSeekbarDesc',
@@ -51,7 +52,7 @@ const GeneralSettings: React.FC = () => {
         }
         theme={theme}
       /> */}
-      <SwitchItem
+      <SettingSwitch
         label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
         value={useVolumeButtons}
         onPress={() =>
@@ -59,7 +60,7 @@ const GeneralSettings: React.FC = () => {
         }
         theme={theme}
       />
-      <SwitchItem
+      <SettingSwitch
         label={getString('readerScreen.bottomSheet.swipeGestures')}
         value={swipeGestures}
         onPress={() =>
@@ -67,7 +68,7 @@ const GeneralSettings: React.FC = () => {
         }
         theme={theme}
       />
-      <SwitchItem
+      <SettingSwitch
         label={getString('readerScreen.bottomSheet.autoscroll')}
         value={autoScroll}
         onPress={() => setChapterGeneralSettings({ autoScroll: !autoScroll })}

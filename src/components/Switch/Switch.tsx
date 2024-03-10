@@ -78,10 +78,11 @@ const Switch = ({
   });
 
   return (
-    <TouchableWithoutFeedback onPress={onValueChange} style={style}>
+    <TouchableWithoutFeedback onPress={onValueChange}>
       <Animated.View
         style={[
           styles.container,
+          style,
           {
             width: size * 2 + size / 6,
             height: size + size / 3,

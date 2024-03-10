@@ -3,13 +3,12 @@ import { FlashList, FlashListProps } from '@shopify/flash-list';
 import React, { useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { getString } from '@strings/translations';
-import { Button } from '@components';
+import { Button, SwitchItem } from '@components';
 
 import { Modal, Portal, TextInput, Text } from 'react-native-paper';
 import { useTheme } from '@hooks/persisted';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { NovelScreenProps } from '@navigators/types';
-import Switch from '@components/Switch/Switch';
 
 interface JumpToChapterModalProps {
   hideModal: () => void;
@@ -180,28 +179,20 @@ const JumpToChapterModal = ({
             error={error.length > 0}
           />
           <Text style={[styles.errorText, { color: errorColor }]}>{error}</Text>
-          <View style={styles.switch}>
-            <Text style={{ color: theme.onSurface }}>
-              {getString('novelScreen.jumpToChapterModal.openChapter')}
-            </Text>
-            <Switch
-              value={openChapter}
-              onValueChange={() => setOpenChapter(!openChapter)}
-              theme={theme}
-              size={20}
-            />
-          </View>
-          <View style={styles.switch}>
-            <Text style={{ color: theme.onSurface }}>
-              {getString('novelScreen.jumpToChapterModal.chapterName')}
-            </Text>
-            <Switch
-              value={mode}
-              onValueChange={() => setMode(!mode)}
-              theme={theme}
-              size={20}
-            />
-          </View>
+          <SwitchItem
+            label={getString('novelScreen.jumpToChapterModal.openChapter')}
+            value={openChapter}
+            theme={theme}
+            onPress={() => setOpenChapter(!openChapter)}
+            size={20}
+          />
+          <SwitchItem
+            label={getString('novelScreen.jumpToChapterModal.chapterName')}
+            value={mode}
+            theme={theme}
+            onPress={() => setMode(!mode)}
+            size={20}
+          />
         </View>
         {result.length ? (
           <View style={[styles.flashlist, { borderColor: theme.outline }]}>
@@ -247,12 +238,6 @@ const styles = StyleSheet.create({
   },
   errorText: {
     paddingTop: 12,
-  },
-  switch: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: 8,
   },
   flashlist: {
     marginTop: 8,
