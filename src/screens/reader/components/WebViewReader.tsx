@@ -241,6 +241,9 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                           <div id="TTS-Controller"></div>
                           <div id="ScrollBar"></div>
                       </div>
+                      <div id="Image-Modal">
+                        <img id="Image-Modal-img">
+                      </div>
                       <div id="reader-footer-wrapper">
                           <div id="reader-footer">
                               <div id="reader-battery" class="reader-footer-item"></div>

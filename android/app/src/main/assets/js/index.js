@@ -25,6 +25,7 @@ const selectVolumeIcon =
 class Reader {
   constructor() {
     this.selection = window.getSelection();
+    this.viewport = document.querySelector('meta[name=viewport]');
     this.footerWrapper = document.getElementById('reader-footer-wrapper');
     this.percentage = document.getElementById('reader-percentage');
     this.battery = document.getElementById('reader-battery');
@@ -510,6 +511,14 @@ class ContextMenu {
     });
     document.addEventListener('contextmenu', e => {
       e.preventDefault();
+      if (e.target instanceof HTMLImageElement) {
+        if (imageModal.showing) {
+          imageModal.hide();
+        } else {
+          imageModal.show(e.target);
+        }
+        return;
+      }
       this.isOpened = true;
       if (this.reader.selection.type === 'Range') {
         this.renderMenu([this.items.START_HERE, this.items.START_READING]);
@@ -517,7 +526,7 @@ class ContextMenu {
         this.renderMenu([this.items.START_READING]);
       }
       const { clientX, clientY } = e;
-      document.body.appendChild(this.contextMenu);
+      e.target.appendChild(this.contextMenu);
       const positionY =
         clientY + this.contextMenu.scrollHeight >= window.innerHeight
           ? window.innerHeight - this.contextMenu.scrollHeight - 20
@@ -537,6 +546,55 @@ class ContextMenu {
   }
 }
 
+/**
+ * @type {import("./type").ImageModal}
+ */
+class ImageModal {
+  /**
+   * @param {import('./type').Reader} reader
+   */
+  constructor(reader) {
+    this.reader = reader;
+    this.$ = document.getElementById('Image-Modal');
+    this.img = this.$.querySelector('img');
+    this.showing = false;
+    this.$.onclick = e => {
+      if (e.target.id !== 'Image-Modal-img') {
+        e.stopPropagation();
+        this.hide();
+      }
+    };
+    this.$.ontouchmove = e => {
+      e.stopImmediatePropagation();
+    };
+  }
+
+  /**
+   *
+   * @param {HTMLImageElement} image
+   */
+  show(image) {
+    this.img.src = image.src;
+    this.img.alt = `Can not render image from ${image.src}`;
+    this.reader.viewport.setAttribute(
+      'content',
+      'width=device-width, initial-scale=1.0, maximum-scale=10',
+    );
+    this.$.classList.add('show');
+    this.showing = true;
+  }
+  hide() {
+    this.$.classList.remove('show');
+    this.showing = false;
+    this.img.src = '';
+    this.img.alt = '';
+    this.reader.viewport.setAttribute(
+      'content',
+      'width=device-width, initial-scale=1.0, maximum-scale=1.0',
+    );
+  }
+}
+
 try {
   var swipeHandler = new SwipeHandler();
   var toolWrapper = new ToolWrapper();
@@ -544,6 +602,7 @@ try {
   var scrollHandler = new ScrollHandler(reader, toolWrapper);
   var tts = new TextToSpeech(reader);
   toolWrapper.tools = [scrollHandler, tts];
+  imageModal = new ImageModal(reader);
   const contextMenu = new ContextMenu(reader);
   contextMenu.init();
 } catch (e) {

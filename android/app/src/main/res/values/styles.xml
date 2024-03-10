@@ -11,6 +11,7 @@
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
     <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+    <item name="colorControlActivated">#2596be</item> 
   </style>
 
   <style name="SplashScreenTheme" parent="SplashScreen_SplashTheme">

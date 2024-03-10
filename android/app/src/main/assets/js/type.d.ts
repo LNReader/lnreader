@@ -7,6 +7,7 @@ import 'typescript/lib/lib.dom';
 
 interface Reader {
   selection: Selection;
+  viewport: HTMLMetaElement;
   footerWrapper: HTMLDivElement;
   percentage: HTMLDivElement;
   battery: HTMLDivElement;
@@ -59,4 +60,11 @@ interface ContextMenu {
   renderMenu: (items: HTMLLIElement[]) => void;
   closeMenu: (menu: HTMLUListElement) => void;
   init: () => void;
+}
+
+interface ImageModal {
+  reader: Reader;
+  showing: boolean;
+  show: (image: HTMLImageElement) => void;
+  hide: () => void;
 }

@@ -23,7 +23,7 @@ export const midnightDusk = {
     onErrorContainer: 'rgb(65, 0, 2)',
     background: 'rgb(255, 251, 255)',
     onBackground: 'rgb(28, 27, 31)',
-    surface: 'rgba(255, 243, 252)',
+    surface: 'rgb(254, 251, 255)',
     onSurface: 'rgb(28, 27, 31)',
     surfaceVariant: 'rgb(243, 221, 224)',
     onSurfaceVariant: 'rgb(82, 67, 70)',
