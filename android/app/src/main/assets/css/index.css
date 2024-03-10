@@ -304,3 +304,26 @@ tts.highlight {
         transform: translateX(0);
     }
 }
+
+#Image-Modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    user-select: none;
+}
+
+#Image-Modal.show {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    max-width: max-content;
+    max-height: max-content;
+    background-color: var(--theme-surface-0-9);
+    align-items: center;
+    overflow: scroll;
+}
+
+#Image img {
+    display: block;
+    width: 100%;
+}
