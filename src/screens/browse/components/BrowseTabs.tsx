@@ -84,13 +84,13 @@ export const InstalledTab = memo(
                 <View
                   style={[
                     styles.buttonGroup,
-                    { backgroundColor: theme.surfaceVariant },
+                    { backgroundColor: theme.inverseSurface },
                   ]}
                 >
                   <IconButtonV2
                     name="update"
                     size={22}
-                    color={theme.onSurfaceVariant}
+                    color={theme.inverseOnSurface}
                     onPress={() => {
                       ref.close();
                       updatePlugin(item)
@@ -106,7 +106,7 @@ export const InstalledTab = memo(
                   <IconButtonV2
                     name="earth"
                     size={22}
-                    color={theme.onSurfaceVariant}
+                    color={theme.inverseOnSurface}
                     onPress={() => {
                       ref.close();
                       navigation.navigate('WebviewScreen', {

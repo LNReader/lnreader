@@ -80,7 +80,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
         renderTabBar={props => (
           <TabBar
             {...props}
-            indicatorStyle={{ backgroundColor: theme.primary }}
+            indicatorStyle={{ backgroundColor: theme.primary, height: 3 }}
             style={{
               backgroundColor: theme.surface,
               borderBottomColor: color(theme.isDark ? '#FFFFFF' : '#000000')
@@ -89,7 +89,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
               borderBottomWidth: 1,
             }}
             renderLabel={({ route, color }) => (
-              <Text style={{ color }}>{route.title}</Text>
+              <Text style={{ color, fontWeight: '600' }}>{route.title}</Text>
             )}
             inactiveColor={theme.secondary}
             activeColor={theme.primary}
