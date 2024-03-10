@@ -11,6 +11,11 @@ import { EmptyView, SearchbarV2 } from '@components';
 import { BrowseScreenProps } from '@navigators/types';
 import { AvailableTab, InstalledTab } from './components/BrowseTabs';
 
+const routes = [
+  { key: 'installedRoute', title: getString('browseScreen.installed') },
+  { key: 'availableRoute', title: getString('browseScreen.available') },
+];
+
 const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
   const theme = useTheme();
   const { searchText, setSearchText, clearSearchbar } = useSearch();
@@ -35,11 +40,6 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
   );
 
   const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'installedRoute', title: getString('browseScreen.installed') },
-    { key: 'availableRoute', title: getString('browseScreen.available') },
-  ]);
-
   return (
     <>
       <SearchbarV2
