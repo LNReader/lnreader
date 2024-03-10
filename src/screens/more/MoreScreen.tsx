@@ -68,7 +68,6 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
             theme={theme}
             value={downloadedOnlyMode}
             onValueChange={enableDownloadedOnlyMode}
-            style={{ marginRight: 8 }}
             size={24}
           />
         </Pressable>
@@ -103,7 +102,6 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
             theme={theme}
             value={incognitoMode}
             onValueChange={enableIncognitoMode}
-            style={{ marginRight: 8 }}
             size={24}
           />
         </Pressable>
