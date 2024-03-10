@@ -1,7 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
-
-import { Switch } from 'react-native-paper';
+import Switch from '../Switch/Switch';
 import { ThemeColors } from '../../theme/types';
 
 interface SwitchItemProps {
@@ -33,7 +32,7 @@ const SwitchItem: React.FC<SwitchItemProps> = ({
     <Switch
       value={value}
       onValueChange={onPress}
-      color={theme.primary}
+      theme={theme}
       style={styles.switch}
     />
   </Pressable>

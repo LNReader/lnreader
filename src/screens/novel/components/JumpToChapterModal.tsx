@@ -5,10 +5,11 @@ import { StyleSheet, View, Pressable } from 'react-native';
 import { getString } from '@strings/translations';
 import { Button } from '@components';
 
-import { Modal, Portal, Switch, TextInput, Text } from 'react-native-paper';
+import { Modal, Portal, TextInput, Text } from 'react-native-paper';
 import { useTheme } from '@hooks/persisted';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { NovelScreenProps } from '@navigators/types';
+import Switch from '@components/Switch/Switch';
 
 interface JumpToChapterModalProps {
   hideModal: () => void;
@@ -186,7 +187,8 @@ const JumpToChapterModal = ({
             <Switch
               value={openChapter}
               onValueChange={() => setOpenChapter(!openChapter)}
-              color={theme.primary}
+              theme={theme}
+              size={20}
             />
           </View>
           <View style={styles.switch}>
@@ -196,7 +198,8 @@ const JumpToChapterModal = ({
             <Switch
               value={mode}
               onValueChange={() => setMode(!mode)}
-              color={theme.primary}
+              theme={theme}
+              size={20}
             />
           </View>
         </View>

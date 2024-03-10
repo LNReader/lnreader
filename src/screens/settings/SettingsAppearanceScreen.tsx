@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView, Text } from 'react-native';
 
 import { ThemePicker } from '@components/ThemePicker/ThemePicker';
-import SwitchSetting from '@components/Switch/Switch';
+import SwitchSetting from '@components/Switch/SwitchSetting';
 import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
 
 import { useAppSettings, useTheme } from '@hooks/persisted';

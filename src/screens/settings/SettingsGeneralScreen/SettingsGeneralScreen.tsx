@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 
-import SwitchSetting from '@components/Switch/Switch';
+import SwitchSetting from '@components/Switch/SwitchSetting';
 import DisplayModeModal from './modals/DisplayModeModal';
 import GridSizeModal from './modals/GridSizeModal';
 

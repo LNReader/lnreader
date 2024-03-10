@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { Switch } from 'react-native-paper';
 import { ThemeColors } from '../../../../theme/types';
+import Switch from '@components/Switch/Switch';
 
 interface ReaderSheetPreferenceItemProps {
   label: string;
@@ -25,7 +25,7 @@ const ReaderSheetPreferenceItem: React.FC<ReaderSheetPreferenceItemProps> = ({
       <Text style={[styles.label, { color: theme.onSurfaceVariant }]}>
         {label}
       </Text>
-      <Switch value={value} onValueChange={onPress} color={theme.primary} />
+      <Switch value={value} onValueChange={onPress} theme={theme} size={20} />
     </Pressable>
   );
 };
