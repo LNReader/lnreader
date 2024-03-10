@@ -1,7 +1,13 @@
 import React from 'react';
-import { Pressable, StyleSheet, View, Text } from 'react-native';
-
-import { Switch } from 'react-native-paper';
+import {
+  Pressable,
+  StyleSheet,
+  View,
+  Text,
+  ViewStyle,
+  StyleProp,
+} from 'react-native';
+import Switch from './Switch';
 import { ThemeColors } from '../../theme/types';
 
 interface SwitchItemProps {
@@ -10,6 +16,8 @@ interface SwitchItemProps {
   description?: string;
   onPress: () => void;
   theme: ThemeColors;
+  size?: number;
+  style?: StyleProp<ViewStyle>;
 }
 
 const SwitchItem: React.FC<SwitchItemProps> = ({
@@ -18,10 +26,12 @@ const SwitchItem: React.FC<SwitchItemProps> = ({
   onPress,
   theme,
   value,
+  size,
+  style,
 }) => (
   <Pressable
     android_ripple={{ color: theme.rippleColor }}
-    style={[styles.container]}
+    style={[styles.container, style]}
     onPress={onPress}
   >
     <View style={styles.labelContainer}>
@@ -33,8 +43,9 @@ const SwitchItem: React.FC<SwitchItemProps> = ({
     <Switch
       value={value}
       onValueChange={onPress}
-      color={theme.primary}
+      theme={theme}
       style={styles.switch}
+      size={size}
     />
   </Pressable>
 );
@@ -45,8 +56,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
     paddingVertical: 12,
+    alignItems: 'center',
   },
   labelContainer: {
     flex: 1,

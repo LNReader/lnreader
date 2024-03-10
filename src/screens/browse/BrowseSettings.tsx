@@ -43,6 +43,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
               value={showAniList}
               onPress={() => setBrowseSettings({ showAniList: !showAniList })}
               theme={theme}
+              style={styles.item}
             />
             <SwitchItem
               label={`${getString('common.show')} MyAnimeList`}
@@ -51,6 +52,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
                 setBrowseSettings({ showMyAnimeList: !showMyAnimeList })
               }
               theme={theme}
+              style={styles.item}
             />
             <List.Divider theme={theme} />
             <List.SubHeader theme={theme}>
@@ -66,6 +68,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
             value={languagesFilter.includes(item)}
             onPress={() => toggleLanguageFilter(item)}
             theme={theme}
+            style={styles.item}
           />
         )}
       />
@@ -78,5 +81,8 @@ export default BrowseSettings;
 const styles = StyleSheet.create({
   container: {
     paddingBottom: 40,
+  },
+  item: {
+    paddingHorizontal: 16,
   },
 });

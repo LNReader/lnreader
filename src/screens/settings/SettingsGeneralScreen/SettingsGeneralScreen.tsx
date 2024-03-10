@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 
-import SwitchSetting from '@components/Switch/Switch';
 import DisplayModeModal from './modals/DisplayModeModal';
 import GridSizeModal from './modals/GridSizeModal';
 
@@ -23,6 +22,7 @@ import NovelSortModal from './modals/NovelSortModal';
 import NovelBadgesModal from './modals/NovelBadgesModal';
 import { NavigationState } from '@react-navigation/native';
 import { getString } from '@strings/translations';
+import SettingSwitch from '../components/SettingSwitch';
 
 interface GenralSettingsProps {
   navigation: NavigationState;
@@ -148,7 +148,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
           />
           <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>{getString('library')}</List.SubHeader>
-          <SwitchSetting
+          <SettingSwitch
             label={getString('generalSettingsScreen.updateLibrary')}
             description={getString('generalSettingsScreen.updateLibraryDesc')}
             value={updateLibraryOnLaunch}
@@ -157,7 +157,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             }
             theme={theme}
           />
-          <SwitchSetting
+          <SettingSwitch
             label={getString('generalSettingsScreen.useFAB')}
             value={useLibraryFAB}
             onPress={() => setAppSettings({ useLibraryFAB: !useLibraryFAB })}
@@ -181,7 +181,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
           <List.SubHeader theme={theme}>
             {getString('generalSettingsScreen.globalUpdate')}
           </List.SubHeader>
-          <SwitchSetting
+          <SettingSwitch
             label={getString('generalSettingsScreen.updateOngoing')}
             value={onlyUpdateOngoingNovels}
             onPress={() =>
@@ -191,7 +191,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             }
             theme={theme}
           />
-          <SwitchSetting
+          <SettingSwitch
             label={getString('generalSettingsScreen.refreshMetadata')}
             description={getString(
               'generalSettingsScreen.refreshMetadataDescription',
@@ -202,7 +202,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             }
             theme={theme}
           />
-          <SwitchSetting
+          <SettingSwitch
             label={getString('generalSettingsScreen.updateTime')}
             value={showLastUpdateTime}
             onPress={() => setShowLastUpdateTime(!showLastUpdateTime)}
@@ -212,7 +212,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
           <List.SubHeader theme={theme}>
             {getString('generalSettingsScreen.autoDownload')}
           </List.SubHeader>
-          <SwitchSetting
+          <SettingSwitch
             label={getString('generalSettingsScreen.downloadNewChapters')}
             value={downloadNewChapters}
             onPress={() =>
@@ -224,7 +224,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
           <List.SubHeader theme={theme}>
             {getString('generalSettings')}
           </List.SubHeader>
-          <SwitchSetting
+          <SettingSwitch
             label={getString('generalSettingsScreen.disableHapticFeedback')}
             value={disableHapticFeedback}
             onPress={() =>
