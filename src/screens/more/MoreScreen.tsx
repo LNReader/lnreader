@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  /* StyleSheet ,*/ View,
-  Pressable,
-  Text,
-  ScrollView,
-} from 'react-native';
+import { StyleSheet, View, Pressable, Text, ScrollView } from 'react-native';
 import { getString } from '@strings/translations';
 
 import { List } from '@components';
@@ -59,7 +54,9 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
               >
                 {getString('moreScreen.downloadOnly')}
               </Text>
-              <Text style={{ color: theme.onSurfaceVariant }}>
+              <Text
+                style={[styles.description, { color: theme.onSurfaceVariant }]}
+              >
                 {getString('moreScreen.downloadOnlyDesc')}
               </Text>
             </View>
@@ -83,7 +80,7 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
           onPress={enableIncognitoMode}
         >
           <View style={{ flexDirection: 'row' }}>
-            <List.Icon theme={theme} icon="incognito" />
+            <List.Icon theme={theme} icon="glasses" />
             <View style={{ marginLeft: 16 }}>
               <Text
                 style={{
@@ -93,7 +90,9 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
               >
                 {getString('moreScreen.incognitoMode')}
               </Text>
-              <Text style={{ color: theme.onSurfaceVariant }}>
+              <Text
+                style={[styles.description, { color: theme.onSurfaceVariant }]}
+              >
                 {getString('moreScreen.incognitoModeDesc')}
               </Text>
             </View>
@@ -178,4 +177,9 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
 
 export default MoreScreen;
 
-// const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  description: {
+    fontSize: 12,
+    lineHeight: 20,
+  },
+});
