@@ -44,6 +44,7 @@
     "react-native": "0.72.10",
     "react-native-background-actions": "^3.0.1",
     "react-native-device-info": "^8.4.7",
+    "react-native-drawer-layout": "^3.2.2",
     "react-native-error-boundary": "^1.1.16",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "~2.12.0",

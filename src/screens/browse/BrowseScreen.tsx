@@ -1,7 +1,6 @@
 import { Text } from 'react-native';
 import React, { useMemo } from 'react';
 import { TabView, TabBar } from 'react-native-tab-view';
-import color from 'color';
 
 import { useSearch } from '@hooks';
 import { usePlugins, useTheme } from '@hooks/persisted';
@@ -83,10 +82,6 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
             indicatorStyle={{ backgroundColor: theme.primary, height: 3 }}
             style={{
               backgroundColor: theme.surface,
-              borderBottomColor: color(theme.isDark ? '#FFFFFF' : '#000000')
-                .alpha(0.12)
-                .string(),
-              borderBottomWidth: 1,
             }}
             renderLabel={({ route, color }) => (
               <Text style={{ color, fontWeight: '600' }}>{route.title}</Text>

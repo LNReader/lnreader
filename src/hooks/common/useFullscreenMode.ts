@@ -12,6 +12,7 @@ import {
   useChapterReaderSettings,
   useTheme,
 } from '../persisted';
+import Color from 'color';
 
 const useFullscreenMode = () => {
   const { addListener } = useNavigation();
@@ -28,13 +29,14 @@ const useFullscreenMode = () => {
         color(backgroundColor).isDark() ? 'light-content' : 'dark-content',
       );
       StatusBar.setBackgroundColor(backgroundColor);
-      changeNavigationBarColor(backgroundColor as any);
+      changeNavigationBarColor(backgroundColor);
     }
   }, [backgroundColor, fullScreenMode]);
 
   const showStatusAndNavBar = useCallback(() => {
     StatusBar.setHidden(false);
     showNavigationBar();
+    changeNavigationBarColor(Color(theme.surface).hex(), !theme.isDark);
   }, []);
 
   useEffect(() => {
@@ -45,6 +47,11 @@ const useFullscreenMode = () => {
     const unsubscribe = addListener('beforeRemove', () => {
       showStatusAndNavBar();
       StatusBar.setBarStyle(theme.isDark ? 'light-content' : 'dark-content');
+      changeNavigationBarColor(
+        Color(theme.surface2).hex(),
+        !theme.isDark,
+        true,
+      );
     });
 
     return unsubscribe;

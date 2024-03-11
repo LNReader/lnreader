@@ -8,8 +8,8 @@ import {
   Text,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  DrawerLayoutAndroid,
 } from 'react-native';
+import { Drawer } from 'react-native-drawer-layout';
 import { FlashList } from '@shopify/flash-list';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
@@ -52,7 +52,6 @@ import { resolveUrl } from '@services/plugin/fetch';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { name, path, pluginId } = route.params;
-  const drawerRef = useRef<DrawerLayoutAndroid>(null);
   const [updating, setUpdating] = useState(false);
   const {
     useFabForContinueReading,
@@ -88,10 +87,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     refreshChapters,
     deleteChapters,
   } = useNovel(path, pluginId);
-
   const theme = useTheme();
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
-  const progressViewOffset = topInset + 32;
 
   const {
     queue: downloadQueue,
@@ -110,6 +107,11 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   let trackerSheetRef = useRef(null);
 
   const deleteDownloadsSnackbar = useBoolean();
+  const {
+    value: drawerOpen,
+    setTrue: openDrawer,
+    setFalse: closeDrawer,
+  } = useBoolean();
 
   const onPageScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = event.nativeEvent.contentOffset.y;
@@ -140,7 +142,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   const refreshControl = () => (
     <RefreshControl
-      progressViewOffset={progressViewOffset}
+      progressViewOffset={topInset + 32}
       onRefresh={onRefresh}
       refreshing={updating}
       colors={[theme.primary]}
@@ -308,18 +310,21 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   };
 
   return (
-    <DrawerLayoutAndroid
-      drawerLockMode={pages.length <= 1 ? 'locked-closed' : 'unlocked'}
-      ref={drawerRef}
-      drawerPosition="left"
-      drawerWidth={300}
-      renderNavigationView={() => (
+    <Drawer
+      open={drawerOpen}
+      onOpen={openDrawer}
+      onClose={closeDrawer}
+      swipeEnabled={pages.length > 1}
+      hideStatusBarOnOpen={true}
+      swipeMinVelocity={1000}
+      drawerStyle={{ backgroundColor: 'transparent' }}
+      renderDrawerContent={() => (
         <NovelDrawer
           theme={theme}
           pages={pages}
           pageIndex={pageIndex}
           openPage={openPage}
-          drawerRef={drawerRef}
+          closeDrawer={closeDrawer}
         />
       )}
     >
@@ -616,7 +621,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   novelBottomSheetRef={novelBottomSheetRef}
                   deleteDownloadsSnackbar={deleteDownloadsSnackbar}
                   page={pages.length > 1 ? pages[pageIndex] : undefined}
-                  drawerRef={drawerRef}
+                  openDrawer={openDrawer}
                 />
               }
               refreshControl={refreshControl()}
@@ -704,7 +709,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           />
         </View>
       </Portal.Host>
-    </DrawerLayoutAndroid>
+    </Drawer>
   );
 };
 

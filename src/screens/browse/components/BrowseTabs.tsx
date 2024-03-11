@@ -181,7 +181,7 @@ export const InstalledTab = memo(
           </Swipeable>
         );
       },
-      [theme.id, searchedPlugins],
+      [theme, searchedPlugins],
     );
 
     return (
@@ -368,7 +368,7 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
         />
       );
     },
-    [theme.id, sections],
+    [theme, sections],
   );
 
   return (

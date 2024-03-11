@@ -1,11 +1,5 @@
-import React, { RefObject, memo, useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  DrawerLayoutAndroid,
-} from 'react-native';
+import React, { memo, useCallback } from 'react';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import color from 'color';
 
 import * as Clipboard from 'expo-clipboard';
@@ -52,7 +46,7 @@ interface NovelInfoHeaderProps {
   novelBottomSheetRef: React.RefObject<BottomSheetModalMethods>;
   deleteDownloadsSnackbar: UseBooleanReturnType;
   page?: string;
-  drawerRef: RefObject<DrawerLayoutAndroid>;
+  openDrawer: () => void;
 }
 
 const NovelInfoHeader = ({
@@ -69,7 +63,7 @@ const NovelInfoHeader = ({
   novelBottomSheetRef,
   deleteDownloadsSnackbar,
   page,
-  drawerRef,
+  openDrawer,
 }: NovelInfoHeaderProps) => {
   const { hideBackdrop = false } = useAppSettings();
 
@@ -187,9 +181,7 @@ const NovelInfoHeader = ({
         <Pressable
           style={styles.bottomsheet}
           onPress={() =>
-            page
-              ? drawerRef.current?.openDrawer()
-              : novelBottomSheetRef.current?.present()
+            page ? openDrawer() : novelBottomSheetRef.current?.present()
           }
           android_ripple={{
             color: color(theme.primary).alpha(0.12).string(),
