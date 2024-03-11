@@ -317,6 +317,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       swipeEnabled={pages.length > 1}
       hideStatusBarOnOpen={true}
       swipeMinVelocity={1000}
+      drawerStyle={{ backgroundColor: 'transparent' }}
       renderDrawerContent={() => (
         <NovelDrawer
           theme={theme}
