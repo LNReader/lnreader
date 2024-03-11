@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import { ProgressBar } from 'react-native-paper';
 
+import { getPlugin } from '@plugins/pluginManager';
 import { useBackHandler } from '@hooks';
 import { useTheme } from '@hooks/persisted';
 import { WebviewScreenProps } from '@navigators/types';
@@ -18,6 +19,7 @@ type StorageData = {
 
 const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const { name, url, pluginId, isNovel } = route.params;
+  const isSave = getPlugin(pluginId)?.webStorageUtilized;
   const uri = resolveUrl(pluginId, url, isNovel);
 
   const theme = useTheme();
@@ -43,7 +45,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   };
 
   const saveData = () => {
-    if (pluginId && tempData) {
+    if (pluginId && tempData && isSave) {
       storage.mmkv.set(
         pluginId + '_LocalStorage',
         JSON.stringify(tempData?.localStorage || {}),
@@ -59,7 +61,8 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
     if (menuVisible) {
       setMenuVisible(false);
       return true;
-    } else if (canGoBack) {
+    }
+    if (canGoBack) {
       webViewRef.current?.goBack();
       return true;
     }
