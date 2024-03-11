@@ -3,7 +3,7 @@ import { NativeModules, Platform } from 'react-native';
 const { NavigationBarColor } = NativeModules;
 
 const changeNavigationBarColor = (
-  color = String,
+  color = '',
   light = false,
   animated = true,
 ) => {
