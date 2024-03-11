@@ -1,8 +1,7 @@
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { ThemeColors } from '@theme/types';
 import color from 'color';
-import { RefObject } from 'react';
-import { DrawerLayoutAndroid, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,14 +10,14 @@ interface NovelDrawerProps {
   pages: string[];
   pageIndex: number;
   openPage: (index: number) => void;
-  drawerRef: RefObject<DrawerLayoutAndroid>;
+  closeDrawer: () => void;
 }
 export default function NovelDrawer({
   theme,
   pages,
   pageIndex,
   openPage,
-  drawerRef,
+  closeDrawer,
 }: NovelDrawerProps) {
   const insets = useSafeAreaInsets();
   const renderItem: ListRenderItem<string> = ({ item, index }) => (
@@ -35,7 +34,7 @@ export default function NovelDrawer({
         style={styles.pageCtn}
         onPress={() => {
           openPage(index);
-          drawerRef.current?.closeDrawer();
+          closeDrawer();
         }}
       >
         <View>
