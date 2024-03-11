@@ -54,7 +54,7 @@ const MainNavigator = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [theme.id]);
+  }, [theme]);
 
   useEffect(() => {
     if (updateLibraryOnLaunch) {
