@@ -31,6 +31,8 @@ import BrowseSettings from '../screens/browse/BrowseSettings';
 import { updateLibrary } from '@services/updates';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
+import { changeNavigationBarColor } from '@native/NavigationBarColor';
+import Color from 'color';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -42,12 +44,17 @@ const MainNavigator = () => {
   useEffect(() => {
     const timer = setTimeout(async () => {
       setBarColor(theme);
+      changeNavigationBarColor(
+        Color(theme.surface2).hex(),
+        !theme.isDark,
+        true,
+      );
     }, 500);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [theme.id]);
+  }, [theme]);
 
   useEffect(() => {
     if (updateLibraryOnLaunch) {
@@ -59,7 +66,7 @@ const MainNavigator = () => {
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
 
   return (
-    <NavigationContainer theme={{ colors: theme }}>
+    <NavigationContainer theme={{ colors: theme, dark: theme.isDark }}>
       {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="BottomNavigator" component={BottomNavigator} />

@@ -7,7 +7,7 @@ export { default as EmptyView } from './EmptyView/EmptyView';
 export { default as Chip } from './Chip/Chip';
 export { default as Button } from './Button/Button';
 export { default as Appbar } from './Appbar/Appbar';
-export { default as SwitchItem } from './SwitchItem/SwitchItem';
+export { default as SwitchItem } from './Switch/SwitchItem';
 export { default as List } from './List/List';
 export { default as ColorPreferenceItem } from './ColorPreferenceItem/ColorPreferenceItem';
 export { default as LoadingMoreIndicator } from './LoadingMoreIndicator/LoadingMoreIndicator';

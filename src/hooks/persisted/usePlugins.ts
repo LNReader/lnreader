@@ -130,35 +130,34 @@ export default function usePlugins() {
   };
 
   const uninstallPlugin = (plugin: PluginItem) => {
-    return _uninstall(plugin).then(() => {
-      if (lastUsedPlugin?.id === plugin.id) {
-        MMKVStorage.delete(LAST_USED_PLUGIN);
-      }
-      const installedPlugins =
-        getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
-      const availablePlugins =
-        getMMKVObject<PluginsMap>(AVAILABLE_PLUGINS) || ({} as PluginsMap);
+    if (lastUsedPlugin?.id === plugin.id) {
+      MMKVStorage.delete(LAST_USED_PLUGIN);
+    }
+    const installedPlugins =
+      getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
+    const availablePlugins =
+      getMMKVObject<PluginsMap>(AVAILABLE_PLUGINS) || ({} as PluginsMap);
 
-      // safe
-      if (!availablePlugins[plugin.lang]?.some(_plg => _plg.id === plugin.id)) {
-        availablePlugins[plugin.lang] = [
-          ...(availablePlugins[plugin.lang] || []),
-          plugin,
-        ];
-        setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
-      }
-      setMMKVObject(
-        INSTALLED_PLUGINS,
-        installedPlugins.filter(plg => plg.id !== plugin.id),
-      );
-      filterPlugins(languagesFilter);
-    });
+    // safe
+    if (!availablePlugins[plugin.lang]?.some(_plg => _plg.id === plugin.id)) {
+      availablePlugins[plugin.lang] = [
+        ...(availablePlugins[plugin.lang] || []),
+        plugin,
+      ];
+      setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
+    }
+    setMMKVObject(
+      INSTALLED_PLUGINS,
+      installedPlugins.filter(plg => plg.id !== plugin.id),
+    );
+    filterPlugins(languagesFilter);
+    return _uninstall(plugin).then(() => {});
   };
 
   const updatePlugin = (plugin: PluginItem) => {
     return _update(plugin).then(_plg => {
       if (plugin.version === _plg?.version) {
-        throw new Error(getString('browseScreen.tryAgain'));
+        throw new Error('No update found!');
       }
       if (_plg) {
         const installedPlugins =

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView, Text } from 'react-native';
 
 import { ThemePicker } from '@components/ThemePicker/ThemePicker';
-import SwitchSetting from '@components/Switch/Switch';
+import SettingSwitch from './components/SettingSwitch';
 import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
 
 import { useAppSettings, useTheme } from '@hooks/persisted';
@@ -143,7 +143,7 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
             ))}
           </ScrollView>
           {theme.isDark && (
-            <SwitchSetting
+            <SettingSwitch
               label={getString('appearanceScreen.pureBlackDarkMode')}
               value={isAmoledBlack}
               onPress={() => setAmoledBlack(prevVal => !prevVal)}
@@ -160,13 +160,13 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
           <List.SubHeader theme={theme}>
             {getString('appearanceScreen.novelInfo')}
           </List.SubHeader>
-          <SwitchSetting
+          <SettingSwitch
             label={getString('appearanceScreen.hideBackdrop')}
             value={hideBackdrop}
             onPress={() => setAppSettings({ hideBackdrop: !hideBackdrop })}
             theme={theme}
           />
-          <SwitchSetting
+          <SettingSwitch
             label={getString('advancedSettingsScreen.useFAB')}
             value={useFabForContinueReading}
             onPress={() =>
@@ -180,19 +180,19 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
           <List.SubHeader theme={theme}>
             {getString('appearanceScreen.navbar')}
           </List.SubHeader>
-          <SwitchSetting
+          <SettingSwitch
             label={getString('appearanceScreen.showUpdatesInTheNav')}
             value={showUpdatesTab}
             onPress={() => setAppSettings({ showUpdatesTab: !showUpdatesTab })}
             theme={theme}
           />
-          <SwitchSetting
+          <SettingSwitch
             label={getString('appearanceScreen.showHistoryInTheNav')}
             value={showHistoryTab}
             onPress={() => setAppSettings({ showHistoryTab: !showHistoryTab })}
             theme={theme}
           />
-          <SwitchSetting
+          <SettingSwitch
             label={getString('appearanceScreen.alwaysShowNavLabels')}
             value={showLabelsInNav}
             onPress={() =>

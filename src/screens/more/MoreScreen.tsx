@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  /* StyleSheet ,*/ View,
-  Pressable,
-  Text,
-  ScrollView,
-} from 'react-native';
-import { Switch } from 'react-native-paper';
+import { StyleSheet, View, Pressable, Text, ScrollView } from 'react-native';
 import { getString } from '@strings/translations';
 
 import { List } from '@components';
@@ -13,6 +7,7 @@ import { List } from '@components';
 import { MoreHeader } from './components/MoreHeader';
 import { useDownload, useLibrarySettings, useTheme } from '@hooks/persisted';
 import { MoreStackScreenProps } from '@navigators/types';
+import Switch from '@components/Switch/Switch';
 
 const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
   const theme = useTheme();
@@ -44,6 +39,7 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
             paddingVertical: 14,
             flexDirection: 'row',
             justifyContent: 'space-between',
+            alignItems: 'center',
           }}
           onPress={enableDownloadedOnlyMode}
         >
@@ -58,16 +54,18 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
               >
                 {getString('moreScreen.downloadOnly')}
               </Text>
-              <Text style={{ color: theme.onSurfaceVariant }}>
+              <Text
+                style={[styles.description, { color: theme.onSurfaceVariant }]}
+              >
                 {getString('moreScreen.downloadOnlyDesc')}
               </Text>
             </View>
           </View>
           <Switch
+            theme={theme}
             value={downloadedOnlyMode}
             onValueChange={enableDownloadedOnlyMode}
-            color={theme.primary}
-            style={{ marginRight: 8 }}
+            size={24}
           />
         </Pressable>
         <Pressable
@@ -77,11 +75,12 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
             paddingVertical: 14,
             flexDirection: 'row',
             justifyContent: 'space-between',
+            alignItems: 'center',
           }}
           onPress={enableIncognitoMode}
         >
           <View style={{ flexDirection: 'row' }}>
-            <List.Icon theme={theme} icon="incognito" />
+            <List.Icon theme={theme} icon="glasses" />
             <View style={{ marginLeft: 16 }}>
               <Text
                 style={{
@@ -91,16 +90,18 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
               >
                 {getString('moreScreen.incognitoMode')}
               </Text>
-              <Text style={{ color: theme.onSurfaceVariant }}>
+              <Text
+                style={[styles.description, { color: theme.onSurfaceVariant }]}
+              >
                 {getString('moreScreen.incognitoModeDesc')}
               </Text>
             </View>
           </View>
           <Switch
+            theme={theme}
             value={incognitoMode}
             onValueChange={enableIncognitoMode}
-            color={theme.primary}
-            style={{ marginRight: 8 }}
+            size={24}
           />
         </Pressable>
         <List.Divider theme={theme} />
@@ -176,4 +177,9 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
 
 export default MoreScreen;
 
-// const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  description: {
+    fontSize: 12,
+    lineHeight: 20,
+  },
+});

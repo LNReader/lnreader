@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { List, SwitchItem } from '@components/index';
+import { List } from '@components/index';
 
 import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
+import SettingSwitch from '../../components/SettingSwitch';
 
 const DisplaySettings: React.FC = () => {
   const theme = useTheme();
@@ -20,7 +21,7 @@ const DisplaySettings: React.FC = () => {
       <List.SubHeader theme={theme}>
         {getString('common.display')}
       </List.SubHeader>
-      <SwitchItem
+      <SettingSwitch
         label={getString('readerScreen.bottomSheet.fullscreen')}
         value={fullScreenMode}
         onPress={() =>
@@ -28,7 +29,7 @@ const DisplaySettings: React.FC = () => {
         }
         theme={theme}
       />
-      <SwitchItem
+      <SettingSwitch
         label={getString('readerScreen.bottomSheet.showProgressPercentage')}
         value={showScrollPercentage}
         onPress={() =>
@@ -38,7 +39,7 @@ const DisplaySettings: React.FC = () => {
         }
         theme={theme}
       />
-      <SwitchItem
+      <SettingSwitch
         label={getString('readerScreen.bottomSheet.showBatteryAndTime')}
         value={showBatteryAndTime}
         onPress={() =>
