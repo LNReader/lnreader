@@ -119,7 +119,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
       ) : (
         <NovelList
           data={novelList}
-          inPlugin
+          isBrowsing
           renderItem={({ item }) => {
             const inLibrary = novelInLibrary(item.path);
 
