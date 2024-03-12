@@ -49,8 +49,9 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
         const lastNovel = groups[date][groups[date].length - 1];
 
         if (
-          (lastNovel?.novelId === item.novelId && lastNovel.startChapter) ??
-          lastNovel.chapterNumber === (item.chapterNumber ?? 0) + 1
+          lastNovel?.novelId === item.novelId &&
+          (lastNovel.startChapter ?? lastNovel.chapterNumber) ===
+            (item.chapterNumber ?? 0) + 1
         ) {
           groups[date][groups[date].length - 1] = {
             ...lastNovel,

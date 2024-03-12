@@ -22,7 +22,7 @@ type listDataItem =
 
 interface NovelListProps
   extends FlatListProps<LibraryNovelInfo | NovelInfo | NovelItem> {
-  inPlugin?: boolean;
+  isBrowsing?: boolean;
   data: Array<listDataItem>;
 }
 
@@ -45,8 +45,8 @@ const NovelList: React.FC<NovelListProps> = props => {
     }
   }, [isListView, orientation, novelsPerRow]);
 
-  var extendedNovelList: Array<listDataItem> = props?.data;
-  if (props.data?.length && props.inPlugin) {
+  let extendedNovelList: Array<listDataItem> = props?.data;
+  if (props.data?.length && props.isBrowsing) {
     let remainder = numColumns - (props.data?.length % numColumns);
     let extension: Array<listDataItem> = [];
     if (remainder !== 0 && remainder !== numColumns) {
