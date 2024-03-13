@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 
 import { FAB } from 'react-native-paper';
 import { Container, ErrorScreenV2, SearchbarV2 } from '@components/index';
@@ -7,7 +7,7 @@ import NovelCover from '@components/NovelCover';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import FilterBottomSheet from './components/FilterBottomSheet';
 
-import { usePreviousRouteName, useSearch } from '@hooks';
+import { useSearch } from '@hooks';
 import { useTheme } from '@hooks/persisted';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
 
@@ -23,8 +23,6 @@ import { BrowseSourceScreenProps } from '@navigators/types';
 
 const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
   const theme = useTheme();
-  const previousScreen = usePreviousRouteName();
-
   const { pluginId, pluginName, site, showLatestNovels } = route.params;
 
   const {
@@ -61,12 +59,6 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     clearSearchbar();
     clearSearchResults();
   };
-
-  useEffect(() => {
-    if (previousScreen === 'WebviewScreen') {
-      refetchNovels();
-    }
-  }, [previousScreen]);
 
   const handleOpenWebView = async () => {
     navigation.navigate('WebviewScreen', {
@@ -111,6 +103,19 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
       ) : errorMessage || novelList.length === 0 ? (
         <ErrorScreenV2
           error={errorMessage || getString('sourceScreen.noResultsFound')}
+          actions={[
+            {
+              iconName: 'refresh',
+              title: getString('common.retry'),
+              onPress: () => {
+                if (searchText) {
+                  searchSource(searchText);
+                } else {
+                  refetchNovels();
+                }
+              },
+            },
+          ]}
         />
       ) : (
         <NovelList

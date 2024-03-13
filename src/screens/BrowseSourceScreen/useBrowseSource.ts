@@ -44,7 +44,10 @@ export const useBrowseSource = (
                 setHasNextPage(false);
               }
             })
-            .catch(error => setError(error.message));
+            .catch(error => {
+              setError(error.message);
+              setHasNextPage(false);
+            });
           setFilterValues(plugin.filters);
         } catch (err: unknown) {
           setError(`${err}`);
@@ -74,8 +77,11 @@ export const useBrowseSource = (
   }, [fetchNovels, currentPage]);
 
   const refetchNovels = () => {
+    setError('');
+    setIsLoading(true);
+    setNovels([]);
     setCurrentPage(1);
-    fetchNovels(1);
+    fetchNovels(1, selectedFilters);
   };
 
   const clearFilters = useCallback(
@@ -113,6 +119,7 @@ export const useSearchSource = (pluginId: string) => {
 
   const searchSource = (searchTerm: string) => {
     setSearchResults([]);
+    setHasNextSearchPage(true);
     setCurrentPage(1);
     setSearchText(searchTerm);
     setIsSearching(true);
@@ -137,6 +144,7 @@ export const useSearchSource = (pluginId: string) => {
           }
         } catch (err: unknown) {
           setSearchError(`${err}`);
+          setHasNextSearchPage(false);
         } finally {
           setIsSearching(false);
         }

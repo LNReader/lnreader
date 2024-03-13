@@ -27,7 +27,7 @@ const downloadChapterAction = async (taskData?: TaskData) => {
   try {
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.DOWNLOAD_CHAPTER);
     let queue = getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE) || [];
-    while (queue.length > 0) {
+    while (queue.length > 0 && BackgroundService.isRunning()) {
       const { novel, chapter } = queue[0];
       await BackgroundService.updateNotification({
         taskTitle: getString('downloadScreen.downloadingNovel', {
@@ -63,13 +63,15 @@ const downloadChapterAction = async (taskData?: TaskData) => {
     }
   } finally {
     MMKVStorage.delete(BACKGROUND_ACTION);
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: getString('downloadScreen.downloader'),
-        body: getString('downloadScreen.completed'),
-      },
-      trigger: null,
-    });
+    if (getMMKVObject<DownloadData[]>(DOWNLOAD_QUEUE)?.length === 0) {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: getString('downloadScreen.downloader'),
+          body: getString('downloadScreen.completed'),
+        },
+        trigger: null,
+      });
+    }
     BackgroundService.stop();
   }
 };
