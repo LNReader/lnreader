@@ -43,9 +43,9 @@ const CustomFileModal: React.FC<CustomFileModal> = ({
         type: mimeType,
       });
 
-      if (file.type === 'success') {
+      if (file.assets) {
         const content = await StorageAccessFramework.readAsStringAsync(
-          file.uri,
+          file.assets[0].uri,
         );
 
         onSave(content.trim());
