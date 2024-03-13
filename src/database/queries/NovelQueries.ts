@@ -309,20 +309,32 @@ export const updateNovelCategories = async (
   categoryIds: number[],
 ): Promise<void> => {
   let queries: string[] = [];
-  // not allow others have local id;
-  categoryIds = categoryIds.filter(id => id !== 2);
   queries.push(
     `DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(
       ',',
     )}) AND categoryId != 2`,
   );
-  novelIds.forEach(novelId => {
-    categoryIds.forEach(categoryId =>
+  // if no category is selected => set to the default category
+  if (categoryIds.length) {
+    novelIds.forEach(novelId => {
+      categoryIds.forEach(categoryId =>
+        queries.push(
+          `INSERT INTO NovelCategory (novelId, categoryId) VALUES (${novelId}, ${categoryId})`,
+        ),
+      );
+    });
+  } else {
+    novelIds.forEach(novelId => {
+      // hacky: insert local novel category -> failed -> ignored
       queries.push(
-        `INSERT INTO NovelCategory (novelId, categoryId) VALUES (${novelId}, ${categoryId})`,
-      ),
-    );
-  });
+        `INSERT OR IGNORE INTO NovelCategory (novelId, categoryId) 
+         VALUES (
+          ${novelId}, 
+          IFNULL((SELECT categoryId FROM NovelCategory WHERE novelId = ${novelId}), (SELECT id FROM Category WHERE sort = 1))
+        )`,
+      );
+    });
+  }
   db.transaction(tx => {
     queries.forEach(query => {
       tx.executeSql(query);
