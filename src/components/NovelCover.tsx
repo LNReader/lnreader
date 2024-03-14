@@ -103,22 +103,22 @@ function NovelCover<TNovel extends NovelItem | NovelInfo | LibraryNovelInfo>({
       >
         <View style={styles.badgeContainer}>
           {libraryStatus && <InLibraryBadge theme={theme} />}
-          {showDownloadBadges && item.chaptersDownloaded > 0 && (
+          {showDownloadBadges && item.chaptersDownloaded > 0 ? (
             <DownloadBadge
               showUnreadBadges={showUnreadBadges}
               chaptersDownloaded={item.chaptersDownloaded}
               chaptersUnread={item.chaptersUnread}
               theme={theme}
             />
-          )}
-          {showUnreadBadges && item.chaptersUnread > 0 && (
+          ) : null}
+          {showUnreadBadges && item.chaptersUnread > 0 ? (
             <UnreadBadge
               theme={theme}
               chaptersDownloaded={item.chaptersDownloaded}
               chaptersUnread={item.chaptersUnread}
               showDownloadBadges={showDownloadBadges}
             />
-          )}
+          ) : null}
         </View>
         <Image
           source={{ uri, headers: { 'User-Agent': getUserAgent() } }}
@@ -132,39 +132,37 @@ function NovelCover<TNovel extends NovelItem | NovelInfo | LibraryNovelInfo>({
           ]}
         />
         <View style={styles.compactTitleContainer}>
-          {displayMode === DisplayModes.Compact && (
+          {displayMode === DisplayModes.Compact ? (
             <CompactTitle novelName={item.name} />
-          )}
+          ) : null}
         </View>
-        {displayMode === DisplayModes.Comfortable && (
+        {displayMode === DisplayModes.Comfortable ? (
           <ComfortableTitle novelName={item.name} theme={theme} />
-        )}
+        ) : null}
       </Pressable>
     </View>
   ) : (
     <ListView
       item={item}
       downloadBadge={
-        showDownloadBadges &&
-        item.chaptersDownloaded && (
+        showDownloadBadges && item.chaptersDownloaded ? (
           <DownloadBadge
             theme={theme}
             showUnreadBadges={showUnreadBadges}
             chaptersDownloaded={item.chaptersDownloaded}
             chaptersUnread={item.chaptersUnread}
           />
-        )
+        ) : null
       }
       unreadBadge={
-        showUnreadBadges &&
-        item.chaptersUnread && (
+        showUnreadBadges && item.chaptersUnread ? (
           <UnreadBadge
             theme={theme}
             chaptersDownloaded={item.chaptersDownloaded}
             chaptersUnread={item.chaptersUnread}
             showDownloadBadges={showDownloadBadges}
           />
-        )
+        ) : null
       }
       inLibraryBadge={libraryStatus && <InLibraryBadge theme={theme} />}
       theme={theme}

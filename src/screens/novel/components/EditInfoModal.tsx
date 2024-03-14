@@ -156,7 +156,7 @@ const EditInfoModal = ({
           dense
         />
 
-        {novel.genres !== undefined && novel.genres !== '' && (
+        {novel.genres !== undefined && novel.genres !== '' ? (
           <FlatList
             contentContainerStyle={{ marginVertical: 8 }}
             horizontal
@@ -169,7 +169,7 @@ const EditInfoModal = ({
             )}
             showsHorizontalScrollIndicator={false}
           />
-        )}
+        ) : null}
         <View style={{ flexDirection: 'row-reverse' }}>
           <Button
             onPress={() => {

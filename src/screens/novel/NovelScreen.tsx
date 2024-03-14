@@ -349,7 +349,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   onPress={() => navigation.goBack()}
                 />
                 <Row>
-                  {!novel.isLocal && (
+                  {!novel.isLocal ? (
                     <IconButton
                       icon="share-variant"
                       iconColor={theme.onBackground}
@@ -363,7 +363,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                         })
                       }
                     />
-                  )}
+                  ) : null}
                   <IconButton
                     icon="text-box-search-outline"
                     iconColor={theme.onBackground}
@@ -373,7 +373,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                     }}
                     onPress={() => showJumpToChapterModal(true)}
                   />
-                  {!novel.isLocal && (
+                  {!novel.isLocal ? (
                     <Menu
                       visible={downloadMenu}
                       onDismiss={() => showDownloadMenu(false)}
@@ -502,7 +502,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                         }}
                       />
                     </Menu>
-                  )}
+                  ) : null}
 
                   <Menu
                     visible={extraMenu}
@@ -628,7 +628,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
               onScroll={onPageScroll}
             />
           </View>
-          {useFabForContinueReading && lastRead && (
+          {useFabForContinueReading && lastRead ? (
             <AnimatedFAB
               style={[
                 styles.fab,
@@ -648,7 +648,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                 }
               }}
             />
-          )}
+          ) : null}
           <Portal>
             <Actionbar active={selected.length > 0} actions={actions} />
             <Snackbar

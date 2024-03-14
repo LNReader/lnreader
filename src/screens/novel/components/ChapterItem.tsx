@@ -70,7 +70,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
         {left}
         {bookmark ? <ChapterBookmarkButton theme={theme} /> : null}
         <View style={{ flex: 1 }}>
-          {isUpdateCard && (
+          {isUpdateCard ? (
             <Text
               style={[
                 {
@@ -82,7 +82,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             >
               {novelName}
             </Text>
-          )}
+          ) : null}
           <View style={styles.row}>
             {unread ? (
               <MaterialCommunityIcons
@@ -147,7 +147,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
           </View>
         </View>
       </View>
-      {!isLocal && (
+      {!isLocal ? (
         <DownloadButton
           isDownloading={isDownloading}
           isDownloaded={chapter.isDownloaded}
@@ -158,7 +158,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
           showDeleteChapterMenu={showMenu}
           deleteChapterMenuVisible={isMenuVisible}
         />
-      )}
+      ) : null}
     </Pressable>
   );
 };

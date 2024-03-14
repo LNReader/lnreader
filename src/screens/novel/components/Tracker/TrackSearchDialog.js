@@ -53,7 +53,7 @@ const TrackSearchDialog = ({
       borderless
     >
       <>
-        {selectedNovel && selectedNovel.id === item.id && (
+        {selectedNovel && selectedNovel.id === item.id ? (
           <MaterialCommunityIcons
             name="check-circle"
             color={theme.primary}
@@ -65,7 +65,7 @@ const TrackSearchDialog = ({
               zIndex: 1,
             }}
           />
-        )}
+        ) : null}
         <Image
           source={{ uri: item.coverImage }}
           style={{ height: 150, width: 100, borderRadius: 4 }}
