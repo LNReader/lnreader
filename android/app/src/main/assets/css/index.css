@@ -48,6 +48,10 @@ img {
     max-width: 100%;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 .nextButton,
 .infoText {
     width: 100%;
@@ -90,7 +94,8 @@ img {
 
 #ToolWrapper {
     position: fixed;
-    top: 25vh;
+    top: 50%;
+    transform: translateY(-50%);
     right: 5vw;
     transition: 150ms;
 }
@@ -117,6 +122,7 @@ img {
     margin-top: 8px;
     width: 2.4rem;
     height: 45vh;
+    min-height: 200px;
     border-radius: 1.2rem;
     background-color: var(--theme-surface-0-9);
     touch-action: none;
@@ -316,10 +322,9 @@ tts.highlight {
     display: flex;
     height: 100%;
     width: 100%;
-    max-width: max-content;
-    max-height: max-content;
     background-color: var(--theme-surface-0-9);
     align-items: center;
+    justify-content: center;
     overflow: scroll;
 }
 

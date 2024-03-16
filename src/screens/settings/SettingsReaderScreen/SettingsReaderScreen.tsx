@@ -1,5 +1,5 @@
-import { View, ScrollView } from 'react-native';
-import React from 'react';
+import { View, ScrollView, StatusBar, Dimensions } from 'react-native';
+import React, { useMemo, useRef, useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
@@ -7,7 +7,11 @@ import { dummyHTML } from './utils';
 
 import { Appbar, List } from '@components/index';
 
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import {
+  useChapterGeneralSettings,
+  useChapterReaderSettings,
+  useTheme,
+} from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
 import GeneralSettings from './Settings/GeneralSettings';
@@ -16,6 +20,11 @@ import CustomJSSettings from './Settings/CustomJSSettings';
 import DisplaySettings from './Settings/DisplaySettings';
 import ReaderThemeSettings from './Settings/ReaderThemeSettings';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import color from 'color';
+import { useBatteryLevel } from 'react-native-device-info';
+import * as Speech from 'expo-speech';
+import * as Clipboard from 'expo-clipboard';
+import { showToast } from '@utils/showToast';
 
 export type TextAlignments =
   | 'left'
@@ -25,13 +34,27 @@ export type TextAlignments =
   | 'justify'
   | undefined;
 
+type WebViewPostEvent = {
+  type: string;
+  data?: { [key: string]: string | number };
+};
+
 const SettingsReaderScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
+  const webViewRef = useRef<WebView>(null);
   const { bottom } = useSafeAreaInsets();
-
+  const [hidden, setHidden] = useState(true);
+  const layoutHeight = Dimensions.get('window').height;
+  const batteryLevel = useBatteryLevel();
   const readerSettings = useChapterReaderSettings();
+  const { showScrollPercentage, showBatteryAndTime } =
+    useChapterGeneralSettings();
   const READER_HEIGHT = 280;
+  const assetsUriPrefix = useMemo(
+    () => (__DEV__ ? 'http://localhost:8081/assets' : 'file:///android_asset'),
+    [],
+  );
   const dummyChapterInfo = {
     sourceId: 11,
     chapterId: 99,
@@ -41,24 +64,38 @@ const SettingsReaderScreen = () => {
   };
   const webViewCSS = `
   <style>
-  body {
-    color: ${readerSettings.textColor};
-    text-align: ${readerSettings.textAlign};
-    line-height: ${readerSettings.lineHeight};
-    font-size: ${readerSettings.textSize}px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: ${readerSettings.padding}%;
-    padding-right: ${readerSettings.padding}%;
-    font-family: ${readerSettings.fontFamily}; 
-  }
-  </style>
-  <style>
-    ${readerSettings.customCSS}
+    :root {
+      --StatusBar-currentHeight: ${StatusBar.currentHeight};
+      --readerSettings-theme: ${readerSettings.theme};
+      --readerSettings-padding: ${readerSettings.padding}%;
+      --readerSettings-textSize: ${readerSettings.textSize}px;
+      --readerSettings-textColor: ${readerSettings.textColor};
+      --readerSettings-textAlign: ${readerSettings.textAlign};
+      --readerSettings-lineHeight: ${readerSettings.lineHeight};
+      --readerSettings-fontFamily: ${readerSettings.fontFamily};
+      --theme-primary: ${theme.primary};
+      --theme-onPrimary: ${theme.onPrimary};
+      --theme-secondary: ${theme.secondary};
+      --theme-tertiary: ${theme.tertiary};
+      --theme-onTertiary: ${theme.onTertiary};
+      --theme-onSecondary: ${theme.onSecondary};
+      --theme-surface: ${theme.surface};
+      --theme-surface-0-9: ${color(theme.surface).alpha(0.9).toString()};
+      --theme-onSurface: ${theme.onSurface};
+      --theme-surfaceVariant: ${theme.surfaceVariant};
+      --theme-onSurfaceVariant: ${theme.onSurfaceVariant};
+      --theme-outline: ${theme.outline};
+      --theme-rippleColor: ${theme.rippleColor};
+      --chapterCtn-height: ${layoutHeight - 140};
+    }
     @font-face {
       font-family: ${readerSettings.fontFamily};
       src: url("file:///android_asset/fonts/${readerSettings.fontFamily}.ttf");
     }
+    </style>
+    <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
+    <style>
+    ${readerSettings.customCSS}
   </style>
   `;
 
@@ -75,23 +112,88 @@ const SettingsReaderScreen = () => {
 
       <View style={{ height: READER_HEIGHT }}>
         <WebView
+          ref={webViewRef}
           originWhitelist={['*']}
+          allowFileAccess={true}
+          scalesPageToFit={true}
+          showsVerticalScrollIndicator={false}
+          javaScriptEnabled={true}
           style={{ backgroundColor: readerBackgroundColor }}
           nestedScrollEnabled={true}
+          onMessage={ev => {
+            const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
+            switch (event.type) {
+              case 'hide':
+                if (hidden) {
+                  webViewRef.current?.injectJavaScript('toolWrapper.show()');
+                } else {
+                  webViewRef.current?.injectJavaScript('toolWrapper.hide()');
+                }
+                setHidden(!hidden);
+                break;
+              case 'speak':
+                if (event.data && typeof event.data === 'string') {
+                  Speech.speak(event.data, {
+                    onDone() {
+                      webViewRef.current?.injectJavaScript('tts.next?.()');
+                    },
+                  });
+                }
+                break;
+              case 'stop-speak':
+                Speech.stop();
+                break;
+              case 'copy':
+                if (event.data && typeof event.data === 'string') {
+                  Clipboard.setStringAsync(event.data).then(() => {
+                    showToast(
+                      getString('common.copiedToClipboard', { name: '' }),
+                    );
+                  });
+                }
+                break;
+            }
+          }}
           source={{
             html: `
             <html>
               <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
                 ${webViewCSS}
+                <script async>
+                  var initSettings = {
+                    showScrollPercentage: ${showScrollPercentage},
+                    swipeGestures: false,
+                    showBatteryAndTime: ${showBatteryAndTime},
+                  }
+                  var batteryLevel = ${batteryLevel};
+                  var autoSaveInterval = 2222;
+                </script>
               </head>
               <body>
                 <chapter 
                   data-novel-id='${dummyChapterInfo.novelId}'
                   data-chapter-id='${dummyChapterInfo.chapterId}'
+                  onclick="reader.post({type:'hide'})"
                 >
                   ${dummyHTML}
                 </chapter>
+                <div class="hidden" id="ToolWrapper">
+                    <div id="TTS-Controller"></div>
+                    <div id="ScrollBar"></div>
+                </div>
+                <div id="Image-Modal">
+                  <img id="Image-Modal-img">
+                </div>
+                <div id="reader-footer-wrapper">
+                    <div id="reader-footer">
+                        <div id="reader-battery" class="reader-footer-item"></div>
+                        <div id="reader-percentage" class="reader-footer-item"></div>
+                        <div id="reader-time" class="reader-footer-item"></div>
+                    </div>
+                </div>
+                </body>
+                <script src="${assetsUriPrefix}/js/index.js"></script>
                 <script>
                   async function fn(){
                     let novelName = "${dummyChapterInfo.novelName}";
@@ -104,7 +206,6 @@ const SettingsReaderScreen = () => {
                   }
                   document.addEventListener("DOMContentLoaded", fn);
                 </script>
-              </body>
             </html>
             `,
           }}
