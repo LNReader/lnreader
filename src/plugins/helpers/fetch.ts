@@ -169,11 +169,14 @@ export const fetchProto = async function (
       }),
   );
   init = await makeInit(init);
-  const arrayBody = new Uint8Array([...headers, ...encodedrequest]);
+  const bodyArray = new Uint8Array(headers.length + encodedrequest.length);
+  bodyArray.set(headers, 0);
+  bodyArray.set(encodedrequest, headers.length);
+
   return fetch(url, {
     method: 'POST',
     ...init,
-    body: arrayBody,
+    body: bodyArray,
   } as RequestInit)
     .then(r => r.blob())
     .then(blob => {
