@@ -63,6 +63,8 @@ export const getLibrary = ({
   }
 
   if (searchText) {
+    searchText = searchText.replace(/'/g, "\\'");
+
     query += ` AND novelName LIKE '%${searchText}%'`;
   }
 
