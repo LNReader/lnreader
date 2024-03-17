@@ -131,6 +131,15 @@ const EditInfoModal = ({
           dense
         />
         <TextInput
+          placeholder={'Artist: ' + novel.artist}
+          style={{ fontSize: 14 }}
+          numberOfLines={1}
+          mode="outlined"
+          theme={{ colors: { ...theme } }}
+          onChangeText={text => setNovel({ ...novel, artist: text })}
+          dense
+        />
+        <TextInput
           placeholder={getString('novelScreen.edit.summary', {
             summary: novel.summary?.substring(0, 16),
           })}

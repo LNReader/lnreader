@@ -401,10 +401,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         );
       }
       setChapters(chapters);
-      if (loading) {
-        setLoading(false);
-      }
     }
+    setLoading(false);
   }, [novel, novelSettings, pageIndex]);
   useEffect(() => {
     getNovel();
