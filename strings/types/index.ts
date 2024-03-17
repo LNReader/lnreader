@@ -341,6 +341,7 @@ export interface StringMap {
   'novelScreen.updatedToast': 'string';
   'readerScreen.bottomSheet.allowTextSelection': 'string';
   'readerScreen.bottomSheet.autoscroll': 'string';
+  'readerScreen.bottomSheet.autoLoadNextChapter': 'string';
   'readerScreen.bottomSheet.bionicReading': 'string';
   'readerScreen.bottomSheet.color': 'string';
   'readerScreen.bottomSheet.fontStyle': 'string';
@@ -367,8 +368,11 @@ export interface StringMap {
   'readerScreen.nextChapter': 'string';
   'readerScreen.noNextChapter': 'string';
   'readerScreen.noPreviousChapter': 'string';
+  'readerScreen.autoLoadingNextChapter': 'string';
   'readerSettings.autoScrollInterval': 'string';
   'readerSettings.autoScrollOffset': 'string';
+  'readerSettings.autoLoadNextChapterThreshold': 'string';
+  'readerSettings.autoLoadNextChapterInterval': 'string';
   'readerSettings.backgroundColor': 'string';
   'readerSettings.backgroundColorModal': 'string';
   'readerSettings.clearCustomCSS': 'string';

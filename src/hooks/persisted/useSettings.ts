@@ -81,6 +81,9 @@ export interface ChapterGeneralSettings {
   autoScrollOffset: number | null;
   verticalSeekbar: boolean;
   removeExtraParagraphSpacing: boolean;
+  autoLoadNextChapter: boolean;
+  autoLoadNextChapterInterval: number;
+  autoLoadNextChapterThreshold: number;
 }
 
 export interface ReaderTheme {
@@ -158,6 +161,9 @@ export const initialChapterGeneralSettings: ChapterGeneralSettings = {
   autoScrollOffset: null,
   verticalSeekbar: true,
   removeExtraParagraphSpacing: false,
+  autoLoadNextChapter: false,
+  autoLoadNextChapterInterval: 4,
+  autoLoadNextChapterThreshold: 95,
 };
 
 export const initialChapterReaderSettings: ChapterReaderSettings = {
