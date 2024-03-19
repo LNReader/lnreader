@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Akkumulátorinformációk és idő mutatása",
       "showProgressPercentage": "Előrehaladás százalékos mutatása",
       "swipeGestures": "Swipe left or right to navigate between chapters",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Szövegkijelölés engedélyezése",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
@@ -169,7 +170,8 @@
         "epubLocation": "EPUB Location",
         "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Új fejezetek letöltése",
-        "disableHapticFeedback": "Haptikus visszajelzés kikapcsolása"
+        "disableHapticFeedback": "Haptikus visszajelzés kikapcsolása",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Olvasó",

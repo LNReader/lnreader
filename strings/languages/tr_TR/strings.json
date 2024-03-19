@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Pili ve saati göster",
       "showProgressPercentage": "İlerleme yüzdesini göster",
       "swipeGestures": "Bölümler arası gezinmek için sol veya sağa doğru kaydırın",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Yazı seçmeye izin ver",
       "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın",
       "removeExtraSpacing": "Ekstra paragraf boşluklarını kaldır",
@@ -169,7 +170,8 @@
         "epubLocation": "EPUB Konumu",
         "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
         "downloadNewChapters": "Yeni bölümleri indir",
-        "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak"
+        "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Okuyucu",
