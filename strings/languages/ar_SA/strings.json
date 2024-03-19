@@ -138,7 +138,7 @@
       "useCustomCSS": "استخدام CSS مخصص",
       "useCustomJS": "استخدام JS مخصص",
       "useCustomJSWarning": "قد لا يكون مدعوماً من كل قراء EPUB",
-      "chaptersWarning": "فقط الفصول التي تم تنزيلها هي المضمنة في ملف EPUB"
+      "chaptersWarning": "فقط الفصول محملة تدرج في ملف EPUB"
     }
   },
   "more": "المزيد",
@@ -193,8 +193,8 @@
         "notSaved": "لم يُحفظ",
         "cssHint": "تلميح: يمكنك إنشاء تضبيطات CSS مخصصة لمصدر محدد باستخدام معرفه. (#sourceId-[SOURCEID])",
         "jsHint": "تلميح: يمكنك الوصول إلى المتغيرات التالية واستخدامها: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "هل أنت متأكد؟ سيتم إعادة تعيين CSS المخصص الخاص بك.",
-        "clearCustomJS": "هل أنت متأكد؟ سيتم إعادة JS الخاص بك إلي الحالة الافتراضية."
+        "clearCustomCSS": "هل أنت متأكد؟ سيتم إعادة تعيين تفضيلات CSS خاصتك.",
+        "clearCustomJS": "هل أنت متأكد؟ سيتم إعادة تفضيلات JS خاصتك إلى الحالة الافتراضية."
       },
       "browseSettings": "تصفح الإعدادات",
       "browseSettingsScreen": {
