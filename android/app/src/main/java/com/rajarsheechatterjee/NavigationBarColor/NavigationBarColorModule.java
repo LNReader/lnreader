@@ -23,9 +23,6 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
     public static final String REACT_CLASS = "NavigationBarColor";
     private static final String ERROR_NO_ACTIVITY = "E_NO_ACTIVITY";
     private static final String ERROR_NO_ACTIVITY_MESSAGE = "Tried to change the navigation bar while not attached to an Activity";
-    private static final String ERROR_API_LEVEL = "API_LEVEl";
-    private static final String ERROR_API_LEVEL_MESSAGE = "Only Android Oreo and above is supported";
-    private static ReactApplicationContext reactContext = null;
     private static final int UI_FLAG_HIDE_NAV_BAR = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
@@ -33,7 +30,6 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
 
     public NavigationBarColorModule(ReactApplicationContext context) {
         super(context);
-        reactContext = context;
     }
 
     public void setNavigationBarTheme(Activity activity, Boolean light) {
@@ -66,61 +62,56 @@ public class NavigationBarColorModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void changeNavigationBarColor(final String color, final Boolean light, final Boolean animated, final Promise promise) {
         final WritableMap map = Arguments.createMap();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (getCurrentActivity() != null) {
-                try {
-                    final Window window = getCurrentActivity().getWindow();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (color.equals("transparent") || color.equals("translucent")) {
-                                window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-                                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-                                if (color.equals("transparent")) {
-                                    window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-                                } else {
-                                    window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-                                }
-                                setNavigationBarTheme(getCurrentActivity(), light);
-                                map.putBoolean("success", true);
-                                promise.resolve(map);
-                                return;
+        if (getCurrentActivity() != null) {
+            try {
+                final Window window = getCurrentActivity().getWindow();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (color.equals("transparent") || color.equals("translucent")) {
+                            window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                            if (color.equals("transparent")) {
+                                window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
                             } else {
-                                window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-                                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-                            }
-                            if (animated) {
-                                Integer colorFrom = window.getNavigationBarColor();
-                                Integer colorTo = Color.parseColor(String.valueOf(color));
-                                //window.setNavigationBarColor(colorTo);
-                                ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-                                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                                    @Override
-                                    public void onAnimationUpdate(ValueAnimator animator) {
-                                        window.setNavigationBarColor((Integer) animator.getAnimatedValue());
-                                    }
-                                });
-                                colorAnimation.start();
-                            } else {
-                                window.setNavigationBarColor(Color.parseColor(String.valueOf(color)));
+                                window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
                             }
                             setNavigationBarTheme(getCurrentActivity(), light);
-                            WritableMap map = Arguments.createMap();
                             map.putBoolean("success", true);
                             promise.resolve(map);
+                            return;
+                        } else {
+                            window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+                            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
                         }
-                    });
-                } catch (IllegalViewOperationException e) {
-                    map.putBoolean("success", false);
-                    promise.reject("error", e);
-                }
-
-            } else {
-                promise.reject(ERROR_NO_ACTIVITY, new Throwable(ERROR_NO_ACTIVITY_MESSAGE));
-
+                        if (animated) {
+                            Integer colorFrom = window.getNavigationBarColor();
+                            Integer colorTo = Color.parseColor(color);
+                            //window.setNavigationBarColor(colorTo);
+                            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animator) {
+                                    window.setNavigationBarColor((Integer) animator.getAnimatedValue());
+                                }
+                            });
+                            colorAnimation.start();
+                        } else {
+                            window.setNavigationBarColor(Color.parseColor(color));
+                        }
+                        setNavigationBarTheme(getCurrentActivity(), light);
+                        WritableMap map = Arguments.createMap();
+                        map.putBoolean("success", true);
+                        promise.resolve(map);
+                    }
+                });
+            } catch (IllegalViewOperationException e) {
+                map.putBoolean("success", false);
+                promise.reject("error", e);
             }
+
         } else {
-            promise.reject(ERROR_API_LEVEL, new Throwable(ERROR_API_LEVEL_MESSAGE));
+            promise.reject(ERROR_NO_ACTIVITY, new Throwable(ERROR_NO_ACTIVITY_MESSAGE));
         }
     }
 
