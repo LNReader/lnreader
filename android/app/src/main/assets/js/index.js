@@ -245,12 +245,20 @@ class SwipeHandler {
     this.initialY = e.changedTouches[0].screenY;
   };
 
+  /**
+   * @param {TouchEvent} e
+   */
   touchEndHandler = e => {
     let diffX = e.changedTouches[0].screenX - this.initialX;
     let diffY = e.changedTouches[0].screenY - this.initialY;
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
-      e.preventDefault();
-      reader.post({ type: diffX < 0 ? 'next' : 'prev' });
+    if (Math.abs(diffX) > Math.abs(diffY) * 2 && Math.abs(diffX) > 50) {
+      if (diffX < 0 && this.initialX >= window.innerWidth / 2) {
+        e.preventDefault();
+        reader.post({ type: 'next' });
+      } else if (diffX > 0 && this.initialX <= window.innerWidth / 2) {
+        e.preventDefault();
+        reader.post({ type: 'prev' });
+      }
     }
   };
 
