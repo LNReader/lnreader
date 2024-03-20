@@ -16,10 +16,9 @@ import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
-import { ChapterItem, SourceNovel } from '@plugins/types';
-import { load as parseXML } from 'cheerio';
 import { showToast } from '@utils/showToast';
 import TextFile from '@native/TextFile';
+import EpubUtil from '@native/EpubUtil';
 
 interface TaskData {
   delay: number;
@@ -31,12 +30,17 @@ const insertLocalNovel = (
   path: string,
   cover?: string,
   author?: string,
+  artist?: string,
+  summary?: string,
 ): Promise<number> => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        "INSERT INTO Novel(name, path, cover, author, pluginId, inLibrary, isLocal) VALUES(?, ?, ?, ?, 'local', 1, 1)",
-        [name, path, cover || null, author || null],
+        `
+          INSERT INTO 
+            Novel(name, path, pluginId, inLibrary, isLocal) 
+          VALUES(?, ?, 'local', 1, 1)`,
+        [name, path],
         async (txObj, resultSet) => {
           if (resultSet.insertId) {
             await updateNovelCategoryById(resultSet.insertId, [2]);
@@ -49,9 +53,11 @@ const insertLocalNovel = (
               await RNFS.moveFile(cover, newCoverPath);
             }
             await updateNovelInfo({
-              pluginId: LOCAL_PLUGIN_ID,
               id: resultSet.insertId,
+              pluginId: LOCAL_PLUGIN_ID,
               author: author,
+              artist: artist,
+              summary: summary,
               path: NovelDownloadFolder + '/local/' + resultSet.insertId,
               cover: newCoverPath,
               name: name,
@@ -144,92 +150,6 @@ const insertLocalChapter = (
   });
 };
 
-const getParent = (filePath: string) => {
-  return filePath.replace(/[/\\][^/\\]+$/, '');
-};
-
-const parseNovelAndChapters = async (
-  epubDirPath: string,
-): Promise<SourceNovel> => {
-  const containerText = await TextFile.readFile(
-    `${epubDirPath}/META-INF/container.xml`,
-  );
-  const contentPath =
-    epubDirPath + '/' + parseXML(containerText)('rootfile').attr('full-path');
-  const contentDir = getParent(contentPath);
-  const contentText = await TextFile.readFile(contentPath);
-  const parsedContent = parseXML(contentText);
-  const novelName = parsedContent('dc\\:title').text().trim();
-  const author = parsedContent('dc\\:creator').text().trim();
-  const description = parsedContent('dc\\:description').text().trim();
-  const coverRef = parsedContent('meta[name="cover"]').attr('content');
-  let cover = '';
-  if (coverRef) {
-    cover =
-      contentDir + '/' + parsedContent(`item[id="${coverRef}"]`).attr('href');
-  }
-  BackgroundService.updateNotification({
-    progressBar: {
-      value: 1,
-      max: 4,
-    },
-  });
-  const tocPath = contentDir + '/' + 'toc.ncx';
-  const tocMap: Record<string, string> = {};
-  if (await RNFS.exists(tocPath)) {
-    const tocText = await TextFile.readFile(tocPath);
-    const toc = parseXML(tocText);
-    toc('navPoint').each(function () {
-      const href = toc(this).find('content').attr('src');
-      const name = toc(this).find('text').text().trim();
-      if (href && name) {
-        tocMap[href] = name;
-      }
-    });
-  }
-  BackgroundService.updateNotification({
-    progressBar: {
-      value: 2,
-      max: 4,
-    },
-  });
-  const itemMap: Record<string, string> = {};
-  parsedContent('item').each(function () {
-    itemMap[this.attribs.id] = this.attribs.href;
-  });
-  BackgroundService.updateNotification({
-    progressBar: {
-      value: 3,
-      max: 4,
-    },
-  });
-  const chapters: ChapterItem[] = parsedContent('itemref')
-    .toArray()
-    .map(ele => {
-      const href = itemMap[ele.attribs.idref];
-      return {
-        name: tocMap[href],
-        path: `${contentDir}/${href}`,
-      };
-    });
-  BackgroundService.updateNotification({
-    progressBar: {
-      value: 4,
-      max: 4,
-      indeterminate: true,
-    },
-  });
-  const novel: SourceNovel = {
-    name: novelName,
-    author: author,
-    cover: cover,
-    path: contentDir + novelName, // temporary
-    chapters: chapters,
-    summary: description,
-  };
-  return novel;
-};
-
 const importEpubAction = async (taskData?: TaskData) => {
   try {
     if (!taskData) {
@@ -241,25 +161,20 @@ const importEpubAction = async (taskData?: TaskData) => {
     if (await RNFS.exists(epubDirPath)) {
       await RNFS.unlink(epubDirPath);
     }
-    await RNFS.mkdir(epubDirPath).catch(e => {
-      throw e;
-    });
+    await RNFS.mkdir(epubDirPath);
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.IMPORT_EPUB);
-    await ZipArchive.unzip(epubFilePath, epubDirPath).catch(e => {
-      throw e;
-    });
+    await ZipArchive.unzip(epubFilePath, epubDirPath);
     await sleep(taskData.delay);
-    const novel = await parseNovelAndChapters(epubDirPath).catch(e => {
-      throw e;
-    });
+
+    const novel = await EpubUtil.parseNovelAndChapters(epubDirPath);
     const novelId = await insertLocalNovel(
       novel.name,
-      novel.path,
+      epubDirPath + novel.name, // temporary
       novel.cover,
       novel.author,
-    ).catch(e => {
-      throw e;
-    });
+      novel.artist,
+      novel.summary,
+    );
     const now = dayjs().toISOString();
     const filePathSet = new Set<string>();
     if (novel.chapters) {
@@ -296,7 +211,6 @@ const importEpubAction = async (taskData?: TaskData) => {
       }
     }
     await sleep(taskData.delay);
-    // move static files
     const novelDir = NovelDownloadFolder + '/local/' + novelId;
     BackgroundService.updateNotification({
       taskTitle: getString('advancedSettingsScreen.importStaticFiles'),
