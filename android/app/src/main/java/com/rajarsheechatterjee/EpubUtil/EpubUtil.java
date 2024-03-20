@@ -74,12 +74,9 @@ public class EpubUtil extends ReactContextBaseJavaModule {
 
     private String getContentMetaFilePath(File file) throws XmlPullParserException, IOException {
         XmlPullParser parser = initParse(file);
-        parser.require(XmlPullParser.START_TAG, null, "container");
         while (parser.next() != XmlPullParser.END_TAG){
-            if (parser.getEventType() != XmlPullParser.START_TAG) {
-                continue;
-            }
-            if(parser.getName().equals("rootfile")) {
+            @Nullable String tag = parser.getName();
+            if(tag != null && tag.equals("rootfile")) {
                 return parser.getAttributeValue(null, "full-path");
             }
         }
@@ -147,7 +144,8 @@ public class EpubUtil extends ReactContextBaseJavaModule {
                         novel.putString("summary", readText(parser));
                         break;
                     case "meta":
-                        if(parser.getAttributeValue(null, "name").equals("cover")){
+                        String metaName = parser.getAttributeValue(null, "name");
+                        if(metaName != null && metaName.equals("cover")){
                             cover = parser.getAttributeValue(null, "content");
                         }
                         break;
