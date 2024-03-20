@@ -36,7 +36,7 @@ public class EpubUtil extends ReactContextBaseJavaModule {
 
     private XmlPullParser initParse(File file) throws XmlPullParserException, IOException {
         XmlPullParser parser = Xml.newPullParser();
-        parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+        parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
         parser.setInput(new FileInputStream(file), null);
         parser.nextTag();
         return parser;
@@ -49,6 +49,13 @@ public class EpubUtil extends ReactContextBaseJavaModule {
             parser.nextTag();
         }
         return result;
+    }
+
+    private String cleanUrl(String url){
+        if(url != null){
+            return url.replaceFirst("#[^.]+?$", "");
+        }
+        return null;
     }
 
     @ReactMethod
@@ -94,7 +101,7 @@ public class EpubUtil extends ReactContextBaseJavaModule {
                     if(tag.equals("text")){
                         label = readText(tocParser);
                     }else if(tag.equals("content")){
-                        String href = tocParser.getAttributeValue(null, "src");
+                        String href = cleanUrl(tocParser.getAttributeValue(null, "src"));
                         if(href != null){
                             tocMap.put(href, label);
                         }
@@ -106,30 +113,41 @@ public class EpubUtil extends ReactContextBaseJavaModule {
         while (parser.next() != XmlPullParser.END_DOCUMENT){
             @Nullable String tag = parser.getName();
             if(tag != null){
-                if(tag.endsWith("item")){
-                    String id = parser.getAttributeValue(null, "id");
-                    String href = parser.getAttributeValue(null, "href");
-                    if(id != null){
-                        refMap.put(id, href);
+                switch (tag) {
+                    case "item": {
+                        String id = parser.getAttributeValue(null, "id");
+                        String href = parser.getAttributeValue(null, "href");
+                        if (id != null) {
+                            refMap.put(id, href);
+                        }
+                        break;
                     }
-                } else if (tag.endsWith("itemref")) {
-                    String idRef = parser.getAttributeValue(null, "idref");
-                    String href = refMap.get(idRef);
-                    if(href != null){
-                        WritableMap chapter = new WritableNativeMap();
-                        chapter.putString("path", contentDir + "/" + href);
-                        String name = tocMap.get(href);
-                        chapter.putString("name", name == null ? href : name);
-                        chapters.pushMap(chapter);
+                    case "itemref": {
+                        String idRef = parser.getAttributeValue(null, "idref");
+                        String href = refMap.get(idRef);
+                        if (href != null) {
+                            WritableMap chapter = new WritableNativeMap();
+                            chapter.putString("path", contentDir + "/" + href);
+                            String name = tocMap.get(href);
+                            chapter.putString("name", name == null ? href : name);
+                            chapters.pushMap(chapter);
+                        }
+                        break;
                     }
-                } else if(tag.equals("dc:title")){
-                    novel.putString("name", readText(parser));
-                } else if (tag.equals("dc:creator")) {
-                    novel.putString("author", readText(parser));
-                } else if (tag.equals("dc:description")) {
-                    novel.putString("summary", readText(parser));
-                } else if (tag.endsWith("meta") && parser.getAttributeValue(null, "name").equals("cover")) {
-                    cover = parser.getAttributeValue(null, "content");
+                    case "title":
+                        novel.putString("name", readText(parser));
+                        break;
+                    case "creator":
+                        novel.putString("author", readText(parser));
+                        break;
+                    case "description":
+                        novel.putString("summary", readText(parser));
+                        break;
+                    case "meta":
+                        if(parser.getAttributeValue(null, "name").equals("cover")){
+                            cover = parser.getAttributeValue(null, "content");
+                        }
+                        break;
                 }
                 parser.next();
             }
