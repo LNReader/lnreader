@@ -186,10 +186,8 @@ img {
 
 #reader-footer {
     display: flex;
-    flex: 1;
-    justify-content: space-between;
-    min-height: 2rem;
-    padding: 0.5rem 2rem 0 2rem;
+    flex: 3;
+    padding: 0.2rem 2rem;
     background-color: var(--readerSettings-theme);
     color: var(--readerSettings-textColor);
     font-size: 1rem;
@@ -198,7 +196,13 @@ img {
 }
 
 .reader-footer-item {
-    display: flex;
+    flex: 1;
+}
+.reader-footer-item:first-child {
+    text-align: left;
+}
+.reader-footer-item:last-child {
+    text-align: right;
 }
 
 tts.highlight {

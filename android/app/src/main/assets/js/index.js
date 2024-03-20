@@ -54,11 +54,13 @@ class Reader {
     this.time.innerText = new Date().toLocaleTimeString(undefined, {
       hour: '2-digit',
       minute: '2-digit',
+      hour12: false,
     });
     this.timeInterval = setInterval(() => {
       this.time.innerText = new Date().toLocaleTimeString(undefined, {
         hour: '2-digit',
         minute: '2-digit',
+        hour12: false,
       });
     }, 60000);
     this.updateBatteryLevel(batteryLevel);
