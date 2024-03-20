@@ -349,7 +349,11 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     } else {
       pages = (await getCustomPages(novel.id)).map(c => c.page);
     }
-    setPages(pages);
+    if (pages.length) {
+      setPages(pages);
+    } else {
+      setPages(['1']);
+    }
     setNovel(novel);
   }, []);
 
@@ -401,8 +405,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         );
       }
       setChapters(chapters);
+      setLoading(false);
     }
-    setLoading(false);
   }, [novel, novelSettings, pageIndex]);
   useEffect(() => {
     getNovel();
