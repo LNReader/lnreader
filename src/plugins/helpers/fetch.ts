@@ -196,10 +196,7 @@ export const fetchProto = async function (
               BigInt(payload[4]),
           );
           const ResponseMessage = protoRoot.lookupType(protoInit.responseType);
-          const data = JSON.stringify(
-            ResponseMessage.decode(payload.slice(5, 5 + length)),
-          );
-          resolve(data);
+          resolve(ResponseMessage.decode(payload.slice(5, 5 + length)));
         };
         fr.onerror = () => reject();
         fr.onabort = () => reject();
