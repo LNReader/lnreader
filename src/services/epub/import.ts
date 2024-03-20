@@ -30,12 +30,17 @@ const insertLocalNovel = (
   path: string,
   cover?: string,
   author?: string,
+  artist?: string,
+  summary?: string,
 ): Promise<number> => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        "INSERT INTO Novel(name, path, cover, author, pluginId, inLibrary, isLocal) VALUES(?, ?, ?, ?, 'local', 1, 1)",
-        [name, path, cover || null, author || null],
+        `
+          INSERT INTO 
+            Novel(name, path, pluginId, inLibrary, isLocal) 
+          VALUES(?, ?, 'local', 1, 1)`,
+        [name, path],
         async (txObj, resultSet) => {
           if (resultSet.insertId) {
             await updateNovelCategoryById(resultSet.insertId, [2]);
@@ -48,9 +53,11 @@ const insertLocalNovel = (
               await RNFS.moveFile(cover, newCoverPath);
             }
             await updateNovelInfo({
-              pluginId: LOCAL_PLUGIN_ID,
               id: resultSet.insertId,
+              pluginId: LOCAL_PLUGIN_ID,
               author: author,
+              artist: artist,
+              summary: summary,
               path: NovelDownloadFolder + '/local/' + resultSet.insertId,
               cover: newCoverPath,
               name: name,
@@ -165,6 +172,8 @@ const importEpubAction = async (taskData?: TaskData) => {
       epubDirPath + novel.name, // temporary
       novel.cover,
       novel.author,
+      novel.artist,
+      novel.summary,
     );
     const now = dayjs().toISOString();
     const filePathSet = new Set<string>();

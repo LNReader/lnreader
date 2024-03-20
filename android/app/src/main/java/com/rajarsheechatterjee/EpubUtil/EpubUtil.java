@@ -140,6 +140,9 @@ public class EpubUtil extends ReactContextBaseJavaModule {
                     case "creator":
                         novel.putString("author", readText(parser));
                         break;
+                    case "contributor":
+                        novel.putString("artist", readText(parser));
+                        break;
                     case "description":
                         novel.putString("summary", readText(parser));
                         break;
