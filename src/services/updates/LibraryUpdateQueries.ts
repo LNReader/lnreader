@@ -70,15 +70,24 @@ const updateNovel = async (
     updateNovelMetadata(pluginId, novelId, novel);
   }
   db.transaction(tx => {
-    novel.chapters.forEach(chapter => {
+    novel.chapters.forEach((chapter, position) => {
       const { name, path, releaseTime, page } = chapter;
       tx.executeSql(
         `
-          INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, page)
-          SELECT ?, ?, ?, ?, datetime('now','localtime'), ?
+          INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, page, position)
+          SELECT ?, ?, ?, ?, datetime('now','localtime'), ?, ?
           WHERE NOT EXISTS (SELECT id FROM Chapter WHERE path = ? AND novelId = ?);
         `,
-        [path, name, releaseTime || null, novelId, page || '1', path, novelId],
+        [
+          path,
+          name,
+          releaseTime || null,
+          novelId,
+          page || '1',
+          position,
+          path,
+          novelId,
+        ],
         (txObj, { insertId }) => {
           if (insertId) {
             if (downloadNewChapters) {
@@ -88,13 +97,14 @@ const updateNovel = async (
             tx.executeSql(
               `
                 UPDATE Chapter SET 
-                  name = ?, releaseTime = ?, updatedTime = datetime('now','localtime'), page = ?
+                  name = ?, releaseTime = ?, updatedTime = datetime('now','localtime'), page = ?, position = ?
                 WHERE path = ? AND novelId = ? AND (name != ? OR releaseTime != ? OR page != ?);
               `,
               [
                 name,
                 releaseTime || null,
                 page || '1',
+                position,
                 path,
                 novelId,
                 name,
