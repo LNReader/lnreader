@@ -4,6 +4,9 @@ import {
   NativeEventEmitter,
   NativeModules,
   StatusBar,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import color from 'color';
@@ -75,7 +78,14 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
       initialChapterReaderSettings,
     [],
   );
-  const { showScrollPercentage, swipeGestures, showBatteryAndTime } = useMemo(
+  const {
+    showScrollPercentage,
+    swipeGestures,
+    showBatteryAndTime,
+    autoLoadNextChapter,
+    autoLoadNextChapterInterval,
+    autoLoadNextChapterThreshold,
+  } = useMemo(
     () =>
       getMMKVObject<ChapterGeneralSettings>(CHAPTER_GENERAL_SETTINGS) ||
       initialChapterGeneralSettings,
@@ -84,6 +94,38 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
   const batteryLevel = useMemo(getBatteryLevelSync, []);
   const layoutHeight = Dimensions.get('window').height;
   const plugin = getPlugin(novel?.pluginId);
+
+  const [isAutoLoadingNextChapter, setIsAutoLoadingNextChapter] =
+    useState(false);
+  const [autoLoadCountdown, setAutoLoadCountdown] = useState(
+    autoLoadNextChapterInterval,
+  );
+
+  useEffect(() => {
+    let autoLoadTimer: NodeJS.Timeout;
+
+    if (isAutoLoadingNextChapter && autoLoadCountdown > 0) {
+      autoLoadTimer = setInterval(() => {
+        setAutoLoadCountdown(prevCountdown => prevCountdown - 1);
+        if (autoLoadCountdown === 1) {
+          showToast('Loading next chapter...');
+          clearInterval(autoLoadTimer);
+          navigateToChapterBySwipe('SWIPE_LEFT');
+          setIsAutoLoadingNextChapter(false);
+          setAutoLoadCountdown(autoLoadNextChapterInterval);
+        }
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(autoLoadTimer);
+    };
+  }, [
+    isAutoLoadingNextChapter,
+    autoLoadCountdown,
+    autoLoadNextChapterInterval,
+    navigateToChapterBySwipe,
+  ]);
 
   useEffect(() => {
     const mmkvListener = MMKVStorage.addOnValueChangedListener(key => {
@@ -118,69 +160,93 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
       subscription.remove();
       mmkvListener.remove();
     };
-  });
+  }, []);
+
   return (
-    <WebView
-      ref={webViewRef}
-      style={{ backgroundColor: readerSettings.theme }}
-      allowFileAccess={true}
-      originWhitelist={['*']}
-      scalesPageToFit={true}
-      showsVerticalScrollIndicator={false}
-      onNavigationStateChange={onWebViewNavigationStateChange}
-      javaScriptEnabled={true}
-      onLayout={async () => onLayout()}
-      onMessage={ev => {
-        const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
-        switch (event.type) {
-          case 'hide':
-            onPress();
-            break;
-          case 'next':
-            navigateToChapterBySwipe('SWIPE_LEFT');
-            break;
-          case 'prev':
-            navigateToChapterBySwipe('SWIPE_RIGHT');
-            break;
-          case 'error-img':
-            if (event.data && typeof event.data === 'string') {
-              plugin?.fetchImage(event.data).then(base64 => {
-                webViewRef.current?.injectJavaScript(
-                  `document.querySelector("img[error-src='${event.data}']").src="data:image/jpg;base64,${base64}"`,
-                );
-              });
-            }
-            break;
-          case 'save':
-            if (event.data && typeof event.data === 'number') {
-              saveProgress(event.data);
-            }
-            break;
-          case 'speak':
-            if (event.data && typeof event.data === 'string') {
-              Speech.speak(event.data, {
-                onDone() {
-                  webViewRef.current?.injectJavaScript('tts.next?.()');
-                },
-              });
-            }
-            break;
-          case 'stop-speak':
-            Speech.stop();
-            break;
-          case 'copy':
-            if (event.data && typeof event.data === 'string') {
-              Clipboard.setStringAsync(event.data).then(() => {
-                showToast(getString('common.copiedToClipboard', { name: '' }));
-              });
-            }
-            break;
-        }
-      }}
-      source={{
-        html: `
-                <html>
-                  <head>
+    <>
+      <WebView
+        ref={webViewRef}
+        style={{ backgroundColor: readerSettings.theme }}
+        allowFileAccess={true}
+        originWhitelist={['*']}
+        scalesPageToFit={true}
+        showsVerticalScrollIndicator={false}
+        onNavigationStateChange={onWebViewNavigationStateChange}
+        javaScriptEnabled={true}
+        onLayout={async () => onLayout()}
+        onMessage={ev => {
+          const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
+          switch (event.type) {
+            case 'hide':
+              onPress();
+              break;
+            case 'next':
+              navigateToChapterBySwipe('SWIPE_LEFT');
+              break;
+            case 'prev':
+              navigateToChapterBySwipe('SWIPE_RIGHT');
+              break;
+            case 'error-img':
+              if (event.data && typeof event.data === 'string') {
+                plugin?.fetchImage(event.data).then(base64 => {
+                  webViewRef.current?.injectJavaScript(
+                    `document.querySelector("img[error-src='${event.data}']").src="data:image/jpg;base64,${base64}"`,
+                  );
+                });
+              }
+              break;
+            case 'save':
+              if (event.data && typeof event.data === 'number') {
+                saveProgress(event.data);
+                if (
+                  autoLoadNextChapter &&
+                  nextChapter &&
+                  event.data >= autoLoadNextChapterThreshold
+                ) {
+                  setIsAutoLoadingNextChapter(true);
+                }
+              }
+              break;
+            case 'speak':
+              if (event.data && typeof event.data === 'string') {
+                Speech.speak(event.data, {
+                  onDone() {
+                    webViewRef.current?.injectJavaScript('tts.next?.()');
+                  },
+                });
+              }
+              break;
+            case 'stop-speak':
+              Speech.stop();
+              break;
+            case 'copy':
+              if (event.data && typeof event.data === 'string') {
+                Clipboard.setStringAsync(event.data).then(() => {
+                  showToast(
+                    getString('common.copiedToClipboard', { name: '' }),
+                  );
+                });
+              }
+              break;
+            case 'save':
+              if (event.data && typeof event.data === 'number') {
+                saveProgress(event.data);
+                if (
+                  autoLoadNextChapter &&
+                  nextChapter &&
+                  event.data >= autoLoadNextChapterThreshold
+                ) {
+                  setIsAutoLoadingNextChapter(true);
+                  setAutoLoadCountdown(autoLoadNextChapterInterval);
+                }
+              }
+              break;
+          }
+        }}
+        source={{
+          html: `
+                  <html>
+                    <head>
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
                     <style>
                     :root {
@@ -286,9 +352,33 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                     </script>
                 </html>
                 `,
-      }}
-    />
+        }}
+      />
+      {isAutoLoadingNextChapter && autoLoadCountdown > 0 && (
+        <View style={styles.autoLoadIndicator}>
+          <Text style={styles.autoLoadText}>{autoLoadCountdown}</Text>
+        </View>
+      )}
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  autoLoadIndicator: {
+    position: 'absolute',
+    top: StatusBar.currentHeight + 10,
+    right: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+  },
+  autoLoadText: {
+    color: 'white',
+    fontSize: 16,
+  },
+});
 
 export default WebViewReader;

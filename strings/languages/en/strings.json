@@ -416,6 +416,7 @@
       "allowTextSelection": "Allow text selection",
       "autoscroll": "AutoScroll",
       "bionicReading": "Bionic Reading",
+      "autoLoadNextChapter": "Auto-load next chapter",
       "color": "Color",
       "fontStyle": "Font style",
       "fullscreen": "Fullscreen",
@@ -448,6 +449,8 @@
   "readerSettings": {
     "autoScrollInterval": "Auto scroll interval (in seconds)",
     "autoScrollOffset": "Auto scroll offset (screen height by default)",
+    "autoLoadNextChapterInterval": "Time interval between loading chapters",
+    "autoLoadNextChapterThreshold": "Progress percentage at which the feature is activated",
     "backgroundColor": "Background color",
     "backgroundColorModal": "Reader background color",
     "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",

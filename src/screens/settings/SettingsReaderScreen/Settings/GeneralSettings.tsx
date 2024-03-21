@@ -26,6 +26,9 @@ const GeneralSettings: React.FC = () => {
     autoScrollInterval = 10,
     autoScrollOffset = null,
     setChapterGeneralSettings,
+    autoLoadNextChapter = false,
+    autoLoadNextChapterInterval = 4,
+    autoLoadNextChapterThreshold = 95,
   } = useChapterGeneralSettings();
 
   const areAutoScrollSettingsDefault =
@@ -68,6 +71,64 @@ const GeneralSettings: React.FC = () => {
         }
         theme={theme}
       />
+      <SettingSwitch
+        label={getString('readerScreen.bottomSheet.autoLoadNextChapter')}
+        value={autoLoadNextChapter}
+        onPress={() =>
+          setChapterGeneralSettings({
+            autoLoadNextChapter: !autoLoadNextChapter,
+          })
+        }
+        theme={theme}
+      />
+      {autoLoadNextChapter ? (
+        <>
+          <List.Divider theme={theme} />
+          <List.SubHeader theme={theme}>
+            {getString('readerScreen.bottomSheet.autoLoadNextChapter')}
+          </List.SubHeader>
+          <View style={styles.autoScrollInterval}>
+            <Text style={[labelStyle, styles.paddingRightM]} numberOfLines={2}>
+              {getString('readerSettings.autoLoadNextChapterThreshold')}
+            </Text>
+            <TextInput
+              style={labelStyle}
+              defaultValue={defaultTo(
+                autoLoadNextChapterThreshold,
+                95,
+              ).toString()}
+              keyboardType="numeric"
+              onChangeText={text => {
+                if (text) {
+                  setChapterGeneralSettings({
+                    autoLoadNextChapterThreshold: Number(text),
+                  });
+                }
+              }}
+            />
+          </View>
+          <View style={styles.autoScrollInterval}>
+            <Text style={[labelStyle, styles.paddingRightM]} numberOfLines={2}>
+              {getString('readerSettings.autoLoadNextChapterInterval')}
+            </Text>
+            <TextInput
+              style={labelStyle}
+              defaultValue={defaultTo(
+                autoLoadNextChapterInterval,
+                4,
+              ).toString()}
+              keyboardType="numeric"
+              onChangeText={text => {
+                if (text) {
+                  setChapterGeneralSettings({
+                    autoLoadNextChapterInterval: Number(text),
+                  });
+                }
+              }}
+            />
+          </View>
+        </>
+      ) : null}
       <SettingSwitch
         label={getString('readerScreen.bottomSheet.autoscroll')}
         value={autoScroll}
