@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { useCallback } from 'react';
 
 import {
@@ -8,38 +8,29 @@ import {
   Update,
 } from '@database/types';
 import { List } from 'react-native-paper';
-import { coverPlaceholderColor } from '@theme/colors';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import ChapterItem from '@screens/novel/components/ChapterItem';
 import { useDownload, useTheme } from '@hooks/persisted';
 import { noop } from 'lodash-es';
 import { RootStackParamList } from '@navigators/types';
 import { FlatList } from 'react-native-gesture-handler';
+import { CardNovelCover } from '@components/CardNovelCover';
+import { deleteChapter } from '@database/queries/ChapterQueries';
+import { showToast } from '@utils/showToast';
+import { getString } from '@strings/translations';
 
-const NovelCover = ({
-  uri,
-  navigateToNovel,
-}: {
-  uri: string;
-  navigateToNovel: () => void;
-}) => {
-  return (
-    <Pressable onPress={navigateToNovel}>
-      <Image source={{ uri }} style={styles.cover} />
-    </Pressable>
-  );
-};
-
-interface UpdateCardProps {
-  chapterList: Update[] | DownloadedChapter[];
+interface NovelCardProps {
+  chapterList: DownloadedChapter[];
   descriptionText: string;
-  deleteChapter: (chapter: Update | DownloadedChapter) => void;
+  updateList: () => void;
+  removeChapterFromHistory?: (chapterId: number) => void;
 }
 
-const UpdateNovelCard: React.FC<UpdateCardProps> = ({
+const NovelCard: React.FC<NovelCardProps> = ({
   chapterList,
   descriptionText,
-  deleteChapter,
+  updateList,
+  removeChapterFromHistory,
 }) => {
   const { navigate } = useNavigation<NavigationProp<RootStackParamList>>();
   const { downloadChapter, queue } = useDownload();
@@ -60,6 +51,16 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     },
     [chapterList],
   );
+  const removeChapter = (chapter: DownloadedChapter) => {
+    deleteChapter(chapter.pluginId, chapter.novelId, chapter.id).then(() => {
+      showToast(
+        getString('common.deleted', {
+          name: chapter.name,
+        }),
+      );
+      updateList();
+    });
+  };
 
   const navigateToChapter = useCallback((chapter: ChapterInfo) => {
     const { novelPath, pluginId, novelName } = chapter as
@@ -91,7 +92,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         title={chapterList[0].novelName}
         titleStyle={{ fontSize: 14, color: theme.onSurface }}
         left={() => (
-          <NovelCover
+          <CardNovelCover
             navigateToNovel={navigateToNovel}
             uri={chapterList[0].novelCover}
           />
@@ -112,21 +113,20 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                 isLocal={false}
                 isDownloading={queue.some(c => c.chapter.id === item.id)}
                 isUpdateCard
-                novelName={chapterList[0].novelName}
                 chapter={item}
                 theme={theme}
                 showChapterTitles={false}
                 downloadChapter={() => handleDownloadChapter(item)}
-                deleteChapter={() => deleteChapter(item)}
+                deleteChapter={() => removeChapter(item)}
                 navigateToChapter={navigateToChapter}
-                left={
-                  <View style={styles.novelCover}>
-                    <NovelCover
-                      navigateToNovel={navigateToNovel}
-                      uri={chapterList[0].novelCover}
-                    />
-                  </View>
-                }
+                // left={
+                //   <View style={styles.novelCover}>
+                //     <CardNovelCover
+                //       navigateToNovel={navigateToNovel}
+                //       uri={chapterList[0].novelCover}
+                //     />
+                //   </View>
+                // }
               />
             );
           }}
@@ -145,11 +145,11 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         theme={theme}
         showChapterTitles={false}
         downloadChapter={() => handleDownloadChapter(chapterList[0])}
-        deleteChapter={() => deleteChapter(chapterList[0])}
+        deleteChapter={() => removeChapter(chapterList[0])}
         navigateToChapter={navigateToChapter}
         left={
           <View style={styles.novelCover}>
-            <NovelCover
+            <CardNovelCover
               navigateToNovel={navigateToNovel}
               uri={chapterList[0].novelCover}
             />
@@ -161,7 +161,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   return null;
 };
 
-export default UpdateNovelCard;
+export default NovelCard;
 
 const styles = StyleSheet.create({
   padding: {
@@ -171,12 +171,6 @@ const styles = StyleSheet.create({
   },
   container: {
     justifyContent: 'space-between',
-  },
-  cover: {
-    height: 40,
-    width: 40,
-    borderRadius: 4,
-    backgroundColor: coverPlaceholderColor,
   },
   novelCover: {
     marginRight: 8,

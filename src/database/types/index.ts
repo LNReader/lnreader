@@ -44,22 +44,14 @@ export interface DownloadedChapter extends ChapterInfo {
   novelCover: string;
 }
 
-export interface History extends ChapterInfo {
-  pluginId: string;
-  novelName: string;
-  novelPath: string;
-  novelCover: string;
+export interface History extends DownloadedChapter {
   readTime: string;
   startChapter?: number;
   endChapter?: number;
 }
 
-export interface Update extends ChapterInfo {
+export interface Update extends DownloadedChapter {
   updatedTime: string;
-  pluginId: string;
-  novelName: string;
-  novelPath: string;
-  novelCover: string;
 }
 
 export interface Category {
