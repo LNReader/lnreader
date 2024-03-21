@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import { Portal } from 'react-native-paper';
 
 import { EmptyView, ErrorScreenV2, SearchbarV2 } from '@components';
-import HistoryCard from './components/HistoryCard/HistoryCard';
 
 import { useSearch, useBoolean } from '@hooks';
 import { useTheme, useHistory } from '@hooks/persisted';
@@ -15,15 +14,17 @@ import { History } from '@database/types';
 import { getString } from '@strings/translations';
 import ClearHistoryDialog from './components/ClearHistoryDialog';
 import HistorySkeletonLoading from './components/HistorySkeletonLoading';
-import { HistoryScreenProps } from '@navigators/types';
 
-const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
+import NovelCard from '@components/NovelCard/NovelCard';
+
+const HistoryScreen = () => {
   const theme = useTheme();
   const {
     isLoading,
     history,
     clearAllHistory,
     removeChapterFromHistory,
+    getHistory,
     error,
   } = useHistory();
 
@@ -40,26 +41,20 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
   };
 
   const groupHistoryByDate = (rawHistory: History[]) => {
-    const dateGroups = rawHistory.reduce<Record<string, History[]>>(
+    const dateGroups = rawHistory.reduce<Record<string, Array<History[]>>>(
       (groups, item) => {
         const date = convertDateToISOString(item.readTime);
         if (!groups[date]) {
           groups[date] = [];
         }
-        const lastNovel = groups[date][groups[date].length - 1];
+        const lastEntry = groups[date][groups[date].length - 1];
+        const ArrayExists = Array.isArray(lastEntry);
+        let lastNovel = ArrayExists ? lastEntry[0] : lastEntry;
 
-        if (
-          lastNovel?.novelId === item.novelId &&
-          (lastNovel.startChapter ?? lastNovel.chapterNumber) ===
-            (item.chapterNumber ?? 0) + 1
-        ) {
-          groups[date][groups[date].length - 1] = {
-            ...lastNovel,
-            endChapter: lastNovel.endChapter ?? lastNovel.chapterNumber,
-            startChapter: item.chapterNumber,
-          };
+        if (lastNovel?.novelId === item.novelId) {
+          groups[date][groups[date].length - 1].push(item);
         } else {
-          groups[date].push(item);
+          groups[date].push([item]);
         }
 
         return groups;
@@ -73,7 +68,6 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
         data: dateGroups[date],
       };
     });
-    // console.log(JSON.stringify(groupedHistory, null, 2));
 
     return groupedHistory;
   };
@@ -83,6 +77,7 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
     setTrue: openClearHistoryDialog,
     setFalse: closeClearHistoryDialog,
   } = useBoolean();
+  console.log(history.length);
 
   return (
     <>
@@ -116,11 +111,11 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
               </Text>
             )}
             renderItem={({ item }) => (
-              <HistoryCard
-                history={item}
-                navigation={navigation}
-                handleRemoveFromHistory={removeChapterFromHistory}
-                theme={theme}
+              <NovelCard
+                chapterList={item}
+                descriptionText="read"
+                updateList={getHistory}
+                removeChapterFromHistory={removeChapterFromHistory}
               />
             )}
             ListEmptyComponent={

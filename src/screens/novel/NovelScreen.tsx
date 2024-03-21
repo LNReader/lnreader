@@ -443,7 +443,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   onSelectPress={onSelectPress}
                   onSelectLongPress={onSelectLongPress}
                   navigateToChapter={navigateToChapter}
-                  novelName={name}
                 />
               )}
               keyExtractor={item => 'chapter_' + item.id}

@@ -59,6 +59,7 @@ const useHistory = () => {
     error,
     removeChapterFromHistory,
     clearAllHistory,
+    getHistory,
   };
 };
 

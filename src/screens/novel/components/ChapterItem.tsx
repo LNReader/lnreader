@@ -25,7 +25,9 @@ interface ChapterItemProps {
   left?: ReactNode;
   isLocal: boolean;
   isUpdateCard?: boolean;
-  novelName: string;
+  novelName?: string;
+  heading?: string;
+  description?: string;
 }
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
@@ -43,6 +45,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   left,
   isUpdateCard,
   novelName,
+  heading,
+  description,
 }) => {
   const { id, name, unread, releaseTime, bookmark, chapterNumber, progress } =
     chapter;
@@ -51,6 +55,26 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
     setTrue: showMenu,
     setFalse: hideMenu,
   } = useBoolean();
+  const title =
+    heading ??
+    (showChapterTitles
+      ? name
+      : getString('novelScreen.chapterChapnum', {
+          num: chapterNumber,
+        }));
+
+  const subtitle = description ?? releaseTime;
+
+  let textColor;
+  if (isUpdateCard) {
+    textColor = theme.onBackground;
+  } else {
+    textColor = !unread
+      ? theme.outline
+      : bookmark
+      ? theme.primary
+      : theme.onSurfaceVariant;
+  }
   return (
     <Pressable
       key={'chapterItem' + id}
@@ -70,12 +94,12 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
         {left}
         {bookmark ? <ChapterBookmarkButton theme={theme} /> : null}
         <View style={{ flex: 1 }}>
-          {isUpdateCard ? (
+          {novelName && (
             <Text
               style={[
                 {
                   fontSize: 14,
-                  color: unread ? theme.onSurface : theme.outline,
+                  color: theme.onBackground,
                 },
               ]}
               numberOfLines={1}
@@ -83,14 +107,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               {novelName}
             </Text>
           ) : null}
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            {unread ? (
+          <View style={styles.row}>
+            {unread && !heading ? (
               <MaterialCommunityIcons
                 name="circle"
                 color={theme.primary}
@@ -102,21 +120,13 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             <Text
               style={[
                 {
-                  fontSize: isUpdateCard ? 12 : 14,
-                  color: !unread
-                    ? theme.outline
-                    : bookmark
-                    ? theme.primary
-                    : theme.onSurfaceVariant,
+                  fontSize: 14,
+                  color: textColor,
                 },
               ]}
               numberOfLines={1}
             >
-              {showChapterTitles
-                ? name
-                : getString('novelScreen.chapterChapnum', {
-                    num: chapterNumber,
-                  })}
+              {title}
             </Text>
           </View>
           <View
@@ -129,31 +139,25 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               <Text
                 style={[
                   {
-                    color: !unread
-                      ? theme.outline
-                      : bookmark
-                      ? theme.primary
-                      : theme.onSurfaceVariant,
-                    marginTop: 4,
+                    color: textColor,
                   },
                   styles.text,
                 ]}
                 numberOfLines={1}
               >
-                {releaseTime}
+                {subtitle}
               </Text>
             ) : null}
-            {!isUpdateCard && progress && progress > 0 && chapter.unread ? (
+            {!isUpdateCard && progress && progress > 0 && unread ? (
               <Text
                 style={{
                   color: theme.outline,
                   fontSize: 12,
-                  marginLeft: chapter.releaseTime ? 5 : 0,
-                  marginTop: 4,
+                  marginLeft: releaseTime ? 5 : 0,
                 }}
                 numberOfLines={1}
               >
-                {chapter.releaseTime ? '•  ' : null}
+                {releaseTime ? '•  ' : null}
                 {getString('novelScreen.progress', { progress })}
               </Text>
             ) : null}

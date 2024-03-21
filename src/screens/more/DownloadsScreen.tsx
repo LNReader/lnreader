@@ -7,7 +7,6 @@ import { ScreenContainer } from '@components/Common';
 import EmptyView from '@components/EmptyView';
 import { Appbar, List } from '@components';
 import {
-  deleteChapter,
   deleteDownloads,
   getDownloadedChapters,
 } from '@database/queries/ChapterQueries';
@@ -16,13 +15,12 @@ import { useTheme } from '@hooks/persisted';
 
 import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
 import UpdatesSkeletonLoading from '@screens/updates/components/UpdatesSkeletonLoading';
-import UpdateNovelCard from '@screens/updates/components/UpdateNovelCard';
 import { getString } from '@strings/translations';
 import { DownloadsScreenProps } from '@navigators/types';
 import { DownloadedChapter } from '@database/types';
-import { showToast } from '@utils/showToast';
 import dayjs from 'dayjs';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
+import NovelCard from '@components/NovelCard/NovelCard';
 
 type DownloadGroup = Record<number, DownloadedChapter[]>;
 
@@ -108,19 +106,11 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
           data={groupUpdatesByDate(chapters)}
           keyExtractor={(item, index) => 'downloadGroup' + index}
           renderItem={({ item }) => (
-            <UpdateNovelCard
+            <NovelCard
               chapterList={item}
               descriptionText={getString('downloadScreen.downloadsLower')}
-              deleteChapter={chapter => {
-                deleteChapter(
-                  chapter.pluginId,
-                  chapter.novelId,
-                  chapter.id,
-                ).then(() => {
-                  showToast(`${getString('common.delete')} ${chapter.name}`);
-                  getChapters();
-                });
-              }}
+              //TODO Check functionality
+              updateList={getChapters}
             />
           )}
           ListEmptyComponent={<ListEmptyComponent />}
