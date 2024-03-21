@@ -33,7 +33,9 @@ const updateLibrary = async (categoryId?: number) => {
 
   if (categoryId) {
     libraryNovels = await getLibraryWithCategory({
-      filter: `categoryId = ${categoryId}`,
+      filter:
+        `categoryId = ${categoryId}` +
+        (onlyUpdateOngoingNovels ? " AND status = 'Ongoing'" : ''),
     });
   } else {
     libraryNovels = (await getLibraryNovelsFromDb(
