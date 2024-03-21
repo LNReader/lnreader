@@ -10,7 +10,7 @@ import qs from 'qs';
 import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
-import { fetchApi, fetchFile, fetchText } from './helpers/fetch';
+import { fetchApi, fetchFile, fetchProto, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
 import { encode, decode } from 'urlencode';
 import TextFile from '@native/TextFile';
@@ -23,7 +23,7 @@ const packages: Record<string, any> = {
   'qs': qs,
   'urlencode': { encode, decode },
   '@libs/novelStatus': { NovelStatus },
-  '@libs/fetch': { fetchApi, fetchFile, fetchText },
+  '@libs/fetch': { fetchApi, fetchFile, fetchText, fetchProto },
   '@libs/isAbsoluteUrl': { isUrlAbsolute },
   '@libs/filterInputs': { FilterTypes },
   '@libs/defaultCover': { defaultCover },

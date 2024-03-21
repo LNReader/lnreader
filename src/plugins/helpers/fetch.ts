@@ -1,4 +1,5 @@
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
+import { parse as parseProto } from 'protobufjs';
 
 type FetchInit = {
   headers?: Record<string, string> | Headers;
@@ -110,4 +111,96 @@ export const fetchText = async (
   } catch (e) {
     return '';
   }
+};
+
+function base64ToBytesArr(str: string) {
+  const abc = [
+    ...'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+  ]; // base64 alphabet
+  let result = [];
+
+  for (let i = 0; i < str.length / 4; i++) {
+    let chunk = [...str.slice(4 * i, 4 * i + 4)];
+    let bin = chunk
+      .map(x => abc.indexOf(x).toString(2).padStart(6, '0'))
+      .join('');
+    let bytes = bin.match(/.{1,8}/g)?.map(x => +('0b' + x)) || [];
+    result.push(
+      ...bytes.slice(
+        0,
+        3 - Number(str[4 * i + 2] === '=') - Number(str[4 * i + 3] === '='),
+      ),
+    );
+  }
+  return result;
+}
+
+interface ProtoRequestInit {
+  // merged .proto file
+  proto: string;
+  requestType: string;
+  requestData?: any;
+  responseType: string;
+}
+
+const BYTE_MARK = BigInt((1 << 8) - 1);
+
+export const fetchProto = async function (
+  protoInit: ProtoRequestInit,
+  url: string,
+  init?: FetchInit,
+) {
+  const protoRoot = parseProto(protoInit.proto).root;
+  const RequestMessge = protoRoot.lookupType(protoInit.requestType);
+  if (RequestMessge.verify(protoInit.requestData)) {
+    throw new Error('Invalid Proto');
+  }
+  // encode request data
+  const encodedrequest = RequestMessge.encode(protoInit.requestData).finish();
+  const requestLength = BigInt(encodedrequest.length);
+  const headers = new Uint8Array(
+    Array(5)
+      .fill(0)
+      .map((v, idx) => {
+        if (idx === 0) {
+          return 0;
+        }
+        return Number((requestLength >> BigInt(8 * (5 - idx - 1))) & BYTE_MARK);
+      }),
+  );
+  init = await makeInit(init);
+  const bodyArray = new Uint8Array(headers.length + encodedrequest.length);
+  bodyArray.set(headers, 0);
+  bodyArray.set(encodedrequest, headers.length);
+
+  return fetch(url, {
+    method: 'POST',
+    ...init,
+    body: bodyArray,
+  } as RequestInit)
+    .then(r => r.blob())
+    .then(blob => {
+      // decode response data
+      return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onloadend = () => {
+          const payload = new Uint8Array(
+            base64ToBytesArr(
+              fr.result.slice(FILE_READER_PREFIX_LENGTH) as string,
+            ),
+          );
+          const length = Number(
+            BigInt(payload[1] << 24) |
+              BigInt(payload[2] << 16) |
+              BigInt(payload[3] << 8) |
+              BigInt(payload[4]),
+          );
+          const ResponseMessage = protoRoot.lookupType(protoInit.responseType);
+          resolve(ResponseMessage.decode(payload.slice(5, 5 + length)));
+        };
+        fr.onerror = () => reject();
+        fr.onabort = () => reject();
+        fr.readAsDataURL(blob);
+      });
+    });
 };
