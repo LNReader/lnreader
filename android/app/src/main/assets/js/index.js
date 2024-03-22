@@ -112,6 +112,7 @@ class Reader {
   updateGeneralSettings = settings => {
     this.showScrollPercentage = settings.showScrollPercentage;
     this.showBatteryAndTime = settings.showBatteryAndTime;
+    this.verticalSeekbar = settings.verticalSeekbar;
     if (settings.swipeGestures) {
       swipeHandler.enable();
     } else {
@@ -133,6 +134,15 @@ class Reader {
         this.battery.classList.add('hidden');
         this.time.classList.add('hidden');
       }
+    }
+    if (!this.verticalSeekbar) {
+      toolWrapper.$.classList.add('horizontal');
+    } else {
+      toolWrapper.$.classList.remove('horizontal');
+    }
+    if (scrollHandler) {
+      scrollHandler.refresh();
+      scrollHandler.update();
     }
   };
   updateBatteryLevel = level => {
@@ -196,7 +206,11 @@ class ScrollHandler {
     this.thumb.ontouchend = () => (this.lock = false);
     this.thumb.ontouchmove = e => {
       const ratio =
-        (e.changedTouches[0].clientY - this.sliderOffsetY) / this.sliderHeight;
+        ((this.reader.verticalSeekbar
+          ? e.changedTouches[0].clientY
+          : e.changedTouches[0].clientX) -
+          this.sliderOffsetY) /
+        this.sliderHeight;
       this.update(ratio < 0 ? 0 : ratio);
     };
   }
@@ -210,7 +224,13 @@ class ScrollHandler {
     }
     const percentage = parseInt(ratio * 100);
     if (this.toolWrapper.visible) {
-      this.progress.style.height = percentage + '%';
+      if (this.reader.verticalSeekbar) {
+        this.progress.style.height = percentage + '%';
+        this.progress.style.width = '100%';
+      } else {
+        this.progress.style.height = '100%';
+        this.progress.style.width = percentage + '%';
+      }
       this.percentage.innerText = percentage;
     }
     if (this.lock) {
@@ -224,8 +244,13 @@ class ScrollHandler {
     }
   };
   refresh = () => {
-    this.sliderHeight = this.slider.clientHeight;
-    this.sliderOffsetY = this.slider.getBoundingClientRect().top;
+    if (this.reader.verticalSeekbar) {
+      this.sliderHeight = this.slider.clientHeight;
+      this.sliderOffsetY = this.slider.getBoundingClientRect().top;
+    } else {
+      this.sliderHeight = this.slider.clientWidth;
+      this.sliderOffsetY = this.slider.getBoundingClientRect().left;
+    }
   };
   onShow = () => {
     this.reader.refresh();
@@ -251,6 +276,9 @@ class SwipeHandler {
   touchEndHandler = e => {
     let diffX = e.changedTouches[0].screenX - this.initialX;
     let diffY = e.changedTouches[0].screenY - this.initialY;
+    if (e.target.id?.startsWith('scrollbar')) {
+      return;
+    }
     if (Math.abs(diffX) > Math.abs(diffY) * 2 && Math.abs(diffX) > 50) {
       if (diffX < 0 && this.initialX >= window.innerWidth / 2) {
         e.preventDefault();

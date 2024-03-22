@@ -48,7 +48,7 @@ const SettingsReaderScreen = () => {
   const layoutHeight = Dimensions.get('window').height;
   const batteryLevel = useBatteryLevel();
   const readerSettings = useChapterReaderSettings();
-  const { showScrollPercentage, showBatteryAndTime } =
+  const { showScrollPercentage, showBatteryAndTime, verticalSeekbar } =
     useChapterGeneralSettings();
   const READER_HEIGHT = 280;
   const assetsUriPrefix = useMemo(
@@ -165,6 +165,7 @@ const SettingsReaderScreen = () => {
                     showScrollPercentage: ${showScrollPercentage},
                     swipeGestures: false,
                     showBatteryAndTime: ${showBatteryAndTime},
+                    verticalSeekbar: ${verticalSeekbar},
                   }
                   var batteryLevel = ${batteryLevel};
                   var autoSaveInterval = 2222;
