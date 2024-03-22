@@ -279,7 +279,7 @@ class SwipeHandler {
     if (e.target.id?.startsWith('scrollbar')) {
       return;
     }
-    if (Math.abs(diffX) > Math.abs(diffY) * 2 && Math.abs(diffX) > 50) {
+    if (Math.abs(diffX) > Math.abs(diffY) * 2 && Math.abs(diffX) > 180) {
       if (diffX < 0 && this.initialX >= window.innerWidth / 2) {
         e.preventDefault();
         reader.post({ type: 'next' });
