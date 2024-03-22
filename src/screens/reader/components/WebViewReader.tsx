@@ -80,6 +80,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
     swipeGestures,
     showBatteryAndTime,
     verticalSeekbar,
+    bionicReading,
   } = useMemo(
     () =>
       getMMKVObject<ChapterGeneralSettings>(CHAPTER_GENERAL_SETTINGS) ||
@@ -229,6 +230,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         swipeGestures: ${swipeGestures},
                         showBatteryAndTime: ${showBatteryAndTime},
                         verticalSeekbar: ${verticalSeekbar},
+                        bionicReading: ${bionicReading},
                       }
                       var batteryLevel = ${batteryLevel};
                       var autoSaveInterval = 2222;
@@ -275,6 +277,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         </div>`
                     }
                     </body>
+                    <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
                     <script src="${assetsUriPrefix}/js/index.js"></script>
                     <script>
                       async function fn(){

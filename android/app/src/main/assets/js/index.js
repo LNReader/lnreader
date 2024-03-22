@@ -36,6 +36,7 @@ class Reader {
       ),
     );
     this.chapter = document.querySelector('chapter');
+    this.rawHTML = this.chapter.innerHTML;
     this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
     this.layoutHeight = window.innerHeight;
     this.pluginId = this.chapter.getAttribute('data-plugin-id');
@@ -113,6 +114,12 @@ class Reader {
     this.showScrollPercentage = settings.showScrollPercentage;
     this.showBatteryAndTime = settings.showBatteryAndTime;
     this.verticalSeekbar = settings.verticalSeekbar;
+    this.bionicReading = settings.bionicReading;
+    if (this.bionicReading) {
+      this.chapter.innerHTML = textVide.textVide(this.rawHTML);
+    } else {
+      this.chapter.innerHTML = this.rawHTML;
+    }
     if (settings.swipeGestures) {
       swipeHandler.enable();
     } else {

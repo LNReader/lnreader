@@ -39,6 +39,7 @@ const GeneralTab: React.FC = () => {
     useVolumeButtons,
     swipeGestures,
     removeExtraParagraphSpacing,
+    bionicReading,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
 
@@ -108,6 +109,14 @@ const GeneralTab: React.FC = () => {
           setChapterGeneralSettings({ useVolumeButtons: !useVolumeButtons })
         }
         value={useVolumeButtons}
+        theme={theme}
+      />
+      <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.bionicReading')}
+        onPress={() =>
+          setChapterGeneralSettings({ bionicReading: !bionicReading })
+        }
+        value={bionicReading}
         theme={theme}
       />
     </View>
