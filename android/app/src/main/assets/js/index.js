@@ -276,7 +276,10 @@ class SwipeHandler {
   touchEndHandler = e => {
     let diffX = e.changedTouches[0].screenX - this.initialX;
     let diffY = e.changedTouches[0].screenY - this.initialY;
-    if (e.target.id?.startsWith('scrollbar')) {
+    if (
+      e.target.id?.startsWith('scrollbar') ||
+      e.target.id === 'Image-Modal-img'
+    ) {
       return;
     }
     if (Math.abs(diffX) > Math.abs(diffY) * 2 && Math.abs(diffX) > 180) {
