@@ -23,6 +23,7 @@ import EpubUtil from '@native/EpubUtil';
 interface TaskData {
   delay: number;
   sourceUri: string;
+  filename?: string;
 }
 
 const insertLocalNovel = (
@@ -167,6 +168,9 @@ const importEpubAction = async (taskData?: TaskData) => {
     await sleep(taskData.delay);
 
     const novel = await EpubUtil.parseNovelAndChapters(epubDirPath);
+    if (!novel.name) {
+      novel.name = taskData.filename?.replace('.epub', '') || 'Untitled';
+    }
     const novelId = await insertLocalNovel(
       novel.name,
       epubDirPath + novel.name, // temporary
@@ -278,7 +282,11 @@ export const importEpub = async () => {
       taskDesc: getString('common.parsing'),
       taskIcon: { name: 'notification_icon', type: 'drawable' },
       color: '#00adb5',
-      parameters: { delay: 500, sourceUri: epubFile.assets[0].uri },
+      parameters: {
+        delay: 500,
+        sourceUri: epubFile.assets[0].uri,
+        filename: epubFile.assets[0].name,
+      },
       progressBar: { value: 0, max: 4 },
     });
   } catch (e: any) {

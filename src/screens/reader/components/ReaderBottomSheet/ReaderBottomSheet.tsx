@@ -33,12 +33,13 @@ const GeneralTab: React.FC = () => {
   const {
     fullScreenMode,
     autoScroll,
-    // verticalSeekbar,
+    verticalSeekbar,
     showBatteryAndTime,
     showScrollPercentage,
     useVolumeButtons,
     swipeGestures,
     removeExtraParagraphSpacing,
+    bionicReading,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
 
@@ -58,14 +59,14 @@ const GeneralTab: React.FC = () => {
         value={autoScroll}
         theme={theme}
       />
-      {/* <ReaderSheetPreferenceItem
+      <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.verticalSeekbar')}
         onPress={() =>
           setChapterGeneralSettings({ verticalSeekbar: !verticalSeekbar })
         }
         value={verticalSeekbar}
         theme={theme}
-      /> */}
+      />
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.showBatteryAndTime')}
         onPress={() =>
@@ -108,6 +109,14 @@ const GeneralTab: React.FC = () => {
           setChapterGeneralSettings({ useVolumeButtons: !useVolumeButtons })
         }
         value={useVolumeButtons}
+        theme={theme}
+      />
+      <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.bionicReading')}
+        onPress={() =>
+          setChapterGeneralSettings({ bionicReading: !bionicReading })
+        }
+        value={bionicReading}
         theme={theme}
       />
     </View>

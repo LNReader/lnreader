@@ -19,7 +19,62 @@ import { getString } from '@strings/translations';
 
 interface TaskData {
   delay: number;
+  libraryNovels: LibraryNovelInfo[];
+  options: UpdateNovelOptions;
 }
+
+const libraryUpdateBackgroundAction = async (taskData?: TaskData) => {
+  try {
+    if (!taskData) {
+      return;
+    }
+    const { delay, libraryNovels, options } = taskData;
+    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.UPDATE_LIBRARY);
+    MMKVStorage.set(LAST_UPDATE_TIME, dayjs().format('YYYY-MM-DD HH:mm:ss'));
+
+    for (
+      let i = 0;
+      BackgroundService.isRunning() && i < libraryNovels.length;
+      i++
+    ) {
+      try {
+        if (BackgroundService.isRunning()) {
+          await updateNovel(
+            libraryNovels[i].pluginId,
+            libraryNovels[i].path,
+            libraryNovels[i].id,
+            options,
+          );
+
+          /**
+           * Update notification
+           */
+          await BackgroundService.updateNotification({
+            taskTitle: '(' + (i + 1) + '/' + libraryNovels.length + ')',
+            taskDesc: libraryNovels[i].name,
+            progressBar: { max: libraryNovels.length, value: i + 1 },
+          });
+          await sleep(delay ?? 1000);
+        }
+      } catch (error: any) {
+        showToast(libraryNovels[i].name + ': ' + error.message);
+        continue;
+      }
+    }
+  } finally {
+    MMKVStorage.delete(BACKGROUND_ACTION);
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: getString('updatesScreen.libraryUpdated'),
+        body: getString('updatesScreen.novelsUpdated', {
+          num: taskData?.libraryNovels.length || 0,
+        }),
+      },
+      trigger: null,
+    });
+    BackgroundService.stop();
+  }
+};
 
 const updateLibrary = async (categoryId?: number) => {
   const { downloadNewChapters, refreshNovelMetadata, onlyUpdateOngoingNovels } =
@@ -30,10 +85,11 @@ const updateLibrary = async (categoryId?: number) => {
   };
 
   let libraryNovels: LibraryNovelInfo[] = [];
-
   if (categoryId) {
     libraryNovels = await getLibraryWithCategory({
-      filter: `categoryId = ${categoryId}`,
+      filter:
+        `categoryId = ${categoryId}` +
+        (onlyUpdateOngoingNovels ? " AND status = 'Ongoing'" : ''),
     });
   } else {
     libraryNovels = (await getLibraryNovelsFromDb(
@@ -47,80 +103,23 @@ const updateLibrary = async (categoryId?: number) => {
     taskDesc: '(0/' + libraryNovels.length + ')',
     taskIcon: { name: 'notification_icon', type: 'drawable' },
     color: '#00adb5',
-    parameters: { delay: 1000 },
+    parameters: { delay: 1000, libraryNovels, options },
     linkingURI: 'lnreader://updates',
     progressBar: { max: libraryNovels.length, value: 0 },
   };
 
-  const libraryUpdateBackgroundAction = async (taskData?: TaskData) => {
-    try {
-      MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.UPDATE_LIBRARY);
-      MMKVStorage.set(LAST_UPDATE_TIME, dayjs().format('YYYY-MM-DD HH:mm:ss'));
-      for (
-        let i = 0;
-        BackgroundService.isRunning() && i < libraryNovels.length;
-        i++
-      ) {
-        try {
-          if (BackgroundService.isRunning()) {
-            await updateNovel(
-              libraryNovels[i].pluginId,
-              libraryNovels[i].path,
-              libraryNovels[i].id,
-              options,
-            );
-
-            /**
-             * Update notification
-             */
-            await BackgroundService.updateNotification({
-              taskTitle: libraryNovels[i].name,
-              taskDesc: '(' + (i + 1) + '/' + libraryNovels.length + ')',
-              progressBar: { max: libraryNovels.length, value: i + 1 },
-            });
-
-            /**
-             * When updating library is finished
-             */
-            if (libraryNovels.length === i + 1) {
-              Notifications.scheduleNotificationAsync({
-                content: {
-                  title: getString('updatesScreen.libraryUpdated'),
-                  body: getString('updatesScreen.novelsUpdated', {
-                    num: libraryNovels.length,
-                  }),
-                },
-                trigger: null,
-              });
-              return;
-            }
-
-            const nextNovelIndex = i + 1;
-
-            if (
-              nextNovelIndex in libraryNovels &&
-              libraryNovels[nextNovelIndex].pluginId ===
-                libraryNovels[i].pluginId
-            ) {
-              await sleep(taskData?.delay ?? 0);
-            }
-          }
-        } catch (error: any) {
-          showToast(libraryNovels[i].name + ': ' + error.message);
-          continue;
-        }
-      }
-    } finally {
-      MMKVStorage.delete(BACKGROUND_ACTION);
-      BackgroundService.stop();
-    }
-  };
-
-  if (libraryNovels.length > 0 && !MMKVStorage.getString(BACKGROUND_ACTION)) {
+  const anotherBackground = MMKVStorage.getString(BACKGROUND_ACTION);
+  if (libraryNovels.length > 0 && !anotherBackground) {
     await BackgroundService.start<TaskData>(
       libraryUpdateBackgroundAction,
       notificationOptions,
     );
+  } else {
+    if (anotherBackground) {
+      showToast(getString('browseScreen.migration.anotherServiceIsRunning'));
+    } else {
+      showToast("There's no novel to be updated");
+    }
   }
 };
 

@@ -20,11 +20,12 @@ const GeneralSettings: React.FC = () => {
 
   const {
     useVolumeButtons = false,
-    // verticalSeekbar = true,
+    verticalSeekbar = true,
     swipeGestures = false,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
+    bionicReading = false,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
 
@@ -41,17 +42,15 @@ const GeneralSettings: React.FC = () => {
       </List.SubHeader>
 
       {/* will add this later xD */}
-      {/* <SettingSwitch
+      <SettingSwitch
         label={getString('readerScreen.bottomSheet.verticalSeekbar')}
-        description={getString(
-          'readerSettings.verticalSeekbarDesc',
-        )}
+        description={getString('readerSettings.verticalSeekbarDesc')}
         value={verticalSeekbar}
         onPress={() =>
           setChapterGeneralSettings({ verticalSeekbar: !verticalSeekbar })
         }
         theme={theme}
-      /> */}
+      />
       <SettingSwitch
         label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
         value={useVolumeButtons}
@@ -65,6 +64,14 @@ const GeneralSettings: React.FC = () => {
         value={swipeGestures}
         onPress={() =>
           setChapterGeneralSettings({ swipeGestures: !swipeGestures })
+        }
+        theme={theme}
+      />
+      <SettingSwitch
+        label={getString('readerScreen.bottomSheet.bionicReading')}
+        value={bionicReading}
+        onPress={() =>
+          setChapterGeneralSettings({ bionicReading: !bionicReading })
         }
         theme={theme}
       />

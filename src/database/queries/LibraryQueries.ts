@@ -41,7 +41,7 @@ export const getLibraryNovelsFromDb = (
   let getLibraryNovelsQuery = 'SELECT * FROM Novel WHERE inLibrary = 1';
 
   if (onlyOngoingNovels) {
-    getLibraryNovelsQuery += " AND status NOT LIKE 'Completed'";
+    getLibraryNovelsQuery += " AND status = 'Ongoing'";
   }
 
   return new Promise(resolve =>

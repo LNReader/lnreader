@@ -36,6 +36,7 @@ class Reader {
       ),
     );
     this.chapter = document.querySelector('chapter');
+    this.rawHTML = this.chapter.innerHTML;
     this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
     this.layoutHeight = window.innerHeight;
     this.pluginId = this.chapter.getAttribute('data-plugin-id');
@@ -54,11 +55,13 @@ class Reader {
     this.time.innerText = new Date().toLocaleTimeString(undefined, {
       hour: '2-digit',
       minute: '2-digit',
+      hour12: false,
     });
     this.timeInterval = setInterval(() => {
       this.time.innerText = new Date().toLocaleTimeString(undefined, {
         hour: '2-digit',
         minute: '2-digit',
+        hour12: false,
       });
     }, 60000);
     this.updateBatteryLevel(batteryLevel);
@@ -110,6 +113,13 @@ class Reader {
   updateGeneralSettings = settings => {
     this.showScrollPercentage = settings.showScrollPercentage;
     this.showBatteryAndTime = settings.showBatteryAndTime;
+    this.verticalSeekbar = settings.verticalSeekbar;
+    this.bionicReading = settings.bionicReading;
+    if (this.bionicReading) {
+      this.chapter.innerHTML = textVide.textVide(this.rawHTML);
+    } else {
+      this.chapter.innerHTML = this.rawHTML;
+    }
     if (settings.swipeGestures) {
       swipeHandler.enable();
     } else {
@@ -131,6 +141,15 @@ class Reader {
         this.battery.classList.add('hidden');
         this.time.classList.add('hidden');
       }
+    }
+    if (!this.verticalSeekbar) {
+      toolWrapper.$.classList.add('horizontal');
+    } else {
+      toolWrapper.$.classList.remove('horizontal');
+    }
+    if (scrollHandler) {
+      scrollHandler.refresh();
+      scrollHandler.update();
     }
   };
   updateBatteryLevel = level => {
@@ -194,7 +213,11 @@ class ScrollHandler {
     this.thumb.ontouchend = () => (this.lock = false);
     this.thumb.ontouchmove = e => {
       const ratio =
-        (e.changedTouches[0].clientY - this.sliderOffsetY) / this.sliderHeight;
+        ((this.reader.verticalSeekbar
+          ? e.changedTouches[0].clientY
+          : e.changedTouches[0].clientX) -
+          this.sliderOffsetY) /
+        this.sliderHeight;
       this.update(ratio < 0 ? 0 : ratio);
     };
   }
@@ -208,7 +231,13 @@ class ScrollHandler {
     }
     const percentage = parseInt(ratio * 100);
     if (this.toolWrapper.visible) {
-      this.progress.style.height = percentage + '%';
+      if (this.reader.verticalSeekbar) {
+        this.progress.style.height = percentage + '%';
+        this.progress.style.width = '100%';
+      } else {
+        this.progress.style.height = '100%';
+        this.progress.style.width = percentage + '%';
+      }
       this.percentage.innerText = percentage;
     }
     if (this.lock) {
@@ -222,8 +251,13 @@ class ScrollHandler {
     }
   };
   refresh = () => {
-    this.sliderHeight = this.slider.clientHeight;
-    this.sliderOffsetY = this.slider.getBoundingClientRect().top;
+    if (this.reader.verticalSeekbar) {
+      this.sliderHeight = this.slider.clientHeight;
+      this.sliderOffsetY = this.slider.getBoundingClientRect().top;
+    } else {
+      this.sliderHeight = this.slider.clientWidth;
+      this.sliderOffsetY = this.slider.getBoundingClientRect().left;
+    }
   };
   onShow = () => {
     this.reader.refresh();
@@ -243,12 +277,26 @@ class SwipeHandler {
     this.initialY = e.changedTouches[0].screenY;
   };
 
+  /**
+   * @param {TouchEvent} e
+   */
   touchEndHandler = e => {
     let diffX = e.changedTouches[0].screenX - this.initialX;
     let diffY = e.changedTouches[0].screenY - this.initialY;
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
-      e.preventDefault();
-      reader.post({ type: diffX < 0 ? 'next' : 'prev' });
+    if (
+      e.target.id?.startsWith('scrollbar') ||
+      e.target.id === 'Image-Modal-img'
+    ) {
+      return;
+    }
+    if (Math.abs(diffX) > Math.abs(diffY) * 2 && Math.abs(diffX) > 180) {
+      if (diffX < 0 && this.initialX >= window.innerWidth / 2) {
+        e.preventDefault();
+        reader.post({ type: 'next' });
+      } else if (diffX > 0 && this.initialX <= window.innerWidth / 2) {
+        e.preventDefault();
+        reader.post({ type: 'prev' });
+      }
     }
   };
 
