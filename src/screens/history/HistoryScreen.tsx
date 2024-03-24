@@ -10,7 +10,7 @@ import { useTheme, useHistory } from '@hooks/persisted';
 
 import { convertDateToISOString } from '@database/utils/convertDateToISOString';
 
-import { History } from '@database/types';
+import { ChapterInfo, History } from '@database/types';
 import { getString } from '@strings/translations';
 import ClearHistoryDialog from './components/ClearHistoryDialog';
 import HistorySkeletonLoading from './components/HistorySkeletonLoading';
@@ -48,12 +48,9 @@ const HistoryScreen = () => {
           groups[date] = [];
         }
         const lastEntry = groups[date][groups[date].length - 1];
-        const ArrayExists = Array.isArray(lastEntry);
-        let lastNovel = ArrayExists ? lastEntry[0] : lastEntry;
+        let lastNovel = lastEntry?.[0];
 
-        if (lastNovel?.novelId === item.novelId) {
-          groups[date][groups[date].length - 1].push(item);
-        } else {
+        if (lastNovel?.novelId !== item.novelId) {
           groups[date].push([item]);
         }
 
@@ -77,7 +74,6 @@ const HistoryScreen = () => {
     setTrue: openClearHistoryDialog,
     setFalse: closeClearHistoryDialog,
   } = useBoolean();
-  console.log(history.length);
 
   return (
     <>
@@ -116,6 +112,11 @@ const HistoryScreen = () => {
                 descriptionText="read"
                 updateList={getHistory}
                 removeChapterFromHistory={removeChapterFromHistory}
+                chapterDescriptionText={(chapter: ChapterInfo) => {
+                  return (
+                    'Read ' + dayjs(chapter.readTime).format('HH:mm') ?? ''
+                  );
+                }}
               />
             )}
             ListEmptyComponent={
