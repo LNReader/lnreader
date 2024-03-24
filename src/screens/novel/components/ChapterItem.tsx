@@ -119,7 +119,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             >
               {novelName}
             </Text>
-          ) : null}
+          )}
           <View style={styles.row}>
             {unread && !heading ? (
               <MaterialCommunityIcons
