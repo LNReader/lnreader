@@ -13,11 +13,11 @@ import ChapterItem from '@screens/novel/components/ChapterItem';
 import { useDownload, useTheme } from '@hooks/persisted';
 import { noop } from 'lodash-es';
 import { RootStackParamList } from '@navigators/types';
-import { CardNovelCover } from '@components/NovelCard/CardNovelCover';
 import { deleteChapter } from '@database/queries/ChapterQueries';
 import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
 import { FlatList } from 'react-native-gesture-handler';
+import { CardNovelCover } from './CardNovelCover';
 
 interface NovelCardProps {
   chapterList: DownloadedChapter[];
