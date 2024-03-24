@@ -10,6 +10,7 @@ import { ChapterInfo } from '@database/types';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getString } from '@strings/translations';
 import { useBoolean } from '@hooks';
+import { IconButtonV2 } from '@components';
 
 interface ChapterItemProps {
   isDownloading?: boolean;
@@ -22,13 +23,21 @@ interface ChapterItemProps {
   onSelectPress?: (chapter: ChapterInfo) => void;
   onSelectLongPress?: (chapter: ChapterInfo) => void;
   navigateToChapter: (chapter: ChapterInfo) => void;
+  removeChapterFromHistory?: (chapterId: number) => void;
   left?: ReactNode;
   isLocal: boolean;
   isUpdateCard?: boolean;
   novelName?: string;
   heading?: string;
   description?: string;
+  height?: keyof typeof heights;
 }
+
+const heights = {
+  'small': 36,
+  'default': 56,
+  'large': 76,
+} as const;
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
   isDownloading,
@@ -41,12 +50,14 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   onSelectPress,
   onSelectLongPress,
   navigateToChapter,
+  removeChapterFromHistory,
   isLocal,
   left,
   isUpdateCard,
   novelName,
   heading,
   description,
+  height = 'default',
 }) => {
   const { id, name, unread, releaseTime, bookmark, chapterNumber, progress } =
     chapter;
@@ -75,6 +86,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       ? theme.primary
       : theme.onSurfaceVariant;
   }
+  const cardHeight = heights[height];
   return (
     <Pressable
       key={'chapterItem' + id}
@@ -83,6 +95,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
         isSelected?.(id) && {
           backgroundColor: color(theme.primary).alpha(0.12).string(),
         },
+        { height: cardHeight },
       ]}
       onPress={() => {
         onSelectPress ? onSelectPress(chapter) : navigateToChapter(chapter);
@@ -120,7 +133,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             <Text
               style={[
                 {
-                  fontSize: 14,
+                  fontSize: novelName ? 12 : 14,
                   color: textColor,
                 },
               ]}
@@ -129,13 +142,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               {title}
             </Text>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            {releaseTime && !isUpdateCard ? (
+          <View style={styles.textRow}>
+            {subtitle ? (
               <Text
                 style={[
                   {
@@ -148,34 +156,42 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                 {subtitle}
               </Text>
             ) : null}
-            {!isUpdateCard && progress && progress > 0 && unread ? (
+            {progress && progress > 0 && unread ? (
               <Text
                 style={{
                   color: theme.outline,
                   fontSize: 12,
-                  marginLeft: releaseTime ? 5 : 0,
                 }}
                 numberOfLines={1}
               >
-                {releaseTime ? '•  ' : null}
+                {subtitle ? '  •  ' : null}
                 {getString('novelScreen.progress', { progress })}
               </Text>
             ) : null}
           </View>
         </View>
       </View>
-      {!isLocal ? (
-        <DownloadButton
-          isDownloading={isDownloading}
-          isDownloaded={chapter.isDownloaded}
+      {removeChapterFromHistory ? (
+        <IconButtonV2
+          name="delete-outline"
           theme={theme}
-          deleteChapter={deleteChapter}
-          downloadChapter={downloadChapter}
-          hideDeleteChapterMenu={hideMenu}
-          showDeleteChapterMenu={showMenu}
-          deleteChapterMenuVisible={isMenuVisible}
+          //@ts-ignore
+          onPress={() => removeChapterFromHistory(chapter.id)}
         />
-      ) : null}
+      ) : (
+        !isLocal && (
+          <DownloadButton
+            isDownloading={isDownloading}
+            isDownloaded={chapter.isDownloaded}
+            theme={theme}
+            deleteChapter={deleteChapter}
+            downloadChapter={downloadChapter}
+            hideDeleteChapterMenu={hideMenu}
+            showDeleteChapterMenu={showMenu}
+            deleteChapterMenuVisible={isMenuVisible}
+          />
+        )
+      )}
     </Pressable>
   );
 };
@@ -184,7 +200,6 @@ export default memo(ChapterItem);
 
 const styles = StyleSheet.create({
   chapterCardContainer: {
-    height: 64,
     paddingHorizontal: 16,
     paddingVertical: 8,
     flexDirection: 'row',
@@ -196,6 +211,7 @@ const styles = StyleSheet.create({
   },
   textRow: {
     flexDirection: 'row',
+    // marginTop: 5,
   },
   row: { flex: 1, flexDirection: 'row', alignItems: 'center' },
   unreadIcon: {

@@ -13,15 +13,16 @@ import ChapterItem from '@screens/novel/components/ChapterItem';
 import { useDownload, useTheme } from '@hooks/persisted';
 import { noop } from 'lodash-es';
 import { RootStackParamList } from '@navigators/types';
-import { FlatList } from 'react-native-gesture-handler';
-import { CardNovelCover } from '@components/CardNovelCover';
+import { CardNovelCover } from '@components/NovelCard/CardNovelCover';
 import { deleteChapter } from '@database/queries/ChapterQueries';
 import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
+import { FlatList } from 'react-native-gesture-handler';
 
 interface NovelCardProps {
   chapterList: DownloadedChapter[];
   descriptionText: string;
+  chapterDescriptionText?: string | ((chapter: ChapterInfo) => string);
   updateList: () => void;
   removeChapterFromHistory?: (chapterId: number) => void;
 }
@@ -29,6 +30,7 @@ interface NovelCardProps {
 const NovelCard: React.FC<NovelCardProps> = ({
   chapterList,
   descriptionText,
+  chapterDescriptionText,
   updateList,
   removeChapterFromHistory,
 }) => {
@@ -105,8 +107,9 @@ const NovelCard: React.FC<NovelCardProps> = ({
       >
         <FlatList
           data={chapterList}
-          keyExtractor={it => 'update' + it.id}
+          keyExtractor={it => 'card' + it.id}
           extraData={[chapterList]}
+          scrollEnabled={false}
           renderItem={({ item }) => {
             return (
               <ChapterItem
@@ -119,28 +122,31 @@ const NovelCard: React.FC<NovelCardProps> = ({
                 downloadChapter={() => handleDownloadChapter(item)}
                 deleteChapter={() => removeChapter(item)}
                 navigateToChapter={navigateToChapter}
-                // left={
-                //   <View style={styles.novelCover}>
-                //     <CardNovelCover
-                //       navigateToNovel={navigateToNovel}
-                //       uri={chapterList[0].novelCover}
-                //     />
-                //   </View>
-                // }
+                description={
+                  typeof chapterDescriptionText === 'string'
+                    ? chapterDescriptionText
+                    : chapterDescriptionText?.(item)
+                }
               />
             );
           }}
-          scrollEnabled={false}
         />
       </List.Accordion>
     );
   } else if (chapterList.length > 0) {
     return (
       <ChapterItem
+        height="large"
+        removeChapterFromHistory={removeChapterFromHistory}
         isLocal={false}
         isDownloading={queue.some(c => c.chapter.id === chapterList[0].id)}
         isUpdateCard
         novelName={chapterList[0].novelName}
+        description={
+          typeof chapterDescriptionText === 'string'
+            ? chapterDescriptionText
+            : chapterDescriptionText?.(chapterList[0])
+        }
         chapter={chapterList[0]}
         theme={theme}
         showChapterTitles={false}
@@ -167,7 +173,7 @@ const styles = StyleSheet.create({
   padding: {
     paddingHorizontal: 16,
     paddingVertical: 3,
-    height: 64,
+    height: 76,
   },
   container: {
     justifyContent: 'space-between',
@@ -191,8 +197,5 @@ const styles = StyleSheet.create({
   },
   downloading: {
     margin: 8,
-  },
-  chapterList: {
-    marginLeft: -64,
   },
 });
