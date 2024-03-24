@@ -2,12 +2,15 @@ import { fetchImage, fetchNovel } from '../plugin/fetch';
 import { downloadChapter } from '../../database/queries/ChapterQueries';
 
 import * as SQLite from 'expo-sqlite';
-import { SourceNovel } from '@plugins/types';
+import { ChapterItem, SourceNovel } from '@plugins/types';
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
 import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
-import { NOVEL_PAGE_UPDATES_PREFIX } from '@hooks/persisted/useNovel';
+import {
+  NOVEL_LATEST_CHAPTER_PREFIX,
+  NOVEL_PAGE_UPDATES_PREFIX,
+} from '@hooks/persisted/useNovel';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = (
@@ -156,13 +159,17 @@ const updateNovel = async (
     await updateNovelMetadata(pluginId, novelId, novel);
   }
   await updateNovelChapters(pluginId, novelId, novel, downloadNewChapters);
-  const key = `${NOVEL_PAGE_UPDATES_PREFIX}_${novelId}`;
-  const hasUpdates = getMMKVObject<boolean[]>(key);
-  if (hasUpdates) {
-    setMMKVObject(
-      key,
-      hasUpdates.map(() => true),
-    );
+  const latestChapterKey = `${NOVEL_LATEST_CHAPTER_PREFIX}_${novelId}`;
+  const latestChapter = getMMKVObject<ChapterItem>(latestChapterKey);
+  if (novel.latestChapter && novel.latestChapter.path !== latestChapter?.path) {
+    const hasUpdatesKey = `${NOVEL_PAGE_UPDATES_PREFIX}_${novelId}`;
+    const hasUpdates = getMMKVObject<boolean[]>(hasUpdatesKey);
+    if (hasUpdates) {
+      setMMKVObject(
+        hasUpdatesKey,
+        hasUpdates.map(() => true),
+      );
+    }
   }
 };
 

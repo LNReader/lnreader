@@ -33,11 +33,11 @@ export interface SourceNovel extends NovelItem {
   status?: NovelStatus;
   chapters: ChapterItem[];
   totalPages?: number;
+  latestChapter?: ChapterItem;
 }
 
 export interface SourcePage {
   chapters: ChapterItem[];
-  latestChapter?: ChapterItem;
 }
 
 export interface PopularNovelsOptions<Q extends Filters> {
