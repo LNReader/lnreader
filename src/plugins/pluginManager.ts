@@ -13,13 +13,13 @@ import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
 import { fetchApi, fetchFile, fetchProto, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
 import { encode, decode } from 'urlencode';
-import htmlparse2 from 'htmlparser2';
+import { Parser } from 'htmlparser2';
 import TextFile from '@native/TextFile';
 
 const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
 
 const packages: Record<string, any> = {
-  'htmlparse2': htmlparse2,
+  'htmlparser2': { Parser },
   'cheerio': { load },
   'dayjs': dayjs,
   'qs': qs,
