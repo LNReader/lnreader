@@ -26,6 +26,7 @@ import { getBatteryLevelSync } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
+import { createHorizontalReaderPages } from './stringCreators/horizontalReaderPages';
 
 type WebViewPostEvent = {
   type: string;
@@ -46,6 +47,9 @@ type WebViewReaderProps = {
   onPress(): void;
   onLayout(): void;
   navigateToChapterBySwipe(name: string): void;
+  onWebViewNavigationStateChange({ url }: WebViewNavigation): void;
+  readerPages: boolean;
+  pages: React.MutableRefObject<number>;
 };
 
 const WebViewReader: FC<WebViewReaderProps> = props => {
@@ -54,8 +58,9 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
     html,
     nextChapter,
     webViewRef,
-    saveProgress,
     pages,
+    readerPages,
+    saveProgress,
     onPress,
     onLayout,
     navigateToChapterBySwipe,
@@ -123,6 +128,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
       mmkvListener.remove();
     };
   });
+
   return (
     <WebView
       ref={webViewRef}
@@ -195,7 +201,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                     :root {
                       --StatusBar-currentHeight: ${StatusBar.currentHeight};
                       --readerSettings-theme: ${readerSettings.theme};
-                      --readerSettings-padding: ${readerSettings.padding}%;
+                      --readerSettings-padding: ${2 * readerSettings.padding}%;
                       --readerSettings-textSize: ${readerSettings.textSize}px;
                       --readerSettings-textColor: ${readerSettings.textColor};
                       --readerSettings-textAlign: ${readerSettings.textAlign};
@@ -217,6 +223,62 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       --theme-outline: ${theme.outline};
                       --theme-rippleColor: ${theme.rippleColor};
                       --chapterCtn-height: ${layoutHeight - 140};
+                      ${
+                        readerPages &&
+                        `
+                          * {touch-action:none;}
+                          body {
+                            overflow: hidden;
+                            position: relative;
+                          }
+                          #left,
+                          #right, #middle {
+                            position: absolute;
+                            height: 100%;
+                            width: 35%;
+                            top: 0;
+                            z-index: 2000
+                          }
+                          #middle {
+                            left: 35%;
+                            width: 30%;
+                          }
+                          #left {
+                            left: 0;
+                          }
+                          #right {
+                            right: 0;
+                          }
+                          #infoContainer {
+                            position: absolute;
+                            z-index: 1000;
+                            bottom: 40;
+                            width: calc(100% - 2*${readerSettings.padding}%)
+                          }
+                          .nextButton{
+                            position: relative;
+                            z-index: 100000 !important
+                          }
+                          chapter {
+                            height: 100%;
+                            display: flexbox;
+                            flex-direction: column;
+                            flex-wrap: wrap;
+                            column-gap: 0;
+                            column-width: 100vw; 
+                            transition: 200ms;
+                            #overflow: hidden;
+                            background-color: red;
+                          }
+                          .hide {
+                            transform: translate(110%);
+                            transition: 200ms
+                          }
+                          .show {
+                            transform: translate(0%);
+                          }
+                          `
+                      }
                       }
                       @font-face {
                         font-family: ${readerSettings.fontFamily};
@@ -243,25 +305,18 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       })}
                     </script>
                   </head>
-                  <body id='sourceId-${chapterInfo.sourceId}'>
-                    <div class="chapterCtn" onclick="reader.post({type:'hide'})"> 
+                  <body'>
+                    <div class="chapterCtn"> 
                       <div id="left"></div>
                       <div id="right"></div>
-                      <div id="middle" ${
-                        readerPages &&
-                        onClickWebViewPostMessage({
-                          type: 'hide',
-                        })
-                      }></div>
+                      <div id="middle" ></div>
                       <chapter 
-                        data-plugin-id='${novel.pluginId}'
                         data-page=0
+                        data-plugin-id='${novel.pluginId}'
                         data-novel-id='${chapter.novelId}'
                         data-chapter-id='${chapter.id}'
                       >
                         ${html}
-                        <p id="spacer"></p>
-
                       </chapter>
                       <div class="hidden" id="ToolWrapper">
                           <div id="TTS-Controller"></div>
@@ -278,6 +333,9 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                           </div>
                       </div>
                     </div>
+                    ${
+                      !readerPages
+                        ? `
                     <div class="infoText">
                       ${getString(
                         'readerScreen.finished',
@@ -293,12 +351,20 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         : `<div class="infoText">
                           ${getString('readerScreen.noNextChapter')}
                         </div>`
+                    }`
+                        : ''
                     }
                     </body>
                     <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
                     <script src="${assetsUriPrefix}/js/index.js"></script>
+                    <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                     <script>
                       async function fn(){
+                        document.querySelector(".chapterCtn").addEventListener("click", ${
+                          !readerPages
+                            ? '() => reader.post({ type: "hide" })'
+                            : 'tapChapter'
+                        });
                         // Position important to prevent layout bugs
                         ${readerPages && createHorizontalReaderPages()}
                         
