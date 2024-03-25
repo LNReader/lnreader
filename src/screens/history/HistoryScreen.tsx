@@ -4,26 +4,27 @@ import dayjs from 'dayjs';
 import { Portal } from 'react-native-paper';
 
 import { EmptyView, ErrorScreenV2, SearchbarV2 } from '@components';
-import HistoryCard from './components/HistoryCard/HistoryCard';
 
 import { useSearch, useBoolean } from '@hooks';
 import { useTheme, useHistory } from '@hooks/persisted';
 
 import { convertDateToISOString } from '@database/utils/convertDateToISOString';
 
-import { History } from '@database/types';
+import { ChapterInfo, History } from '@database/types';
 import { getString } from '@strings/translations';
 import ClearHistoryDialog from './components/ClearHistoryDialog';
 import HistorySkeletonLoading from './components/HistorySkeletonLoading';
-import { HistoryScreenProps } from '@navigators/types';
 
-const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
+import NovelCard from '@components/NovelCard/NovelCard';
+
+const HistoryScreen = () => {
   const theme = useTheme();
   const {
     isLoading,
     history,
     clearAllHistory,
     removeChapterFromHistory,
+    getHistory,
     error,
   } = useHistory();
 
@@ -40,15 +41,18 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
   };
 
   const groupHistoryByDate = (rawHistory: History[]) => {
-    const dateGroups = rawHistory.reduce<Record<string, History[]>>(
+    const dateGroups = rawHistory.reduce<Record<string, Array<History[]>>>(
       (groups, item) => {
         const date = convertDateToISOString(item.readTime);
-
         if (!groups[date]) {
           groups[date] = [];
         }
+        const lastEntry = groups[date][groups[date].length - 1];
+        let lastNovel = lastEntry?.[0];
 
-        groups[date].push(item);
+        if (lastNovel?.novelId !== item.novelId) {
+          groups[date].push([item]);
+        }
 
         return groups;
       },
@@ -103,11 +107,16 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
               </Text>
             )}
             renderItem={({ item }) => (
-              <HistoryCard
-                history={item}
-                navigation={navigation}
-                handleRemoveFromHistory={removeChapterFromHistory}
-                theme={theme}
+              <NovelCard
+                chapterList={item}
+                descriptionText="read"
+                updateList={getHistory}
+                removeChapterFromHistory={removeChapterFromHistory}
+                chapterDescriptionText={(chapter: ChapterInfo) => {
+                  return (
+                    'Read ' + dayjs(chapter.readTime).format('HH:mm') ?? ''
+                  );
+                }}
               />
             )}
             ListEmptyComponent={

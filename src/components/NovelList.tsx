@@ -15,12 +15,20 @@ export type NovelListRenderItem = ListRenderItem<
   LibraryNovelInfo | NovelInfo | NovelItem
 >;
 
-const NovelList: React.FC<
-  FlatListProps<LibraryNovelInfo | NovelInfo | NovelItem>
-> = props => {
+type listDataItem =
+  | (LibraryNovelInfo | NovelInfo | NovelItem) & {
+      completeRow?: number;
+    };
+
+interface NovelListProps
+  extends FlatListProps<LibraryNovelInfo | NovelInfo | NovelItem> {
+  isBrowsing?: boolean;
+  data: Array<listDataItem>;
+}
+
+const NovelList: React.FC<NovelListProps> = props => {
   const { displayMode = DisplayModes.Comfortable, novelsPerRow = 3 } =
     useLibrarySettings();
-
   const orientation = useDeviceOrientation();
 
   const isListView = displayMode === DisplayModes.List;
@@ -37,6 +45,22 @@ const NovelList: React.FC<
     }
   }, [isListView, orientation, novelsPerRow]);
 
+  let extendedNovelList: Array<listDataItem> = props?.data;
+  if (props.data?.length && props.isBrowsing) {
+    let remainder = numColumns - (props.data?.length % numColumns);
+    let extension: Array<listDataItem> = [];
+    if (remainder !== 0 && remainder !== numColumns) {
+      extension.push({
+        cover: '',
+        name: '',
+        path: 'loading-' + remainder,
+        completeRow: -remainder,
+      } as listDataItem);
+    }
+
+    extendedNovelList = [...props.data, ...extension];
+  }
+
   return (
     <FlatList
       contentContainerStyle={[
@@ -47,6 +71,7 @@ const NovelList: React.FC<
       key={numColumns}
       keyExtractor={(item, index) => index + '_' + item.path}
       {...props}
+      data={extendedNovelList}
     />
   );
 };

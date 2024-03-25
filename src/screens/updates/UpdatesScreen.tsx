@@ -15,10 +15,8 @@ import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import { useTheme } from '@hooks/persisted';
 import UpdatesSkeletonLoading from './components/UpdatesSkeletonLoading';
-import UpdateNovelCard from './components/UpdateNovelCard';
 import { useFocusEffect } from '@react-navigation/native';
-import { deleteChapter } from '@database/queries/ChapterQueries';
-import { showToast } from '@utils/showToast';
+import NovelCard from '@components/NovelCard/NovelCard';
 
 const UpdatesScreen = () => {
   const theme = useTheme();
@@ -113,22 +111,9 @@ const UpdatesScreen = () => {
           )}
           keyExtractor={item => 'updatedGroup' + item[0].novelId}
           renderItem={({ item }) => (
-            <UpdateNovelCard
-              deleteChapter={chapter => {
-                deleteChapter(
-                  chapter.pluginId,
-                  chapter.novelId,
-                  chapter.id,
-                ).then(() => {
-                  showToast(
-                    getString('common.deleted', {
-                      name: chapter.name,
-                    }),
-                  );
-                  getUpdates();
-                });
-              }}
+            <NovelCard
               chapterList={item}
+              updateList={getUpdates}
               descriptionText={getString('updatesScreen.updatesLower')}
             />
           )}

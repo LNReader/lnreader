@@ -46,7 +46,6 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     clearSearchResults,
     searchError,
   } = useSearchSource(pluginId);
-
   const novelList = searchResults.length > 0 ? searchResults : novels;
   const errorMessage = error || searchError;
 
@@ -120,6 +119,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
       ) : (
         <NovelList
           data={novelList}
+          isBrowsing
           renderItem={({ item }) => {
             const inLibrary = novelInLibrary(item.path);
 
@@ -163,6 +163,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
               fetchNextPage();
             }
           }}
+          onEndReachedThreshold={1.5}
           ListFooterComponent={
             (hasNextPage && !searchText) ||
             (hasNextSearchPage && searchText) ? (
