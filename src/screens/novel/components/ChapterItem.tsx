@@ -31,6 +31,7 @@ interface ChapterItemProps {
   heading?: string;
   description?: string;
   height?: keyof typeof heights;
+  paddingLeft?: number;
 }
 
 const heights = {
@@ -58,6 +59,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   heading,
   description,
   height = 'default',
+  paddingLeft,
 }) => {
   const { id, name, unread, releaseTime, bookmark, chapterNumber, progress } =
     chapter;
@@ -95,7 +97,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
         isSelected?.(id) && {
           backgroundColor: color(theme.primary).alpha(0.12).string(),
         },
-        { height: cardHeight },
+        { height: cardHeight, paddingLeft: paddingLeft },
       ]}
       onPress={() => {
         onSelectPress ? onSelectPress(chapter) : navigateToChapter(chapter);

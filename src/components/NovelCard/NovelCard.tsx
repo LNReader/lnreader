@@ -90,48 +90,57 @@ const NovelCard: React.FC<NovelCardProps> = ({
 
   if (chapterList.length > 1) {
     return (
-      <List.Accordion
-        title={chapterList[0].novelName}
-        titleStyle={{ fontSize: 14, color: theme.onSurface }}
-        left={() => (
+      <View
+        style={{
+          position: 'relative',
+        }}
+      >
+        <View style={[styles.cover, styles.padding]}>
           <CardNovelCover
             navigateToNovel={navigateToNovel}
             uri={chapterList[0].novelCover}
           />
-        )}
-        descriptionStyle={{ fontSize: 12 }}
-        theme={{ colors: theme }}
-        style={[styles.container, styles.padding]}
-        description={`${chapterList.length} ${descriptionText}`}
-        onPress={noop}
-      >
-        <FlatList
-          data={chapterList}
-          keyExtractor={it => 'card' + it.id}
-          extraData={[chapterList]}
-          scrollEnabled={false}
-          renderItem={({ item }) => {
-            return (
-              <ChapterItem
-                isLocal={false}
-                isDownloading={queue.some(c => c.chapter.id === item.id)}
-                isUpdateCard
-                chapter={item}
-                theme={theme}
-                showChapterTitles={false}
-                downloadChapter={() => handleDownloadChapter(item)}
-                deleteChapter={() => removeChapter(item)}
-                navigateToChapter={navigateToChapter}
-                description={
-                  typeof chapterDescriptionText === 'string'
-                    ? chapterDescriptionText
-                    : chapterDescriptionText?.(item)
-                }
-              />
-            );
-          }}
-        />
-      </List.Accordion>
+        </View>
+
+        <List.Accordion
+          title={chapterList[0].novelName}
+          titleStyle={{ fontSize: 14, color: theme.onSurface }}
+          descriptionStyle={{ fontSize: 12 }}
+          theme={{ colors: theme }}
+          style={[styles.container, styles.padding, { paddingLeft: 58 }]}
+          description={`${chapterList.length} ${descriptionText}`}
+          onPress={noop}
+        >
+          <FlatList
+            data={chapterList}
+            keyExtractor={it => 'card' + it.id}
+            extraData={[chapterList]}
+            scrollEnabled={false}
+            style={{ paddingLeft: 0 }}
+            renderItem={({ item }) => {
+              return (
+                <ChapterItem
+                  isLocal={false}
+                  paddingLeft={40}
+                  isDownloading={queue.some(c => c.chapter.id === item.id)}
+                  isUpdateCard
+                  chapter={item}
+                  theme={theme}
+                  showChapterTitles={false}
+                  downloadChapter={() => handleDownloadChapter(item)}
+                  deleteChapter={() => removeChapter(item)}
+                  navigateToChapter={navigateToChapter}
+                  description={
+                    typeof chapterDescriptionText === 'string'
+                      ? chapterDescriptionText
+                      : chapterDescriptionText?.(item)
+                  }
+                />
+              );
+            }}
+          />
+        </List.Accordion>
+      </View>
     );
   } else if (chapterList.length > 0) {
     return (
@@ -170,12 +179,19 @@ const NovelCard: React.FC<NovelCardProps> = ({
 export default NovelCard;
 
 const styles = StyleSheet.create({
+  cover: {
+    position: 'absolute',
+    top: 3,
+    left: 3,
+    zIndex: 1,
+    height: 70,
+  },
   padding: {
     paddingHorizontal: 16,
     paddingVertical: 3,
-    height: 76,
   },
   container: {
+    height: 76,
     justifyContent: 'space-between',
   },
   novelCover: {
