@@ -13,18 +13,11 @@ function tapChapter(event) {
   let bounds = document.querySelector('html').getBoundingClientRect();
   let x = event.clientX;
   let y = event.clientY;
-  console.log(pages);
-  console.log(pages === null);
-  console.log(typeof pages);
-  console.log(pages === 'null');
 
-  //   if (pages === null || pages < 1) {
-  console.log('fired');
   clientWidth = document.documentElement.clientWidth;
   textWidth = chapter.scrollWidth;
   pages = Math.ceil(textWidth / clientWidth) - 2;
-  //   }
-  console.log(pages);
+
   if (pages === null || (pages < 0 && textWidth !== clientWidth)) {
     return;
   }
@@ -66,7 +59,6 @@ function movePage(page) {
       },
     }),
   );
-  console.log(page + '/' + pages);
 }
 let sendWidthTimeout;
 const sendPages = timeOut => {
