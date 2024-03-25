@@ -8,20 +8,21 @@ const select = key => {
 const chapter = select('chapter');
 const clientWidth = document.documentElement.clientWidth;
 const textWidth = chapter.scrollWidth;
-const pages = Math.ceil(textWidth / clientWidth) - 1;
-let page = 0;
+const pages = Math.ceil(textWidth / clientWidth) - 2;
 function tapChapter(event) {
   let bounds = document.querySelector('html').getBoundingClientRect();
   let x = event.clientX;
   let y = event.clientY;
-  console.log('e');
+  let page = select('chapter')?.getAttribute('data-page');
+
   //   alert(JSON.stringify({ x, y }, null, 2));
-  page = select('chapter')?.getAttribute('data-page');
   if (x / bounds.width < 0.33) {
     // alert('T' + page);
     if (page > 0) {
       page--;
-      movePage();
+      movePage(page);
+    } else {
+      reader.post({ type: 'prev' });
     }
   } else if (x / bounds.width > 0.66) {
     if (isNaN(page)) {
@@ -29,9 +30,9 @@ function tapChapter(event) {
     }
     if (page < pages) {
       page++;
-      movePage();
-      if (page === pages) {
-      }
+      movePage(page);
+    } else {
+      reader.post({ type: 'next' });
     }
   } else {
     reader.post({ type: 'hide' });
@@ -43,10 +44,10 @@ function tapChapter(event) {
 // const infoBox = id('infoContainer');
 // infoBox.classList.add('hidden');
 
-function movePage() {
+function movePage(page) {
   chapter.style.transform = 'translate(-' + page * 100 + '%)';
   select('chapter').setAttribute('data-page', page);
-  window.ReactNativeWebView.postMessage(
+  reader.post(
     JSON.stringify({
       type: 'scrollend',
       data: {
@@ -55,15 +56,14 @@ function movePage() {
       },
     }),
   );
+  console.log(page + '/' + pages);
 }
 let sendWidthTimeout;
 const sendPages = timeOut => {
   clearTimeout(sendHeightTimeout);
   sendHeightTimeout = setTimeout(
-    window.ReactNativeWebView.postMessage(
-      JSON.stringify({ type: 'pages', data: pages }),
-    ),
+    reader.post(JSON.stringify({ type: 'pages', data: pages })),
     timeOut,
   );
 };
-// sendPages(200);
+sendPages(200);

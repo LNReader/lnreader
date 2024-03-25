@@ -142,7 +142,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
      console.warn = console.log;
      console.error = console.log;
      `;
-
+  //@ts-ignore
   const onMessage = payload => {
     let dataPayload;
     try {
@@ -297,8 +297,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                             column-gap: 0;
                             column-width: 100vw; 
                             transition: 200ms;
-                            #overflow: hidden;
-                            background-color: red;
                           }
                           .hide {
                             transform: translate(110%);
