@@ -99,7 +99,7 @@ const GeneralTab: React.FC = () => {
       />
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.readerPages')}
-        onPress={() => dispatch(setAppSettings('readerPages', !readerPages))}
+        onPress={() => setChapterGeneralSettings({ readerPages: !readerPages })}
         value={readerPages}
         theme={theme}
       />
@@ -199,9 +199,16 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   };
   const { bottom } = useSafeAreaInsets();
   return (
-    <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[360, 600]}>
+    <BottomSheet
+      bottomSheetRef={bottomSheetRef}
+      snapPoints={[360, 600]}
+      backgroundStyle={{ backgroundColor }}
+    >
       <BottomSheetView
-        style={[styles.bottomSheetContainer, { backgroundColor }]}
+        style={[
+          styles.bottomSheetContainer,
+          { backgroundColor, marginBottom: bottom },
+        ]}
       >
         <TabView
           navigationState={{ index, routes }}
@@ -211,7 +218,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
           initialLayout={{ width: layout.width }}
           style={styles.tabView}
         />
-      </BottomSheetScrollView>
+      </BottomSheetView>
     </BottomSheet>
   );
 };

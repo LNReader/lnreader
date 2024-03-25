@@ -16,8 +16,8 @@ html {
 }
 
 body {
-  padding-left: var(--readerSettings-padding);
-  padding-right: var(--readerSettings-padding);
+  margin-left: 0;
+  margin-right: 0;
   padding-bottom: 40px;
 
   font-size: var(--readerSettings-textSize);
@@ -30,6 +30,11 @@ body {
 
 chapter {
   display: block;
+}
+
+chapter * {
+  padding-left: var(--readerSettings-padding);
+  padding-right: var(--readerSettings-padding);
 }
 
 hr {
@@ -300,9 +305,11 @@ td {
 .reader-footer-item {
   flex: 1;
 }
+
 .reader-footer-item:first-child {
   text-align: left;
 }
+
 .reader-footer-item:last-child {
   text-align: right;
 }
@@ -361,6 +368,7 @@ td {
 .contextMenu-button svg {
   fill: var(--theme-onSurface);
 }
+
 .contextMenu-button span {
   margin-left: 4px;
 }

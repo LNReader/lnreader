@@ -104,6 +104,7 @@ export const ChapterContent = ({
     autoScroll,
     autoScrollInterval,
     autoScrollOffset,
+    readerPages = false,
     // verticalSeekbar = true,
     removeExtraParagraphSpacing,
     keepScreenOn,
@@ -125,6 +126,7 @@ export const ChapterContent = ({
   >([]);
 
   const emmiter = useRef(new NativeEventEmitter(VolumeButtonListener));
+  const pages = useRef(0);
 
   const connectVolumeButton = () => {
     VolumeButtonListener.connect();
@@ -199,11 +201,43 @@ export const ChapterContent = ({
     }
   }, [chapter]);
 
+  useEffect(() => {
+    if (!readerPages) {
+      webViewRef?.current?.injectJavaScript(
+        "document.querySelector('chapter').style.transform = 'translate(0%)';",
+      );
+    }
+  }, [readerPages]);
+
   const scrollTo = useCallback(
-    (offsetY: number) => {
-      webViewRef.current?.injectJavaScript(`(()=>{
-        window.scrollTo({top:${offsetY},behavior:'smooth',})
-      })()`);
+    (offset: number) => {
+      requestAnimationFrame(() => {
+        webViewRef?.current?.injectJavaScript(
+          !readerPages
+            ? `(()=>{
+                window.scrollTo({top:${offset},behavior:'smooth'})
+              })()`
+            : `(()=>{
+              document.querySelector('chapter').setAttribute('data-page', ${
+                offset / 100
+              });
+              document.querySelector("chapter").style.transform = 'translate(-${offset}%)';
+              window.ReactNativeWebView.postMessage(
+                JSON.stringify(
+                  {
+                    type:"scrollend",
+                    data:{
+                        offSetY: ${offset},                                    
+                        percentage: (${offset / 100 / pages.current} > 0 ? ${
+                offset / 100 / pages.current
+              } * 100 : 1),  
+                    }
+                  }
+                )
+              );
+            })()`,
+        );
+      });
     },
     [webViewRef],
   );
@@ -334,6 +368,8 @@ export const ChapterContent = ({
         html={chapterText}
         nextChapter={nextChapter}
         webViewRef={webViewRef}
+        readerPages={readerPages}
+        pages={pages}
         saveProgress={saveProgress}
         onLayout={() => {
           useVolumeButtons && onLayout();
