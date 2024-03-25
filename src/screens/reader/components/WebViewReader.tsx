@@ -128,9 +128,36 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
       mmkvListener.remove();
     };
   });
+  const debugging = `
+     // Debug
+     console = new Object();
+     console.log = function(log) {
+      reader.post({"type": "console", "msg": log});
+     };
+     console.debug = console.log;
+     console.info = console.log;
+     console.warn = console.log;
+     console.error = console.log;
+     `;
+
+  const onMessage = payload => {
+    let dataPayload;
+    try {
+      dataPayload = JSON.parse(payload.nativeEvent.data);
+    } catch (e) {}
+
+    if (dataPayload) {
+      if (dataPayload.type === 'console') {
+        console.info(`[Console] ${JSON.stringify(dataPayload.msg)}`);
+      } else if (false) {
+        if (dataPayload.type !== 'save') console.log(dataPayload);
+      }
+    }
+  };
 
   return (
     <WebView
+      injectedJavaScript={debugging}
       ref={webViewRef}
       style={{ backgroundColor: readerSettings.theme }}
       allowFileAccess={true}
@@ -141,6 +168,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
       onLayout={async () => onLayout()}
       injectedJavaScriptObject={{ customValue: 'myCustomValue' }}
       onMessage={ev => {
+        __DEV__ && onMessage(ev);
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
           case 'hide':
