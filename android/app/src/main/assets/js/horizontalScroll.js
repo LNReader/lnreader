@@ -6,13 +6,28 @@ const select = key => {
 };
 
 const chapter = select('chapter');
-const clientWidth = document.documentElement.clientWidth;
-const textWidth = chapter.scrollWidth;
-const pages = Math.ceil(textWidth / clientWidth) - 2;
+let clientWidth = document.documentElement.clientWidth;
+let textWidth = chapter.scrollWidth;
+let pages = Math.ceil(textWidth / clientWidth) - 2;
 function tapChapter(event) {
   let bounds = document.querySelector('html').getBoundingClientRect();
   let x = event.clientX;
   let y = event.clientY;
+  console.log(pages);
+  console.log(pages === null);
+  console.log(typeof pages);
+  console.log(pages === 'null');
+
+  //   if (pages === null || pages < 1) {
+  console.log('fired');
+  clientWidth = document.documentElement.clientWidth;
+  textWidth = chapter.scrollWidth;
+  pages = Math.ceil(textWidth / clientWidth) - 2;
+  //   }
+  console.log(pages);
+  if (pages === null || (pages < 0 && textWidth !== clientWidth)) {
+    return;
+  }
   let page = select('chapter')?.getAttribute('data-page');
 
   //   alert(JSON.stringify({ x, y }, null, 2));
@@ -38,11 +53,6 @@ function tapChapter(event) {
     reader.post({ type: 'hide' });
   }
 }
-
-// const navLeft = id('left');
-// const navRight = id('right');
-// const infoBox = id('infoContainer');
-// infoBox.classList.add('hidden');
 
 function movePage(page) {
   chapter.style.transform = 'translate(-' + page * 100 + '%)';
