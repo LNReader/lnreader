@@ -1,7 +1,6 @@
 import RNFS from 'react-native-fs';
 import { PluginDownloadFolder } from '@utils/constants/download';
 import { newer } from '@utils/compareVersion';
-import { Language } from '@utils/constants/languages';
 
 // packages for plugins
 import { load } from 'cheerio';
@@ -127,13 +126,13 @@ const updatePlugin = async (plugin: PluginItem) => {
   return installPlugin(plugin.url);
 };
 
-const fetchPlugins = (): Promise<Record<Language, Array<PluginItem>>> => {
+const fetchPlugins = (): Promise<PluginItem[]> => {
   // plugins host
   const githubUsername = 'LNReader';
   const githubRepository = 'lnreader-sources';
-
+  const pluginsTag = 'v2.1.0';
   return fetch(
-    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/dist/.dist/plugins.min.json`,
+    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/plugins/${pluginsTag}/.dist/plugins.min.json`,
   ).then(res => res.json());
 };
 

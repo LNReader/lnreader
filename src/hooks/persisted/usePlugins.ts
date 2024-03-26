@@ -1,5 +1,5 @@
 import { locale } from 'expo-localization';
-import { Language, languagesMapping } from '@utils/constants/languages';
+import { languagesMapping } from '@utils/constants/languages';
 import { orderBy } from 'lodash-es';
 import { useMMKVObject } from 'react-native-mmkv';
 import { PluginItem } from '@plugins/types';
@@ -23,17 +23,13 @@ export const FILTERED_INSTALLED_PLUGINS = 'FILTERED_INSTALLED_PLUGINS';
 
 const defaultLang = languagesMapping[locale.split('-')[0]] || 'English';
 
-export type PluginsMap = Record<Language, PluginItem[] | undefined>;
-
 export default function usePlugins() {
   const [lastUsedPlugin, setLastUsedPlugin] =
     useMMKVObject<PluginItem>(LAST_USED_PLUGIN);
   const [languagesFilter = [defaultLang], setLanguagesFilter] =
-    useMMKVObject<Language[]>(LANGUAGES_FILTER);
-  const [
-    filteredAvailablePlugins = {} as PluginsMap,
-    setFilteredAvailablePlugins,
-  ] = useMMKVObject<PluginsMap>(FILTERED_AVAILABLE_PLUGINS);
+    useMMKVObject<string[]>(LANGUAGES_FILTER);
+  const [filteredAvailablePlugins = [], setFilteredAvailablePlugins] =
+    useMMKVObject<PluginItem[]>(FILTERED_AVAILABLE_PLUGINS);
   const [filteredInstalledPlugins = [], setFilteredInstalledPlugins] =
     useMMKVObject<PluginItem[]>(FILTERED_INSTALLED_PLUGINS);
   /**
@@ -41,54 +37,51 @@ export default function usePlugins() {
    * We cant use the languagesFilter directly because it is updated only after component's lifecycle end.
    * And toggleLanguagFilter triggers filterPlugins before lifecycle end.
    */
-  const filterPlugins = useCallback((filter: Language[]) => {
+  const filterPlugins = useCallback((filter: string[]) => {
     const installedPlugins =
       getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
     const availablePlugins =
-      getMMKVObject<PluginsMap>(AVAILABLE_PLUGINS) || ({} as PluginsMap);
+      getMMKVObject<PluginItem[]>(AVAILABLE_PLUGINS) || [];
     setFilteredInstalledPlugins(
       installedPlugins.filter(plg => filter.includes(plg.lang)),
     );
     setFilteredAvailablePlugins(
-      filter.reduce((pre, cur) => {
-        pre[cur] = orderBy(availablePlugins[cur], 'name');
-        return pre;
-      }, {} as PluginsMap),
+      orderBy(
+        availablePlugins.filter(plg => filter.includes(plg.lang)),
+        'name',
+      ),
     );
   }, []);
 
   const refreshPlugins = useCallback(() => {
     const installedPlugins =
       getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
-    return fetchPlugins().then(fetchedPluginsMap => {
-      for (const key in fetchedPluginsMap) {
-        const lang = key as Language;
-        fetchedPluginsMap[lang] = fetchedPluginsMap[lang].filter(plg => {
-          const finded = installedPlugins.find(v => v.id === plg.id);
-          if (finded) {
-            if (newer(plg.version, finded.version)) {
-              finded.hasUpdate = true;
-              finded.iconUrl = plg.iconUrl;
-              finded.url = plg.url;
-              if (finded.id === lastUsedPlugin?.id) {
-                setLastUsedPlugin(finded);
-              }
+    return fetchPlugins().then(fetchedPlugins => {
+      fetchedPlugins.filter(plg => {
+        const finded = installedPlugins.find(v => v.id === plg.id);
+        if (finded) {
+          if (newer(plg.version, finded.version)) {
+            finded.hasUpdate = true;
+            finded.iconUrl = plg.iconUrl;
+            finded.url = plg.url;
+            if (finded.id === lastUsedPlugin?.id) {
+              setLastUsedPlugin(finded);
             }
-            return false;
           }
-          return true;
-        });
-        setMMKVObject(INSTALLED_PLUGINS, installedPlugins);
-        setMMKVObject(AVAILABLE_PLUGINS, fetchedPluginsMap);
-        filterPlugins(languagesFilter);
-      }
+          return false;
+        }
+        return true;
+      });
+      setMMKVObject(INSTALLED_PLUGINS, installedPlugins);
+      setMMKVObject(AVAILABLE_PLUGINS, fetchedPlugins);
+      filterPlugins(languagesFilter);
     });
   }, [languagesFilter]);
 
-  const toggleLanguageFilter = (lang: Language) => {
+  const toggleLanguageFilter = (lang: string) => {
     const newFilter = languagesFilter.includes(lang)
       ? languagesFilter.filter(l => l !== lang)
-      : [...languagesFilter, lang];
+      : [lang, ...languagesFilter];
     setLanguagesFilter(newFilter);
     filterPlugins(newFilter);
   };
@@ -106,10 +99,7 @@ export default function usePlugins() {
         const installedPlugins =
           getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
         const availablePlugins =
-          getMMKVObject<PluginsMap>(AVAILABLE_PLUGINS) || ({} as PluginsMap);
-        availablePlugins[plugin.lang] = availablePlugins[plugin.lang]?.filter(
-          plg => plg.id !== plugin.id,
-        );
+          getMMKVObject<PluginItem[]>(AVAILABLE_PLUGINS) || [];
 
         const actualPlugin: PluginItem = {
           ...plugin,
@@ -119,7 +109,10 @@ export default function usePlugins() {
         if (!installedPlugins.some(plg => plg.id === plugin.id)) {
           setMMKVObject(INSTALLED_PLUGINS, [...installedPlugins, actualPlugin]);
         }
-        setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
+        setMMKVObject(
+          AVAILABLE_PLUGINS,
+          availablePlugins.filter(plg => plg.id !== plugin.id),
+        );
         filterPlugins(languagesFilter);
       } else {
         throw new Error(
@@ -136,14 +129,11 @@ export default function usePlugins() {
     const installedPlugins =
       getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
     const availablePlugins =
-      getMMKVObject<PluginsMap>(AVAILABLE_PLUGINS) || ({} as PluginsMap);
+      getMMKVObject<PluginItem[]>(AVAILABLE_PLUGINS) || [];
 
     // safe
-    if (!availablePlugins[plugin.lang]?.some(_plg => _plg.id === plugin.id)) {
-      availablePlugins[plugin.lang] = [
-        ...(availablePlugins[plugin.lang] || []),
-        plugin,
-      ];
+    if (!availablePlugins.some(_plg => _plg.id === plugin.id)) {
+      availablePlugins.push(plugin);
       setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
     }
     setMMKVObject(

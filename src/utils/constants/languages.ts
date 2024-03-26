@@ -2,43 +2,22 @@
 // https://en.wikipedia.org/wiki/IETF_language_tag
 // https://en.wikipedia.org/wiki/List_of_language_names
 
-export const languages = {
-  Arabic: 'العربية',
-  Chinese: '中文, 汉语, 漢語',
-  English: 'English',
-  French: 'Français',
-  Indonesian: 'Bahasa Indonesia',
-  Japanese: '日本語',
-  Korean: '조선말, 한국어',
-  Polish: 'Polski',
-  Portuguese: 'Português',
-  Russian: 'Русский',
-  Spanish: 'Español',
-  Thai: 'ไทย',
-  Turkish: 'Türkçe',
-  Ukrainian: 'Українська',
-  Vietnamese: 'Tiếng Việt',
-} as const;
-
-export type Language = keyof typeof languages;
-export type NativeLanguage = (typeof languages)[Language];
-
-export const languagesMapping: Record<string, Language | undefined> = {
-  'ab': 'Arabic',
-  'zh': 'Chinese',
+export const languagesMapping: Record<string, string> = {
+  'ab': 'العربية',
+  'zh': '中文, 汉语, 漢語',
   'en': 'English',
-  'fr': 'French',
-  'id': 'Indonesian',
-  'ja': 'Japanese',
-  'ko': 'Korean',
-  'pl': 'Polish',
-  'pt': 'Portuguese',
-  'ru': 'Russian',
-  'es': 'Spanish',
-  'th': 'Thai',
-  'tr': 'Turkish',
-  'uk': 'Ukrainian',
-  'vi': 'Vietnamese',
+  'fr': 'Français',
+  'id': 'Bahasa Indonesia',
+  'ja': '日本語',
+  'ko': '조선말, 한국어',
+  'pl': 'Polski',
+  'pt': 'Português',
+  'ru': 'Русский',
+  'es': 'Español',
+  'th': 'ไทย',
+  'tr': 'Türkçe',
+  'uk': 'Українська',
+  'vi': 'Tiếng Việt',
 };
 
-export const availableLanguages = Object.keys(languages) as Language[];
+export const languages = Object.values(languagesMapping);

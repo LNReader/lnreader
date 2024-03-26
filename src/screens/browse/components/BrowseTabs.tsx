@@ -19,7 +19,6 @@ import {
 import { coverPlaceholderColor } from '@theme/colors';
 import { ThemeColors } from '@theme/types';
 import { Swipeable } from 'react-native-gesture-handler';
-import { languages } from '@utils/constants/languages';
 import { getString } from '@strings/translations';
 import { BrowseScreenProps } from '@navigators/types';
 import { Button, IconButtonV2 } from '@components';
@@ -30,6 +29,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { groupBy } from 'lodash-es';
 
 interface AvailableTabProps {
   searchText: string;
@@ -168,7 +168,7 @@ export const InstalledTab = memo(
                     numberOfLines={1}
                     style={[{ color: theme.onSurfaceVariant }, styles.addition]}
                   >
-                    {`${languages[item.lang]} - ${item.version}`}
+                    {`${item.lang} - ${item.version}`}
                   </Text>
                 </View>
               </View>
@@ -297,7 +297,7 @@ const AvailablePluginCard = ({
               textStyles,
             ]}
           >
-            {`${languages[plugin.lang]} - ${plugin.version}`}
+            {`${plugin.lang} - ${plugin.version}`}
           </Animated.Text>
         </Animated.View>
       </Animated.View>
@@ -337,22 +337,20 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
 
   const sections = useMemo(() => {
     const list = [];
-    for (const language of languagesFilter) {
-      if (filteredAvailablePlugins[language]) {
-        let plugins;
-        if (searchText) {
-          plugins = filteredAvailablePlugins[language]?.filter(plg =>
+    const group = groupBy(
+      searchText
+        ? filteredAvailablePlugins.filter(plg =>
             plg.name.toLocaleLowerCase().includes(searchText.toLowerCase()),
-          );
-        } else {
-          plugins = filteredAvailablePlugins[language];
-        }
-        if (plugins && plugins.length) {
-          list.push({
-            header: language,
-            data: plugins,
-          });
-        }
+          )
+        : filteredAvailablePlugins,
+      'lang',
+    );
+    for (const language of languagesFilter) {
+      if (group[language]?.length) {
+        list.push({
+          header: language,
+          data: group[language],
+        });
       }
     }
     return list;
