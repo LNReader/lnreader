@@ -37,6 +37,7 @@
     "expo-speech": "~11.3.0",
     "expo-sqlite": "~11.3.3",
     "expo-web-browser": "~12.3.2",
+    "htmlparser2": "^9.1.0",
     "i18n-js": "^3.8.0",
     "lodash-es": "^4.17.21",
     "protobufjs": "^7.2.6",

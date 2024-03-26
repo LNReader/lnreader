@@ -1,5 +1,4 @@
 import { FilterToValues, Filters } from './filterTypes';
-import { Language } from '@utils/constants/languages';
 
 export interface NovelItem {
   name: string;
@@ -50,7 +49,7 @@ export interface PluginItem {
   id: string;
   name: string;
   site: string;
-  lang: Language;
+  lang: string;
   version: string;
   url: string; // the url of raw code
   iconUrl: string;
