@@ -69,10 +69,7 @@ const getPageChaptersQuery = (
   sort = 'ORDER BY position ASC',
   filter = '',
   page = '1',
-) =>
-  `SELECT * FROM Chapter WHERE novelId = ? ${
-    page ? 'AND page = ?' : ''
-  } ${filter} ${sort}`;
+) => `SELECT * FROM Chapter WHERE novelId = ? AND page = ? ${filter} ${sort}`;
 
 export const getCustomPages = (
   novelId: number,
