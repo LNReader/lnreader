@@ -70,7 +70,9 @@ const getPageChaptersQuery = (
   filter = '',
   page = '1',
 ) =>
-  `SELECT * FROM Chapter WHERE novelId = ? AND page = '${page}' ${filter} ${sort}`;
+  `SELECT * FROM Chapter WHERE novelId = ? ${
+    page ? 'AND page = ?' : ''
+  } ${filter} ${sort}`;
 
 export const getCustomPages = (
   novelId: number,
@@ -109,7 +111,7 @@ export const getPageChapters = (
     db.transaction(tx => {
       tx.executeSql(
         getPageChaptersQuery(sort, filter, page),
-        [novelId],
+        page ? [novelId, page] : [novelId],
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
       );
