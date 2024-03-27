@@ -8,24 +8,21 @@ const select = key => {
 const chapter = select('chapter');
 let clientWidth = document.documentElement.clientWidth;
 let textWidth = chapter.scrollWidth;
-let pages = Math.ceil(textWidth / clientWidth) - 2;
+let pages = Math.ceil(textWidth / clientWidth) - 1;
 function tapChapter(event) {
   let bounds = document.querySelector('html').getBoundingClientRect();
   let x = event.clientX;
   let y = event.clientY;
 
-  clientWidth = document.documentElement.clientWidth;
   textWidth = chapter.scrollWidth;
-  pages = Math.ceil(textWidth / clientWidth) - 2;
+  pages = Math.ceil(textWidth / bounds.width) - 1;
 
   if (pages === null || (pages < 0 && textWidth !== clientWidth)) {
     return;
   }
   let page = select('chapter')?.getAttribute('data-page');
 
-  //   alert(JSON.stringify({ x, y }, null, 2));
   if (x / bounds.width < 0.33) {
-    // alert('T' + page);
     if (page > 0) {
       page--;
       movePage(page);
@@ -60,10 +57,10 @@ function movePage(page) {
     }),
   );
 }
-let sendWidthTimeout;
+let sendPagesTimeout;
 const sendPages = timeOut => {
-  clearTimeout(sendHeightTimeout);
-  sendHeightTimeout = setTimeout(
+  clearTimeout(sendPagesTimeout);
+  sendPagesTimeout = setTimeout(
     reader.post(JSON.stringify({ type: 'pages', data: pages })),
     timeOut,
   );
