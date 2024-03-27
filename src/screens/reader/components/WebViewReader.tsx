@@ -151,8 +151,8 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
 
     if (dataPayload) {
       if (dataPayload.type === 'console') {
-        console.info(`[Console] ${JSON.stringify(dataPayload.msg)}`);
-      } else if (false) {
+        console.info(`[Console] ${JSON.stringify(dataPayload.msg, null, 2)}`);
+      } else if (!false) {
         if (dataPayload.type !== 'save') console.log(dataPayload);
       }
     }
@@ -384,20 +384,29 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         : ''
                     }
                     </body>
+                    <script>
+                        // Debug
+                        console = new Object();
+                        console.log = function(log) {
+                         reader.post({"type": "console", "msg": log});
+                        };
+                        console.debug = console.log;
+                        console.info = console.log;
+                        console.warn = console.log;
+                        console.error = console.log;
+                    </script>
                     <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
                     <script src="${assetsUriPrefix}/js/index.js"></script>
                     <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                     <script src="${pluginCustomJS}"></script>
                     <script>
+                    document.querySelector(".chapterCtn").addEventListener("click", ${
+                      !readerPages
+                        ? '() => reader.post({ type: "hide" })'
+                        : 'tapChapter'
+                    });
                       async function fn(){
-                        document.querySelector(".chapterCtn").addEventListener("click", ${
-                          !readerPages
-                            ? '() => reader.post({ type: "hide" })'
-                            : 'tapChapter'
-                        });
-                        // Position important to prevent layout bugs
-                        ${readerPages && createHorizontalReaderPages()}
-                        
+                                         
                           ${readerSettings.customJS}
                         // scroll to saved position
                         reader.refresh();
