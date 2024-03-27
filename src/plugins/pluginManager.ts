@@ -10,6 +10,7 @@ import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
 import { fetchApi, fetchFile, fetchProto, fetchText } from './helpers/fetch';
+import { storage, localStorage, sessionStorage } from './helpers/storage';
 import { defaultCover } from './helpers/constants';
 import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
@@ -28,6 +29,7 @@ const packages: Record<string, any> = {
   '@libs/isAbsoluteUrl': { isUrlAbsolute },
   '@libs/filterInputs': { FilterTypes },
   '@libs/defaultCover': { defaultCover },
+  '@libs/storage': { storage, localStorage, sessionStorage },
 };
 
 const _require = (packageName: string) => {
@@ -119,6 +121,11 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
 
 const uninstallPlugin = async (_plugin: PluginItem) => {
   plugins[_plugin.id] = undefined;
+  storage.mmkv.getAllKeys().forEach(key => {
+    if (key.startsWith(_plugin.id)) {
+      storage.mmkv.delete(key);
+    }
+  });
   return serializePlugin(_plugin.id, '', false);
 };
 
@@ -128,9 +135,10 @@ const updatePlugin = async (plugin: PluginItem) => {
 
 const fetchPlugins = (): Promise<PluginItem[]> => {
   // plugins host
-  const githubUsername = 'LNReader';
+  const githubUsername = 'Rider21';
   const githubRepository = 'lnreader-sources';
   const pluginsTag = 'v2.1.0';
+
   return fetch(
     `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/plugins/${pluginsTag}/.dist/plugins.min.json`,
   ).then(res => res.json());

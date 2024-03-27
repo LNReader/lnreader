@@ -43,13 +43,13 @@ type ExcludableCheckboxFilter = {
 
 export type Filters = Record<
   string,
-  | { label: string } & (
-      | PickerFilter
-      | CheckboxFilter
-      | TextFilter
-      | SwitchFilter
-      | ExcludableCheckboxFilter
-    )
+  { label: string } & (
+    | PickerFilter
+    | CheckboxFilter
+    | TextFilter
+    | SwitchFilter
+    | ExcludableCheckboxFilter
+  )
 >;
 
 export type FilterToValues<
@@ -67,14 +67,14 @@ export type ValueOfFilter<T extends FilterTypes> =
   T extends FilterTypes.CheckboxGroup
     ? CheckboxFilter['value']
     : T extends FilterTypes.Picker
-    ? PickerFilter['value']
-    : T extends FilterTypes.Switch
-    ? SwitchFilter['value']
-    : T extends FilterTypes.TextInput
-    ? TextFilter['value']
-    : T extends FilterTypes.ExcludableCheckboxGroup
-    ? ExcludableCheckboxFilter['value']
-    : never;
+      ? PickerFilter['value']
+      : T extends FilterTypes.Switch
+        ? SwitchFilter['value']
+        : T extends FilterTypes.TextInput
+          ? TextFilter['value']
+          : T extends FilterTypes.ExcludableCheckboxGroup
+            ? ExcludableCheckboxFilter['value']
+            : never;
 
 export const isPickerValue = (
   q: FilterToValues<Filters>[string],
