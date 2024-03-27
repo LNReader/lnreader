@@ -270,11 +270,11 @@ export const updateNovelInfo = async (info: NovelInfo) => {
 
 export const pickCustomNovelCover = async (novel: NovelInfo) => {
   const image = await DocumentPicker.getDocumentAsync({ type: 'image/*' });
-  if (image.type === 'success' && image.uri) {
+  if (image.assets && image.assets[0]) {
     const novelDir =
       NovelDownloadFolder + '/' + novel.pluginId + '/' + novel.id;
     let novelCoverUri = 'file://' + novelDir + '/cover.png';
-    RNFS.copyFile(image.uri, novelCoverUri);
+    RNFS.copyFile(image.assets[0].uri, novelCoverUri);
     novelCoverUri += '?' + Date.now();
     db.transaction(tx => {
       tx.executeSql(
@@ -309,20 +309,32 @@ export const updateNovelCategories = async (
   categoryIds: number[],
 ): Promise<void> => {
   let queries: string[] = [];
-  // not allow others have local id;
-  categoryIds = categoryIds.filter(id => id !== 2);
   queries.push(
     `DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(
       ',',
     )}) AND categoryId != 2`,
   );
-  novelIds.forEach(novelId => {
-    categoryIds.forEach(categoryId =>
+  // if no category is selected => set to the default category
+  if (categoryIds.length) {
+    novelIds.forEach(novelId => {
+      categoryIds.forEach(categoryId =>
+        queries.push(
+          `INSERT INTO NovelCategory (novelId, categoryId) VALUES (${novelId}, ${categoryId})`,
+        ),
+      );
+    });
+  } else {
+    novelIds.forEach(novelId => {
+      // hacky: insert local novel category -> failed -> ignored
       queries.push(
-        `INSERT INTO NovelCategory (novelId, categoryId) VALUES (${novelId}, ${categoryId})`,
-      ),
-    );
-  });
+        `INSERT OR IGNORE INTO NovelCategory (novelId, categoryId) 
+         VALUES (
+          ${novelId}, 
+          IFNULL((SELECT categoryId FROM NovelCategory WHERE novelId = ${novelId}), (SELECT id FROM Category WHERE sort = 1))
+        )`,
+      );
+    });
+  }
   db.transaction(tx => {
     queries.forEach(query => {
       tx.executeSql(query);

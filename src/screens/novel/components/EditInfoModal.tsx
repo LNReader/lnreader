@@ -131,6 +131,15 @@ const EditInfoModal = ({
           dense
         />
         <TextInput
+          placeholder={'Artist: ' + novel.artist}
+          style={{ fontSize: 14 }}
+          numberOfLines={1}
+          mode="outlined"
+          theme={{ colors: { ...theme } }}
+          onChangeText={text => setNovel({ ...novel, artist: text })}
+          dense
+        />
+        <TextInput
           placeholder={getString('novelScreen.edit.summary', {
             summary: novel.summary?.substring(0, 16),
           })}
@@ -156,7 +165,7 @@ const EditInfoModal = ({
           dense
         />
 
-        {novel.genres !== undefined && novel.genres !== '' && (
+        {novel.genres !== undefined && novel.genres !== '' ? (
           <FlatList
             contentContainerStyle={{ marginVertical: 8 }}
             horizontal
@@ -169,7 +178,7 @@ const EditInfoModal = ({
             )}
             showsHorizontalScrollIndicator={false}
           />
-        )}
+        ) : null}
         <View style={{ flexDirection: 'row-reverse' }}>
           <Button
             onPress={() => {

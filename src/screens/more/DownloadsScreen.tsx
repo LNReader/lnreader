@@ -91,13 +91,13 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
         handleGoBack={navigation.goBack}
         theme={theme}
       >
-        {chapters.length > 0 && (
+        {chapters.length > 0 ? (
           <MaterialAppbar.Action
             icon="delete-sweep"
             iconColor={theme.onSurface}
             onPress={showDialog}
           />
-        )}
+        ) : null}
       </Appbar>
       <List.InfoItem title={getString('downloadScreen.dbInfo')} theme={theme} />
       {loading ? (

@@ -69,7 +69,7 @@ const ChapterFooter = ({
             iconColor={theme.onSurface}
           />
         </Pressable>
-        {!novel.isLocal && (
+        {!novel.isLocal ? (
           <Pressable
             android_ripple={rippleConfig}
             style={styles.buttonStyles}
@@ -83,7 +83,7 @@ const ChapterFooter = ({
           >
             <IconButton icon="earth" size={26} iconColor={theme.onSurface} />
           </Pressable>
-        )}
+        ) : null}
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}

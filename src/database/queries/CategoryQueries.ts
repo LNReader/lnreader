@@ -35,6 +35,7 @@ export const getCategoriesWithCount = async (
       ',',
     )}) GROUP BY categoryId 
   ) as NC ON Category.id = NC.categoryId
+  WHERE Category.id != 2
   ORDER BY sort
 	`;
 

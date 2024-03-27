@@ -89,7 +89,7 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
           />
         }
       />
-      {queue.length > 0 && (
+      {queue.length > 0 ? (
         <FAB
           style={[styles.fab, { backgroundColor: theme.primary }]}
           color={theme.onPrimary}
@@ -104,7 +104,7 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
             isDownloading ? pauseDownload() : resumeDowndload();
           }}
         />
-      )}
+      ) : null}
     </>
   );
 };

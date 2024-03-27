@@ -65,27 +65,25 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
             theme={theme}
           />
           {tracker?.name === 'MyAnimeList' &&
-            tracker?.auth.expiresAt < new Date(Date.now()) && (
-              <>
-                <List.Divider theme={theme} />
-                <List.SubHeader theme={theme}>
-                  {getString('common.settings')}
-                </List.SubHeader>
-                <List.Item
-                  title={
-                    getString('trackingScreen.revalidate') + ' Myanimelist'
+          tracker?.auth.expiresAt < new Date(Date.now()) ? (
+            <>
+              <List.Divider theme={theme} />
+              <List.SubHeader theme={theme}>
+                {getString('common.settings')}
+              </List.SubHeader>
+              <List.Item
+                title={getString('trackingScreen.revalidate') + ' Myanimelist'}
+                onPress={async () => {
+                  const revalidate = getTracker('MyAnimeList')?.revalidate;
+                  if (revalidate) {
+                    const auth = await revalidate(tracker.auth);
+                    setTracker('MyAnimeList', auth);
                   }
-                  onPress={async () => {
-                    const revalidate = getTracker('MyAnimeList')?.revalidate;
-                    if (revalidate) {
-                      const auth = await revalidate(tracker.auth);
-                      setTracker('MyAnimeList', auth);
-                    }
-                  }}
-                  theme={theme}
-                />
-              </>
-            )}
+                }}
+                theme={theme}
+              />
+            </>
+          ) : null}
         </List.Section>
 
         <Portal>

@@ -142,14 +142,14 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
               />
             ))}
           </ScrollView>
-          {theme.isDark && (
+          {theme.isDark ? (
             <SettingSwitch
               label={getString('appearanceScreen.pureBlackDarkMode')}
               value={isAmoledBlack}
               onPress={() => setAmoledBlack(prevVal => !prevVal)}
               theme={theme}
             />
-          )}
+          ) : null}
           <List.ColorItem
             title={getString('appearanceScreen.accentColor')}
             description={theme.primary.toUpperCase()}

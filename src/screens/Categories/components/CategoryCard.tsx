@@ -101,7 +101,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
             onPress={showCategoryModal}
             theme={theme}
           />
-          {categoryIndex !== 0 && category.id !== 2 && (
+          {categoryIndex !== 0 && category.id !== 2 ? (
             <IconButton
               name="delete-outline"
               color={theme.onSurface}
@@ -109,7 +109,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
               onPress={showDeleteCategoryModal}
               theme={theme}
             />
-          )}
+          ) : null}
         </View>
       </View>
       <Portal>

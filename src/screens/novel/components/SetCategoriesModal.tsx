@@ -113,20 +113,18 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
               closeModal();
             }}
           />
-          {selectedCategories.length ? (
-            <Button
-              title={getString('common.ok')}
-              onPress={async () => {
-                await updateNovelCategories(
-                  novelIds,
-                  selectedCategories.map(category => category.id),
-                );
-                closeModal();
-                setSelectedCategories([]);
-                onSuccess?.();
-              }}
-            />
-          ) : null}
+          <Button
+            title={getString('common.ok')}
+            onPress={async () => {
+              await updateNovelCategories(
+                novelIds,
+                selectedCategories.map(category => category.id),
+              );
+              closeModal();
+              setSelectedCategories([]);
+              onSuccess?.();
+            }}
+          />
         </View>
       </Modal>
     </Portal>

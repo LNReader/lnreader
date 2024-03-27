@@ -39,7 +39,7 @@ export const ThemePicker = ({
       }}
     >
       <Pressable style={{ flex: 1 }} onPress={onPress}>
-        {currentTheme.id === theme.id && (
+        {currentTheme.id === theme.id ? (
           <MaterialCommunityIcons
             name="check"
             color={theme.onPrimary}
@@ -54,7 +54,7 @@ export const ThemePicker = ({
               padding: 1.6,
             }}
           />
-        )}
+        ) : null}
         <View
           style={{
             height: 20,

@@ -130,9 +130,9 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
         handleGoBack={navigation.goBack}
         theme={theme}
       />
-      {progress > 0 && (
+      {progress > 0 ? (
         <ProgressBar color={theme.primary} progress={progress} />
-      )}
+      ) : null}
       <FlatList
         contentContainerStyle={{ flexGrow: 1, padding: 4 }}
         data={searchResults}

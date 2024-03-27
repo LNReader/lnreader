@@ -67,8 +67,8 @@ export const restoreBackup = async (filePath?: string) => {
     });
     let novelsString = '';
 
-    if (backup.type === 'success') {
-      novelsString = await RNFS.readFile(backup.uri);
+    if (backup.assets && backup.assets[0]) {
+      novelsString = await RNFS.readFile(backup.assets[0].uri);
     } else if (filePath) {
       if (!(await RNFS.exists(filePath))) {
         showToast(getString('backupScreen.legacy.noErrorNovel'));

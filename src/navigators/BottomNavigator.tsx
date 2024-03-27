@@ -37,7 +37,7 @@ const BottomNavigator = () => {
           tabBarIcon: 'book-variant-multiple',
         }}
       />
-      {showUpdatesTab && (
+      {showUpdatesTab ? (
         <Tab.Screen
           name="Updates"
           component={Updates}
@@ -46,8 +46,8 @@ const BottomNavigator = () => {
             tabBarIcon: 'alert-decagram-outline',
           }}
         />
-      )}
-      {showHistoryTab && (
+      ) : null}
+      {showHistoryTab ? (
         <Tab.Screen
           name="History"
           component={History}
@@ -56,7 +56,7 @@ const BottomNavigator = () => {
             tabBarIcon: 'history',
           }}
         />
-      )}
+      ) : null}
       <Tab.Screen
         name="Browse"
         component={Browse}

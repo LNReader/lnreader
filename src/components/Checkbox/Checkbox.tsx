@@ -71,14 +71,14 @@ export const SortItem = ({ label, status, onPress, theme }: SortItemProps) => (
     style={[styles.pressable, { paddingVertical: 16, paddingLeft: 64 }]}
     onPress={onPress}
   >
-    {status && (
+    {status ? (
       <MaterialCommunityIcons
         name={status === 'asc' ? 'arrow-up' : 'arrow-down'}
         color={theme.primary}
         size={21}
         style={styles.icon}
       />
-    )}
+    ) : null}
     <Text style={{ color: theme.onSurface }}>{label}</Text>
   </Pressable>
 );
