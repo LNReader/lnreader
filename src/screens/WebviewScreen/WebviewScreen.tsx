@@ -25,7 +25,6 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const theme = useTheme();
   const webViewRef = useRef<WebView | null>(null);
 
-  const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [title, setTitle] = useState(name || '');
   const [currentUrl, setCurrentUrl] = useState(uri);
@@ -38,7 +37,6 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
     if (!e.loading) {
       setTitle(e.title);
     }
-    setLoading(e.loading);
     setCurrentUrl(e.url);
     setCanGoBack(e.canGoBack);
     setCanGoForward(e.canGoForward);
@@ -78,7 +76,6 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
       <Appbar
         title={title}
         theme={theme}
-        loading={loading && progress !== 1}
         currentUrl={currentUrl}
         canGoBack={canGoBack}
         canGoForward={canGoForward}
@@ -92,7 +89,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
       <ProgressBar
         color={theme.primary}
         progress={progress}
-        visible={loading && progress !== 1}
+        visible={progress !== 1}
       />
       <WebView
         userAgent={getUserAgent()}

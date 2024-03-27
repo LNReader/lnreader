@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import TextTicker from 'react-native-text-ticker';
+import { Marquee } from '@animatereactnative/marquee';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { IconButtonV2 } from '@components';
@@ -9,7 +9,6 @@ import { ThemeColors } from '@theme/types';
 interface AppbarProps {
   title: string;
   theme: ThemeColors;
-  loading: boolean;
   currentUrl: string;
   canGoBack: boolean;
   canGoForward: boolean;
@@ -21,7 +20,6 @@ interface AppbarProps {
 const Appbar: React.FC<AppbarProps> = ({
   title,
   theme,
-  loading,
   currentUrl,
   canGoBack,
   canGoForward,
@@ -51,18 +49,13 @@ const Appbar: React.FC<AppbarProps> = ({
         >
           {title}
         </Text>
-        <TextTicker
+        <Marquee
           style={[styles.url, { color: theme.onSurfaceVariant }]}
-          loop
-          scrollSpeed={45}
-          bounceSpeed={100}
-          marqueeDelay={1000}
-          bounceDelay={1000}
-          isInteraction={false}
-          disabled={loading}
+          speed={5}
+          spacing={20}
         >
           {currentUrl}
-        </TextTicker>
+        </Marquee>
       </View>
       <View style={styles.iconContainer}>
         <IconButtonV2
@@ -97,12 +90,14 @@ export default Appbar;
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    justifyContent: 'center',
   },
   titleContainer: {
     flex: 1,
     justifyContent: 'center',
   },
   title: {
+    paddingBottom: 2,
     paddingLeft: 2,
     fontSize: 18,
   },

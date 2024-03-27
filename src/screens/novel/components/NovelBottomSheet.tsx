@@ -45,8 +45,8 @@ const ChaptersSettingsSheet = ({
           filter.match('AND isDownloaded=1')
             ? true
             : filter.match('AND isDownloaded=0')
-            ? 'indeterminate'
-            : false
+              ? 'indeterminate'
+              : false
         }
         onPress={() => {
           if (filter.match('AND isDownloaded=1')) {
@@ -67,8 +67,8 @@ const ChaptersSettingsSheet = ({
           filter.match('AND `unread`=1')
             ? true
             : filter.match('AND `unread`=0')
-            ? 'indeterminate'
-            : false
+              ? 'indeterminate'
+              : false
         }
         onPress={() => {
           if (filter.match(' AND `unread`=1')) {
@@ -103,8 +103,8 @@ const ChaptersSettingsSheet = ({
           sort === 'ORDER BY position ASC'
             ? 'asc'
             : sort === 'ORDER BY position DESC'
-            ? 'desc'
-            : undefined
+              ? 'desc'
+              : undefined
         }
         onPress={() =>
           sort === 'ORDER BY position ASC'
@@ -119,8 +119,8 @@ const ChaptersSettingsSheet = ({
           sort === 'ORDER BY name ASC'
             ? 'asc'
             : sort === 'ORDER BY name DESC'
-            ? 'desc'
-            : undefined
+              ? 'desc'
+              : undefined
         }
         onPress={() =>
           sort === 'ORDER BY name ASC'
