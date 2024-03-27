@@ -28,7 +28,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
 import { getString } from '@strings/translations';
-import { ChapterItem } from '@plugins/types';
 import dayjs from 'dayjs';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 
@@ -326,6 +325,12 @@ export const useNovel = (novelPath: string, pluginId: string) => {
       if (!novel) {
         return;
       }
+      if (sourceNovel.latestChapter) {
+        setMMKVObject(
+          `${NOVEL_LATEST_CHAPTER_PREFIX}_${novel.id}`,
+          sourceNovel.latestChapter,
+        );
+      }
     }
     let pages: string[];
     if (novel.totalPages > 0) {
@@ -349,7 +354,11 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     } else {
       pages = (await getCustomPages(novel.id)).map(c => c.page);
     }
-    setPages(pages);
+    if (pages.length) {
+      setPages(pages);
+    } else {
+      setPages(['1']);
+    }
     setNovel(novel);
   }, []);
 
@@ -373,26 +382,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
           };
         });
         await insertChapters(novel.id, sourceChapters);
-        const latestChapkey = `${NOVEL_LATEST_CHAPTER_PREFIX}_${novel.id}`;
-        const latestChapter = getMMKVObject<ChapterItem>(latestChapkey);
-        if (
-          sourcePage.latestChapter &&
-          sourcePage.latestChapter.path !== latestChapter?.path
-        ) {
-          setMMKVObject(latestChapkey, sourcePage.latestChapter);
-          setMMKVObject(
-            hasUpdatesKey,
-            hasUpdates?.map((val, idx) => {
-              if (idx !== pageIndex) {
-                return false;
-              }
-              return true;
-            }),
-          );
-        } else {
-          hasUpdates[pageIndex] = false;
-          setMMKVObject(hasUpdatesKey, hasUpdates);
-        }
+        hasUpdates[pageIndex] = false;
+        setMMKVObject(hasUpdatesKey, hasUpdates);
         chapters = await _getPageChapters(
           novel.id,
           novelSettings.sort,
@@ -401,8 +392,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         );
       }
       setChapters(chapters);
+      setLoading(false);
     }
-    setLoading(false);
   }, [novel, novelSettings, pageIndex]);
   useEffect(() => {
     getNovel();

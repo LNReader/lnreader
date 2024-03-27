@@ -1,7 +1,6 @@
 import RNFS from 'react-native-fs';
 import { PluginDownloadFolder } from '@utils/constants/download';
 import { newer } from '@utils/compareVersion';
-import { Language } from '@utils/constants/languages';
 
 // packages for plugins
 import { load } from 'cheerio';
@@ -10,27 +9,27 @@ import qs from 'qs';
 import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
-import { fetchApi, fetchFile, fetchText } from './helpers/fetch';
+import { fetchApi, fetchFile, fetchProto, fetchText } from './helpers/fetch';
 import { storage, localStorage, sessionStorage } from './helpers/storage';
-import { cookieManager } from './helpers/сookie';
 import { defaultCover } from './helpers/constants';
 import { encode, decode } from 'urlencode';
+import { Parser } from 'htmlparser2';
 import TextFile from '@native/TextFile';
 
 const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
 
 const packages: Record<string, any> = {
+  'htmlparser2': { Parser },
   'cheerio': { load },
   'dayjs': dayjs,
   'qs': qs,
   'urlencode': { encode, decode },
   '@libs/novelStatus': { NovelStatus },
-  '@libs/fetch': { fetchApi, fetchFile, fetchText },
+  '@libs/fetch': { fetchApi, fetchFile, fetchText, fetchProto },
   '@libs/isAbsoluteUrl': { isUrlAbsolute },
   '@libs/filterInputs': { FilterTypes },
   '@libs/defaultCover': { defaultCover },
   '@libs/storage': { storage, localStorage, sessionStorage },
-  '@libs/сookie': { cookieManager },
 };
 
 const _require = (packageName: string) => {
@@ -134,13 +133,14 @@ const updatePlugin = async (plugin: PluginItem) => {
   return installPlugin(plugin.url);
 };
 
-const fetchPlugins = (): Promise<Record<Language, Array<PluginItem>>> => {
+const fetchPlugins = (): Promise<PluginItem[]> => {
   // plugins host
   const githubUsername = 'Rider21';
   const githubRepository = 'lnreader-sources';
+  const pluginsTag = 'v2.1.0';
 
   return fetch(
-    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/dist/.dist/plugins.min.json`,
+    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/plugins/${pluginsTag}/.dist/plugins.min.json`,
   ).then(res => res.json());
 };
 

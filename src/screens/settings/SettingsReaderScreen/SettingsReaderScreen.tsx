@@ -48,8 +48,12 @@ const SettingsReaderScreen = () => {
   const layoutHeight = Dimensions.get('window').height;
   const batteryLevel = useBatteryLevel();
   const readerSettings = useChapterReaderSettings();
-  const { showScrollPercentage, showBatteryAndTime } =
-    useChapterGeneralSettings();
+  const {
+    showScrollPercentage,
+    showBatteryAndTime,
+    verticalSeekbar,
+    bionicReading,
+  } = useChapterGeneralSettings();
   const READER_HEIGHT = 280;
   const assetsUriPrefix = useMemo(
     () => (__DEV__ ? 'http://localhost:8081/assets' : 'file:///android_asset'),
@@ -165,6 +169,8 @@ const SettingsReaderScreen = () => {
                     showScrollPercentage: ${showScrollPercentage},
                     swipeGestures: false,
                     showBatteryAndTime: ${showBatteryAndTime},
+                    verticalSeekbar: ${verticalSeekbar},
+                    bionicReading: ${bionicReading},
                   }
                   var batteryLevel = ${batteryLevel};
                   var autoSaveInterval = 2222;
@@ -193,6 +199,7 @@ const SettingsReaderScreen = () => {
                     </div>
                 </div>
                 </body>
+                <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
                 <script src="${assetsUriPrefix}/js/index.js"></script>
                 <script>
                   async function fn(){

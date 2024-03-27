@@ -65,12 +65,8 @@ export const insertChapters = async (
   });
 };
 
-const getPageChaptersQuery = (
-  sort = 'ORDER BY position ASC',
-  filter = '',
-  page = '1',
-) =>
-  `SELECT * FROM Chapter WHERE novelId = ? AND page = '${page}' ${filter} ${sort}`;
+const getPageChaptersQuery = (sort = 'ORDER BY position ASC', filter = '') =>
+  `SELECT * FROM Chapter WHERE novelId = ? AND page = ? ${filter} ${sort}`;
 
 export const getCustomPages = (
   novelId: number,
@@ -108,8 +104,8 @@ export const getPageChapters = (
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        getPageChaptersQuery(sort, filter, page),
-        [novelId],
+        getPageChaptersQuery(sort, filter),
+        [novelId, page || '1'],
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
       );

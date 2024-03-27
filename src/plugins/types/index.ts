@@ -1,5 +1,4 @@
 import { FilterToValues, Filters } from './filterTypes';
-import { Language } from '@utils/constants/languages';
 
 export interface NovelItem {
   name: string;
@@ -33,11 +32,11 @@ export interface SourceNovel extends NovelItem {
   status?: NovelStatus;
   chapters: ChapterItem[];
   totalPages?: number;
+  latestChapter?: ChapterItem;
 }
 
 export interface SourcePage {
   chapters: ChapterItem[];
-  latestChapter?: ChapterItem;
 }
 
 export interface PopularNovelsOptions<Q extends Filters> {
@@ -50,7 +49,7 @@ export interface PluginItem {
   id: string;
   name: string;
   site: string;
-  lang: Language;
+  lang: string;
   version: string;
   url: string; // the url of raw code
   iconUrl: string;

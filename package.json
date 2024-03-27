@@ -6,7 +6,7 @@
     "android": "react-native run-android --active-arch-only",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "lint": "eslint \"./src/**/*.{js,jsx,ts,tsx}\" --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
     "buildRelease": "cd android && ./gradlew clean && ./gradlew assembleRelease",
     "open": "open ./android/app/build/outputs/apk/release/",
@@ -37,8 +37,10 @@
     "expo-speech": "~11.3.0",
     "expo-sqlite": "~11.3.3",
     "expo-web-browser": "~12.3.2",
+    "htmlparser2": "^9.1.0",
     "i18n-js": "^3.8.0",
     "lodash-es": "^4.17.21",
+    "protobufjs": "^7.2.6",
     "qs": "^6.12.0",
     "react": "18.2.0",
     "react-native": "0.72.10",
@@ -60,7 +62,7 @@
     "react-native-text-ticker": "^1.14.0",
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "^13.2.2",
-    "sanitize-html": "^2.12.1",
+    "sanitize-html": "^2.13.0",
     "urlencode": "^2.0.0"
   },
   "devDependencies": {

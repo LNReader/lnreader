@@ -81,6 +81,7 @@ export interface ChapterGeneralSettings {
   autoScrollOffset: number | null;
   verticalSeekbar: boolean;
   removeExtraParagraphSpacing: boolean;
+  bionicReading: boolean;
 }
 
 export interface ReaderTheme {
@@ -158,6 +159,7 @@ export const initialChapterGeneralSettings: ChapterGeneralSettings = {
   autoScrollOffset: null,
   verticalSeekbar: true,
   removeExtraParagraphSpacing: false,
+  bionicReading: false,
 };
 
 export const initialChapterReaderSettings: ChapterReaderSettings = {
