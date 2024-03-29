@@ -221,7 +221,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                     :root {
                       --StatusBar-currentHeight: ${StatusBar.currentHeight};
                       --readerSettings-theme: ${readerSettings.theme};
-                      --readerSettings-padding: ${2 * readerSettings.padding}%;
+                      --readerSettings-padding: ${readerSettings.padding}%;
                       --readerSettings-textSize: ${readerSettings.textSize}px;
                       --readerSettings-textColor: ${readerSettings.textColor};
                       --readerSettings-textAlign: ${readerSettings.textAlign};
@@ -245,9 +245,9 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       --chapterCtn-height: ${layoutHeight - 140};
                       }
                       .nextButton, .infoText {
-                        margin-left: ${readerSettings.padding * 2}%;
-                        margin-right: ${readerSettings.padding * 2}%;
-                        width: calc(100% - ${readerSettings.padding * 4}%);
+                        margin-left: ${readerSettings.padding}%;
+                        margin-right: ${readerSettings.padding}%;
+                        width: calc(100% - ${readerSettings.padding * 2}%);
                       }
                       @font-face {
                         font-family: ${readerSettings.fontFamily};
