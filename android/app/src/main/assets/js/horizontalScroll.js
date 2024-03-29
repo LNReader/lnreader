@@ -20,6 +20,7 @@ function tapChapter(event) {
   if (pages === null || (pages < 0 && textWidth !== clientWidth)) {
     return;
   }
+  select('chapter').setAttribute('data-pages', pages);
   let page = select('chapter')?.getAttribute('data-page');
 
   if (x / bounds.width < 0.33) {
@@ -47,22 +48,22 @@ function tapChapter(event) {
 function movePage(page) {
   chapter.style.transform = 'translate(-' + page * 100 + '%)';
   select('chapter').setAttribute('data-page', page);
-  reader.post(
-    JSON.stringify({
-      type: 'scrollend',
-      data: {
-        offSetY: page * 100,
-        percentage: page === 0 ? 1 : (page / pages) * 100,
-      },
-    }),
-  );
+  // reader.post(
+  //   JSON.stringify({
+  //     type: 'scrollend',
+  //     data: {
+  //       offSetY: page * 100,
+  //       percentage: page === 0 ? 1 : (page / pages) * 100,
+  //     },
+  //   }),
+  // );
 }
-let sendPagesTimeout;
-const sendPages = timeOut => {
-  clearTimeout(sendPagesTimeout);
-  sendPagesTimeout = setTimeout(
-    reader.post(JSON.stringify({ type: 'pages', data: pages })),
-    timeOut,
-  );
-};
-sendPages(200);
+// let sendPagesTimeout;
+// const sendPages = timeOut => {
+//   clearTimeout(sendPagesTimeout);
+//   sendPagesTimeout = setTimeout(
+//     reader.post(JSON.stringify({ type: 'pages', data: pages })),
+//     timeOut,
+//   );
+// };
+// sendPages(200);

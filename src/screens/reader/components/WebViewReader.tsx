@@ -336,11 +336,10 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                   </head>
                   <body'>
                     <div class="chapterCtn"> 
-                      <div id="left"></div>
-                      <div id="right"></div>
-                      <div id="middle" ></div>
                       <chapter 
                         data-page=0
+                        data-pages=0
+                        data-page-reader='${readerPages}'
                         data-plugin-id='${novel.pluginId}'
                         data-novel-id='${chapter.novelId}'
                         data-chapter-id='${chapter.id}'

@@ -42,6 +42,11 @@ class Reader {
     this.pluginId = this.chapter.getAttribute('data-plugin-id');
     this.novelId = this.chapter.getAttribute('data-novel-id');
     this.chapterId = this.chapter.getAttribute('data-chapter-id');
+    this.chapterWidth = this.chapter.scrollWidth;
+    this.layoutWidth = window.innerWidth;
+    this.pageReader = this.chapter.getAttribute('data-page-reader');
+    this.currentPage = this.chapter.getAttribute('data-page');
+    this.totalPages = this.chapter.getAttribute('data-pages');
     this.saveProgressInterval = setInterval(
       () =>
         this.post({
@@ -214,6 +219,8 @@ class ScrollHandler {
     this.sliderOffsetY = this.slider.getBoundingClientRect().top;
     this.lock = false;
     window.onscroll = () => !this.lock && this.update();
+    window.ontouchend = () => !this.lock && this.update();
+    //window.onload = () => setTimeout(() => this.update(), 100);
     this.thumb.ontouchstart = () => (this.lock = true);
     this.thumb.ontouchend = () => (this.lock = false);
     this.thumb.ontouchmove = e => {
@@ -227,6 +234,44 @@ class ScrollHandler {
     };
   }
   update = ratio => {
+    if (this.reader.pageReader === 'true') {
+      setTimeout(() => this.updateHorizontal(ratio), 10);
+    } else {
+      this.updateVertical(ratio);
+    }
+  };
+  updateHorizontal = ratio => {
+    this.reader.currentPage = Number(
+      this.reader.chapter.getAttribute('data-page'),
+    );
+    this.reader.totalPages = Number(
+      this.reader.chapter.getAttribute('data-pages'),
+    );
+    const percentage = parseInt(
+      (this.reader.currentPage / this.reader.totalPages) * 100,
+    );
+    if (this.toolWrapper.visible) {
+      if (this.reader.verticalSeekbar) {
+        this.progress.style.height = percentage + '%';
+        this.progress.style.width = '100%';
+      } else {
+        this.progress.style.height = '100%';
+        this.progress.style.width = percentage + '%';
+      }
+      this.percentage.innerText = this.reader.currentPage;
+    }
+    if (this.lock) {
+      window.scrollTo({
+        left: this.reader.layoutWidth * ratio,
+        behavior: 'instant',
+      });
+    }
+    if (this.reader.percentage) {
+      this.reader.percentage.innerText =
+        this.reader.currentPage + 1 + '/' + (this.reader.totalPages + 1);
+    }
+  };
+  updateVertical = ratio => {
     if (ratio === undefined) {
       ratio =
         (window.scrollY + this.reader.layoutHeight) / this.reader.chapterHeight;
