@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Marquee } from '@animatereactnative/marquee';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,6 +10,7 @@ interface AppbarProps {
   title: string;
   theme: ThemeColors;
   currentUrl: string;
+  loading: boolean;
   canGoBack: boolean;
   canGoForward: boolean;
   webView: RefObject<WebView>;
@@ -21,6 +22,7 @@ const Appbar: React.FC<AppbarProps> = ({
   title,
   theme,
   currentUrl,
+  loading,
   canGoBack,
   canGoForward,
   webView,
@@ -28,6 +30,7 @@ const Appbar: React.FC<AppbarProps> = ({
   goBack,
 }) => {
   const { top } = useSafeAreaInsets();
+  const [animating, setAnimating] = useState(false);
 
   return (
     <View
@@ -44,18 +47,31 @@ const Appbar: React.FC<AppbarProps> = ({
       />
       <View style={styles.titleContainer}>
         <Text
-          style={[styles.title, { color: theme.onSurface }]}
           numberOfLines={1}
+          style={[styles.title, { color: theme.onSurface }]}
         >
           {title}
         </Text>
-        <Marquee
-          style={[styles.url, { color: theme.onSurfaceVariant }]}
-          speed={5}
-          spacing={20}
-        >
-          {currentUrl}
-        </Marquee>
+
+        <View style={{ display: loading || !animating ? 'flex' : 'none' }}>
+          <Text
+            numberOfLines={1}
+            style={[styles.url, { color: theme.onSurfaceVariant }]}
+            onTextLayout={({ nativeEvent: { lines } }) =>
+              setAnimating(lines.length > 1)
+            }
+          >
+            {currentUrl}
+          </Text>
+        </View>
+
+        {!loading && animating && (
+          <Marquee speed={0.8} spacing={50}>
+            <Text style={[styles.url, { color: theme.onSurfaceVariant }]}>
+              {currentUrl}
+            </Text>
+          </Marquee>
+        )}
       </View>
       <View style={styles.iconContainer}>
         <IconButtonV2

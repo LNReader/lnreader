@@ -13,8 +13,8 @@ import Appbar from './components/Appbar';
 import Menu from './components/Menu';
 
 type StorageData = {
-  localStorage?: Record<string, any>;
-  sessionStorage?: Record<string, any>;
+  localStorage?: Record<string, string>;
+  sessionStorage?: Record<string, string>;
 };
 
 const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
@@ -77,6 +77,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         title={title}
         theme={theme}
         currentUrl={currentUrl}
+        loading={progress !== 1}
         canGoBack={canGoBack}
         canGoForward={canGoForward}
         webView={webViewRef}

@@ -100,8 +100,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                   color: !unread
                     ? theme.outline
                     : bookmark
-                      ? theme.primary
-                      : theme.onSurfaceVariant,
+                    ? theme.primary
+                    : theme.onSurfaceVariant,
                 },
               ]}
               numberOfLines={1}
@@ -121,8 +121,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                     color: !unread
                       ? theme.outline
                       : bookmark
-                        ? theme.primary
-                        : theme.onSurfaceVariant,
+                      ? theme.primary
+                      : theme.onSurfaceVariant,
                   },
                   styles.text,
                 ]}
