@@ -152,7 +152,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
     if (dataPayload) {
       if (dataPayload.type === 'console') {
         console.info(`[Console] ${JSON.stringify(dataPayload.msg, null, 2)}`);
-      } else if (!false) {
+      } else if (false) {
         if (dataPayload.type !== 'save') console.log(dataPayload);
       }
     }
