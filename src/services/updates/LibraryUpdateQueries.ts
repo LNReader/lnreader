@@ -65,6 +65,22 @@ const updateNovelMetadata = (
   });
 };
 
+const updateNovelTotalPages = (novelId: number, totalPages: number) => {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'UPDATE SET Novel totalPages = ? WHERE id = ?',
+        [totalPages, novelId],
+        () => resolve(null),
+        (txObj, error) => {
+          reject(error);
+          return false;
+        },
+      );
+    });
+  });
+};
+
 const updateNovelChapters = (
   pluginId: string,
   novelId: number,
@@ -153,6 +169,9 @@ const updateNovel = async (
   const novel = await fetchNovel(pluginId, novelPath);
   if (refreshNovelMetadata) {
     await updateNovelMetadata(pluginId, novelId, novel);
+  } else if (novel.totalPages) {
+    // at least update totalPages,
+    await updateNovelTotalPages(novelId, novel.totalPages);
   }
   await updateNovelChapters(pluginId, novelId, novel, downloadNewChapters);
   const latestChapterKey = `${NOVEL_LATEST_CHAPTER_PREFIX}_${novelId}`;
