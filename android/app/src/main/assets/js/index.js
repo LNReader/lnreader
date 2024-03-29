@@ -259,7 +259,7 @@ class ScrollHandler {
         this.progress.style.height = '100%';
         this.progress.style.width = percentage + '%';
       }
-      this.percentage.innerText = this.reader.currentPage;
+      this.percentage.innerText = this.reader.currentPage + 1;
     }
     if (this.lock) {
       let page = parseInt(this.reader.totalPages * ratio);
