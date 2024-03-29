@@ -4,14 +4,12 @@ const select = key => {
 
 const chapter = select('chapter');
 const clientWidth = document.documentElement.clientWidth;
-let page = chapter?.getAttribute('data-page');
 let pages = 0;
 function tapChapter(event) {
-  let bounds = document.querySelector('html').getBoundingClientRect();
-  let { clientX, clientY } = event;
-  let { x, y } = { x: clientX / bounds.width, y: clientY / bounds.height };
-
-  let textWidth = chapter.scrollWidth;
+  const bounds = document.querySelector('html').getBoundingClientRect();
+  const { clientX, clientY } = event;
+  const { x, y } = { x: clientX / bounds.width, y: clientY / bounds.height };
+  const textWidth = chapter.scrollWidth;
 
   pages = Math.ceil(textWidth / bounds.width) - 1;
   if (pages === null || (pages < 0 && textWidth !== clientWidth)) {
@@ -33,7 +31,7 @@ function tapChapter(event) {
 }
 
 function movePage(panel) {
-  page = chapter?.getAttribute('data-page');
+  let page = chapter?.getAttribute('data-page');
   if (isNaN(page)) {
     page = 0;
   }
