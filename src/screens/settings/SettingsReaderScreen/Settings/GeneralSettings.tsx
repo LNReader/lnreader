@@ -83,13 +83,13 @@ const GeneralSettings: React.FC = () => {
         }
         theme={theme}
       />
-      <SwitchItem
+      <SettingSwitch
         label={getString('readerScreen.bottomSheet.readerPages')}
         value={readerPages}
-        onPress={() => dispatch(setAppSettings('readerPages', !readerPages))}
+        onPress={() => setChapterGeneralSettings({ readerPages: !readerPages })}
         theme={theme}
       />
-      <SwitchItem
+      <SettingSwitch
         label={getString('readerScreen.bottomSheet.autoscroll')}
         value={autoScroll}
         onPress={() => setChapterGeneralSettings({ autoScroll: !autoScroll })}
