@@ -80,7 +80,7 @@ td {
 
 .nextButton,
 .infoText {
-  width: 100%;
+  /* width: 100%; */
   border-radius: 50px;
   border-width: 1;
   color: var(--theme-onPrimary);
@@ -348,9 +348,8 @@ td {
   color: var(--theme-onSurface);
   background: 0;
   border: 0;
-  white-space: nowrap;
-  width: 100%;
   border-radius: 4px;
+  white-space: nowrap;
   padding: 6px 24px 6px 7px;
   text-align: left;
   display: flex;

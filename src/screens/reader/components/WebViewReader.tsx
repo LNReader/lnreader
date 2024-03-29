@@ -246,60 +246,11 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       --theme-outline: ${theme.outline};
                       --theme-rippleColor: ${theme.rippleColor};
                       --chapterCtn-height: ${layoutHeight - 140};
-                      ${
-                        readerPages &&
-                        `
-                          * {touch-action:none;}
-                          body {
-                            overflow: hidden;
-                            position: relative;
-                          }
-                          #left,
-                          #right, #middle {
-                            position: absolute;
-                            height: 100%;
-                            width: 35%;
-                            top: 0;
-                            z-index: 2000
-                          }
-                          #middle {
-                            left: 35%;
-                            width: 30%;
-                          }
-                          #left {
-                            left: 0;
-                          }
-                          #right {
-                            right: 0;
-                          }
-                          #infoContainer {
-                            position: absolute;
-                            z-index: 1000;
-                            bottom: 40;
-                            width: calc(100% - 2*${readerSettings.padding}%)
-                          }
-                          .nextButton{
-                            position: relative;
-                            z-index: 100000 !important
-                          }
-                          chapter {
-                            height: 100%;
-                            display: flexbox;
-                            flex-direction: column;
-                            flex-wrap: wrap;
-                            column-gap: 0;
-                            column-width: 100vw; 
-                            transition: 200ms;
-                          }
-                          .hide {
-                            transform: translate(110%);
-                            transition: 200ms
-                          }
-                          .show {
-                            transform: translate(0%);
-                          }
-                          `
                       }
+                      .nextButton, .infoText {
+                        margin-left: ${readerSettings.padding * 2}%;
+                        margin-right: ${readerSettings.padding * 2}%;
+                        width: calc(100% - ${readerSettings.padding * 4}%);
                       }
                       @font-face {
                         font-family: ${readerSettings.fontFamily};
@@ -308,6 +259,12 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         }.ttf");
                       }
                     </style>
+                    ${
+                      readerPages &&
+                      `
+                      <link rel="stylesheet" href="${assetsUriPrefix}/css/horizontal.css">
+                        `
+                    }
                     <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
                     <link rel="stylesheet" href="${pluginCustomCSS}">
                     <style>${readerSettings.customCSS}</style>
