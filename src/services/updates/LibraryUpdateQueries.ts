@@ -73,7 +73,6 @@ const updateNovelChapters = (
 ) => {
   return new Promise((resolve, reject) => {
     db.transaction(async tx => {
-      const newChapters: { id: number; path: string }[] = [];
       for (let position = 0; position < novel.chapters.length; position++) {
         const { name, path, releaseTime, page } = novel.chapters[position];
         tx.executeSql(
@@ -95,7 +94,9 @@ const updateNovelChapters = (
           (txObj, { insertId }) => {
             if (insertId) {
               if (downloadNewChapters) {
-                newChapters.push({ id: insertId, path: path });
+                downloadChapter(pluginId, novelId, insertId, path).catch(
+                  reject,
+                );
               }
             } else {
               tx.executeSql(
@@ -128,11 +129,6 @@ const updateNovelChapters = (
             return false;
           },
         );
-      }
-      if (downloadNewChapters) {
-        for (const { id, path } of newChapters) {
-          await downloadChapter(pluginId, novelId, id, path).catch(reject);
-        }
       }
       resolve(null);
     });
