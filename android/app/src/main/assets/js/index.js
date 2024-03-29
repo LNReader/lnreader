@@ -207,11 +207,12 @@ class ScrollHandler {
           </div>
           
         </div>
-        <div class="scrollbar-item scrollbar-text">
+        <div id="scrollbar-percentage-max" class="scrollbar-item scrollbar-text">
           100
         </div>
       `;
     this.percentage = this.$.querySelector('#scrollbar-percentage');
+    this.percentageMax = this.$.querySelector('#scrollbar-percentage-max');
     this.progress = this.$.querySelector('#scrollbar-progress');
     this.thumb = this.$.querySelector('#scrollbar-thumb-wrapper');
     this.slider = this.$.querySelector('#scrollbar-slider');
@@ -220,7 +221,6 @@ class ScrollHandler {
     this.lock = false;
     window.onscroll = () => !this.lock && this.update();
     window.ontouchend = () => !this.lock && this.update();
-    //window.onload = () => setTimeout(() => this.update(), 100);
     this.thumb.ontouchstart = () => (this.lock = true);
     this.thumb.ontouchend = () => (this.lock = false);
     this.thumb.ontouchmove = e => {
@@ -247,6 +247,7 @@ class ScrollHandler {
     this.reader.totalPages = Number(
       this.reader.chapter.getAttribute('data-pages'),
     );
+    this.percentageMax.innerHTML = this.reader.totalPages + 1;
     const percentage = parseInt(
       (this.reader.currentPage / this.reader.totalPages) * 100,
     );
@@ -261,10 +262,10 @@ class ScrollHandler {
       this.percentage.innerText = this.reader.currentPage;
     }
     if (this.lock) {
-      window.scrollTo({
-        left: this.reader.layoutWidth * ratio,
-        behavior: 'instant',
-      });
+      let page = parseInt(this.reader.totalPages * ratio);
+      if (page > this.reader.totalPages) page = this.reader.totalPages;
+      this.reader.chapter.setAttribute('data-page', page);
+      this.reader.chapter.style.transform = 'translate(-' + page * 100 + '%)';
     }
     if (this.reader.percentage) {
       this.reader.percentage.innerText =

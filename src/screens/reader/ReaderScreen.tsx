@@ -200,14 +200,6 @@ export const ChapterContent = ({
     }
   }, [chapter]);
 
-  useEffect(() => {
-    if (!readerPages) {
-      webViewRef?.current?.injectJavaScript(
-        "document.querySelector('chapter').style.transform = 'translate(0%)';",
-      );
-    }
-  }, [readerPages]);
-
   const scrollToStart = () =>
     requestAnimationFrame(() => {
       webViewRef?.current?.injectJavaScript(
