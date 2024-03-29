@@ -350,6 +350,7 @@ export interface StringMap {
   'readerScreen.bottomSheet.fontStyle': 'string';
   'readerScreen.bottomSheet.fullscreen': 'string';
   'readerScreen.bottomSheet.lineHeight': 'string';
+  'readerScreen.bottomSheet.padding': 'string';
   'readerScreen.bottomSheet.readerPages': 'string';
   'readerScreen.bottomSheet.removeExtraSpacing': 'string';
   'readerScreen.bottomSheet.renderHml': 'string';
@@ -358,7 +359,6 @@ export interface StringMap {
   'readerScreen.bottomSheet.showProgressPercentage': 'string';
   'readerScreen.bottomSheet.showSwipeMargins': 'string';
   'readerScreen.bottomSheet.swipeGestures': 'string';
-  'readerScreen.bottomSheet.readerPages': 'string';
   'readerScreen.bottomSheet.textAlign': 'string';
   'readerScreen.bottomSheet.textSize': 'string';
   'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation': 'string';
