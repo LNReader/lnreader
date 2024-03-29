@@ -46,20 +46,19 @@ export const insertNovelAndChapters = async (
     const promises = [insertChapters(novelId, sourceNovel.chapters)];
     if (sourceNovel.cover) {
       const novelDir = NovelDownloadFolder + '/' + pluginId + '/' + novelId;
+      await RNFS.mkdir(novelDir);
       const novelCoverUri = 'file://' + novelDir + '/cover.png';
       promises.push(
         fetchImage(pluginId, sourceNovel.cover).then(base64 => {
           if (base64) {
-            RNFS.mkdir(novelDir)
-              .then(() => RNFS.writeFile(novelCoverUri, base64, 'base64'))
-              .then(() => {
-                db.transaction(tx => {
-                  tx.executeSql('UPDATE Novel SET cover = ? WHERE id = ?', [
-                    novelCoverUri,
-                    novelId,
-                  ]);
-                });
+            RNFS.writeFile(novelCoverUri, base64, 'base64').then(() => {
+              db.transaction(tx => {
+                tx.executeSql('UPDATE Novel SET cover = ? WHERE id = ?', [
+                  novelCoverUri,
+                  novelId,
+                ]);
               });
+            });
           }
         }),
       );
@@ -274,6 +273,9 @@ export const pickCustomNovelCover = async (novel: NovelInfo) => {
     const novelDir =
       NovelDownloadFolder + '/' + novel.pluginId + '/' + novel.id;
     let novelCoverUri = 'file://' + novelDir + '/cover.png';
+    if (!(await RNFS.exists(novelDir))) {
+      await RNFS.mkdir(novelDir);
+    }
     RNFS.copyFile(image.assets[0].uri, novelCoverUri);
     novelCoverUri += '?' + Date.now();
     db.transaction(tx => {
