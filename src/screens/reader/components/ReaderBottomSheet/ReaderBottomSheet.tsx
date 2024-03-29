@@ -12,7 +12,7 @@ import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
 import TextSizeSlider from './TextSizeSlider';
 import ReaderThemeSelector from './ReaderThemeSelector';
 import ReaderTextAlignSelector from './ReaderTextAlignSelector';
-import ReaderLineHeight from './ReaderLineHeight';
+import ReaderValueChange from './ReaderValueChange';
 import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -24,7 +24,16 @@ const ReaderTab: React.FC = () => {
       <TextSizeSlider />
       <ReaderThemeSelector />
       <ReaderTextAlignSelector />
-      <ReaderLineHeight />
+      <ReaderValueChange
+        label={getString('readerScreen.bottomSheet.lineHeight')}
+        valueKey="lineHeight"
+      />
+      <ReaderValueChange
+        label={getString('readerScreen.bottomSheet.padding')}
+        valueKey="padding"
+        valueChange={0.5}
+        max={10}
+      />
       <ReaderFontPicker />
     </View>
   );
