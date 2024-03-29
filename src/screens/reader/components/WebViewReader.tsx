@@ -50,7 +50,6 @@ type WebViewReaderProps = {
   navigateToChapterBySwipe(name: string): void;
   onWebViewNavigationStateChange({ url }: WebViewNavigation): void;
   readerPages: boolean;
-  pages: React.MutableRefObject<number>;
 };
 
 const WebViewReader: FC<WebViewReaderProps> = props => {
@@ -59,7 +58,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
     html,
     nextChapter,
     webViewRef,
-    pages,
     readerPages,
     saveProgress,
     onPress,
@@ -209,11 +207,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
               Clipboard.setStringAsync(event.data).then(() => {
                 showToast(getString('common.copiedToClipboard', { name: '' }));
               });
-            }
-            break;
-          case 'pages':
-            if (event.data) {
-              pages.current = Number(event.data);
             }
             break;
         }
