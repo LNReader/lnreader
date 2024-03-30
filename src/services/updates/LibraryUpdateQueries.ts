@@ -90,11 +90,12 @@ const updateNovelChapters = (
   return new Promise((resolve, reject) => {
     db.transaction(async tx => {
       for (let position = 0; position < novel.chapters.length; position++) {
-        const { name, path, releaseTime, page } = novel.chapters[position];
+        const { name, path, releaseTime, page, chapterNumber } =
+          novel.chapters[position];
         tx.executeSql(
           `
-            INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, page, position)
-            SELECT ?, ?, ?, ?, datetime('now','localtime'), ?, ?
+            INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, chapterNumber, page, position)
+            SELECT ?, ?, ?, ?, datetime('now','localtime'), ?, ?, ?
             WHERE NOT EXISTS (SELECT id FROM Chapter WHERE path = ? AND novelId = ?);
           `,
           [
@@ -102,13 +103,14 @@ const updateNovelChapters = (
             name,
             releaseTime || null,
             novelId,
+            chapterNumber || null,
             page || '1',
             position,
             path,
             novelId,
           ],
           (txObj, { insertId }) => {
-            if (insertId) {
+            if (insertId && insertId >= 0) {
               if (downloadNewChapters) {
                 downloadChapter(pluginId, novelId, insertId, path).catch(
                   reject,
@@ -119,7 +121,7 @@ const updateNovelChapters = (
                 `
                   UPDATE Chapter SET 
                     name = ?, releaseTime = ?, updatedTime = datetime('now','localtime'), page = ?, position = ?
-                  WHERE path = ? AND novelId = ? AND (name != ? OR releaseTime != ? OR page != ?);
+                  WHERE path = ? AND novelId = ? AND (name != ? OR releaseTime != ? OR page != ? OR position != ?);
                 `,
                 [
                   name,
@@ -131,6 +133,7 @@ const updateNovelChapters = (
                   name,
                   releaseTime || null,
                   page || '1',
+                  position,
                 ],
                 undefined,
                 (txObj, error) => {
