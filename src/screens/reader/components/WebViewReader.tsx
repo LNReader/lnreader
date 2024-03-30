@@ -217,9 +217,11 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
         method: plugin?.imageRequestInit?.method,
         body: plugin?.imageRequestInit?.body,
         html: `
+        <!DOCTYPE html>
                 <html>
                   <head>
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+                    <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
                     <style>
                     :root {
                       --StatusBar-currentHeight: ${StatusBar.currentHeight};
@@ -251,22 +253,22 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         margin-left: ${readerSettings.padding}%;
                         margin-right: ${readerSettings.padding}%;
                         width: calc(100% - ${readerSettings.padding * 2}%);
-                      }
+                      } 
+                      
                       @font-face {
                         font-family: ${readerSettings.fontFamily};
                         src: url("file:///android_asset/fonts/${
                           readerSettings.fontFamily
                         }.ttf");
                       }
-                    </style>
-                    ${
-                      readerPages
-                        ? `
-                      <link rel="stylesheet" href="${assetsUriPrefix}/css/horizontal.css">
+                      </style>
+                      ${
+                        readerPages
+                          ? `
+                          <link rel="stylesheet" href="${assetsUriPrefix}/css/horizontal.css">
                         `
-                        : ''
-                    }
-                    <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
+                          : ''
+                      }
                     <link rel="stylesheet" href="${pluginCustomCSS}">
                     <style>${readerSettings.customCSS}</style>
                     <script>
@@ -346,22 +348,13 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         console.error = console.log;
                     </script>
                     <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
+                    <script src="${assetsUriPrefix}/js/default.js"></script>
                     <script src="${assetsUriPrefix}/js/index.js"></script>
+                    <script src="${assetsUriPrefix}/js/setup.js"></script>
                     <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                     <script src="${pluginCustomJS}"></script>
                     <script>
-                    document.querySelector(".chapterCtn").addEventListener("click", ${
-                      !readerPages
-                        ? '() => reader.post({ type: "hide" })'
-                        : 'tapChapter'
-                    });
-                      async function fn(){
-                                         
-                          ${readerSettings.customJS}
-                        //? scroll to saved position
-                        scrollHandler.onDOMCreation(${chapter.progress});
-                      }
-                      document.addEventListener("DOMContentLoaded", fn);
+                        setup(${chapter.progress},${readerSettings.customJS})
                     </script>
                 </html>
                 `,

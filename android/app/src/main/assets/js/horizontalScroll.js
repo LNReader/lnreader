@@ -1,21 +1,8 @@
-const select = key => {
-  return document.querySelector(key);
-};
-
-const chapter = select('chapter');
 const clientWidth = document.documentElement.clientWidth;
-let pages = 0;
 function tapChapter(event) {
   const bounds = document.querySelector('html').getBoundingClientRect();
   const { clientX, clientY } = event;
-  const { x, y } = { x: clientX / bounds.width, y: clientY / bounds.height };
-  const textWidth = chapter.scrollWidth;
-
-  pages = Math.ceil(textWidth / bounds.width) - 1;
-  if (pages === null || (pages < 0 && textWidth !== clientWidth)) {
-    return;
-  }
-  chapter.setAttribute('data-pages', pages);
+  const { x, y } = { x: clientX / bounds.width, y: 0.5 };
 
   if (y < 0.2) {
     movePage('prev');
@@ -31,7 +18,8 @@ function tapChapter(event) {
 }
 
 function movePage(panel) {
-  let page = chapter?.getAttribute('data-page');
+  let page = getInt('data-page');
+  const pages = getInt('data-pages');
   if (isNaN(page)) {
     page = 0;
   }
@@ -50,5 +38,5 @@ function movePage(panel) {
   }
 
   chapter.style.transform = 'translate(-' + page * 100 + '%)';
-  select('chapter').setAttribute('data-page', page);
+  setAttr('data-page', page);
 }

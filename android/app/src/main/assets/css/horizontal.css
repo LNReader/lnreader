@@ -7,31 +7,12 @@ body {
     position: relative;
 }
 
-#left,
-#right,
-#middle {
-    position: absolute;
-    height: 100%;
-    width: 35%;
-    top: 0;
-    z-index: 2000
-}
-
 chapter {
-    height: 100%;
+    height: 96vh;
     display: flexbox;
     flex-direction: column;
     flex-wrap: wrap;
     column-gap: 0;
     column-width: 100vw;
     transition: 200ms;
-}
-
-.hide {
-    transform: translate(110%);
-    transition: 200ms
-}
-
-.show {
-    transform: translate(0%);
 }
