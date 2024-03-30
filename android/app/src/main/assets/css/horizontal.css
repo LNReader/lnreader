@@ -3,13 +3,18 @@
 }
 
 body {
+    height: 100vh;
     overflow: hidden;
     position: relative;
 }
 
+html {
+    height: 100vh;
+}
+
 chapter {
-    height: 96vh;
-    /* padding: var(--readerSettings-padding); */
+    /* height: calc(100% - 3% - var(--readerSettings-padding) - 2rem); */
+    height: 90vh;
     display: flexbox;
     flex-direction: column;
     flex-wrap: wrap;
