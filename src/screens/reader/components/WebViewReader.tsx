@@ -260,10 +260,11 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       }
                     </style>
                     ${
-                      readerPages &&
-                      `
+                      readerPages
+                        ? `
                       <link rel="stylesheet" href="${assetsUriPrefix}/css/horizontal.css">
                         `
+                        : ''
                     }
                     <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
                     <link rel="stylesheet" href="${pluginCustomCSS}">
@@ -357,14 +358,8 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       async function fn(){
                                          
                           ${readerSettings.customJS}
-                        // scroll to saved position
-                        reader.refresh();
-                        window.scrollTo({
-                          top: reader.chapterHeight * ${
-                            chapter.progress
-                          } / 100 - reader.layoutHeight,
-                          behavior: 'smooth',
-                        });
+                        //? scroll to saved position
+                        scrollHandler.onDOMCreation(${chapter.progress});
                       }
                       document.addEventListener("DOMContentLoaded", fn);
                     </script>

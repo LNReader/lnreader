@@ -46,17 +46,22 @@ class Reader {
     this.layoutWidth = window.innerWidth;
     this.pageReader = this.chapter.getAttribute('data-page-reader');
     this.currentPage = this.chapter.getAttribute('data-page');
-    this.totalPages = this.chapter.getAttribute('data-pages');
-    this.saveProgressInterval = setInterval(
-      () =>
+    this.totalPages = Math.ceil(this.chapterWidth / this.layoutWidth) - 1;
+    this.saveProgressInterval = setInterval(() => {
+      if (this.pageReader !== 'true') {
         this.post({
           type: 'save',
           data: parseInt(
             ((window.scrollY + this.layoutHeight) / this.chapterHeight) * 100,
           ),
-        }),
-      autoSaveInterval,
-    );
+        });
+      } else {
+        this.post({
+          type: 'save',
+          data: parseInt(((this.currentPage + 1) / this.totalPages) * 100),
+        });
+      }
+    }, autoSaveInterval);
     this.time.innerText = new Date().toLocaleTimeString(undefined, {
       hour: '2-digit',
       minute: '2-digit',
@@ -244,9 +249,10 @@ class ScrollHandler {
     this.reader.currentPage = Number(
       this.reader.chapter.getAttribute('data-page'),
     );
-    this.reader.totalPages = Number(
-      this.reader.chapter.getAttribute('data-pages'),
-    );
+    this.reader.totalPages =
+      Math.ceil(this.reader.chapterWidth / this.reader.layoutWidth) - 1;
+    console.log(this.reader.totalPages + ' !');
+
     this.percentageMax.innerHTML = this.reader.totalPages + 1;
     const percentage = parseInt(
       (this.reader.currentPage / this.reader.totalPages) * 100,
@@ -314,6 +320,24 @@ class ScrollHandler {
     this.reader.refresh();
     this.refresh();
     this.update();
+  };
+  onDOMCreation = progress => {
+    this.onShow();
+    if (this.reader.pageReader === 'true') {
+      console.log(this.reader.totalPages + ' ' + progress);
+      let page = parseInt((this.reader.totalPages * progress) / 100);
+      console.log(page);
+      if (page >= this.reader.totalPages) page = this.reader.totalPages - 1;
+      this.reader.chapter.setAttribute('data-page', page);
+      this.reader.chapter.style.transform = 'translate(-' + page * 100 + '%)';
+    } else {
+      window.scrollTo({
+        top:
+          (this.reader.chapterHeight * progress) / 100 -
+          this.reader.layoutHeight,
+        behavior: 'smooth',
+      });
+    }
   };
 }
 
