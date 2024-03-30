@@ -292,7 +292,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         data-novel-id='${chapter.novelId}'
                         data-chapter-id='${chapter.id}'
                       >
-                        ${html}
+                      ${html} ${html} ${html} ${html} ${html} ${html} ${html}
                       </chapter>
                       <div class="hidden" id="ToolWrapper">
                           <div id="TTS-Controller"></div>
