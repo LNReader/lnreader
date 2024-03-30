@@ -32,7 +32,7 @@ chapter {
   display: block;
 }
 
-chapter * {
+chapter > * {
   padding-left: var(--readerSettings-padding);
   padding-right: var(--readerSettings-padding);
 }
