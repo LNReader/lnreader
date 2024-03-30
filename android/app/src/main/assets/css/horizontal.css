@@ -16,4 +16,5 @@ chapter {
     column-gap: 0;
     column-width: 100vw;
     transition: 200ms;
+    padding-top: calc(3% + var(--readerSettings-padding));
 }
