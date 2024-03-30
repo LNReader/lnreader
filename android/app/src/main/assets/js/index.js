@@ -42,13 +42,13 @@ class Reader {
     this.rawHTML = this.chapter.innerHTML;
     this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
     this.layoutHeight = window.innerHeight;
-    this.pluginId = getInt('data-plugin-id');
-    this.novelId = getInt('data-novel-id');
-    this.chapterId = getInt('data-chapter-id');
+    this.pluginId = getInt('plugin-id');
+    this.novelId = getInt('novel-id');
+    this.chapterId = getInt('chapter-id');
     this.chapterWidth = this.chapter.scrollWidth;
     this.layoutWidth = window.innerWidth;
     this.pageReader = this.chapter.getAttribute('data-page-reader') === 'true';
-    this.currentPage = getInt('data-page');
+    this.currentPage = getInt('page');
     this.saveProgressInterval = setInterval(() => {
       if (!this.pageReader) {
         this.post({
@@ -60,7 +60,7 @@ class Reader {
       } else {
         this.post({
           type: 'save',
-          data: parseInt((getInt('data-page') / getInt('data-pages')) * 100),
+          data: parseInt((getInt('page') / getInt('pages')) * 100),
         });
       }
     }, autoSaveInterval);
@@ -92,9 +92,9 @@ class Reader {
     if (!this.pageReader)
       this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
     else {
-      this.currentPage = getInt('data-page');
+      this.currentPage = getInt('page');
       this.percentage.innerText =
-        this.currentPage + 1 + '/' + (getInt('data-pages') + 1);
+        this.currentPage + 1 + '/' + (getInt('pages') + 1);
       this.chapterWidth = this.chapter.scrollWidth;
     }
   };
@@ -260,8 +260,8 @@ class ScrollHandler {
   };
   updateHorizontal = ratio => {
     this.reader.refresh();
-    const totalPages = getInt('data-pages');
-    const currentPage = getInt('data-page');
+    const totalPages = getInt('pages');
+    const currentPage = getInt('page');
 
     this.percentageMax.innerHTML = totalPages + 1;
     const percentage = parseInt((currentPage / totalPages) * 100);
@@ -332,7 +332,7 @@ class ScrollHandler {
   onDOMCreation = progress => {
     this.onShow();
     if (this.reader.pageReader) {
-      const totalPages = getInt('data-pages');
+      const totalPages = getInt('pages');
       let page = Math.round((totalPages * progress) / 100);
       if (page >= totalPages) page = totalPages - 1;
       this.reader.chapter.style.transform = 'translate(-' + page * 100 + '%)';

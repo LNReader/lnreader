@@ -18,8 +18,8 @@ function tapChapter(event) {
 }
 
 function movePage(panel) {
-  let page = getInt('data-page');
-  const pages = getInt('data-pages');
+  let page = getInt('page');
+  const pages = getInt('pages');
   if (isNaN(page)) {
     page = 0;
   }

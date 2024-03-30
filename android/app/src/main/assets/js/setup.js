@@ -1,7 +1,3 @@
-const textWidth = chapter.width;
-const layoutWidth = parseInt(
-  document.querySelector('html').getBoundingClientRect().width,
-);
 function setup(progress, customJS) {
   async function startup() {
     customJS;
