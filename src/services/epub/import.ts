@@ -42,11 +42,10 @@ const insertLocalNovel = (
             Novel(name, path, pluginId, inLibrary, isLocal) 
           VALUES(?, ?, 'local', 1, 1)`,
         [name, path],
-        async (txObj, resultSet) => {
-          if (resultSet.insertId) {
-            await updateNovelCategoryById(resultSet.insertId, [2]);
-            const novelDir =
-              NovelDownloadFolder + '/local/' + resultSet.insertId;
+        async (txObj, { insertId }) => {
+          if (insertId && insertId >= 0) {
+            await updateNovelCategoryById(insertId, [2]);
+            const novelDir = NovelDownloadFolder + '/local/' + insertId;
             await RNFS.mkdir(novelDir);
             const newCoverPath =
               'file://' + novelDir + '/' + cover?.split(/[\/\\]/).pop();
@@ -54,19 +53,19 @@ const insertLocalNovel = (
               await RNFS.moveFile(cover, newCoverPath);
             }
             await updateNovelInfo({
-              id: resultSet.insertId,
+              id: insertId,
               pluginId: LOCAL_PLUGIN_ID,
               author: author,
               artist: artist,
               summary: summary,
-              path: NovelDownloadFolder + '/local/' + resultSet.insertId,
+              path: NovelDownloadFolder + '/local/' + insertId,
               cover: newCoverPath,
               name: name,
               inLibrary: true,
               isLocal: true,
               totalPages: 0,
             });
-            resolve(resultSet.insertId);
+            resolve(insertId);
           } else {
             reject(
               new Error(getString('advancedSettingsScreen.novelInsertFailed')),
@@ -100,8 +99,8 @@ const insertLocalChapter = (
           releaseTime,
           fakeId,
         ],
-        async (txObj, resultSet) => {
-          if (resultSet.insertId) {
+        async (txObj, { insertId }) => {
+          if (insertId && insertId >= 0) {
             let chapterText: string = '';
             try {
               path = decodeURI(path);
@@ -128,9 +127,9 @@ const insertLocalChapter = (
                   ?.pop()}"`;
               },
             );
-            await RNFS.mkdir(novelDir + '/' + resultSet.insertId);
+            await RNFS.mkdir(novelDir + '/' + insertId);
             await TextFile.writeFile(
-              novelDir + '/' + resultSet.insertId + '/index.html',
+              novelDir + '/' + insertId + '/index.html',
               chapterText,
             );
             resolve(staticPaths);
