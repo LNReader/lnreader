@@ -23,7 +23,10 @@ const selectVolumeIcon =
  * @type {import("./type").Reader}
  */
 class Reader {
-  constructor() {
+  constructor(swipeHandler, toolWrapper) {
+    this.swipeHandler = swipeHandler;
+    this.toolWrapper = toolWrapper;
+
     this.selection = window.getSelection();
     this.viewport = document.querySelector('meta[name=viewport]');
     this.footerWrapper = document.getElementById('reader-footer-wrapper');
@@ -39,16 +42,15 @@ class Reader {
     this.rawHTML = this.chapter.innerHTML;
     this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
     this.layoutHeight = window.innerHeight;
-    this.pluginId = this.chapter.getAttribute('data-plugin-id');
-    this.novelId = this.chapter.getAttribute('data-novel-id');
-    this.chapterId = this.chapter.getAttribute('data-chapter-id');
+    this.pluginId = getInt('data-plugin-id');
+    this.novelId = getInt('data-novel-id');
+    this.chapterId = getInt('data-chapter-id');
     this.chapterWidth = this.chapter.scrollWidth;
     this.layoutWidth = window.innerWidth;
-    this.pageReader = this.chapter.getAttribute('data-page-reader');
-    this.currentPage = this.chapter.getAttribute('data-page');
-    this.totalPages = Math.ceil(this.chapterWidth / this.layoutWidth) - 1;
+    this.pageReader = this.chapter.getAttribute('data-page-reader') === 'true';
+    this.currentPage = getInt('data-page');
     this.saveProgressInterval = setInterval(() => {
-      if (this.pageReader !== 'true') {
+      if (!this.pageReader) {
         this.post({
           type: 'save',
           data: parseInt(
@@ -58,7 +60,7 @@ class Reader {
       } else {
         this.post({
           type: 'save',
-          data: parseInt(((this.currentPage + 1) / this.totalPages) * 100),
+          data: parseInt((getInt('data-page') / getInt('data-pages')) * 100),
         });
       }
     }, autoSaveInterval);
@@ -73,13 +75,28 @@ class Reader {
         minute: '2-digit',
         hour12: false,
       });
-    }, 60000);
+    }, 10000);
     this.updateBatteryLevel(batteryLevel);
     this.updateGeneralSettings(initSettings);
   }
+  nextPage = () => {
+    this.currentPage++;
+    // setAttr('data-page', this.currentPage);
+  };
+  prevPage = () => {
+    this.currentPage--;
+    // setAttr('data-page', this.currentPage);
+  };
 
   refresh = () => {
-    this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
+    if (!this.pageReader)
+      this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
+    else {
+      this.currentPage = getInt('data-page');
+      this.percentage.innerText =
+        this.currentPage + 1 + '/' + (getInt('data-pages') + 1);
+      this.chapterWidth = this.chapter.scrollWidth;
+    }
   };
   post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
   updateReaderSettings = settings => {
@@ -136,9 +153,9 @@ class Reader {
       this.chapter.innerHTML = this.rawHTML;
     }
     if (settings.swipeGestures) {
-      swipeHandler.enable();
+      this.swipeHandler.enable();
     } else {
-      swipeHandler.disable();
+      this.swipeHandler.disable();
     }
     if (!this.showScrollPercentage && !this.showBatteryAndTime) {
       this.footerWrapper.classList.add('d-none');
@@ -158,13 +175,9 @@ class Reader {
       }
     }
     if (!this.verticalSeekbar) {
-      toolWrapper.$.classList.add('horizontal');
+      this.toolWrapper.$.classList.add('horizontal');
     } else {
-      toolWrapper.$.classList.remove('horizontal');
-    }
-    if (scrollHandler) {
-      scrollHandler.refresh();
-      scrollHandler.update();
+      this.toolWrapper.$.classList.remove('horizontal');
     }
   };
   updateBatteryLevel = level => {
@@ -239,24 +252,19 @@ class ScrollHandler {
     };
   }
   update = ratio => {
-    if (this.reader.pageReader === 'true') {
+    if (this.reader.pageReader) {
       setTimeout(() => this.updateHorizontal(ratio), 10);
     } else {
       this.updateVertical(ratio);
     }
   };
   updateHorizontal = ratio => {
-    this.reader.currentPage = Number(
-      this.reader.chapter.getAttribute('data-page'),
-    );
-    this.reader.totalPages =
-      Math.ceil(this.reader.chapterWidth / this.reader.layoutWidth) - 1;
-    console.log(this.reader.totalPages + ' !');
+    this.reader.refresh();
+    const totalPages = getInt('data-pages');
+    const currentPage = getInt('data-page');
 
-    this.percentageMax.innerHTML = this.reader.totalPages + 1;
-    const percentage = parseInt(
-      (this.reader.currentPage / this.reader.totalPages) * 100,
-    );
+    this.percentageMax.innerHTML = totalPages + 1;
+    const percentage = parseInt((currentPage / totalPages) * 100);
     if (this.toolWrapper.visible) {
       if (this.reader.verticalSeekbar) {
         this.progress.style.height = percentage + '%';
@@ -268,16 +276,16 @@ class ScrollHandler {
       this.percentage.innerText = this.reader.currentPage + 1;
     }
     if (this.lock) {
-      let page = parseInt(this.reader.totalPages * ratio);
-      if (page > this.reader.totalPages) page = this.reader.totalPages;
-      this.reader.chapter.setAttribute('data-page', page);
+      let page = parseInt(totalPages * ratio);
+      if (page > totalPages) page = totalPages;
+      setAttr('data-page', page);
       this.reader.chapter.style.transform = 'translate(-' + page * 100 + '%)';
     }
     if (this.reader.percentage) {
-      this.reader.percentage.innerText =
-        this.reader.currentPage + 1 + '/' + (this.reader.totalPages + 1);
+      this.reader.refresh();
     }
   };
+
   updateVertical = ratio => {
     if (ratio === undefined) {
       ratio =
@@ -323,13 +331,12 @@ class ScrollHandler {
   };
   onDOMCreation = progress => {
     this.onShow();
-    if (this.reader.pageReader === 'true') {
-      console.log(this.reader.totalPages + ' ' + progress);
-      let page = parseInt((this.reader.totalPages * progress) / 100);
-      console.log(page);
-      if (page >= this.reader.totalPages) page = this.reader.totalPages - 1;
-      this.reader.chapter.setAttribute('data-page', page);
+    if (this.reader.pageReader) {
+      const totalPages = getInt('data-pages');
+      let page = Math.round((totalPages * progress) / 100);
+      if (page >= totalPages) page = totalPages - 1;
       this.reader.chapter.style.transform = 'translate(-' + page * 100 + '%)';
+      setAttr('data-page', page);
     } else {
       window.scrollTo({
         top:
@@ -596,7 +603,7 @@ class ContextMenu {
   renderMenu(items) {
     this.contextMenu.innerHTML = '';
     items.concat(this.commonItems).forEach((item, index) => {
-      item.firstChild.setAttribute('style', `animation-delay: ${index * 0.1}s`);
+      setAttr('style', `animation-delay: ${index * 0.1}s`);
       this.contextMenu.appendChild(item);
     });
   }
@@ -638,7 +645,7 @@ class ContextMenu {
         clientX + this.contextMenu.scrollWidth >= window.innerWidth
           ? window.innerWidth - this.contextMenu.scrollWidth - 20
           : clientX;
-      this.contextMenu.setAttribute(
+      setAttr(
         'style',
         `--width: ${this.contextMenu.scrollWidth}px;
         --height: ${this.contextMenu.scrollHeight}px;
@@ -679,7 +686,7 @@ class ImageModal {
   show(image) {
     this.img.src = image.src;
     this.img.alt = `Can not render image from ${image.src}`;
-    this.reader.viewport.setAttribute(
+    setAttr(
       'content',
       'width=device-width, initial-scale=1.0, maximum-scale=10',
     );
@@ -691,7 +698,7 @@ class ImageModal {
     this.showing = false;
     this.img.src = '';
     this.img.alt = '';
-    this.reader.viewport.setAttribute(
+    setAttr(
       'content',
       'width=device-width, initial-scale=1.0, maximum-scale=1.0',
     );
@@ -701,7 +708,7 @@ class ImageModal {
 try {
   var swipeHandler = new SwipeHandler();
   var toolWrapper = new ToolWrapper();
-  var reader = new Reader();
+  var reader = new Reader(swipeHandler, toolWrapper);
   var scrollHandler = new ScrollHandler(reader, toolWrapper);
   var tts = new TextToSpeech(reader);
   toolWrapper.tools = [scrollHandler, tts];
