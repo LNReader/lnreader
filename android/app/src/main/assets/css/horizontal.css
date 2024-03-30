@@ -9,6 +9,7 @@ body {
 
 chapter {
     height: 96vh;
+    /* padding: var(--readerSettings-padding); */
     display: flexbox;
     flex-direction: column;
     flex-wrap: wrap;

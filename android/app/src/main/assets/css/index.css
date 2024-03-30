@@ -3,6 +3,7 @@ html {
   overflow-x: hidden;
   padding-top: var(--StatusBar-currentHeight);
   word-wrap: break-word;
+  padding: 0;
 }
 
 ::selection {
@@ -18,6 +19,7 @@ html {
 body {
   margin-left: 0;
   margin-right: 0;
+  padding: 0;
   padding-bottom: 40px;
 
   font-size: var(--readerSettings-textSize);
@@ -29,10 +31,12 @@ body {
 }
 
 chapter {
+  width: 100%;
   display: block;
 }
 
 chapter > * {
+  max-width: 100vw;
   padding-left: var(--readerSettings-padding);
   padding-right: var(--readerSettings-padding);
 }
