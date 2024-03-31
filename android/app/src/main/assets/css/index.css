@@ -326,15 +326,15 @@ td {
 }
 
 .contextMenu {
-  position: absolute;
-  height: 0;
-  overflow: hidden;
+  position: fixed !important;
   background: var(--theme-surface-0-9);
+  height: 0;
+  top: var(--top);
+  left: var(--left);
+  overflow: hidden;
   -webkit-backdrop-filter: blur(1px);
   backdrop-filter: blur(1px);
   position: fixed;
-  top: var(--top);
-  left: var(--left);
   -webkit-animation: menuAnimation 0.4s 0s both;
   animation: menuAnimation 0.4s 0s both;
   transform-origin: left;

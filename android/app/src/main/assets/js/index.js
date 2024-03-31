@@ -79,15 +79,6 @@ class Reader {
     this.updateBatteryLevel(batteryLevel);
     this.updateGeneralSettings(initSettings);
   }
-  nextPage = () => {
-    this.currentPage++;
-    // setAttr('data-page', this.currentPage);
-  };
-  prevPage = () => {
-    this.currentPage--;
-    // setAttr('data-page', this.currentPage);
-  };
-
   refresh = () => {
     if (!this.pageReader)
       this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
@@ -603,22 +594,12 @@ class ContextMenu {
   renderMenu(items) {
     this.contextMenu.innerHTML = '';
     items.concat(this.commonItems).forEach((item, index) => {
-      setAttr('style', `animation-delay: ${index * 0.1}s`);
+      item.firstChild.setAttribute('style', `animation-delay: ${index * 0.1}s`);
       this.contextMenu.appendChild(item);
     });
   }
 
-  closeMenu() {
-    if (this.isOpened) {
-      this.isOpened = false;
-      this.contextMenu.remove();
-    }
-  }
-
   init() {
-    this.reader.chapter.addEventListener('click', () => {
-      this.closeMenu(this.contextMenu);
-    });
     document.addEventListener('contextmenu', e => {
       e.preventDefault();
       if (e.target instanceof HTMLImageElement) {
@@ -645,12 +626,14 @@ class ContextMenu {
         clientX + this.contextMenu.scrollWidth >= window.innerWidth
           ? window.innerWidth - this.contextMenu.scrollWidth - 20
           : clientX;
-      setAttr(
+      const page = getInt('page');
+      // chapter.style.transform = 'translate(-' + page * 100 + '%)';
+      this.contextMenu.setAttribute(
         'style',
         `--width: ${this.contextMenu.scrollWidth}px;
         --height: ${this.contextMenu.scrollHeight}px;
         --top: ${positionY}px;
-        --left: ${positionX}px;`,
+        --left: ${positionX + window.innerWidth * page}px;`,
       );
     });
   }
@@ -686,7 +669,7 @@ class ImageModal {
   show(image) {
     this.img.src = image.src;
     this.img.alt = `Can not render image from ${image.src}`;
-    setAttr(
+    this.reader.viewport.setAttribute(
       'content',
       'width=device-width, initial-scale=1.0, maximum-scale=10',
     );
@@ -698,22 +681,28 @@ class ImageModal {
     this.showing = false;
     this.img.src = '';
     this.img.alt = '';
-    setAttr(
+    this.reader.viewport.setAttribute(
       'content',
       'width=device-width, initial-scale=1.0, maximum-scale=1.0',
     );
   }
 }
+var swipeHandler;
+var toolWrapper;
+var reader;
+var scrollHandler;
+var tts;
+var contextMenu;
 
 try {
-  var swipeHandler = new SwipeHandler();
-  var toolWrapper = new ToolWrapper();
-  var reader = new Reader(swipeHandler, toolWrapper);
-  var scrollHandler = new ScrollHandler(reader, toolWrapper);
-  var tts = new TextToSpeech(reader);
+  swipeHandler = new SwipeHandler();
+  toolWrapper = new ToolWrapper();
+  reader = new Reader(swipeHandler, toolWrapper);
+  scrollHandler = new ScrollHandler(reader, toolWrapper);
+  tts = new TextToSpeech(reader);
   toolWrapper.tools = [scrollHandler, tts];
   imageModal = new ImageModal(reader);
-  const contextMenu = new ContextMenu(reader);
+  contextMenu = new ContextMenu(reader);
   contextMenu.init();
 } catch (e) {
   alert(e);
