@@ -106,7 +106,7 @@ export const ChapterContent = ({
     autoScroll,
     autoScrollInterval,
     autoScrollOffset,
-    readerPages = false,
+    pageReader = false,
     // verticalSeekbar = true,
     removeExtraParagraphSpacing,
   } = useChapterGeneralSettings();
@@ -203,7 +203,7 @@ export const ChapterContent = ({
   const scrollToStart = () =>
     requestAnimationFrame(() => {
       webViewRef?.current?.injectJavaScript(
-        !readerPages
+        !pageReader
           ? `(()=>{
                 window.scrollTo({top:0,behavior:'smooth'})
               })()`
@@ -338,7 +338,7 @@ export const ChapterContent = ({
         html={chapterText}
         nextChapter={nextChapter}
         webViewRef={webViewRef}
-        readerPages={readerPages}
+        pageReader={pageReader}
         saveProgress={saveProgress}
         onLayout={() => {
           useVolumeButtons && onLayout();

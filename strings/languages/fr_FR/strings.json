@@ -419,7 +419,7 @@
       "fontStyle": "Style de police",
       "fullscreen": "Plein écran",
       "lineHeight": "Hauteur de la ligne",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Supprimer l'espacement de paragraphe supplémentaire",
       "renderHml": "Rendre l'HTML",
       "scrollAmount": "Défilement du montant (hauteur de l'écran par défaut)",

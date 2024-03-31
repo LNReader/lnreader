@@ -410,7 +410,7 @@
       "fontStyle": "字体样式",
       "fullscreen": "全屏",
       "lineHeight": "行高",
-      "readerPages": "阅读器中单击左右以导航页面 (实验性)",
+      "pageReader": "阅读器中单击左右以导航页面 (实验性)",
       "removeExtraSpacing": "移除多余段落空格",
       "renderHml": "渲染 HTML",
       "scrollAmount": "滚动长度 (默认屏幕高度)",

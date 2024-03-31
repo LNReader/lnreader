@@ -186,7 +186,7 @@
       "fontStyle": "フォントスタイル",
       "fullscreen": "全画面",
       "lineHeight": "Line Height",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "renderHml": "HTMLをレンダリング",
       "scrollAmount": "Scroll amount (screen height by default)",

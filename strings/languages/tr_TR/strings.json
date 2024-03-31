@@ -186,7 +186,7 @@
       "fontStyle": "Yazı tipi",
       "fullscreen": "Tam ekran",
       "lineHeight": "Satır Yüksekliği",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Ekstra paragraf boşluklarını kaldır",
       "renderHml": "HTML'yi Render'le",
       "scrollAmount": "Kaydırma miktarı (varsayılan olarak ekran yüksekliği)",
