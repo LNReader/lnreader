@@ -1,4 +1,10 @@
 function setup(progress, customJS) {
+  document
+    .querySelector('.chapterCtn')
+    .addEventListener('click', e => onTap(e));
+
+  document.addEventListener('DOMContentLoaded', startup);
+
   async function startup() {
     customJS;
     //? scroll to saved position
@@ -15,12 +21,12 @@ function setup(progress, customJS) {
       scrollHandler.onDOMCreation(progress);
     }
   }
-  document
-    .querySelector('.chapterCtn')
-    .addEventListener(
-      'click',
-      !reader.pageReader ? () => reader.post({ type: 'hide' }) : tapChapter,
-    );
-
-  document.addEventListener('DOMContentLoaded', startup);
+  function onTap(event) {
+    if (!contextMenu.isOpened) {
+      !reader.pageReader ? reader.post({ type: 'hide' }) : tapChapter(event);
+    } else {
+      contextMenu.isOpened = false;
+      contextMenu.contextMenu.remove();
+    }
+  }
 }

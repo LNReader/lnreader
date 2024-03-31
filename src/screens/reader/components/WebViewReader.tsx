@@ -282,7 +282,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       })}
                     </script>
                   </head>
-                  <body'>
+                  <body>
                     <div class="chapterCtn"> 
                       <chapter 
                         data-page=0
