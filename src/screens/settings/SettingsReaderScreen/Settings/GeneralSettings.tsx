@@ -23,7 +23,7 @@ const GeneralSettings: React.FC = () => {
     useVolumeButtons = false,
     verticalSeekbar = true,
     swipeGestures = false,
-    readerPages = false,
+    pageReader = false,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -84,9 +84,9 @@ const GeneralSettings: React.FC = () => {
         theme={theme}
       />
       <SettingSwitch
-        label={getString('readerScreen.bottomSheet.readerPages')}
-        value={readerPages}
-        onPress={() => setChapterGeneralSettings({ readerPages: !readerPages })}
+        label={getString('readerScreen.bottomSheet.pageReader')}
+        value={pageReader}
+        onPress={() => setChapterGeneralSettings({ pageReader: !pageReader })}
         theme={theme}
       />
       <SettingSwitch

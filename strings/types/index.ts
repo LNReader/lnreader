@@ -354,7 +354,7 @@ export interface StringMap {
   'readerScreen.bottomSheet.fullscreen': 'string';
   'readerScreen.bottomSheet.lineHeight': 'string';
   'readerScreen.bottomSheet.padding': 'string';
-  'readerScreen.bottomSheet.readerPages': 'string';
+  'readerScreen.bottomSheet.pageReader': 'string';
   'readerScreen.bottomSheet.removeExtraSpacing': 'string';
   'readerScreen.bottomSheet.renderHml': 'string';
   'readerScreen.bottomSheet.scrollAmount': 'string';

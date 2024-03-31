@@ -186,7 +186,7 @@
       "fontStyle": "Estilo de fuente",
       "fullscreen": "Pantalla completa",
       "lineHeight": "Interlineado",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Eliminar espaciado extra del párrafo",
       "renderHml": "Renderizar HTML",
       "scrollAmount": "Cantidad de desplazamiento (alto de la pantalla de forma predeterminada)",

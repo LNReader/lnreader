@@ -186,7 +186,7 @@
       "fontStyle": "Schriftart",
       "fullscreen": "Vollbildmodus",
       "lineHeight": "Zeilenhöhe",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Extra Absatzabstand entfernen",
       "renderHml": "HTML anzeigen",
       "scrollAmount": "Höhe des Bildlaufs (standardmäßig Bildschirmhöhe)",

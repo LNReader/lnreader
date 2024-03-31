@@ -74,7 +74,7 @@ export interface LibrarySettings {
 export interface ChapterGeneralSettings {
   keepScreenOn: boolean;
   fullScreenMode: boolean;
-  readerPages: boolean;
+  pageReader: boolean;
   swipeGestures: boolean;
   showScrollPercentage: boolean;
   useVolumeButtons: boolean;
@@ -163,7 +163,7 @@ const initialBrowseSettings: BrowseSettings = {
 export const initialChapterGeneralSettings: ChapterGeneralSettings = {
   keepScreenOn: true,
   fullScreenMode: true,
-  readerPages: false,
+  pageReader: false,
   swipeGestures: false,
   showScrollPercentage: true,
   useVolumeButtons: false,
