@@ -77,7 +77,6 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         title={title}
         theme={theme}
         currentUrl={currentUrl}
-        loading={progress !== 1}
         canGoBack={canGoBack}
         canGoForward={canGoForward}
         webView={webViewRef}

@@ -14,7 +14,6 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@animatereactnative/marquee": "^0.2.0",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@react-native-community/slider": "4.4.2",
     "@react-native-cookies/cookies": "^6.2.1",
