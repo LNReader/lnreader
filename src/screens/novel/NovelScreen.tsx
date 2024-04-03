@@ -7,7 +7,6 @@ import {
   Text,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  DrawerLayoutAndroid,
   Share,
 } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
