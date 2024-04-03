@@ -2,7 +2,7 @@ const clientWidth = document.documentElement.clientWidth;
 function tapChapter(event) {
   const bounds = document.querySelector('html').getBoundingClientRect();
   const { clientX, clientY } = event;
-  const { x, y } = { x: clientX / bounds.width, y: 0.5 };
+  const { x, y } = { x: clientX / bounds.width, y: clientY / bounds.height };
 
   if (y < 0.2) {
     movePage('prev');

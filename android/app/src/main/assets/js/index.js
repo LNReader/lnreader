@@ -687,22 +687,16 @@ class ImageModal {
     );
   }
 }
-var swipeHandler;
-var toolWrapper;
-var reader;
-var scrollHandler;
-var tts;
-var contextMenu;
 
 try {
-  swipeHandler = new SwipeHandler();
-  toolWrapper = new ToolWrapper();
-  reader = new Reader(swipeHandler, toolWrapper);
-  scrollHandler = new ScrollHandler(reader, toolWrapper);
-  tts = new TextToSpeech(reader);
+  var swipeHandler = new SwipeHandler();
+  var toolWrapper = new ToolWrapper();
+  var reader = new Reader(swipeHandler, toolWrapper);
+  var scrollHandler = new ScrollHandler(reader, toolWrapper);
+  var tts = new TextToSpeech(reader);
   toolWrapper.tools = [scrollHandler, tts];
-  imageModal = new ImageModal(reader);
-  contextMenu = new ContextMenu(reader);
+  var imageModal = new ImageModal(reader);
+  var contextMenu = new ContextMenu(reader);
   contextMenu.init();
 } catch (e) {
   alert(e);
