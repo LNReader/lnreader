@@ -1,4 +1,5 @@
-import { FC, useEffect, useMemo } from 'react';
+import * as React from 'react';
+import { useEffect, useMemo } from 'react';
 import {
   Dimensions,
   NativeEventEmitter,
@@ -50,7 +51,7 @@ type WebViewReaderProps = {
   pageReader: boolean;
 };
 
-const WebViewReader: FC<WebViewReaderProps> = props => {
+const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const {
     data: { chapter, novel },
     html,
@@ -145,8 +146,10 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
 
     if (dataPayload) {
       if (dataPayload.type === 'console') {
+        // eslint-disable-next-line no-console
         console.info(`[Console] ${JSON.stringify(dataPayload.msg, null, 2)}`);
       } else if (false) {
+        // eslint-disable-next-line no-console
         if (dataPayload.type !== 'save') console.log(dataPayload);
       }
     }
