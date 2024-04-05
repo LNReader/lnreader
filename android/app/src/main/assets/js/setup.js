@@ -10,11 +10,7 @@ function setup(progress, customJS) {
     //? scroll to saved position
     if (reader.pageReader) {
       setTimeout(() => {
-        const textWidth = chapter.scrollWidth;
-        const layoutWidth = parseInt(
-          document.querySelector('html').getBoundingClientRect().width,
-        );
-        setAttr('data-pages', Math.round(textWidth / layoutWidth) - 1);
+        setPages();
         scrollHandler.onDOMCreation(progress);
       }, 100);
     } else {

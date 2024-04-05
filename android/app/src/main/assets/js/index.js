@@ -37,6 +37,7 @@ class Reader {
       getComputedStyle(document.querySelector('html')).getPropertyValue(
         'padding-top',
       ),
+      10,
     );
     this.chapter = document.querySelector('chapter');
     this.rawHTML = this.chapter.innerHTML;
@@ -48,19 +49,19 @@ class Reader {
     this.chapterWidth = this.chapter.scrollWidth;
     this.layoutWidth = window.innerWidth;
     this.pageReader = this.chapter.getAttribute('data-page-reader') === 'true';
-    this.currentPage = getInt('page');
     this.saveProgressInterval = setInterval(() => {
       if (!this.pageReader) {
         this.post({
           type: 'save',
           data: parseInt(
             ((window.scrollY + this.layoutHeight) / this.chapterHeight) * 100,
+            10,
           ),
         });
       } else {
         this.post({
           type: 'save',
-          data: parseInt((getInt('page') / getInt('pages')) * 100),
+          data: parseInt((getPage() / getPages()) * 100, 10),
         });
       }
     }, autoSaveInterval);
@@ -80,12 +81,10 @@ class Reader {
     this.updateGeneralSettings(initSettings);
   }
   refresh = () => {
-    if (!this.pageReader)
+    if (!this.pageReader) {
       this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
-    else {
-      this.currentPage = getInt('page');
-      this.percentage.innerText =
-        this.currentPage + 1 + '/' + (getInt('pages') + 1);
+    } else {
+      this.percentage.innerText = getPage() + 1 + '/' + (getPages() + 1);
       this.chapterWidth = this.chapter.scrollWidth;
     }
   };
@@ -251,11 +250,11 @@ class ScrollHandler {
   };
   updateHorizontal = ratio => {
     this.reader.refresh();
-    const totalPages = getInt('pages');
-    const currentPage = getInt('page');
+    const totalPages = getPages();
+    const currentPage = getPage();
 
     this.percentageMax.innerHTML = totalPages + 1;
-    const percentage = parseInt((currentPage / totalPages) * 100);
+    const percentage = parseInt((currentPage / totalPages) * 100, 10);
     if (this.toolWrapper.visible) {
       if (this.reader.verticalSeekbar) {
         this.progress.style.height = percentage + '%';
@@ -267,10 +266,11 @@ class ScrollHandler {
       this.percentage.innerText = this.reader.currentPage + 1;
     }
     if (this.lock) {
-      let page = parseInt(totalPages * ratio);
-      if (page > totalPages) page = totalPages;
-      setAttr('data-page', page);
-      this.reader.chapter.style.transform = 'translate(-' + page * 100 + '%)';
+      let newPage = parseInt(totalPages * ratio, 10);
+      newPage = newPage > totalPages ? totalPages : newPage;
+      setPage(newPage);
+      this.reader.chapter.style.transform =
+        'translate(-' + newPage * 100 + '%)';
     }
     if (this.reader.percentage) {
       this.reader.refresh();
@@ -285,7 +285,7 @@ class ScrollHandler {
     if (ratio > 1) {
       ratio = 1;
     }
-    const percentage = parseInt(ratio * 100);
+    const percentage = parseInt(ratio * 100, 10);
     if (this.toolWrapper.visible) {
       if (this.reader.verticalSeekbar) {
         this.progress.style.height = percentage + '%';
@@ -323,11 +323,10 @@ class ScrollHandler {
   onDOMCreation = progress => {
     this.onShow();
     if (this.reader.pageReader) {
-      const totalPages = getInt('pages');
+      const totalPages = getPages();
       let page = Math.round((totalPages * progress) / 100);
-      if (page >= totalPages) page = totalPages - 1;
+      setPage(page >= totalPages ? totalPages : page);
       this.reader.chapter.style.transform = 'translate(-' + page * 100 + '%)';
-      setAttr('data-page', page);
     } else {
       window.scrollTo({
         top:
@@ -626,8 +625,7 @@ class ContextMenu {
         clientX + this.contextMenu.scrollWidth >= window.innerWidth
           ? window.innerWidth - this.contextMenu.scrollWidth - 20
           : clientX;
-      const page = getInt('page');
-      // chapter.style.transform = 'translate(-' + page * 100 + '%)';
+      const page = getPage();
       this.contextMenu.setAttribute(
         'style',
         `--width: ${this.contextMenu.scrollWidth}px;
