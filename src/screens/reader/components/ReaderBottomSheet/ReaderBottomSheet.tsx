@@ -32,6 +32,7 @@ const ReaderTab: React.FC = () => {
         label={getString('readerScreen.bottomSheet.padding')}
         valueKey="padding"
         valueChange={0.5}
+        min={1}
         max={10}
       />
       <ReaderFontPicker />
