@@ -159,7 +159,7 @@ const SettingsReaderScreen = () => {
           javaScriptEnabled={true}
           style={{ backgroundColor: readerBackgroundColor }}
           nestedScrollEnabled={true}
-          onMessage={ev => {
+          onMessage={(ev: { nativeEvent: { data: string } }) => {
             const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
             switch (event.type) {
               case 'hide':
@@ -231,8 +231,6 @@ const SettingsReaderScreen = () => {
               <body> 
                 <div class="chapterCtn"> 
                   <chapter 
-                    data-page=0
-                    data-pages=0
                     data-page-reader='${pageReader}'
                     data-novel-id='${dummyChapterInfo.novelId}'
                     data-chapter-id='${dummyChapterInfo.chapterId}'
@@ -257,9 +255,9 @@ const SettingsReaderScreen = () => {
                 </body>
                 <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
                 <script src="${assetsUriPrefix}/js/default.js"></script>
+                <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                 <script src="${assetsUriPrefix}/js/index.js"></script>
                 <script src="${assetsUriPrefix}/js/setup.js"></script>
-                <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                 <script>
                         setup(0,${readerSettings.customJS})
                 </script>

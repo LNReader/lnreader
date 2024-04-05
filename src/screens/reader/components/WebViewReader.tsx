@@ -167,7 +167,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       javaScriptEnabled={true}
       onLayout={async () => onLayout()}
       injectedJavaScriptObject={{ customValue: 'myCustomValue' }}
-      onMessage={ev => {
+      onMessage={(ev: { nativeEvent: { data: string } }) => {
         __DEV__ && onMessage(ev);
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
@@ -284,8 +284,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                   <body>
                     <div class="chapterCtn"> 
                       <chapter 
-                        data-page=0
-                        data-pages=0
                         data-page-reader='${pageReader}'
                         data-plugin-id='${novel.pluginId}'
                         data-novel-id='${chapter.novelId}'
@@ -343,9 +341,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     </script>
                     <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
                     <script src="${assetsUriPrefix}/js/default.js"></script>
+                    <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                     <script src="${assetsUriPrefix}/js/index.js"></script>
                     <script src="${assetsUriPrefix}/js/setup.js"></script>
-                    <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                     <script>
                         setup(${chapter.progress},${readerSettings.customJS})
                     </script>
