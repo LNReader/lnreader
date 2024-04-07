@@ -8,7 +8,6 @@ import { ThemeColors } from '@theme/types';
 interface AppbarProps {
   title: string;
   theme: ThemeColors;
-  currentUrl: string;
   canGoBack: boolean;
   canGoForward: boolean;
   webView: RefObject<WebView>;
@@ -19,7 +18,6 @@ interface AppbarProps {
 const Appbar: React.FC<AppbarProps> = ({
   title,
   theme,
-  currentUrl,
   canGoBack,
   canGoForward,
   webView,
@@ -47,13 +45,6 @@ const Appbar: React.FC<AppbarProps> = ({
           style={[styles.title, { color: theme.onSurface }]}
         >
           {title}
-        </Text>
-
-        <Text
-          numberOfLines={1}
-          style={[styles.url, { color: theme.onSurfaceVariant }]}
-        >
-          {currentUrl}
         </Text>
       </View>
       <View style={styles.iconContainer}>

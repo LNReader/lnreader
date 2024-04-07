@@ -76,7 +76,6 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
       <Appbar
         title={title}
         theme={theme}
-        currentUrl={currentUrl}
         canGoBack={canGoBack}
         canGoForward={canGoForward}
         webView={webViewRef}
