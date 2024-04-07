@@ -65,6 +65,22 @@ const updateNovelMetadata = (
   });
 };
 
+const updateNovelTotalPages = (novelId: number, totalPages: number) => {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'UPDATE SET Novel totalPages = ? WHERE id = ?',
+        [totalPages, novelId],
+        () => resolve(null),
+        (txObj, error) => {
+          reject(error);
+          return false;
+        },
+      );
+    });
+  });
+};
+
 const updateNovelChapters = (
   pluginId: string,
   novelId: number,
@@ -73,13 +89,13 @@ const updateNovelChapters = (
 ) => {
   return new Promise((resolve, reject) => {
     db.transaction(async tx => {
-      const newChapters: { id: number; path: string }[] = [];
       for (let position = 0; position < novel.chapters.length; position++) {
-        const { name, path, releaseTime, page } = novel.chapters[position];
+        const { name, path, releaseTime, page, chapterNumber } =
+          novel.chapters[position];
         tx.executeSql(
           `
-            INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, page, position)
-            SELECT ?, ?, ?, ?, datetime('now','localtime'), ?, ?
+            INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, chapterNumber, page, position)
+            SELECT ?, ?, ?, ?, datetime('now','localtime'), ?, ?, ?
             WHERE NOT EXISTS (SELECT id FROM Chapter WHERE path = ? AND novelId = ?);
           `,
           [
@@ -87,22 +103,25 @@ const updateNovelChapters = (
             name,
             releaseTime || null,
             novelId,
+            chapterNumber || null,
             page || '1',
             position,
             path,
             novelId,
           ],
           (txObj, { insertId }) => {
-            if (insertId) {
+            if (insertId && insertId >= 0) {
               if (downloadNewChapters) {
-                newChapters.push({ id: insertId, path: path });
+                downloadChapter(pluginId, novelId, insertId, path).catch(
+                  reject,
+                );
               }
             } else {
               tx.executeSql(
                 `
                   UPDATE Chapter SET 
                     name = ?, releaseTime = ?, updatedTime = datetime('now','localtime'), page = ?, position = ?
-                  WHERE path = ? AND novelId = ? AND (name != ? OR releaseTime != ? OR page != ?);
+                  WHERE path = ? AND novelId = ? AND (name != ? OR releaseTime != ? OR page != ? OR position != ?);
                 `,
                 [
                   name,
@@ -114,6 +133,7 @@ const updateNovelChapters = (
                   name,
                   releaseTime || null,
                   page || '1',
+                  position,
                 ],
                 undefined,
                 (txObj, error) => {
@@ -128,11 +148,6 @@ const updateNovelChapters = (
             return false;
           },
         );
-      }
-      if (downloadNewChapters) {
-        for (const { id, path } of newChapters) {
-          await downloadChapter(pluginId, novelId, id, path).catch(reject);
-        }
       }
       resolve(null);
     });
@@ -157,6 +172,9 @@ const updateNovel = async (
   const novel = await fetchNovel(pluginId, novelPath);
   if (refreshNovelMetadata) {
     await updateNovelMetadata(pluginId, novelId, novel);
+  } else if (novel.totalPages) {
+    // at least update totalPages,
+    await updateNovelTotalPages(novelId, novel.totalPages);
   }
   await updateNovelChapters(pluginId, novelId, novel, downloadNewChapters);
   const latestChapterKey = `${NOVEL_LATEST_CHAPTER_PREFIX}_${novelId}`;
