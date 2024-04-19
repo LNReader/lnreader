@@ -1,10 +1,10 @@
 import { NovelStatus } from '@plugins/types';
 export interface NovelInfo {
   id: number;
-  path: string;
-  pluginId: string;
   name: string;
   cover?: string;
+  path: string;
+  pluginId: string;
   summary?: string;
   author?: string;
   artist?: string;

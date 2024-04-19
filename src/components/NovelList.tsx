@@ -7,23 +7,20 @@ import {
   FlatListProps,
   ListRenderItem,
 } from 'react-native';
-import { NovelItem } from '@plugins/types';
-import { LibraryNovelInfo, NovelInfo } from '../database/types';
 import { useDeviceOrientation } from '@hooks';
+import { LibraryNovelInfo } from '@database/types';
+import { NovelItem } from '@plugins/types';
 
-export type NovelListRenderItem = ListRenderItem<
-  LibraryNovelInfo | NovelInfo | NovelItem
->;
+export type NovelListRenderItem = ListRenderItem<NovelItem | LibraryNovelInfo>;
 
 type listDataItem =
-  | (LibraryNovelInfo | NovelInfo | NovelItem) & {
+  | (NovelItem | LibraryNovelInfo) & {
       completeRow?: number;
     };
 
-interface NovelListProps
-  extends FlatListProps<LibraryNovelInfo | NovelInfo | NovelItem> {
+interface NovelListProps extends FlatListProps<listDataItem> {
   isBrowsing?: boolean;
-  data: Array<listDataItem>;
+  data: Array<NovelItem | LibraryNovelInfo>;
 }
 
 const NovelList: React.FC<NovelListProps> = props => {

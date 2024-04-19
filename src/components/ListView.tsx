@@ -7,9 +7,10 @@ import { coverPlaceholderColor } from '../theme/colors';
 import color from 'color';
 import { ThemeColors } from '@theme/types';
 import { NovelItem } from '@plugins/types';
+import { LibraryNovelInfo } from '@database/types';
 
 interface ListViewProps {
-  item: NovelItem;
+  item: NovelItem | LibraryNovelInfo;
   downloadBadge?: React.ReactNode;
   unreadBadge?: React.ReactNode;
   inLibraryBadge?: React.ReactNode;

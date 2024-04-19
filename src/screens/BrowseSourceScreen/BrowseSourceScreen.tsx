@@ -16,7 +16,7 @@ import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { switchNovelToLibrary } from '@database/queries/NovelQueries';
-import { NovelInfo } from '@database/types';
+import { LibraryNovelInfo, NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BrowseSourceScreenProps } from '@navigators/types';
@@ -74,7 +74,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     );
 
   const navigateToNovel = useCallback(
-    (item: NovelItem) =>
+    (item: NovelItem | LibraryNovelInfo) =>
       navigation.navigate('Novel', {
         ...item,
         pluginId: pluginId,
@@ -122,37 +122,53 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
           isBrowsing
           renderItem={({ item }) => {
             const inLibrary = novelInLibrary(item.path);
-
-            return (
-              <NovelCover
-                item={item}
-                theme={theme}
-                libraryStatus={inLibrary}
-                onPress={() => navigateToNovel(item)}
-                isSelected={false}
-                onLongPress={async () => {
-                  await switchNovelToLibrary(item.path, pluginId);
-                  setLibrary(prevValues => {
-                    if (inLibrary) {
-                      return [
-                        ...prevValues.filter(novel => novel.path !== item.path),
-                      ];
-                    } else {
-                      return [
-                        ...prevValues,
-                        {
-                          ...item,
-                          pluginId: pluginId,
-                          inLibrary: true,
-                          isLocal: false,
-                        } as NovelInfo,
-                      ];
-                    }
-                  });
-                }}
-                selectedNovelIds={[]}
-              />
-            );
+            if (item.completeRow) {
+              if (
+                (hasNextPage && !searchText) ||
+                (hasNextSearchPage && searchText)
+              ) {
+                return (
+                  <SourceScreenSkeletonLoading
+                    theme={theme}
+                    completeRow={item.completeRow}
+                  />
+                );
+              }
+              return null;
+            } else {
+              return (
+                <NovelCover
+                  item={item}
+                  theme={theme}
+                  libraryStatus={inLibrary}
+                  onPress={() => navigateToNovel(item)}
+                  isSelected={false}
+                  onLongPress={async () => {
+                    await switchNovelToLibrary(item.path, pluginId);
+                    setLibrary(prevValues => {
+                      if (inLibrary) {
+                        return [
+                          ...prevValues.filter(
+                            novel => novel.path !== item.path,
+                          ),
+                        ];
+                      } else {
+                        return [
+                          ...prevValues,
+                          {
+                            ...item,
+                            pluginId: pluginId,
+                            inLibrary: true,
+                            isLocal: false,
+                          } as NovelInfo,
+                        ];
+                      }
+                    });
+                  }}
+                  selectedNovelIds={[]}
+                />
+              );
+            }
           }}
           onEndReached={() => {
             if (searchText) {
