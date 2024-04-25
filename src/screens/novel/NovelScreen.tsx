@@ -4,23 +4,20 @@ import {
   View,
   RefreshControl,
   StatusBar,
-  Share,
   Text,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Share,
 } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
 import { FlashList } from '@shopify/flash-list';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  useSharedValue,
+} from 'react-native-reanimated';
 
-import {
-  Portal,
-  Appbar,
-  IconButton,
-  Menu,
-  Snackbar,
-  AnimatedFAB,
-} from 'react-native-paper';
+import { Portal, Appbar, Snackbar, AnimatedFAB } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { showToast } from '../../utils/showToast';
 import {
@@ -32,7 +29,6 @@ import {
 import NovelInfoHeader from './components/Info/NovelInfoHeader';
 import NovelBottomSheet from './components/NovelBottomSheet';
 import TrackSheet from './components/Tracker/TrackSheet';
-import { Row } from '../../components/Common';
 import JumpToChapterModal from './components/JumpToChapterModal';
 import { Actionbar } from '../../components/Actionbar/Actionbar';
 import EditInfoModal from './components/EditInfoModal';
@@ -48,6 +44,8 @@ import { getString } from '@strings/translations';
 import NovelDrawer from './components/NovelDrawer';
 import { updateNovel } from '@services/updates/LibraryUpdateQueries';
 import { useFocusEffect } from '@react-navigation/native';
+import { isNumber } from 'lodash-es';
+import NovelAppbar from './components/NovelAppbar';
 import { resolveUrl } from '@services/plugin/fetch';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
@@ -97,8 +95,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   } = useDownload();
 
   const [selected, setSelected] = useState<ChapterInfo[]>([]);
-  const [downloadMenu, showDownloadMenu] = useState(false);
-  const [extraMenu, showExtraMenu] = useState(false);
   const [editInfoModal, showEditInfoModal] = useState(false);
   const [isFabExtended, setIsFabExtended] = useState(true);
 
@@ -107,6 +103,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   let trackerSheetRef = useRef(null);
 
   const deleteDownloadsSnackbar = useBoolean();
+
+  const headerOpacity = useSharedValue(0);
   const {
     value: drawerOpen,
     setTrue: openDrawer,
@@ -115,6 +113,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   const onPageScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = event.nativeEvent.contentOffset.y;
+    headerOpacity.value = y < 50 ? 0 : (y - 50) / 150;
     const currentScrollPosition = Math.floor(y) ?? 0;
     if (useFabForContinueReading && lastRead) {
       setIsFabExtended(currentScrollPosition <= 0);
@@ -150,6 +149,29 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       progressBackgroundColor={theme.onPrimary}
     />
   );
+
+  const downloadChs = (amount: number | 'all' | 'unread') => {
+    if (!novel) return;
+    let filtered = chapters.filter(chapter => !chapter.isDownloaded);
+    if (amount === 'unread') {
+      filtered = filtered.filter(chapter => chapter.unread);
+    }
+    if (isNumber(amount)) {
+      filtered = filtered.slice(0, amount);
+    }
+    if (filtered) {
+      downloadChapters(novel, filtered);
+    }
+  };
+  const deleteChs = () => {
+    deleteChapters(chapters.filter(c => c.isDownloaded));
+  };
+  const shareNovel = () => {
+    if (!novel) return;
+    Share.share({
+      message: resolveUrl(novel.pluginId, novel.path, true),
+    });
+  };
 
   const [jumpToChapterModal, showJumpToChapterModal] = useState(false);
   const downloadCustomChapterModal = useBoolean();
@@ -300,7 +322,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   };
 
   const setCustomNovelCover = async () => {
-    showExtraMenu(false);
     const newCover = await pickCustomNovelCover(novel);
     if (newCover) {
       setNovel({
@@ -333,219 +354,19 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
         <View style={[styles.container, { backgroundColor: theme.background }]}>
           <Portal>
             {selected.length === 0 ? (
-              <View
-                style={{
-                  position: 'absolute',
-                  height: (StatusBar.currentHeight || 0) + 54,
-                  width: '100%',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <IconButton
-                  icon="arrow-left"
-                  iconColor={theme.onBackground}
-                  size={24}
-                  style={{ marginTop: (StatusBar.currentHeight || 0) + 8 }}
-                  onPress={() => navigation.goBack()}
-                />
-                <Row>
-                  {!novel.isLocal ? (
-                    <IconButton
-                      icon="share-variant"
-                      iconColor={theme.onBackground}
-                      size={21}
-                      style={{
-                        marginTop: (StatusBar.currentHeight || 0) + 8,
-                      }}
-                      onPress={() =>
-                        Share.share({
-                          message: resolveUrl(novel.pluginId, novel.path, true),
-                        })
-                      }
-                    />
-                  ) : null}
-                  <IconButton
-                    icon="text-box-search-outline"
-                    iconColor={theme.onBackground}
-                    size={21}
-                    style={{
-                      marginTop: (StatusBar.currentHeight || 0) + 8,
-                    }}
-                    onPress={() => showJumpToChapterModal(true)}
-                  />
-                  {!novel.isLocal ? (
-                    <Menu
-                      visible={downloadMenu}
-                      onDismiss={() => showDownloadMenu(false)}
-                      anchor={
-                        <IconButton
-                          icon="download-outline"
-                          iconColor={theme.onBackground}
-                          size={24}
-                          style={{
-                            marginTop: (StatusBar.currentHeight || 0) + 8,
-                          }}
-                          onPress={() => showDownloadMenu(true)}
-                        />
-                      }
-                      contentStyle={{ backgroundColor: theme.surface2 }}
-                    >
-                      <Menu.Item
-                        title={getString('novelScreen.download.next')}
-                        style={{ backgroundColor: theme.surface2 }}
-                        titleStyle={{ color: theme.onSurface }}
-                        onPress={() => {
-                          showDownloadMenu(false);
-                          const finded = chapters.find(
-                            chapter => chapter.unread && !chapter.isDownloaded,
-                          );
-                          if (novel && finded) {
-                            downloadChapter(novel, finded);
-                          }
-                        }}
-                      />
-                      <Menu.Item
-                        title={getString('novelScreen.download.next5')}
-                        style={{ backgroundColor: theme.surface2 }}
-                        titleStyle={{
-                          color: theme.onSurface,
-                        }}
-                        onPress={() => {
-                          showDownloadMenu(false);
-                          if (novel) {
-                            downloadChapters(
-                              novel,
-                              chapters
-                                .filter(
-                                  chapter =>
-                                    chapter.unread && !chapter.isDownloaded,
-                                )
-                                .slice(0, 5),
-                            );
-                          }
-                        }}
-                      />
-                      <Menu.Item
-                        title={getString('novelScreen.download.next10')}
-                        style={{ backgroundColor: theme.surface2 }}
-                        titleStyle={{
-                          color: theme.onSurface,
-                        }}
-                        onPress={() => {
-                          showDownloadMenu(false);
-                          if (novel) {
-                            downloadChapters(
-                              novel,
-                              chapters
-                                .filter(
-                                  chapter =>
-                                    chapter.unread && !chapter.isDownloaded,
-                                )
-                                .slice(0, 10),
-                            );
-                          }
-                        }}
-                      />
-                      <Menu.Item
-                        title={getString('novelScreen.download.custom')}
-                        style={{ backgroundColor: theme.surface2 }}
-                        titleStyle={{ color: theme.onSurface }}
-                        onPress={() => {
-                          downloadCustomChapterModal.setTrue();
-                          showDownloadMenu(false);
-                        }}
-                      />
-                      <Menu.Item
-                        title={getString('novelScreen.download.unread')}
-                        style={{ backgroundColor: theme.surface2 }}
-                        titleStyle={{
-                          color: theme.onSurface,
-                        }}
-                        onPress={() => {
-                          showDownloadMenu(false);
-                          if (novel) {
-                            downloadChapters(
-                              novel,
-                              chapters.filter(
-                                chapter =>
-                                  chapter.unread && !chapter.isDownloaded,
-                              ),
-                            );
-                          }
-                        }}
-                      />
-                      <Menu.Item
-                        title={getString('common.all')}
-                        style={{ backgroundColor: theme.surface2 }}
-                        titleStyle={{
-                          color: theme.onSurface,
-                        }}
-                        onPress={() => {
-                          if (novel) {
-                            downloadChapters(
-                              novel,
-                              chapters.filter(chapter => !chapter.isDownloaded),
-                            );
-                          }
-                          showDownloadMenu(false);
-                        }}
-                      />
-                      <Menu.Item
-                        title={getString('novelScreen.download.delete')}
-                        style={{ backgroundColor: theme.surface2 }}
-                        titleStyle={{
-                          color: theme.onSurface,
-                        }}
-                        onPress={() => {
-                          showDownloadMenu(false);
-                          deleteChapters(chapters.filter(c => c.isDownloaded));
-                        }}
-                      />
-                    </Menu>
-                  ) : null}
-
-                  <Menu
-                    visible={extraMenu}
-                    onDismiss={() => showExtraMenu(false)}
-                    anchor={
-                      <IconButton
-                        icon="dots-vertical"
-                        iconColor={theme.onBackground}
-                        size={21}
-                        style={{
-                          marginTop: (StatusBar.currentHeight || 0) + 8,
-                          marginRight: 16,
-                        }}
-                        onPress={() => showExtraMenu(true)}
-                      />
-                    }
-                    contentStyle={{
-                      backgroundColor: theme.surface2,
-                    }}
-                  >
-                    <Menu.Item
-                      title={getString('novelScreen.edit.info')}
-                      style={{ backgroundColor: theme.surface2 }}
-                      titleStyle={{
-                        color: theme.onSurface,
-                      }}
-                      onPress={() => {
-                        showEditInfoModal(true);
-                        showExtraMenu(false);
-                      }}
-                    />
-                    <Menu.Item
-                      title={getString('novelScreen.edit.cover')}
-                      style={{ backgroundColor: theme.surface2 }}
-                      titleStyle={{
-                        color: theme.onSurface,
-                      }}
-                      onPress={setCustomNovelCover}
-                    />
-                  </Menu>
-                </Row>
-              </View>
+              <NovelAppbar
+                deleteChapters={deleteChs}
+                downloadChapters={downloadChs}
+                showEditInfoModal={showEditInfoModal}
+                setCustomNovelCover={setCustomNovelCover}
+                downloadCustomChapterModal={downloadCustomChapterModal.setTrue}
+                showJumpToChapterModal={showJumpToChapterModal}
+                shareNovel={shareNovel}
+                theme={theme}
+                isLocal={novel.isLocal}
+                goBack={navigation.goBack}
+                headerOpacity={headerOpacity}
+              />
             ) : (
               <Animated.View
                 entering={FadeIn.duration(150)}
