@@ -3,21 +3,21 @@
 // https://en.wikipedia.org/wiki/List_of_language_names
 
 export const languagesMapping: Record<string, string> = {
-  'ab': 'العربية',
-  'zh': '中文, 汉语, 漢語',
-  'en': 'English',
-  'fr': 'Français',
   'id': 'Bahasa Indonesia',
-  'ja': '日本語',
-  'ko': '조선말, 한국어',
+  'en': 'English',
+  'es': 'Español',
+  'fr': 'Français',
   'pl': 'Polski',
   'pt': 'Português',
-  'ru': 'Русский',
-  'es': 'Español',
-  'th': 'ไทย',
-  'tr': 'Türkçe',
-  'uk': 'Українська',
   'vi': 'Tiếng Việt',
+  'tr': 'Türkçe',
+  'ru': 'Русский',
+  'uk': 'Українська',
+  'ab': '‎العربية',
+  'th': 'ไทย',
+  'zh': '中文, 汉语, 漢語',
+  'ja': '日本語',
+  'ko': '조선말, 한국어',
 };
 
 export const languages = Object.values(languagesMapping);
