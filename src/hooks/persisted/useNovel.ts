@@ -2,7 +2,7 @@ import { SearchResult, UserListEntry } from '@services/Trackers';
 import { useMMKVNumber, useMMKVObject } from 'react-native-mmkv';
 import { TrackerMetadata, getTracker } from './useTracker';
 import { ChapterInfo, NovelInfo } from '@database/types';
-import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
 import {
   getNovel as _getNovel,
   deleteCachedNovels as _deleteCachedNovels,
@@ -37,7 +37,6 @@ import { parseChapterNumber } from '@utils/parseChapterNumber';
 export const TRACKED_NOVEL_PREFIX = 'TRACKED_NOVEL_PREFIX';
 
 export const NOVEL_PAGE_INDEX_PREFIX = 'NOVEL_PAGE_INDEX_PREFIX';
-export const NOVEL_PAGE_UPDATES_PREFIX = 'NOVEL_PAGES_UPDATES_PREFIX';
 export const NOVEL_SETTINSG_PREFIX = 'NOVEL_SETTINGS';
 export const LAST_READ_PREFIX = 'LAST_READ_PREFIX';
 
@@ -330,20 +329,6 @@ export const useNovel = (novelPath: string, pluginId: string) => {
       pages = Array(novel.totalPages)
         .fill(0)
         .map((v, idx) => String(idx + 1));
-      const key = `${NOVEL_PAGE_UPDATES_PREFIX}_${novel.id}`;
-      const hasUpdates = getMMKVObject<boolean[]>(key);
-      if (hasUpdates) {
-        if (pages.length > hasUpdates.length) {
-          setMMKVObject(
-            key,
-            hasUpdates.concat(
-              Array(pages.length - hasUpdates.length).fill(false),
-            ),
-          );
-        }
-      } else {
-        setMMKVObject(key, Array(novel.totalPages).fill(false));
-      }
     } else {
       pages = (await getCustomPages(novel.id)).map(c => c.page);
     }
@@ -358,15 +343,13 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const getChapters = useCallback(async () => {
     const page = pages[pageIndex];
     if (novel && page) {
-      const hasUpdatesKey = `${NOVEL_PAGE_UPDATES_PREFIX}_${novel.id}`;
-      const hasUpdates = getMMKVObject<boolean[]>(hasUpdatesKey);
       let chapters = await _getPageChapters(
         novel.id,
         novelSettings.sort,
         novelSettings.filter,
         page,
       );
-      if (hasUpdates && (hasUpdates[pageIndex] || !chapters.length)) {
+      if (!chapters.length) {
         const sourcePage = await fetchPage(pluginId, novelPath, page);
         const sourceChapters = sourcePage.chapters.map(ch => {
           return {
@@ -375,8 +358,6 @@ export const useNovel = (novelPath: string, pluginId: string) => {
           };
         });
         await insertChapters(novel.id, sourceChapters);
-        hasUpdates[pageIndex] = false;
-        setMMKVObject(hasUpdatesKey, hasUpdates);
         chapters = await _getPageChapters(
           novel.id,
           novelSettings.sort,
@@ -427,7 +408,6 @@ export const deleteCachedNovels = async () => {
   const cachedNovels = await _getCachedNovels();
   for (let novel of cachedNovels) {
     MMKVStorage.delete(`${TRACKED_NOVEL_PREFIX}_${novel.id}`);
-    MMKVStorage.delete(`${NOVEL_PAGE_UPDATES_PREFIX}_${novel.id}`);
     MMKVStorage.delete(
       `${NOVEL_PAGE_INDEX_PREFIX}_${novel.pluginId}_${novel.path}`,
     );
