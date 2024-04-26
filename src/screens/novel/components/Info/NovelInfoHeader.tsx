@@ -47,6 +47,7 @@ interface NovelInfoHeaderProps {
   deleteDownloadsSnackbar: UseBooleanReturnType;
   page?: string;
   openDrawer: () => void;
+  onRefreshPage: (page: string) => void;
 }
 
 const NovelInfoHeader = ({
@@ -64,6 +65,7 @@ const NovelInfoHeader = ({
   deleteDownloadsSnackbar,
   page,
   openDrawer,
+  onRefreshPage,
 }: NovelInfoHeaderProps) => {
   const { hideBackdrop = false } = useAppSettings();
 
@@ -200,6 +202,14 @@ const NovelInfoHeader = ({
               {`${chapters?.length} ${getString('novelScreen.chapters')}`}
             </Text>
           </View>
+          {page ? (
+            <IconButton
+              icon="reload"
+              iconColor={theme.onSurface}
+              size={24}
+              onPress={() => onRefreshPage(page)}
+            />
+          ) : null}
           <IconButton
             icon="filter-variant"
             iconColor={filter ? filterColor(theme.isDark) : theme.onSurface}
