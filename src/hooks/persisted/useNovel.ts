@@ -36,7 +36,6 @@ import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 export const TRACKED_NOVEL_PREFIX = 'TRACKED_NOVEL_PREFIX';
 
-export const NOVEL_LATEST_CHAPTER_PREFIX = 'NOVEL_LATEST_CHAPTER';
 export const NOVEL_PAGE_INDEX_PREFIX = 'NOVEL_PAGE_INDEX_PREFIX';
 export const NOVEL_PAGE_UPDATES_PREFIX = 'NOVEL_PAGES_UPDATES_PREFIX';
 export const NOVEL_SETTINSG_PREFIX = 'NOVEL_SETTINGS';
@@ -325,12 +324,6 @@ export const useNovel = (novelPath: string, pluginId: string) => {
       if (!novel) {
         return;
       }
-      if (sourceNovel.latestChapter) {
-        setMMKVObject(
-          `${NOVEL_LATEST_CHAPTER_PREFIX}_${novel.id}`,
-          sourceNovel.latestChapter,
-        );
-      }
     }
     let pages: string[];
     if (novel.totalPages > 0) {
@@ -434,7 +427,6 @@ export const deleteCachedNovels = async () => {
   const cachedNovels = await _getCachedNovels();
   for (let novel of cachedNovels) {
     MMKVStorage.delete(`${TRACKED_NOVEL_PREFIX}_${novel.id}`);
-    MMKVStorage.delete(`${NOVEL_LATEST_CHAPTER_PREFIX}_${novel.id}`);
     MMKVStorage.delete(`${NOVEL_PAGE_UPDATES_PREFIX}_${novel.id}`);
     MMKVStorage.delete(
       `${NOVEL_PAGE_INDEX_PREFIX}_${novel.pluginId}_${novel.path}`,
