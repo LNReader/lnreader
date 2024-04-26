@@ -10,7 +10,9 @@ export const sanitizeChapterText = (
   options?: Options,
 ): string => {
   if (html) {
-    html = html.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+    html = html
+      .replace(/&lt;/g, '&NoBreak;<&NoBreak;')
+      .replace(/&gt;/g, '&NoBreak;>&NoBreak;');
   }
   let text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
