@@ -75,3 +75,4 @@ web-build/
 
 .vscode/
 src/sources/en/generators/
+*.lockb

@@ -1,4 +1,4 @@
-import { fetchImage, fetchNovel } from '../plugin/fetch';
+import { fetchImage, fetchNovel, fetchPage } from '../plugin/fetch';
 import { downloadChapter } from '../../database/queries/ChapterQueries';
 
 import * as SQLite from 'expo-sqlite';
@@ -6,11 +6,6 @@ import { ChapterItem, SourceNovel } from '@plugins/types';
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import { NovelDownloadFolder } from '@utils/constants/download';
 import * as RNFS from 'react-native-fs';
-import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
-import {
-  NOVEL_LATEST_CHAPTER_PREFIX,
-  NOVEL_PAGE_UPDATES_PREFIX,
-} from '@hooks/persisted/useNovel';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = (
@@ -84,14 +79,14 @@ const updateNovelTotalPages = (novelId: number, totalPages: number) => {
 const updateNovelChapters = (
   pluginId: string,
   novelId: number,
-  novel: SourceNovel,
+  chapters: ChapterItem[],
   downloadNewChapters?: boolean,
+  page?: string,
 ) => {
   return new Promise((resolve, reject) => {
     db.transaction(async tx => {
-      for (let position = 0; position < novel.chapters.length; position++) {
-        const { name, path, releaseTime, page, chapterNumber } =
-          novel.chapters[position];
+      for (let position = 0; position < chapters.length; position++) {
+        const { name, path, releaseTime, chapterNumber } = chapters[position];
         tx.executeSql(
           `
             INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, chapterNumber, page, position)
@@ -176,19 +171,30 @@ const updateNovel = async (
     // at least update totalPages,
     await updateNovelTotalPages(novelId, novel.totalPages);
   }
-  await updateNovelChapters(pluginId, novelId, novel, downloadNewChapters);
-  const latestChapterKey = `${NOVEL_LATEST_CHAPTER_PREFIX}_${novelId}`;
-  const latestChapter = getMMKVObject<ChapterItem>(latestChapterKey);
-  if (novel.latestChapter && novel.latestChapter.path !== latestChapter?.path) {
-    const hasUpdatesKey = `${NOVEL_PAGE_UPDATES_PREFIX}_${novelId}`;
-    const hasUpdates = getMMKVObject<boolean[]>(hasUpdatesKey);
-    if (hasUpdates) {
-      setMMKVObject(
-        hasUpdatesKey,
-        hasUpdates.map(() => true),
-      );
-    }
-  }
+  await updateNovelChapters(
+    pluginId,
+    novelId,
+    novel.chapters || [],
+    downloadNewChapters,
+  );
 };
 
-export { updateNovel };
+const updateNovelPage = async (
+  pluginId: string,
+  novelPath: string,
+  novelId: number,
+  page: string,
+  options: Pick<UpdateNovelOptions, 'downloadNewChapters'>,
+) => {
+  const { downloadNewChapters } = options;
+  const sourcePage = await fetchPage(pluginId, novelPath, page);
+  await updateNovelChapters(
+    pluginId,
+    novelId,
+    sourcePage.chapters || [],
+    downloadNewChapters,
+    page,
+  );
+};
+
+export { updateNovel, updateNovelPage };
