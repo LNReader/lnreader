@@ -8,7 +8,11 @@ import { useTheme } from '@hooks/persisted';
 import { WebviewScreenProps } from '@navigators/types';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
 import { resolveUrl } from '@services/plugin/fetch';
-import { storage } from '@plugins/helpers/storage';
+import {
+  WEBVIEW_LOCAL_STORAGE,
+  WEBVIEW_SESSION_STORAGE,
+  store,
+} from '@plugins/helpers/storage';
 import Appbar from './components/Appbar';
 import Menu from './components/Menu';
 
@@ -44,12 +48,12 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
 
   const saveData = () => {
     if (pluginId && tempData && isSave) {
-      storage.mmkv.set(
-        pluginId + '_LocalStorage',
+      store.set(
+        pluginId + WEBVIEW_LOCAL_STORAGE,
         JSON.stringify(tempData?.localStorage || {}),
       );
-      storage.mmkv.set(
-        pluginId + '_SessionStorage',
+      store.set(
+        pluginId + WEBVIEW_SESSION_STORAGE,
         JSON.stringify(tempData?.sessionStorage || {}),
       );
     }

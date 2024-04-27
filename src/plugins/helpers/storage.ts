@@ -2,6 +2,10 @@ import { MMKV } from 'react-native-mmkv';
 
 const store = new MMKV({ id: 'plugin_db' });
 
+const PLUGIN_STORAGE = '_DB_';
+const WEBVIEW_LOCAL_STORAGE = '_LocalStorage';
+const WEBVIEW_SESSION_STORAGE = '_SessionStorage';
+
 interface StoredItem {
   created: Date;
   value: any;
@@ -9,12 +13,14 @@ interface StoredItem {
 }
 
 class Storage {
-  mmkv: MMKV;
-
-  constructor() {
-    this.mmkv = store;
-  }
-
+  /**
+   * Sets a key-value pair in the storage.
+   *
+   * @param pluginID - The ID of the plugin.
+   * @param key - The key to set.
+   * @param value - The value to set.
+   * @param expires - Optional. The expiration date for the key-value pair.
+   */
   set(
     pluginID: string,
     key: string,
@@ -26,11 +32,19 @@ class Storage {
       value,
       expires: expires instanceof Date ? expires.getTime() : expires,
     };
-    this.mmkv.set(`${pluginID}_DB_${key}`, JSON.stringify(item));
+    store.set(pluginID + PLUGIN_STORAGE + key, JSON.stringify(item));
   }
 
+  /**
+   * Gets the value associated with a key from the storage.
+   *
+   * @param pluginID - The ID of the plugin.
+   * @param key - The key to retrieve.
+   * @param raw - Optional. If true, returns the raw storage item object.
+   * @returns The value associated with the key or undefined if not found or expired.
+   */
   get(pluginID: string, key: string, raw?: boolean): any {
-    const storedItem = this.mmkv.getString(`${pluginID}_DB_${key}`);
+    const storedItem = store.getString(pluginID + PLUGIN_STORAGE + key);
     if (storedItem) {
       const item: StoredItem = JSON.parse(storedItem);
       if (item.expires) {
@@ -47,51 +61,60 @@ class Storage {
     return undefined;
   }
 
+  /**
+   * Deletes a key from the storage.
+   *
+   * @param pluginID - The ID of the plugin.
+   * @param key - The key to delete.
+   */
   delete(pluginID: string, key: string): void {
-    this.mmkv.delete(`${pluginID}_DB_${key}`);
+    store.delete(pluginID + PLUGIN_STORAGE + key);
   }
 
+  /**
+   * Clears all keys associated with a plugin from the storage.
+   *
+   * @param pluginID - The ID of the plugin.
+   */
   clearAll(pluginID: string): void {
     const keysToRemove = this.getAllKeys(pluginID);
     keysToRemove.forEach(key => this.delete(pluginID, key));
   }
 
+  /**
+   * Gets all keys associated with a plugin from the storage.
+   *
+   * @param pluginID - The ID of the plugin.
+   * @returns An array of keys associated with the plugin.
+   */
   getAllKeys(pluginID: string): string[] {
-    const keys = this.mmkv
+    const keys = store
       .getAllKeys()
-      .filter(key => key.startsWith(`${pluginID}_DB_`))
-      .map(key => key.replace(`${pluginID}_DB_`, ''));
+      .filter(key => key.startsWith(pluginID + PLUGIN_STORAGE))
+      .map(key => key.replace(pluginID + PLUGIN_STORAGE, ''));
     return keys;
   }
 }
 
-export const storage = new Storage();
-
 class LocalStorage {
-  private mmkv: MMKV;
-
-  constructor() {
-    this.mmkv = store;
-  }
-
   get(pluginID: string): StoredItem.value | undefined {
-    const data = this.mmkv.getString(`${pluginID}_LocalStorage`);
+    const data = store.getString(pluginID + WEBVIEW_LOCAL_STORAGE);
     return data ? JSON.parse(data) : undefined;
   }
 }
-export const localStorage = new LocalStorage();
 
 class SessionStorage {
-  private mmkv: MMKV;
-
-  constructor() {
-    this.mmkv = store;
-  }
-
   get(pluginID: string): StoredItem.value | undefined {
-    const data = this.mmkv.getString(`${pluginID}_SessionStorage`);
+    const data = store.getString(pluginID + WEBVIEW_SESSION_STORAGE);
     return data ? JSON.parse(data) : undefined;
   }
 }
 
-export const sessionStorage = new SessionStorage();
+const storage = new Storage();
+const localStorage = new LocalStorage();
+const sessionStorage = new SessionStorage();
+
+export { storage, localStorage, sessionStorage };
+
+//to record data from the web view
+export { WEBVIEW_LOCAL_STORAGE, WEBVIEW_SESSION_STORAGE, store };

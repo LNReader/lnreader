@@ -1,6 +1,7 @@
 import RNFS from 'react-native-fs';
 import { PluginDownloadFolder } from '@utils/constants/download';
 import { newer } from '@utils/compareVersion';
+import { store } from './helpers/storage';
 
 // packages for plugins
 import { load } from 'cheerio';
@@ -121,9 +122,9 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
 
 const uninstallPlugin = async (_plugin: PluginItem) => {
   plugins[_plugin.id] = undefined;
-  storage.mmkv.getAllKeys().forEach(key => {
+  store.getAllKeys().forEach(key => {
     if (key.startsWith(_plugin.id)) {
-      storage.mmkv.delete(key);
+      store.delete(key);
     }
   });
   return serializePlugin(_plugin.id, '', false);
