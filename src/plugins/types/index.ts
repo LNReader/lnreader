@@ -32,7 +32,6 @@ export interface SourceNovel extends NovelItem {
   status?: NovelStatus;
   chapters: ChapterItem[];
   totalPages?: number;
-  latestChapter?: ChapterItem;
 }
 
 export interface SourcePage {
