@@ -5,6 +5,7 @@ export const txnErrorCallback = (
   txn: SQLTransaction,
   error: SQLError,
 ): boolean => {
+  console.log(error.message);
   showToast(error.message);
   return false;
 };

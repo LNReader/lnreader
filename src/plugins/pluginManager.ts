@@ -14,6 +14,8 @@ import { defaultCover } from './helpers/constants';
 import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
 import TextFile from '@native/TextFile';
+import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
+import { uniqBy } from 'lodash-es';
 
 const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
 
@@ -126,14 +128,17 @@ const updatePlugin = async (plugin: PluginItem) => {
   return installPlugin(plugin.url);
 };
 
-const fetchPlugins = (): Promise<PluginItem[]> => {
-  // plugins host
-  const githubUsername = 'LNReader';
-  const githubRepository = 'lnreader-sources';
-  const pluginsTag = 'v2.1.0';
-  return fetch(
-    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/plugins/${pluginsTag}/.dist/plugins.min.json`,
-  ).then(res => res.json());
+const fetchPlugins = async (): Promise<PluginItem[]> => {
+  const allPlugins: PluginItem[] = [];
+  const allRepositories = await getRepositoriesFromDb();
+
+  const repoPluginsRes = await Promise.all(
+    allRepositories.map(({ url }) => fetch(url).then(res => res.json())),
+  );
+
+  repoPluginsRes.forEach(repoPlugins => allPlugins.push(...repoPlugins));
+
+  return uniqBy(allPlugins, plugin => plugin.id);
 };
 
 const getPlugin = (pluginId: string) => plugins[pluginId];

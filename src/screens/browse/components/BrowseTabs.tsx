@@ -330,6 +330,8 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
     installPlugin,
   } = usePlugins();
 
+  // console.log(JSON.stringify(filteredAvailablePlugins, null, 2));
+
   const sections = useMemo(() => {
     const list = [];
     const group = groupBy(
