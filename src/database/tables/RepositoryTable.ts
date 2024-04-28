@@ -7,4 +7,4 @@ export const createRepositoryTableQuery = `
 `;
 
 export const insertDefaultRepository =
-  'INSERT INTO Repository (url) VALUES ("https://raw.githubusercontent.com/LNReader/lnreader-plugins/plugins/v2.1.0/.dist/plugins.min.json");';
+  'INSERT OR REPLACE INTO Repository (id, url) VALUES (1, "https://raw.githubusercontent.com/LNReader/lnreader-plugins/plugins/v2.1.0/.dist/plugins.min.json");';

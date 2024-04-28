@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { noop } from 'lodash-es';
 
 import { Appbar, EmptyView } from '@components';
 
