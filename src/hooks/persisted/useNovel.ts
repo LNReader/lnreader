@@ -48,7 +48,9 @@ export interface NovelSettings {
   showChapterTitles?: boolean;
 }
 
-const defaultNovelSettings: NovelSettings = {};
+const defaultNovelSettings: NovelSettings = {
+  showChapterTitles: true,
+};
 const defaultPageIndex = 0;
 
 export const useTrackedNovel = (novelId: number) => {
