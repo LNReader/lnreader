@@ -1,4 +1,5 @@
 import RNFS from 'react-native-fs';
+import { reverse, uniqBy } from 'lodash-es';
 import { PluginDownloadFolder } from '@utils/constants/download';
 import { newer } from '@utils/compareVersion';
 
@@ -15,7 +16,6 @@ import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
 import TextFile from '@native/TextFile';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
-import { uniqBy } from 'lodash-es';
 
 const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
 
@@ -138,7 +138,7 @@ const fetchPlugins = async (): Promise<PluginItem[]> => {
 
   repoPluginsRes.forEach(repoPlugins => allPlugins.push(...repoPlugins));
 
-  return uniqBy(allPlugins, plugin => plugin.id);
+  return uniqBy(reverse(allPlugins), 'id');
 };
 
 const getPlugin = (pluginId: string) => plugins[pluginId];
