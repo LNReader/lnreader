@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useMemo } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import color from 'color';
 
@@ -29,8 +29,10 @@ import { NovelScreenProps } from '@navigators/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { UseBooleanReturnType } from '@hooks';
 import { useAppSettings } from '@hooks/persisted';
-import { NovelStatus } from '@plugins/types';
+import { NovelStatus, PluginItem } from '@plugins/types';
 import { translateNovelStatus } from '@utils/translateEnum';
+import { getMMKVObject } from '@utils/mmkv/mmkv';
+import { AVAILABLE_PLUGINS } from '@hooks/persisted/usePlugins';
 
 interface NovelInfoHeaderProps {
   novel: NovelData;
@@ -49,6 +51,16 @@ interface NovelInfoHeaderProps {
   openDrawer: () => void;
   onRefreshPage: (page: string) => void;
 }
+
+const getStatusIcon = (status?: string) => {
+  if (status === NovelStatus.Ongoing) {
+    return 'clock-outline';
+  }
+  if (status === NovelStatus.Completed) {
+    return 'check-all';
+  }
+  return 'help';
+};
 
 const NovelInfoHeader = ({
   novel,
@@ -69,15 +81,14 @@ const NovelInfoHeader = ({
 }: NovelInfoHeaderProps) => {
   const { hideBackdrop = false } = useAppSettings();
 
-  const getStatusIcon = useCallback((status?: string) => {
-    if (status === NovelStatus.Ongoing) {
-      return 'clock-outline';
-    }
-    if (status === NovelStatus.Completed) {
-      return 'check-all';
-    }
-    return 'help';
-  }, []);
+  const pluginName = useMemo(
+    () =>
+      (getMMKVObject<PluginItem[]>(AVAILABLE_PLUGINS) || []).find(
+        plugin => plugin.id === novel.pluginId,
+      )?.name,
+    [],
+  );
+
   return (
     <>
       <CoverImage
@@ -146,7 +157,7 @@ const NovelInfoHeader = ({
                 {(translateNovelStatus(novel.status) ||
                   getString('novelScreen.unknownStatus')) +
                   ' • ' +
-                  novel.pluginId}
+                  pluginName}
               </NovelInfo>
             </Row>
           </View>

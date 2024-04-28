@@ -290,10 +290,9 @@ export const downloadChapter = async (
     if (chapterText && chapterText.length) {
       await downloadFiles(chapterText, plugin, novelId, chapterId);
       db.transaction(tx => {
-        tx.executeSql(
-          "UPDATE Chapter SET isDownloaded = 1, updatedTime = datetime('now','localtime') WHERE id = ?",
-          [chapterId],
-        );
+        tx.executeSql('UPDATE Chapter SET isDownloaded = 1 WHERE id = ?', [
+          chapterId,
+        ]);
       });
     } else {
       throw new Error(getString('downloadScreen.chapterEmptyOrScrapeError'));

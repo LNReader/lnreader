@@ -112,48 +112,47 @@ const EditInfoModal = ({
           placeholder={getString('novelScreen.edit.title', {
             title: novel.name,
           })}
-          style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
           theme={{ colors: { ...theme } }}
           onChangeText={text => setNovel({ ...novel, name: text })}
           dense
+          style={styles.inputWrapper}
         />
         <TextInput
           placeholder={getString('novelScreen.edit.author', {
             author: novel.author,
           })}
-          style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
           theme={{ colors: { ...theme } }}
           onChangeText={text => setNovel({ ...novel, author: text })}
           dense
+          style={styles.inputWrapper}
         />
         <TextInput
           placeholder={'Artist: ' + novel.artist}
-          style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
           theme={{ colors: { ...theme } }}
           onChangeText={text => setNovel({ ...novel, artist: text })}
           dense
+          style={styles.inputWrapper}
         />
         <TextInput
           placeholder={getString('novelScreen.edit.summary', {
             summary: novel.summary?.substring(0, 16),
           })}
-          style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
           onChangeText={text => setNovel({ ...novel, summary: text })}
           theme={{ colors: { ...theme } }}
           dense
+          style={styles.inputWrapper}
         />
 
         <TextInput
           placeholder={getString('novelScreen.edit.addTag')}
-          style={{ fontSize: 14 }}
           numberOfLines={1}
           mode="outlined"
           onChangeText={text => setTag(text)}
@@ -163,6 +162,7 @@ const EditInfoModal = ({
           }}
           theme={{ colors: { ...theme } }}
           dense
+          style={styles.inputWrapper}
         />
 
         {novel.genres !== undefined && novel.genres !== '' ? (
@@ -213,11 +213,11 @@ const GenreChip = ({
       borderRadius: 8,
       paddingVertical: 6,
       paddingHorizontal: 16,
-      marginVertical: 4,
+      marginBottom: 4,
       marginRight: 8,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.outline,
+      backgroundColor: theme.secondaryContainer,
     }}
   >
     <Text
@@ -242,16 +242,19 @@ const GenreChip = ({
 const styles = StyleSheet.create({
   modalContainer: {
     margin: 30,
-    padding: 20,
-    borderRadius: 8,
+    padding: 24,
+    borderRadius: 28,
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: 24,
     marginBottom: 16,
   },
   errorText: {
     color: '#FF0033',
     paddingTop: 8,
   },
-  genreChip: {},
+  inputWrapper: {
+    fontSize: 14,
+    marginBottom: 12,
+  },
 });

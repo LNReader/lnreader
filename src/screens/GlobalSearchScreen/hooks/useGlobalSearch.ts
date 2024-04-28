@@ -77,7 +77,7 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
                     ...prevResult,
                     novels: [],
                     isLoading: false,
-                    error: error.message,
+                    error: error?.message,
                   }
                 : { ...prevResult },
             ),
