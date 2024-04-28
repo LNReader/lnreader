@@ -86,6 +86,7 @@ const RepositoryCard: FC<RepositoryCardProps> = ({
           style={styles.manageBtn}
           onPress={showDeleteRepositoryModal}
           theme={theme}
+          disabled={repository.id === 1} /** Disabled for Default Repository */
         />
       </View>
       <Portal>

@@ -69,7 +69,7 @@ const AddRepositoryModal: React.FC<AddRepositoryModalProps> = ({
               }
 
               if (await isRepoUrlDuplicate(repositoryUrl)) {
-                showToast(getString('categories.duplicateError'));
+                showToast('A respository with this url already exists!');
               } else {
                 if (isEditMode && repository) {
                   updateRepository(repository?.id, repositoryUrl);
