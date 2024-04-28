@@ -105,7 +105,7 @@ const MigrationNovelList = ({
             }}
           >
             {getString('browseScreen.migration.dialogMessage', {
-              url: selectedNovel.path,
+              url: selectedNovel.name,
             })}
           </Text>
           <View
