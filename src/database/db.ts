@@ -31,6 +31,9 @@ export const createTables = () => {
     tx.executeSql(createNovelCategoryTableQuery);
     tx.executeSql(createChapterTableQuery);
     tx.executeSql(createChapterNovelIdIndexQuery);
+  });
+
+  db.transaction(tx => {
     tx.executeSql(createRepositoryTableQuery);
     tx.executeSql(insertDefaultRepository);
   });
