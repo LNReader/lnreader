@@ -8,7 +8,6 @@ import {
   Update,
 } from '@database/types';
 import { List } from 'react-native-paper';
-import { coverPlaceholderColor } from '@theme/colors';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import ChapterItem from '@screens/novel/components/ChapterItem';
 import { useDownload, useTheme } from '@hooks/persisted';
