@@ -169,6 +169,8 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                   webViewRef.current?.injectJavaScript('tts.next?.()');
                 },
               });
+            } else {
+              webViewRef.current?.injectJavaScript('tts.next?.()');
             }
             break;
           case 'stop-speak':

@@ -314,6 +314,8 @@ class SwipeHandler {
 /**
  * @type {import('./type').TextToSpeech}
  */
+
+// Walk through all leave -> convert each leaf to list of tts elements -> read through all tts elements
 class TextToSpeech {
   constructor(reader) {
     this.reader = reader;
@@ -382,7 +384,8 @@ class TextToSpeech {
 
   readable() {
     return (
-      this.leaf.nodeName === '#text' && /[^\s\n,.?!;":“”]/.test(this.leaf.data)
+      this.leaf.nodeName === '#text' &&
+      /[^\s\n,\.?!;'":“”‘’]+/.test(this.leaf.data)
     );
   }
 
@@ -402,15 +405,12 @@ class TextToSpeech {
 
   makeLeafSpeakable() {
     this.TTSWrapper = document.createElement('tts-wrapper');
-    this.TTSWrapper.innerHTML = this.leaf.data.replace(
-      /([^\n,.?!;":“”]+)/g,
-      matched => {
-        if (matched.trim().length) {
-          return `<tts>${matched}</tts>`;
-        }
-        return matched;
-      },
-    );
+    this.TTSWrapper.innerHTML = this.leaf.data.replace(/([^\n]+)/g, matched => {
+      if (matched.trim().length) {
+        return `<tts>${matched}</tts>`;
+      }
+      return matched;
+    });
     this.TTSEle = this.TTSWrapper.firstElementChild;
     this.leaf.replaceWith(this.TTSWrapper);
   }
@@ -463,7 +463,7 @@ class TextToSpeech {
       return;
     }
     this.TTSEle.classList.add('highlight');
-    this.reader.post({ type: 'speak', data: this.TTSEle?.innerText.trim() });
+    this.reader.post({ type: 'speak', data: this.TTSEle?.innerText });
   };
 }
 
