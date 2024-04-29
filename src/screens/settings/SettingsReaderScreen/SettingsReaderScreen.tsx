@@ -142,7 +142,12 @@ const SettingsReaderScreen = () => {
                     onDone() {
                       webViewRef.current?.injectJavaScript('tts.next?.()');
                     },
+                    voice: readerSettings.tts?.voice?.identifier,
+                    pitch: readerSettings.tts?.pitch || 1,
+                    rate: readerSettings.tts?.rate || 1,
                   });
+                } else {
+                  webViewRef.current?.injectJavaScript('tts.next?.()');
                 }
                 break;
               case 'stop-speak':
