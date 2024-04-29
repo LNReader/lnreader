@@ -25,6 +25,7 @@ import { useBatteryLevel } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
+import TextToSpeechSettings from './Settings/TextToSpeechSettings';
 
 export type TextAlignments =
   | 'left'
@@ -230,6 +231,8 @@ const SettingsReaderScreen = () => {
           <DisplaySettings />
           <List.Divider theme={theme} />
           <ReaderThemeSettings />
+          <List.Divider theme={theme} />
+          <TextToSpeechSettings />
         </View>
       </ScrollView>
     </>
