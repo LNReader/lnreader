@@ -481,6 +481,7 @@ class ContextMenu {
         name: 'Copy',
         icon: copyIcon,
         action: () => {
+          this.closeMenu();
           this.reader.post({
             type: 'copy',
             data: this.reader.selection.toString(),
