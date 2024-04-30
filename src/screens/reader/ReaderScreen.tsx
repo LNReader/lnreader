@@ -11,6 +11,7 @@ import {
   DrawerLayoutAndroid,
 } from 'react-native';
 import * as RNFS from 'react-native-fs';
+import * as Speech from 'expo-speech';
 
 import VolumeButtonListener from '@native/volumeButtonListener';
 
@@ -158,6 +159,7 @@ export const ChapterContent = ({
       VolumeButtonListener.disconnect();
       emmiter.current.removeAllListeners('VolumeUp');
       emmiter.current.removeAllListeners('VolumeDown');
+      Speech.stop();
     };
   }, [useVolumeButtons, chapter]);
 

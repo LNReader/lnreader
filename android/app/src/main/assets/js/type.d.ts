@@ -30,10 +30,9 @@ interface Reader {
 
 interface TextToSpeech {
   reader: Reader;
-  leaf: HTMLElement;
-  TTSWrapper: HTMLElement;
-  TTSEle: HTMLElement;
+  leaf: HTMLUnknownElement;
   reading: boolean;
+  readableTags: string[];
   start: () => void;
   startHere: () => void;
   resume: () => void;

@@ -4,6 +4,7 @@ import {
   LibrarySortOrder,
 } from '@screens/library/constants/constants';
 import { useMMKVObject } from 'react-native-mmkv';
+import { Voice } from 'expo-speech';
 
 export const APP_SETTINGS = 'APP_SETTINGS';
 export const BROWSE_SETTINGS = 'BROWSE_SETTINGS';
@@ -100,6 +101,11 @@ export interface ChapterReaderSettings {
   customCSS: string;
   customJS: string;
   customThemes: ReaderTheme[];
+  tts?: {
+    voice?: Voice;
+    rate?: number;
+    pitch?: number;
+  };
 }
 
 const initialAppSettings: AppSettings = {
@@ -173,6 +179,10 @@ export const initialChapterReaderSettings: ChapterReaderSettings = {
   customCSS: '',
   customJS: '',
   customThemes: [],
+  tts: {
+    rate: 1,
+    pitch: 1,
+  },
 };
 
 export const useAppSettings = () => {
