@@ -1,7 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import color from 'color';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { ThemeColors } from '@theme/types';
@@ -40,23 +39,16 @@ const ChapterFooter = ({
     radius: 50,
   };
 
-  const insets = useSafeAreaInsets();
-
   return (
     <Animated.View
       entering={FadeIn.duration(150)}
       exiting={FadeOut.duration(150)}
-      style={styles.footer}
+      style={[
+        styles.footer,
+        { backgroundColor: color(theme.surface).alpha(0.9).string() },
+      ]}
     >
-      <View
-        style={[
-          {
-            backgroundColor: color(theme.surface).alpha(0.9).string(),
-            paddingBottom: insets.bottom,
-          },
-          styles.buttonsContainer,
-        ]}
-      >
+      <View style={[styles.buttonsContainer]}>
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
@@ -145,10 +137,12 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
   },
   footer: {
+    flex: 1,
     position: 'absolute',
-    zIndex: 2,
+    zIndex: 1,
     bottom: 0,
     width: '100%',
+    paddingBottom: 16,
   },
   buttonsContainer: {
     flexDirection: 'row',

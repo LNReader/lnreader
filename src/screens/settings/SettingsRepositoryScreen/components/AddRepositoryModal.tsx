@@ -60,7 +60,7 @@ const AddRepositoryModal: React.FC<AddRepositoryModalProps> = ({
             title={getString(isEditMode ? 'common.ok' : 'common.add')}
             onPress={async () => {
               if (
-                !new RegExp(/http(?:s)?:\/\/(.*)plugins\.min\.json/).test(
+                !new RegExp(/https?:\/\/(.*)plugins\.min\.json/).test(
                   repositoryUrl,
                 )
               ) {

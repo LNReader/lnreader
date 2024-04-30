@@ -1,5 +1,5 @@
 import RNFS from 'react-native-fs';
-import { isArray, isObject, reverse, uniqBy } from 'lodash-es';
+import { reverse, uniqBy } from 'lodash-es';
 import { PluginDownloadFolder } from '@utils/constants/download';
 import { newer } from '@utils/compareVersion';
 
