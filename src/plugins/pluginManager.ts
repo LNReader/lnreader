@@ -16,6 +16,7 @@ import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
 import TextFile from '@native/TextFile';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
+import { showToast } from '@utils/showToast';
 
 const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
 
@@ -132,11 +133,17 @@ const fetchPlugins = async (): Promise<PluginItem[]> => {
   const allPlugins: PluginItem[] = [];
   const allRepositories = await getRepositoriesFromDb();
 
-  const repoPluginsRes = await Promise.all(
+  const repoPluginsRes = await Promise.allSettled(
     allRepositories.map(({ url }) => fetch(url).then(res => res.json())),
   );
 
-  repoPluginsRes.forEach(repoPlugins => allPlugins.push(...repoPlugins));
+  repoPluginsRes.forEach(repoPlugins => {
+    if (repoPlugins.status === 'fulfilled') {
+      allPlugins.push(...repoPlugins.value);
+    } else {
+      showToast(repoPlugins.reason);
+    }
+  });
 
   return uniqBy(reverse(allPlugins), 'id');
 };

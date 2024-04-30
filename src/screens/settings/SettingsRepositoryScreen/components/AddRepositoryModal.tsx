@@ -60,9 +60,9 @@ const AddRepositoryModal: React.FC<AddRepositoryModalProps> = ({
             title={getString(isEditMode ? 'common.ok' : 'common.add')}
             onPress={async () => {
               if (
-                !new RegExp(
-                  /https:\/\/raw\.githubusercontent\.com\/(.*)plugins\.min\.json/,
-                ).test(repositoryUrl)
+                !new RegExp(/http(?:s)?:\/\/(.*)plugins\.min\.json/).test(
+                  repositoryUrl,
+                )
               ) {
                 showToast('Repository URL is invalid');
                 return;
