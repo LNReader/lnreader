@@ -327,6 +327,7 @@ class TextToSpeech {
     this.readableNodeNames = ['#text', 'B', 'I', 'SPAN', 'EM', 'BR', 'STRONG'];
     this.leaf = this.reader.chapter;
     this.reading = false;
+    this.started = false;
     this.$ = document.getElementById('TTS-Controller');
     this.$.classList.add('d-none');
     this.$.onclick = () => {
@@ -339,6 +340,7 @@ class TextToSpeech {
   }
 
   start = () => {
+    this.started = false;
     this.$.innerHTML = `<button>${pauseIcon}</button>`;
     this.$.classList.remove('d-none');
     this.stop();
@@ -416,8 +418,9 @@ class TextToSpeech {
         } else {
           this.findNextTextNode();
         }
-      } else {
+      } else if (!this.started) {
         this.findNextTextNode();
+        this.started = true;
       }
       this.speak();
     } catch (e) {
