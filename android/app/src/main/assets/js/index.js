@@ -101,14 +101,19 @@ class Reader {
       '--readerSettings-fontFamily',
       settings.fontFamily,
     );
-    new FontFace(
-      settings.fontFamily,
-      'url("file:///android_asset/fonts/' + settings.fontFamily + '.ttf")',
-    )
-      .load()
-      .then(function (loadedFont) {
-        document.fonts.add(loadedFont);
-      });
+    if (settings.fontFamily) {
+      new FontFace(
+        settings.fontFamily,
+        'url("file:///android_asset/fonts/' + settings.fontFamily + '.ttf")',
+      )
+        .load()
+        .then(function (loadedFont) {
+          document.fonts.add(loadedFont);
+        });
+    } else {
+      // have no affect with a font declared in head
+      document.fonts.forEach(fontFace => document.fonts.delete(fontFace));
+    }
   };
   updateGeneralSettings = settings => {
     this.showScrollPercentage = settings.showScrollPercentage;
