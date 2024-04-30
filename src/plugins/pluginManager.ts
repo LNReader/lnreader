@@ -1,5 +1,5 @@
 import RNFS from 'react-native-fs';
-import { reverse, uniqBy } from 'lodash-es';
+import { isArray, isObject, reverse, uniqBy } from 'lodash-es';
 import { PluginDownloadFolder } from '@utils/constants/download';
 import { newer } from '@utils/compareVersion';
 
@@ -141,7 +141,7 @@ const fetchPlugins = async (): Promise<PluginItem[]> => {
     if (repoPlugins.status === 'fulfilled') {
       allPlugins.push(...repoPlugins.value);
     } else {
-      showToast(repoPlugins.reason);
+      showToast(repoPlugins.reason.toString());
     }
   });
 
