@@ -16,7 +16,7 @@ import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { switchNovelToLibrary } from '@database/queries/NovelQueries';
-import { NovelInfo } from '@database/types';
+import { LibraryNovelInfo, NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BrowseSourceScreenProps } from '@navigators/types';
@@ -75,7 +75,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     );
 
   const navigateToNovel = useCallback(
-    (item: NovelItem) =>
+    (item: NovelItem | LibraryNovelInfo) =>
       navigation.navigate('Novel', {
         ...item,
         pluginId: pluginId,
@@ -131,6 +131,10 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
                 libraryStatus={inLibrary}
                 onPress={() => navigateToNovel(item)}
                 isSelected={false}
+                addSkeletonLoading={
+                  Boolean(hasNextPage && !searchText) ||
+                  Boolean(hasNextSearchPage && searchText)
+                }
                 onLongPress={async () => {
                   await switchNovelToLibrary(item.path, pluginId);
                   setLibrary(prevValues => {
@@ -165,15 +169,8 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
             }
           }}
           onEndReachedThreshold={1.5}
-          ListFooterComponent={
-            (hasNextPage && !searchText) ||
-            (hasNextSearchPage && searchText) ? (
-              <SourceScreenSkeletonLoading theme={theme} />
-            ) : undefined
-          }
         />
       )}
-
       {!showLatestNovels && filterValues && !searchText ? (
         <>
           <FAB

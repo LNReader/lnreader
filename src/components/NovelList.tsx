@@ -8,20 +8,17 @@ import {
   ListRenderItem,
 } from 'react-native';
 import { NovelItem } from '@plugins/types';
-import { LibraryNovelInfo, NovelInfo } from '../database/types';
+import { LibraryNovelInfo } from '../database/types';
 import { useDeviceOrientation } from '@hooks';
 
-export type NovelListRenderItem = ListRenderItem<
-  LibraryNovelInfo | NovelInfo | NovelItem
->;
+export type NovelListRenderItem = ListRenderItem<LibraryNovelInfo | NovelItem>;
 
 type listDataItem =
-  | (LibraryNovelInfo | NovelInfo | NovelItem) & {
+  | (LibraryNovelInfo | NovelItem) & {
       completeRow?: number;
     };
 
-interface NovelListProps
-  extends FlatListProps<LibraryNovelInfo | NovelInfo | NovelItem> {
+interface NovelListProps extends FlatListProps<LibraryNovelInfo | NovelItem> {
   inSource?: boolean;
   data: Array<listDataItem>;
 }
@@ -50,11 +47,19 @@ const NovelList: React.FC<NovelListProps> = props => {
     let remainder = numColumns - (props.data?.length % numColumns);
     let extension: Array<listDataItem> = [];
     if (remainder !== 0 && remainder !== numColumns) {
+      for (let i = 0; i < remainder; i++) {
+        extension.push({
+          cover: '',
+          name: '',
+          path: 'loading-' + remainder,
+          completeRow: 1,
+        } as listDataItem);
+      }
       extension.push({
         cover: '',
         name: '',
         path: 'loading-' + remainder,
-        completeRow: -remainder,
+        completeRow: 2,
       } as listDataItem);
     }
 

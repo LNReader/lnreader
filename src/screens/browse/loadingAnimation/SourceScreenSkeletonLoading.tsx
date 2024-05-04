@@ -35,20 +35,22 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
     let height = (window.width / numColumns) * (4 / 3);
     let width = (window.width - 12 - 9.6 * numColumns) / numColumns;
     return [height, width];
-  }, [numColumns]);
+  }, [numColumns, window.width]);
 
   const renderLoadingNovel = (item: number, index: number) => {
     let randomNumber = Math.random();
     randomNumber < 0.1 ? (randomNumber = 0) : null;
     return (
-      <LoadingNovel
-        key={index}
-        backgroundColor={backgroundColor}
-        highlightColor={highlightColor}
-        pictureHeight={pictureHeight}
-        pictureWidth={pictureWidth}
-        displayMode={displayMode}
-      />
+      <View style={{ flex: 1 / numColumns }}>
+        <LoadingNovel
+          key={index}
+          backgroundColor={backgroundColor}
+          highlightColor={highlightColor}
+          pictureHeight={pictureHeight}
+          pictureWidth={pictureWidth}
+          displayMode={displayMode}
+        />
+      </View>
     );
   };
   const renderLoading = (item: number, index: number) => {
@@ -59,6 +61,7 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
         items.push(i * offset);
       }
     }
+    // return items.map(renderLoadingNovel);
     return (
       <View key={index} style={styles.row}>
         {items.map(renderLoadingNovel)}
@@ -66,14 +69,8 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
     );
   };
   let items: Array<number> = [];
-
-  if (completeRow) {
-    for (let i = -1; i >= completeRow; i--) {
-      items.push(i);
-    }
-    return (
-      <View style={styles.completeRow}>{items.map(renderLoadingNovel)}</View>
-    );
+  if (completeRow === 1) {
+    return renderLoadingNovel(completeRow, completeRow);
   }
 
   if (displayMode === DisplayModes.List) {
@@ -84,21 +81,19 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
     }
   }
 
-  return (
-    <View style={[styles.container, { flex: 1 / numColumns }]}>
-      {items.map(renderLoading)}
-    </View>
-  );
+  return <View style={styles.container}>{items.map(renderLoading)}</View>;
 };
 
 const createStyleSheet = () => {
   return StyleSheet.create({
     container: {
       flexGrow: 1,
-      marginHorizontal: 4,
+      marginHorizontal: 2,
       marginBottom: 8,
       marginTop: 2,
       overflow: 'visible',
+      // position: 'absolute',
+      // left: 0,
     },
     row: {
       flexDirection: 'row',
@@ -110,8 +105,11 @@ const createStyleSheet = () => {
       justifyContent: 'space-around',
       paddingHorizontal: 1,
       marginBottom: 8,
-      position: 'absolute',
+      position: 'relative',
+      // transform: [{ translateY: -250 }],
       right: 0,
+      // top: 100,
+      opacity: 0.8,
     },
   });
 };

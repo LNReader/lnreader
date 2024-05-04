@@ -14,7 +14,7 @@ import ListView from './ListView';
 import { useDeviceOrientation } from '@hooks';
 import { coverPlaceholderColor } from '../theme/colors';
 import { DisplayModes } from '@screens/library/constants/constants';
-import { LibraryNovelInfo, NovelInfo } from '@database/types';
+import { LibraryNovelInfo } from '@database/types';
 import { NovelItem } from '@plugins/types';
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
@@ -42,44 +42,41 @@ type coverItemLibrary =
     };
 
 type coverItemPlugin =
-  | (NovelInfo | NovelItem) & {
+  | NovelItem & {
       completeRow?: number;
     };
 
-function NovelCover<TNovel extends coverItemPlugin>({
-  item,
-  onPress,
-  libraryStatus,
-  theme,
-  isSelected,
-  onLongPress,
-  selectedNovelIds,
-}: {
+interface INovelCover<TNovel> {
   item: TNovel;
   onPress: () => void;
   libraryStatus: boolean;
   theme: ThemeColors;
   isSelected: boolean;
+  addSkeletonLoading: boolean;
   onLongPress: (item: TNovel) => void;
   selectedNovelIds: number[];
-}): React.ReactNode;
-function NovelCover<TNovel extends coverItemLibrary>({
+}
+
+// function NovelCover<TNovel extends coverItemPlugin>({
+//   item,
+//   onPress,
+//   libraryStatus,
+//   theme,
+//   isSelected,
+//   addSkeletonLoading,
+//   onLongPress,
+//   selectedNovelIds,
+// }: INovelCover<TNovel>): React.ReactElement;
+function NovelCover<TNovel extends coverItemLibrary | coverItemPlugin>({
   item,
   onPress,
   libraryStatus,
   theme,
   isSelected,
+  addSkeletonLoading,
   onLongPress,
   selectedNovelIds,
-}: {
-  item: TNovel;
-  onPress: () => void;
-  libraryStatus: boolean;
-  theme: ThemeColors;
-  isSelected: boolean;
-  onLongPress: (item: TNovel) => void;
-  selectedNovelIds: number[];
-}) {
+}: INovelCover<TNovel>) {
   const {
     displayMode = DisplayModes.Comfortable,
     showDownloadBadges = true,
@@ -105,9 +102,18 @@ function NovelCover<TNovel extends coverItemLibrary>({
   const selectNovel = () => onLongPress(item);
 
   const uri = item.cover;
-  return item.completeRow ? (
-    <SourceScreenSkeletonLoading theme={theme} completeRow={item.completeRow} />
-  ) : displayMode !== DisplayModes.List ? (
+  if (item.completeRow) {
+    if (!addSkeletonLoading) {
+      return <></>;
+    }
+    return (
+      <SourceScreenSkeletonLoading
+        theme={theme}
+        completeRow={item.completeRow}
+      />
+    );
+  }
+  return displayMode !== DisplayModes.List ? (
     <View
       style={[
         {
@@ -130,25 +136,27 @@ function NovelCover<TNovel extends coverItemLibrary>({
         }
         onLongPress={selectNovel}
       >
-        <View style={styles.badgeContainer}>
-          {libraryStatus && <InLibraryBadge theme={theme} />}
-          {showDownloadBadges && item.chaptersDownloaded > 0 ? (
-            <DownloadBadge
-              showUnreadBadges={showUnreadBadges}
-              chaptersDownloaded={item.chaptersDownloaded}
-              chaptersUnread={item.chaptersUnread}
-              theme={theme}
-            />
-          ) : null}
-          {showUnreadBadges && item.chaptersUnread > 0 ? (
-            <UnreadBadge
-              theme={theme}
-              chaptersDownloaded={item.chaptersDownloaded}
-              chaptersUnread={item.chaptersUnread}
-              showDownloadBadges={showDownloadBadges}
-            />
-          ) : null}
-        </View>
+        {item.id ? (
+          <View style={styles.badgeContainer}>
+            {libraryStatus && <InLibraryBadge theme={theme} />}
+            {showDownloadBadges && item.chaptersDownloaded > 0 ? (
+              <DownloadBadge
+                showUnreadBadges={showUnreadBadges}
+                chaptersDownloaded={item.chaptersDownloaded}
+                chaptersUnread={item.chaptersUnread}
+                theme={theme}
+              />
+            ) : null}
+            {showUnreadBadges && item.chaptersUnread > 0 ? (
+              <UnreadBadge
+                theme={theme}
+                chaptersDownloaded={item.chaptersDownloaded}
+                chaptersUnread={item.chaptersUnread}
+                showDownloadBadges={showDownloadBadges}
+              />
+            ) : null}
+          </View>
+        ) : null}
         <Image
           source={{ uri, headers: { 'User-Agent': getUserAgent() } }}
           style={[
@@ -174,7 +182,7 @@ function NovelCover<TNovel extends coverItemLibrary>({
     <ListView
       item={item}
       downloadBadge={
-        showDownloadBadges && item.chaptersDownloaded ? (
+        showDownloadBadges && item.id && item.chaptersDownloaded ? (
           <DownloadBadge
             theme={theme}
             showUnreadBadges={showUnreadBadges}
@@ -184,7 +192,7 @@ function NovelCover<TNovel extends coverItemLibrary>({
         ) : null
       }
       unreadBadge={
-        showUnreadBadges && item.chaptersUnread ? (
+        showUnreadBadges && item.id && item.chaptersUnread ? (
           <UnreadBadge
             theme={theme}
             chaptersDownloaded={item.chaptersDownloaded}

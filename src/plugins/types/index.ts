@@ -1,6 +1,7 @@
 import { FilterToValues, Filters } from './filterTypes';
 
 export interface NovelItem {
+  id: undefined;
   name: string;
   path: string;
   cover?: string;
