@@ -101,14 +101,19 @@ class Reader {
       '--readerSettings-fontFamily',
       settings.fontFamily,
     );
-    new FontFace(
-      settings.fontFamily,
-      'url("file:///android_asset/fonts/' + settings.fontFamily + '.ttf")',
-    )
-      .load()
-      .then(function (loadedFont) {
-        document.fonts.add(loadedFont);
-      });
+    if (settings.fontFamily) {
+      new FontFace(
+        settings.fontFamily,
+        'url("file:///android_asset/fonts/' + settings.fontFamily + '.ttf")',
+      )
+        .load()
+        .then(function (loadedFont) {
+          document.fonts.add(loadedFont);
+        });
+    } else {
+      // have no affect with a font declared in head
+      document.fonts.forEach(fontFace => document.fonts.delete(fontFace));
+    }
   };
   updateGeneralSettings = settings => {
     this.showScrollPercentage = settings.showScrollPercentage;
@@ -314,12 +319,15 @@ class SwipeHandler {
 /**
  * @type {import('./type').TextToSpeech}
  */
+
+// Walk through all leave -> convert each leaf to list of tts elements -> read through all tts elements
 class TextToSpeech {
   constructor(reader) {
     this.reader = reader;
-    (this.leaf = this.reader.chapter), (this.TTSWrapper = null); // swap these 2 elements
-    this.TTSEle = null;
+    this.readableNodeNames = ['#text', 'B', 'I', 'SPAN', 'EM', 'BR', 'STRONG'];
+    this.leaf = this.reader.chapter;
     this.reading = false;
+    this.started = false;
     this.$ = document.getElementById('TTS-Controller');
     this.$.classList.add('d-none');
     this.$.onclick = () => {
@@ -332,9 +340,11 @@ class TextToSpeech {
   }
 
   start = () => {
+    this.started = false;
     this.$.innerHTML = `<button>${pauseIcon}</button>`;
     this.$.classList.remove('d-none');
     this.stop();
+    this.leaf = this.reader.chapter;
     this.next();
   };
 
@@ -343,11 +353,11 @@ class TextToSpeech {
     this.$.classList.remove('d-none');
     this.stop();
     if (this.reader.selection.type === 'Range') {
-      if (this.leaf && this.TTSWrapper) {
-        this.TTSWrapper.replaceWith(this.leaf);
-      }
       this.leaf = this.reader.selection.anchorNode;
-      this.makeLeafSpeakable();
+      while (this.readableNodeNames.includes(this.leaf.nodeName)) {
+        this.leaf = this.leaf.parentNode;
+      }
+      this.reader.selection.removeAllRanges();
       this.speak();
     } else {
       this.next();
@@ -359,77 +369,58 @@ class TextToSpeech {
     this.next();
   };
 
-  findLeaf() {
-    while (this.leaf.firstChild) {
-      this.leaf = this.leaf.firstChild;
-    }
-  }
-
-  findNextLeaf() {
-    if (this.reader.chapter.isSameNode(this.leaf)) {
-      this.findLeaf();
-    } else if (this.leaf.nextSibling) {
-      this.leaf = this.leaf.nextSibling;
-      this.findLeaf();
-    } else {
-      this.leaf = this.leaf.parentNode;
-      if (this.reader.chapter.isSameNode(this.leaf)) {
-        return;
-      }
-      this.findNextLeaf();
-    }
-  }
-
   readable() {
-    return (
-      this.leaf.nodeName === '#text' && /[^\s\n,.?!;":“”]/.test(this.leaf.data)
-    );
+    if (
+      this.leaf.nodeName !== 'SPAN' &&
+      this.readableNodeNames.includes(this.leaf.nodeName)
+    ) {
+      return false;
+    }
+    if (!this.leaf.hasChildNodes()) {
+      return false;
+    }
+    const a = [];
+    for (let i = 0; i < this.leaf.childNodes.length; i++) {
+      if (
+        !this.readableNodeNames.includes(this.leaf.childNodes.item(i).nodeName)
+      ) {
+        return false;
+      }
+    }
+    return true;
   }
 
   findNextTextNode() {
-    if (this.leaf && this.TTSWrapper) {
-      this.TTSWrapper.replaceWith(this.leaf);
-      this.TTSWrapper = null;
-    }
     do {
-      this.findNextLeaf();
-    } while (!this.readable() && !this.reader.chapter.isSameNode(this.leaf));
+      if (this.reader.chapter.isSameNode(this.leaf)) {
+        this.leaf = this.leaf.firstElementChild;
+      } else {
+        if (this.leaf.firstElementChild) {
+          this.leaf = this.leaf.firstElementChild;
+        } else if (this.leaf.nextElementSibling) {
+          this.leaf = this.leaf.nextElementSibling;
+        } else {
+          this.leaf = this.leaf.parentElement;
+        }
+      }
+    } while (!this.readable());
     if (this.reader.chapter.isSameNode(this.leaf)) {
       return;
     }
-    this.makeLeafSpeakable();
-  }
-
-  makeLeafSpeakable() {
-    this.TTSWrapper = document.createElement('tts-wrapper');
-    this.TTSWrapper.innerHTML = this.leaf.data.replace(
-      /([^\n,.?!;":“”]+)/g,
-      matched => {
-        if (matched.trim().length) {
-          return `<tts>${matched}</tts>`;
-        }
-        return matched;
-      },
-    );
-    this.TTSEle = this.TTSWrapper.firstElementChild;
-    this.leaf.replaceWith(this.TTSWrapper);
   }
 
   next = () => {
     try {
-      if (this.TTSEle) {
-        this.TTSEle.classList.remove('highlight');
-      }
+      this.leaf?.classList?.remove('highlight');
       if (this.reading) {
-        if (this.TTSEle && this.TTSEle.nextElementSibling) {
-          this.TTSEle = this.TTSEle.nextElementSibling;
+        if (this.leaf.nextElementSibling) {
+          this.leaf = this.leaf.nextElementSibling;
         } else {
           this.findNextTextNode();
         }
-      } else {
-        if (!this.TTSEle) {
-          this.findNextTextNode();
-        }
+      } else if (!this.started) {
+        this.findNextTextNode();
+        this.started = true;
       }
       this.speak();
     } catch (e) {
@@ -438,15 +429,10 @@ class TextToSpeech {
   };
 
   stop = () => {
-    this.$.classList.add('d-none');
-    this.reading = false;
-    if (this.leaf && this.TTSWrapper) {
-      this.TTSWrapper.replaceWith(this.leaf);
-      this.TTSWrapper = null;
-      this.TTSEle = null;
-      this.leaf = this.reader.chapter;
-    }
     this.reader.post({ type: 'stop-speak' });
+    this.$.classList.add('d-none');
+    this.leaf?.classList?.remove('highlight');
+    this.reading = false;
   };
 
   pause = () => {
@@ -455,15 +441,13 @@ class TextToSpeech {
     this.reader.post({ type: 'stop-speak' });
   };
 
-  started = () => this.TTSWrapper !== null;
-
   speak = () => {
     this.reading = true;
     if (this.reader.chapter.isSameNode(this.leaf)) {
       return;
     }
-    this.TTSEle.classList.add('highlight');
-    this.reader.post({ type: 'speak', data: this.TTSEle?.innerText.trim() });
+    this.leaf.classList.add('highlight');
+    this.reader.post({ type: 'speak', data: this.leaf?.innerText });
   };
 }
 
@@ -481,22 +465,23 @@ class ContextMenu {
         name: 'Start Reading',
         icon: volumeIcon,
         action: () => {
-          tts.start();
           this.closeMenu();
+          tts.start();
         },
       }),
       START_HERE: this.renderItem({
         name: 'Start Here',
         icon: selectVolumeIcon,
         action: () => {
-          tts.startHere();
           this.closeMenu();
+          tts.startHere();
         },
       }),
       COPY: this.renderItem({
         name: 'Copy',
         icon: copyIcon,
         action: () => {
+          this.closeMenu();
           this.reader.post({
             type: 'copy',
             data: this.reader.selection.toString(),

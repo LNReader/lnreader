@@ -70,7 +70,7 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
                 ? {
                     ...pluginItem,
                     loading: false,
-                    error: e.message,
+                    error: e?.message,
                   }
                 : pluginItem,
             ),

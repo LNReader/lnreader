@@ -1,4 +1,5 @@
 import RNFS from 'react-native-fs';
+import { reverse, uniqBy } from 'lodash-es';
 import { PluginDownloadFolder } from '@utils/constants/download';
 import { newer } from '@utils/compareVersion';
 import { store } from './helpers/storage';
@@ -11,11 +12,13 @@ import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
 import { fetchApi, fetchFile, fetchProto, fetchText } from './helpers/fetch';
-import { storage, localStorage, sessionStorage } from './helpers/storage';
 import { defaultCover } from './helpers/constants';
+import { storage, localStorage, sessionStorage } from './helpers/storage';
 import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
 import TextFile from '@native/TextFile';
+import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
+import { showToast } from '@utils/showToast';
 
 const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
 
@@ -134,15 +137,23 @@ const updatePlugin = async (plugin: PluginItem) => {
   return installPlugin(plugin.url);
 };
 
-const fetchPlugins = (): Promise<PluginItem[]> => {
-  // plugins host
-  const githubUsername = 'LNReader';
-  const githubRepository = 'lnreader-sources';
-  const pluginsTag = 'v2.1.0';
+const fetchPlugins = async (): Promise<PluginItem[]> => {
+  const allPlugins: PluginItem[] = [];
+  const allRepositories = await getRepositoriesFromDb();
 
-  return fetch(
-    `https://raw.githubusercontent.com/${githubUsername}/${githubRepository}/plugins/${pluginsTag}/.dist/plugins.min.json`,
-  ).then(res => res.json());
+  const repoPluginsRes = await Promise.allSettled(
+    allRepositories.map(({ url }) => fetch(url).then(res => res.json())),
+  );
+
+  repoPluginsRes.forEach(repoPlugins => {
+    if (repoPlugins.status === 'fulfilled') {
+      allPlugins.push(...repoPlugins.value);
+    } else {
+      showToast(repoPlugins.reason.toString());
+    }
+  });
+
+  return uniqBy(reverse(allPlugins), 'id');
 };
 
 const getPlugin = (pluginId: string) => plugins[pluginId];

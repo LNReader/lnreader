@@ -25,6 +25,7 @@ import { useBatteryLevel } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
+import TextToSpeechSettings from './Settings/TextToSpeechSettings';
 
 export type TextAlignments =
   | 'left'
@@ -141,7 +142,12 @@ const SettingsReaderScreen = () => {
                     onDone() {
                       webViewRef.current?.injectJavaScript('tts.next?.()');
                     },
+                    voice: readerSettings.tts?.voice?.identifier,
+                    pitch: readerSettings.tts?.pitch || 1,
+                    rate: readerSettings.tts?.rate || 1,
                   });
+                } else {
+                  webViewRef.current?.injectJavaScript('tts.next?.()');
                 }
                 break;
               case 'stop-speak':
@@ -230,6 +236,8 @@ const SettingsReaderScreen = () => {
           <DisplaySettings />
           <List.Divider theme={theme} />
           <ReaderThemeSettings />
+          <List.Divider theme={theme} />
+          <TextToSpeechSettings />
         </View>
       </ScrollView>
     </>

@@ -38,22 +38,22 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           }
           theme={theme}
         />
-        {/* <List.Item
-          title={getString('library')}
-          icon="book-variant-multiple"
-          onPress={() =>
-            navigation.navigate('SettingsStack', {
-              screen: 'LibrarySettings',
-            })
-          }
-          theme={theme}
-        /> */}
         <List.Item
           title={getString('readerSettings.title')}
           icon="book-open-outline"
           onPress={() =>
             navigation.navigate('SettingsStack', {
               screen: 'ReaderSettings',
+            })
+          }
+          theme={theme}
+        />
+        <List.Item
+          title="Repositories"
+          icon="github"
+          onPress={() =>
+            navigation.navigate('SettingsStack', {
+              screen: 'RespositorySettings',
             })
           }
           theme={theme}

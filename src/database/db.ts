@@ -12,6 +12,10 @@ import {
 } from './tables/ChapterTable';
 import { dbTxnErrorCallback } from './utils/helpers';
 import { noop } from 'lodash-es';
+import {
+  createRepositoryTableQuery,
+  insertDefaultRepository,
+} from './tables/RepositoryTable';
 
 const dbName = 'lnreader.db';
 
@@ -28,6 +32,11 @@ export const createTables = () => {
     tx.executeSql(createChapterTableQuery);
     tx.executeSql(createChapterNovelIdIndexQuery);
   });
+
+  db.transaction(tx => {
+    tx.executeSql(createRepositoryTableQuery);
+    tx.executeSql(insertDefaultRepository);
+  });
 };
 
 /**
@@ -41,6 +50,7 @@ export const deleteDatabase = async () => {
       tx.executeSql('DROP TABLE NovelCategory');
       tx.executeSql('DROP TABLE Chapter');
       tx.executeSql('DROP TABLE Download');
+      tx.executeSql('DROP TABLE Repository');
     },
     dbTxnErrorCallback,
     noop,

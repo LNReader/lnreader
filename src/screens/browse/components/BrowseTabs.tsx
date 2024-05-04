@@ -88,22 +88,6 @@ export const InstalledTab = memo(
                   ]}
                 >
                   <IconButtonV2
-                    name="update"
-                    size={22}
-                    color={theme.inverseOnSurface}
-                    onPress={() => {
-                      ref.close();
-                      updatePlugin(item)
-                        .then(version =>
-                          showToast(
-                            getString('browseScreen.updatedTo', { version }),
-                          ),
-                        )
-                        .catch((error: Error) => showToast(error.message));
-                    }}
-                    theme={theme}
-                  />
-                  <IconButtonV2
                     name="earth"
                     size={22}
                     color={theme.inverseOnSurface}
@@ -148,19 +132,12 @@ export const InstalledTab = memo(
               android_ripple={{ color: theme.rippleColor }}
               onPress={() => navigateToSource(item)}
             >
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={{ uri: item.iconUrl }} style={styles.icon} />
                 <View style={styles.details}>
                   <Text
                     numberOfLines={1}
-                    style={[
-                      {
-                        color: item.hasUpdate
-                          ? theme.onSurfaceDisabled
-                          : theme.onSurface,
-                      },
-                      styles.name,
-                    ]}
+                    style={[{ color: theme.onSurface }, styles.name]}
                   >
                     {item.name}
                   </Text>
@@ -172,6 +149,24 @@ export const InstalledTab = memo(
                   </Text>
                 </View>
               </View>
+              <View style={{ flex: 1 }} />
+              {item.hasUpdate ? (
+                <IconButtonV2
+                  name="download-outline"
+                  size={22}
+                  color={theme.primary}
+                  onPress={() => {
+                    updatePlugin(item)
+                      .then(version =>
+                        showToast(
+                          getString('browseScreen.updatedTo', { version }),
+                        ),
+                      )
+                      .catch((error: Error) => showToast(error.message));
+                  }}
+                  theme={theme}
+                />
+              ) : null}
               <Button
                 title={getString('browseScreen.latest')}
                 textColor={theme.primary}
@@ -302,7 +297,7 @@ const AvailablePluginCard = ({
         </Animated.View>
       </Animated.View>
       <IconButtonV2
-        name="download"
+        name="download-outline"
         color={theme.primary}
         onPress={() => {
           ratio.value = withTiming(0, { duration: 500 });
