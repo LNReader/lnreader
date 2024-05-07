@@ -43,7 +43,7 @@
         "displayMode": "Režim zobrazení",
         "compact": "Kompaktní mřížka",
         "comfortable": "Komfortní mřížka",
-        "noTitle": "Mřížka pouze s přebaly",
+        "noTitle": "Mřížka jen s přebaly",
         "list": "Seznam",
         "badges": "Odznaky",
         "downloadBadges": "Stáhnout odznaky",
@@ -101,162 +101,162 @@
       "removeExtraSpacing": "Odstranit extra prostor mezi paragrafy",
       "volumeButtonsScroll": "Posun pomocí tlačítek hlasitosti",
       "scrollAmount": "Vzdálenost posunu (jako výchozí velikost výška obrazovky)",
-      "showSwipeMargins": "Show swipe margins"
+      "showSwipeMargins": "Zobrazit okraje tahu"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "Přejít na aktuální kapitolu",
+      "scrollToTop": "Přejít na začátek",
+      "scrollToBottom": "Přejít na konec"
     }
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
-    "noSummary": "No summary",
+    "addToLibaray": "Přidat do knihovny",
+    "inLibaray": "V knihovně",
+    "continueReading": "Pokračovat ve čtení",
+    "chapters": "kapitoly",
+    "migrate": "Migrovat",
+    "noSummary": "Žádné shrnutí",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filter": "Filtr",
+      "sort": "Seřadit",
+      "display": "Zobrazit"
     },
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
-      "chapterName": "Chapter Name",
-      "chapterNumber": "Chapter Number",
+      "jumpToChapter": "Přeskočit na kapitolu",
+      "openChapter": "Otevřít kapitolu",
+      "chapterName": "Název kapitoly",
+      "chapterNumber": "Číslo kapitoly",
       "error": {
-        "validChapterName": "Enter a valid chapter name",
-        "validChapterNumber": "Enter a valid chapter number"
+        "validChapterName": "Zadejte platný název kapitoly",
+        "validChapterNumber": "Zadejte platné číslo kapitoly"
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
-      "pathToFolder": "Path to EPUB save folder",
-      "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use custom CSS",
-      "useCustomJS": "Use custom JS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers",
-      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
+      "chooseLocation": "Vyberte složku úložiště EPUB",
+      "pathToFolder": "Cesta k složce pro ukládání EPUB",
+      "useReaderTheme": "Použít motiv čtečky",
+      "useCustomCSS": "Použít vlastní CSS",
+      "useCustomJS": "Použít vlastní JS",
+      "useCustomJSWarning": "Nemusí být podporováno všemi čtečkami EPUB",
+      "chaptersWarning": "Jenom stažené kapitoly jsou obsaženy v EPUB"
     }
   },
-  "more": "More",
+  "more": "Více",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "Nastavení",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "Obecné",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
+        "display": "Zobrazení",
+        "displayMode": "Režim zobrazení",
+        "itemsPerRow": "Položek v rádce",
+        "itemsPerRowLibrary": "Položky na řádek v knihovně",
+        "novelBadges": "Odznaky novel",
+        "novelSort": "Seřazení novel",
+        "updateLibrary": "Aktualizovat knihovnu při startu",
+        "useFAB": "Použít FAB v knihovně",
+        "novel": "Novela",
+        "chapterSort": "Výchozí seřazení kapitol",
+        "bySource": "Podle zdroje",
+        "asc": "(vzestupně)",
+        "desc": "(sestupně)",
+        "globalUpdate": "Globální aktualizace",
+        "updateOngoing": "Aktualizovat jen pokračující novely",
+        "refreshMetadata": "Automaticky aktualizovat metadata",
+        "refreshMetadataDescription": "Zkontrolovat nové obálky a podrobnosti při aktualizaci knihovny",
+        "updateTime": "Zobrazit čas poslední aktualizace",
+        "autoDownload": "Automatické stahování",
         "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
+        "epubLocation": "Umístění EPUB",
+        "epubLocationDescription": "Místo, kde otevřete a exportujete vaše soubory EPUB.",
+        "downloadNewChapters": "Stáhnout nové kapitoly",
+        "disableHapticFeedback": "Vypnout hmatovou odezvu",
+        "jumpToLastReadChapter": "Přejít na poslední přečtenou kapitolu v seznamu"
       },
       "readerSettings": {
-        "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS",
-        "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset."
+        "title": "Čtečka",
+        "readerTheme": "Motiv čtečky",
+        "preset": "Předvolba",
+        "backgroundColor": "Barva pozadí",
+        "textColor": "Barva textu",
+        "backgroundColorModal": "Barva pozadí čtečky",
+        "textColorModal": "Barva textu čtečky",
+        "verticalSeekbarDesc": "Přepnout mezi svislým a vodorovným vyhledávacím panelem",
+        "autoScrollInterval": "Automatický interval posunu (ve vteřinách)",
+        "autoScrollOffset": "Automatická vzdálenost posunu (výška obrazovky jako výchozí)",
+        "saveCustomTheme": "Uložit vlastní motiv",
+        "deleteCustomTheme": "Smazat vlastní motiv",
+        "customCSS": "Vlastní CSS",
+        "customJS": "Vlastní JS",
+        "openCSSFile": "Otevřít soubor CSS",
+        "openJSFile": "Otevřít soubor JS",
+        "notSaved": "Neuloženo",
+        "cssHint": "Tip: Můžete vytvořit zdrojovou specifickou CSS konfiguraci se zdrojovým ID. (#sourceId-[SOURCEID])",
+        "jsHint": "Tip: Máte přístup k následujícím proměnným: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Jste si jisti? Vaše vlastní CSS bude obnoveno.",
+        "clearCustomJS": "Jste si jisti? Vaše vlastní JS bude obnoven."
       },
-      "browseSettings": "Browse Settings",
+      "browseSettings": "Procházet nastavení",
       "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+        "onlyShowPinnedSources": "Zobrazit jen připnuté zdroje",
+        "languages": "Jazyky",
+        "searchAllSources": "Prohledat všechny zdroje",
+        "searchAllWarning": "Prohledávání velkého množství zdrojů může zaseknout aplikaci do té doby než je hledání hotovo."
       }
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "Nebyly nalezeny žádné výsledky"
   },
   "statsScreen": {
-    "title": "Statistics",
-    "titlesInLibrary": "Titles in library",
-    "totalChapters": "Total chapters",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "title": "Statistiky",
+    "titlesInLibrary": "Názvy v knihovně",
+    "totalChapters": "Kapitol dohromady",
+    "readChapters": "Prečíst kapitoly",
+    "unreadChapters": "Nepřečtené kapitoly",
+    "downloadedChapters": "Stažené kapitoly",
+    "genreDistribution": "Rozložení žánrů",
+    "statusDistribution": "Rozložení statusu"
   },
   "globalSearch": {
-    "searchIn": "Search a novel in",
-    "allSources": "all sources",
-    "pinnedSources": "pinned sources"
+    "searchIn": "Hledat novelu v",
+    "allSources": "všechny zdroje",
+    "pinnedSources": "připnuté zdroje"
   },
   "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+    "deleteReadChapters": "Odstranit přečtené kapitoly",
+    "deleteReadChaptersDialogTitle": "Jste si jistí? Všechny kapitoly označeny jako přečtené budou odstraněny."
   },
   "date": {
     "calendar": {
-      "sameDay": "[Today]",
-      "nextDay": "[Tomorrow]",
-      "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd"
+      "sameDay": "[Dnes]",
+      "nextDay": "[Zítra]",
+      "lastDay": "[Včera]",
+      "lastWeek": "[poslední] dddd"
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit categories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "addCategories": "Přidat kategorii",
+    "editCategories": "Přejmenovat kategorii",
+    "setCategories": "Nastavit kategorie",
+    "header": "Upravit kategorie",
+    "emptyMsg": "Nemáte žádné kategorie. Klepněte na tlačítko plus pro vytvoření nové kategorie",
+    "setModalEmptyMsg": "Nemáte žádné kategorie. Klepněte na tlačítko editovat pro vytvoření nové kategorie",
     "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
+      "header": "Smazat kategorii",
+      "desc": "Přejete si odstranit kategorii"
     },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
+    "duplicateError": "Kategorie s tímto názvem již existuje!",
+    "defaultCategory": "Výchozí kategorie"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "Anonymní režim",
+    "downloadedOnly": "Pouze stažené"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads",
-    "downloadsLower": "downloads"
+    "dbInfo": "Stahování jsou uložena v databázi SQLite.",
+    "downloadChapters": "stažené kapitoly",
+    "noDownloads": "Žádné stažené",
+    "downloadsLower": "stažené"
   }
 }
