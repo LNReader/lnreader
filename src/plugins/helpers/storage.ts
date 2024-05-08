@@ -43,7 +43,7 @@ class Storage {
    * @param raw - Optional. If true, returns the raw storage item object.
    * @returns The value associated with the key or undefined if not found or expired.
    */
-  get(pluginID: string, key: string, raw?: boolean): any {
+  get(pluginID: string, key: string, raw?: boolean): StoredItem | undefined {
     const storedItem = store.getString(pluginID + PLUGIN_STORAGE + key);
     if (storedItem) {
       const item: StoredItem = JSON.parse(storedItem);
