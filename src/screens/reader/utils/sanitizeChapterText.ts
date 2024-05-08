@@ -17,10 +17,13 @@ export const sanitizeChapterText = (
       'b',
       'a',
       'div',
+      'ol',
+      'li',
     ]),
     allowedAttributes: {
       'img': ['src'],
       'a': ['href'],
+      'ol': ['reversed', 'start', 'type'],
     },
     allowedSchemes: ['data', 'http', 'https', 'file'],
   });
