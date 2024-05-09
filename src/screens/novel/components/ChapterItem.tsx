@@ -83,7 +83,13 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               {novelName}
             </Text>
           ) : null}
-          <View style={styles.row}>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
             {unread ? (
               <MaterialCommunityIcons
                 name="circle"
@@ -113,7 +119,12 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                   })}
             </Text>
           </View>
-          <View style={styles.textRow}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
             {releaseTime && !isUpdateCard ? (
               <Text
                 style={[
@@ -123,6 +134,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                       : bookmark
                       ? theme.primary
                       : theme.onSurfaceVariant,
+                    marginTop: 4,
                   },
                   styles.text,
                 ]}
@@ -137,6 +149,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                   color: theme.outline,
                   fontSize: 12,
                   marginLeft: chapter.releaseTime ? 5 : 0,
+                  marginTop: 4,
                 }}
                 numberOfLines={1}
               >
@@ -179,7 +192,6 @@ const styles = StyleSheet.create({
   },
   textRow: {
     flexDirection: 'row',
-    marginTop: 5,
   },
   row: { flex: 1, flexDirection: 'row', alignItems: 'center' },
   unreadIcon: {

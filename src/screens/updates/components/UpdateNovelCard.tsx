@@ -8,7 +8,6 @@ import {
   Update,
 } from '@database/types';
 import { List } from 'react-native-paper';
-import { coverPlaceholderColor } from '@theme/colors';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import ChapterItem from '@screens/novel/components/ChapterItem';
 import { useDownload, useTheme } from '@hooks/persisted';
@@ -24,7 +23,7 @@ const NovelCover = ({
   navigateToNovel: () => void;
 }) => {
   return (
-    <Pressable onPress={navigateToNovel}>
+    <Pressable onPress={navigateToNovel} style={{ alignSelf: 'center' }}>
       <Image source={{ uri }} style={styles.cover} />
     </Pressable>
   );
@@ -106,6 +105,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
           data={chapterList}
           keyExtractor={it => 'update' + it.id}
           extraData={[chapterList]}
+          style={styles.chapterList}
           renderItem={({ item }) => {
             return (
               <ChapterItem
@@ -166,39 +166,21 @@ export default UpdateNovelCard;
 const styles = StyleSheet.create({
   padding: {
     paddingHorizontal: 16,
-    paddingVertical: 3,
-    height: 64,
+    paddingVertical: 2,
   },
   container: {
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   cover: {
     height: 40,
     width: 40,
     borderRadius: 4,
-    backgroundColor: coverPlaceholderColor,
   },
   novelCover: {
     marginRight: 8,
   },
-  imageContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  nameContainer: {
-    flex: 1,
-    marginLeft: 16,
-    paddingRight: 16,
-  },
-  chapterName: {
-    marginTop: 4,
-    fontSize: 12,
-  },
-  downloading: {
-    margin: 8,
-  },
   chapterList: {
-    marginLeft: -64,
+    marginLeft: -40,
   },
 });

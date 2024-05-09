@@ -307,7 +307,7 @@ td {
   text-align: right;
 }
 
-tts.highlight {
+.highlight {
   color: var(--theme-onSecondary);
   background-color: var(--theme-secondary);
 }

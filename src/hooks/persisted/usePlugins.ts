@@ -47,7 +47,14 @@ export default function usePlugins() {
     );
     setFilteredAvailablePlugins(
       orderBy(
-        availablePlugins.filter(plg => filter.includes(plg.lang)),
+        availablePlugins
+          .filter(
+            avalilablePlugin =>
+              !installedPlugins.some(
+                installedPlugin => installedPlugin.id === avalilablePlugin.id,
+              ),
+          )
+          .filter(plg => filter.includes(plg.lang)),
         'name',
       ),
     );

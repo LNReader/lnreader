@@ -80,6 +80,7 @@ export type SettingsStackParamList = {
   AppearanceSettings: undefined;
   AdvancedSettings: undefined;
   LibrarySettings: undefined;
+  RespositorySettings: undefined;
 };
 
 export type NovelScreenProps = StackScreenProps<RootStackParamList, 'Novel'>;

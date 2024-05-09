@@ -42,7 +42,10 @@ import { ChapterInfo } from '@database/types';
 import ChapterItem from './components/ChapterItem';
 import { getString } from '@strings/translations';
 import NovelDrawer from './components/NovelDrawer';
-import { updateNovel } from '@services/updates/LibraryUpdateQueries';
+import {
+  updateNovel,
+  updateNovelPage,
+} from '@services/updates/LibraryUpdateQueries';
 import { useFocusEffect } from '@react-navigation/native';
 import { isNumber } from 'lodash-es';
 import NovelAppbar from './components/NovelAppbar';
@@ -140,6 +143,19 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     }
   };
 
+  const onRefreshPage = (page: string) => {
+    if (novel) {
+      setUpdating(true);
+      updateNovelPage(pluginId, novel.path, novel.id, page, {
+        downloadNewChapters,
+      })
+        .then(() => getNovel())
+        .then(() => showToast(`Updated page: ${page}`))
+        .catch(e => showToast(e.message))
+        .finally(() => setUpdating(false));
+    }
+  };
+
   const refreshControl = () => (
     <RefreshControl
       progressViewOffset={topInset + 32}
@@ -151,7 +167,9 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   );
 
   const downloadChs = (amount: number | 'all' | 'unread') => {
-    if (!novel) return;
+    if (!novel) {
+      return;
+    }
     let filtered = chapters.filter(chapter => !chapter.isDownloaded);
     if (amount === 'unread') {
       filtered = filtered.filter(chapter => chapter.unread);
@@ -167,7 +185,9 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     deleteChapters(chapters.filter(c => c.isDownloaded));
   };
   const shareNovel = () => {
-    if (!novel) return;
+    if (!novel) {
+      return;
+    }
     Share.share({
       message: resolveUrl(novel.pluginId, novel.path, true),
     });
@@ -443,6 +463,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   novelBottomSheetRef={novelBottomSheetRef}
                   deleteDownloadsSnackbar={deleteDownloadsSnackbar}
                   page={pages.length > 1 ? pages[pageIndex] : undefined}
+                  onRefreshPage={onRefreshPage}
                   openDrawer={openDrawer}
                 />
               }

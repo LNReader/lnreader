@@ -93,3 +93,8 @@ export interface BackupNovel extends NovelInfo {
 export interface BackupCategory extends Category {
   novelIds: number[];
 }
+
+export interface Repository {
+  id: number;
+  url: string;
+}

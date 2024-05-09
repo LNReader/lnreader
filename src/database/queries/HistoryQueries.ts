@@ -9,10 +9,12 @@ import { getString } from '@strings/translations';
 
 const getHistoryQuery = `
     SELECT 
-      Chapter.*, Novel.pluginId, Novel.name as novelName, Novel.path as novelPath, Novel.cover as novelCover
+      Chapter.*, Novel.pluginId, Novel.name as novelName, Novel.path as novelPath, Novel.cover as novelCover, Novel.id as novelId
     FROM Chapter 
     JOIN Novel
     ON Chapter.novelId = Novel.id AND Chapter.readTime IS NOT NULL
+    GROUP BY novelId
+    HAVING readTime = MAX(readTime)
     ORDER BY readTime DESC
     `;
 
