@@ -18,7 +18,6 @@ jobs:
           upload_sources: true
           upload_translations: false
           download_translations: false
-          localization_branch_name: i18n
           create_pull_request: false
           project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
           token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
