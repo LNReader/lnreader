@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with: 
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Update translations
         uses: crowdin/github-action@v1
@@ -30,7 +32,4 @@ jobs:
           pull_request_reviewers: nyagami
           github_user_name: github-actions[bot]
           github_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
