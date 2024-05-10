@@ -2,7 +2,7 @@ name: Upload sources
 
 on:
   push:
-    branches: [ master ]
+    branches: [ update-translations ]
 
 jobs:
   upload-sources:

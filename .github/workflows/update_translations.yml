@@ -1,8 +1,8 @@
 name: Update translations
 
 on:
-  push:
-    branches: [ update-strings ]
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   update-translations:
