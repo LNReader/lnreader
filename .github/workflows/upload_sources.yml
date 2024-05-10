@@ -1,11 +1,11 @@
-name: Upload translations
+name: Upload sources
 
 on:
   push:
     branches: [ update-strings ]
 
 jobs:
-  synchronize-with-crowdin:
+  upload-sources:
     runs-on: ubuntu-latest
 
     steps:
