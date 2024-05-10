@@ -58,7 +58,7 @@
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="lnreadertesting" />
+				<data android:scheme="lnreader" />
 				<data android:scheme="com.rajarsheechatterjee.LNReaderTesting" />
 			</intent-filter>
 		</activity>
