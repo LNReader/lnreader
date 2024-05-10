@@ -1,5 +1,9 @@
-pull_request_title: 'chore: Update translations'
-commit_message: '[ci skip]'
-files:
-  - source: /strings/languages/en/strings.json
-    translation: /strings/languages/%locale_with_underscore%/strings.json
+"preserve_hierarchy": true
+"base_path": "."
+"base_url": "https://api.crowdin.com"
+"files": [
+  {
+    "source": "/strings/languages/en/strings.json",
+    "translation": "/strings/languages/%locale_with_underscore%/strings.json"
+  }
+]
