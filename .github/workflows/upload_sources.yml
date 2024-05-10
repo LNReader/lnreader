@@ -2,7 +2,7 @@ name: Upload sources
 
 on:
   push:
-    branches: [ update-strings ]
+    branches: [ master ]
 
 jobs:
   upload-sources:

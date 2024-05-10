@@ -29,7 +29,7 @@ jobs:
           pull_request_base_branch_name: 'master'
           pull_request_labels: i18n, Enhancement
           commit_message: 'i18n: update translations from Crowdin'
-          pull_request_reviewers: nyagami
+          pull_request_reviewers: rajarsheechatterjee
           github_user_name: github-actions[bot]
           github_user_email: 41898282+github-actions[bot]@users.noreply.github.com
         env:
