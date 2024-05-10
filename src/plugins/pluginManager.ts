@@ -13,7 +13,7 @@ import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
 import { fetchApi, fetchFile, fetchProto, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
-import { storage, localStorage, sessionStorage } from './helpers/storage';
+import { Storage, LocalStorage, SessionStorage } from './helpers/storage';
 import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
 import TextFile from '@native/TextFile';
@@ -33,15 +33,20 @@ const packages: Record<string, any> = {
   '@libs/isAbsoluteUrl': { isUrlAbsolute },
   '@libs/filterInputs': { FilterTypes },
   '@libs/defaultCover': { defaultCover },
-  '@libs/storage': { storage, localStorage, sessionStorage },
 };
 
-const _require = (packageName: string) => {
-  return packages[packageName];
-};
-
-const initPlugin = (rawCode: string) => {
+const initPlugin = (pluginId: string, rawCode: string) => {
   try {
+    const _require = (packageName: string) => {
+      if (packageName === '@libs/storage') {
+        return {
+          storage: new Storage(pluginId),
+          localStorage: new LocalStorage(pluginId),
+          sessionStorage: new SessionStorage(pluginId),
+        };
+      }
+      return packages[packageName];
+    };
     /* eslint no-new-func: "off", curly: "error" */
     const plugin: Plugin = Function(
       'require',
@@ -87,26 +92,31 @@ const deserializePlugins = () => {
   return TextFile.readFile(pluginsFilePath)
     .then(content => {
       serializedPlugins = JSON.parse(content);
-      for (const script of Object.values(serializedPlugins)) {
-        const plugin = initPlugin(script as string);
-        if (plugin) {
-          plugins[plugin.id] = plugin;
-        }
-      }
+      Object.entries(serializedPlugins).forEach(
+        ([pluginId, script]): string[] => {
+          const plugin = initPlugin(pluginId, script);
+          if (plugin) {
+            plugins[plugin.id] = plugin;
+          }
+        },
+      );
     })
     .catch(() => {
       // nothing to read
     });
 };
 
-const installPlugin = async (url: string): Promise<Plugin | undefined> => {
+const installPlugin = async (
+  pluginId: string,
+  url: string,
+): Promise<Plugin | undefined> => {
   try {
     return await fetch(url, {
       headers: { 'pragma': 'no-cache', 'cache-control': 'no-cache' },
     })
       .then(res => res.text())
       .then(async rawCode => {
-        const plugin = initPlugin(rawCode);
+        const plugin = initPlugin(pluginId, rawCode);
         if (!plugin) {
           return undefined;
         }
@@ -134,7 +144,7 @@ const uninstallPlugin = async (_plugin: PluginItem) => {
 };
 
 const updatePlugin = async (plugin: PluginItem) => {
-  return installPlugin(plugin.url);
+  return installPlugin(plugin.id, plugin.url);
 };
 
 const fetchPlugins = async (): Promise<PluginItem[]> => {

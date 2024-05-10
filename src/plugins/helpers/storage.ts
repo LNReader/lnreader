@@ -13,43 +13,44 @@ interface StoredItem {
 }
 
 class Storage {
+  private _pluginID;
+
+  constructor(pluginID) {
+    Object.defineProperty(this, '_pluginID', {
+      value: pluginID,
+    });
+  }
+
   /**
-   * Sets a key-value pair in the storage.
+   * Sets a key-value pair in storage.
    *
-   * @param pluginID - The ID of the plugin.
-   * @param key - The key to set.
-   * @param value - The value to set.
-   * @param expires - Optional. The expiration date for the key-value pair.
+   * @param {string} key - The key to set.
+   * @param {any} value - The value to set.
+   * @param {Date | number} [expires] - Optional expiry date or time in milliseconds.
    */
-  set(
-    pluginID: string,
-    key: string,
-    value: any,
-    expires?: Date | number,
-  ): void {
+  set(key: string, value: any, expires?: Date | number): void {
     const item: StoredItem = {
       created: new Date(),
       value,
       expires: expires instanceof Date ? expires.getTime() : expires,
     };
-    store.set(pluginID + PLUGIN_STORAGE + key, JSON.stringify(item));
+    store.set(this._pluginID + PLUGIN_STORAGE + key, JSON.stringify(item));
   }
 
   /**
-   * Gets the value associated with a key from the storage.
+   * Retrieves the value for a given key from storage.
    *
-   * @param pluginID - The ID of the plugin.
-   * @param key - The key to retrieve.
-   * @param raw - Optional. If true, returns the raw storage item object.
-   * @returns The value associated with the key or undefined if not found or expired.
+   * @param {string} key - The key to retrieve the value for.
+   * @param {boolean} [raw] - Optional flag to return the raw stored item.
+   * @returns {any} The stored value or undefined if key is not found.
    */
-  get(pluginID: string, key: string, raw?: boolean): StoredItem | undefined {
-    const storedItem = store.getString(pluginID + PLUGIN_STORAGE + key);
+  get(key: string, raw?: boolean): any {
+    const storedItem = store.getString(this._pluginID + PLUGIN_STORAGE + key);
     if (storedItem) {
       const item: StoredItem = JSON.parse(storedItem);
       if (item.expires) {
         if (Date.now() > item.expires) {
-          this.delete(pluginID, key);
+          this.delete(key);
           return undefined;
         }
         if (raw) {
@@ -62,59 +63,67 @@ class Storage {
   }
 
   /**
-   * Deletes a key from the storage.
+   * Deletes a key from storage.
    *
-   * @param pluginID - The ID of the plugin.
-   * @param key - The key to delete.
+   * @param {string} key - The key to delete.
    */
-  delete(pluginID: string, key: string): void {
-    store.delete(pluginID + PLUGIN_STORAGE + key);
+  delete(key: string): void {
+    store.delete(this._pluginID + PLUGIN_STORAGE + key);
   }
 
   /**
-   * Clears all keys associated with a plugin from the storage.
-   *
-   * @param pluginID - The ID of the plugin.
+   * Clears all stored items from storage.
    */
-  clearAll(pluginID: string): void {
-    const keysToRemove = this.getAllKeys(pluginID);
-    keysToRemove.forEach(key => this.delete(pluginID, key));
+  clearAll(): void {
+    const keysToRemove = this.getAllKeys();
+    keysToRemove.forEach(key => this.delete(key));
   }
 
   /**
-   * Gets all keys associated with a plugin from the storage.
+   * Retrieves all keys set by the `set` method.
    *
-   * @param pluginID - The ID of the plugin.
-   * @returns An array of keys associated with the plugin.
+   * @returns {string[]} An array of keys.
    */
-  getAllKeys(pluginID: string): string[] {
+  getAllKeys(): string[] {
     const keys = store
       .getAllKeys()
-      .filter(key => key.startsWith(pluginID + PLUGIN_STORAGE))
-      .map(key => key.replace(pluginID + PLUGIN_STORAGE, ''));
+      .filter(key => key.startsWith(this._pluginID + PLUGIN_STORAGE))
+      .map(key => key.replace(this._pluginID + PLUGIN_STORAGE, ''));
     return keys;
   }
 }
 
 class LocalStorage {
-  get(pluginID: string): StoredItem.value | undefined {
-    const data = store.getString(pluginID + WEBVIEW_LOCAL_STORAGE);
+  private _pluginID;
+
+  constructor(pluginID) {
+    Object.defineProperty(this, '_pluginID', {
+      value: pluginID,
+    });
+  }
+
+  get(): StoredItem.value | undefined {
+    const data = store.getString(this._pluginID + WEBVIEW_LOCAL_STORAGE);
     return data ? JSON.parse(data) : undefined;
   }
 }
 
 class SessionStorage {
-  get(pluginID: string): StoredItem.value | undefined {
-    const data = store.getString(pluginID + WEBVIEW_SESSION_STORAGE);
+  private _pluginID;
+
+  constructor(pluginID) {
+    Object.defineProperty(this, '_pluginID', {
+      value: pluginID,
+    });
+  }
+
+  get(): StoredItem.value | undefined {
+    const data = store.getString(this._pluginID + WEBVIEW_SESSION_STORAGE);
     return data ? JSON.parse(data) : undefined;
   }
 }
 
-const storage = new Storage();
-const localStorage = new LocalStorage();
-const sessionStorage = new SessionStorage();
-
-export { storage, localStorage, sessionStorage };
+export { Storage, LocalStorage, SessionStorage };
 
 //to record data from the web view
 export { WEBVIEW_LOCAL_STORAGE, WEBVIEW_SESSION_STORAGE, store };

@@ -101,7 +101,7 @@ export default function usePlugins() {
    */
 
   const installPlugin = (plugin: PluginItem) => {
-    return _install(plugin.url).then(_plg => {
+    return _install(plugin.id, plugin.url).then(_plg => {
       if (_plg) {
         const installedPlugins =
           getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
