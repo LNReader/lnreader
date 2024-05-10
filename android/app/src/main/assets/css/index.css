@@ -438,3 +438,23 @@ td {
   display: block;
   width: 100%;
 }
+
+.novel-system-box {
+  --colors-novel-system-box-bg-1: 0 2 20;
+  --colors-novel-system-box-bg-2: 34 40 93;
+  --colors-novel-system-box-border: 137 149 199;
+  --colors-novel-system-box-shadow: 9 23 134;
+  background: linear-gradient(180deg,rgb(var(--colors-novel-system-box-bg-1)) 35%,rgb(var(--colors-novel-system-box-bg-2)) 214%);
+  border: 1px solid rgb(var(--colors-novel-system-box-border));
+  color: #fffffd;
+  font-family: Rajdhani,serif;
+  font-weight: 500;
+  margin: 0 auto;
+  padding: 1rem;
+  text-shadow: 1px 1px 2px rgb(var(--colors-novel-system-box-shadow)),0 0 1em rgb(var(--colors-novel-system-box-shadow)),0 0 .2em rgb(var(--colors-novel-system-box-shadow));
+  width: fit-content;
+}
+
+.text-center {
+  text-align: center !important;
+}
