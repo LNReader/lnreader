@@ -1,4 +1,4 @@
-package com.rajarsheechatterjee.LNReader;
+package com.rajarsheechatterjee.LNReaderTesting;
 
 import android.app.Application;
 import android.content.res.Configuration;
@@ -25,7 +25,7 @@ import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
-  private final ReactNativeHost mReactNativeHost = 
+  private final ReactNativeHost mReactNativeHost =
     new ReactNativeHostWrapper(this, new DefaultReactNativeHost(this) {
         @Override
         public boolean getUseDeveloperSupport() {

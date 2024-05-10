@@ -1,4 +1,4 @@
-package com.rajarsheechatterjee.LNReader;
+package com.rajarsheechatterjee.LNReaderTesting;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -18,7 +18,7 @@ import com.rajarsheechatterjee.VolumeButtonListener.VolumeButtonListener;
 import org.devio.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends ReactActivity {
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "LNReader",
-    "slug": "LNReader",
-    "scheme": "lnreader",
+    "name": "LNReaderTesting",
+    "slug": "LNReaderTesting",
+    "scheme": "lnreadertesting",
     "plugins": [
       "expo-localization"
     ]
