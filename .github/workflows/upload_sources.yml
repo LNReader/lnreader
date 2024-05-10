@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Upload strings
+      - name: Upload sources
         uses: crowdin/github-action@v1
         with:
           upload_sources: true
