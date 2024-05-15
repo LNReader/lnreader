@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - test
   workflow_dispatch:
 jobs:
   build-android:
