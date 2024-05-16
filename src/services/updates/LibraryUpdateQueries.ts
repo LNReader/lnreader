@@ -64,7 +64,7 @@ const updateNovelTotalPages = (novelId: number, totalPages: number) => {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'UPDATE SET Novel totalPages = ? WHERE id = ?',
+        'UPDATE Novel SET totalPages = ? WHERE id = ?',
         [totalPages, novelId],
         () => resolve(null),
         (txObj, error) => {
