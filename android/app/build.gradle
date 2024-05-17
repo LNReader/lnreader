@@ -80,7 +80,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     namespace "com.rajarsheechatterjee.LNReader"
     defaultConfig {
-        applicationId 'com.rajarsheechatterjee.LNReader'
+        applicationId project.hasProperty('customAppId') ? project.getProperty('customAppId') : 'com.rajarsheechatterjee.LNReader'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         // Generated version code. Supports versions up to 1024.1024.2048
