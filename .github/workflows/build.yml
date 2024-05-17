@@ -35,6 +35,9 @@ jobs:
           cat > .env << EOF
           MYANIMELIST_CLIENT_ID=${{ vars.MYANIMELIST_CLIENT_ID }}
           ANILIST_CLIENT_ID=${{ vars.ANILIST_CLIENT_ID }}
+          GIT_HASH=$(git rev-parse --short HEAD)
+          RELEASE_DATE=$(date --utc +'%d/%m/%y %I:%M %p %Z')
+          BUILD_TYPE=Github Actions
           EOF
 
       - name: Cache Gradle Wrapper

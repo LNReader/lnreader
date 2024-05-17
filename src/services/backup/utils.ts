@@ -4,7 +4,7 @@ import { TRACKER } from '@hooks/persisted/useTracker';
 import { LAST_UPDATE_TIME } from '@hooks/persisted/useUpdates';
 import { BACKGROUND_ACTION } from '@services/constants';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
-import { appVersion } from '@utils/versionUtils';
+import { version } from '../../../package.json';
 import {
   _restoreNovelAndChapters,
   getAllNovels,
@@ -64,7 +64,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   // version
   await TextFile.writeFile(
     cacheDirPath + '/' + BackupEntryName.VERSION,
-    JSON.stringify({ version: appVersion }),
+    JSON.stringify({ version: version }),
   );
 
   // novels
