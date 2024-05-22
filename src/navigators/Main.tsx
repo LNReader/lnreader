@@ -3,7 +3,10 @@ import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { setBarColor } from '@theme/utils/setBarColor';
+import {
+  changeNavigationBarColor,
+  setBarColor,
+} from '@theme/utils/setBarColor';
 import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
@@ -32,7 +35,6 @@ import { updateLibrary } from '@services/updates';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
 import Color from 'color';
-import { changeNavigationBarColor } from '@hooks/common/useFullscreenMode';
 
 const Stack = createStackNavigator<RootStackParamList>();
 

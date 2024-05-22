@@ -8,12 +8,10 @@ import {
 } from '../persisted';
 import Color from 'color';
 import * as NavigationBar from 'expo-navigation-bar';
-import { setBarColor } from '@theme/utils/setBarColor';
-
-export const changeNavigationBarColor = (color: string, isDark = false) => {
-  NavigationBar.setBackgroundColorAsync(color);
-  NavigationBar.setButtonStyleAsync(isDark ? 'dark' : 'light');
-};
+import {
+  changeNavigationBarColor,
+  setBarColor,
+} from '@theme/utils/setBarColor';
 
 const useFullscreenMode = () => {
   const { addListener } = useNavigation();
@@ -26,9 +24,14 @@ const useFullscreenMode = () => {
       StatusBar.setHidden(true);
       NavigationBar.setVisibilityAsync('hidden');
     } else {
-      setBarColor(theme);
+      StatusBar.setBarStyle(
+        Color(backgroundColor).isDark() ? 'light-content' : 'dark-content',
+      );
       StatusBar.setBackgroundColor(backgroundColor);
-      changeNavigationBarColor(backgroundColor);
+      changeNavigationBarColor(
+        backgroundColor,
+        Color(backgroundColor).isDark(),
+      );
     }
   }, [backgroundColor, fullScreenMode]);
 
@@ -48,9 +51,12 @@ const useFullscreenMode = () => {
       StatusBar.setTranslucent(true);
       StatusBar.setBackgroundColor('transparent');
     } else {
-      changeNavigationBarColor(backgroundColor);
+      changeNavigationBarColor(
+        backgroundColor,
+        Color(backgroundColor).isDark(),
+      );
     }
-  }, [fullScreenMode]);
+  }, [backgroundColor, fullScreenMode]);
 
   useEffect(() => {
     setImmersiveMode();
