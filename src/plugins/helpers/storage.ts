@@ -13,10 +13,10 @@ interface StoredItem {
 }
 
 class Storage {
-  private _pluginID: string;
+  #pluginID: string;
 
   constructor(pluginID: string) {
-    this._pluginID = pluginID;
+    this.#pluginID = pluginID;
   }
 
   /**
@@ -32,7 +32,7 @@ class Storage {
       value,
       expires: expires instanceof Date ? expires.getTime() : expires,
     };
-    store.set(this._pluginID + PLUGIN_STORAGE + key, JSON.stringify(item));
+    store.set(this.#pluginID + PLUGIN_STORAGE + key, JSON.stringify(item));
   }
 
   /**
@@ -43,7 +43,7 @@ class Storage {
    * @returns {any} The stored value or undefined if key is not found.
    */
   get(key: string, raw?: boolean): any {
-    const storedItem = store.getString(this._pluginID + PLUGIN_STORAGE + key);
+    const storedItem = store.getString(this.#pluginID + PLUGIN_STORAGE + key);
     if (storedItem) {
       const item: StoredItem = JSON.parse(storedItem);
       if (item.expires) {
@@ -66,7 +66,7 @@ class Storage {
    * @param {string} key - The key to delete.
    */
   delete(key: string): void {
-    store.delete(this._pluginID + PLUGIN_STORAGE + key);
+    store.delete(this.#pluginID + PLUGIN_STORAGE + key);
   }
 
   /**
@@ -85,34 +85,34 @@ class Storage {
   getAllKeys(): string[] {
     const keys = store
       .getAllKeys()
-      .filter(key => key.startsWith(this._pluginID + PLUGIN_STORAGE))
-      .map(key => key.replace(this._pluginID + PLUGIN_STORAGE, ''));
+      .filter(key => key.startsWith(this.#pluginID + PLUGIN_STORAGE))
+      .map(key => key.replace(this.#pluginID + PLUGIN_STORAGE, ''));
     return keys;
   }
 }
 
 class LocalStorage {
-  private _pluginID: string;
+  #pluginID: string;
 
   constructor(pluginID: string) {
-    this._pluginID = pluginID;
+    this.#pluginID = pluginID;
   }
 
   get(): StoredItem['value'] | undefined {
-    const data = store.getString(this._pluginID + WEBVIEW_LOCAL_STORAGE);
+    const data = store.getString(this.#pluginID + WEBVIEW_LOCAL_STORAGE);
     return data ? JSON.parse(data) : undefined;
   }
 }
 
 class SessionStorage {
-  private _pluginID: string;
+  #pluginID: string;
 
   constructor(pluginID: string) {
-    this._pluginID = pluginID;
+    this.#pluginID = pluginID;
   }
 
   get(): StoredItem['value'] | undefined {
-    const data = store.getString(this._pluginID + WEBVIEW_SESSION_STORAGE);
+    const data = store.getString(this.#pluginID + WEBVIEW_SESSION_STORAGE);
     return data ? JSON.parse(data) : undefined;
   }
 }
