@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     bottom: 0,
     width: '100%',
-    paddingBottom: 16,
+    paddingBottom: 40,
   },
   buttonsContainer: {
     flexDirection: 'row',

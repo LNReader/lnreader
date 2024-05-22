@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import color from 'color';
 import {
   useChapterGeneralSettings,
   useChapterReaderSettings,
@@ -9,6 +8,7 @@ import {
 } from '../persisted';
 import Color from 'color';
 import * as NavigationBar from 'expo-navigation-bar';
+import { setBarColor } from '@theme/utils/setBarColor';
 
 export const changeNavigationBarColor = (color: string, isDark = false) => {
   NavigationBar.setBackgroundColorAsync(color);
@@ -26,9 +26,7 @@ const useFullscreenMode = () => {
       StatusBar.setHidden(true);
       NavigationBar.setVisibilityAsync('hidden');
     } else {
-      StatusBar.setBarStyle(
-        color(backgroundColor).isDark() ? 'light-content' : 'dark-content',
-      );
+      setBarColor(theme);
       StatusBar.setBackgroundColor(backgroundColor);
       changeNavigationBarColor(backgroundColor);
     }
@@ -38,15 +36,21 @@ const useFullscreenMode = () => {
     StatusBar.setHidden(false);
     NavigationBar.setVisibilityAsync('visible');
 
-    /**
-     * This is overlay of reader footer and should be transparent.
-     * But in hexa, ##xxxxxx00 could be another color
-     */
-    changeNavigationBarColor(
-      Color(theme.surface).alpha(0.05).hexa(),
-      !theme.isDark,
-    );
-  }, []);
+    if (fullScreenMode) {
+      /**
+       * This is overlay of reader footer and should be transparent.
+       * But in hexa, ##xxxxxx00 could be another color
+       */
+      changeNavigationBarColor(
+        Color(theme.surface).alpha(0.05).hexa(),
+        !theme.isDark,
+      );
+      StatusBar.setTranslucent(true);
+      StatusBar.setBackgroundColor('transparent');
+    } else {
+      changeNavigationBarColor(backgroundColor);
+    }
+  }, [fullScreenMode]);
 
   useEffect(() => {
     setImmersiveMode();
@@ -54,7 +58,11 @@ const useFullscreenMode = () => {
 
   useEffect(() => {
     const unsubscribe = addListener('beforeRemove', () => {
-      showStatusAndNavBar();
+      StatusBar.setHidden(false);
+      NavigationBar.setVisibilityAsync('visible');
+      setBarColor(theme);
+      StatusBar.setTranslucent(true);
+      StatusBar.setBackgroundColor('transparent');
       StatusBar.setBarStyle(theme.isDark ? 'light-content' : 'dark-content');
       changeNavigationBarColor(Color(theme.surface2).hex(), !theme.isDark);
     });
