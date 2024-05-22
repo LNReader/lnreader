@@ -3,16 +3,17 @@ import { StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import color from 'color';
 import {
-  changeNavigationBarColor,
-  hideNavigationBar,
-  showNavigationBar,
-} from '../../native/NavigationBarColor';
-import {
   useChapterGeneralSettings,
   useChapterReaderSettings,
   useTheme,
 } from '../persisted';
 import Color from 'color';
+import * as NavigationBar from 'expo-navigation-bar';
+
+export const changeNavigationBarColor = (color: string, isDark = false) => {
+  NavigationBar.setBackgroundColorAsync(color);
+  NavigationBar.setButtonStyleAsync(isDark ? 'dark' : 'light');
+};
 
 const useFullscreenMode = () => {
   const { addListener } = useNavigation();
@@ -23,7 +24,7 @@ const useFullscreenMode = () => {
   const setImmersiveMode = useCallback(() => {
     if (fullScreenMode) {
       StatusBar.setHidden(true);
-      hideNavigationBar();
+      NavigationBar.setVisibilityAsync('hidden');
     } else {
       StatusBar.setBarStyle(
         color(backgroundColor).isDark() ? 'light-content' : 'dark-content',
@@ -35,8 +36,16 @@ const useFullscreenMode = () => {
 
   const showStatusAndNavBar = useCallback(() => {
     StatusBar.setHidden(false);
-    showNavigationBar();
-    changeNavigationBarColor(Color(theme.surface).hex(), !theme.isDark);
+    NavigationBar.setVisibilityAsync('visible');
+
+    /**
+     * This is overlay of reader footer and should be transparent.
+     * But in hexa, ##xxxxxx00 could be another color
+     */
+    changeNavigationBarColor(
+      Color(theme.surface).alpha(0.05).hexa(),
+      !theme.isDark,
+    );
   }, []);
 
   useEffect(() => {
@@ -47,11 +56,7 @@ const useFullscreenMode = () => {
     const unsubscribe = addListener('beforeRemove', () => {
       showStatusAndNavBar();
       StatusBar.setBarStyle(theme.isDark ? 'light-content' : 'dark-content');
-      changeNavigationBarColor(
-        Color(theme.surface2).hex(),
-        !theme.isDark,
-        true,
-      );
+      changeNavigationBarColor(Color(theme.surface2).hex(), !theme.isDark);
     });
 
     return unsubscribe;

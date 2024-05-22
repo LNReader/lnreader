@@ -33,6 +33,7 @@
     "expo-linear-gradient": "~12.3.0",
     "expo-linking": "~5.0.2",
     "expo-localization": "~14.3.0",
+    "expo-navigation-bar": "^2.8.1",
     "expo-notifications": "~0.20.1",
     "expo-speech": "~11.3.0",
     "expo-sqlite": "~11.3.3",

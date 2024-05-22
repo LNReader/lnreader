@@ -31,8 +31,8 @@ import BrowseSettings from '../screens/browse/BrowseSettings';
 import { updateLibrary } from '@services/updates';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
-import { changeNavigationBarColor } from '@native/NavigationBarColor';
 import Color from 'color';
+import { changeNavigationBarColor } from '@hooks/common/useFullscreenMode';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -44,11 +44,7 @@ const MainNavigator = () => {
   useEffect(() => {
     const timer = setTimeout(async () => {
       setBarColor(theme);
-      changeNavigationBarColor(
-        Color(theme.surface2).hex(),
-        !theme.isDark,
-        true,
-      );
+      changeNavigationBarColor(Color(theme.surface2).hex(), !theme.isDark);
     }, 500);
 
     return () => {
