@@ -92,14 +92,14 @@ const deserializePlugins = () => {
   return TextFile.readFile(pluginsFilePath)
     .then(content => {
       serializedPlugins = JSON.parse(content);
-      Object.entries(serializedPlugins).forEach(
-        ([pluginId, script]): string[] => {
+      Object.entries(serializedPlugins).forEach(([pluginId, script]) => {
+        if (script) {
           const plugin = initPlugin(pluginId, script);
           if (plugin) {
             plugins[plugin.id] = plugin;
           }
-        },
-      );
+        }
+      });
     })
     .catch(() => {
       // nothing to read

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { IconButtonV2 } from '@components';
 import { ThemeColors } from '@theme/types';
+import WebView from 'react-native-webview';
 
 interface AppbarProps {
   title: string;
@@ -11,7 +12,7 @@ interface AppbarProps {
   canGoBack: boolean;
   canGoForward: boolean;
   webView: RefObject<WebView>;
-  setMenuVisible: () => void;
+  setMenuVisible: (value: boolean) => void;
   goBack: () => void;
 }
 

@@ -9,16 +9,14 @@ const WEBVIEW_SESSION_STORAGE = '_SessionStorage';
 interface StoredItem {
   created: Date;
   value: any;
-  expires?: Date;
+  expires?: number; // timestamp (miliseconds)
 }
 
 class Storage {
-  private _pluginID;
+  private _pluginID: string;
 
-  constructor(pluginID) {
-    Object.defineProperty(this, '_pluginID', {
-      value: pluginID,
-    });
+  constructor(pluginID: string) {
+    this._pluginID = pluginID;
   }
 
   /**
@@ -54,7 +52,7 @@ class Storage {
           return undefined;
         }
         if (raw) {
-          item.expires = new Date(item.expires);
+          item.expires = new Date(item.expires).getTime();
         }
       }
       return raw ? item : item.value;
@@ -94,30 +92,26 @@ class Storage {
 }
 
 class LocalStorage {
-  private _pluginID;
+  private _pluginID: string;
 
-  constructor(pluginID) {
-    Object.defineProperty(this, '_pluginID', {
-      value: pluginID,
-    });
+  constructor(pluginID: string) {
+    this._pluginID = pluginID;
   }
 
-  get(): StoredItem.value | undefined {
+  get(): StoredItem['value'] | undefined {
     const data = store.getString(this._pluginID + WEBVIEW_LOCAL_STORAGE);
     return data ? JSON.parse(data) : undefined;
   }
 }
 
 class SessionStorage {
-  private _pluginID;
+  private _pluginID: string;
 
-  constructor(pluginID) {
-    Object.defineProperty(this, '_pluginID', {
-      value: pluginID,
-    });
+  constructor(pluginID: string) {
+    this._pluginID = pluginID;
   }
 
-  get(): StoredItem.value | undefined {
+  get(): StoredItem['value'] | undefined {
     const data = store.getString(this._pluginID + WEBVIEW_SESSION_STORAGE);
     return data ? JSON.parse(data) : undefined;
   }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import { Pressable, Share, View, Text, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
@@ -12,7 +12,7 @@ interface MenuProps {
   theme: ThemeColors;
   currentUrl: string;
   webView: RefObject<WebView>;
-  setMenuVisible: () => void;
+  setMenuVisible: (value: boolean) => void;
 }
 
 const Menu: React.FC<MenuProps> = ({
