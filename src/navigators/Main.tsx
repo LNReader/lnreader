@@ -46,7 +46,7 @@ const MainNavigator = () => {
   useEffect(() => {
     const timer = setTimeout(async () => {
       setBarColor(theme);
-      changeNavigationBarColor(Color(theme.surface2).hex(), !theme.isDark);
+      changeNavigationBarColor(Color(theme.surface2).hex(), theme.isDark);
     }, 500);
 
     return () => {

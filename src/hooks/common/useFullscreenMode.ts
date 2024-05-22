@@ -46,7 +46,7 @@ const useFullscreenMode = () => {
        */
       changeNavigationBarColor(
         Color(theme.surface).alpha(0.05).hexa(),
-        !theme.isDark,
+        theme.isDark,
       );
       StatusBar.setTranslucent(true);
       StatusBar.setBackgroundColor('transparent');
