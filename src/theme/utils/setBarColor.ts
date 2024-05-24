@@ -1,15 +1,19 @@
 import { StatusBar } from 'react-native';
 import { ThemeColors } from '@theme/types';
 import * as NavigationBar from 'expo-navigation-bar';
+import Color from 'color';
 
-/**
- * Sets status and navigation bar color.
- *
- * @param theme
- */
-
-export const setBarColor = (theme: ThemeColors) =>
-  StatusBar.setBarStyle(theme.isDark ? 'light-content' : 'dark-content');
+export const setBarColor = (color: ThemeColors | Color) => {
+  if (color instanceof Color) {
+    // fullscreen reader mode
+    StatusBar.setBarStyle(color.isDark() ? 'light-content' : 'dark-content');
+    StatusBar.setBackgroundColor(color.hexa());
+  } else {
+    StatusBar.setTranslucent(true);
+    StatusBar.setBackgroundColor('transparent');
+    StatusBar.setBarStyle(color.isDark ? 'light-content' : 'dark-content');
+  }
+};
 
 export const changeNavigationBarColor = (color: string, isDark = false) => {
   NavigationBar.setBackgroundColorAsync(color);

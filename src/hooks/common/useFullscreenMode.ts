@@ -24,10 +24,7 @@ const useFullscreenMode = () => {
       StatusBar.setHidden(true);
       NavigationBar.setVisibilityAsync('hidden');
     } else {
-      StatusBar.setBarStyle(
-        Color(backgroundColor).isDark() ? 'light-content' : 'dark-content',
-      );
-      StatusBar.setBackgroundColor(backgroundColor);
+      setBarColor(Color(backgroundColor));
       changeNavigationBarColor(
         backgroundColor,
         Color(backgroundColor).isDark(),
@@ -48,8 +45,6 @@ const useFullscreenMode = () => {
         Color(theme.surface).alpha(0.05).hexa(),
         theme.isDark,
       );
-      StatusBar.setTranslucent(true);
-      StatusBar.setBackgroundColor('transparent');
       setBarColor(theme);
     } else {
       changeNavigationBarColor(
@@ -68,9 +63,6 @@ const useFullscreenMode = () => {
       StatusBar.setHidden(false);
       NavigationBar.setVisibilityAsync('visible');
       setBarColor(theme);
-      StatusBar.setTranslucent(true);
-      StatusBar.setBackgroundColor('transparent');
-      StatusBar.setBarStyle(theme.isDark ? 'light-content' : 'dark-content');
       changeNavigationBarColor(Color(theme.surface2).hex(), !theme.isDark);
     });
 
