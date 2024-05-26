@@ -15,7 +15,7 @@
     "searchFor": "Şunu ara",
     "globally": "global olarak",
     "searchResults": "Arama sonuçları",
-    "chapters": "Bölüm",
+    "chapters": "Bölümler",
     "submit": "Gönder",
     "retry": "Yeniden dene"
   },
@@ -36,8 +36,8 @@
         "totalChapters": "Toplam bölüm",
         "download": "İndirilenler",
         "unread": "Okunmamışlar",
-        "lastRead": "Son okunma",
-        "lastUpdated": "Son güncellenme"
+        "lastRead": "Son okunmuşlar",
+        "lastUpdated": "Son güncellenenler"
       },
       "display": {
         "displayMode": "Görüntüleme modu",
@@ -56,7 +56,7 @@
   "updatesScreen": {
     "searchbar": "Güncellemelerde ara",
     "lastUpdatedAt": "Kitaplık son güncelleme:",
-    "newChapters": "Yeni bölüm",
+    "newChapters": "yeni Bölümler",
     "emptyView": "Güncelleme yok",
     "updatesLower": "güncellemeler"
   },
@@ -95,7 +95,7 @@
       "showBatteryAndTime": "Pili ve saati göster",
       "showProgressPercentage": "İlerleme yüzdesini göster",
       "swipeGestures": "Bölümler arası gezinmek için sol veya sağa doğru kaydırın",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "readerPages": "Okuyucudaki sayfalar arasında gezinmek için sola veya sağa tıklayın (Deneysel)",
       "allowTextSelection": "Yazı seçmeye izin ver",
       "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın",
       "removeExtraSpacing": "Ekstra paragraf boşluklarını kaldır",
@@ -171,7 +171,7 @@
         "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
         "downloadNewChapters": "Yeni bölümleri indir",
         "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
+        "jumpToLastReadChapter": "Listedeki son okunan bölüme atlayın"
       },
       "readerSettings": {
         "title": "Okuyucu",
