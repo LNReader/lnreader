@@ -57,7 +57,7 @@
     "searchbar": "Güncellemelerde ara",
     "lastUpdatedAt": "Kitaplık son güncelleme:",
     "newChapters": "yeni Bölümler",
-    "emptyView": "Güncelleme yok",
+    "emptyView": "Yeni güncelleme yok",
     "updatesLower": "güncellemeler"
   },
   "history": "Geçmiş",
@@ -155,13 +155,13 @@
         "novelSort": "Novel Sıralaması",
         "updateLibrary": "Açılışta kitaplığı güncelle",
         "useFAB": "Kitaplıkta FAB kullan",
-        "novel": "Novel",
+        "novel": "Roman",
         "chapterSort": "Varsayılan bölüm sıralaması",
         "bySource": "Kaynağa göre",
         "asc": "(Artan)",
         "desc": "(Azalan)",
         "globalUpdate": "Global güncelleme",
-        "updateOngoing": "Yalnızca devam eden novel'leri güncelle",
+        "updateOngoing": "Yalnızca devam eden romanları güncelle",
         "refreshMetadata": "Üst veriyi otomatik olarak yenile",
         "refreshMetadataDescription": "Kitaplığı güncellerken yeni kapak ve ayrıntıları denetle",
         "updateTime": "Son güncelleme süresini göster",
@@ -191,7 +191,7 @@
         "openCSSFile": "CSS dosyası aç",
         "openJSFile": "JS dosyası aç",
         "notSaved": "Kaydedilmedi",
-        "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[KAYNAKID])",
+        "cssHint": "İpucu: Kaynak ID'si ile kaynağa özel CSS yapılandırması oluşturabilirsiniz.\n(#kaynakId-[SOURCEID])",
         "jsHint": "İpucu: Aşağıdaki değişkenlere erişiminiz bulunmakta:\nhtml, novelName, chapterName, sourceId, chapterId, novelId",
         "clearCustomCSS": "Emin misiniz? Özel CSS'niz sıfırlanır.",
         "clearCustomJS": "Emin misiniz? Özel JS kodlarınız sıfırlanır."
@@ -229,10 +229,10 @@
   },
   "date": {
     "calendar": {
-      "sameDay": "[Bugün]",
-      "nextDay": "[Yarın]",
-      "lastDay": "[Dün]",
-      "lastWeek": "[Geçen] dddd"
+      "sameDay": "Bugün",
+      "nextDay": "Yarın",
+      "lastDay": "Dün",
+      "lastWeek": "Geçen dddd"
     }
   },
   "categories": {
@@ -257,6 +257,6 @@
     "dbInfo": "İndirilenler bir SQLite Veritabanında kaydedilmektedir.",
     "downloadChapters": "İndirilen bölümler",
     "noDownloads": "İndirme yok",
-    "downloadsLower": "İndirilenler"
+    "downloadsLower": "indirilenler"
   }
 }
