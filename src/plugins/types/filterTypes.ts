@@ -43,13 +43,13 @@ type ExcludableCheckboxFilter = {
 
 export type Filters = Record<
   string,
-  | { label: string } & (
-      | PickerFilter
-      | CheckboxFilter
-      | TextFilter
-      | SwitchFilter
-      | ExcludableCheckboxFilter
-    )
+  { label: string } & (
+    | PickerFilter
+    | CheckboxFilter
+    | TextFilter
+    | SwitchFilter
+    | ExcludableCheckboxFilter
+  )
 >;
 
 export type FilterToValues<

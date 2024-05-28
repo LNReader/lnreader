@@ -67,4 +67,5 @@ export interface Plugin extends PluginItem {
   searchNovels: (searchTerm: string, pageNo: number) => Promise<NovelItem[]>;
   fetchImage: (url: string) => Promise<string>;
   resolveUrl?: (path: string, isNovel?: boolean) => string;
+  webStorageUtilized?: boolean;
 }

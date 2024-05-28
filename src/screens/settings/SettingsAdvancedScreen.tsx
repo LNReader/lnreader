@@ -26,11 +26,13 @@ import { AdvancedSettingsScreenProps } from '@navigators/types';
 import { StyleSheet, View } from 'react-native';
 import { getUserAgentSync } from 'react-native-device-info';
 import CookieManager from '@react-native-cookies/cookies';
+import { store } from '@plugins/helpers/storage';
 
 const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   const theme = useTheme();
   const clearCookies = () => {
     CookieManager.clearAll();
+    store.clearAll();
     showToast(getString('webview.cookiesCleared'));
   };
 

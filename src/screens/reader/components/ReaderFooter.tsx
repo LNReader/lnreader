@@ -71,7 +71,7 @@ const ChapterFooter = ({
             style={styles.buttonStyles}
             onPress={() =>
               navigation.navigate('WebviewScreen', {
-                name: `${chapter.name} | ${novel.name}`,
+                name: novel.name,
                 url: chapter.path,
                 pluginId: novel.pluginId,
               })

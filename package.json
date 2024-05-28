@@ -42,7 +42,7 @@
     "i18n-js": "^3.8.0",
     "lodash-es": "^4.17.21",
     "protobufjs": "^7.2.6",
-    "qs": "^6.11.2",
+    "qs": "^6.12.0",
     "react": "18.2.0",
     "react-native": "0.72.10",
     "react-native-background-actions": "^3.0.1",
@@ -62,7 +62,7 @@
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "^13.2.2",
-    "sanitize-html": "^2.7.0",
+    "sanitize-html": "^2.13.0",
     "urlencode": "^2.0.0"
   },
   "devDependencies": {
@@ -76,7 +76,7 @@
     "@types/lodash-es": "^4.17.6",
     "@types/react": "^18.0.24",
     "@types/react-native-vector-icons": "^6.4.10",
-    "@types/sanitize-html": "^2.6.2",
+    "@types/sanitize-html": "^2.11.0",
     "@typescript-eslint/eslint-plugin": "^5.10.2",
     "@typescript-eslint/parser": "^5.10.2",
     "babel-plugin-module-resolver": "^4.1.0",
