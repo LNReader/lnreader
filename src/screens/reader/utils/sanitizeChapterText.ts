@@ -9,9 +9,6 @@ export const sanitizeChapterText = (
   html: string,
   options?: Options,
 ): string => {
-  if (html) {
-    html = html.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-  }
   let text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
       'img',
@@ -20,10 +17,13 @@ export const sanitizeChapterText = (
       'b',
       'a',
       'div',
+      'ol',
+      'li',
     ]),
     allowedAttributes: {
       'img': ['src'],
       'a': ['href'],
+      'ol': ['reversed', 'start', 'type'],
     },
     allowedSchemes: ['data', 'http', 'https', 'file'],
   });
