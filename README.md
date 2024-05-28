@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./.github/readme-images/icon_alt.png" align="center" width="128" />
+  <img src="./.github/readme-images/icon_alt.png" align="center" width="128" style="border-radius:50%"/>
 <p>
 <h1 align="center">
   LNReader
