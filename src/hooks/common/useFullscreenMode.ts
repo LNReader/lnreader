@@ -10,7 +10,7 @@ import Color from 'color';
 import * as NavigationBar from 'expo-navigation-bar';
 import {
   changeNavigationBarColor,
-  setBarColor,
+  setStatusBarColor,
 } from '@theme/utils/setBarColor';
 
 const useFullscreenMode = () => {
@@ -24,7 +24,7 @@ const useFullscreenMode = () => {
       StatusBar.setHidden(true);
       NavigationBar.setVisibilityAsync('hidden');
     } else {
-      setBarColor(Color(backgroundColor));
+      setStatusBarColor(Color(backgroundColor));
       changeNavigationBarColor(
         backgroundColor,
         Color(backgroundColor).isDark(),
@@ -45,7 +45,7 @@ const useFullscreenMode = () => {
         Color(theme.surface).alpha(0.05).hexa(),
         theme.isDark,
       );
-      setBarColor(theme);
+      setStatusBarColor(theme);
     } else {
       changeNavigationBarColor(
         backgroundColor,
@@ -62,7 +62,7 @@ const useFullscreenMode = () => {
     const unsubscribe = addListener('beforeRemove', () => {
       StatusBar.setHidden(false);
       NavigationBar.setVisibilityAsync('visible');
-      setBarColor(theme);
+      setStatusBarColor(theme);
       changeNavigationBarColor(Color(theme.surface2).hex(), !theme.isDark);
     });
 

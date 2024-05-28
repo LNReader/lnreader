@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import {
   changeNavigationBarColor,
-  setBarColor,
+  setStatusBarColor,
 } from '@theme/utils/setBarColor';
 import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
@@ -45,7 +45,7 @@ const MainNavigator = () => {
 
   useEffect(() => {
     const timer = setTimeout(async () => {
-      setBarColor(theme);
+      setStatusBarColor(theme);
       changeNavigationBarColor(Color(theme.surface2).hex(), theme.isDark);
     }, 500);
 

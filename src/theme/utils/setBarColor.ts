@@ -3,7 +3,7 @@ import { ThemeColors } from '@theme/types';
 import * as NavigationBar from 'expo-navigation-bar';
 import Color from 'color';
 
-export const setBarColor = (color: ThemeColors | Color) => {
+export const setStatusBarColor = (color: ThemeColors | Color) => {
   if (color instanceof Color) {
     // fullscreen reader mode
     StatusBar.setBarStyle(color.isDark() ? 'light-content' : 'dark-content');
