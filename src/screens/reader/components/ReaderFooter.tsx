@@ -7,6 +7,7 @@ import { ThemeColors } from '@theme/types';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { ChapterScreenProps } from '@navigators/types';
+import { useDeviceOrientation } from '@hooks/index';
 
 interface ChapterFooterProps {
   theme: ThemeColors;
@@ -38,14 +39,17 @@ const ChapterFooter = ({
     borderless: true,
     radius: 50,
   };
-
+  const orientation = useDeviceOrientation();
   return (
     <Animated.View
       entering={FadeIn.duration(150)}
       exiting={FadeOut.duration(150)}
       style={[
         styles.footer,
-        { backgroundColor: color(theme.surface).alpha(0.9).string() },
+        {
+          backgroundColor: color(theme.surface).alpha(0.9).string(),
+          paddingBottom: orientation === 'potrait' ? 40 : 0,
+        },
       ]}
     >
       <View style={[styles.buttonsContainer]}>
@@ -142,7 +146,6 @@ const styles = StyleSheet.create({
     zIndex: 1,
     bottom: 0,
     width: '100%',
-    paddingBottom: 16,
   },
   buttonsContainer: {
     flexDirection: 'row',
