@@ -9,7 +9,7 @@
     "start": "react-native start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
-    "buildRelease": "npm run prestart && cd android && ./gradlew clean && ./gradlew assembleRelease",
+    "buildRelease": "node scripts/setEnvFile.cjs Release && cd android && ./gradlew clean && ./gradlew assembleRelease",
     "open": "open ./android/app/build/outputs/apk/release/",
     "strings": "node scripts/stringTypes.cjs",
     "prepare": "husky install"

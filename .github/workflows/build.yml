@@ -37,7 +37,7 @@ jobs:
           ANILIST_CLIENT_ID=${{ vars.ANILIST_CLIENT_ID }}
           GIT_HASH=$(git rev-parse --short HEAD)
           RELEASE_DATE=$(date --utc +'%d/%m/%y %I:%M %p %Z')
-          BUILD_TYPE=Github Actions
+          BUILD_TYPE=Github Action
           EOF
 
       - name: Cache Gradle Wrapper
