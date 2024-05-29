@@ -10,7 +10,7 @@ import { useTheme } from '@hooks/persisted';
 import { List } from '@components';
 import { AboutScreenProps } from '@navigators/types';
 import { GIT_HASH, RELEASE_DATE, BUILD_TYPE } from '@env';
-import Clipboard from '@react-native-community/clipboard';
+import * as Clipboard from 'expo-clipboard';
 import { version } from '../../../package.json';
 
 const AboutScreen = ({ navigation }: AboutScreenProps) => {
@@ -45,7 +45,7 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
             description={getBuildName()}
             theme={theme}
             onPress={() => {
-              Clipboard.setString(getBuildName());
+              Clipboard.setStringAsync(getBuildName());
             }}
           />
           <List.Item
