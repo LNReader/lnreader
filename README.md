@@ -43,7 +43,7 @@ Get the app from our [releases page](https://github.com/LNReader/lnreader/releas
 
 LNReader does not have any affiliation with the content providers available.
 
-Plugins requests should be created at [LNReader/lnreader-plugins](https://github.com/LNReader/lnreader-plugins).
+Plugin requests should be created at [LNReader/lnreader-plugins](https://github.com/LNReader/lnreader-plugins).
 
 ## Building & Contributing
 
