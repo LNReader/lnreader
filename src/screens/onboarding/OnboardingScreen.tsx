@@ -7,9 +7,24 @@ import PickThemeStep from './PickThemeStep';
 import { useState } from 'react';
 import StorageStep from './StorageStep';
 
+enum OnboardingStep {
+  PICK_THEME,
+  STORAGE_LOCATION,
+}
+
 export default function OnboardingScreen() {
   const theme = useTheme();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState<OnboardingStep>(OnboardingStep.PICK_THEME);
+  const renderStep = () => {
+    switch (step) {
+      case OnboardingStep.PICK_THEME:
+        return <PickThemeStep />;
+      case OnboardingStep.STORAGE_LOCATION:
+        return <StorageStep />;
+      default:
+        return <PickThemeStep />;
+    }
+  };
   return (
     <SafeAreaView style={[styles.root, { backgroundColor: theme.background }]}>
       <Image
@@ -37,33 +52,34 @@ export default function OnboardingScreen() {
           color: theme.onBackground,
         }}
       >
-        Youkoso jitsuryoku shijou shugi no kyoushitsu e
+        Let's set some things up first.
       </Text>
       <View
         style={[
           styles.stepContainer,
-          { backgroundColor: theme.primaryContainer },
+          { backgroundColor: theme.surfaceVariant },
         ]}
       >
-        {step === 0 ? <PickThemeStep /> : <StorageStep />}
+        {renderStep()}
       </View>
       <View style={{ flex: 1 }} />
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        {step === 0 ? (
-          <Button
-            style={{ flex: 1 }}
-            title="Next"
-            mode="contained"
-            onPress={() => setStep(1)}
-          />
-        ) : (
+        {step !== OnboardingStep.PICK_THEME ? (
           <Button
             style={{ flex: 1 }}
             title="Previous"
             mode="contained"
-            onPress={() => setStep(0)}
+            onPress={() => setStep(step - 1)}
           />
-        )}
+        ) : null}
+        {step !== OnboardingStep.STORAGE_LOCATION ? (
+          <Button
+            style={{ flex: 1 }}
+            title="Next"
+            mode="contained"
+            onPress={() => setStep(step + 1)}
+          />
+        ) : null}
       </View>
     </SafeAreaView>
   );
@@ -78,6 +94,6 @@ const styles = StyleSheet.create({
   },
   stepContainer: {
     paddingVertical: 16,
-    borderRadius: 12,
+    borderRadius: 8,
   },
 });
