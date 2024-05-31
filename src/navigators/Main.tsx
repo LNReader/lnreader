@@ -7,7 +7,12 @@ import {
   changeNavigationBarColor,
   setStatusBarColor,
 } from '@theme/utils/setBarColor';
-import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
+import {
+  useAppSettings,
+  usePlugins,
+  useStorages,
+  useTheme,
+} from '@hooks/persisted';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
 /**
@@ -35,6 +40,7 @@ import { updateLibrary } from '@services/updates';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
 import Color from 'color';
+import OnboardingScreen from '../screens/onboarding/OnboardingScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -42,6 +48,7 @@ const MainNavigator = () => {
   const theme = useTheme();
   const { updateLibraryOnLaunch } = useAppSettings();
   const { refreshPlugins } = usePlugins();
+  const { rootStorage } = useStorages();
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -62,7 +69,9 @@ const MainNavigator = () => {
   }, []);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
-
+  if (!rootStorage) {
+    return <OnboardingScreen />;
+  }
   return (
     <NavigationContainer theme={{ colors: theme, dark: theme.isDark }}>
       {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
