@@ -14,13 +14,29 @@ enum OnboardingStep {
 
 export default function OnboardingScreen() {
   const theme = useTheme();
+  const [rootStorage, setRootStorage] = useState('');
   const [step, setStep] = useState<OnboardingStep>(OnboardingStep.PICK_THEME);
   const renderStep = () => {
     switch (step) {
       case OnboardingStep.PICK_THEME:
         return <PickThemeStep />;
       case OnboardingStep.STORAGE_LOCATION:
-        return <StorageStep />;
+        return (
+          <StorageStep
+            rootStorage={rootStorage}
+            onPathChange={setRootStorage}
+          />
+        );
+      default:
+        return <PickThemeStep />;
+    }
+  };
+  const renderHelptext = () => {
+    switch (step) {
+      case OnboardingStep.PICK_THEME:
+        return 'Pick a theme';
+      case OnboardingStep.STORAGE_LOCATION:
+        return 'Select storage for LNReader';
       default:
         return <PickThemeStep />;
     }
@@ -29,7 +45,7 @@ export default function OnboardingScreen() {
     <SafeAreaView style={[styles.root, { backgroundColor: theme.background }]}>
       <Image
         source={require('../../../assets/logo.png')}
-        tintColor={theme.onBackground}
+        tintColor={theme.primary}
         style={{
           width: 90,
           height: 90,
@@ -40,7 +56,7 @@ export default function OnboardingScreen() {
         style={{
           fontWeight: '600',
           paddingBottom: 8,
-          color: theme.primary,
+          color: theme.onBackground,
         }}
       >
         Yaholo!
@@ -52,7 +68,7 @@ export default function OnboardingScreen() {
           color: theme.onBackground,
         }}
       >
-        Let's set some things up first.
+        {renderHelptext()}
       </Text>
       <View
         style={[

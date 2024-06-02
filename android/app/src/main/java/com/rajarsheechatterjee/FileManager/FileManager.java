@@ -1,4 +1,8 @@
-package com.rajarsheechatterjee.TextFile;
+package com.rajarsheechatterjee.FileManager;
+
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 
 import androidx.annotation.NonNull;
 
@@ -8,22 +12,18 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-public class TextFile extends ReactContextBaseJavaModule {
-    TextFile(ReactApplicationContext context) {
+public class FileManager extends ReactContextBaseJavaModule {
+    FileManager(ReactApplicationContext context) {
         super(context);
     }
 
     @NonNull
     @Override
     public String getName() {
-        return "TextFile";
+        return "FileManager";
     }
 
     @ReactMethod
@@ -49,5 +49,21 @@ public class TextFile extends ReactContextBaseJavaModule {
             promise.reject(e);
         }
 
+    }
+
+    @ReactMethod
+    public void resolveExternalContentUri(String uriString, Promise promise){
+        Uri uri = Uri.parse(uriString);
+        try{
+            final String docId = DocumentsContract.getTreeDocumentId(uri);
+            final String[] split = docId.split(":");
+            if("primary".equals(split[0])){
+                promise.resolve(Environment.getExternalStorageDirectory() + "/" + split[1]);
+            }else{
+                promise.resolve(null);
+            }
+        }catch (Exception e){
+            promise.resolve(null);
+        }
     }
 }

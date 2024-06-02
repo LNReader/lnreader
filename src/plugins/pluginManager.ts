@@ -16,7 +16,7 @@ import { defaultCover } from './helpers/constants';
 import { Storage, LocalStorage, SessionStorage } from './helpers/storage';
 import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
-import TextFile from '@native/TextFile';
+import FileManager from '@native/FileManager';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
 import { showToast } from '@utils/showToast';
 
@@ -71,7 +71,7 @@ const serializePlugin = async (
 ) => {
   if (!serializedPlugins) {
     if (await RNFS.exists(pluginsFilePath)) {
-      const content = await TextFile.readFile(pluginsFilePath);
+      const content = await FileManager.readFile(pluginsFilePath);
       serializedPlugins = JSON.parse(content);
     } else {
       serializedPlugins = {};
@@ -85,11 +85,14 @@ const serializePlugin = async (
   if (!(await RNFS.exists(PluginDownloadFolder))) {
     await RNFS.mkdir(PluginDownloadFolder);
   }
-  await TextFile.writeFile(pluginsFilePath, JSON.stringify(serializedPlugins));
+  await FileManager.writeFile(
+    pluginsFilePath,
+    JSON.stringify(serializedPlugins),
+  );
 };
 
 const deserializePlugins = () => {
-  return TextFile.readFile(pluginsFilePath)
+  return FileManager.readFile(pluginsFilePath)
     .then(content => {
       serializedPlugins = JSON.parse(content);
       Object.entries(serializedPlugins).forEach(([pluginId, script]) => {

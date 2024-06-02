@@ -17,7 +17,7 @@ import {
 } from '@database/queries/CategoryQueries';
 import { BackupCategory } from '@database/types';
 import { BackupEntryName } from './types';
-import TextFile from '@native/TextFile';
+import FileManager from '@native/FileManager';
 import { AppDownloadFolder } from '@utils/constants/download';
 
 const AppDownloadUriPrefix = 'file://' + AppDownloadFolder;
@@ -62,7 +62,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   await RNFS.mkdir(novelDirPath); // this also creates cacheDirPath
 
   // version
-  await TextFile.writeFile(
+  await FileManager.writeFile(
     cacheDirPath + '/' + BackupEntryName.VERSION,
     JSON.stringify({ version: version }),
   );
@@ -71,7 +71,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   await getAllNovels().then(async novels => {
     for (const novel of novels) {
       const chapters = await getNovelChapters(novel.id);
-      await TextFile.writeFile(
+      await FileManager.writeFile(
         novelDirPath + '/' + novel.id + '.json',
         JSON.stringify({
           chapters: chapters,
@@ -85,7 +85,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   // categories
   await getCategoriesFromDb().then(categories => {
     return getAllNovelCategories().then(async novelCategories => {
-      await TextFile.writeFile(
+      await FileManager.writeFile(
         cacheDirPath + '/' + BackupEntryName.CATEGORY,
         JSON.stringify(
           categories.map(category => {
@@ -102,7 +102,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   });
 
   // settings
-  await TextFile.writeFile(
+  await FileManager.writeFile(
     cacheDirPath + '/' + BackupEntryName.SETTING,
     JSON.stringify(backupMMKVData()),
   );
@@ -118,7 +118,7 @@ export const restoreData = async (cacheDirPath: string) => {
   await RNFS.readDir(novelDirPath).then(async items => {
     for (const item of items) {
       if (item.isFile()) {
-        await TextFile.readFile(item.path).then(content => {
+        await FileManager.readFile(item.path).then(content => {
           const backupNovel = JSON.parse(content);
           if (!backupNovel.cover?.startsWith('http')) {
             backupNovel.cover = AppDownloadUriPrefix + backupNovel.cover;
@@ -130,17 +130,17 @@ export const restoreData = async (cacheDirPath: string) => {
   });
 
   // categories
-  await TextFile.readFile(cacheDirPath + '/' + BackupEntryName.CATEGORY).then(
-    async content => {
-      const categories: BackupCategory[] = JSON.parse(content);
-      for (const category of categories) {
-        await _restoreCategory(category);
-      }
-    },
-  );
+  await FileManager.readFile(
+    cacheDirPath + '/' + BackupEntryName.CATEGORY,
+  ).then(async content => {
+    const categories: BackupCategory[] = JSON.parse(content);
+    for (const category of categories) {
+      await _restoreCategory(category);
+    }
+  });
 
   // settings
-  await TextFile.readFile(cacheDirPath + '/' + BackupEntryName.SETTING).then(
+  await FileManager.readFile(cacheDirPath + '/' + BackupEntryName.SETTING).then(
     content => {
       restoreMMKVData(JSON.parse(content));
     },

@@ -17,7 +17,7 @@ import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
 import { showToast } from '@utils/showToast';
-import TextFile from '@native/TextFile';
+import FileManager from '@native/FileManager';
 import EpubUtil from '@native/EpubUtil';
 
 interface TaskData {
@@ -107,7 +107,7 @@ const insertLocalChapter = (
             } catch {
               // nothing to do
             }
-            await TextFile.readFile(path)
+            await FileManager.readFile(path)
               .then(r => (chapterText = r))
               .catch(e => reject(e));
             if (!chapterText) {
@@ -128,7 +128,7 @@ const insertLocalChapter = (
               },
             );
             await RNFS.mkdir(novelDir + '/' + insertId);
-            await TextFile.writeFile(
+            await FileManager.writeFile(
               novelDir + '/' + insertId + '/index.html',
               chapterText,
             );

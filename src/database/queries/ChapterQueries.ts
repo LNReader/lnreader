@@ -12,7 +12,7 @@ import { Plugin } from '@plugins/types';
 import { Update } from '../types';
 import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
-import TextFile from '@native/TextFile';
+import FileManager from '@native/FileManager';
 
 const db = SQLite.openDatabase('lnreader.db');
 
@@ -230,7 +230,7 @@ const createChapterFolder = async (
     if (!(await RNFS.exists(p))) {
       await RNFS.mkdir(p);
       if (nomedia) {
-        await TextFile.writeFile(nomediaPath, ',');
+        await FileManager.writeFile(nomediaPath, ',');
       }
     }
   };
@@ -268,7 +268,7 @@ const downloadFiles = async (
         RNFS.writeFile(fileurl, imageb64, 'base64');
       }
     }
-    TextFile.writeFile(folder + 'index.html', loadedCheerio.html());
+    FileManager.writeFile(folder + 'index.html', loadedCheerio.html());
   } catch (error) {
     throw error;
   }
