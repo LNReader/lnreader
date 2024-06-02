@@ -6,7 +6,6 @@ import BackgroundService from 'react-native-background-actions';
 import * as Notifications from 'expo-notifications';
 import { sleep } from '@utils/sleep';
 import ZipArchive from '@native/ZipArchive';
-import { NovelDownloadFolder } from '@utils/constants/download';
 import dayjs from 'dayjs';
 import {
   updateNovelCategoryById,
@@ -19,6 +18,7 @@ import { getString } from '@strings/translations';
 import { showToast } from '@utils/showToast';
 import FileManager from '@native/FileManager';
 import EpubUtil from '@native/EpubUtil';
+import { getAppStorages } from '@utils/Storages';
 
 interface TaskData {
   delay: number;
@@ -34,6 +34,7 @@ const insertLocalNovel = (
   artist?: string,
   summary?: string,
 ): Promise<number> => {
+  const { NOVEL_STORAGE } = getAppStorages();
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
@@ -45,7 +46,7 @@ const insertLocalNovel = (
         async (txObj, { insertId }) => {
           if (insertId && insertId >= 0) {
             await updateNovelCategoryById(insertId, [2]);
-            const novelDir = NovelDownloadFolder + '/local/' + insertId;
+            const novelDir = NOVEL_STORAGE + '/local/' + insertId;
             await RNFS.mkdir(novelDir);
             const newCoverPath =
               'file://' + novelDir + '/' + cover?.split(/[\/\\]/).pop();
@@ -58,7 +59,7 @@ const insertLocalNovel = (
               author: author,
               artist: artist,
               summary: summary,
-              path: NovelDownloadFolder + '/local/' + insertId,
+              path: NOVEL_STORAGE + '/local/' + insertId,
               cover: newCoverPath,
               name: name,
               inLibrary: true,
@@ -88,6 +89,7 @@ const insertLocalChapter = (
   path: string,
   releaseTime: string,
 ): Promise<string[]> => {
+  const { NOVEL_STORAGE } = getAppStorages();
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
@@ -95,7 +97,7 @@ const insertLocalChapter = (
         [
           novelId,
           name,
-          NovelDownloadFolder + '/local/' + novelId + '/' + fakeId,
+          NOVEL_STORAGE + '/local/' + novelId + '/' + fakeId,
           releaseTime,
           fakeId,
         ],
@@ -114,7 +116,7 @@ const insertLocalChapter = (
               return;
             }
             const staticPaths: string[] = [];
-            const novelDir = NovelDownloadFolder + '/local/' + novelId;
+            const novelDir = NOVEL_STORAGE + '/local/' + novelId;
             const epubContentDir = path.replace(/[^\\\/]+$/, '');
             chapterText = chapterText.replace(
               /(href|src)=(["'])(.*?)\2/g,
@@ -152,6 +154,7 @@ const insertLocalChapter = (
 
 const importEpubAction = async (taskData?: TaskData) => {
   try {
+    const { NOVEL_STORAGE } = getAppStorages();
     if (!taskData) {
       throw new Error(getString('backupScreen.noDataProvided'));
     }
@@ -214,7 +217,7 @@ const importEpubAction = async (taskData?: TaskData) => {
       }
     }
     await sleep(taskData.delay);
-    const novelDir = NovelDownloadFolder + '/local/' + novelId;
+    const novelDir = NOVEL_STORAGE + '/local/' + novelId;
     BackgroundService.updateNotification({
       taskTitle: getString('advancedSettingsScreen.importStaticFiles'),
       taskDesc: '0/' + filePathSet.size,

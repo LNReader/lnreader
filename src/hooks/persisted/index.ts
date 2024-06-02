@@ -14,4 +14,3 @@ export { getTracker, useTracker } from './useTracker';
 export { useTrackedNovel, useNovel } from './useNovel';
 export { default as useDownload } from './useDownload';
 export { default as useUserAgent } from './useUserAgent';
-export { default as useStorages } from './useStorages';

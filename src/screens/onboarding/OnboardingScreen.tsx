@@ -6,7 +6,7 @@ import { Button } from '@components';
 import PickThemeStep from './PickThemeStep';
 import { useState } from 'react';
 import StorageStep from './StorageStep';
-import { setAppStorage } from '@hooks/persisted/useStorages';
+import { setAppStorage } from '@utils/Storages';
 
 enum OnboardingStep {
   PICK_THEME,

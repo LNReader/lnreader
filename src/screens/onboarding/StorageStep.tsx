@@ -4,6 +4,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '@components';
 import { StorageAccessFramework } from 'expo-file-system';
 import FileManager from '@native/FileManager';
+import * as RNFS from 'react-native-fs';
+import { showToast } from '@utils/showToast';
 
 interface StorageStepProps {
   rootStorage: string;
@@ -20,7 +22,13 @@ export default function StorageStep({
       if (res.granted) {
         FileManager.resolveExternalContentUri(res.directoryUri).then(path => {
           if (path) {
-            onPathChange(path);
+            RNFS.readdir(path).then(res => {
+              if (res.length > 0) {
+                showToast('Please select an empty folder');
+              } else {
+                onPathChange(path);
+              }
+            });
           }
         });
       }
@@ -29,7 +37,7 @@ export default function StorageStep({
   return (
     <View style={{ paddingHorizontal: 16 }}>
       <Text style={[styles.text, { color: theme.onSurfaceVariant }]}>
-        Recommend to create a new empty folder.
+        Select an empty folder.
       </Text>
       {rootStorage ? (
         <Text style={[styles.text, { color: theme.onSurfaceVariant }]}>

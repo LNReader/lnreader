@@ -1,6 +1,5 @@
 import RNFS from 'react-native-fs';
 import { reverse, uniqBy } from 'lodash-es';
-import { PluginDownloadFolder } from '@utils/constants/download';
 import { newer } from '@utils/compareVersion';
 import { store } from './helpers/storage';
 
@@ -19,8 +18,12 @@ import { Parser } from 'htmlparser2';
 import FileManager from '@native/FileManager';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
 import { showToast } from '@utils/showToast';
+import { getAppStorages } from '@utils/Storages';
 
-const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
+const _getPluginsFilePath = () => {
+  const { PLUGIN_STORAGE } = getAppStorages();
+  return PLUGIN_STORAGE + '/plugins.json';
+};
 
 const packages: Record<string, any> = {
   'htmlparser2': { Parser },
@@ -70,8 +73,8 @@ const serializePlugin = async (
   installed: boolean,
 ) => {
   if (!serializedPlugins) {
-    if (await RNFS.exists(pluginsFilePath)) {
-      const content = await FileManager.readFile(pluginsFilePath);
+    if (await RNFS.exists(_getPluginsFilePath())) {
+      const content = await FileManager.readFile(_getPluginsFilePath());
       serializedPlugins = JSON.parse(content);
     } else {
       serializedPlugins = {};
@@ -82,17 +85,18 @@ const serializePlugin = async (
   } else {
     serializedPlugins[pluginId] = undefined;
   }
-  if (!(await RNFS.exists(PluginDownloadFolder))) {
-    await RNFS.mkdir(PluginDownloadFolder);
+  const { PLUGIN_STORAGE } = getAppStorages();
+  if (!(await RNFS.exists(PLUGIN_STORAGE))) {
+    await RNFS.mkdir(PLUGIN_STORAGE);
   }
   await FileManager.writeFile(
-    pluginsFilePath,
+    _getPluginsFilePath(),
     JSON.stringify(serializedPlugins),
   );
 };
 
 const deserializePlugins = () => {
-  return FileManager.readFile(pluginsFilePath)
+  return FileManager.readFile(_getPluginsFilePath())
     .then(content => {
       serializedPlugins = JSON.parse(content);
       Object.entries(serializedPlugins).forEach(([pluginId, script]) => {

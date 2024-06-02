@@ -18,9 +18,12 @@ import {
 import { BackupCategory } from '@database/types';
 import { BackupEntryName } from './types';
 import FileManager from '@native/FileManager';
-import { AppDownloadFolder } from '@utils/constants/download';
+import { getAppStorages } from '@utils/Storages';
 
-const AppDownloadUriPrefix = 'file://' + AppDownloadFolder;
+const _getAppStorageUriPrefix = () => {
+  const { ROOT_STORAGE } = getAppStorages();
+  return 'file://' + ROOT_STORAGE;
+};
 export const CACHE_DIR_PATH = RNFS.ExternalCachesDirectoryPath + '/BackupData';
 
 const backupMMKVData = () => {
@@ -76,7 +79,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
         JSON.stringify({
           chapters: chapters,
           ...novel,
-          cover: novel.cover?.replace(AppDownloadUriPrefix, ''),
+          cover: novel.cover?.replace(_getAppStorageUriPrefix(), ''),
         }),
       );
     }
@@ -121,7 +124,7 @@ export const restoreData = async (cacheDirPath: string) => {
         await FileManager.readFile(item.path).then(content => {
           const backupNovel = JSON.parse(content);
           if (!backupNovel.cover?.startsWith('http')) {
-            backupNovel.cover = AppDownloadUriPrefix + backupNovel.cover;
+            backupNovel.cover = _getAppStorageUriPrefix() + backupNovel.cover;
           }
           return _restoreNovelAndChapters(backupNovel);
         });

@@ -6,8 +6,8 @@ import { download, upload } from '@api/remote';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
 import { CACHE_DIR_PATH, prepareBackupData, restoreData } from '../utils';
-import { AppDownloadFolder } from '@utils/constants/download';
 import { ZipBackupName } from '../types';
+import { getAppStorages } from '@utils/Storages';
 
 interface TaskData {
   delay: number;
@@ -17,6 +17,7 @@ interface TaskData {
 
 const remoteBackupAction = async (taskData?: TaskData) => {
   try {
+    const { ROOT_STORAGE } = getAppStorages();
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
     if (!taskData) {
       throw new Error(getString('backupScreen.noDataProvided'));
@@ -57,7 +58,7 @@ const remoteBackupAction = async (taskData?: TaskData) => {
       )
       .then(() => sleep(delay))
       .then(() =>
-        upload(host, backupFolder, ZipBackupName.DOWNLOAD, AppDownloadFolder),
+        upload(host, backupFolder, ZipBackupName.DOWNLOAD, ROOT_STORAGE),
       )
       .then(() => {
         return Notifications.scheduleNotificationAsync({
@@ -110,6 +111,7 @@ export const createBackup = async (host: string, backupFolder: string) => {
 
 const remoteRestoreAction = async (taskData?: TaskData) => {
   try {
+    const { ROOT_STORAGE } = getAppStorages();
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
     if (!taskData) {
       throw new Error(getString('backupScreen.noDataProvided'));
@@ -150,7 +152,7 @@ const remoteRestoreAction = async (taskData?: TaskData) => {
       )
       .then(() => sleep(delay))
       .then(() =>
-        download(host, backupFolder, ZipBackupName.DOWNLOAD, AppDownloadFolder),
+        download(host, backupFolder, ZipBackupName.DOWNLOAD, ROOT_STORAGE),
       )
       .then(() =>
         Notifications.scheduleNotificationAsync({

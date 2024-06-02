@@ -6,16 +6,15 @@ import { ChapterInfo, DownloadedChapter } from '../types';
 import { ChapterItem } from '@plugins/types';
 
 import * as cheerio from 'cheerio';
-import { NovelDownloadFolder } from '@utils/constants/download';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { Plugin } from '@plugins/types';
 import { Update } from '../types';
 import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
+import { getAppStorages } from '@utils/Storages';
 
 const db = SQLite.openDatabase('lnreader.db');
-
 const insertChapterQuery = `
 INSERT OR IGNORE INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
 VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -249,7 +248,8 @@ const downloadFiles = async (
   chapterId: number,
 ): Promise<void> => {
   try {
-    const folder = await createChapterFolder(NovelDownloadFolder, {
+    const { NOVEL_STORAGE } = getAppStorages();
+    const folder = await createChapterFolder(NOVEL_STORAGE, {
       pluginId: plugin.id,
       novelId,
       chapterId,
@@ -308,7 +308,8 @@ const deleteDownloadedFiles = async (
   chapterId: number,
 ) => {
   try {
-    const path = await createChapterFolder(NovelDownloadFolder, {
+    const { NOVEL_STORAGE } = getAppStorages();
+    const path = await createChapterFolder(NOVEL_STORAGE, {
       pluginId,
       novelId,
       chapterId,

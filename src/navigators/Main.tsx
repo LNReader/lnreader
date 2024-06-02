@@ -7,12 +7,7 @@ import {
   changeNavigationBarColor,
   setStatusBarColor,
 } from '@theme/utils/setBarColor';
-import {
-  useAppSettings,
-  usePlugins,
-  useStorages,
-  useTheme,
-} from '@hooks/persisted';
+import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
 /**
@@ -41,15 +36,16 @@ import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
 import Color from 'color';
 import OnboardingScreen from '../screens/onboarding/OnboardingScreen';
-import { DEAFULT_ROOT_STORAGE } from '@hooks/persisted/useStorages';
+import { APP_STORAGE_KEY } from '@utils/Storages';
+import { useMMKVString } from 'react-native-mmkv';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
   const theme = useTheme();
+  const [ROOT_STORAGE] = useMMKVString(APP_STORAGE_KEY);
   const { updateLibraryOnLaunch } = useAppSettings();
   const { refreshPlugins } = usePlugins();
-  const { rootStorage } = useStorages();
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -70,7 +66,7 @@ const MainNavigator = () => {
   }, []);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
-  if (rootStorage === DEAFULT_ROOT_STORAGE) {
+  if (!ROOT_STORAGE) {
     return <OnboardingScreen />;
   }
   return (

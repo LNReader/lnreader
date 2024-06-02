@@ -13,7 +13,7 @@ import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import { BackupNovel, NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
-import { NovelDownloadFolder } from '@utils/constants/download';
+import { getAppStorages } from '@utils/Storages';
 
 export const insertNovelAndChapters = async (
   pluginId: string,
@@ -45,7 +45,8 @@ export const insertNovelAndChapters = async (
   if (novelId) {
     const promises = [insertChapters(novelId, sourceNovel.chapters)];
     if (sourceNovel.cover) {
-      const novelDir = NovelDownloadFolder + '/' + pluginId + '/' + novelId;
+      const { NOVEL_STORAGE } = getAppStorages();
+      const novelDir = NOVEL_STORAGE + '/' + pluginId + '/' + novelId;
       await RNFS.mkdir(novelDir);
       const novelCoverUri = 'file://' + novelDir + '/cover.png';
       promises.push(
@@ -270,8 +271,8 @@ export const updateNovelInfo = async (info: NovelInfo) => {
 export const pickCustomNovelCover = async (novel: NovelInfo) => {
   const image = await DocumentPicker.getDocumentAsync({ type: 'image/*' });
   if (image.assets && image.assets[0]) {
-    const novelDir =
-      NovelDownloadFolder + '/' + novel.pluginId + '/' + novel.id;
+    const { NOVEL_STORAGE } = getAppStorages();
+    const novelDir = NOVEL_STORAGE + '/' + novel.pluginId + '/' + novel.id;
     let novelCoverUri = 'file://' + novelDir + '/cover.png';
     if (!(await RNFS.exists(novelDir))) {
       await RNFS.mkdir(novelDir);
