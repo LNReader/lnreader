@@ -121,12 +121,16 @@ export default function PickThemeStep() {
       <View style={styles.buttonContainer}>
         <SchemeButton
           onPress={() => {
-            setTheme(getInverseTheme(theme));
+            if (theme.isDark) {
+              setTheme(getInverseTheme(theme));
+            }
           }}
         />
         <SchemeButton
           onPress={() => {
-            setTheme(getInverseTheme(theme));
+            if (!theme.isDark) {
+              setTheme(getInverseTheme(theme));
+            }
           }}
           isDarkButton={true}
         />

@@ -6,6 +6,7 @@ import { Button } from '@components';
 import PickThemeStep from './PickThemeStep';
 import { useState } from 'react';
 import StorageStep from './StorageStep';
+import { setAppStorage } from '@hooks/persisted/useStorages';
 
 enum OnboardingStep {
   PICK_THEME,
@@ -63,7 +64,7 @@ export default function OnboardingScreen() {
       </Text>
       <Text
         style={{
-          fontWeight: '500',
+          fontWeight: '600',
           paddingBottom: 8,
           color: theme.onBackground,
         }}
@@ -94,6 +95,16 @@ export default function OnboardingScreen() {
             title="Next"
             mode="contained"
             onPress={() => setStep(step + 1)}
+          />
+        ) : null}
+        {step === OnboardingStep.STORAGE_LOCATION && rootStorage ? (
+          <Button
+            style={{ flex: 1 }}
+            title="Complete"
+            mode="contained"
+            onPress={() => {
+              setAppStorage(rootStorage);
+            }}
           />
         ) : null}
       </View>

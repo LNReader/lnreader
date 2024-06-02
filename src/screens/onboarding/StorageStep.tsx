@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from '@hooks/persisted';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '@components';
 import { StorageAccessFramework } from 'expo-file-system';
 import FileManager from '@native/FileManager';
@@ -28,11 +28,11 @@ export default function StorageStep({
   };
   return (
     <View style={{ paddingHorizontal: 16 }}>
-      <Text style={{ color: theme.onSurfaceVariant }}>
+      <Text style={[styles.text, { color: theme.onSurfaceVariant }]}>
         Recommend to create a new empty folder.
       </Text>
       {rootStorage ? (
-        <Text style={{ color: theme.onSurfaceVariant }}>
+        <Text style={[styles.text, { color: theme.onSurfaceVariant }]}>
           Selected folder: {rootStorage}
         </Text>
       ) : null}
@@ -41,9 +41,6 @@ export default function StorageStep({
         labelStyle={{
           flex: 1,
         }}
-        style={{
-          marginTop: 16,
-        }}
         title="Select a folder"
         mode="contained"
         onPress={pickFolder}
@@ -51,3 +48,11 @@ export default function StorageStep({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  text: {
+    marginBottom: 16,
+    fontSize: 12,
+    fontWeight: '500',
+  },
+});
