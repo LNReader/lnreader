@@ -41,6 +41,7 @@ import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
 import Color from 'color';
 import OnboardingScreen from '../screens/onboarding/OnboardingScreen';
+import { DEAFULT_ROOT_STORAGE } from '@hooks/persisted/useStorages';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -69,7 +70,7 @@ const MainNavigator = () => {
   }, []);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
-  if (!rootStorage) {
+  if (rootStorage === DEAFULT_ROOT_STORAGE) {
     return <OnboardingScreen />;
   }
   return (

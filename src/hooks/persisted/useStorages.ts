@@ -6,22 +6,20 @@ export const APP_STORAGE = 'APP_STORAGE';
 
 const NOVEL_STORAGE_PATH = 'Novels';
 const PLUGIN_STORAGE_PATH = 'Plugins';
+export const DEAFULT_ROOT_STORAGE = RNFS.ExternalDirectoryPath;
 
 interface AppStorage {
-  rootStorage?: string;
-  novelStorage?: string;
-  pluginStorage?: string;
+  rootStorage: string;
+  novelStorage: string;
+  pluginStorage: string;
 }
 
-const _getAppStorages = (rootStorage?: string) => {
-  const storage: AppStorage = {
-    rootStorage,
+const _getAppStorages = (rootStorage?: string): AppStorage => {
+  return {
+    rootStorage: rootStorage || DEAFULT_ROOT_STORAGE,
+    novelStorage: rootStorage + '/' + NOVEL_STORAGE_PATH,
+    pluginStorage: rootStorage + '/' + PLUGIN_STORAGE_PATH,
   };
-  if (rootStorage) {
-    storage.novelStorage = rootStorage + '/' + NOVEL_STORAGE_PATH;
-    storage.pluginStorage = rootStorage + '/' + PLUGIN_STORAGE_PATH;
-  }
-  return storage;
 };
 
 export default function useStorages() {
