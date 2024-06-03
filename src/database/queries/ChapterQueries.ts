@@ -1,4 +1,3 @@
-import RNFS from 'react-native-fs';
 import * as SQLite from 'expo-sqlite';
 import { showToast } from '@utils/showToast';
 import { getPlugin } from '@plugins/pluginManager';
@@ -226,8 +225,8 @@ const createChapterFolder = async (
   const mkdirIfNot = async (p: string, nomedia: boolean) => {
     const nomediaPath =
       p + (p.charAt(p.length - 1) === '/' ? '' : '/') + '.nomedia';
-    if (!(await RNFS.exists(p))) {
-      await RNFS.mkdir(p);
+    if (!(await FileManager.exists(p))) {
+      await FileManager.mkdir(p);
       if (nomedia) {
         await FileManager.writeFile(nomediaPath, ',');
       }
@@ -265,7 +264,7 @@ const downloadFiles = async (
         const imageb64 = await plugin.fetchImage(url);
         const fileurl = folder + i + '.b64.png';
         elem.attr('src', `file://${fileurl}`);
-        RNFS.writeFile(fileurl, imageb64, 'base64');
+        FileManager.writeFile(fileurl, imageb64, 'base64');
       }
     }
     FileManager.writeFile(folder + 'index.html', loadedCheerio.html());
@@ -314,11 +313,11 @@ const deleteDownloadedFiles = async (
       novelId,
       chapterId,
     });
-    const files = await RNFS.readDir(path);
+    const files = await FileManager.readDir(path);
     for (let i = 0; i < files.length; i++) {
-      await RNFS.unlink(files[i].path);
+      await FileManager.unlink(files[i].path);
     }
-    await RNFS.unlink(path);
+    await FileManager.unlink(path);
   } catch (error) {
     throw new Error(getString('novelScreen.deleteChapterError'));
   }

@@ -2,7 +2,6 @@ import * as DocumentPicker from 'expo-document-picker';
 import { StorageAccessFramework } from 'expo-file-system';
 import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
-import RNFS from 'react-native-fs';
 
 import { getPlugin } from '@plugins/pluginManager';
 import { restoreLibrary } from '@database/queries/NovelQueries';
@@ -14,6 +13,7 @@ import { sleep } from '@utils/sleep';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
+import FileManager from '@native/FileManager';
 
 export const createBackup = async () => {
   try {
@@ -68,13 +68,13 @@ export const restoreBackup = async (filePath?: string) => {
     let novelsString = '';
 
     if (backup.assets && backup.assets[0]) {
-      novelsString = await RNFS.readFile(backup.assets[0].uri);
+      novelsString = await FileManager.readFile(backup.assets[0].uri);
     } else if (filePath) {
-      if (!(await RNFS.exists(filePath))) {
+      if (!(await FileManager.exists(filePath))) {
         showToast(getString('backupScreen.legacy.noErrorNovel'));
         return; //neither backup nor error backup
       }
-      novelsString = await RNFS.readFile(filePath);
+      novelsString = await FileManager.readFile(filePath);
     }
 
     const novels: NovelInfo[] = await JSON.parse(novelsString);
@@ -144,9 +144,10 @@ export const restoreBackup = async (filePath?: string) => {
             continue;
           }
         }
-        const errorPath = RNFS.ExternalDirectoryPath + '/errorNovels.json';
+        const errorPath =
+          FileManager.ExternalDirectoryPath + '/errorNovels.json';
         if (errorNovels.length > 0) {
-          await RNFS.writeFile(errorPath, JSON.stringify(errorNovels));
+          await FileManager.writeFile(errorPath, JSON.stringify(errorNovels));
           Notifications.scheduleNotificationAsync({
             content: {
               title: getString('backupScreen.legacy.libraryRestored'),
@@ -158,9 +159,9 @@ export const restoreBackup = async (filePath?: string) => {
           });
           resolve();
         } else {
-          RNFS.exists(errorPath).then(exist => {
+          FileManager.exists(errorPath).then(exist => {
             if (exist) {
-              RNFS.unlink(errorPath);
+              FileManager.unlink(errorPath);
             }
           });
         }
@@ -181,6 +182,6 @@ export const restoreBackup = async (filePath?: string) => {
 };
 
 export const restoreError = async () => {
-  const errorPath = RNFS.ExternalDirectoryPath + '/errorNovels.json';
+  const errorPath = FileManager.ExternalDirectoryPath + '/errorNovels.json';
   restoreBackup(errorPath);
 };

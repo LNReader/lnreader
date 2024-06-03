@@ -4,7 +4,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '@components';
 import { StorageAccessFramework } from 'expo-file-system';
 import FileManager from '@native/FileManager';
-import * as RNFS from 'react-native-fs';
 import { showToast } from '@utils/showToast';
 
 interface StorageStepProps {
@@ -22,7 +21,7 @@ export default function StorageStep({
       if (res.granted) {
         FileManager.resolveExternalContentUri(res.directoryUri).then(path => {
           if (path) {
-            RNFS.readdir(path).then(res => {
+            FileManager.readDir(path).then(res => {
               if (res.length > 0) {
                 showToast('Please select an empty folder');
               } else {

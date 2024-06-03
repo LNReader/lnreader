@@ -1,4 +1,3 @@
-import RNFS from 'react-native-fs';
 import { reverse, uniqBy } from 'lodash-es';
 import { newer } from '@utils/compareVersion';
 import { store } from './helpers/storage';
@@ -73,7 +72,7 @@ const serializePlugin = async (
   installed: boolean,
 ) => {
   if (!serializedPlugins) {
-    if (await RNFS.exists(_getPluginsFilePath())) {
+    if (await FileManager.exists(_getPluginsFilePath())) {
       const content = await FileManager.readFile(_getPluginsFilePath());
       serializedPlugins = JSON.parse(content);
     } else {
@@ -86,8 +85,8 @@ const serializePlugin = async (
     serializedPlugins[pluginId] = undefined;
   }
   const { PLUGIN_STORAGE } = getAppStorages();
-  if (!(await RNFS.exists(PLUGIN_STORAGE))) {
-    await RNFS.mkdir(PLUGIN_STORAGE);
+  if (!(await FileManager.exists(PLUGIN_STORAGE))) {
+    await FileManager.mkdir(PLUGIN_STORAGE);
   }
   await FileManager.writeFile(
     _getPluginsFilePath(),

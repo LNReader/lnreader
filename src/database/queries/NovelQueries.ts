@@ -2,7 +2,6 @@ import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('lnreader.db');
 
 import * as DocumentPicker from 'expo-document-picker';
-import * as RNFS from 'react-native-fs';
 
 import { fetchImage, fetchNovel } from '@services/plugin/fetch';
 import { insertChapters } from './ChapterQueries';
@@ -14,6 +13,7 @@ import { getString } from '@strings/translations';
 import { BackupNovel, NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
 import { getAppStorages } from '@utils/Storages';
+import FileManager from '@native/FileManager';
 
 export const insertNovelAndChapters = async (
   pluginId: string,
@@ -47,12 +47,12 @@ export const insertNovelAndChapters = async (
     if (sourceNovel.cover) {
       const { NOVEL_STORAGE } = getAppStorages();
       const novelDir = NOVEL_STORAGE + '/' + pluginId + '/' + novelId;
-      await RNFS.mkdir(novelDir);
+      await FileManager.mkdir(novelDir);
       const novelCoverUri = 'file://' + novelDir + '/cover.png';
       promises.push(
         fetchImage(pluginId, sourceNovel.cover).then(base64 => {
           if (base64) {
-            RNFS.writeFile(novelCoverUri, base64, 'base64').then(() => {
+            FileManager.writeFile(novelCoverUri, base64, 'base64').then(() => {
               db.transaction(tx => {
                 tx.executeSql('UPDATE Novel SET cover = ? WHERE id = ?', [
                   novelCoverUri,
@@ -274,10 +274,10 @@ export const pickCustomNovelCover = async (novel: NovelInfo) => {
     const { NOVEL_STORAGE } = getAppStorages();
     const novelDir = NOVEL_STORAGE + '/' + novel.pluginId + '/' + novel.id;
     let novelCoverUri = 'file://' + novelDir + '/cover.png';
-    if (!(await RNFS.exists(novelDir))) {
-      await RNFS.mkdir(novelDir);
+    if (!(await FileManager.exists(novelDir))) {
+      await FileManager.mkdir(novelDir);
     }
-    RNFS.copyFile(image.assets[0].uri, novelCoverUri);
+    FileManager.copyFile(image.assets[0].uri, novelCoverUri);
     novelCoverUri += '?' + Date.now();
     db.transaction(tx => {
       tx.executeSql(

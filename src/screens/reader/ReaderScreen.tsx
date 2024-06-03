@@ -10,7 +10,6 @@ import {
   NativeEventEmitter,
   DrawerLayoutAndroid,
 } from 'react-native';
-import * as RNFS from 'react-native-fs';
 import * as Speech from 'expo-speech';
 
 import VolumeButtonListener from '@native/volumeButtonListener';
@@ -171,7 +170,7 @@ export const ChapterContent = ({
     try {
       const { NOVEL_STORAGE } = getAppStorages();
       const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
-      if (await RNFS.exists(filePath)) {
+      if (await FileManager.exists(filePath)) {
         sourceChapter.chapterText = await FileManager.readFile(filePath);
       } else {
         await fetchChapter(novel.pluginId, chapter.path)

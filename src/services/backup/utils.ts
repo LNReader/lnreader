@@ -1,4 +1,3 @@
-import RNFS from 'react-native-fs';
 import { SELF_HOST_BACKUP } from '@hooks/persisted/useSelfHost';
 import { TRACKER } from '@hooks/persisted/useTracker';
 import { LAST_UPDATE_TIME } from '@hooks/persisted/useUpdates';
@@ -24,7 +23,8 @@ const _getAppStorageUriPrefix = () => {
   const { ROOT_STORAGE } = getAppStorages();
   return 'file://' + ROOT_STORAGE;
 };
-export const CACHE_DIR_PATH = RNFS.ExternalCachesDirectoryPath + '/BackupData';
+export const CACHE_DIR_PATH =
+  FileManager.ExternalCachesDirectoryPath + '/BackupData';
 
 const backupMMKVData = () => {
   const excludeKeys = [
@@ -58,11 +58,11 @@ const restoreMMKVData = (data: any) => {
 
 export const prepareBackupData = async (cacheDirPath: string) => {
   const novelDirPath = cacheDirPath + '/' + BackupEntryName.NOVEL_AND_CHAPTERS;
-  if (await RNFS.exists(novelDirPath)) {
-    await RNFS.unlink(novelDirPath);
+  if (await FileManager.exists(novelDirPath)) {
+    await FileManager.unlink(novelDirPath);
   }
 
-  await RNFS.mkdir(novelDirPath); // this also creates cacheDirPath
+  await FileManager.mkdir(novelDirPath); // this also creates cacheDirPath
 
   // version
   await FileManager.writeFile(
@@ -118,9 +118,9 @@ export const restoreData = async (cacheDirPath: string) => {
   // nothing to do
 
   // novels
-  await RNFS.readDir(novelDirPath).then(async items => {
+  await FileManager.readDir(novelDirPath).then(async items => {
     for (const item of items) {
-      if (item.isFile()) {
+      if (!item.isDirectory) {
         await FileManager.readFile(item.path).then(content => {
           const backupNovel = JSON.parse(content);
           if (!backupNovel.cover?.startsWith('http')) {
