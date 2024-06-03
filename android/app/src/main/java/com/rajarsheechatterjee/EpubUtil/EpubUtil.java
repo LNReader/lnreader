@@ -20,13 +20,13 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class EpubUtil extends ReactContextBaseJavaModule {
-    EpubUtil(ReactApplicationContext context){super(context);}
+    EpubUtil(ReactApplicationContext context) {
+        super(context);
+    }
 
     @NonNull
     @Override
@@ -51,8 +51,8 @@ public class EpubUtil extends ReactContextBaseJavaModule {
         return result;
     }
 
-    private String cleanUrl(String url){
-        if(url != null){
+    private String cleanUrl(String url) {
+        if (url != null) {
             return url.replaceFirst("#[^.]+?$", "");
         }
         return null;
@@ -74,14 +74,15 @@ public class EpubUtil extends ReactContextBaseJavaModule {
 
     private String getContentMetaFilePath(File file) throws XmlPullParserException, IOException {
         XmlPullParser parser = initParse(file);
-        while (parser.next() != XmlPullParser.END_TAG){
+        while (parser.next() != XmlPullParser.END_TAG) {
             @Nullable String tag = parser.getName();
-            if(tag != null && tag.equals("rootfile")) {
+            if (tag != null && tag.equals("rootfile")) {
                 return parser.getAttributeValue(null, "full-path");
             }
         }
         return "OEBPS/content.opf"; // default
     }
+
     private ReadableMap getNovelMetadata(File file, String contentDir) throws XmlPullParserException, IOException {
         WritableMap novel = new WritableNativeMap();
         WritableArray chapters = new WritableNativeArray();
@@ -89,17 +90,17 @@ public class EpubUtil extends ReactContextBaseJavaModule {
         HashMap<String, String> refMap = new HashMap<>();
         HashMap<String, String> tocMap = new HashMap<>();
         File tocFile = new File(contentDir, "toc.ncx");
-        if(tocFile.exists()){
+        if (tocFile.exists()) {
             XmlPullParser tocParser = initParse(tocFile);
             String label = null;
-            while (tocParser.next() != XmlPullParser.END_DOCUMENT){
+            while (tocParser.next() != XmlPullParser.END_DOCUMENT) {
                 String tag = tocParser.getName();
-                if(tag != null){
-                    if(tag.equals("text")){
+                if (tag != null) {
+                    if (tag.equals("text")) {
                         label = readText(tocParser);
-                    }else if(tag.equals("content")){
+                    } else if (tag.equals("content")) {
                         String href = cleanUrl(tocParser.getAttributeValue(null, "src"));
-                        if(href != null){
+                        if (href != null) {
                             tocMap.put(href, label);
                         }
                     }
@@ -107,9 +108,9 @@ public class EpubUtil extends ReactContextBaseJavaModule {
             }
         }
         String cover = null;
-        while (parser.next() != XmlPullParser.END_DOCUMENT){
+        while (parser.next() != XmlPullParser.END_DOCUMENT) {
             @Nullable String tag = parser.getName();
-            if(tag != null){
+            if (tag != null) {
                 switch (tag) {
                     case "item": {
                         String id = parser.getAttributeValue(null, "id");
@@ -145,7 +146,7 @@ public class EpubUtil extends ReactContextBaseJavaModule {
                         break;
                     case "meta":
                         String metaName = parser.getAttributeValue(null, "name");
-                        if(metaName != null && metaName.equals("cover")){
+                        if (metaName != null && metaName.equals("cover")) {
                             cover = parser.getAttributeValue(null, "content");
                         }
                         break;
@@ -153,7 +154,7 @@ public class EpubUtil extends ReactContextBaseJavaModule {
                 parser.next();
             }
         }
-        if(cover != null){
+        if (cover != null) {
             String coverPath = contentDir + "/" + refMap.get(cover);
             novel.putString("cover", coverPath);
         }
