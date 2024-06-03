@@ -1,4 +1,3 @@
-import RNFS from 'react-native-fs';
 import * as SQLite from 'expo-sqlite';
 import { showToast } from '@utils/showToast';
 import { getPlugin } from '@plugins/pluginManager';
@@ -6,16 +5,15 @@ import { ChapterInfo, DownloadedChapter } from '../types';
 import { ChapterItem } from '@plugins/types';
 
 import * as cheerio from 'cheerio';
-import { NovelDownloadFolder } from '@utils/constants/download';
 import { txnErrorCallback } from '@database/utils/helpers';
 import { Plugin } from '@plugins/types';
 import { Update } from '../types';
 import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
-import TextFile from '@native/TextFile';
+import FileManager from '@native/FileManager';
+import { getAppStorages } from '@utils/Storages';
 
 const db = SQLite.openDatabase('lnreader.db');
-
 const insertChapterQuery = `
 INSERT OR IGNORE INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
 VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -227,10 +225,10 @@ const createChapterFolder = async (
   const mkdirIfNot = async (p: string, nomedia: boolean) => {
     const nomediaPath =
       p + (p.charAt(p.length - 1) === '/' ? '' : '/') + '.nomedia';
-    if (!(await RNFS.exists(p))) {
-      await RNFS.mkdir(p);
+    if (!(await FileManager.exists(p))) {
+      await FileManager.mkdir(p);
       if (nomedia) {
-        await TextFile.writeFile(nomediaPath, ',');
+        await FileManager.writeFile(nomediaPath, ',');
       }
     }
   };
@@ -249,7 +247,8 @@ const downloadFiles = async (
   chapterId: number,
 ): Promise<void> => {
   try {
-    const folder = await createChapterFolder(NovelDownloadFolder, {
+    const { NOVEL_STORAGE } = getAppStorages();
+    const folder = await createChapterFolder(NOVEL_STORAGE, {
       pluginId: plugin.id,
       novelId,
       chapterId,
@@ -265,10 +264,10 @@ const downloadFiles = async (
         const imageb64 = await plugin.fetchImage(url);
         const fileurl = folder + i + '.b64.png';
         elem.attr('src', `file://${fileurl}`);
-        RNFS.writeFile(fileurl, imageb64, 'base64');
+        FileManager.writeFile(fileurl, imageb64, 'base64');
       }
     }
-    TextFile.writeFile(folder + 'index.html', loadedCheerio.html());
+    FileManager.writeFile(folder + 'index.html', loadedCheerio.html());
   } catch (error) {
     throw error;
   }
@@ -308,16 +307,17 @@ const deleteDownloadedFiles = async (
   chapterId: number,
 ) => {
   try {
-    const path = await createChapterFolder(NovelDownloadFolder, {
+    const { NOVEL_STORAGE } = getAppStorages();
+    const path = await createChapterFolder(NOVEL_STORAGE, {
       pluginId,
       novelId,
       chapterId,
     });
-    const files = await RNFS.readDir(path);
+    const files = await FileManager.readDir(path);
     for (let i = 0; i < files.length; i++) {
-      await RNFS.unlink(files[i].path);
+      await FileManager.unlink(files[i].path);
     }
-    await RNFS.unlink(path);
+    await FileManager.unlink(path);
   } catch (error) {
     throw new Error(getString('novelScreen.deleteChapterError'));
   }

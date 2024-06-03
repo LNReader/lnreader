@@ -4,8 +4,8 @@ import { downloadChapter } from '../../database/queries/ChapterQueries';
 import * as SQLite from 'expo-sqlite';
 import { ChapterItem, SourceNovel } from '@plugins/types';
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
-import { NovelDownloadFolder } from '@utils/constants/download';
-import * as RNFS from 'react-native-fs';
+import { getAppStorages } from '@utils/Storages';
+import FileManager from '@native/FileManager';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = (
@@ -13,12 +13,13 @@ const updateNovelMetadata = (
   novelId: number,
   novel: SourceNovel,
 ) => {
+  const { NOVEL_STORAGE } = getAppStorages();
   return new Promise(async (resolve, reject) => {
     let { name, cover, summary, author, artist, genres, status, totalPages } =
       novel;
-    const novelDir = NovelDownloadFolder + '/' + pluginId + '/' + novelId;
-    if (!(await RNFS.exists(novelDir))) {
-      await RNFS.mkdir(novelDir);
+    const novelDir = NOVEL_STORAGE + '/' + pluginId + '/' + novelId;
+    if (!(await FileManager.exists(novelDir))) {
+      await FileManager.mkdir(novelDir);
     }
     if (cover) {
       const novelCoverUri = 'file://' + novelDir + '/cover.png';
@@ -26,7 +27,7 @@ const updateNovelMetadata = (
         .then(base64 => {
           if (base64) {
             cover = novelCoverUri;
-            return RNFS.writeFile(novelCoverUri, base64, 'base64');
+            return FileManager.writeFile(novelCoverUri, base64, 'base64');
           }
         })
         .catch(reject);

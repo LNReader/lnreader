@@ -1,4 +1,4 @@
-package com.rajarsheechatterjee.TextFile;
+package com.rajarsheechatterjee.FileManager;
 
 import androidx.annotation.NonNull;
 
@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TextFilePackage implements ReactPackage {
+public class FileManagerPackage implements ReactPackage {
     @NonNull
     @Override
     public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactApplicationContext) {
         List<NativeModule> modules = new ArrayList<>();
         try {
-            modules.add(new TextFile(reactApplicationContext));
+            modules.add(new FileManager(reactApplicationContext));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

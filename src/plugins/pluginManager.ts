@@ -1,6 +1,4 @@
-import RNFS from 'react-native-fs';
 import { reverse, uniqBy } from 'lodash-es';
-import { PluginDownloadFolder } from '@utils/constants/download';
 import { newer } from '@utils/compareVersion';
 import { store } from './helpers/storage';
 
@@ -16,11 +14,15 @@ import { defaultCover } from './helpers/constants';
 import { Storage, LocalStorage, SessionStorage } from './helpers/storage';
 import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
-import TextFile from '@native/TextFile';
+import FileManager from '@native/FileManager';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
 import { showToast } from '@utils/showToast';
+import { getAppStorages } from '@utils/Storages';
 
-const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
+const _getPluginsFilePath = () => {
+  const { PLUGIN_STORAGE } = getAppStorages();
+  return PLUGIN_STORAGE + '/plugins.json';
+};
 
 const packages: Record<string, any> = {
   'htmlparser2': { Parser },
@@ -70,8 +72,8 @@ const serializePlugin = async (
   installed: boolean,
 ) => {
   if (!serializedPlugins) {
-    if (await RNFS.exists(pluginsFilePath)) {
-      const content = await TextFile.readFile(pluginsFilePath);
+    if (await FileManager.exists(_getPluginsFilePath())) {
+      const content = await FileManager.readFile(_getPluginsFilePath());
       serializedPlugins = JSON.parse(content);
     } else {
       serializedPlugins = {};
@@ -82,14 +84,18 @@ const serializePlugin = async (
   } else {
     serializedPlugins[pluginId] = undefined;
   }
-  if (!(await RNFS.exists(PluginDownloadFolder))) {
-    await RNFS.mkdir(PluginDownloadFolder);
+  const { PLUGIN_STORAGE } = getAppStorages();
+  if (!(await FileManager.exists(PLUGIN_STORAGE))) {
+    await FileManager.mkdir(PLUGIN_STORAGE);
   }
-  await TextFile.writeFile(pluginsFilePath, JSON.stringify(serializedPlugins));
+  await FileManager.writeFile(
+    _getPluginsFilePath(),
+    JSON.stringify(serializedPlugins),
+  );
 };
 
 const deserializePlugins = () => {
-  return TextFile.readFile(pluginsFilePath)
+  return FileManager.readFile(_getPluginsFilePath())
     .then(content => {
       serializedPlugins = JSON.parse(content);
       Object.entries(serializedPlugins).forEach(([pluginId, script]) => {

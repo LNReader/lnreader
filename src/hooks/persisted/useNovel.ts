@@ -25,11 +25,11 @@ import {
 import { fetchNovel, fetchPage } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
 import { useCallback, useEffect, useState } from 'react';
-import { NovelDownloadFolder } from '@utils/constants/download';
-import * as RNFS from 'react-native-fs';
 import { getString } from '@strings/translations';
 import dayjs from 'dayjs';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
+import { getAppStorages } from '@utils/Storages';
+import FileManager from '@native/FileManager';
 
 // store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
 // store key: '<PREFIX>_<novel.id>',
@@ -417,10 +417,10 @@ export const deleteCachedNovels = async () => {
       `${NOVEL_SETTINSG_PREFIX}_${novel.pluginId}_${novel.path}`,
     );
     MMKVStorage.delete(`${LAST_READ_PREFIX}_${novel.pluginId}_${novel.path}`);
-    const novelDir =
-      NovelDownloadFolder + '/' + novel.pluginId + '/' + novel.id;
-    if (await RNFS.exists(novelDir)) {
-      await RNFS.unlink(novelDir);
+    const { NOVEL_STORAGE } = getAppStorages();
+    const novelDir = NOVEL_STORAGE + '/' + novel.pluginId + '/' + novel.id;
+    if (await FileManager.exists(novelDir)) {
+      await FileManager.unlink(novelDir);
     }
   }
   _deleteCachedNovels();

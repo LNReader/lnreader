@@ -13,7 +13,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 
 import com.rajarsheechatterjee.EpubUtil.EpubUtilPackage;
-import com.rajarsheechatterjee.TextFile.TextFilePackage;
+import com.rajarsheechatterjee.FileManager.FileManagerPackage;
 import com.rajarsheechatterjee.VolumeButtonListener.VolumeButtonListenerPackage;
 import com.rajarsheechatterjee.ZipArchive.ZipArchivePackage;
 
@@ -36,7 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           packages.add(new VolumeButtonListenerPackage());
           packages.add(new ZipArchivePackage());
-          packages.add(new TextFilePackage());
+          packages.add(new FileManagerPackage());
           packages.add(new EpubUtilPackage());
           return packages;
         }

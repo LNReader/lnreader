@@ -34,7 +34,7 @@ public class ZipArchive extends ReactContextBaseJavaModule {
         return "ZipArchive";
     }
 
-    private String escapeFilePath(String filePath){
+    private String escapeFilePath(String filePath) {
         return filePath.replaceAll(":", "\uA789");
     }
 
@@ -43,7 +43,7 @@ public class ZipArchive extends ReactContextBaseJavaModule {
         int len;
         byte[] buffer = new byte[4096];
         while ((zipEntry = zis.getNextEntry()) != null) {
-            if(zipEntry.getName().endsWith("/")) continue;
+            if (zipEntry.getName().endsWith("/")) continue;
             String escapedFilePath = this.escapeFilePath(zipEntry.getName());
             File newFile = new File(distDirPath, escapedFilePath);
             newFile.getParentFile().mkdirs();
@@ -53,12 +53,13 @@ public class ZipArchive extends ReactContextBaseJavaModule {
         }
         zis.closeEntry();
     }
+
     @ReactMethod
     public void unzip(String sourceFilePath, String distDirPath, Promise promise) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     ZipInputStream zis = new ZipInputStream(new FileInputStream(sourceFilePath));
                     unzipProcess(zis, distDirPath);
                     zis.close();
@@ -71,7 +72,7 @@ public class ZipArchive extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void remoteUnzip(String distDirPath, String _url, @Nullable ReadableMap headers, Promise promise){
+    public void remoteUnzip(String distDirPath, String _url, @Nullable ReadableMap headers, Promise promise) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -79,9 +80,9 @@ public class ZipArchive extends ReactContextBaseJavaModule {
                     URL url = new URL(_url);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("GET");
-                    if(headers != null){
+                    if (headers != null) {
                         Iterator<Map.Entry<String, Object>> it = headers.getEntryIterator();
-                        while (it.hasNext()){
+                        while (it.hasNext()) {
                             Map.Entry<String, Object> entry = it.next();
                             connection.setRequestProperty(entry.getKey(), entry.getValue().toString());
                         }
@@ -90,7 +91,7 @@ public class ZipArchive extends ReactContextBaseJavaModule {
                     unzipProcess(zis, distDirPath);
                     connection.disconnect();
                     promise.resolve(null);
-                }catch (Exception e){
+                } catch (Exception e) {
                     promise.reject(e.getCause());
                 }
             }
@@ -100,12 +101,12 @@ public class ZipArchive extends ReactContextBaseJavaModule {
     private ArrayList<String> walkDir(String path) {
         ArrayList<String> res = new ArrayList<>();
         File node = new File(path);
-        if(node.isFile()){
+        if (node.isFile()) {
             res.add(path);
-        }else{
+        } else {
             String[] children = node.list();
-            if(children != null){
-                for(String filename: children){
+            if (children != null) {
+                for (String filename : children) {
                     ArrayList<String> childPaths = walkDir(new File(path, filename).toString());
                     res.addAll(childPaths);
                 }
@@ -113,11 +114,12 @@ public class ZipArchive extends ReactContextBaseJavaModule {
         }
         return res;
     }
-    private void zipProcess(String sourceDirPath, ZipOutputStream zos) throws Exception{
+
+    private void zipProcess(String sourceDirPath, ZipOutputStream zos) throws Exception {
         ArrayList<String> paths = walkDir(sourceDirPath);
         byte[] buffer = new byte[4096];
         int len;
-        for(String path: paths){
+        for (String path : paths) {
             ZipEntry zipEntry = new ZipEntry(path.replace(sourceDirPath + "/", ""));
             zos.putNextEntry(zipEntry);
             try (FileInputStream fis = new FileInputStream(path)) {
@@ -129,8 +131,9 @@ public class ZipArchive extends ReactContextBaseJavaModule {
         }
         zos.close();
     }
+
     @ReactMethod
-    public void remoteZip(String sourceDirPath, String _url, @Nullable ReadableMap headers, Promise promise){
+    public void remoteZip(String sourceDirPath, String _url, @Nullable ReadableMap headers, Promise promise) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -138,16 +141,16 @@ public class ZipArchive extends ReactContextBaseJavaModule {
                     URL url = new URL(_url);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setRequestMethod("POST");
-                    if(headers != null){
+                    if (headers != null) {
                         Iterator<Map.Entry<String, Object>> it = headers.getEntryIterator();
-                        while (it.hasNext()){
+                        while (it.hasNext()) {
                             Map.Entry<String, Object> entry = it.next();
                             connection.setRequestProperty(entry.getKey(), entry.getValue().toString());
                         }
                     }
                     ZipOutputStream zos = new ZipOutputStream(connection.getOutputStream());
                     zipProcess(sourceDirPath, zos);
-                    if(connection.getResponseCode() == 200){
+                    if (connection.getResponseCode() == 200) {
                         InputStream is = connection.getInputStream();
                         ByteArrayOutputStream result = new ByteArrayOutputStream();
                         byte[] buffer = new byte[1024];
@@ -157,10 +160,10 @@ public class ZipArchive extends ReactContextBaseJavaModule {
                         is.close();
                         connection.disconnect();
                         promise.resolve(result.toString());
-                    }else{
+                    } else {
                         throw new Exception("Network request failed");
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     promise.reject(e.getCause());
                 }
             }
