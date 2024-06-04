@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { Fragment, useRef } from 'react';
 import { Pressable, StyleSheet, View, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,13 +11,17 @@ interface RightIcon {
   onPress: () => void;
 }
 
+interface RightIconElement {
+  element: React.JSX.Element;
+}
+
 interface SearcbarProps {
   searchText: string;
   placeholder: string;
   onChangeText?: (text: string) => void;
   onSubmitEditing?: () => void;
   leftIcon: string;
-  rightIcons?: RightIcon[];
+  rightIcons?: (RightIcon | RightIconElement)[];
   handleBackAction?: () => void;
   clearSearchbar: () => void;
   onLeftIconPress?: () => void;
@@ -91,15 +95,19 @@ const Searchbar: React.FC<SearcbarProps> = ({
             theme={theme}
           />
         ) : null}
-        {rightIcons?.map((icon, index) => (
-          <IconButtonV2
-            key={index}
-            name={icon.iconName}
-            color={icon.color || theme.onSurface}
-            onPress={icon.onPress}
-            theme={theme}
-          />
-        ))}
+        {rightIcons?.map((icon, index) =>
+          'element' in icon ? (
+            <Fragment key={index}>{icon.element}</Fragment>
+          ) : (
+            <IconButtonV2
+              key={index}
+              name={icon.iconName}
+              color={icon.color || theme.onSurface}
+              onPress={icon.onPress}
+              theme={theme}
+            />
+          ),
+        )}
       </Pressable>
     </View>
   );

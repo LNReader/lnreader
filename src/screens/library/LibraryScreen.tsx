@@ -24,7 +24,7 @@ import {
 } from '@hooks/persisted';
 import { useSearch, useBackHandler, useBoolean } from '@hooks';
 import { getString } from '@strings/translations';
-import { FAB, Portal } from 'react-native-paper';
+import { FAB, Menu, Portal } from 'react-native-paper';
 import {
   markAllChaptersRead,
   markAllChaptersUnread,
@@ -38,6 +38,8 @@ import { Row } from '@components/Common';
 import { LibraryScreenProps } from '@navigators/types';
 import { NovelInfo } from '@database/types';
 import { importEpub } from '@services/epub/import';
+import IconButtonV2 from '@components/IconButtonV2/IconButtonV2';
+import { updateLibrary } from '@services/updates';
 
 type State = NavigationState<{
   key: string;
@@ -69,6 +71,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
 
   const { library, refetchLibrary, isLoading } = useLibrary({ searchText });
   const [selectedNovelIds, setSelectedNovelIds] = useState<number[]>([]);
+  const [extraMenu, showExtraMenu] = useState<boolean>(false);
   useBackHandler(() => {
     if (selectedNovelIds.length) {
       setSelectedNovelIds([]);
@@ -139,6 +142,18 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     setFalse: closeSetCategoryModal,
   } = useBoolean();
 
+  function openRandom() {
+    const novels = library[index].novels;
+    const randomNovel = novels[Math.floor(Math.random() * novels.length)];
+    if (randomNovel) {
+      navigation.navigate('Novel', {
+        name: randomNovel.name,
+        path: randomNovel.path,
+        pluginId: randomNovel.pluginId,
+      });
+    }
+  }
+
   return (
     <>
       <SearchbarV2
@@ -165,12 +180,80 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
               ]
             : [
                 {
-                  iconName: 'book-arrow-up-outline',
-                  onPress: importEpub,
-                },
-                {
                   iconName: 'filter-variant',
                   onPress: () => bottomSheetRef.current?.present(),
+                },
+                {
+                  element: (
+                    <Menu
+                      visible={extraMenu}
+                      onDismiss={() => showExtraMenu(false)}
+                      anchor={
+                        <IconButtonV2
+                          name="dots-vertical"
+                          color={theme.onSurface}
+                          onPress={() => showExtraMenu(true)}
+                          theme={theme}
+                        />
+                      }
+                      contentStyle={{
+                        backgroundColor: theme.surface2,
+                      }}
+                    >
+                      <Menu.Item
+                        title={getString(
+                          'libraryScreen.extraMenu.updateLibrary',
+                        )}
+                        style={{ backgroundColor: theme.surface2 }}
+                        titleStyle={{
+                          color: theme.onSurface,
+                        }}
+                        onPress={() => {
+                          showExtraMenu(false);
+                          updateLibrary();
+                        }}
+                      />
+                      <Menu.Item
+                        title={getString(
+                          'libraryScreen.extraMenu.updateCategory',
+                        )}
+                        style={{ backgroundColor: theme.surface2 }}
+                        titleStyle={{
+                          color: theme.onSurface,
+                        }}
+                        onPress={() => {
+                          showExtraMenu(false);
+                          // local category
+                          if (library[index].id === 2) {
+                            return;
+                          }
+                          updateLibrary(library[index].id);
+                        }}
+                      />
+                      <Menu.Item
+                        title={getString('libraryScreen.extraMenu.importEpub')}
+                        style={{ backgroundColor: theme.surface2 }}
+                        titleStyle={{
+                          color: theme.onSurface,
+                        }}
+                        onPress={() => {
+                          showExtraMenu(false);
+                          importEpub();
+                        }}
+                      />
+                      <Menu.Item
+                        title={getString('libraryScreen.extraMenu.openRandom')}
+                        style={{ backgroundColor: theme.surface2 }}
+                        titleStyle={{
+                          color: theme.onSurface,
+                        }}
+                        onPress={() => {
+                          showExtraMenu(false);
+                          openRandom();
+                        }}
+                      />
+                    </Menu>
+                  ),
                 },
               ]
         }

@@ -321,6 +321,12 @@
       }
     },
     "empty": "Your library is empty. Add series to your library from Browse.",
+    "extraMenu": {
+      "importEpub": "Import Epub",
+      "openRandom": "Open Random Entry",
+      "updateCategory": "Update Category",
+      "updateLibrary": "Update Library"
+    },
     "searchbar": "Search library"
   },
   "more": "More",
