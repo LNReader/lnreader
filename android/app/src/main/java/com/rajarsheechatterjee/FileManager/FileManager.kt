@@ -29,7 +29,7 @@ class FileManager(context: ReactApplicationContext) :
         return "FileManager"
     }
 
-    val coroutineScope = MainScope()
+    private val coroutineScope = MainScope()
 
     @Throws(Exception::class)
     private fun getFileUri(filepath: String): Uri {
@@ -55,7 +55,6 @@ class FileManager(context: ReactApplicationContext) :
     private val writeAccessByAPILevel: String
         get() = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) "w" else "rwt"
 
-    @Throws(Exception::class)
     private fun getOutputStream(filepath: String): OutputStream {
         val uri = getFileUri(filepath)
         return reactApplicationContext.contentResolver.openOutputStream(uri, writeAccessByAPILevel)
@@ -98,10 +97,7 @@ class FileManager(context: ReactApplicationContext) :
     @ReactMethod
     fun copyFile(filepath: String, destPath: String, promise: Promise) {
         try {
-            val inFile = File(filepath)
-            if (inFile.renameTo(File(destPath))) {
-                copyFileContent(filepath, destPath, promise)
-            }
+            copyFileContent(filepath, destPath, null, promise)
         } catch (e: Exception) {
             promise.reject(e)
         }
@@ -112,17 +108,18 @@ class FileManager(context: ReactApplicationContext) :
     fun moveFile(filepath: String, destPath: String, promise: Promise) {
         try {
             val inFile = File(filepath)
-            if (inFile.renameTo(File(destPath))) {
-                copyFileContent(filepath, destPath)
-                inFile.delete()
-                promise.resolve(null)
-            }
+            copyFileContent(filepath, destPath, { inFile.delete() }, promise)
         } catch (e: Exception) {
             promise.reject(e)
         }
     }
 
-    private fun copyFileContent(filepath: String, destPath: String, promise: Promise? = null) {
+    private fun copyFileContent(
+        filepath: String,
+        destPath: String,
+        onDone: (() -> Unit)? = null,
+        promise: Promise? = null
+    ) {
         coroutineScope.launch {
             val inputStream = getInputStream(filepath)
             val outputStream = getOutputStream(destPath)
@@ -134,6 +131,9 @@ class FileManager(context: ReactApplicationContext) :
             }
             inputStream.close()
             outputStream.close()
+            if (onDone != null) {
+                onDone()
+            }
             promise?.resolve(null)
         }
     }

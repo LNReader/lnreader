@@ -21,7 +21,6 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
         return "EpubUtil"
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
     private fun initParse(file: File): XmlPullParser {
         val parser = Xml.newPullParser()
         parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true)
@@ -30,7 +29,6 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
         return parser
     }
 
-    @Throws(IOException::class, XmlPullParserException::class)
     private fun readText(parser: XmlPullParser): String {
         var result = ""
         if (parser.next() == XmlPullParser.TEXT) {
@@ -40,26 +38,23 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
         return result
     }
 
-    private fun cleanUrl(url: String?): String? {
-        return url?.replaceFirst("#[^.]+?$".toRegex(), "")
+    private fun cleanUrl(url: String): String {
+        return url.replaceFirst("#[^.]+?$", "")
     }
 
     @ReactMethod
-    fun parseNovelAndChapters(epubDirPath: String?, promise: Promise) {
+    fun parseNovelAndChapters(epubDirPath: String, promise: Promise) {
         try {
             val containerFile = File(epubDirPath, "META-INF/container.xml")
             val contentMetaFile = File(epubDirPath, getContentMetaFilePath(containerFile))
             val contentDir = contentMetaFile.parent
-            val novel = getNovelMetadata(contentMetaFile, contentDir)
+            val novel = contentDir?.let { getNovelMetadata(contentMetaFile, it) }
             promise.resolve(novel)
-        } catch (e: XmlPullParserException) {
-            promise.reject(e.cause)
-        } catch (e: IOException) {
-            promise.reject(e.cause)
+        } catch (e: Exception) {
+            promise.reject(e)
         }
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
     private fun getContentMetaFilePath(file: File): String {
         val parser = initParse(file)
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -71,7 +66,6 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
         return "OEBPS/content.opf" // default
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
     private fun getNovelMetadata(file: File, contentDir: String): ReadableMap {
         val novel: WritableMap = WritableNativeMap()
         val chapters: WritableArray = WritableNativeArray()
@@ -89,9 +83,7 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
                         label = readText(tocParser)
                     } else if (tag == "content") {
                         val href = cleanUrl(tocParser.getAttributeValue(null, "src"))
-                        if (href != null) {
-                            tocMap[href] = label
-                        }
+                        tocMap[href] = label
                     }
                 }
             }

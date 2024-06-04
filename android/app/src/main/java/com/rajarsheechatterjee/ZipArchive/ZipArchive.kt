@@ -5,7 +5,6 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -21,15 +20,16 @@ class ZipArchive(context: ReactApplicationContext) : ReactContextBaseJavaModule(
     }
 
     private fun escapeFilePath(filePath: String): String {
-        return filePath.replace(":".toRegex(), "\uA789")
+        return filePath.replace(":", "\uA789")
     }
 
-    @Throws(Exception::class)
     private fun unzipProcess(zis: ZipInputStream, distDirPath: String) {
-        var zipEntry: ZipEntry
+        var zipEntry: ZipEntry?
         var len: Int
         val buffer = ByteArray(4096)
-        while (zis.nextEntry.also { zipEntry = it } != null) {
+        while (true) {
+            zipEntry = zis.nextEntry
+            if (zipEntry == null) return
             if (zipEntry.name.endsWith("/")) continue
             val escapedFilePath = escapeFilePath(zipEntry.name)
             val newFile = File(distDirPath, escapedFilePath)
@@ -38,7 +38,6 @@ class ZipArchive(context: ReactApplicationContext) : ReactContextBaseJavaModule(
             while (zis.read(buffer).also { len = it } > 0) fos.write(buffer, 0, len)
             fos.close()
         }
-        zis.closeEntry()
     }
 
     @ReactMethod
@@ -50,102 +49,81 @@ class ZipArchive(context: ReactApplicationContext) : ReactContextBaseJavaModule(
                 zis.close()
                 promise.resolve(null)
             } catch (e: Exception) {
-                promise.reject(e.cause)
+                promise.reject(e)
             }
         }.start()
     }
 
     @ReactMethod
-    fun remoteUnzip(distDirPath: String, _url: String?, headers: ReadableMap?, promise: Promise) {
+    fun remoteUnzip(
+        distDirPath: String,
+        urlString: String,
+        headers: ReadableMap,
+        promise: Promise
+    ) {
+        val connection = URL(urlString).openConnection() as HttpURLConnection
         Thread {
             try {
-                val url = URL(_url)
-                val connection = url.openConnection() as HttpURLConnection
                 connection.requestMethod = "GET"
-                if (headers != null) {
-                    val it = headers.entryIterator
-                    while (it.hasNext()) {
-                        val (key, value) = it.next()
-                        connection.setRequestProperty(key, value.toString())
-                    }
+                val it = headers.entryIterator
+                while (it.hasNext()) {
+                    val (key, value) = it.next()
+                    connection.setRequestProperty(key, value.toString())
                 }
-                val zis = ZipInputStream(connection.inputStream)
-                unzipProcess(zis, distDirPath)
-                connection.disconnect()
-                promise.resolve(null)
-            } catch (e: Exception) {
-                promise.reject(e.cause)
-            }
-        }.start()
-    }
-
-    private fun walkDir(path: String): ArrayList<String> {
-        val res = ArrayList<String>()
-        val node = File(path)
-        if (node.isFile) {
-            res.add(path)
-        } else {
-            val children = node.list()
-            if (children != null) {
-                for (filename in children) {
-                    val childPaths = walkDir(File(path, filename).toString())
-                    res.addAll(childPaths)
-                }
-            }
-        }
-        return res
-    }
-
-    @Throws(Exception::class)
-    private fun zipProcess(sourceDirPath: String, zos: ZipOutputStream) {
-        val paths = walkDir(sourceDirPath)
-        val buffer = ByteArray(4096)
-        var len: Int
-        for (path in paths) {
-            val zipEntry = ZipEntry(path.replace("$sourceDirPath/", ""))
-            zos.putNextEntry(zipEntry)
-            FileInputStream(path).use { fis ->
-                while (fis.read(buffer).also { len = it } > 0) {
-                    zos.write(buffer, 0, len)
-                }
-            }
-            zos.closeEntry()
-        }
-        zos.close()
-    }
-
-    @ReactMethod
-    fun remoteZip(sourceDirPath: String, _url: String?, headers: ReadableMap?, promise: Promise) {
-        Thread {
-            try {
-                val url = URL(_url)
-                val connection = url.openConnection() as HttpURLConnection
-                connection.requestMethod = "POST"
-                if (headers != null) {
-                    val it = headers.entryIterator
-                    while (it.hasNext()) {
-                        val (key, value) = it.next()
-                        connection.setRequestProperty(key, value.toString())
-                    }
-                }
-                val zos = ZipOutputStream(connection.outputStream)
-                zipProcess(sourceDirPath, zos)
+                ZipInputStream(connection.inputStream).use { unzipProcess(it, distDirPath) }
                 if (connection.responseCode == 200) {
-                    val `is` = connection.inputStream
-                    val result = ByteArrayOutputStream()
-                    val buffer = ByteArray(1024)
-                    var length: Int
-                    while (`is`.read(buffer).also { length = it } != -1) {
-                        result.write(buffer, 0, length)
-                    }
-                    `is`.close()
-                    connection.disconnect()
-                    promise.resolve(result.toString())
+                    promise.resolve(null)
                 } else {
                     throw Exception("Network request failed")
                 }
             } catch (e: Exception) {
-                promise.reject(e.cause)
+                promise.reject(e)
+            } finally {
+                connection.disconnect()
+            }
+        }.start()
+    }
+
+    private fun zipProcess(sourceDirPath: String, zos: ZipOutputStream) {
+        val sourceDir = File(sourceDirPath)
+        sourceDir.walkBottomUp().forEach { file ->
+            val zipFileName =
+                file.absolutePath.removePrefix(sourceDir.absolutePath).removePrefix("/")
+            val entry = ZipEntry("$zipFileName${(if (file.isDirectory) "/" else "")}")
+            zos.putNextEntry(entry)
+            if (file.isFile) {
+                file.inputStream().use { fis -> fis.copyTo(zos) }
+            }
+        }
+    }
+
+    @ReactMethod
+    fun remoteZip(
+        sourceDirPath: String,
+        urlString: String,
+        headers: ReadableMap,
+        promise: Promise
+    ) {
+        Thread {
+            val connection = URL(urlString).openConnection() as HttpURLConnection
+            try {
+                connection.requestMethod = "POST"
+                val it = headers.entryIterator
+                while (it.hasNext()) {
+                    val (key, value) = it.next()
+                    connection.setRequestProperty(key, value.toString())
+                }
+                ZipOutputStream(connection.outputStream).use { zipProcess(sourceDirPath, it) }
+                if (connection.responseCode == 200) {
+                    promise.resolve(
+                        connection.inputStream.bufferedReader().use { it.readText() })
+                } else {
+                    throw Exception("Network request failed")
+                }
+            } catch (e: Exception) {
+                promise.reject(e)
+            } finally {
+                connection.disconnect()
             }
         }.start()
     }
