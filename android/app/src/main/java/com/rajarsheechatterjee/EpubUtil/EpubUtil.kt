@@ -11,10 +11,8 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import org.xmlpull.v1.XmlPullParser
-import org.xmlpull.v1.XmlPullParserException
 import java.io.File
 import java.io.FileInputStream
-import java.io.IOException
 
 class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(context) {
     override fun getName(): String {

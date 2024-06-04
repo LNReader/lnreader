@@ -6,11 +6,11 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
@@ -19,34 +19,19 @@ class ZipArchive(context: ReactApplicationContext) : ReactContextBaseJavaModule(
         return "ZipArchive"
     }
 
-    private fun escapeFilePath(filePath: String): String {
-        return filePath.replace(":", "\uA789")
-    }
-
-    private fun unzipProcess(zis: ZipInputStream, distDirPath: String) {
-        var zipEntry: ZipEntry?
-        var len: Int
-        val buffer = ByteArray(4096)
-        while (true) {
-            zipEntry = zis.nextEntry
-            if (zipEntry == null) return
-            if (zipEntry.name.endsWith("/")) continue
-            val escapedFilePath = escapeFilePath(zipEntry.name)
-            val newFile = File(distDirPath, escapedFilePath)
-            newFile.parentFile?.mkdirs()
-            val fos = FileOutputStream(newFile)
-            while (zis.read(buffer).also { len = it } > 0) fos.write(buffer, 0, len)
-            fos.close()
-        }
-    }
-
     @ReactMethod
-    fun unzip(sourceFilePath: String?, distDirPath: String, promise: Promise) {
+    fun unzip(sourceFilePath: String, distDirPath: String, promise: Promise) {
         Thread {
             try {
-                val zis = ZipInputStream(FileInputStream(sourceFilePath))
-                unzipProcess(zis, distDirPath)
-                zis.close()
+                ZipFile(sourceFilePath).use { zis ->
+                    zis.entries().asSequence().filterNot { it.isDirectory }.forEach { zipEntry ->
+                        val newFile = File(distDirPath, zipEntry.name)
+                        newFile.parentFile?.mkdirs()
+                        zis.getInputStream(zipEntry).use { inputStream ->
+                            FileOutputStream(newFile).use { fos -> inputStream.copyTo(fos, 4096) }
+                        }
+                    }
+                }
                 promise.resolve(null)
             } catch (e: Exception) {
                 promise.reject(e)
@@ -70,7 +55,15 @@ class ZipArchive(context: ReactApplicationContext) : ReactContextBaseJavaModule(
                     val (key, value) = it.next()
                     connection.setRequestProperty(key, value.toString())
                 }
-                ZipInputStream(connection.inputStream).use { unzipProcess(it, distDirPath) }
+                ZipInputStream(connection.inputStream).use { zis ->
+                    generateSequence { zis.nextEntry }
+                        .filterNot { it.isDirectory }
+                        .forEach { zipEntry ->
+                            val newFile = File(distDirPath, zipEntry.name)
+                            newFile.parentFile?.mkdirs()
+                            FileOutputStream(newFile).use { fos -> zis.copyTo(fos, 4096) }
+                        }
+                }
                 if (connection.responseCode == 200) {
                     promise.resolve(null)
                 } else {
@@ -86,14 +79,12 @@ class ZipArchive(context: ReactApplicationContext) : ReactContextBaseJavaModule(
 
     private fun zipProcess(sourceDirPath: String, zos: ZipOutputStream) {
         val sourceDir = File(sourceDirPath)
-        sourceDir.walkBottomUp().forEach { file ->
+        sourceDir.walkBottomUp().filter { it.isFile }.forEach { file ->
             val zipFileName =
                 file.absolutePath.removePrefix(sourceDir.absolutePath).removePrefix("/")
             val entry = ZipEntry("$zipFileName${(if (file.isDirectory) "/" else "")}")
             zos.putNextEntry(entry)
-            if (file.isFile) {
-                file.inputStream().use { fis -> fis.copyTo(zos) }
-            }
+            file.inputStream().use { fis -> fis.copyTo(zos, 4096) }
         }
     }
 
