@@ -16,6 +16,7 @@ dayjs.extend(calendar);
 import 'dayjs/locale/ar';
 import 'dayjs/locale/de';
 import 'dayjs/locale/es';
+import 'dayjs/locale/fr';
 import 'dayjs/locale/it';
 import 'dayjs/locale/ja';
 import 'dayjs/locale/pt';
@@ -29,6 +30,7 @@ import ar from './languages/ar_SA/strings.json';
 import de from './languages/de_DE/strings.json';
 import en from './languages/en/strings.json';
 import es from './languages/es_ES/strings.json';
+import fr from './languages/fr_FR/strings.json';
 import it from './languages/it_IT/strings.json';
 import ja from './languages/ja_JP/strings.json';
 import pt from './languages/pt_PT/strings.json';
@@ -48,6 +50,7 @@ i18n.translations = {
   de,
   en,
   es,
+  fr,
   it,
   ja,
   pt,
