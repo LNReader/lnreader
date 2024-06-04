@@ -20,6 +20,7 @@ interface FileManagerInterface {
   mkdir: (filePath: string) => Promise<void>; // create parents;
   unlink: (filePath: string) => Promise<void>; // remove recursively
   readDir: (dirPath: string) => Promise<ReadDirResult[]>; // file/sub-folder names
+  pickFolder: () => Promise<string | null>; // return path of folderc
   ExternalDirectoryPath: string;
   ExternalCachesDirectoryPath: string;
 }
