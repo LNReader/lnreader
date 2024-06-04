@@ -1,5 +1,4 @@
 import * as DocumentPicker from 'expo-document-picker';
-import { StorageAccessFramework } from 'expo-file-system';
 import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 
@@ -20,33 +19,17 @@ export const createBackup = async () => {
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
     const novels = await getLibraryNovelsFromDb();
 
-    const permissions =
-      await StorageAccessFramework.requestDirectoryPermissionsAsync();
-
-    if (!permissions.granted) {
+    const folder = await FileManager.pickFolder();
+    if (!folder) {
       return;
     }
-
-    const uri = permissions.directoryUri;
-
     const datetime = dayjs().format('YYYY-MM-DD_HH:mm');
-
-    const fileName = 'lnreader_backup_' + datetime;
-
-    if (uri) {
-      const fileUri = await StorageAccessFramework.createFileAsync(
-        uri,
-        fileName,
-        'application/json',
-      );
-
-      await StorageAccessFramework.writeAsStringAsync(
-        fileUri,
-        JSON.stringify(novels),
-      );
-
-      showToast(getString('backupScreen.legacy.backupCreated', { fileName }));
-    }
+    const fileName = 'lnreader_backup_' + datetime + '.json';
+    await FileManager.writeFile(
+      folder + '/' + fileName,
+      JSON.stringify(novels),
+    );
+    showToast(getString('backupScreen.legacy.backupCreated', { fileName }));
   } catch (error: any) {
     showToast(error.message);
   } finally {
@@ -179,9 +162,4 @@ export const restoreBackup = async (filePath?: string) => {
   } catch (error: any) {
     showToast(error.message);
   }
-};
-
-export const restoreError = async () => {
-  const errorPath = FileManager.ExternalDirectoryPath + '/errorNovels.json';
-  restoreBackup(errorPath);
 };

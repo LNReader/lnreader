@@ -1,11 +1,13 @@
 package com.rajarsheechatterjee.FileManager
 
-import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.util.Base64
+import com.facebook.react.bridge.BaseActivityEventListener
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -29,9 +31,37 @@ class FileManager(context: ReactApplicationContext) :
         return "FileManager"
     }
 
+    private var _promise: Promise? = null
     private val coroutineScope = MainScope()
+    private val activityEventListener = object : BaseActivityEventListener() {
+        override fun onActivityResult(
+            activity: Activity?,
+            requestCode: Int,
+            resultCode: Int,
+            intent: Intent?
+        ) {
+            if (requestCode == FOLDER_PICKER_REQUEST) {
+                when (resultCode) {
+                    Activity.RESULT_CANCELED -> resolveUri()
+                    Activity.RESULT_OK -> {
+                        if (intent != null) {
+                            intent.data?.let { uri ->
+                                val flags =
+                                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                                context.contentResolver.takePersistableUriPermission(uri, flags)
+                                resolveUri(uri)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-    @Throws(Exception::class)
+    init {
+        context.addActivityEventListener(activityEventListener)
+    }
+
     private fun getFileUri(filepath: String): Uri {
         var uri = Uri.parse(filepath)
         if (uri.scheme == null) {
@@ -45,7 +75,6 @@ class FileManager(context: ReactApplicationContext) :
         return uri
     }
 
-    @Throws(Exception::class)
     private fun getInputStream(filepath: String): InputStream {
         val uri = getFileUri(filepath)
         return reactApplicationContext.contentResolver.openInputStream(uri)
@@ -93,7 +122,6 @@ class FileManager(context: ReactApplicationContext) :
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
     @ReactMethod
     fun copyFile(filepath: String, destPath: String, promise: Promise) {
         try {
@@ -103,7 +131,6 @@ class FileManager(context: ReactApplicationContext) :
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
     @ReactMethod
     fun moveFile(filepath: String, destPath: String, promise: Promise) {
         try {
@@ -135,24 +162,6 @@ class FileManager(context: ReactApplicationContext) :
                 onDone()
             }
             promise?.resolve(null)
-        }
-    }
-
-    @ReactMethod
-    fun resolveExternalContentUri(uriString: String, promise: Promise) {
-        val uri = Uri.parse(uriString)
-        try {
-            val docId = DocumentsContract.getTreeDocumentId(uri)
-            val split = docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if ("primary" == split[0]) {
-                promise.resolve(
-                    Environment.getExternalStorageDirectory().toString() + "/" + split[1]
-                )
-            } else {
-                promise.resolve(null)
-            }
-        } catch (e: Exception) {
-            promise.resolve(null)
         }
     }
 
@@ -230,5 +239,37 @@ class FileManager(context: ReactApplicationContext) :
             constants["ExternalCachesDirectoryPath"] = externalCachesDirectory.absolutePath
         }
         return constants
+    }
+
+    private fun resolveUri(uri: Uri? = null) {
+        _promise?.let { promise ->
+            try {
+                if (uri == null) promise.resolve(null)
+                else {
+                    val docId = DocumentsContract.getTreeDocumentId(uri)
+                    val split =
+                        docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                    promise.resolve(
+                        Environment.getExternalStorageDirectory().toString() + "/" + split[1]
+                    )
+                }
+            } catch (e: Exception) {
+                promise.reject(e)
+            } finally {
+                _promise = null
+            }
+        }
+    }
+
+    @ReactMethod
+    fun pickFolder(promise: Promise) {
+        if (_promise != null) promise.reject(Exception("Can not perform action"))
+        _promise = promise
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        currentActivity?.startActivityForResult(intent, FOLDER_PICKER_REQUEST)
+    }
+
+    companion object {
+        const val FOLDER_PICKER_REQUEST = 1
     }
 }
