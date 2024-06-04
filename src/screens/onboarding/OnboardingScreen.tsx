@@ -7,6 +7,7 @@ import PickThemeStep from './PickThemeStep';
 import { useState } from 'react';
 import StorageStep from './StorageStep';
 import { setAppStorage } from '@utils/Storages';
+import { useBackHandler } from '@hooks/index';
 
 enum OnboardingStep {
   PICK_THEME,
@@ -42,6 +43,15 @@ export default function OnboardingScreen() {
         return <PickThemeStep />;
     }
   };
+
+  useBackHandler(() => {
+    if (step === OnboardingStep.STORAGE_LOCATION) {
+      setStep(OnboardingStep.PICK_THEME);
+      return true;
+    }
+    return false;
+  });
+
   return (
     <SafeAreaView style={[styles.root, { backgroundColor: theme.background }]}>
       <Image
@@ -81,14 +91,6 @@ export default function OnboardingScreen() {
       </View>
       <View style={{ flex: 1 }} />
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        {step !== OnboardingStep.PICK_THEME ? (
-          <Button
-            style={{ flex: 1 }}
-            title="Previous"
-            mode="contained"
-            onPress={() => setStep(step - 1)}
-          />
-        ) : null}
         {step !== OnboardingStep.STORAGE_LOCATION ? (
           <Button
             style={{ flex: 1 }}
@@ -97,7 +99,7 @@ export default function OnboardingScreen() {
             onPress={() => setStep(step + 1)}
           />
         ) : null}
-        {step === OnboardingStep.STORAGE_LOCATION && rootStorage ? (
+        {step === OnboardingStep.STORAGE_LOCATION ? (
           <Button
             style={{ flex: 1 }}
             title="Complete"
@@ -105,6 +107,7 @@ export default function OnboardingScreen() {
             onPress={() => {
               setAppStorage(rootStorage);
             }}
+            disabled={!rootStorage}
           />
         ) : null}
       </View>
