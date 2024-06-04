@@ -27,7 +27,8 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
   return (
     <ScrollView>
       <MoreHeader
-        title={getString('more')}
+        // status bar is translucent, text could be mess with it
+        title={''}
         navigation={navigation}
         theme={theme}
       />

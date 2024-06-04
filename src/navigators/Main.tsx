@@ -62,8 +62,11 @@ const MainNavigator = () => {
     if (updateLibraryOnLaunch) {
       updateLibrary();
     }
-    refreshPlugins();
-  }, []);
+    if (ROOT_STORAGE) {
+      // hack this helps app has enough time to initialize database;
+      refreshPlugins();
+    }
+  }, [ROOT_STORAGE]);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
   if (!ROOT_STORAGE) {
