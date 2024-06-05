@@ -1,9 +1,10 @@
-import React, { Fragment, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Pressable, StyleSheet, View, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import IconButtonV2 from '../IconButtonV2/IconButtonV2';
 import { ThemeColors } from '../../theme/types';
+import { Menu } from 'react-native-paper';
 
 interface RightIcon {
   iconName: string;
@@ -11,8 +12,9 @@ interface RightIcon {
   onPress: () => void;
 }
 
-interface RightIconElement {
-  element: React.JSX.Element;
+interface MenuButton {
+  title: string;
+  onPress: () => void;
 }
 
 interface SearcbarProps {
@@ -21,7 +23,8 @@ interface SearcbarProps {
   onChangeText?: (text: string) => void;
   onSubmitEditing?: () => void;
   leftIcon: string;
-  rightIcons?: (RightIcon | RightIconElement)[];
+  rightIcons?: RightIcon[];
+  menuButtons?: MenuButton[];
   handleBackAction?: () => void;
   clearSearchbar: () => void;
   onLeftIconPress?: () => void;
@@ -35,6 +38,7 @@ const Searchbar: React.FC<SearcbarProps> = ({
   onSubmitEditing,
   leftIcon,
   rightIcons,
+  menuButtons,
   handleBackAction,
   clearSearchbar,
   onLeftIconPress,
@@ -42,6 +46,7 @@ const Searchbar: React.FC<SearcbarProps> = ({
 }) => {
   const searchbarRef = useRef<any>(null);
   const focusSearchbar = () => searchbarRef.current.focus();
+  const [extraMenu, showExtraMenu] = useState(false);
 
   const { top, right, left } = useSafeAreaInsets();
   const marginTop = top + 8;
@@ -95,19 +100,47 @@ const Searchbar: React.FC<SearcbarProps> = ({
             theme={theme}
           />
         ) : null}
-        {rightIcons?.map((icon, index) =>
-          'element' in icon ? (
-            <Fragment key={index}>{icon.element}</Fragment>
-          ) : (
-            <IconButtonV2
-              key={index}
-              name={icon.iconName}
-              color={icon.color || theme.onSurface}
-              onPress={icon.onPress}
-              theme={theme}
-            />
-          ),
-        )}
+        {rightIcons?.map((icon, index) => (
+          <IconButtonV2
+            key={index}
+            name={icon.iconName}
+            color={icon.color || theme.onSurface}
+            onPress={icon.onPress}
+            theme={theme}
+          />
+        ))}
+        {menuButtons?.length ? (
+          <Menu
+            visible={extraMenu}
+            onDismiss={() => showExtraMenu(false)}
+            anchor={
+              <IconButtonV2
+                name="dots-vertical"
+                color={theme.onSurface}
+                onPress={() => showExtraMenu(true)}
+                theme={theme}
+              />
+            }
+            contentStyle={{
+              backgroundColor: theme.surface2,
+            }}
+          >
+            {menuButtons?.map((button, index) => (
+              <Menu.Item
+                key={index}
+                title={button.title}
+                style={{ backgroundColor: theme.surface2 }}
+                titleStyle={{
+                  color: theme.onSurface,
+                }}
+                onPress={() => {
+                  showExtraMenu(false);
+                  button.onPress();
+                }}
+              />
+            ))}
+          </Menu>
+        ) : null}
       </Pressable>
     </View>
   );

@@ -24,7 +24,7 @@ import {
 } from '@hooks/persisted';
 import { useSearch, useBackHandler, useBoolean } from '@hooks';
 import { getString } from '@strings/translations';
-import { FAB, Menu, Portal } from 'react-native-paper';
+import { FAB, Portal } from 'react-native-paper';
 import {
   markAllChaptersRead,
   markAllChaptersUnread,
@@ -38,7 +38,6 @@ import { Row } from '@components/Common';
 import { LibraryScreenProps } from '@navigators/types';
 import { NovelInfo } from '@database/types';
 import { importEpub } from '@services/epub/import';
-import IconButtonV2 from '@components/IconButtonV2/IconButtonV2';
 import { updateLibrary } from '@services/updates';
 
 type State = NavigationState<{
@@ -71,7 +70,6 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
 
   const { library, refetchLibrary, isLoading } = useLibrary({ searchText });
   const [selectedNovelIds, setSelectedNovelIds] = useState<number[]>([]);
-  const [extraMenu, showExtraMenu] = useState<boolean>(false);
   useBackHandler(() => {
     if (selectedNovelIds.length) {
       setSelectedNovelIds([]);
@@ -183,80 +181,28 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
                   iconName: 'filter-variant',
                   onPress: () => bottomSheetRef.current?.present(),
                 },
-                {
-                  element: (
-                    <Menu
-                      visible={extraMenu}
-                      onDismiss={() => showExtraMenu(false)}
-                      anchor={
-                        <IconButtonV2
-                          name="dots-vertical"
-                          color={theme.onSurface}
-                          onPress={() => showExtraMenu(true)}
-                          theme={theme}
-                        />
-                      }
-                      contentStyle={{
-                        backgroundColor: theme.surface2,
-                      }}
-                    >
-                      <Menu.Item
-                        title={getString(
-                          'libraryScreen.extraMenu.updateLibrary',
-                        )}
-                        style={{ backgroundColor: theme.surface2 }}
-                        titleStyle={{
-                          color: theme.onSurface,
-                        }}
-                        onPress={() => {
-                          showExtraMenu(false);
-                          updateLibrary();
-                        }}
-                      />
-                      <Menu.Item
-                        title={getString(
-                          'libraryScreen.extraMenu.updateCategory',
-                        )}
-                        style={{ backgroundColor: theme.surface2 }}
-                        titleStyle={{
-                          color: theme.onSurface,
-                        }}
-                        onPress={() => {
-                          showExtraMenu(false);
-                          // local category
-                          if (library[index].id === 2) {
-                            return;
-                          }
-                          updateLibrary(library[index].id);
-                        }}
-                      />
-                      <Menu.Item
-                        title={getString('libraryScreen.extraMenu.importEpub')}
-                        style={{ backgroundColor: theme.surface2 }}
-                        titleStyle={{
-                          color: theme.onSurface,
-                        }}
-                        onPress={() => {
-                          showExtraMenu(false);
-                          importEpub();
-                        }}
-                      />
-                      <Menu.Item
-                        title={getString('libraryScreen.extraMenu.openRandom')}
-                        style={{ backgroundColor: theme.surface2 }}
-                        titleStyle={{
-                          color: theme.onSurface,
-                        }}
-                        onPress={() => {
-                          showExtraMenu(false);
-                          openRandom();
-                        }}
-                      />
-                    </Menu>
-                  ),
-                },
               ]
         }
+        menuButtons={[
+          {
+            title: getString('libraryScreen.extraMenu.updateLibrary'),
+            onPress: updateLibrary,
+          },
+          {
+            title: getString('libraryScreen.extraMenu.updateCategory'),
+            onPress: () =>
+              //2 = local category
+              library[index].id !== 2 && updateLibrary(library[index].id),
+          },
+          {
+            title: getString('libraryScreen.extraMenu.importEpub'),
+            onPress: importEpub,
+          },
+          {
+            title: getString('libraryScreen.extraMenu.openRandom'),
+            onPress: openRandom,
+          },
+        ]}
         theme={theme}
       />
       {downloadedOnlyMode ? (
