@@ -8,8 +8,8 @@ import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
 import { CACHE_DIR_PATH, prepareBackupData, restoreData } from '../utils';
 import { download, updateMetadata, uploadMedia } from '@api/drive/request';
-import { AppDownloadFolder } from '@utils/constants/download';
 import { ZipBackupName } from '../types';
+import { getAppStorages } from '@utils/Storages';
 
 interface TaskData {
   delay: number;
@@ -18,7 +18,9 @@ interface TaskData {
 
 const driveBackupAction = async (taskData?: TaskData) => {
   try {
+    const { ROOT_STORAGE } = getAppStorages();
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
+
     if (!taskData) {
       throw new Error(getString('backupScreen.noDataProvided'));
     }
@@ -65,7 +67,7 @@ const driveBackupAction = async (taskData?: TaskData) => {
           },
         }),
       )
-      .then(() => uploadMedia(AppDownloadFolder))
+      .then(() => uploadMedia(ROOT_STORAGE))
       .then(file => {
         return updateMetadata(
           file.id,
@@ -125,6 +127,7 @@ export const createBackup = async (backupFolder: DriveFile) => {
 
 const driveRestoreAction = async (taskData?: TaskData) => {
   try {
+    const { ROOT_STORAGE } = getAppStorages();
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
     if (!taskData) {
       throw new Error(getString('backupScreen.noDataProvided'));
@@ -177,7 +180,7 @@ const driveRestoreAction = async (taskData?: TaskData) => {
           },
         }),
       )
-      .then(() => download(zipDownloadFile, AppDownloadFolder))
+      .then(() => download(zipDownloadFile, ROOT_STORAGE))
       .then(() => {
         return Notifications.scheduleNotificationAsync({
           content: {

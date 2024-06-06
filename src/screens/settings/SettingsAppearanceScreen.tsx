@@ -7,16 +7,6 @@ import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
 
 import { useAppSettings, useTheme } from '@hooks/persisted';
 import {
-  defaultTheme,
-  midnightDusk,
-  tealTurquoise,
-  yotsubaTheme,
-  lavenderTheme,
-  strawberryDaiquiriTheme,
-  takoTheme,
-} from '@theme/md3';
-
-import {
   useMMKVBoolean,
   useMMKVObject,
   useMMKVString,
@@ -24,25 +14,7 @@ import {
 import { Appbar, List } from '@components';
 import { AppearanceSettingsScreenProps } from '@navigators/types';
 import { getString } from '@strings/translations';
-
-const lightThemes = [
-  defaultTheme.light,
-  midnightDusk.light,
-  tealTurquoise.light,
-  yotsubaTheme.light,
-  lavenderTheme.light,
-  strawberryDaiquiriTheme.light,
-  takoTheme.light,
-];
-const darkThemes = [
-  defaultTheme.dark,
-  midnightDusk.dark,
-  tealTurquoise.dark,
-  yotsubaTheme.dark,
-  lavenderTheme.dark,
-  strawberryDaiquiriTheme.dark,
-  takoTheme.dark,
-];
+import { darkThemes, lightThemes } from '@theme/md3';
 
 const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
   const theme = useTheme();
