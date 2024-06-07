@@ -51,7 +51,7 @@ import { ChapterInfo } from '@database/types';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
-import { getAppStorages } from '@utils/Storages';
+import { NOVEL_STORAGE } from '@utils/Storages';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
@@ -168,7 +168,6 @@ export const ChapterContent = ({
 
   const getChapter = async () => {
     try {
-      const { NOVEL_STORAGE } = getAppStorages();
       const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
       if (await FileManager.exists(filePath)) {
         sourceChapter.chapterText = await FileManager.readFile(filePath);

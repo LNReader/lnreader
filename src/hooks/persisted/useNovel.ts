@@ -28,7 +28,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { getString } from '@strings/translations';
 import dayjs from 'dayjs';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
-import { getAppStorages } from '@utils/Storages';
+import { NOVEL_STORAGE } from '@utils/Storages';
 import FileManager from '@native/FileManager';
 
 // store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
@@ -417,7 +417,6 @@ export const deleteCachedNovels = async () => {
       `${NOVEL_SETTINSG_PREFIX}_${novel.pluginId}_${novel.path}`,
     );
     MMKVStorage.delete(`${LAST_READ_PREFIX}_${novel.pluginId}_${novel.path}`);
-    const { NOVEL_STORAGE } = getAppStorages();
     const novelDir = NOVEL_STORAGE + '/' + novel.pluginId + '/' + novel.id;
     if (await FileManager.exists(novelDir)) {
       await FileManager.unlink(novelDir);

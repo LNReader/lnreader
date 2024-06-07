@@ -12,7 +12,7 @@ import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import { BackupNovel, NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
-import { getAppStorages } from '@utils/Storages';
+import { NOVEL_STORAGE } from '@utils/Storages';
 import FileManager from '@native/FileManager';
 
 export const insertNovelAndChapters = async (
@@ -45,7 +45,6 @@ export const insertNovelAndChapters = async (
   if (novelId) {
     const promises = [insertChapters(novelId, sourceNovel.chapters)];
     if (sourceNovel.cover) {
-      const { NOVEL_STORAGE } = getAppStorages();
       const novelDir = NOVEL_STORAGE + '/' + pluginId + '/' + novelId;
       await FileManager.mkdir(novelDir);
       const novelCoverUri = 'file://' + novelDir + '/cover.png';
@@ -271,7 +270,6 @@ export const updateNovelInfo = async (info: NovelInfo) => {
 export const pickCustomNovelCover = async (novel: NovelInfo) => {
   const image = await DocumentPicker.getDocumentAsync({ type: 'image/*' });
   if (image.assets && image.assets[0]) {
-    const { NOVEL_STORAGE } = getAppStorages();
     const novelDir = NOVEL_STORAGE + '/' + novel.pluginId + '/' + novel.id;
     let novelCoverUri = 'file://' + novelDir + '/cover.png';
     if (!(await FileManager.exists(novelDir))) {

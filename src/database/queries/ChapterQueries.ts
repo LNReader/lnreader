@@ -11,7 +11,7 @@ import { Update } from '../types';
 import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
-import { getAppStorages } from '@utils/Storages';
+import { NOVEL_STORAGE } from '@utils/Storages';
 
 const db = SQLite.openDatabase('lnreader.db');
 const insertChapterQuery = `
@@ -247,7 +247,6 @@ const downloadFiles = async (
   chapterId: number,
 ): Promise<void> => {
   try {
-    const { NOVEL_STORAGE } = getAppStorages();
     const folder = await createChapterFolder(NOVEL_STORAGE, {
       pluginId: plugin.id,
       novelId,
@@ -307,7 +306,6 @@ const deleteDownloadedFiles = async (
   chapterId: number,
 ) => {
   try {
-    const { NOVEL_STORAGE } = getAppStorages();
     const path = await createChapterFolder(NOVEL_STORAGE, {
       pluginId,
       novelId,

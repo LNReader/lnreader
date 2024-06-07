@@ -4,8 +4,8 @@ import { downloadChapter } from '../../database/queries/ChapterQueries';
 import * as SQLite from 'expo-sqlite';
 import { ChapterItem, SourceNovel } from '@plugins/types';
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
-import { getAppStorages } from '@utils/Storages';
 import FileManager from '@native/FileManager';
+import { NOVEL_STORAGE } from '@utils/Storages';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = (
@@ -13,7 +13,6 @@ const updateNovelMetadata = (
   novelId: number,
   novel: SourceNovel,
 ) => {
-  const { NOVEL_STORAGE } = getAppStorages();
   return new Promise(async (resolve, reject) => {
     let { name, cover, summary, author, artist, genres, status, totalPages } =
       novel;

@@ -5,30 +5,19 @@ import { Image, StyleSheet, View } from 'react-native';
 import { Button } from '@components';
 import PickThemeStep from './PickThemeStep';
 import { useState } from 'react';
-import StorageStep from './StorageStep';
-import { setAppStorage } from '@utils/Storages';
-import { useBackHandler } from '@hooks/index';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
 
 enum OnboardingStep {
   PICK_THEME,
-  STORAGE_LOCATION,
 }
 
 export default function OnboardingScreen() {
   const theme = useTheme();
-  const [rootStorage, setRootStorage] = useState('');
-  const [step, setStep] = useState<OnboardingStep>(OnboardingStep.PICK_THEME);
+  const [step] = useState<OnboardingStep>(OnboardingStep.PICK_THEME);
   const renderStep = () => {
     switch (step) {
       case OnboardingStep.PICK_THEME:
         return <PickThemeStep />;
-      case OnboardingStep.STORAGE_LOCATION:
-        return (
-          <StorageStep
-            rootStorage={rootStorage}
-            onPathChange={setRootStorage}
-          />
-        );
       default:
         return <PickThemeStep />;
     }
@@ -37,20 +26,10 @@ export default function OnboardingScreen() {
     switch (step) {
       case OnboardingStep.PICK_THEME:
         return 'Pick a theme';
-      case OnboardingStep.STORAGE_LOCATION:
-        return 'Select storage for LNReader';
       default:
         return <PickThemeStep />;
     }
   };
-
-  useBackHandler(() => {
-    if (step === OnboardingStep.STORAGE_LOCATION) {
-      setStep(OnboardingStep.PICK_THEME);
-      return true;
-    }
-    return false;
-  });
 
   return (
     <SafeAreaView style={[styles.root, { backgroundColor: theme.background }]}>
@@ -91,25 +70,14 @@ export default function OnboardingScreen() {
       </View>
       <View style={{ flex: 1 }} />
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        {step !== OnboardingStep.STORAGE_LOCATION ? (
-          <Button
-            style={{ flex: 1 }}
-            title="Next"
-            mode="contained"
-            onPress={() => setStep(step + 1)}
-          />
-        ) : null}
-        {step === OnboardingStep.STORAGE_LOCATION ? (
-          <Button
-            style={{ flex: 1 }}
-            title="Complete"
-            mode="contained"
-            onPress={() => {
-              setAppStorage(rootStorage);
-            }}
-            disabled={!rootStorage}
-          />
-        ) : null}
+        <Button
+          style={{ flex: 1 }}
+          title="Complete"
+          mode="contained"
+          onPress={() => {
+            MMKVStorage.set('IS_ONBOARDED', true);
+          }}
+        />
       </View>
     </SafeAreaView>
   );

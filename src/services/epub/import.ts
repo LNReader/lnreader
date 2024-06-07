@@ -17,7 +17,7 @@ import { getString } from '@strings/translations';
 import { showToast } from '@utils/showToast';
 import FileManager from '@native/FileManager';
 import EpubUtil from '@native/EpubUtil';
-import { getAppStorages } from '@utils/Storages';
+import { NOVEL_STORAGE } from '@utils/Storages';
 
 interface TaskData {
   delay: number;
@@ -33,7 +33,6 @@ const insertLocalNovel = (
   artist?: string,
   summary?: string,
 ): Promise<number> => {
-  const { NOVEL_STORAGE } = getAppStorages();
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
@@ -88,7 +87,6 @@ const insertLocalChapter = (
   path: string,
   releaseTime: string,
 ): Promise<string[]> => {
-  const { NOVEL_STORAGE } = getAppStorages();
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
@@ -153,7 +151,6 @@ const insertLocalChapter = (
 
 const importEpubAction = async (taskData?: TaskData) => {
   try {
-    const { NOVEL_STORAGE } = getAppStorages();
     if (!taskData) {
       throw new Error(getString('backupScreen.noDataProvided'));
     }

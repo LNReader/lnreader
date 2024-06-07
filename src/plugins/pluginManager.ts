@@ -17,12 +17,9 @@ import { Parser } from 'htmlparser2';
 import FileManager from '@native/FileManager';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
 import { showToast } from '@utils/showToast';
-import { getAppStorages } from '@utils/Storages';
+import { PLUGIN_STORAGE } from '@utils/Storages';
 
-const _getPluginsFilePath = () => {
-  const { PLUGIN_STORAGE } = getAppStorages();
-  return PLUGIN_STORAGE + '/plugins.json';
-};
+const pluginFilePath = PLUGIN_STORAGE + '/plugins.json';
 
 const packages: Record<string, any> = {
   'htmlparser2': { Parser },
@@ -72,8 +69,8 @@ const serializePlugin = async (
   installed: boolean,
 ) => {
   if (!serializedPlugins) {
-    if (await FileManager.exists(_getPluginsFilePath())) {
-      const content = await FileManager.readFile(_getPluginsFilePath());
+    if (await FileManager.exists(pluginFilePath)) {
+      const content = await FileManager.readFile(pluginFilePath);
       serializedPlugins = JSON.parse(content);
     } else {
       serializedPlugins = {};
@@ -84,18 +81,17 @@ const serializePlugin = async (
   } else {
     serializedPlugins[pluginId] = undefined;
   }
-  const { PLUGIN_STORAGE } = getAppStorages();
   if (!(await FileManager.exists(PLUGIN_STORAGE))) {
     await FileManager.mkdir(PLUGIN_STORAGE);
   }
   await FileManager.writeFile(
-    _getPluginsFilePath(),
+    pluginFilePath,
     JSON.stringify(serializedPlugins),
   );
 };
 
 const deserializePlugins = () => {
-  return FileManager.readFile(_getPluginsFilePath())
+  return FileManager.readFile(pluginFilePath)
     .then(content => {
       serializedPlugins = JSON.parse(content);
       Object.entries(serializedPlugins).forEach(([pluginId, script]) => {

@@ -35,17 +35,15 @@ import { updateLibrary } from '@services/updates';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
 import Color from 'color';
-import OnboardingScreen from '../screens/onboarding/OnboardingScreen';
-import { APP_STORAGE_KEY } from '@utils/Storages';
-import { useMMKVString } from 'react-native-mmkv';
-
+import { useMMKVBoolean } from 'react-native-mmkv';
+import OnboardingScreen from '@screens/onboarding/OnboardingScreen';
 const Stack = createStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
   const theme = useTheme();
-  const [ROOT_STORAGE] = useMMKVString(APP_STORAGE_KEY);
   const { updateLibraryOnLaunch } = useAppSettings();
   const { refreshPlugins } = usePlugins();
+  const [isOnboarded] = useMMKVBoolean('IS_ONBOARDED');
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -62,16 +60,18 @@ const MainNavigator = () => {
     if (updateLibraryOnLaunch) {
       updateLibrary();
     }
-    if (ROOT_STORAGE) {
+    if (isOnboarded) {
       // hack this helps app has enough time to initialize database;
       refreshPlugins();
     }
-  }, [ROOT_STORAGE]);
+  }, [isOnboarded]);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
-  if (!ROOT_STORAGE) {
+
+  if (!isOnboarded) {
     return <OnboardingScreen />;
   }
+
   return (
     <NavigationContainer theme={{ colors: theme, dark: theme.isDark }}>
       {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}

@@ -9,7 +9,7 @@ import { getString } from '@strings/translations';
 import { CACHE_DIR_PATH, prepareBackupData, restoreData } from '../utils';
 import { download, updateMetadata, uploadMedia } from '@api/drive/request';
 import { ZipBackupName } from '../types';
-import { getAppStorages } from '@utils/Storages';
+import { ROOT_STORAGE } from '@utils/Storages';
 
 interface TaskData {
   delay: number;
@@ -18,7 +18,6 @@ interface TaskData {
 
 const driveBackupAction = async (taskData?: TaskData) => {
   try {
-    const { ROOT_STORAGE } = getAppStorages();
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
 
     if (!taskData) {
@@ -127,7 +126,6 @@ export const createBackup = async (backupFolder: DriveFile) => {
 
 const driveRestoreAction = async (taskData?: TaskData) => {
   try {
-    const { ROOT_STORAGE } = getAppStorages();
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
     if (!taskData) {
       throw new Error(getString('backupScreen.noDataProvided'));

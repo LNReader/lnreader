@@ -7,7 +7,7 @@ import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
 import { CACHE_DIR_PATH, prepareBackupData, restoreData } from '../utils';
 import { ZipBackupName } from '../types';
-import { getAppStorages } from '@utils/Storages';
+import { ROOT_STORAGE } from '@utils/Storages';
 
 interface TaskData {
   delay: number;
@@ -17,7 +17,6 @@ interface TaskData {
 
 const remoteBackupAction = async (taskData?: TaskData) => {
   try {
-    const { ROOT_STORAGE } = getAppStorages();
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
     if (!taskData) {
       throw new Error(getString('backupScreen.noDataProvided'));
@@ -111,7 +110,6 @@ export const createBackup = async (host: string, backupFolder: string) => {
 
 const remoteRestoreAction = async (taskData?: TaskData) => {
   try {
-    const { ROOT_STORAGE } = getAppStorages();
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
     if (!taskData) {
       throw new Error(getString('backupScreen.noDataProvided'));

@@ -179,8 +179,10 @@ class FileManager(context: ReactApplicationContext) :
     fun mkdir(filepath: String, promise: Promise) {
         try {
             val file = File(filepath)
-            val created = file.mkdirs()
-            if (!created) throw Exception("Directory could not be created")
+            if(!file.exists()){
+                val created = file.mkdirs()
+                if (!created) throw Exception("Directory could not be created")
+            }
             promise.resolve(null)
         } catch (e: Exception) {
             promise.reject(e)
