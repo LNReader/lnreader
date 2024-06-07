@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - test
+      - recovery-branch
   workflow_dispatch:
 jobs:
   build-android:
