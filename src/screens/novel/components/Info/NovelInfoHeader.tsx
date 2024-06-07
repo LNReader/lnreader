@@ -85,7 +85,7 @@ const NovelInfoHeader = ({
     () =>
       (getMMKVObject<PluginItem[]>(AVAILABLE_PLUGINS) || []).find(
         plugin => plugin.id === novel.pluginId,
-      )?.name,
+      )?.name || novel.pluginId,
     [],
   );
 
