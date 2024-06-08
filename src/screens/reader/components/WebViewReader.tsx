@@ -50,7 +50,7 @@ type WebViewReaderProps = {
 
 const WebViewReader: FC<WebViewReaderProps> = props => {
   const {
-    data,
+    data: { chapter, novel },
     html,
     nextChapter,
     webViewRef,
@@ -66,7 +66,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
   const { RNDeviceInfo } = NativeModules;
   const deviceInfoEmitter = new NativeEventEmitter(RNDeviceInfo);
   const theme = useTheme();
-  const { novel, chapter } = data;
   const readerSettings = useMemo(
     () =>
       getMMKVObject<ChapterReaderSettings>(CHAPTER_READER_SETTINGS) ||
@@ -133,6 +132,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
       showsVerticalScrollIndicator={false}
       javaScriptEnabled={true}
       onLayout={async () => onLayout()}
+      injectedJavaScriptObject={{ customValue: 'myCustomValue' }}
       onMessage={ev => {
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
@@ -221,7 +221,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                     </style>
                     <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
                     <style>${readerSettings.customCSS}</style>
-                    <script async>
+                    <script>
                       var initSettings = {
                         showScrollPercentage: ${showScrollPercentage},
                         swipeGestures: ${swipeGestures},
@@ -231,6 +231,10 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       }
                       var batteryLevel = ${batteryLevel};
                       var autoSaveInterval = 2222;
+                      var { NOVEL, CHAPTER } = ${JSON.stringify({
+                        NOVEL: novel,
+                        CHAPTER: chapter,
+                      })}
                     </script>
                   </head>
                   <body>

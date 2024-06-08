@@ -326,7 +326,6 @@ export const ChapterContent = ({
       />
     );
   }
-  console.log('re-render');
   return (
     <>
       <WebViewReader
