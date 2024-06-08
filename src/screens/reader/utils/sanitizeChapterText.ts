@@ -31,11 +31,6 @@ export const sanitizeChapterText = (
     if (options?.removeExtraParagraphSpacing) {
       text = text.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
     }
-    const imgHandlerRegex = /<img([^>]*src="[^"]+"[^>]*)>/g;
-    text = text.replace(
-      imgHandlerRegex,
-      "<img alt=\"Plugin can't fetch this img\" onload=\"reader.refresh()\" onerror=\"this.setAttribute('error-src', this.src);reader.post({type:'error-img',data:this.src});this.src='file:///android_asset/images/loading.gif';this.onerror=undefined\" $1>",
-    );
   } else {
     text = getString('readerScreen.emptyChapterMessage');
   }

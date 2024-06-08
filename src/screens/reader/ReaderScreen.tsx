@@ -48,7 +48,7 @@ import ChapterLoadingScreen from './ChapterLoadingScreen/ChapterLoadingScreen';
 import { ErrorScreenV2 } from '@components';
 import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
-import WebView, { WebViewNavigation } from 'react-native-webview';
+import WebView from 'react-native-webview';
 import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
@@ -281,19 +281,6 @@ export const ChapterContent = ({
         );
   };
 
-  const onWebViewNavigationStateChange = async ({ url }: WebViewNavigation) => {
-    if (url !== 'about:blank') {
-      setLoading(true);
-      fetchChapter(novel.pluginId, chapter.path)
-        .then(res => {
-          sourceChapter.chapterText = res;
-          setChapter(sourceChapter);
-        })
-        .catch(e => setError(e.message))
-        .finally(() => setLoading(false));
-    }
-  };
-
   const chapterText = useMemo(
     () =>
       sanitizeChapterText(sourceChapter.chapterText, {
@@ -339,7 +326,7 @@ export const ChapterContent = ({
       />
     );
   }
-
+  console.log('re-render');
   return (
     <>
       <WebViewReader
@@ -353,7 +340,6 @@ export const ChapterContent = ({
         }}
         onPress={hideHeader}
         navigateToChapterBySwipe={navigateToChapterBySwipe}
-        onWebViewNavigationStateChange={onWebViewNavigationStateChange}
       />
       <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       {!hidden ? (

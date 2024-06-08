@@ -50,37 +50,6 @@ export const fetchApi = async (
 const FILE_READER_PREFIX_LENGTH = 'data:application/octet-stream;base64,'
   .length;
 
-/**
- *
- * @param url
- * @param init
- * @returns base64 of file
- */
-export const fetchFile = async (
-  url: string,
-  init?: FetchInit,
-): Promise<string> => {
-  init = makeInit(init);
-  try {
-    const res = await fetch(url, init);
-    if (!res.ok) {
-      throw new Error();
-    }
-    const blob = await res.blob();
-    return await new Promise((resolve, reject) => {
-      const fr = new FileReader();
-      fr.onloadend = () => {
-        resolve(fr.result.slice(FILE_READER_PREFIX_LENGTH) as string);
-      };
-      fr.onerror = () => reject();
-      fr.onabort = () => reject();
-      fr.readAsDataURL(blob);
-    });
-  } catch (e) {
-    return '';
-  }
-};
-
 export const downloadFile = async (
   url: string,
   destPath: string,
