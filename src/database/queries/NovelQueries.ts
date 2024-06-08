@@ -3,7 +3,7 @@ const db = SQLite.openDatabase('lnreader.db');
 
 import * as DocumentPicker from 'expo-document-picker';
 
-import { fetchImage, fetchNovel } from '@services/plugin/fetch';
+import { fetchNovel } from '@services/plugin/fetch';
 import { insertChapters } from './ChapterQueries';
 
 import { showToast } from '@utils/showToast';
@@ -14,6 +14,8 @@ import { BackupNovel, NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import FileManager from '@native/FileManager';
+import { downloadFile } from '@plugins/helpers/fetch';
+import { getPlugin } from '@plugins/pluginManager';
 
 export const insertNovelAndChapters = async (
   pluginId: string,
@@ -43,27 +45,25 @@ export const insertNovelAndChapters = async (
     });
   });
   if (novelId) {
-    const promises = [insertChapters(novelId, sourceNovel.chapters)];
     if (sourceNovel.cover) {
       const novelDir = NOVEL_STORAGE + '/' + pluginId + '/' + novelId;
       await FileManager.mkdir(novelDir);
-      const novelCoverUri = 'file://' + novelDir + '/cover.png';
-      promises.push(
-        fetchImage(pluginId, sourceNovel.cover).then(base64 => {
-          if (base64) {
-            FileManager.writeFile(novelCoverUri, base64, 'base64').then(() => {
-              db.transaction(tx => {
-                tx.executeSql('UPDATE Novel SET cover = ? WHERE id = ?', [
-                  novelCoverUri,
-                  novelId,
-                ]);
-              });
-            });
-          }
-        }),
-      );
+      const novelCoverPath = novelDir + '/cover.png';
+      const novelCoverUri = 'file://' + novelCoverPath;
+      downloadFile(
+        sourceNovel.cover,
+        novelCoverPath,
+        getPlugin(pluginId)?.imageRequestInit,
+      ).then(() => {
+        db.transaction(tx => {
+          tx.executeSql('UPDATE Novel SET cover = ? WHERE id = ?', [
+            novelCoverUri,
+            novelId,
+          ]);
+        });
+      });
     }
-    await Promise.all(promises);
+    await insertChapters(novelId, sourceNovel.chapters);
   }
   return novelId;
 };

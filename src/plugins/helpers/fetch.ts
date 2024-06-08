@@ -1,4 +1,5 @@
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
+import FileManager from '@native/FileManager';
 import { parse as parseProto } from 'protobufjs';
 
 type FetchInit = {
@@ -78,6 +79,21 @@ export const fetchFile = async (
   } catch (e) {
     return '';
   }
+};
+
+export const downloadFile = async (
+  url: string,
+  destPath: string,
+  init?: FetchInit,
+): Promise<void> => {
+  init = makeInit(init);
+  return FileManager.downloadFile(
+    url,
+    destPath,
+    init.method || 'get',
+    init.headers as Record<string, string>,
+    init.body?.toString(),
+  );
 };
 
 /**

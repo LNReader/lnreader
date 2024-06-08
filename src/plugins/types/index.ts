@@ -55,7 +55,15 @@ export interface PluginItem {
   hasUpdate?: boolean;
 }
 
+export interface ImageRequestInit {
+  [x: string]: string | Record<string, string> | Headers | FormData | undefined;
+  method?: string;
+  headers?: Record<string, string>;
+  body?: string;
+}
+
 export interface Plugin extends PluginItem {
+  imageRequestInit?: ImageRequestInit;
   filters?: Filters;
   popularNovels: (
     pageNo: number,
@@ -65,7 +73,6 @@ export interface Plugin extends PluginItem {
   parsePage?: (novelPath: string, page: string) => Promise<SourcePage>;
   parseChapter: (chapterPath: string) => Promise<string>;
   searchNovels: (searchTerm: string, pageNo: number) => Promise<NovelItem[]>;
-  fetchImage: (url: string) => Promise<string>;
   resolveUrl?: (path: string, isNovel?: boolean) => string;
   webStorageUtilized?: boolean;
 }

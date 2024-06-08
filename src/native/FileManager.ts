@@ -7,11 +7,7 @@ interface ReadDirResult {
 }
 
 interface FileManagerInterface {
-  writeFile: (
-    path: string,
-    content: string,
-    encoding?: 'utf8' | 'base64',
-  ) => Promise<void>;
+  writeFile: (path: string, content: string) => Promise<void>;
   readFile: (path: string) => Promise<string>;
   resolveExternalContentUri: (uriString: string) => Promise<string | null>;
   copyFile: (sourcePath: string, destPath: string) => Promise<void>;
@@ -21,17 +17,17 @@ interface FileManagerInterface {
   unlink: (filePath: string) => Promise<void>; // remove recursively
   readDir: (dirPath: string) => Promise<ReadDirResult[]>; // file/sub-folder names
   pickFolder: () => Promise<string | null>; // return path of folderc
+  downloadFile: (
+    url: string,
+    destPath: string,
+    method: string,
+    headers: Record<string, string> | Headers,
+    body?: string,
+  ) => Promise<void>;
   ExternalDirectoryPath: string;
   ExternalCachesDirectoryPath: string;
 }
 
 const { FileManager } = NativeModules;
 
-const _FileManager = {
-  ...FileManager,
-  writeFile: (path: string, destPath: string, encoding?: 'utf8' | 'base64') => {
-    return FileManager.writeFile(path, destPath, encoding || null);
-  },
-};
-
-export default _FileManager as FileManagerInterface;
+export default FileManager as FileManagerInterface;
