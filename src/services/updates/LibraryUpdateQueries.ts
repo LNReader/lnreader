@@ -85,7 +85,14 @@ const updateNovelChapters = (
   return new Promise((resolve, reject) => {
     db.transaction(async tx => {
       for (let position = 0; position < chapters.length; position++) {
-        const { name, path, releaseTime, chapterNumber } = chapters[position];
+        const {
+          name,
+          path,
+          releaseTime,
+          page: customPage,
+          chapterNumber,
+        } = chapters[position];
+        const chapterPage = page || customPage || '1';
         tx.executeSql(
           `
             INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, chapterNumber, page, position)
@@ -98,7 +105,7 @@ const updateNovelChapters = (
             releaseTime || null,
             novelId,
             chapterNumber || null,
-            page || '1',
+            chapterPage,
             position,
             path,
             novelId,
@@ -120,13 +127,13 @@ const updateNovelChapters = (
                 [
                   name,
                   releaseTime || null,
-                  page || '1',
+                  chapterPage,
                   position,
                   path,
                   novelId,
                   name,
                   releaseTime || null,
-                  page || '1',
+                  chapterPage,
                   position,
                 ],
                 undefined,
