@@ -14,14 +14,15 @@ import { getString } from '@strings/translations';
 import AddRepositoryModal from './components/AddRepositoryModal';
 import CategorySkeletonLoading from '@screens/Categories/components/CategorySkeletonLoading';
 import RepositoryCard from './components/RepositoryCard';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const SettingsBrowseScreen = () => {
   const navigation = useNavigation();
   const theme = useTheme();
+  const { bottom } = useSafeAreaInsets();
 
   const [isLoading, setIsLoading] = useState(true);
   const [repositories, setRepositories] = useState<Repository[]>();
-
   const getRepositories = async () => {
     try {
       let res = await getRepositoriesFromDb();
@@ -71,7 +72,10 @@ const SettingsBrowseScreen = () => {
         />
       )}
       <FAB
-        style={[styles.fab, { backgroundColor: theme.primary }]}
+        style={[
+          styles.fab,
+          { backgroundColor: theme.primary, bottom: bottom + 16 },
+        ]}
         color={theme.onPrimary}
         label={getString('common.add')}
         uppercase={false}
@@ -96,7 +100,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     margin: 16,
     right: 0,
-    bottom: 16,
   },
   contentCtn: {
     flexGrow: 1,
