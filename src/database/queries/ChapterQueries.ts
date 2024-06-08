@@ -12,6 +12,7 @@ import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
+import { downloadFile } from '@plugins/helpers/fetch';
 
 const db = SQLite.openDatabase('lnreader.db');
 const insertChapterQuery = `
@@ -260,13 +261,12 @@ const downloadFiles = async (
       const elem = loadedCheerio(imgs[i]);
       const url = elem.attr('src');
       if (url) {
-        const imageb64 = await plugin.fetchImage(url);
         const fileurl = folder + i + '.b64.png';
         elem.attr('src', `file://${fileurl}`);
-        FileManager.writeFile(fileurl, imageb64, 'base64');
+        await downloadFile(url, fileurl, plugin.imageRequestInit);
       }
     }
-    FileManager.writeFile(folder + 'index.html', loadedCheerio.html());
+    await FileManager.writeFile(folder + 'index.html', loadedCheerio.html());
   } catch (error) {
     throw error;
   }

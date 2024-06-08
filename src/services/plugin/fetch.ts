@@ -10,14 +10,6 @@ export const fetchNovel = async (pluginId: string, novelPath: string) => {
   return res;
 };
 
-export const fetchImage = async (pluginId: string, imageUrl: string) => {
-  const plugin = getPlugin(pluginId);
-  if (!plugin) {
-    throw new Error(`Unknown plugin: ${pluginId}`);
-  }
-  return plugin.fetchImage(imageUrl);
-};
-
 export const fetchChapter = async (pluginId: string, chapterPath: string) => {
   const plugin = getPlugin(pluginId);
   let chapterText = `Unkown plugin: ${pluginId}`;

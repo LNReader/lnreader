@@ -1,11 +1,12 @@
-import { fetchImage, fetchNovel, fetchPage } from '../plugin/fetch';
+import { fetchNovel, fetchPage } from '../plugin/fetch';
 import { downloadChapter } from '../../database/queries/ChapterQueries';
 
 import * as SQLite from 'expo-sqlite';
 import { ChapterItem, SourceNovel } from '@plugins/types';
-import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
+import { getPlugin, LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
+import { downloadFile } from '@plugins/helpers/fetch';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = (
@@ -21,16 +22,14 @@ const updateNovelMetadata = (
       await FileManager.mkdir(novelDir);
     }
     if (cover) {
-      const novelCoverUri = 'file://' + novelDir + '/cover.png';
-      await fetchImage(pluginId, cover)
-        .then(base64 => {
-          if (base64) {
-            cover = novelCoverUri;
-            return FileManager.writeFile(novelCoverUri, base64, 'base64');
-          }
-        })
-        .catch(reject);
-      cover += '?' + Date.now();
+      const novelCoverPath = novelDir + '/cover.png';
+      const novelCoverUri = 'file://' + novelCoverPath;
+      await downloadFile(
+        cover,
+        novelCoverPath,
+        getPlugin(pluginId)?.imageRequestInit,
+      );
+      cover = novelCoverUri + '?' + Date.now();
     }
     db.transaction(tx => {
       tx.executeSql(

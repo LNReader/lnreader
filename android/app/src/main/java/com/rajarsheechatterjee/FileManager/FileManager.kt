@@ -6,22 +6,36 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
-import android.util.Base64
 import com.facebook.react.bridge.BaseActivityEventListener
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
+import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
-import kotlinx.coroutines.MainScope
+import com.facebook.react.modules.network.CookieJarContainer
+import com.facebook.react.modules.network.ForwardingCookieHandler
+import com.facebook.react.modules.network.OkHttpClientProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Headers
+import okhttp3.JavaNetCookieJar
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
+import okio.buffer
+import okio.sink
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
+import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -31,8 +45,9 @@ class FileManager(context: ReactApplicationContext) :
         return "FileManager"
     }
 
+    private val okHttpClient = OkHttpClientProvider.createClient()
     private var _promise: Promise? = null
-    private val coroutineScope = MainScope()
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private val activityEventListener = object : BaseActivityEventListener() {
         override fun onActivityResult(
             activity: Activity?,
@@ -60,6 +75,9 @@ class FileManager(context: ReactApplicationContext) :
 
     init {
         context.addActivityEventListener(activityEventListener)
+        val cookieContainer = okHttpClient.cookieJar as CookieJarContainer
+        val cookieHandler = ForwardingCookieHandler(reactApplicationContext)
+        cookieContainer.setCookieJar(JavaNetCookieJar(cookieHandler))
     }
 
     private fun getFileUri(filepath: String): Uri {
@@ -91,18 +109,11 @@ class FileManager(context: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun writeFile(path: String, content: String, encoding: String?, promise: Promise) {
+    fun writeFile(path: String, content: String, promise: Promise) {
         try {
-            if (encoding == null || encoding == "utf8") {
-                val fw = FileWriter(path)
-                fw.write(content)
-                fw.close()
-            } else {
-                val bytes = Base64.decode(content, Base64.DEFAULT)
-                val os = getOutputStream(path)
-                os.write(bytes)
-                os.close()
-            }
+            val fw = FileWriter(path)
+            fw.write(content)
+            fw.close()
             promise.resolve(null)
         } catch (e: Exception) {
             promise.reject(e)
@@ -147,7 +158,7 @@ class FileManager(context: ReactApplicationContext) :
         onDone: (() -> Unit)? = null,
         promise: Promise? = null
     ) {
-        coroutineScope.launch {
+        coroutineScope.launch(Dispatchers.IO) {
             val inputStream = getInputStream(filepath)
             val outputStream = getOutputStream(destPath)
             val buffer = ByteArray(1024)
@@ -179,7 +190,7 @@ class FileManager(context: ReactApplicationContext) :
     fun mkdir(filepath: String, promise: Promise) {
         try {
             val file = File(filepath)
-            if(!file.exists()){
+            if (!file.exists()) {
                 val created = file.mkdirs()
                 if (!created) throw Exception("Directory could not be created")
             }
@@ -269,6 +280,53 @@ class FileManager(context: ReactApplicationContext) :
         _promise = promise
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
         currentActivity?.startActivityForResult(intent, FOLDER_PICKER_REQUEST)
+    }
+
+    @ReactMethod
+    fun downloadFile(
+        url: String,
+        destPath: String,
+        method: String,
+        headers: ReadableMap,
+        body: String?,
+        promise: Promise
+    ) {
+        coroutineScope.launch {
+            try {
+                val headersBuilder = Headers.Builder()
+                headers.entryIterator.forEach { entry ->
+                    headersBuilder.add(entry.key, entry.value.toString())
+                }
+                val requestBuilder = Request.Builder()
+                    .url(url)
+                    .headers(headersBuilder.build())
+                if (method.lowercase() == "get") {
+                    requestBuilder.get()
+                } else if (body != null) {
+                    requestBuilder.post(body.toRequestBody())
+                }
+
+                okHttpClient.newCall(requestBuilder.build())
+                    .enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            promise.reject(e)
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            if (!response.isSuccessful || response.body == null) {
+                                promise.reject(Exception("Failed to download load: ${response.code}"))
+                                return
+                            }
+                            val sink = File(destPath).sink().buffer()
+                            response.body!!.source().readAll(sink)
+                            sink.close()
+                            promise.resolve(null)
+                        }
+                    })
+            } catch (e: Exception) {
+                promise.reject(e)
+            }
+        }
     }
 
     companion object {

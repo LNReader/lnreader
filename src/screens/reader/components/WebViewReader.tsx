@@ -26,6 +26,7 @@ import { getBatteryLevelSync } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
+import { fetchFile } from '@plugins/helpers/fetch';
 
 type WebViewPostEvent = {
   type: string;
@@ -150,7 +151,11 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
             break;
           case 'error-img':
             if (event.data && typeof event.data === 'string') {
-              plugin?.fetchImage(event.data).then(base64 => {
+              fetchFile(event.data, {
+                method: plugin?.imageRequestInit?.method,
+                headers: plugin?.imageRequestInit?.headers,
+                body: plugin?.imageRequestInit?.body,
+              }).then(base64 => {
                 webViewRef.current?.injectJavaScript(
                   `document.querySelector("img[error-src='${event.data}']").src="data:image/jpg;base64,${base64}"`,
                 );
