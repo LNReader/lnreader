@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - master
+      - dev
+      - test
+    workflow_dispatch:
 jobs:
   build-android:
     name: Build App
@@ -25,7 +28,7 @@ jobs:
           key: ${{ runner.os }}-cache-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-cache-npm-
-    
+
       - name: Install Dependencies
         run: |
           npm install
@@ -94,7 +97,7 @@ jobs:
           sed -i 's/LNReader/LNReader-r${{ env.COMMIT_COUNT }}(${{ env.COMMIT_ID }})/g' android/app/src/main/res/values/strings.xml
           cd android && ./gradlew assembleRelease --no-daemon -PcustomAppId=com.rajarsheechatterjee.LNReader.commit_${{ env.COMMIT_ID }}
           mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/LNReader-r${{ env.COMMIT_COUNT }}\(${{ env.COMMIT_ID }}\)-customID.apk
-  
+
       - name: Upload Custom APK
         env:
           COMMIT_COUNT: ${{ env.COMMIT_COUNT }}
