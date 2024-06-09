@@ -5,7 +5,7 @@ on:
       - master
       - dev
       - test
-    workflow_dispatch:
+  workflow_dispatch:
 jobs:
   build-android:
     name: Build App
