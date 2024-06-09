@@ -29,15 +29,17 @@ import okhttp3.JavaNetCookieJar
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import okio.buffer
-import okio.sink
 import java.io.BufferedReader
 import java.io.File
+import java.io.FileOutputStream
 import java.io.FileReader
 import java.io.FileWriter
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import java.io.PushbackInputStream
+import java.util.zip.GZIPInputStream
+
 
 class FileManager(context: ReactApplicationContext) :
     ReactContextBaseJavaModule(context) {
@@ -45,6 +47,7 @@ class FileManager(context: ReactApplicationContext) :
         return "FileManager"
     }
 
+    private val BUFFER_SIZE = 4096
     private val okHttpClient = OkHttpClientProvider.createClient()
     private var _promise: Promise? = null
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
@@ -282,6 +285,15 @@ class FileManager(context: ReactApplicationContext) :
         currentActivity?.startActivityForResult(intent, FOLDER_PICKER_REQUEST)
     }
 
+    private fun decompressStream(input: InputStream?): InputStream {
+        val pb = PushbackInputStream(input, 2)
+        val signature = ByteArray(2)
+        val len = pb.read(signature)
+        pb.unread(signature, 0, len)
+        return if (signature[0] == 0x1f.toByte() && signature[1] == 0x8b.toByte())
+            GZIPInputStream(pb) else pb
+    }
+
     @ReactMethod
     fun downloadFile(
         url: String,
@@ -317,10 +329,15 @@ class FileManager(context: ReactApplicationContext) :
                                 promise.reject(Exception("Failed to download load: ${response.code}"))
                                 return
                             }
-                            val sink = File(destPath).sink().buffer()
-                            response.body!!.source().readAll(sink)
-                            sink.close()
-                            promise.resolve(null)
+                            try {
+                                val inputStream = decompressStream(response.body!!.byteStream())
+                                FileOutputStream(destPath).use { fos ->
+                                    inputStream.copyTo(fos, BUFFER_SIZE)
+                                }
+                                promise.resolve(null)
+                            } catch (e: Exception) {
+                                promise.reject(e)
+                            }
                         }
                     })
             } catch (e: Exception) {
