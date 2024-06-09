@@ -1,11 +1,12 @@
-import { fetchImage, fetchNovel, fetchPage } from '../plugin/fetch';
+import { fetchNovel, fetchPage } from '../plugin/fetch';
 import { downloadChapter } from '../../database/queries/ChapterQueries';
 
 import * as SQLite from 'expo-sqlite';
 import { ChapterItem, SourceNovel } from '@plugins/types';
-import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
-import { NovelDownloadFolder } from '@utils/constants/download';
-import * as RNFS from 'react-native-fs';
+import { getPlugin, LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
+import FileManager from '@native/FileManager';
+import { NOVEL_STORAGE } from '@utils/Storages';
+import { downloadFile } from '@plugins/helpers/fetch';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = (
@@ -16,21 +17,19 @@ const updateNovelMetadata = (
   return new Promise(async (resolve, reject) => {
     let { name, cover, summary, author, artist, genres, status, totalPages } =
       novel;
-    const novelDir = NovelDownloadFolder + '/' + pluginId + '/' + novelId;
-    if (!(await RNFS.exists(novelDir))) {
-      await RNFS.mkdir(novelDir);
+    const novelDir = NOVEL_STORAGE + '/' + pluginId + '/' + novelId;
+    if (!(await FileManager.exists(novelDir))) {
+      await FileManager.mkdir(novelDir);
     }
     if (cover) {
-      const novelCoverUri = 'file://' + novelDir + '/cover.png';
-      await fetchImage(pluginId, cover)
-        .then(base64 => {
-          if (base64) {
-            cover = novelCoverUri;
-            return RNFS.writeFile(novelCoverUri, base64, 'base64');
-          }
-        })
-        .catch(reject);
-      cover += '?' + Date.now();
+      const novelCoverPath = novelDir + '/cover.png';
+      const novelCoverUri = 'file://' + novelCoverPath;
+      await downloadFile(
+        cover,
+        novelCoverPath,
+        getPlugin(pluginId)?.imageRequestInit,
+      );
+      cover = novelCoverUri + '?' + Date.now();
     }
     db.transaction(tx => {
       tx.executeSql(
@@ -86,7 +85,14 @@ const updateNovelChapters = (
   return new Promise((resolve, reject) => {
     db.transaction(async tx => {
       for (let position = 0; position < chapters.length; position++) {
-        const { name, path, releaseTime, chapterNumber } = chapters[position];
+        const {
+          name,
+          path,
+          releaseTime,
+          page: customPage,
+          chapterNumber,
+        } = chapters[position];
+        const chapterPage = page || customPage || '1';
         tx.executeSql(
           `
             INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, chapterNumber, page, position)
@@ -99,7 +105,7 @@ const updateNovelChapters = (
             releaseTime || null,
             novelId,
             chapterNumber || null,
-            page || '1',
+            chapterPage,
             position,
             path,
             novelId,
@@ -121,13 +127,13 @@ const updateNovelChapters = (
                 [
                   name,
                   releaseTime || null,
-                  page || '1',
+                  chapterPage,
                   position,
                   path,
                   novelId,
                   name,
                   releaseTime || null,
-                  page || '1',
+                  chapterPage,
                   position,
                 ],
                 undefined,

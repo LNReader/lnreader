@@ -1,19 +1,144 @@
 {
+  "aboutScreen": {
+    "discord": "Discord",
+    "github": "Github",
+    "helpTranslate": "Aidez à traduire",
+    "sources": "Sources",
+    "version": "Version",
+    "whatsNew": "Quoi de neuf"
+  },
+  "advancedSettings": "Avancé",
   "advancedSettingsScreen": {
+    "cachedNovelsDeletedToast": "Cached novels deleted",
+    "chapterInsertFailed": "chapter insert failed",
+    "clearCachedNovels": "Clear cached novels",
+    "clearCachedNovelsDesc": "Delete cached novels which not in your library",
+    "clearDatabaseWarning": "Are you sure? Read and Downloaded chapters and progress of non-library novels will be lost.",
+    "clearUpdatesMessage": "Updates cleared.",
+    "clearUpdatesTab": "Clear updates tab",
+    "clearUpdatesWarning": "Are you sure? Updates tab will be cleared.",
+    "clearupdatesTabDesc": "Clears chapter entries in updates tab",
+    "dataManagement": "Data Management",
     "deleteReadChapters": "Supprimer les chapitres lus",
-    "deleteReadChaptersDialogTitle": "Êtes-vous sûr? Tous les chapitres marqués comme lus seront supprimés"
+    "deleteReadChaptersDialogTitle": "Êtes-vous sûr? Tous les chapitres marqués comme lus seront supprimés",
+    "importEpub": "Importer Epub",
+    "importError": "Erreur d'importation",
+    "importNovel": "Importer un roman",
+    "importStaticFiles": "Import Static Files",
+    "novelInsertFailed": "novel insert failed",
+    "parseEpub": "Parse Epub",
+    "useFAB": "Use FAB instead of button",
+    "userAgent": "User Agent"
+  },
+  "appearance": "Apparence",
+  "appearanceScreen": {
+    "accentColor": "Accent Color",
+    "alwaysShowNavLabels": "Toujours afficher les étiquettes de navigation",
+    "appTheme": "Theme",
+    "darkTheme": "Sombre",
+    "hideBackdrop": "Hide backdrop",
+    "lightTheme": "Clair",
+    "navbar": "Barre de navigation",
+    "novelInfo": "Novel info",
+    "pureBlackDarkMode": "Mode noir pur",
+    "showHistoryInTheNav": "Afficher l'historique dans la navigation",
+    "showUpdatesInTheNav": "Afficher les mises à jour dans la navigation",
+    "theme": {
+      "default": "Défaut",
+      "lavender": "Lavande",
+      "midnightDusk": "Crépuscule de minuit",
+      "daybreakBloom": "Daybreak Bloom",
+      "strawberry": "Daiquiri aux fraises",
+      "tako": "Tako",
+      "teal": "Teal",
+      "turquoise": "Turquoise",
+      "yotsuba": "Yotsuba"
+    }
+  },
+  "backupScreen": {
+    "backupName": "Backup name",
+    "createBackup": "Créer une sauvegarde",
+    "createBackupDesc": "Peut être utilisé pour restaurer la bibliothèque actuelle",
+    "createBackupWarning": "Créer une sauvegarde peut ne pas fonctionner sur les appareils équipés d'Android 9 ou d'une version antérieure.",
+    "downloadingData": "Téléchargement de données",
+    "downloadingDownloadedFiles": "Downloading Downloaded files",
+    "drive": {
+      "backup": "Drive Backup",
+      "backupInterruped": "Drive Backup Interruped",
+      "googleDriveBackup": "Google Drive Backup",
+      "restore": "Drive Restore",
+      "restoreInterruped": "Drive Restore Interruped"
+    },
+    "googeDrive": "Googe Drive",
+    "googeDriveDesc": "Sauvegarde sur votre Google Drive",
+    "invalidBackupFolder": "Dossier de sauvegarde invalide",
+    "legacy": {
+      "backupCreated": "Backup created %{fileName}",
+      "libraryRestored": "Bibliothèque restaurée",
+      "noAvailableBackup": "There's no available backup",
+      "noErrorNovel": "There's no error novel",
+      "novelsRestored": "%{num} novels restored",
+      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
+      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+    },
+    "legacyBackup": "Legacy Backup",
+    "noBackupFound": "Aucune sauvegarde trouvée",
+    "noDataProvided": "No data provided",
+    "preparingData": "Preparing Data",
+    "remote": {
+      "backup": "Self Host Backup",
+      "backupInterruped": "Self Host Backup Interruped",
+      "host": "Host",
+      "restore": "Self Host Restore",
+      "restoreInterruped": "Self Host Restore Interruped",
+      "unknownHost": "Unknown host"
+    },
+    "remoteBackup": "Remote Backup",
+    "restoreBackup": "Restore backup",
+    "restoreBackupDesc": "Restore library from backup file",
+    "restoreError": "Restore error",
+    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
+    "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
+    "restorinBackup": "Restoring backup",
+    "restoringData": "Restoring Data",
+    "selfHost": "Self Host",
+    "selfHostDesc": "Backup to your server",
+    "uploadingData": "Uploading Data",
+    "uploadingDownloadedFiles": "Uploading Downloaded files"
   },
   "browse": "Parcourir",
   "browseScreen": {
     "addedToLibrary": "Ajouté à la bibliothèque",
+    "available": "Disponible",
     "discover": "Découvrir",
     "globalSearch": "Recherche globale",
+    "installFailed": "L'installation a échoué: %{name}",
+    "installed": "Installé",
+    "installedPlugin": "Installé %{name}",
+    "installedPlugins": "Plugins installés",
     "lastUsed": "Dernière utilisation",
     "latest": "Dernier",
     "listEmpty": "Activer les langues à partir des paramètres",
+    "migration": {
+      "anotherServiceIsRunning": "Another service is running",
+      "dialogMessage": "Migrate %{url}?",
+      "migratingToNewSource": "Migrating %{name} to new source",
+      "migrationError": "Migration error",
+      "novelAlreadyInLibrary": "Novel already in library",
+      "novelMigrated": "Novel Migrated",
+      "selectSource": "Select Source",
+      "selectSourceDesc": "Select a Source To Migrate From"
+    },    
+    "noSource": "Your library does not have any novels from this source",
     "pinned": "Épinglé",
+    "pluginsHostError": "Plugins host error",
     "removeFromLibrary": "Supprimé de la bibliothèque",
-    "searchbar": "Rechercher des sources"
+    "searchbar": "Rechercher des sources",
+    "selectNovel": "Sélectionnez un roman",
+    "tryAgain": "Réessayez dans un instant",
+    "uninstalledPlugin": "Désinstallé %{name}",
+    "updateFailed": "Mise à jour échouée",
+    "updatedTo": "Mis à jour %{version}"
   },
   "browseSettings": "Parcourir les paramètres",
   "browseSettingsScreen": {
@@ -24,6 +149,8 @@
   },
   "categories": {
     "addCategories": "Ajouter une catégorie",
+    "cantDeleteDefault": "You cant delete default category",
+    "default": "Défaut",
     "defaultCategory": "Catégorie par défaut",
     "deleteModal": {
       "desc": "Voulez-vous supprimer cette catégorie",
@@ -33,33 +160,61 @@
     "editCategories": "Renommer la catégorie",
     "emptyMsg": "Vous n'avez pas de catégories. Appuyez sur le bouton + pour en créer une pour organiser votre bibliothèque",
     "header": "Modifier les catégories",
+    "local": "Local",
     "setCategories": "Définir les catégories",
     "setModalEmptyMsg": "Vous n'avez pas de catégories. Appuyez sur le bouton Modifier pour en créer une pour organiser votre bibliothèque"
   },
   "common": {
+    "about": "À propos",
     "add": "Ajouter",
     "all": "Tout",
+    "backup": "Sauvegarde",
     "cancel": "Annuler",
     "categories": "Catégories",
     "chapters": "Chapitres",
     "clear": "Nettoyez",
+    "copiedToClipboard": "Copié dans le presse-papier: %{name}",
+    "delete": "Supprimer",
+    "deleted": "Supprimer %{name}",
+    "deprecated": "Obsolète",
     "display": "Afficher",
+    "done": "Done",
+    "downloads": "Téléchargements",
     "edit": "Modifier",
+    "example": "Exemple",
     "filter": "Filtre",
     "globally": "globalement",
     "install": "Installer",
+    "logout": "Se déconnecter",
     "name": "Nom",
     "newUpdateAvailable": "Nouvelle mise à jour disponible",
     "ok": "Ok",
+    "parsing": "Parsing",
+    "pause": "Pause",
+    "preparing": "Preparing",
+    "remove": "Retirer",
     "reset": "Réinitialiser",
+    "resume": "Resume",
     "retry": "Réessayer",
     "save": "Sauvegarder",
     "search": "Recherchez",
     "searchFor": "Rechercher",
     "searchResults": "Résultats de la recherche",
     "settings": "Paramètres",
+    "show": "Show",
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter",
     "sort": "Trier",
     "submit": "Soumettre"
+  },
+  "webview": {
+    "refresh": "Actualiser",
+    "share": "Partager",
+    "openInBrowser": "Ouvrir dans le navigateur",
+    "clearCookies": "Effacer les cookies",
+    "cookiesCleared": "Cookies cleared",
+    "clearData": "Effacer les données WebView",
+    "dataDeleted": "WebView data cleared"
   },
   "date": {
     "calendar": {
@@ -70,10 +225,22 @@
     }
   },
   "downloadScreen": {
+    "cancelDownloads": "Cancel downloads",
+    "cancelled": "Downloads cancelled.",
+    "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
+    "chapterName": "Chapter: %{name}",
+    "completed": "Download completed",
     "dbInfo": "Les téléchargements sont enregistrés dans une base de données SQLite.",
     "downloadChapters": "chapitres téléchargés",
+    "downloader": "Downloader",
+    "downloading": "Downloading",
+    "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "télécharger",
-    "noDownloads": "Aucun téléchargement"
+    "failed": "Download failed: %{message}",
+    "noDownloads": "Aucun téléchargement",
+    "pluginNotFound": "Plugin not found!",
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
+    "serviceRunning": "Another service is running. Queued chapters"
   },
   "generalSettings": "Général",
   "generalSettingsScreen": {
@@ -89,6 +256,8 @@
     "epubLocation": "Localisation EPUB",
     "epubLocationDescription": "L'endroit où vous ouvrez et exportez vos fichiers EPUB.",
     "globalUpdate": "Mise à jour globale",
+    "gridSize": "Taille de la grille",
+    "gridSizeDesc": "%{num} par ligne",
     "itemsPerRow": "Élément par ligne",
     "itemsPerRowLibrary": "Éléments par ligne dans la bibliothèque",
     "jumpToLastReadChapter": "Jump to last read chapter in list",
@@ -97,7 +266,9 @@
     "novelSort": "Trier les romans",
     "refreshMetadata": "Rafraîchir automatiquement les métadonnées",
     "refreshMetadataDescription": "Vérifier la nouvelle couverture et les détails lors de la mise à jour de la bibliothèque",
+    "sortOrder": "Ordre de tri",
     "updateLibrary": "Mettre à jour la bibliothèque au lancement",
+    "updateLibraryDesc": "Non recommandé pour les appareils ????",
     "updateOngoing": "Ne mettre à jour que les romans en cours",
     "updateTime": "Afficher la date de dernière mise à jour",
     "useFAB": "Utiliser FAB dans la bibliothèque"
@@ -109,7 +280,10 @@
   },
   "history": "Historique",
   "historyScreen": {
+    "chapter": "Chapitre",
     "clearHistorWarning": "Êtes-vous sûr? Tout l'historique sera perdu.",
+    "deleted": "Historique supprimé.",
+    "nothingReadRecently": "Rien lu récemment",
     "searchbar": "Historique des recherches"
   },
   "library": "Bibliothèque",
@@ -120,24 +294,27 @@
         "comfortable": "Grille confortable",
         "compact": "Grille compacte",
         "displayMode": "Mode d'affichage",
+        "download": "Télécharger",
         "downloadBadges": "Télécharger les badges",
         "list": "Liste",
-        "noTitle": "Grille de couverture uniquement",
+        "noTitle": "Grille avec seulement la couverture",
+        "numberOfItems": "Nombre d'éléments",
         "showNoOfItems": "Afficher le nombre d'éléments",
+        "unread": "Non lu",
         "unreadBadges": "Badges non lus"
       },
       "filters": {
-        "completed": "Complété",
+        "completed": "Terminé",
         "downloaded": "Téléchargé",
         "started": "Commencé",
-        "unread": "Non lu"
+        "unread": "Non lus"
       },
       "sortOrders": {
         "alphabetically": "Alphabétiquement",
         "dateAdded": "Date ajoutée",
         "download": "Téléchargé",
-        "lastRead": "Dernière lecture",
-        "lastUpdated": "Dernière mise à jour",
+        "lastRead": "Dernière lu",
+        "lastUpdated": "Dernière vérification de mise à jour",
         "totalChapters": "Nombre total de chapitres",
         "unread": "Non lu"
       }
@@ -145,13 +322,32 @@
     "empty": "Votre bibliothèque est vide. Ajouter des séries à votre bibliothèque à partir de Parcourir",
     "searchbar": "Rechercher dans la bibliothèque"
   },
-  "more": "Suite",
+  "more": "Plus",
   "moreScreen": {
     "downloadOnly": "Téléchargés seulement",
-    "incognitoMode": "Navigation privée"
+    "downloadOnlyDesc": "Filtre tous les romans de votre bibliothèque",
+    "downloadQueue": "File de téléchargement",
+    "incognitoMode": "Navigation privée",
+    "incognitoModeDesc": "Suspend l'historique de lecture"
   },
   "novelScreen": {
     "addToLibaray": "Ajouter à la bibliothèque",
+    "bottomSheet": {
+      "displays": {
+        "chapterNumber": "Numéros du chapitre",
+        "sourceTitle": "Titre de la source"
+      },
+      "filters": {
+        "bookmarked": "Signet",
+        "downloaded": "Téléchargé",
+        "unread": "Non lu"
+      },
+      "order": {
+        "byChapterName": "Par nom de chapitre",
+        "bySource": "Par source"
+      }
+    },
+    "chapterChapnum": "Chapitre %{num}",
     "chapters": "chapitres",
     "continueReading": "Continuer la lecture",
     "convertToEpubModal": {
@@ -163,7 +359,28 @@
       "useCustomJSWarning": "Peut ne pas être supporté par tous les lecteurs d'EPUB",
       "useReaderTheme": "Utiliser le mode lecture"
     },
-    "inLibaray": "En bibliothèque",
+    "deleteChapterError": "Cant delete chapter chapter folder",
+    "deleteMessage": "Delete downloaded chapters?",
+    "deletedAllDownloads": "Deleted all Downloads",
+    "download": {
+      "custom": "Personnalisé",
+      "customAmount": "Télécharger un nombre personnalisé",
+      "delete": "Supprimer les téléchargements",
+      "next": "Chapitre suivant",
+      "next10": "10 chapitres suivants",
+      "next5": "5 chapitres suivants",
+      "unread": "Non lu"
+    },
+    "edit": {
+      "addTag": "Ajouté catégorie",
+      "author": "Auteur: %{author}",
+      "cover": "Modifier la couverture",
+      "info": "Modifier les informations",
+      "status": "Statut:",
+      "summary": "Résumé: %{summary}...",
+      "title": "Titre: %{title}"
+    },
+    "inLibaray": "Dans la bibliothèque",
     "jumpToChapterModal": {
       "chapterName": "Nom du Chapitre",
       "chapterNumber": "Numéro du chapitre",
@@ -175,7 +392,23 @@
       "openChapter": "Ouvrir le chapitre"
     },
     "migrate": "Migrer",
-    "noSummary": "Aucun résumé"
+    "noSummary": "Aucun résumé",
+    "progress": "Progress %{progress} %",
+    "readChaptersDeleted": "Read chapters deleted",
+    "startReadingChapters": "Start reading %{name}",
+    "status": {
+      "cancelled": "Annulé",
+      "completed": "Complet",
+      "licensed": "Licensed",
+      "onHiatus": "En pause",
+      "ongoing": "En cours",
+      "publishingFinished": "Publishing Finished",
+      "unknown": "Inconnu"
+    },
+    "tracked": "Tracked",
+    "tracking": "Suivi",
+    "unknownStatus": "Statut inconnu",
+    "updatedToast": "Mis à jour %{name}"
   },
   "readerScreen": {
     "bottomSheet": {
@@ -205,8 +438,11 @@
       "scrollToCurrentChapter": "Défiler vers le chapitre actuel",
       "scrollToTop": "Défiler jusqu'en haut"
     },
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p>",
     "finished": "Terminé",
-    "noNextChapter": "Il n'y a pas de prochain chapitre"
+    "nextChapter": "Suivant: %{name}",
+    "noNextChapter": "Il n'y a pas de chapitre suivant",
+    "noPreviousChapter": "Il n'y a pas de chapitre précédent"
   },
   "readerSettings": {
     "autoScrollInterval": "Intervalle du scroll automatique (en secondes)",
@@ -238,18 +474,30 @@
     "downloadedChapters": "Chapitres téléchargés",
     "genreDistribution": "Répartition par genres",
     "readChapters": "Chapitres Lu",
+    "sources": "Sources",
     "statusDistribution": "Répartition de l'état",
     "title": "Statistiques",
     "titlesInLibrary": "Titres dans la bibliothèque",
     "totalChapters": "Nombre total de chapitres",
     "unreadChapters": "Chapitres non lus"
   },
+  "tracking": "Suivi",
+  "trackingScreen": {
+    "logOutMessage": "Se déconnecter de %{name} ?",
+    "revalidate": "Revalider",
+    "services": "Services"
+  },
   "updates": "Mises à jour",
   "updatesScreen": {
+    "deletedChapters": "Deleted %{num} chapters",
     "emptyView": "Pas de mise à jour récente",
     "lastUpdatedAt": "Dernière mise à jour de la bibliothèque :",
+    "libraryUpdated": "Library Updated",
     "newChapters": "nouveaux Chapitres",
+    "novelsUpdated": "%{num} novels updated",
     "searchbar": "Rechercher des mises à jour",
-    "updatesLower": "mises à jour"
+    "unableToGetNovel": "Unable to get novel",
+    "updatesLower": "mises à jour",
+    "updatingLibrary": "Updating library"
   }
 }

@@ -3,12 +3,13 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "android": "react-native run-android --active-arch-only",
+    "android": "npm run prestart && react-native run-android --active-arch-only",
     "ios": "react-native run-ios",
+    "prestart": "node scripts/setEnvFile.cjs Debug",
     "start": "react-native start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
-    "buildRelease": "cd android && ./gradlew clean && ./gradlew assembleRelease",
+    "buildRelease": "node scripts/setEnvFile.cjs Release && cd android && ./gradlew clean && ./gradlew assembleRelease",
     "open": "open ./android/app/build/outputs/apk/release/",
     "strings": "node scripts/stringTypes.cjs",
     "prepare": "husky install"
@@ -49,7 +50,6 @@
     "react-native-device-info": "^8.4.7",
     "react-native-drawer-layout": "^3.2.2",
     "react-native-error-boundary": "^1.1.16",
-    "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "~2.12.0",
     "react-native-lottie-splash-screen": "^1.0.1",
     "react-native-mmkv": "^2.11.0",

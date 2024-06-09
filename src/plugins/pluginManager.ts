@@ -1,6 +1,4 @@
-import RNFS from 'react-native-fs';
 import { reverse, uniqBy } from 'lodash-es';
-import { PluginDownloadFolder } from '@utils/constants/download';
 import { newer } from '@utils/compareVersion';
 import { store } from './helpers/storage';
 
@@ -11,16 +9,17 @@ import qs from 'qs';
 import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
-import { fetchApi, fetchFile, fetchProto, fetchText } from './helpers/fetch';
+import { fetchApi, fetchProto, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
 import { Storage, LocalStorage, SessionStorage } from './helpers/storage';
 import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
-import TextFile from '@native/TextFile';
+import FileManager from '@native/FileManager';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
 import { showToast } from '@utils/showToast';
+import { PLUGIN_STORAGE } from '@utils/Storages';
 
-const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
+const pluginFilePath = PLUGIN_STORAGE + '/plugins.json';
 
 const packages: Record<string, any> = {
   'htmlparser2': { Parser },
@@ -29,7 +28,7 @@ const packages: Record<string, any> = {
   'qs': qs,
   'urlencode': { encode, decode },
   '@libs/novelStatus': { NovelStatus },
-  '@libs/fetch': { fetchApi, fetchFile, fetchText, fetchProto },
+  '@libs/fetch': { fetchApi, fetchText, fetchProto },
   '@libs/isAbsoluteUrl': { isUrlAbsolute },
   '@libs/filterInputs': { FilterTypes },
   '@libs/defaultCover': { defaultCover },
@@ -70,8 +69,8 @@ const serializePlugin = async (
   installed: boolean,
 ) => {
   if (!serializedPlugins) {
-    if (await RNFS.exists(pluginsFilePath)) {
-      const content = await TextFile.readFile(pluginsFilePath);
+    if (await FileManager.exists(pluginFilePath)) {
+      const content = await FileManager.readFile(pluginFilePath);
       serializedPlugins = JSON.parse(content);
     } else {
       serializedPlugins = {};
@@ -82,14 +81,17 @@ const serializePlugin = async (
   } else {
     serializedPlugins[pluginId] = undefined;
   }
-  if (!(await RNFS.exists(PluginDownloadFolder))) {
-    await RNFS.mkdir(PluginDownloadFolder);
+  if (!(await FileManager.exists(PLUGIN_STORAGE))) {
+    await FileManager.mkdir(PLUGIN_STORAGE);
   }
-  await TextFile.writeFile(pluginsFilePath, JSON.stringify(serializedPlugins));
+  await FileManager.writeFile(
+    pluginFilePath,
+    JSON.stringify(serializedPlugins),
+  );
 };
 
 const deserializePlugins = () => {
-  return TextFile.readFile(pluginsFilePath)
+  return FileManager.readFile(pluginFilePath)
     .then(content => {
       serializedPlugins = JSON.parse(content);
       Object.entries(serializedPlugins).forEach(([pluginId, script]) => {

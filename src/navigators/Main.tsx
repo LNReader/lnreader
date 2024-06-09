@@ -35,13 +35,15 @@ import { updateLibrary } from '@services/updates';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
 import Color from 'color';
-
+import { useMMKVBoolean } from 'react-native-mmkv';
+import OnboardingScreen from '@screens/onboarding/OnboardingScreen';
 const Stack = createStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
   const theme = useTheme();
   const { updateLibraryOnLaunch } = useAppSettings();
   const { refreshPlugins } = usePlugins();
+  const [isOnboarded] = useMMKVBoolean('IS_ONBOARDED');
 
   useEffect(() => {
     const timer = setTimeout(async () => {
@@ -58,10 +60,17 @@ const MainNavigator = () => {
     if (updateLibraryOnLaunch) {
       updateLibrary();
     }
-    refreshPlugins();
-  }, []);
+    if (isOnboarded) {
+      // hack this helps app has enough time to initialize database;
+      refreshPlugins();
+    }
+  }, [isOnboarded]);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
+
+  if (!isOnboarded) {
+    return <OnboardingScreen />;
+  }
 
   return (
     <NavigationContainer theme={{ colors: theme, dark: theme.isDark }}>
