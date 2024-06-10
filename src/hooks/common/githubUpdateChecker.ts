@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { appVersion } from '../../utils/versionUtils';
+import { version } from '../../../package.json';
 import { newer } from '@utils/compareVersion';
 
 interface GithubUpdate {
@@ -29,7 +29,7 @@ export const useGithubUpdateChecker = (): GithubUpdate => {
   };
 
   const isNewVersion = (versionTag: string) => {
-    let currentVersion = `${appVersion}`;
+    let currentVersion = `${version}`;
     const regex = /[^\\d.]/;
 
     let newVersion = versionTag.replace(regex, '');

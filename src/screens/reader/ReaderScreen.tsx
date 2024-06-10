@@ -10,7 +10,6 @@ import {
   NativeEventEmitter,
   DrawerLayoutAndroid,
 } from 'react-native';
-import * as RNFS from 'react-native-fs';
 import * as Speech from 'expo-speech';
 
 import VolumeButtonListener from '@native/volumeButtonListener';
@@ -49,10 +48,10 @@ import ChapterLoadingScreen from './ChapterLoadingScreen/ChapterLoadingScreen';
 import { ErrorScreenV2 } from '@components';
 import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
-import WebView, { WebViewNavigation } from 'react-native-webview';
-import { NovelDownloadFolder } from '@utils/constants/download';
+import WebView from 'react-native-webview';
 import { getString } from '@strings/translations';
-import TextFile from '@native/TextFile';
+import FileManager from '@native/FileManager';
+import { NOVEL_STORAGE } from '@utils/Storages';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
@@ -169,9 +168,9 @@ export const ChapterContent = ({
 
   const getChapter = async () => {
     try {
-      const filePath = `${NovelDownloadFolder}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
-      if (await RNFS.exists(filePath)) {
-        sourceChapter.chapterText = await TextFile.readFile(filePath);
+      const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
+      if (await FileManager.exists(filePath)) {
+        sourceChapter.chapterText = await FileManager.readFile(filePath);
       } else {
         await fetchChapter(novel.pluginId, chapter.path)
           .then(res => {
@@ -282,19 +281,6 @@ export const ChapterContent = ({
         );
   };
 
-  const onWebViewNavigationStateChange = async ({ url }: WebViewNavigation) => {
-    if (url !== 'about:blank') {
-      setLoading(true);
-      fetchChapter(novel.pluginId, chapter.path)
-        .then(res => {
-          sourceChapter.chapterText = res;
-          setChapter(sourceChapter);
-        })
-        .catch(e => setError(e.message))
-        .finally(() => setLoading(false));
-    }
-  };
-
   const chapterText = useMemo(
     () =>
       sanitizeChapterText(sourceChapter.chapterText, {
@@ -331,7 +317,7 @@ export const ChapterContent = ({
             title: 'WebView',
             onPress: () =>
               navigation.navigate('WebviewScreen', {
-                name: `${chapter.name} | ${novel.name}`,
+                name: novel.name,
                 url: chapter.path,
                 pluginId: novel.pluginId,
               }),
@@ -340,7 +326,6 @@ export const ChapterContent = ({
       />
     );
   }
-
   return (
     <>
       <WebViewReader
@@ -354,7 +339,6 @@ export const ChapterContent = ({
         }}
         onPress={hideHeader}
         navigateToChapterBySwipe={navigateToChapterBySwipe}
-        onWebViewNavigationStateChange={onWebViewNavigationStateChange}
       />
       <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       {!hidden ? (

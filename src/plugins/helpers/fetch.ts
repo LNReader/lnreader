@@ -1,4 +1,5 @@
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
+import FileManager from '@native/FileManager';
 import { parse as parseProto } from 'protobufjs';
 
 type FetchInit = {
@@ -49,35 +50,19 @@ export const fetchApi = async (
 const FILE_READER_PREFIX_LENGTH = 'data:application/octet-stream;base64,'
   .length;
 
-/**
- *
- * @param url
- * @param init
- * @returns base64 of file
- */
-export const fetchFile = async (
+export const downloadFile = async (
   url: string,
+  destPath: string,
   init?: FetchInit,
-): Promise<string> => {
+): Promise<void> => {
   init = makeInit(init);
-  try {
-    const res = await fetch(url, init);
-    if (!res.ok) {
-      throw new Error();
-    }
-    const blob = await res.blob();
-    return await new Promise((resolve, reject) => {
-      const fr = new FileReader();
-      fr.onloadend = () => {
-        resolve(fr.result.slice(FILE_READER_PREFIX_LENGTH) as string);
-      };
-      fr.onerror = () => reject();
-      fr.onabort = () => reject();
-      fr.readAsDataURL(blob);
-    });
-  } catch (e) {
-    return '';
-  }
+  return FileManager.downloadFile(
+    url,
+    destPath,
+    init.method || 'get',
+    init.headers as Record<string, string>,
+    init.body?.toString(),
+  );
 };
 
 /**

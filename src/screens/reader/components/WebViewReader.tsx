@@ -5,7 +5,7 @@ import {
   NativeModules,
   StatusBar,
 } from 'react-native';
-import WebView, { WebViewNavigation } from 'react-native-webview';
+import WebView from 'react-native-webview';
 import color from 'color';
 
 import { useTheme } from '@hooks/persisted';
@@ -46,12 +46,11 @@ type WebViewReaderProps = {
   onPress(): void;
   onLayout(): void;
   navigateToChapterBySwipe(name: string): void;
-  onWebViewNavigationStateChange({ url }: WebViewNavigation): void;
 };
 
 const WebViewReader: FC<WebViewReaderProps> = props => {
   const {
-    data,
+    data: { chapter, novel },
     html,
     nextChapter,
     webViewRef,
@@ -59,7 +58,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
     onPress,
     onLayout,
     navigateToChapterBySwipe,
-    onWebViewNavigationStateChange,
   } = props;
   const assetsUriPrefix = useMemo(
     () => (__DEV__ ? 'http://localhost:8081/assets' : 'file:///android_asset'),
@@ -68,7 +66,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
   const { RNDeviceInfo } = NativeModules;
   const deviceInfoEmitter = new NativeEventEmitter(RNDeviceInfo);
   const theme = useTheme();
-  const { novel, chapter } = data;
   const readerSettings = useMemo(
     () =>
       getMMKVObject<ChapterReaderSettings>(CHAPTER_READER_SETTINGS) ||
@@ -133,9 +130,9 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
       originWhitelist={['*']}
       scalesPageToFit={true}
       showsVerticalScrollIndicator={false}
-      onNavigationStateChange={onWebViewNavigationStateChange}
       javaScriptEnabled={true}
       onLayout={async () => onLayout()}
+      injectedJavaScriptObject={{ customValue: 'myCustomValue' }}
       onMessage={ev => {
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
@@ -147,15 +144,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
             break;
           case 'prev':
             navigateToChapterBySwipe('SWIPE_RIGHT');
-            break;
-          case 'error-img':
-            if (event.data && typeof event.data === 'string') {
-              plugin?.fetchImage(event.data).then(base64 => {
-                webViewRef.current?.injectJavaScript(
-                  `document.querySelector("img[error-src='${event.data}']").src="data:image/jpg;base64,${base64}"`,
-                );
-              });
-            }
             break;
           case 'save':
             if (event.data && typeof event.data === 'number') {
@@ -189,6 +177,10 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
         }
       }}
       source={{
+        baseUrl: plugin?.site,
+        headers: plugin?.imageRequestInit?.headers,
+        method: plugin?.imageRequestInit?.method,
+        body: plugin?.imageRequestInit?.body,
         html: `
                 <html>
                   <head>
@@ -229,7 +221,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                     </style>
                     <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
                     <style>${readerSettings.customCSS}</style>
-                    <script async>
+                    <script>
                       var initSettings = {
                         showScrollPercentage: ${showScrollPercentage},
                         swipeGestures: ${swipeGestures},
@@ -239,6 +231,10 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       }
                       var batteryLevel = ${batteryLevel};
                       var autoSaveInterval = 2222;
+                      var { NOVEL, CHAPTER } = ${JSON.stringify({
+                        NOVEL: novel,
+                        CHAPTER: chapter,
+                      })}
                     </script>
                   </head>
                   <body>

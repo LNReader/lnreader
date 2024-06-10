@@ -9,34 +9,60 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repository (Latest)
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
+
+      - name: Cache npm & node modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            node_modules
+          key: ${{ runner.os }}-cache-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-cache-npm-
+    
       - name: Install Dependencies
         run: |
           npm install
+
       - name: Create .env
         run: |
           cat > .env << EOF
           MYANIMELIST_CLIENT_ID=${{ vars.MYANIMELIST_CLIENT_ID }}
           ANILIST_CLIENT_ID=${{ vars.ANILIST_CLIENT_ID }}
+          GIT_HASH=$(git rev-parse --short HEAD)
+          RELEASE_DATE=$(date --utc +'%d/%m/%y %I:%M %p %Z')
+          BUILD_TYPE=Github Action
           EOF
+
       - name: Cache Gradle Wrapper
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Cache Gradle Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-caches-
+
+      - name: Cache build intermediates
+        uses: actions/cache@v4
+        with:
+          path: |
+            android/app/build/generated
+            android/app/build/intermediates
+            android/app/build/tmp
+            android/.gradle
+          key: ${{ runner.os }}-build-${{ hashFiles('package-lock.json') }}
 
       - name: Make Gradlew Executable
         run: cd android && chmod +x ./gradlew
@@ -44,14 +70,36 @@ jobs:
       - name: Build Android Release
         run: |
           cd android && ./gradlew assembleRelease --no-daemon
+          mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/LNReader.apk
 
       - name: Set Env
         run: |
           set -x
           echo "COMMIT_COUNT=$(git rev-list --count HEAD)" >> $GITHUB_ENV
+          echo "COMMIT_ID=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v1
+        env:
+          COMMIT_COUNT: ${{ env.COMMIT_COUNT }}
+        uses: actions/upload-artifact@v4
         with:
           name: LNReader-r${{ env.COMMIT_COUNT }}
-          path: android/app/build/outputs/apk/release/app-release.apk
+          path: android/app/build/outputs/apk/release/LNReader.apk
+
+      - name: Build Custom APK
+        env:
+          COMMIT_COUNT: ${{ env.COMMIT_COUNT }}
+          COMMIT_ID: ${{ env.COMMIT_ID }}
+        run: |
+          sed -i 's/LNReader/LNReader-r${{ env.COMMIT_COUNT }}(${{ env.COMMIT_ID }})/g' android/app/src/main/res/values/strings.xml
+          cd android && ./gradlew assembleRelease --no-daemon -PcustomAppId=com.rajarsheechatterjee.LNReader.commit_${{ env.COMMIT_ID }}
+          mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/LNReader-r${{ env.COMMIT_COUNT }}\(${{ env.COMMIT_ID }}\)-customID.apk
+  
+      - name: Upload Custom APK
+        env:
+          COMMIT_COUNT: ${{ env.COMMIT_COUNT }}
+          COMMIT_ID: ${{ env.COMMIT_ID }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: LNReader-r${{ env.COMMIT_COUNT }}(${{ env.COMMIT_ID }})-customID
+          path: android/app/build/outputs/apk/release/LNReader-r${{ env.COMMIT_COUNT }}(${{ env.COMMIT_ID }})-customID.apk

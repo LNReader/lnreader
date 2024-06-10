@@ -45,6 +45,39 @@ const SettingsReaderScreen = () => {
   const navigation = useNavigation();
   const webViewRef = useRef<WebView>(null);
   const { bottom } = useSafeAreaInsets();
+  const novel = {
+    'artist': null,
+    'author': 'Kinugasa Shougo',
+    'cover':
+      'file:///storage/emulated/0/Android/data/com.rajarsheechatterjee.LNReader/files/Novels/lightnovelcave/16/cover.png?1717862123181',
+    'genres': 'Drama,Slice of Life,Psychological,School Life,Shounen',
+    'id': 16,
+    'inLibrary': 1,
+    'isLocal': 0,
+    'name': 'Classroom of the Elite (LN)',
+    'path': 'novel/classroom-of-the-elite-16091321',
+    'pluginId': 'lightnovelcave',
+    'status': 'Ongoing',
+    'summary':
+      'Kōdo Ikusei Senior High School, a leading prestigious school with state-of-the-art facilities where nearly 100% of students go on to university or find employment. The students there have the freedom to wear any hairstyle and bring any personal effects they desire. Kōdo Ikusei is a paradise-like school, but the truth is that only the most superior of students receive favorable treatment.The protagonist Kiyotaka Ayanokōji is a student of D-class, which is where the school dumps its “inferior” students in order to ridicule them. For a certain reason, Kiyotaka was careless on his entrance examination, and was put in D-class. After meeting Suzune Horikita and Kikyō Kushida, two other students in his class, Kiyotaka’s situation begins to change.Show More',
+    'totalPages': 8,
+  };
+  const chapter = {
+    'bookmark': 0,
+    'chapterNumber': 2.1,
+    'id': 3722,
+    'isDownloaded': 1,
+    'name': 'Chapter V4C2.1 - A Vast Array of Thoughts Part 1',
+    'novelId': 16,
+    'page': '2',
+    'path': 'novel/classroom-of-the-elite-547/vol-4-chapter-2-1',
+    'position': 0,
+    'progress': 3,
+    'readTime': '2024-06-08 22:56:09',
+    'releaseTime': '14 tháng 9 năm 2021',
+    'unread': 1,
+    'updatedTime': null,
+  };
   const [hidden, setHidden] = useState(true);
   const layoutHeight = Dimensions.get('window').height;
   const batteryLevel = useBatteryLevel();
@@ -180,6 +213,10 @@ const SettingsReaderScreen = () => {
                   }
                   var batteryLevel = ${batteryLevel};
                   var autoSaveInterval = 2222;
+                  var { NOVEL, CHAPTER } = ${JSON.stringify({
+                    NOVEL: novel,
+                    CHAPTER: chapter,
+                  })}
                 </script>
               </head>
               <body>

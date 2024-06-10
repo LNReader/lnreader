@@ -64,6 +64,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     navigation.navigate('WebviewScreen', {
       name: pluginName,
       url: site,
+      pluginId,
     });
   };
 

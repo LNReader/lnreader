@@ -1,7 +1,6 @@
-import RNFS from 'react-native-fs';
 import { reverse, uniqBy } from 'lodash-es';
-import { PluginDownloadFolder } from '@utils/constants/download';
 import { newer } from '@utils/compareVersion';
+import { store } from './helpers/storage';
 
 // packages for plugins
 import { load } from 'cheerio';
@@ -10,15 +9,17 @@ import qs from 'qs';
 import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
-import { fetchApi, fetchFile, fetchProto, fetchText } from './helpers/fetch';
+import { fetchApi, fetchProto, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
+import { Storage, LocalStorage, SessionStorage } from './helpers/storage';
 import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
-import TextFile from '@native/TextFile';
+import FileManager from '@native/FileManager';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
 import { showToast } from '@utils/showToast';
+import { PLUGIN_STORAGE } from '@utils/Storages';
 
-const pluginsFilePath = PluginDownloadFolder + '/plugins.json';
+const pluginFilePath = PLUGIN_STORAGE + '/plugins.json';
 
 const packages: Record<string, any> = {
   'htmlparser2': { Parser },
@@ -27,18 +28,24 @@ const packages: Record<string, any> = {
   'qs': qs,
   'urlencode': { encode, decode },
   '@libs/novelStatus': { NovelStatus },
-  '@libs/fetch': { fetchApi, fetchFile, fetchText, fetchProto },
+  '@libs/fetch': { fetchApi, fetchText, fetchProto },
   '@libs/isAbsoluteUrl': { isUrlAbsolute },
   '@libs/filterInputs': { FilterTypes },
   '@libs/defaultCover': { defaultCover },
 };
 
-const _require = (packageName: string) => {
-  return packages[packageName];
-};
-
-const initPlugin = (rawCode: string) => {
+const initPlugin = (pluginId: string, rawCode: string) => {
   try {
+    const _require = (packageName: string) => {
+      if (packageName === '@libs/storage') {
+        return {
+          storage: new Storage(pluginId),
+          localStorage: new LocalStorage(pluginId),
+          sessionStorage: new SessionStorage(pluginId),
+        };
+      }
+      return packages[packageName];
+    };
     /* eslint no-new-func: "off", curly: "error" */
     const plugin: Plugin = Function(
       'require',
@@ -62,8 +69,8 @@ const serializePlugin = async (
   installed: boolean,
 ) => {
   if (!serializedPlugins) {
-    if (await RNFS.exists(pluginsFilePath)) {
-      const content = await TextFile.readFile(pluginsFilePath);
+    if (await FileManager.exists(pluginFilePath)) {
+      const content = await FileManager.readFile(pluginFilePath);
       serializedPlugins = JSON.parse(content);
     } else {
       serializedPlugins = {};
@@ -74,36 +81,44 @@ const serializePlugin = async (
   } else {
     serializedPlugins[pluginId] = undefined;
   }
-  if (!(await RNFS.exists(PluginDownloadFolder))) {
-    await RNFS.mkdir(PluginDownloadFolder);
+  if (!(await FileManager.exists(PLUGIN_STORAGE))) {
+    await FileManager.mkdir(PLUGIN_STORAGE);
   }
-  await TextFile.writeFile(pluginsFilePath, JSON.stringify(serializedPlugins));
+  await FileManager.writeFile(
+    pluginFilePath,
+    JSON.stringify(serializedPlugins),
+  );
 };
 
 const deserializePlugins = () => {
-  return TextFile.readFile(pluginsFilePath)
+  return FileManager.readFile(pluginFilePath)
     .then(content => {
       serializedPlugins = JSON.parse(content);
-      for (const script of Object.values(serializedPlugins)) {
-        const plugin = initPlugin(script as string);
-        if (plugin) {
-          plugins[plugin.id] = plugin;
+      Object.entries(serializedPlugins).forEach(([pluginId, script]) => {
+        if (script) {
+          const plugin = initPlugin(pluginId, script);
+          if (plugin) {
+            plugins[plugin.id] = plugin;
+          }
         }
-      }
+      });
     })
     .catch(() => {
       // nothing to read
     });
 };
 
-const installPlugin = async (url: string): Promise<Plugin | undefined> => {
+const installPlugin = async (
+  pluginId: string,
+  url: string,
+): Promise<Plugin | undefined> => {
   try {
     return await fetch(url, {
       headers: { 'pragma': 'no-cache', 'cache-control': 'no-cache' },
     })
       .then(res => res.text())
       .then(async rawCode => {
-        const plugin = initPlugin(rawCode);
+        const plugin = initPlugin(pluginId, rawCode);
         if (!plugin) {
           return undefined;
         }
@@ -122,11 +137,16 @@ const installPlugin = async (url: string): Promise<Plugin | undefined> => {
 
 const uninstallPlugin = async (_plugin: PluginItem) => {
   plugins[_plugin.id] = undefined;
+  store.getAllKeys().forEach(key => {
+    if (key.startsWith(_plugin.id)) {
+      store.delete(key);
+    }
+  });
   return serializePlugin(_plugin.id, '', false);
 };
 
 const updatePlugin = async (plugin: PluginItem) => {
-  return installPlugin(plugin.url);
+  return installPlugin(plugin.id, plugin.url);
 };
 
 const fetchPlugins = async (): Promise<PluginItem[]> => {

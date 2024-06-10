@@ -13,7 +13,6 @@ import SelfHostModal from './Components/SelfHostModal';
 import {
   createBackup as deprecatedCreateBackup,
   restoreBackup as deprecatedRestoreBackup,
-  restoreError as deprecatedRestoreError,
 } from '@services/backup/legacy';
 import { ScrollView } from 'react-native-gesture-handler';
 import { BACKGROUND_ACTION } from '@services/constants';
@@ -81,15 +80,6 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
               )})`}
               description={getString('backupScreen.restoreBackupDesc')}
               onPress={() => deprecatedRestoreBackup()}
-              theme={theme}
-              disabled={Boolean(hasAction)}
-            />
-            <List.Item
-              title={`${getString('backupScreen.restoreError')} (${getString(
-                'common.deprecated',
-              )})`}
-              description={getString('backupScreen.restoreErrorDesc')}
-              onPress={deprecatedRestoreError}
               theme={theme}
               disabled={Boolean(hasAction)}
             />

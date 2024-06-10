@@ -1,12 +1,10 @@
 import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('lnreader.db');
 import * as DocumentPicker from 'expo-document-picker';
-import * as RNFS from 'react-native-fs';
 import BackgroundService from 'react-native-background-actions';
 import * as Notifications from 'expo-notifications';
 import { sleep } from '@utils/sleep';
 import ZipArchive from '@native/ZipArchive';
-import { NovelDownloadFolder } from '@utils/constants/download';
 import dayjs from 'dayjs';
 import {
   updateNovelCategoryById,
@@ -17,8 +15,9 @@ import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
 import { showToast } from '@utils/showToast';
-import TextFile from '@native/TextFile';
+import FileManager from '@native/FileManager';
 import EpubUtil from '@native/EpubUtil';
+import { NOVEL_STORAGE } from '@utils/Storages';
 
 interface TaskData {
   delay: number;
@@ -45,12 +44,12 @@ const insertLocalNovel = (
         async (txObj, { insertId }) => {
           if (insertId && insertId >= 0) {
             await updateNovelCategoryById(insertId, [2]);
-            const novelDir = NovelDownloadFolder + '/local/' + insertId;
-            await RNFS.mkdir(novelDir);
+            const novelDir = NOVEL_STORAGE + '/local/' + insertId;
+            await FileManager.mkdir(novelDir);
             const newCoverPath =
               'file://' + novelDir + '/' + cover?.split(/[\/\\]/).pop();
-            if (cover && (await RNFS.exists(cover))) {
-              await RNFS.moveFile(cover, newCoverPath);
+            if (cover && (await FileManager.exists(cover))) {
+              await FileManager.moveFile(cover, newCoverPath);
             }
             await updateNovelInfo({
               id: insertId,
@@ -58,7 +57,7 @@ const insertLocalNovel = (
               author: author,
               artist: artist,
               summary: summary,
-              path: NovelDownloadFolder + '/local/' + insertId,
+              path: NOVEL_STORAGE + '/local/' + insertId,
               cover: newCoverPath,
               name: name,
               inLibrary: true,
@@ -95,7 +94,7 @@ const insertLocalChapter = (
         [
           novelId,
           name,
-          NovelDownloadFolder + '/local/' + novelId + '/' + fakeId,
+          NOVEL_STORAGE + '/local/' + novelId + '/' + fakeId,
           releaseTime,
           fakeId,
         ],
@@ -107,14 +106,14 @@ const insertLocalChapter = (
             } catch {
               // nothing to do
             }
-            await TextFile.readFile(path)
+            await FileManager.readFile(path)
               .then(r => (chapterText = r))
               .catch(e => reject(e));
             if (!chapterText) {
               return;
             }
             const staticPaths: string[] = [];
-            const novelDir = NovelDownloadFolder + '/local/' + novelId;
+            const novelDir = NOVEL_STORAGE + '/local/' + novelId;
             const epubContentDir = path.replace(/[^\\\/]+$/, '');
             chapterText = chapterText.replace(
               /(href|src)=(["'])(.*?)\2/g,
@@ -127,8 +126,8 @@ const insertLocalChapter = (
                   ?.pop()}"`;
               },
             );
-            await RNFS.mkdir(novelDir + '/' + insertId);
-            await TextFile.writeFile(
+            await FileManager.mkdir(novelDir + '/' + insertId);
+            await FileManager.writeFile(
               novelDir + '/' + insertId + '/index.html',
               chapterText,
             );
@@ -155,13 +154,14 @@ const importEpubAction = async (taskData?: TaskData) => {
     if (!taskData) {
       throw new Error(getString('backupScreen.noDataProvided'));
     }
-    const epubFilePath = RNFS.ExternalCachesDirectoryPath + '/novel.epub';
-    await RNFS.copyFile(taskData.sourceUri, epubFilePath);
-    const epubDirPath = RNFS.ExternalCachesDirectoryPath + '/epub';
-    if (await RNFS.exists(epubDirPath)) {
-      await RNFS.unlink(epubDirPath);
+    const epubFilePath =
+      FileManager.ExternalCachesDirectoryPath + '/novel.epub';
+    await FileManager.copyFile(taskData.sourceUri, epubFilePath);
+    const epubDirPath = FileManager.ExternalCachesDirectoryPath + '/epub';
+    if (await FileManager.exists(epubDirPath)) {
+      await FileManager.unlink(epubDirPath);
     }
-    await RNFS.mkdir(epubDirPath);
+    await FileManager.mkdir(epubDirPath);
     MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.IMPORT_EPUB);
     await ZipArchive.unzip(epubFilePath, epubDirPath);
     await sleep(taskData.delay);
@@ -214,7 +214,7 @@ const importEpubAction = async (taskData?: TaskData) => {
       }
     }
     await sleep(taskData.delay);
-    const novelDir = NovelDownloadFolder + '/local/' + novelId;
+    const novelDir = NOVEL_STORAGE + '/local/' + novelId;
     BackgroundService.updateNotification({
       taskTitle: getString('advancedSettingsScreen.importStaticFiles'),
       taskDesc: '0/' + filePathSet.size,
@@ -232,8 +232,8 @@ const importEpubAction = async (taskData?: TaskData) => {
           max: filePathSet.size,
         },
       });
-      if (await RNFS.exists(filePath)) {
-        await RNFS.moveFile(
+      if (await FileManager.exists(filePath)) {
+        await FileManager.moveFile(
           filePath,
           novelDir + '/' + filePath.split(/[\\\/]/).pop(),
         );

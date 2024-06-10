@@ -137,7 +137,11 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
         refreshNovelMetadata,
       })
         .then(() => getNovel())
-        .then(() => showToast(getString('novelScreen.updatedToast', { name })))
+        .then(() =>
+          showToast(
+            getString('novelScreen.updatedToast', { name: novel.name }),
+          ),
+        )
         .catch(error => showToast(error.message))
         .finally(() => setUpdating(false));
     }

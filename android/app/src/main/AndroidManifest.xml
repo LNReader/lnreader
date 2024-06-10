@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.rajarsheechatterjee.LNReader">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<!-- Internet -->
 	<uses-permission android:name="android.permission.INTERNET" />
@@ -41,7 +41,6 @@
 
 		<activity
 			android:name=".MainActivity"
-			android:label="@string/app_name"
 			android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
 			android:launchMode="singleTask"
 			android:windowSoftInputMode="adjustResize"
@@ -59,7 +58,6 @@
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="lnreader" />
-				<data android:scheme="com.rajarsheechatterjee.LNReader" />
 			</intent-filter>
 		</activity>
 

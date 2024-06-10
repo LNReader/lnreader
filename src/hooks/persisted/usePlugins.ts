@@ -101,13 +101,10 @@ export default function usePlugins() {
    */
 
   const installPlugin = (plugin: PluginItem) => {
-    return _install(plugin.url).then(_plg => {
+    return _install(plugin.id, plugin.url).then(_plg => {
       if (_plg) {
         const installedPlugins =
           getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
-        const availablePlugins =
-          getMMKVObject<PluginItem[]>(AVAILABLE_PLUGINS) || [];
-
         const actualPlugin: PluginItem = {
           ...plugin,
           version: _plg.version,
@@ -116,10 +113,6 @@ export default function usePlugins() {
         if (!installedPlugins.some(plg => plg.id === plugin.id)) {
           setMMKVObject(INSTALLED_PLUGINS, [...installedPlugins, actualPlugin]);
         }
-        setMMKVObject(
-          AVAILABLE_PLUGINS,
-          availablePlugins.filter(plg => plg.id !== plugin.id),
-        );
         filterPlugins(languagesFilter);
       } else {
         throw new Error(
@@ -135,14 +128,6 @@ export default function usePlugins() {
     }
     const installedPlugins =
       getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
-    const availablePlugins =
-      getMMKVObject<PluginItem[]>(AVAILABLE_PLUGINS) || [];
-
-    // safe
-    if (!availablePlugins.some(_plg => _plg.id === plugin.id)) {
-      availablePlugins.push(plugin);
-      setMMKVObject(AVAILABLE_PLUGINS, availablePlugins);
-    }
     setMMKVObject(
       INSTALLED_PLUGINS,
       installedPlugins.filter(plg => plg.id !== plugin.id),
