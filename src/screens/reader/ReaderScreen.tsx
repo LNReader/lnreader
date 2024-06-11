@@ -43,7 +43,7 @@ import { useFullscreenMode } from '@hooks';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import { defaultTo } from 'lodash-es';
 import { sanitizeChapterText } from './utils/sanitizeChapterText';
-import ChapterDrawer from './components/ChapterDrawer';
+import ChapterDrawer from './components/ChapterDrawer/ChapterDrawer';
 import ChapterLoadingScreen from './ChapterLoadingScreen/ChapterLoadingScreen';
 import { ErrorScreenV2 } from '@components';
 import { ChapterScreenProps } from '@navigators/types';
