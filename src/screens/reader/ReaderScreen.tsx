@@ -111,7 +111,7 @@ export const ChapterContent = ({
   } = useChapterGeneralSettings();
   const { incognitoMode } = useLibrarySettings();
 
-  const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
+  const { setImmersiveMode, showStatusAndNavBar, bottom } = useFullscreenMode();
 
   const [hidden, setHidden] = useState(true);
 
@@ -326,6 +326,7 @@ export const ChapterContent = ({
       />
     );
   }
+
   return (
     <>
       <WebViewReader
@@ -361,6 +362,7 @@ export const ChapterContent = ({
             navigateToChapterBySwipe={navigateToChapterBySwipe}
             navigation={navigation}
             openDrawer={openDrawer}
+            bottomInset={bottom}
           />
         </>
       ) : null}

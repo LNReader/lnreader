@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -12,12 +12,15 @@ import {
   changeNavigationBarColor,
   setStatusBarColor,
 } from '@theme/utils/setBarColor';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const useFullscreenMode = () => {
   const { addListener } = useNavigation();
   const { theme: backgroundColor } = useChapterReaderSettings();
   const { fullScreenMode } = useChapterGeneralSettings();
   const theme = useTheme();
+  const { bottom } = useSafeAreaInsets();
+  const bottomInset = useRef(bottom);
 
   const setImmersiveMode = useCallback(() => {
     if (fullScreenMode) {
@@ -69,7 +72,7 @@ const useFullscreenMode = () => {
     return unsubscribe;
   }, []);
 
-  return { setImmersiveMode, showStatusAndNavBar };
+  return { setImmersiveMode, showStatusAndNavBar, bottom: bottomInset.current };
 };
 
 export default useFullscreenMode;

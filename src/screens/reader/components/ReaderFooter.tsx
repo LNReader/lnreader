@@ -20,6 +20,7 @@ interface ChapterFooterProps {
   navigateToChapterBySwipe: (actionName: string) => void;
   navigation: ChapterScreenProps['navigation'];
   openDrawer: () => void;
+  bottomInset: number;
 }
 
 const ChapterFooter = ({
@@ -33,6 +34,7 @@ const ChapterFooter = ({
   navigateToChapterBySwipe,
   navigation,
   openDrawer,
+  bottomInset,
 }: ChapterFooterProps) => {
   const rippleConfig = {
     color: theme.rippleColor,
@@ -40,6 +42,7 @@ const ChapterFooter = ({
     radius: 50,
   };
   const orientation = useDeviceOrientation();
+
   return (
     <Animated.View
       entering={FadeIn.duration(150)}
@@ -48,7 +51,7 @@ const ChapterFooter = ({
         styles.footer,
         {
           backgroundColor: color(theme.surface).alpha(0.9).string(),
-          paddingBottom: orientation === 'potrait' ? 40 : 0,
+          paddingBottom: orientation === 'potrait' ? bottomInset : 0,
         },
       ]}
     >
