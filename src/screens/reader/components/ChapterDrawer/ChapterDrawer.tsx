@@ -53,7 +53,6 @@ const ChapterDrawer = ({
         return el.id === chapter.id;
       }) || 0;
     let res = indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
-
     return res;
   }, [chapters, chapter.id]);
 
@@ -74,61 +73,63 @@ const ChapterDrawer = ({
     },
   });
 
-  const checkViewableItems = useCallback(
-    ({ viewableItems }: { viewableItems: ViewToken[]; sTIndex: number }) => {
-      let up = {
-        text: getString('readerScreen.drawer.scrollToTop'),
-        func: () => {
-          listRef.current?.scrollToIndex({ index: 0, animated: true });
-        },
-      };
-      let down = {
-        text: getString('readerScreen.drawer.scrollToBottom'),
-        func: () => {
-          listRef.current?.scrollToEnd({
-            animated: true,
-          });
-        },
-      };
-      if (viewableItems.length !== 0) {
-        let visible = viewableItems.find(({ item }) => {
-          return item.id === chapter.id;
+  const checkViewableItems = ({
+    viewableItems,
+  }: {
+    viewableItems: ViewToken[];
+  }) => {
+    let up = {
+      text: getString('readerScreen.drawer.scrollToTop'),
+      func: () => {
+        listRef.current?.scrollToIndex({ index: 0, animated: true });
+      },
+    };
+    let down = {
+      text: getString('readerScreen.drawer.scrollToBottom'),
+      func: () => {
+        listRef.current?.scrollToEnd({
+          animated: true,
         });
-        if (!visible && scrollToIndex) {
-          if (
-            listAscending
-              ? viewableItems[0].item.id < chapter.id
-              : viewableItems[0].item.id > chapter.id
-          ) {
-            down = {
-              text: getString('readerScreen.drawer.scrollToCurrentChapter'),
-              func: () => {
-                listRef.current?.scrollToIndex({
-                  index: scrollToIndex,
-                  animated: true,
-                });
-              },
-            };
-          } else {
-            up = {
-              text: getString('readerScreen.drawer.scrollToCurrentChapter'),
-              func: () => {
-                listRef.current?.scrollToIndex({
-                  index: scrollToIndex,
-                  animated: true,
-                });
-              },
-            };
-          }
+      },
+    };
+    if (viewableItems.length !== 0) {
+      let visible = viewableItems.find(({ item }) => {
+        return item.id === chapter.id;
+      });
+      if (!visible && scrollToIndex) {
+        if (
+          listAscending
+            ? viewableItems[0].item.id < chapter.id
+            : viewableItems[0].item.id > chapter.id
+        ) {
+          down = {
+            text: getString('readerScreen.drawer.scrollToCurrentChapter'),
+            func: () => {
+              listRef.current?.scrollToIndex({
+                index: scrollToIndex,
+                animated: true,
+              });
+            },
+          };
+        } else {
+          up = {
+            text: getString('readerScreen.drawer.scrollToCurrentChapter'),
+            func: () => {
+              listRef.current?.scrollToIndex({
+                index: scrollToIndex,
+                animated: true,
+              });
+            },
+          };
         }
-        setButtonProperties({
-          up: up,
-          down: down,
-        });
       }
-    },
-    [chapter.id, listAscending, scrollToIndex],
-  );
+      setButtonProperties({
+        up: up,
+        down: down,
+      });
+    }
+  };
+
   useEffect(() => {
     let pageIndex = pages.indexOf(chapter.page);
     if (pageIndex === -1) {
@@ -142,12 +143,7 @@ const ChapterDrawer = ({
       {scrollToIndex !== undefined ? (
         <FlashList
           ref={listRef}
-          onViewableItemsChanged={({ viewableItems }) =>
-            checkViewableItems({
-              viewableItems,
-              sTIndex: scrollToIndex,
-            })
-          }
+          onViewableItemsChanged={checkViewableItems}
           data={chapters}
           renderItem={val =>
             renderListChapter({
