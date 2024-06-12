@@ -34,7 +34,7 @@ export const sanitizeChapterText = (
       text = text
         .replace(/[\u200B-\u200D\uFEFF]/g, '')
         .replace(/<br>\s*(?=<\/p>)/g, '')
-        .replace(/<br>\s*(?<=<\/p>\s*<br>)(?=<p>)/g, '')
+        .replace(/<br>(?<=<\/p>\s*<br>)\s*(?=<p>)/g, '')
         .replace(/(?:<br>\s*<\/?br>)+/g, '')
         .replace(/\n\n+/g, '\n');
     }
