@@ -119,31 +119,27 @@ export const restoreData = async (cacheDirPath: string) => {
   await FileManager.readDir(novelDirPath).then(async items => {
     for (const item of items) {
       if (!item.isDirectory) {
-        await FileManager.readFile(item.path).then(content => {
-          const backupNovel = JSON.parse(content);
-          if (!backupNovel.cover?.startsWith('http')) {
-            backupNovel.cover = APP_STORAGE_URI + backupNovel.cover;
-          }
-          return _restoreNovelAndChapters(backupNovel);
-        });
+        const backupNovel = JSON.parse(FileManager.readFile(item.path));
+        if (!backupNovel.cover?.startsWith('http')) {
+          backupNovel.cover = APP_STORAGE_URI + backupNovel.cover;
+        }
+        await _restoreNovelAndChapters(backupNovel);
       }
     }
   });
 
   // categories
-  await FileManager.readFile(
-    cacheDirPath + '/' + BackupEntryName.CATEGORY,
-  ).then(async content => {
-    const categories: BackupCategory[] = JSON.parse(content);
-    for (const category of categories) {
-      await _restoreCategory(category);
-    }
-  });
+  const categories: BackupCategory[] = JSON.parse(
+    FileManager.readFile(cacheDirPath + '/' + BackupEntryName.CATEGORY),
+  );
+  for (const category of categories) {
+    await _restoreCategory(category);
+  }
 
   // settings
-  await FileManager.readFile(cacheDirPath + '/' + BackupEntryName.SETTING).then(
-    content => {
-      restoreMMKVData(JSON.parse(content));
-    },
+  restoreMMKVData(
+    JSON.parse(
+      FileManager.readFile(cacheDirPath + '/' + BackupEntryName.SETTING),
+    ),
   );
 };

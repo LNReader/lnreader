@@ -19,8 +19,6 @@ import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
 import { showToast } from '@utils/showToast';
 import { PLUGIN_STORAGE } from '@utils/Storages';
 
-const pluginFilePath = PLUGIN_STORAGE + '/plugins.json';
-
 const packages: Record<string, any> = {
   'htmlparser2': { Parser },
   'cheerio': { load },
@@ -61,52 +59,6 @@ const initPlugin = (pluginId: string, rawCode: string) => {
 };
 
 const plugins: Record<string, Plugin | undefined> = {};
-let serializedPlugins: Record<string, string | undefined>;
-
-const serializePlugin = async (
-  pluginId: string,
-  rawCode: string,
-  installed: boolean,
-) => {
-  if (!serializedPlugins) {
-    if (await FileManager.exists(pluginFilePath)) {
-      const content = await FileManager.readFile(pluginFilePath);
-      serializedPlugins = JSON.parse(content);
-    } else {
-      serializedPlugins = {};
-    }
-  }
-  if (installed) {
-    serializedPlugins[pluginId] = rawCode;
-  } else {
-    serializedPlugins[pluginId] = undefined;
-  }
-  if (!(await FileManager.exists(PLUGIN_STORAGE))) {
-    await FileManager.mkdir(PLUGIN_STORAGE);
-  }
-  await FileManager.writeFile(
-    pluginFilePath,
-    JSON.stringify(serializedPlugins),
-  );
-};
-
-const deserializePlugins = () => {
-  return FileManager.readFile(pluginFilePath)
-    .then(content => {
-      serializedPlugins = JSON.parse(content);
-      Object.entries(serializedPlugins).forEach(([pluginId, script]) => {
-        if (script) {
-          const plugin = initPlugin(pluginId, script);
-          if (plugin) {
-            plugins[plugin.id] = plugin;
-          }
-        }
-      });
-    })
-    .catch(() => {
-      // nothing to read
-    });
-};
 
 const installPlugin = async (
   pluginId: string,
@@ -126,7 +78,12 @@ const installPlugin = async (
         if (!currentPlugin || newer(plugin.version, currentPlugin.version)) {
           plugins[plugin.id] = plugin;
           currentPlugin = plugin;
-          await serializePlugin(plugin.id, rawCode, true);
+
+          // save plugin code;
+          const pluginDir = `${PLUGIN_STORAGE}/${pluginId}`;
+          await FileManager.mkdir(pluginDir);
+          const filePath = pluginDir + '/index.js';
+          await FileManager.writeFile(filePath, rawCode);
         }
         return currentPlugin;
       });
@@ -142,7 +99,10 @@ const uninstallPlugin = async (_plugin: PluginItem) => {
       store.delete(key);
     }
   });
-  return serializePlugin(_plugin.id, '', false);
+  const pluginFilePath = `${PLUGIN_STORAGE}/${_plugin.id}/index.js`;
+  if (await FileManager.exists(pluginFilePath)) {
+    await FileManager.unlink(pluginFilePath);
+  }
 };
 
 const updatePlugin = async (plugin: PluginItem) => {
@@ -168,7 +128,19 @@ const fetchPlugins = async (): Promise<PluginItem[]> => {
   return uniqBy(reverse(allPlugins), 'id');
 };
 
-const getPlugin = (pluginId: string) => plugins[pluginId];
+const getPlugin = (pluginId: string) => {
+  if (!plugins[pluginId]) {
+    const filePath = `${PLUGIN_STORAGE}/${pluginId}/index.js`;
+    try {
+      const code = FileManager.readFile(filePath);
+      const plugin = initPlugin(pluginId, code);
+      plugins[pluginId] = plugin;
+    } catch {
+      // file doesnt exist
+    }
+  }
+  return plugins[pluginId];
+};
 
 const LOCAL_PLUGIN_ID = 'local';
 
@@ -177,7 +149,6 @@ export {
   installPlugin,
   uninstallPlugin,
   updatePlugin,
-  deserializePlugins,
   fetchPlugins,
   LOCAL_PLUGIN_ID,
 };

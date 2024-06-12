@@ -170,7 +170,7 @@ export const ChapterContent = ({
     try {
       const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
       if (await FileManager.exists(filePath)) {
-        sourceChapter.chapterText = await FileManager.readFile(filePath);
+        sourceChapter.chapterText = FileManager.readFile(filePath);
       } else {
         await fetchChapter(novel.pluginId, chapter.path)
           .then(res => {
