@@ -32,11 +32,11 @@ export const sanitizeChapterText = (
   if (text) {
     if (options?.removeExtraParagraphSpacing) {
       text = text
-      .replace(/[\u200B-\u200D\uFEFF]/g, '')
-      .replace(/<br>\s*(?=<\/p>)/g, '')
-      .replace(/<br>\s*(?<=\/p><br>)(?=<p>)/g, '')
-      .replace(/(?:<br>\s*<\/?br>)+/g, '')
-      .replace(/\n\n+/g, '\n');
+        .replace(/[\u200B-\u200D\uFEFF]/g, '')
+        .replace(/<br>\s*(?=<\/p>)/g, '')
+        .replace(/<br>\s*(?<=\/p><br>)(?=<p>)/g, '')
+        .replace(/(?:<br>\s*<\/?br>)+/g, '')
+        .replace(/\n\n+/g, '\n');
     }
   } else {
     text = getString('readerScreen.emptyChapterMessage');
