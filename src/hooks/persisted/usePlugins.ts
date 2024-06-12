@@ -188,3 +188,9 @@ export default function usePlugins() {
 export const getInstalledPlugins = () => {
   return getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS);
 };
+
+export const getPluginItem = (pluginId: string) => {
+  return getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS)?.find(
+    item => item.id === pluginId,
+  );
+};

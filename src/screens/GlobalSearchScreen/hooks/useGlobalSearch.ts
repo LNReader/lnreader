@@ -70,6 +70,7 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
             ),
           );
         } catch (error: any) {
+          const errorMessage = error?.message || String(error);
           setSearchResults(prevState =>
             prevState.map(prevResult =>
               prevResult.plugin.id === _plugin.id
@@ -77,7 +78,7 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
                     ...prevResult,
                     novels: [],
                     isLoading: false,
-                    error: error?.message,
+                    error: errorMessage,
                   }
                 : { ...prevResult },
             ),

@@ -18,7 +18,6 @@ import FileManager from '@native/FileManager';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
 import { showToast } from '@utils/showToast';
 import { PLUGIN_STORAGE } from '@utils/Storages';
-import { getInstalledPlugins } from '@hooks/persisted/usePlugins';
 
 const packages: Record<string, any> = {
   'htmlparser2': { Parser },
@@ -129,25 +128,19 @@ const fetchPlugins = async (): Promise<PluginItem[]> => {
   return uniqBy(reverse(allPlugins), 'id');
 };
 
-const loadPlugins = async () => {
-  const installedPlugins = getInstalledPlugins();
-  if (installedPlugins && installedPlugins.length) {
-    await Promise.allSettled(
-      installedPlugins.map(async ({ id }) => {
-        const filePath = `${PLUGIN_STORAGE}/${id}/index.js`;
-        if (await FileManager.exists(filePath)) {
-          const code = await FileManager.readFile(filePath);
-          const plugin = initPlugin(id, code);
-          if (plugin) {
-            plugins[plugin.id] = plugin;
-          }
-        }
-      }),
-    );
+const getPlugin = (pluginId: string) => {
+  if (!plugins[pluginId]) {
+    const filePath = `${PLUGIN_STORAGE}/${pluginId}/index.js`;
+    try {
+      const code = FileManager.readFile(filePath);
+      const plugin = initPlugin(pluginId, code);
+      plugins[pluginId] = plugin;
+    } catch {
+      // file doesnt exist
+    }
   }
+  return plugins[pluginId];
 };
-
-const getPlugin = (pluginId: string) => plugins[pluginId];
 
 const LOCAL_PLUGIN_ID = 'local';
 
@@ -157,6 +150,5 @@ export {
   uninstallPlugin,
   updatePlugin,
   fetchPlugins,
-  loadPlugins,
   LOCAL_PLUGIN_ID,
 };

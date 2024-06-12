@@ -19,7 +19,6 @@ import Main from './src/navigators/Main';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { BACKGROUND_ACTION } from '@services/constants';
-import { loadPlugins } from '@plugins/pluginManager';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
@@ -32,7 +31,7 @@ Notifications.setNotificationHandler({
 });
 
 createTables();
-loadPlugins().then(() => LottieSplashScreen.hide());
+LottieSplashScreen.hide();
 if (!BackgroundService.isRunning()) {
   MMKVStorage.delete(BACKGROUND_ACTION);
 }

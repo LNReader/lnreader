@@ -123,17 +123,9 @@ class FileManager(context: ReactApplicationContext) :
         }
     }
 
-    @ReactMethod
-    fun readFile(path: String?, promise: Promise) {
-        try {
-            val sb = StringBuilder()
-            val br = BufferedReader(FileReader(path))
-            var line: String?
-            while (br.readLine().also { line = it } != null) sb.append(line).append('\n')
-            promise.resolve(sb.toString())
-        } catch (e: Exception) {
-            promise.reject(e)
-        }
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    fun readFile(path: String): String {
+        return File(path).bufferedReader().readText()
     }
 
     @ReactMethod

@@ -8,7 +8,7 @@ interface ReadDirResult {
 
 interface FileManagerInterface {
   writeFile: (path: string, content: string) => Promise<void>;
-  readFile: (path: string) => Promise<string>;
+  readFile: (path: string) => string;
   resolveExternalContentUri: (uriString: string) => Promise<string | null>;
   copyFile: (sourcePath: string, destPath: string) => Promise<void>;
   moveFile: (sourcePath: string, destPath: string) => Promise<void>;
