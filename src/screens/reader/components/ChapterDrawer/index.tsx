@@ -47,6 +47,7 @@ const ChapterDrawer = ({
         return el.id === chapter.id;
       }) || 0;
     let res = indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
+
     return res;
   }, [chapters, chapter.id]);
 
@@ -93,8 +94,8 @@ const ChapterDrawer = ({
       if (!visible && scrollToIndex) {
         if (
           listAscending
-            ? viewableItems[0].item.id < chapter.id
-            : viewableItems[0].item.id > chapter.id
+            ? (viewableItems[0].index ?? 0) < (chapter.position ?? 0)
+            : (viewableItems[0].index ?? 0) > (chapter.position ?? 0)
         ) {
           down = {
             text: getString('readerScreen.drawer.scrollToCurrentChapter'),
