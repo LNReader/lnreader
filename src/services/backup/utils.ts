@@ -123,7 +123,7 @@ export const restoreData = async (cacheDirPath: string) => {
         if (!backupNovel.cover?.startsWith('http')) {
           backupNovel.cover = APP_STORAGE_URI + backupNovel.cover;
         }
-        return _restoreNovelAndChapters(backupNovel);
+        await _restoreNovelAndChapters(backupNovel);
       }
     }
   });
