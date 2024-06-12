@@ -13,7 +13,7 @@ interface FileManagerInterface {
   copyFile: (sourcePath: string, destPath: string) => Promise<void>;
   moveFile: (sourcePath: string, destPath: string) => Promise<void>;
   exists: (filePath: string) => Promise<boolean>;
-  mkdir: (filePath: string) => Promise<void>; // create parents;
+  mkdir: (filePath: string) => Promise<void>; // create parents, and do nothing if exists;
   unlink: (filePath: string) => Promise<void>; // remove recursively
   readDir: (dirPath: string) => Promise<ReadDirResult[]>; // file/sub-folder names
   pickFolder: () => Promise<string | null>; // return path of folderc

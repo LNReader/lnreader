@@ -184,3 +184,7 @@ export default function usePlugins() {
     updatePlugin,
   };
 }
+
+export const getInstalledPlugins = () => {
+  return getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS);
+};
