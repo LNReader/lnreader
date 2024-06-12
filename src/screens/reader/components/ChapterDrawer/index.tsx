@@ -94,8 +94,8 @@ const ChapterDrawer = ({
       if (!visible && scrollToIndex) {
         if (
           listAscending
-            ? (viewableItems[0].index ?? 0) < (chapter.position ?? 0)
-            : (viewableItems[0].index ?? 0) > (chapter.position ?? 0)
+            ? (viewableItems[0].index ?? 0) < scrollToIndex + 2
+            : (viewableItems[0].index ?? 0) > scrollToIndex + 2
         ) {
           down = {
             text: getString('readerScreen.drawer.scrollToCurrentChapter'),
