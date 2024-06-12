@@ -133,7 +133,10 @@ export const InstalledTab = memo(
               onPress={() => navigateToSource(item)}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Image source={{ uri: item.iconUrl }} style={styles.icon} />
+                <Image
+                  source={{ uri: item.iconUrl }}
+                  style={[styles.icon, { backgroundColor: theme.surface }]}
+                />
                 <View style={styles.details}>
                   <Text
                     numberOfLines={1}
