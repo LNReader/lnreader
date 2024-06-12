@@ -63,7 +63,7 @@ const useFullscreenMode = () => {
       StatusBar.setHidden(false);
       NavigationBar.setVisibilityAsync('visible');
       setStatusBarColor(theme);
-      changeNavigationBarColor(Color(theme.surface2).hex(), !theme.isDark);
+      changeNavigationBarColor(Color(theme.surface2).hex(), theme.isDark);
     });
 
     return unsubscribe;
