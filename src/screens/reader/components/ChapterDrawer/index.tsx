@@ -1,16 +1,21 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useAppSettings, useTheme } from '@hooks/persisted';
 import { FlashList, ViewToken } from '@shopify/flash-list';
-import { LoadingScreenV2 } from '@components/index';
+import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
 import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
 import { NovelSettings } from '@hooks/persisted/useNovel';
-import ListFooter from './ListFooter';
 import renderListChapter from './RenderListChapter';
 
 type ChapterDrawerProps = ChapterScreenProps & {
@@ -18,6 +23,15 @@ type ChapterDrawerProps = ChapterScreenProps & {
   novelSettings: NovelSettings;
   pages: string[];
   setPageIndex: (value: number) => void;
+};
+type ButtonProperties = {
+  text: string;
+  index?: number;
+};
+
+type ButtonsProperties = {
+  up: ButtonProperties;
+  down: ButtonProperties;
 };
 
 const ChapterDrawer = ({
@@ -30,63 +44,57 @@ const ChapterDrawer = ({
 }: ChapterDrawerProps) => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const styles = createStylesheet(theme, insets);
-  const listRef = useRef<FlashList<ChapterInfo>>(null);
-  const { chapter, novel: novelItem } = route.params;
   const { defaultChapterSort } = useAppSettings();
-  const { sort = defaultChapterSort } = novelSettings;
+  const listRef = useRef<FlashList<ChapterInfo>>(null);
 
+  const styles = createStylesheet(theme, insets);
+
+  const { chapter, novel: novelItem } = route.params;
+  const { sort = defaultChapterSort } = novelSettings;
   const listAscending = sort === 'ORDER BY position ASC';
+
+  const defaultButtonLayout: ButtonsProperties = {
+    up: {
+      text: getString('readerScreen.drawer.scrollToTop'),
+      index: 0,
+    },
+    down: {
+      text: getString('readerScreen.drawer.scrollToBottom'),
+      index: undefined,
+    },
+  };
+
+  useEffect(() => {
+    let pageIndex = pages.indexOf(chapter.page);
+    if (pageIndex === -1) {
+      pageIndex = 0;
+    }
+    setPageIndex(pageIndex);
+  }, [chapter, pages, setPageIndex]);
 
   const scrollToIndex = useMemo(() => {
     if (chapters.length < 1) {
       return;
     }
+
     const indexOfCurrentChapter =
       chapters.findIndex(el => {
         return el.id === chapter.id;
       }) || 0;
-    let res = indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
-
-    return res;
+    return indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
   }, [chapters, chapter.id]);
 
-  const [buttonProperties, setButtonProperties] = useState({
-    up: {
-      text: getString('readerScreen.drawer.scrollToTop'),
-      func: () => {
-        listRef.current?.scrollToIndex({ index: 0, animated: true });
-      },
-    },
-    down: {
-      text: getString('readerScreen.drawer.scrollToBottom'),
-      func: () => {
-        listRef.current?.scrollToEnd({
-          animated: true,
-        });
-      },
-    },
-  });
+  const [footerBtnProps, setButtonProperties] =
+    useState<ButtonsProperties>(defaultButtonLayout);
 
   const checkViewableItems = ({
     viewableItems,
   }: {
     viewableItems: ViewToken[];
   }) => {
-    let up = {
-      text: getString('readerScreen.drawer.scrollToTop'),
-      func: () => {
-        listRef.current?.scrollToIndex({ index: 0, animated: true });
-      },
-    };
-    let down = {
-      text: getString('readerScreen.drawer.scrollToBottom'),
-      func: () => {
-        listRef.current?.scrollToEnd({
-          animated: true,
-        });
-      },
-    };
+    const curChapter = getString('readerScreen.drawer.scrollToCurrentChapter');
+    let newBtnLayout = Object.create(defaultButtonLayout);
+
     if (viewableItems.length !== 0) {
       let visible = viewableItems.find(({ item }) => {
         return item.id === chapter.id;
@@ -97,45 +105,40 @@ const ChapterDrawer = ({
             ? (viewableItems[0].index ?? 0) < scrollToIndex + 2
             : (viewableItems[0].index ?? 0) > scrollToIndex + 2
         ) {
-          down = {
-            text: getString('readerScreen.drawer.scrollToCurrentChapter'),
-            func: () => {
-              listRef.current?.scrollToIndex({
-                index: scrollToIndex,
-                animated: true,
-              });
-            },
+          newBtnLayout.down = {
+            text: curChapter,
+            index: scrollToIndex,
           };
         } else {
-          up = {
-            text: getString('readerScreen.drawer.scrollToCurrentChapter'),
-            func: () => {
-              listRef.current?.scrollToIndex({
-                index: scrollToIndex,
-                animated: true,
-              });
-            },
+          newBtnLayout.up = {
+            text: curChapter,
+            index: scrollToIndex,
           };
         }
       }
-      setButtonProperties({
-        up: up,
-        down: down,
-      });
+
+      setButtonProperties(newBtnLayout);
     }
   };
-
-  useEffect(() => {
-    let pageIndex = pages.indexOf(chapter.page);
-    if (pageIndex === -1) {
-      pageIndex = 0;
+  const scroll = useCallback((index?: number) => {
+    if (index !== undefined) {
+      listRef.current?.scrollToIndex({
+        index,
+        animated: true,
+      });
+    } else {
+      listRef.current?.scrollToEnd({
+        animated: true,
+      });
     }
-    setPageIndex(pageIndex);
-  }, [chapter, pages, setPageIndex]);
+  }, []);
+
   return (
     <View style={styles.drawer}>
       <Text style={styles.headerCtn}>{getString('common.chapters')}</Text>
-      {scrollToIndex !== undefined ? (
+      {scrollToIndex === undefined ? (
+        <LoadingScreenV2 theme={theme} />
+      ) : (
         <FlashList
           ref={listRef}
           onViewableItemsChanged={checkViewableItems}
@@ -153,10 +156,21 @@ const ChapterDrawer = ({
           estimatedItemSize={60}
           initialScrollIndex={scrollToIndex}
         />
-      ) : (
-        <LoadingScreenV2 theme={theme} />
       )}
-      <ListFooter styles={styles} buttonProperties={buttonProperties} />
+      <View style={styles.footer}>
+        <Button
+          mode="contained"
+          style={styles.button}
+          title={footerBtnProps.up.text}
+          onPress={() => scroll(footerBtnProps.up.index)}
+        />
+        <Button
+          mode="contained"
+          style={styles.button}
+          title={footerBtnProps.down.text}
+          onPress={() => scroll(footerBtnProps.down.index)}
+        />
+      </View>
     </View>
   );
 };
