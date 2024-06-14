@@ -90,7 +90,7 @@ function NovelCover<
     displayMode = DisplayModes.Comfortable,
     showDownloadBadges = true,
     showUnreadBadges = true,
-    novelsPerRow = 3,
+    novelsPerRow = 2,
   } = useLibrarySettings();
 
   const window = useWindowDimensions();
@@ -98,7 +98,7 @@ function NovelCover<
   const orientation = useDeviceOrientation();
 
   const numColumns = useMemo(
-    () => (orientation === 'landscape' ? 6 : novelsPerRow),
+    () => (orientation === 'landscape' ? 6 : novelsPerRow + 1),
     [orientation, novelsPerRow],
   );
 

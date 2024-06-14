@@ -26,6 +26,13 @@ import { store } from '@plugins/helpers/storage';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { NavigationContainerRef } from '@react-navigation/native';
 
+declare global {
+  interface ObjectConstructor {
+    typedKeys<T>(obj: T): Array<keyof T>;
+  }
+}
+Object.typedKeys = Object.keys as any;
+
 Notifications.setNotificationHandler({
   handleNotification: async () => {
     return {
