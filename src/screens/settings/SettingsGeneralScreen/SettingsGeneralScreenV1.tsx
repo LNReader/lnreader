@@ -33,7 +33,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
 
   const {
     displayMode = DisplayModes.Comfortable,
-    novelsPerRow = 3,
+    novelsPerRow = 2,
     showDownloadBadges = true,
     showNumberOfNovels = false,
     showUnreadBadges = true,
@@ -123,6 +123,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             title={getString('generalSettingsScreen.itemsPerRowLibrary')}
             description={
               novelsPerRow +
+              1 +
               ' ' +
               getString('generalSettingsScreen.itemsPerRow')
             }
