@@ -33,8 +33,8 @@ export const sanitizeChapterText = (
     if (options?.removeExtraParagraphSpacing) {
       text = text
         .replace(/[\u200B-\u200D\uFEFF]/g, '')
-        .replace(/<br>(?<=<\/p>\s*<br>|)\s*(?=<\/?p>)/g, '')
         .replace(/(?:<br>\s*<\/?br>)+/g, '')
+        .replace(/<br>\s*(?=<\/?p>)/g, '')
         .replace(/\n\n+/g, '\n');
     }
   } else {
