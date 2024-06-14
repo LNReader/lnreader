@@ -20,6 +20,13 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { BACKGROUND_ACTION } from '@services/constants';
 
+declare global {
+  interface ObjectConstructor {
+    typedKeys<T>(obj: T): Array<keyof T>;
+  }
+}
+Object.typedKeys = Object.keys as any;
+
 Notifications.setNotificationHandler({
   handleNotification: async () => {
     return {
