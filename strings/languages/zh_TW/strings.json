@@ -6,18 +6,18 @@
     "clear": "清除",
     "reset": "重置",
     "search": "搜索",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results",
-    "chapters": "Chapters",
-    "submit": "Submit",
-    "retry": "Retry"
+    "install": "安裝",
+    "newUpdateAvailable": "有可用更新",
+    "categories": "類別",
+    "add": "新增",
+    "edit": "編輯",
+    "name": "名稱",
+    "searchFor": "搜尋",
+    "globally": "全球",
+    "searchResults": "搜尋結果",
+    "chapters": "章節",
+    "submit": "提交",
+    "retry": "重試"
   },
   "library": "书库",
   "libraryScreen": {
@@ -28,22 +28,22 @@
         "downloaded": "已下载",
         "unread": "未读",
         "completed": "已完成",
-        "started": "Started"
+        "started": "已啟動"
       },
       "sortOrders": {
         "dateAdded": "日期已添加",
         "alphabetically": "按字母排序",
         "totalChapters": "章节总数",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last read",
-        "lastUpdated": "Last updated"
+        "download": "已下載",
+        "unread": "未讀",
+        "lastRead": "上次閱讀",
+        "lastUpdated": "上次更新於"
       },
       "display": {
         "displayMode": "显示模式",
         "compact": "紧凑网格",
         "comfortable": "可变网格",
-        "noTitle": "Cover only grid",
+        "noTitle": "僅封面網格",
         "list": "列表",
         "badges": "徽章",
         "downloadBadges": "下载徽章",
@@ -56,9 +56,9 @@
   "updatesScreen": {
     "searchbar": "搜索更新",
     "lastUpdatedAt": "最近更新的库：",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates",
-    "updatesLower": "updates"
+    "newChapters": "新章節",
+    "emptyView": "最近沒有更新",
+    "updatesLower": "更新"
   },
   "history": "历史",
   "historyScreen": {
@@ -75,8 +75,8 @@
     "pinned": "已固定",
     "all": "全部",
     "latest": "最新",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "addedToLibrary": "新增至書庫",
+    "removeFromLibrary": "從書庫中移除"
   },
   "readerScreen": {
     "finished": "已完成",
@@ -88,7 +88,7 @@
       "lineHeight": "行高",
       "fontStyle": "字体样式",
       "fullscreen": "全屏",
-      "bionicReading": "Bionic Reading",
+      "bionicReading": "仿生閱讀",
       "renderHml": "渲染HTML",
       "autoscroll": "自动滚动",
       "verticalSeekbar": "垂直进度条",
@@ -104,9 +104,9 @@
       "showSwipeMargins": "Show swipe margins"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "捲動到當前章節",
+      "scrollToTop": "捲動至頂",
+      "scrollToBottom": "捲動至底"
     }
   },
   "novelScreen": {
@@ -115,28 +115,28 @@
     "continueReading": "继续阅读",
     "chapters": "章节",
     "migrate": "迁移",
-    "noSummary": "No summary",
+    "noSummary": "無總結",
     "bottomSheet": {
       "filter": "筛选",
       "sort": "排序",
       "display": "显示"
     },
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
-      "chapterName": "Chapter Name",
-      "chapterNumber": "Chapter Number",
+      "jumpToChapter": "跳轉至章節",
+      "openChapter": "打開章節",
+      "chapterName": "章節名稱",
+      "chapterNumber": "章節編號",
       "error": {
         "validChapterName": "Enter a valid chapter name",
-        "validChapterNumber": "Enter a valid chapter number"
+        "validChapterNumber": "請輸入有效的章節編號"
       }
     },
     "convertToEpubModal": {
       "chooseLocation": "Select EPUB storage directory",
       "pathToFolder": "Path to EPUB save folder",
       "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use custom CSS",
-      "useCustomJS": "Use custom JS",
+      "useCustomCSS": "使用自定義 CSS",
+      "useCustomJS": "使用自定義 JS",
       "useCustomJSWarning": "May not be supported by all EPUB readers",
       "chaptersWarning": "Only downloaded chapters are included in the EPUB"
     }
@@ -147,9 +147,9 @@
     "settingsScreen": {
       "generalSettings": "常规",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
+        "display": "顯示",
+        "displayMode": "顯示模式",
+        "itemsPerRow": "每行顯示物品數",
         "itemsPerRowLibrary": "Items per row in library",
         "novelBadges": "Novel Badges",
         "novelSort": "Novel Sort",
@@ -214,9 +214,9 @@
     "totalChapters": "Total chapters",
     "readChapters": "Read chapters",
     "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "downloadedChapters": "已下載章節",
+    "genreDistribution": "類型分佈",
+    "statusDistribution": "狀態分布"
   },
   "globalSearch": {
     "searchIn": "搜索小说在",
@@ -229,34 +229,34 @@
   },
   "date": {
     "calendar": {
-      "sameDay": "[Today]",
+      "sameDay": "[今日]",
       "nextDay": "[Tomorrow]",
-      "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd"
+      "lastDay": "[昨日]",
+      "lastWeek": "[上次] dddd"
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit categories",
+    "addCategories": "新增類別",
+    "editCategories": "重命名類別",
+    "setCategories": "設定分類",
+    "header": "編輯類別",
     "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
     "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
     "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
+      "header": "刪除類別",
+      "desc": "你想刪除此類別嗎"
     },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
+    "duplicateError": "已存在同名類別！",
+    "defaultCategory": "預設類別"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "隱身模式",
+    "downloadedOnly": "僅已下載"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads",
-    "downloadsLower": "downloads"
+    "dbInfo": "下載內容已保存在 SQLite 資料庫中",
+    "downloadChapters": "已下載章節",
+    "noDownloads": "沒有下載",
+    "downloadsLower": "下載"
   }
 }
