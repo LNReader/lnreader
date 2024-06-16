@@ -127,7 +127,7 @@
       "chapterName": "章節名稱",
       "chapterNumber": "章節編號",
       "error": {
-        "validChapterName": "Enter a valid chapter name",
+        "validChapterName": "請輸入有效的章節名稱",
         "validChapterNumber": "請輸入有效的章節編號"
       }
     },
@@ -155,22 +155,22 @@
         "novelSort": "Novel Sort",
         "updateLibrary": "Update library on launch",
         "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
+        "novel": "小說",
+        "chapterSort": "預設章節排序",
+        "bySource": "按來源",
+        "asc": "(升序)",
+        "desc": "(降序)",
+        "globalUpdate": "全局更新",
+        "updateOngoing": "只更新連載中小說",
+        "refreshMetadata": "自動刷新元資料",
         "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
+        "updateTime": "顯示上次更新時間",
+        "autoDownload": "自動下載",
         "epub": "EPUB",
         "epubLocation": "EPUB Location",
         "epubLocationDescription": "The place where you open and export your EPUB files.",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback",
+        "downloadNewChapters": "下載新章節",
+        "disableHapticFeedback": "停用震動反饋",
         "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
@@ -187,10 +187,10 @@
         "saveCustomTheme": "保存自定义主题",
         "deleteCustomTheme": "删除自定义主题",
         "customCSS": "自定义 CSS",
-        "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
+        "customJS": "自訂 JS",
+        "openCSSFile": "打開 CSS 檔案",
+        "openJSFile": "打開 JS 檔案",
+        "notSaved": "未儲存",
         "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
         "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
         "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
@@ -209,11 +209,11 @@
     "noResultsFound": "未找到相应结果"
   },
   "statsScreen": {
-    "title": "Statistics",
+    "title": "統計資料",
     "titlesInLibrary": "Titles in library",
-    "totalChapters": "Total chapters",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
+    "totalChapters": "總章節",
+    "readChapters": "已讀章節",
+    "unreadChapters": "未讀章節",
     "downloadedChapters": "已下載章節",
     "genreDistribution": "類型分佈",
     "statusDistribution": "狀態分布"
@@ -224,13 +224,13 @@
     "pinnedSources": "置顶的源"
   },
   "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
+    "deleteReadChapters": "刪除已讀章節",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
   },
   "date": {
     "calendar": {
       "sameDay": "[今日]",
-      "nextDay": "[Tomorrow]",
+      "nextDay": "[明日]",
       "lastDay": "[昨日]",
       "lastWeek": "[上次] dddd"
     }
