@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Hiển thị pin và giờ",
       "showProgressPercentage": "Hiện tiến trình",
       "swipeGestures": "Vuốt để đổi chương",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Cho phép bôi đen chữ",
       "useChapterDrawerSwipeNavigation": "Vuốt phải để hiện danh sách",
       "removeExtraSpacing": "Xoá khoảng trống thừa",
@@ -169,7 +170,8 @@
         "epubLocation": "EPUB Location",
         "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Tải chương mới",
-        "disableHapticFeedback": "Tắt phản hồi xúc giác"
+        "disableHapticFeedback": "Tắt phản hồi xúc giác",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Trang đọc",
