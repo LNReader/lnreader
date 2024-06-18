@@ -25,6 +25,7 @@ export const sanitizeChapterText = (
     'game-prompt-warning-content': ['font-family', 'text-align'],
     'novel-system-box': ['font-family', 'text-align'],
     'letter-style': ['font-family', 'text-align'],
+    'status': ['font-family', 'text-align'],
     'system': ['font-family', 'text-align'],
   };
   let text = sanitizeHtml(html, {

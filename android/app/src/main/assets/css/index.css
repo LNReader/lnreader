@@ -566,6 +566,24 @@ td {
 }
 
 /**
+ * Novel Updates -> Raei Translations
+ * https://www.novelupdates.com/group/raei-translations/
+ * Necessary to display chapterContent correctly
+ */
+.status {
+  --color-special: #ff751a;
+  --color-special-light: #ffa970;
+  border-left: ridge 4px var(--color-special);
+  padding: 1em;
+  color: var(--color-special-light);
+  box-shadow: -5px 0 4px -5px var(--color-special);
+  margin-top: 2em;
+  margin-bottom: 2em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/**
  * Novel Updates -> Sky Demon Order
  * https://www.novelupdates.com/group/sky-demon-order/
  * Necessary to display chapterContent correctly
