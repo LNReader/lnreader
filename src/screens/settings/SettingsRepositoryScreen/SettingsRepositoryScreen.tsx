@@ -72,10 +72,7 @@ const SettingsBrowseScreen = () => {
         />
       )}
       <FAB
-        style={[
-          styles.fab,
-          { backgroundColor: theme.primary, bottom: bottom + 16 },
-        ]}
+        style={[styles.fab, { backgroundColor: theme.primary, bottom: bottom }]}
         color={theme.onPrimary}
         label={getString('common.add')}
         uppercase={false}

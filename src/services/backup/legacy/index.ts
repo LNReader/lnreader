@@ -51,13 +51,13 @@ export const restoreBackup = async (filePath?: string) => {
     let novelsString = '';
 
     if (backup.assets && backup.assets[0]) {
-      novelsString = await FileManager.readFile(backup.assets[0].uri);
+      novelsString = FileManager.readFile(backup.assets[0].uri);
     } else if (filePath) {
       if (!(await FileManager.exists(filePath))) {
         showToast(getString('backupScreen.legacy.noErrorNovel'));
         return; //neither backup nor error backup
       }
-      novelsString = await FileManager.readFile(filePath);
+      novelsString = FileManager.readFile(filePath);
     }
 
     const novels: NovelInfo[] = await JSON.parse(novelsString);
