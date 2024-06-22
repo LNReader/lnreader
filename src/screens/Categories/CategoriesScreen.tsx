@@ -18,6 +18,7 @@ import { Category } from '@database/types';
 import CategoryCard from './components/CategoryCard';
 import { orderBy } from 'lodash-es';
 import CategorySkeletonLoading from './components/CategorySkeletonLoading';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const CategoriesScreen = () => {
   const theme = useTheme();
@@ -25,6 +26,7 @@ const CategoriesScreen = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>();
+  const { bottom } = useSafeAreaInsets();
 
   const getCategories = async () => {
     try {
@@ -105,7 +107,7 @@ const CategoriesScreen = () => {
         />
       )}
       <FAB
-        style={[styles.fab, { backgroundColor: theme.primary }]}
+        style={[styles.fab, { backgroundColor: theme.primary, bottom: bottom }]}
         color={theme.onPrimary}
         label={getString('common.add')}
         uppercase={false}

@@ -106,9 +106,7 @@ const insertLocalChapter = (
             } catch {
               // nothing to do
             }
-            await FileManager.readFile(path)
-              .then(r => (chapterText = r))
-              .catch(e => reject(e));
+            chapterText = FileManager.readFile(path);
             if (!chapterText) {
               return;
             }

@@ -274,6 +274,10 @@ export interface StringMap {
   'libraryScreen.bottomSheet.sortOrders.totalChapters': 'string';
   'libraryScreen.bottomSheet.sortOrders.unread': 'string';
   'libraryScreen.empty': 'string';
+  'libraryScreen.extraMenu.importEpub': 'string';
+  'libraryScreen.extraMenu.openRandom': 'string';
+  'libraryScreen.extraMenu.updateCategory': 'string';
+  'libraryScreen.extraMenu.updateLibrary': 'string';
   'libraryScreen.searchbar': 'string';
   'more': 'string';
   'moreScreen.downloadOnly': 'string';
