@@ -55,13 +55,13 @@ const NovelList: React.FC<NovelListProps> = props => {
           completeRow: 1,
         } as listDataItem);
       }
-      extension.push({
-        cover: '',
-        name: '',
-        path: 'loading-' + remainder,
-        completeRow: 2,
-      } as listDataItem);
     }
+    extension.push({
+      cover: '',
+      name: '',
+      path: 'loading-' + remainder,
+      completeRow: 2,
+    } as listDataItem);
 
     extendedNovelList = [...props.data, ...extension];
   }
