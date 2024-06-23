@@ -1,11 +1,10 @@
-import { View, ScrollView, StatusBar, Dimensions, Text } from 'react-native';
+import { View, StatusBar, Dimensions, Text } from 'react-native';
 import React, { useMemo, useRef, useState } from 'react';
 
-import { useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
-import { dummyHTML } from './utils';
+import { dummyHTML } from '../SettingsReaderScreen/utils';
 
-import { Appbar, List } from '@components/index';
+import { Appbar } from '@components/index';
 
 import {
   useChapterGeneralSettings,
@@ -14,18 +13,14 @@ import {
 } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
-import GeneralSettings from './Settings/GeneralSettings';
-import CustomCSSSettings from './Settings/CustomCSSSettings';
-import CustomJSSettings from './Settings/CustomJSSettings';
-import DisplaySettings from './Settings/DisplaySettings';
-import ReaderThemeSettings from './Settings/ReaderThemeSettings';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import color from 'color';
 import { useBatteryLevel } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
-import TextToSpeechSettings from './Settings/TextToSpeechSettings';
+import SettingsSubScreen from './SettingsSubScreen';
+import { StackScreenProps } from '@react-navigation/stack';
+import { SettingsStackParamList } from '@navigators/types';
 
 export type TextAlignments =
   | 'left'
@@ -39,14 +34,14 @@ type WebViewPostEvent = {
   type: string;
   data?: { [key: string]: string | number };
 };
+type Props = StackScreenProps<
+  SettingsStackParamList,
+  keyof Omit<SettingsStackParamList, 'Settings'>
+>;
 
-const SettingsReaderScreen = r => {
-  console.log(JSON.stringify(r, null, 2));
-
+const ReaderSettingsSubScreen: React.FC<Props> = ({ navigation, route }) => {
   const theme = useTheme();
-  const navigation = useNavigation();
   const webViewRef = useRef<WebView>(null);
-  const { bottom } = useSafeAreaInsets();
   const novel = {
     'artist': null,
     'author': 'Kinugasa Shougo',
@@ -91,7 +86,6 @@ const SettingsReaderScreen = r => {
     verticalSeekbar,
     bionicReading,
   } = useChapterGeneralSettings();
-  const READER_HEIGHT = 280;
   const assetsUriPrefix = useMemo(
     () => (__DEV__ ? 'http://localhost:8081/assets' : 'file:///android_asset'),
     [],
@@ -271,7 +265,7 @@ const SettingsReaderScreen = r => {
           backgroundColor: readerBackgroundColor,
           borderBottomColor: theme.outline,
           borderBottomWidth: 2,
-          marginBottom: 9,
+          zIndex: 100,
         }}
       >
         <View
@@ -283,29 +277,24 @@ const SettingsReaderScreen = r => {
             borderRadius: 10,
           }}
           onTouchMove={e => {
-            setWebViewHeight(e.nativeEvent.pageY - 84);
+            setWebViewHeight(e.nativeEvent.pageY - 10 - 84);
           }}
         >
           <Text style={{ textAlign: 'center' }}>•••</Text>
         </View>
       </View>
-      <ScrollView>
-        <View style={{ paddingBottom: bottom }}>
-          <GeneralSettings />
-          <List.Divider theme={theme} />
-          <CustomCSSSettings />
-          <List.Divider theme={theme} />
-          <CustomJSSettings />
-          <List.Divider theme={theme} />
-          <DisplaySettings />
-          <List.Divider theme={theme} />
-          <ReaderThemeSettings />
-          <List.Divider theme={theme} />
-          <TextToSpeechSettings />
-        </View>
-      </ScrollView>
+      <View
+        style={{
+          height: layoutHeight - 104 - webViewHeight,
+        }}
+      >
+        <SettingsSubScreen
+          navigation={navigation}
+          route={route}
+          disableAppbar
+        />
+      </View>
     </>
   );
 };
-
-export default SettingsReaderScreen;
+export default ReaderSettingsSubScreen;
