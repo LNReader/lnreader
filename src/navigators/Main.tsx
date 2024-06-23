@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import * as Linking from 'expo-linking';
 
 import {
   changeNavigationBarColor,
@@ -37,9 +38,15 @@ import { RootStackParamList } from './types';
 import Color from 'color';
 import { useMMKVBoolean } from 'react-native-mmkv';
 import OnboardingScreen from '@screens/onboarding/OnboardingScreen';
+import {
+  createRepository,
+  isRepoUrlDuplicate,
+} from '@database/queries/RepositoryQueries';
+import { showToast } from '@utils/showToast';
 const Stack = createStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
+  const url = Linking.useURL();
   const theme = useTheme();
   const { updateLibraryOnLaunch } = useAppSettings();
   const { refreshPlugins } = usePlugins();
@@ -65,6 +72,24 @@ const MainNavigator = () => {
       refreshPlugins();
     }
   }, [isOnboarded]);
+
+  useEffect(() => {
+    if (url) {
+      const { hostname, path, queryParams } = Linking.parse(url);
+      if (hostname === 'repo' && path === 'add') {
+        const repoUrl = queryParams?.url;
+        if (typeof repoUrl === 'string') {
+          isRepoUrlDuplicate(repoUrl).then(isDuplicated => {
+            if (isDuplicated) {
+              showToast('A respository with this url already exists!');
+            } else {
+              createRepository(repoUrl);
+            }
+          });
+        }
+      }
+    }
+  }, [url]);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
 
