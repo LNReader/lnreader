@@ -59,6 +59,12 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
           />
           <List.Divider theme={theme} />
           <List.Item
+            title={getString('aboutScreen.website')}
+            description="https://lnreader.github.io"
+            onPress={() => Linking.openURL('https://lnreader.github.io')}
+            theme={theme}
+          />
+          <List.Item
             title={getString('aboutScreen.discord')}
             description="https://discord.gg/QdcWN4MD63"
             onPress={() => Linking.openURL('https://discord.gg/QdcWN4MD63')}

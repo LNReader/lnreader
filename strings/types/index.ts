@@ -3,6 +3,7 @@
  */
 
 export interface StringMap {
+  'aboutScreen.website': 'string';
   'aboutScreen.discord': 'string';
   'aboutScreen.github': 'string';
   'aboutScreen.helpTranslate': 'string';

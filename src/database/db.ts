@@ -12,10 +12,7 @@ import {
 } from './tables/ChapterTable';
 import { dbTxnErrorCallback } from './utils/helpers';
 import { noop } from 'lodash-es';
-import {
-  createRepositoryTableQuery,
-  insertDefaultRepository,
-} from './tables/RepositoryTable';
+import { createRepositoryTableQuery } from './tables/RepositoryTable';
 
 const dbName = 'lnreader.db';
 
@@ -35,7 +32,6 @@ export const createTables = () => {
 
   db.transaction(tx => {
     tx.executeSql(createRepositoryTableQuery);
-    tx.executeSql(insertDefaultRepository);
   });
 };
 
