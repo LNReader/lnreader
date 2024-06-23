@@ -57,16 +57,6 @@ interface INovelCover<TNovel> {
   selectedNovelIds: number[];
 }
 
-// function NovelCover<TNovel extends coverItemPlugin>({
-//   item,
-//   onPress,
-//   libraryStatus,
-//   theme,
-//   isSelected,
-//   addSkeletonLoading,
-//   onLongPress,
-//   selectedNovelIds,
-// }: INovelCover<TNovel>): React.ReactElement;
 function NovelCover<TNovel extends coverItemLibrary | coverItemPlugin>({
   item,
   onPress,

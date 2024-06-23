@@ -92,12 +92,9 @@ const createStyleSheet = () => {
       marginBottom: 8,
       marginTop: 2,
       overflow: 'visible',
-      // position: 'absolute',
-      // left: 0,
     },
     row: {
       flexDirection: 'row',
-      // justifyContent: 'space-around',
       paddingHorizontal: 1,
     },
     completeRow: {
@@ -106,9 +103,7 @@ const createStyleSheet = () => {
       paddingHorizontal: 1,
       marginBottom: 8,
       position: 'relative',
-      // transform: [{ translateY: -250 }],
       right: 0,
-      // top: 100,
       opacity: 0.8,
     },
   });
