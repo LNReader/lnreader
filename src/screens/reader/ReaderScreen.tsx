@@ -132,12 +132,16 @@ export const ChapterContent = ({
     VolumeButtonListener.preventDefault();
     emmiter.current.addListener('VolumeUp', () => {
       webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top: -${Dimensions.get('window').height / 2}, behavior: 'smooth'})
+          window.scrollBy({top: -${
+            Dimensions.get('window').height / 2
+          }, behavior: 'smooth'})
         })()`);
     });
     emmiter.current.addListener('VolumeDown', () => {
       webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top: ${Dimensions.get('window').height / 2}, behavior: 'smooth'})
+          window.scrollBy({top: ${
+            Dimensions.get('window').height / 2
+          }, behavior: 'smooth'})
         })()`);
     });
   };
