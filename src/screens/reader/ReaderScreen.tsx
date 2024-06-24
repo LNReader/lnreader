@@ -133,14 +133,14 @@ export const ChapterContent = ({
     emmiter.current.addListener('VolumeUp', () => {
       webViewRef.current?.injectJavaScript(`(()=>{
           window.scrollBy({top: -${
-            Dimensions.get('window').height / 2
+            Dimensions.get('window').height * 0.75
           }, behavior: 'smooth'})
         })()`);
     });
     emmiter.current.addListener('VolumeDown', () => {
       webViewRef.current?.injectJavaScript(`(()=>{
           window.scrollBy({top: ${
-            Dimensions.get('window').height / 2
+            Dimensions.get('window').height * 0.75
           }, behavior: 'smooth'})
         })()`);
     });
