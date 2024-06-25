@@ -291,8 +291,8 @@ export const ChapterContent = ({
 
   const openDrawer = useCallback(() => {
     drawerRef.current?.openDrawer();
-    setHidden(true);
-  }, [drawerRef]);
+    hideHeader();
+  }, [drawerRef, hideHeader]);
 
   if (loading) {
     return <ChapterLoadingScreen />;
