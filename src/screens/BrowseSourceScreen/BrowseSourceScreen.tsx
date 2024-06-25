@@ -133,7 +133,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
                 isSelected={false}
                 addSkeletonLoading={
                   (hasNextPage && !searchText) ||
-                  (hasNextSearchPage && !!searchText)
+                  (hasNextSearchPage && Boolean(searchText))
                 }
                 onLongPress={async () => {
                   await switchNovelToLibrary(item.path, pluginId);
