@@ -98,15 +98,15 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
                             refMap[id] = href
                         }
                     }
-
                     "itemref" -> {
                         val idRef = parser.getAttributeValue(null, "idref")
                         val href = refMap[idRef]
-                        if (href != null) {
+                        val chapterFile = File("$contentDir/$href")
+                        if (href != null && chapterFile.exists()) {
                             val chapter: WritableMap = WritableNativeMap()
-                            chapter.putString("path", "$contentDir/$href")
+                            chapter.putString("path", chapterFile.path)
                             val name = tocMap[href]
-                            chapter.putString("name", name ?: href)
+                            chapter.putString("name", name ?: chapterFile.name)
                             chapters.pushMap(chapter)
                         }
                     }
