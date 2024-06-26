@@ -64,16 +64,21 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
         return "OEBPS/content.opf" // default
     }
 
+    private fun mergeChapter(sourceChapter: File, desChapter: File) {
+        desChapter.appendBytes(sourceChapter.readBytes())
+    }
+
     private fun getNovelMetadata(file: File, contentDir: String): ReadableMap {
         val novel: WritableMap = WritableNativeMap()
         val chapters: WritableArray = WritableNativeArray()
         val parser = initParse(file)
         val refMap = HashMap<String, String>()
         val tocMap = HashMap<String, String?>()
+        val entryList = mutableListOf<ChapterEntry>()
         val tocFile = File(contentDir, "toc.ncx")
         if (tocFile.exists()) {
             val tocParser = initParse(tocFile)
-            var label: String? = null
+            var label = ""
             while (tocParser.next() != XmlPullParser.END_DOCUMENT) {
                 val tag = tocParser.name
                 if (tag != null) {
@@ -81,12 +86,23 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
                         label = readText(tocParser)
                     } else if (tag == "content") {
                         val href = cleanUrl(tocParser.getAttributeValue(null, "src"))
+                        if(label.isNotBlank()){
+                            entryList.add(ChapterEntry(name = label, href = href))
+                        }
+                        label = ""
                         tocMap[href] = label
                     }
                 }
             }
+        }else{
+            throw Error("Table of content doesn't exist!")
         }
         var cover: String? = null
+        var entryIndex = 0
+        val startChapter = WritableNativeMap()
+        startChapter.putString("name", entryList[0].name)
+        startChapter.putString("path", "$contentDir/${entryList[0].href}")
+        chapters.pushMap(startChapter)
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             val tag = parser.name
             if (tag != null) {
@@ -103,11 +119,18 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
                         val href = refMap[idRef]
                         val chapterFile = File("$contentDir/$href")
                         if (href != null && chapterFile.exists()) {
-                            val chapter: WritableMap = WritableNativeMap()
-                            chapter.putString("path", chapterFile.path)
-                            val name = tocMap[href]
-                            chapter.putString("name", name ?: chapterFile.name)
-                            chapters.pushMap(chapter)
+                            if (entryIndex < entryList.size - 1 && entryList[entryIndex + 1].href == href) {
+                                val newChapter = WritableNativeMap()
+                                newChapter.putString("path", chapterFile.path)
+                                newChapter.putString("name", entryList[entryIndex + 1].name)
+                                chapters.pushMap(newChapter)
+                                entryIndex += 1
+                            }else{
+                                if (href == entryList[entryIndex].href){
+                                    continue
+                                }
+                                mergeChapter(chapterFile, File("$contentDir/${entryList[entryIndex].href}"))
+                            }
                         }
                     }
 
@@ -128,6 +151,19 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
         if (cover != null) {
             val coverPath = contentDir + "/" + refMap[cover]
             novel.putString("cover", coverPath)
+        } else {
+            // try scanning Images dir if exists
+            val imageDir = File("$contentDir/Images")
+            if(imageDir.exists() && imageDir.isDirectory){
+                imageDir.listFiles()?.forEach { img ->
+                    if (img.isFile && img.name.lowercase().contains("cover|illus".toRegex())){
+                        cover = img.path
+                    }
+                }
+            }
+            if (cover != null){
+                novel.putString("cover", cover)
+            }
         }
         novel.putArray("chapters", chapters)
         return novel
