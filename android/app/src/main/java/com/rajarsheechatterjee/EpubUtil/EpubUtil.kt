@@ -37,7 +37,7 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
     }
 
     private fun cleanUrl(url: String): String {
-        return url.replaceFirst("#[^.]+?$", "")
+        return url.replaceFirst("#[^.]+?$".toRegex(), "")
     }
 
     @ReactMethod
@@ -73,7 +73,6 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
         val chapters: WritableArray = WritableNativeArray()
         val parser = initParse(file)
         val refMap = HashMap<String, String>()
-        val tocMap = HashMap<String, String?>()
         val entryList = mutableListOf<ChapterEntry>()
         val tocFile = File(contentDir, "toc.ncx")
         if (tocFile.exists()) {
@@ -90,7 +89,6 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
                             entryList.add(ChapterEntry(name = label, href = href))
                         }
                         label = ""
-                        tocMap[href] = label
                     }
                 }
             }
