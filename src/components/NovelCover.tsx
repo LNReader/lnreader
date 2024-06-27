@@ -36,12 +36,12 @@ interface DownloadBadgeProps {
   theme: ThemeColors;
 }
 
-type coverItemLibrary =
+type CoverItemLibrary =
   | LibraryNovelInfo & {
       completeRow?: number;
     };
 
-type coverItemPlugin =
+type CoverItemPlugin =
   | NovelItem & {
       completeRow?: number;
     };
