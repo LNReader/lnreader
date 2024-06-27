@@ -132,15 +132,16 @@ export const ChapterContent = ({
     VolumeButtonListener.preventDefault();
     emmiter.current.addListener('VolumeUp', () => {
       webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top:${-Dimensions.get('window')
-            .height},behavior:'smooth',})
+          window.scrollBy({top: -${
+            Dimensions.get('window').height * 0.75
+          }, behavior: 'smooth'})
         })()`);
     });
     emmiter.current.addListener('VolumeDown', () => {
       webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top:${
-            Dimensions.get('window').height
-          },behavior:'smooth',})
+          window.scrollBy({top: ${
+            Dimensions.get('window').height * 0.75
+          }, behavior: 'smooth'})
         })()`);
     });
   };
@@ -291,8 +292,8 @@ export const ChapterContent = ({
 
   const openDrawer = useCallback(() => {
     drawerRef.current?.openDrawer();
-    setHidden(true);
-  }, [drawerRef]);
+    hideHeader();
+  }, [drawerRef, hideHeader]);
 
   if (loading) {
     return <ChapterLoadingScreen />;
