@@ -64,10 +64,6 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
         return "OEBPS/content.opf" // default
     }
 
-    private fun mergeChapter(sourceChapter: File, desChapter: File) {
-        desChapter.appendBytes(sourceChapter.readBytes())
-    }
-
     private fun getNovelMetadata(file: File, contentDir: String): ReadableMap {
         val novel: WritableMap = WritableNativeMap()
         val chapters: WritableArray = WritableNativeArray()
@@ -96,11 +92,7 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
             throw Error("Table of content doesn't exist!")
         }
         var cover: String? = null
-        var entryIndex = 0
-        val startChapter = WritableNativeMap()
-        startChapter.putString("name", entryList[0].name)
-        startChapter.putString("path", "$contentDir/${entryList[0].href}")
-        chapters.pushMap(startChapter)
+        var entryIndex = 0;
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             val tag = parser.name
             if (tag != null) {
@@ -116,18 +108,16 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
                         val idRef = parser.getAttributeValue(null, "idref")
                         val href = refMap[idRef]
                         val chapterFile = File("$contentDir/$href")
-                        if (href != null && chapterFile.exists()) {
-                            if (entryIndex < entryList.size - 1 && entryList[entryIndex + 1].href == href) {
+                        if (chapterFile.exists()) {
+                            if (entryIndex == 0 || entryIndex < entryList.size && entryList[entryIndex].href == href) {
                                 val newChapter = WritableNativeMap()
                                 newChapter.putString("path", chapterFile.path)
-                                newChapter.putString("name", entryList[entryIndex + 1].name)
+                                newChapter.putString("name", entryList[entryIndex].name)
                                 chapters.pushMap(newChapter)
                                 entryIndex += 1
                             }else{
-                                if (href == entryList[entryIndex].href){
-                                    continue
-                                }
-                                mergeChapter(chapterFile, File("$contentDir/${entryList[entryIndex].href}"))
+                                // merge to previous entry
+                                File("$contentDir/${entryList[entryIndex - 1].href}").appendBytes(chapterFile.readBytes())
                             }
                         }
                     }
