@@ -22,6 +22,7 @@ const GeneralSettings: React.FC = () => {
     useVolumeButtons = false,
     verticalSeekbar = true,
     swipeGestures = false,
+    pageReader = false,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -73,6 +74,12 @@ const GeneralSettings: React.FC = () => {
         onPress={() =>
           setChapterGeneralSettings({ bionicReading: !bionicReading })
         }
+        theme={theme}
+      />
+      <SettingSwitch
+        label={getString('readerScreen.bottomSheet.pageReader')}
+        value={pageReader}
+        onPress={() => setChapterGeneralSettings({ pageReader: !pageReader })}
         theme={theme}
       />
       <SettingSwitch

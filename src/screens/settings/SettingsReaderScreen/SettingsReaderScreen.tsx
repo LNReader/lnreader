@@ -87,6 +87,7 @@ const SettingsReaderScreen = () => {
     showBatteryAndTime,
     verticalSeekbar,
     bionicReading,
+    pageReader,
   } = useChapterGeneralSettings();
   const READER_HEIGHT = 280;
   const assetsUriPrefix = useMemo(
@@ -158,7 +159,7 @@ const SettingsReaderScreen = () => {
           javaScriptEnabled={true}
           style={{ backgroundColor: readerBackgroundColor }}
           nestedScrollEnabled={true}
-          onMessage={ev => {
+          onMessage={(ev: { nativeEvent: { data: string } }) => {
             const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
             switch (event.type) {
               case 'hide':
@@ -203,6 +204,14 @@ const SettingsReaderScreen = () => {
               <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
                 ${webViewCSS}
+               
+                ${
+                  pageReader
+                    ? `
+                    <link rel="stylesheet" href="${assetsUriPrefix}/css/horizontal.css">
+                  `
+                    : ''
+                }
                 <script async>
                   var initSettings = {
                     showScrollPercentage: ${showScrollPercentage},
@@ -219,14 +228,16 @@ const SettingsReaderScreen = () => {
                   })}
                 </script>
               </head>
-              <body>
-                <chapter 
-                  data-novel-id='${dummyChapterInfo.novelId}'
-                  data-chapter-id='${dummyChapterInfo.chapterId}'
-                  onclick="reader.post({type:'hide'})"
-                >
-                  ${dummyHTML}
-                </chapter>
+              <body> 
+                <div class="chapterCtn"> 
+                  <chapter 
+                    data-page-reader='${pageReader}'
+                    data-novel-id='${dummyChapterInfo.novelId}'
+                    data-chapter-id='${dummyChapterInfo.chapterId}'
+                  >
+                    ${dummyHTML}
+                  </chapter>
+                </div>
                 <div class="hidden" id="ToolWrapper">
                     <div id="TTS-Controller"></div>
                     <div id="ScrollBar"></div>
@@ -243,18 +254,12 @@ const SettingsReaderScreen = () => {
                 </div>
                 </body>
                 <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
+                <script src="${assetsUriPrefix}/js/default.js"></script>
+                <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                 <script src="${assetsUriPrefix}/js/index.js"></script>
+                <script src="${assetsUriPrefix}/js/setup.js"></script>
                 <script>
-                  async function fn(){
-                    let novelName = "${dummyChapterInfo.novelName}";
-                    let chapterName = "${dummyChapterInfo.chapterName}";
-                    let sourceId =${dummyChapterInfo.sourceId};
-                    let chapterId =${dummyChapterInfo.chapterId};
-                    let novelId =${dummyChapterInfo.novelId};
-                    let html = document.getElementsByTagName("chapter")[0].innerHTML;
-                    ${readerSettings.customJS}
-                  }
-                  document.addEventListener("DOMContentLoaded", fn);
+                        setup(0,${readerSettings.customJS})
                 </script>
             </html>
             `,

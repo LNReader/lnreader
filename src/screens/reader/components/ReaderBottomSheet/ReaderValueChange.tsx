@@ -3,43 +3,64 @@ import React from 'react';
 
 import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 import { IconButtonV2 } from '@components';
-import { getString } from '@strings/translations';
+import { ChapterReaderSettings } from '@hooks/persisted/useSettings';
 
-interface ReaderLineHeightProps {
+type ValueKey<T extends object> = {
+  [K in keyof T]: T[K] extends number ? K : never;
+}[keyof T];
+
+interface ReaderValueChangeProps {
   labelStyle?: TextStyle | TextStyle[];
+  valueChange?: number;
+  label: string;
+  valueKey: ValueKey<ChapterReaderSettings>;
+  decimals?: number;
+  min?: number;
+  max?: number;
 }
 
-const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
+const ReaderValueChange: React.FC<ReaderValueChangeProps> = ({
+  labelStyle,
+  label,
+  valueChange = 0.1,
+  valueKey,
+  decimals = 1,
+  min = 1.3,
+  max = 2,
+}) => {
   const theme = useTheme();
-
-  const { lineHeight, setChapterReaderSettings } = useChapterReaderSettings();
+  const { setChapterReaderSettings, ...settings } = useChapterReaderSettings();
 
   return (
     <View style={styles.container}>
       <Text style={[{ color: theme.onSurfaceVariant }, labelStyle]}>
-        {getString('readerScreen.bottomSheet.lineHeight')}
+        {label}
       </Text>
       <View style={styles.buttonContainer}>
         <IconButtonV2
           name="minus"
           color={theme.primary}
           size={26}
-          disabled={lineHeight <= 1.3}
+          disabled={settings[valueKey] <= min}
           onPress={() =>
-            setChapterReaderSettings({ lineHeight: lineHeight - 0.1 })
+            setChapterReaderSettings({
+              [valueKey]: Math.max(min, settings[valueKey] - valueChange),
+            })
           }
           theme={theme}
         />
         <Text style={[styles.value, { color: theme.onSurface }]}>
-          {`${Math.round(lineHeight * 10) / 10}%`}
+          {`${((settings[valueKey] * 10) / 10).toFixed(decimals)}%`}
         </Text>
         <IconButtonV2
           name="plus"
           color={theme.primary}
           size={26}
-          disabled={lineHeight >= 2}
+          disabled={settings[valueKey] >= max}
           onPress={() =>
-            setChapterReaderSettings({ lineHeight: lineHeight + 0.1 })
+            setChapterReaderSettings({
+              [valueKey]: Math.min(max, settings[valueKey] + valueChange),
+            })
           }
           theme={theme}
         />
@@ -48,7 +69,7 @@ const ReaderLineHeight: React.FC<ReaderLineHeightProps> = ({ labelStyle }) => {
   );
 };
 
-export default ReaderLineHeight;
+export default ReaderValueChange;
 
 const styles = StyleSheet.create({
   container: {
@@ -59,7 +80,9 @@ const styles = StyleSheet.create({
     marginVertical: 6,
   },
   value: {
-    paddingHorizontal: 24,
+    width: 60,
+    paddingHorizontal: 4,
+    textAlign: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',

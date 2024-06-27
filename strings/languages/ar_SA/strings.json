@@ -186,7 +186,7 @@
       "fontStyle": "نمط الخط",
       "fullscreen": "تكبير الشاشة",
       "lineHeight": "ارتفاع الخط",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
       "renderHml": "عرض HTML",
       "scrollAmount": "مقدار التمرير (افتراضيًا طول الشاشة)",
