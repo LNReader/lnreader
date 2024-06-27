@@ -57,7 +57,7 @@ interface INovelCover<TNovel> {
   selectedNovelIds: number[];
 }
 
-function NovelCover<TNovel extends coverItemLibrary | coverItemPlugin>({
+function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
   item,
   onPress,
   libraryStatus,
