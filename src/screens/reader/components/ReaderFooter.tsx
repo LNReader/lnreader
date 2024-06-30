@@ -8,7 +8,7 @@ import { ChapterInfo, NovelInfo } from '@database/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { ChapterScreenProps } from '@navigators/types';
 import { useDeviceOrientation } from '@hooks/index';
-import { initialWindowMetrics } from 'react-native-safe-area-context';
+import getInitialInsets from '@database/utils/getInitialInsets';
 
 interface ChapterFooterProps {
   theme: ThemeColors;
@@ -41,10 +41,9 @@ const ChapterFooter = ({
     radius: 50,
   };
   const orientation = useDeviceOrientation();
-  const Metrics = initialWindowMetrics;
   let bottom = 0;
   if (orientation === 'potrait') {
-    bottom = Metrics ? Metrics.insets.bottom : 40;
+    bottom = getInitialInsets().bottom;
   }
   return (
     <Animated.View
