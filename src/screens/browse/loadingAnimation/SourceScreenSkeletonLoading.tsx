@@ -41,9 +41,8 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
     let randomNumber = Math.random();
     randomNumber < 0.1 ? (randomNumber = 0) : null;
     return (
-      <View style={{ flex: 1 / numColumns }}>
+      <View key={'sourceLoading' + item} style={{ flex: 1 / numColumns }}>
         <LoadingNovel
-          key={index}
           backgroundColor={backgroundColor}
           highlightColor={highlightColor}
           pictureHeight={pictureHeight}
@@ -63,7 +62,7 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
     }
     // return items.map(renderLoadingNovel);
     return (
-      <View key={index} style={styles.row}>
+      <View key={'sourceSkeletonRow' + item} style={styles.row}>
         {items.map(renderLoadingNovel)}
       </View>
     );
