@@ -8,6 +8,7 @@ import { ChapterInfo, NovelInfo } from '@database/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { ChapterScreenProps } from '@navigators/types';
 import { useDeviceOrientation } from '@hooks/index';
+import { initialWindowMetrics } from 'react-native-safe-area-context';
 
 interface ChapterFooterProps {
   theme: ThemeColors;
@@ -20,7 +21,6 @@ interface ChapterFooterProps {
   navigateToChapterBySwipe: (actionName: string) => void;
   navigation: ChapterScreenProps['navigation'];
   openDrawer: () => void;
-  bottomInset: number;
 }
 
 const ChapterFooter = ({
@@ -34,7 +34,6 @@ const ChapterFooter = ({
   navigateToChapterBySwipe,
   navigation,
   openDrawer,
-  bottomInset,
 }: ChapterFooterProps) => {
   const rippleConfig = {
     color: theme.rippleColor,
@@ -42,7 +41,11 @@ const ChapterFooter = ({
     radius: 50,
   };
   const orientation = useDeviceOrientation();
-
+  const Metrics = initialWindowMetrics;
+  let bottom = 0;
+  if (orientation === 'potrait') {
+    bottom = Metrics ? Metrics.insets.bottom : 40;
+  }
   return (
     <Animated.View
       entering={FadeIn.duration(150)}
@@ -51,7 +54,7 @@ const ChapterFooter = ({
         styles.footer,
         {
           backgroundColor: color(theme.surface).alpha(0.9).string(),
-          paddingBottom: orientation === 'potrait' ? bottomInset : 0,
+          paddingBottom: bottom,
         },
       ]}
     >
