@@ -110,7 +110,7 @@ export const ChapterContent = ({
   } = useChapterGeneralSettings();
   const { incognitoMode } = useLibrarySettings();
 
-  const { setImmersiveMode, showStatusAndNavBar, bottom } = useFullscreenMode();
+  const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 
   const [hidden, setHidden] = useState(true);
 
@@ -363,7 +363,6 @@ export const ChapterContent = ({
             navigateToChapterBySwipe={navigateToChapterBySwipe}
             navigation={navigation}
             openDrawer={openDrawer}
-            bottomInset={bottom}
           />
         </>
       ) : null}
