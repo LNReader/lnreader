@@ -16,7 +16,7 @@ import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { switchNovelToLibrary } from '@database/queries/NovelQueries';
-import { NovelInfo } from '@database/types';
+import { LibraryNovelInfo, NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BrowseSourceScreenProps } from '@navigators/types';
@@ -46,7 +46,6 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     clearSearchResults,
     searchError,
   } = useSearchSource(pluginId);
-
   const novelList = searchResults.length > 0 ? searchResults : novels;
   const errorMessage = error || searchError;
 
@@ -76,7 +75,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     );
 
   const navigateToNovel = useCallback(
-    (item: NovelItem) =>
+    (item: NovelItem | LibraryNovelInfo) =>
       navigation.navigate('Novel', {
         ...item,
         pluginId: pluginId,
@@ -121,6 +120,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
       ) : (
         <NovelList
           data={novelList}
+          inSource
           renderItem={({ item }) => {
             const inLibrary = novelInLibrary(item.path);
 
@@ -131,6 +131,10 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
                 libraryStatus={inLibrary}
                 onPress={() => navigateToNovel(item)}
                 isSelected={false}
+                addSkeletonLoading={
+                  (hasNextPage && !searchText) ||
+                  (hasNextSearchPage && Boolean(searchText))
+                }
                 onLongPress={async () => {
                   await switchNovelToLibrary(item.path, pluginId);
                   setLibrary(prevValues => {
@@ -164,15 +168,9 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
               fetchNextPage();
             }
           }}
-          ListFooterComponent={
-            (hasNextPage && !searchText) ||
-            (hasNextSearchPage && searchText) ? (
-              <SourceScreenSkeletonLoading theme={theme} />
-            ) : undefined
-          }
+          onEndReachedThreshold={1.5}
         />
       )}
-
       {!showLatestNovels && filterValues && !searchText ? (
         <>
           <FAB

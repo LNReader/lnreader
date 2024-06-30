@@ -9,9 +9,13 @@ import { useDeviceOrientation } from '@hooks';
 
 interface Props {
   theme: ThemeColors;
+  completeRow?: number;
 }
 
-const SourceScreenSkeletonLoading: React.FC<Props> = ({ theme }) => {
+const SourceScreenSkeletonLoading: React.FC<Props> = ({
+  theme,
+  completeRow,
+}) => {
   const [highlightColor, backgroundColor] = getLoadingColors(theme);
 
   const { displayMode = DisplayModes.Comfortable, novelsPerRow = 3 } =
@@ -31,23 +35,24 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({ theme }) => {
     let height = (window.width / numColumns) * (4 / 3);
     let width = (window.width - 12 - 9.6 * numColumns) / numColumns;
     return [height, width];
-  }, [numColumns]);
+  }, [numColumns, window.width]);
 
-  const renderLoadingNovel = (item: number, index: number) => {
+  const renderLoadingNovel = (item: number) => {
     let randomNumber = Math.random();
     randomNumber < 0.1 ? (randomNumber = 0) : null;
     return (
-      <LoadingNovel
-        key={index}
-        backgroundColor={backgroundColor}
-        highlightColor={highlightColor}
-        pictureHeight={pictureHeight}
-        pictureWidth={pictureWidth}
-        displayMode={displayMode}
-      />
+      <View key={'sourceLoading' + item} style={{ flex: 1 / numColumns }}>
+        <LoadingNovel
+          backgroundColor={backgroundColor}
+          highlightColor={highlightColor}
+          pictureHeight={pictureHeight}
+          pictureWidth={pictureWidth}
+          displayMode={displayMode}
+        />
+      </View>
     );
   };
-  const renderLoading = (item: number, index: number) => {
+  const renderLoading = (item: number) => {
     const offset = Math.pow(10, item);
     const items: Array<number> = [1 * offset];
     if (displayMode !== DisplayModes.List) {
@@ -56,12 +61,16 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({ theme }) => {
       }
     }
     return (
-      <View key={index} style={styles.row}>
+      <View key={'sourceSkeletonRow' + item} style={styles.row}>
         {items.map(renderLoadingNovel)}
       </View>
     );
   };
   let items: Array<number> = [];
+  if (completeRow === 1) {
+    return renderLoadingNovel(completeRow);
+  }
+
   if (displayMode === DisplayModes.List) {
     items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   } else {
@@ -69,6 +78,7 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({ theme }) => {
       items.push(i);
     }
   }
+
   return <View style={styles.container}>{items.map(renderLoading)}</View>;
 };
 
@@ -76,15 +86,23 @@ const createStyleSheet = () => {
   return StyleSheet.create({
     container: {
       flexGrow: 1,
-      marginHorizontal: 4,
+      marginHorizontal: 2,
       marginBottom: 8,
       marginTop: 2,
       overflow: 'visible',
     },
     row: {
       flexDirection: 'row',
+      paddingHorizontal: 1,
+    },
+    completeRow: {
+      flexDirection: 'row',
       justifyContent: 'space-around',
       paddingHorizontal: 1,
+      marginBottom: 8,
+      position: 'relative',
+      right: 0,
+      opacity: 0.8,
     },
   });
 };

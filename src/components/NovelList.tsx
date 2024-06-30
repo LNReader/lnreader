@@ -8,19 +8,24 @@ import {
   ListRenderItem,
 } from 'react-native';
 import { NovelItem } from '@plugins/types';
-import { LibraryNovelInfo, NovelInfo } from '../database/types';
+import { LibraryNovelInfo } from '../database/types';
 import { useDeviceOrientation } from '@hooks';
 
-export type NovelListRenderItem = ListRenderItem<
-  LibraryNovelInfo | NovelInfo | NovelItem
->;
+export type NovelListRenderItem = ListRenderItem<LibraryNovelInfo | NovelItem>;
 
-const NovelList: React.FC<
-  FlatListProps<LibraryNovelInfo | NovelInfo | NovelItem>
-> = props => {
+type listDataItem =
+  | (LibraryNovelInfo | NovelItem) & {
+      completeRow?: number;
+    };
+
+interface NovelListProps extends FlatListProps<LibraryNovelInfo | NovelItem> {
+  inSource?: boolean;
+  data: Array<listDataItem>;
+}
+
+const NovelList: React.FC<NovelListProps> = props => {
   const { displayMode = DisplayModes.Comfortable, novelsPerRow = 3 } =
     useLibrarySettings();
-
   const orientation = useDeviceOrientation();
 
   const isListView = displayMode === DisplayModes.List;
@@ -37,6 +42,30 @@ const NovelList: React.FC<
     }
   }, [isListView, orientation, novelsPerRow]);
 
+  var extendedNovelList: Array<listDataItem> = props?.data;
+  if (props.data?.length && props.inSource) {
+    let remainder = numColumns - (props.data?.length % numColumns);
+    let extension: Array<listDataItem> = [];
+    if (remainder !== 0 && remainder !== numColumns) {
+      for (let i = 0; i < remainder; i++) {
+        extension.push({
+          cover: '',
+          name: '',
+          path: 'loading-' + remainder,
+          completeRow: 1,
+        } as listDataItem);
+      }
+    }
+    extension.push({
+      cover: '',
+      name: '',
+      path: 'loading-' + remainder,
+      completeRow: 2,
+    } as listDataItem);
+
+    extendedNovelList = [...props.data, ...extension];
+  }
+
   return (
     <FlatList
       contentContainerStyle={[
@@ -47,6 +76,7 @@ const NovelList: React.FC<
       key={numColumns}
       keyExtractor={(item, index) => index + '_' + item.path}
       {...props}
+      data={extendedNovelList}
     />
   );
 };
