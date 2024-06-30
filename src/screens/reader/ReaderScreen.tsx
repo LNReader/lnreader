@@ -52,7 +52,6 @@ import WebView from 'react-native-webview';
 import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
