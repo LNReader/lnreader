@@ -37,7 +37,7 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
     return [height, width];
   }, [numColumns, window.width]);
 
-  const renderLoadingNovel = (item: number, index: number) => {
+  const renderLoadingNovel = (item: number) => {
     let randomNumber = Math.random();
     randomNumber < 0.1 ? (randomNumber = 0) : null;
     return (
@@ -52,7 +52,7 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
       </View>
     );
   };
-  const renderLoading = (item: number, index: number) => {
+  const renderLoading = (item: number) => {
     const offset = Math.pow(10, item);
     const items: Array<number> = [1 * offset];
     if (displayMode !== DisplayModes.List) {
@@ -60,7 +60,6 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
         items.push(i * offset);
       }
     }
-    // return items.map(renderLoadingNovel);
     return (
       <View key={'sourceSkeletonRow' + item} style={styles.row}>
         {items.map(renderLoadingNovel)}
@@ -69,7 +68,7 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
   };
   let items: Array<number> = [];
   if (completeRow === 1) {
-    return renderLoadingNovel(completeRow, completeRow);
+    return renderLoadingNovel(completeRow);
   }
 
   if (displayMode === DisplayModes.List) {
