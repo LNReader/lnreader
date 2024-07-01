@@ -37,8 +37,9 @@ import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/Source
 import { Row } from '@components/Common';
 import { LibraryScreenProps } from '@navigators/types';
 import { NovelInfo } from '@database/types';
-import { importEpub } from '@services/epub/import';
 import { updateLibrary } from '@services/updates';
+import * as DocumentPicker from 'expo-document-picker';
+import ServiceManager from '@services/ServiceManager';
 
 type State = NavigationState<{
   key: string;
@@ -196,7 +197,25 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           },
           {
             title: getString('libraryScreen.extraMenu.importEpub'),
-            onPress: importEpub,
+            onPress: () => {
+              DocumentPicker.getDocumentAsync({
+                type: 'application/epub+zip',
+                copyToCacheDirectory: true,
+                multiple: true,
+              }).then(res => {
+                if (!res.canceled) {
+                  ServiceManager.manager.addTask(
+                    res.assets.map(asset => ({
+                      name: 'IMPORT_EPUB',
+                      data: {
+                        filename: asset.name,
+                        uri: asset.uri,
+                      },
+                    })),
+                  );
+                }
+              });
+            },
           },
           {
             title: getString('libraryScreen.extraMenu.openRandom'),
