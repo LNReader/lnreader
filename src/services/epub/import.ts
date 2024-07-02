@@ -1,9 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('lnreader.db');
-import * as DocumentPicker from 'expo-document-picker';
 import BackgroundService from 'react-native-background-actions';
-import * as Notifications from 'expo-notifications';
-import { sleep } from '@utils/sleep';
 import ZipArchive from '@native/ZipArchive';
 import dayjs from 'dayjs';
 import {
@@ -11,19 +8,10 @@ import {
   updateNovelInfo,
 } from '@database/queries/NovelQueries';
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
-import { MMKVStorage } from '@utils/mmkv/mmkv';
-import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
-import { showToast } from '@utils/showToast';
 import FileManager from '@native/FileManager';
 import EpubUtil from '@native/EpubUtil';
 import { NOVEL_STORAGE } from '@utils/Storages';
-
-interface TaskData {
-  delay: number;
-  sourceUri: string;
-  filename?: string;
-}
 
 const insertLocalNovel = (
   name: string,
@@ -147,156 +135,90 @@ const insertLocalChapter = (
   });
 };
 
-const importEpubAction = async (taskData?: TaskData) => {
-  try {
-    if (!taskData) {
-      throw new Error(getString('backupScreen.noDataProvided'));
-    }
-    const epubFilePath =
-      FileManager.ExternalCachesDirectoryPath + '/novel.epub';
-    await FileManager.copyFile(taskData.sourceUri, epubFilePath);
-    const epubDirPath = FileManager.ExternalCachesDirectoryPath + '/epub';
-    if (await FileManager.exists(epubDirPath)) {
-      await FileManager.unlink(epubDirPath);
-    }
-    await FileManager.mkdir(epubDirPath);
-    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.IMPORT_EPUB);
-    await ZipArchive.unzip(epubFilePath, epubDirPath);
-    await sleep(taskData.delay);
-
-    const novel = await EpubUtil.parseNovelAndChapters(epubDirPath);
-    if (!novel.name) {
-      novel.name = taskData.filename?.replace('.epub', '') || 'Untitled';
-    }
-    const novelId = await insertLocalNovel(
-      novel.name,
-      epubDirPath + novel.name, // temporary
-      novel.cover,
-      novel.author,
-      novel.artist,
-      novel.summary,
-    );
-    const now = dayjs().toISOString();
-    const filePathSet = new Set<string>();
-    if (novel.chapters) {
+export const importEpub = async ({
+  uri,
+  filename,
+}: {
+  uri: string;
+  filename: string;
+}) => {
+  const epubFilePath = FileManager.ExternalCachesDirectoryPath + '/novel.epub';
+  await FileManager.copyFile(uri, epubFilePath);
+  const epubDirPath = FileManager.ExternalCachesDirectoryPath + '/epub';
+  if (await FileManager.exists(epubDirPath)) {
+    await FileManager.unlink(epubDirPath);
+  }
+  await FileManager.mkdir(epubDirPath);
+  await ZipArchive.unzip(epubFilePath, epubDirPath);
+  const novel = await EpubUtil.parseNovelAndChapters(epubDirPath);
+  if (!novel.name) {
+    novel.name = filename.replace('.epub', '') || 'Untitled';
+  }
+  const novelId = await insertLocalNovel(
+    novel.name,
+    epubDirPath + novel.name, // temporary
+    novel.cover,
+    novel.author,
+    novel.artist,
+    novel.summary,
+  );
+  const now = dayjs().toISOString();
+  const filePathSet = new Set<string>();
+  if (novel.chapters) {
+    BackgroundService.updateNotification({
+      taskTitle: getString('advancedSettingsScreen.importNovel'),
+      taskDesc: '0/' + novel.chapters.length,
+      progressBar: {
+        value: 0,
+        max: novel.chapters.length,
+      },
+    });
+    for (let i = 0; i < novel.chapters?.length; i++) {
       BackgroundService.updateNotification({
-        taskTitle: getString('advancedSettingsScreen.importNovel'),
-        taskDesc: '0/' + novel.chapters.length,
+        taskDesc: i + 1 + '/' + novel.chapters.length,
         progressBar: {
-          value: 0,
+          value: i + 1,
           max: novel.chapters.length,
         },
       });
-      for (let i = 0; i < novel.chapters?.length; i++) {
-        BackgroundService.updateNotification({
-          taskDesc: i + 1 + '/' + novel.chapters.length,
-          progressBar: {
-            value: i + 1,
-            max: novel.chapters.length,
-          },
-        });
-        const chapter = novel.chapters[i];
-        if (!chapter.name) {
-          chapter.name = chapter.path.split(/[\\\/]/).pop() || 'unknown';
-        }
-        const filePaths = await insertLocalChapter(
-          novelId,
-          i,
-          chapter.name,
-          chapter.path,
-          now,
-        ).catch(e => {
-          throw e;
-        });
-        filePaths.forEach(filePath => filePathSet.add(filePath));
+      const chapter = novel.chapters[i];
+      if (!chapter.name) {
+        chapter.name = chapter.path.split(/[\\\/]/).pop() || 'unknown';
       }
+      const filePaths = await insertLocalChapter(
+        novelId,
+        i,
+        chapter.name,
+        chapter.path,
+        now,
+      );
+      filePaths.forEach(filePath => filePathSet.add(filePath));
     }
-    await sleep(taskData.delay);
-    const novelDir = NOVEL_STORAGE + '/local/' + novelId;
+  }
+  const novelDir = NOVEL_STORAGE + '/local/' + novelId;
+  BackgroundService.updateNotification({
+    taskTitle: getString('advancedSettingsScreen.importStaticFiles'),
+    taskDesc: '0/' + filePathSet.size,
+    progressBar: {
+      value: 0,
+      max: filePathSet.size,
+    },
+  });
+  let cnt = 1;
+  for (let filePath of filePathSet) {
     BackgroundService.updateNotification({
-      taskTitle: getString('advancedSettingsScreen.importStaticFiles'),
-      taskDesc: '0/' + filePathSet.size,
+      taskDesc: cnt + '/' + filePathSet.size,
       progressBar: {
-        value: 0,
+        value: cnt,
         max: filePathSet.size,
       },
     });
-    let cnt = 1;
-    for (let filePath of filePathSet) {
-      BackgroundService.updateNotification({
-        taskDesc: cnt + '/' + filePathSet.size,
-        progressBar: {
-          value: cnt,
-          max: filePathSet.size,
-        },
-      });
-      if (await FileManager.exists(filePath)) {
-        await FileManager.moveFile(
-          filePath,
-          novelDir + '/' + filePath.split(/[\\\/]/).pop(),
-        );
-      }
-      cnt += 1;
+    if (await FileManager.exists(filePath)) {
+      await FileManager.moveFile(
+        filePath,
+        novelDir + '/' + filePath.split(/[\\\/]/).pop(),
+      );
     }
-    Notifications.scheduleNotificationAsync({
-      content: {
-        title: getString('advancedSettingsScreen.importEpub'),
-        body: getString('common.done'),
-      },
-      trigger: null,
-    });
-  } catch (e: any) {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: getString('advancedSettingsScreen.importError'),
-        body: e.message,
-      },
-      trigger: null,
-    });
-  } finally {
-    MMKVStorage.delete(BACKGROUND_ACTION);
-    await BackgroundService.stop();
-  }
-};
-
-export const importEpub = async () => {
-  try {
-    const currentAction = MMKVStorage.getString(BACKGROUND_ACTION);
-    if (currentAction) {
-      throw new Error('Another serivce is running');
-    }
-    const epubFile = await DocumentPicker.getDocumentAsync({
-      type: 'application/epub+zip',
-      copyToCacheDirectory: false,
-    });
-    if (epubFile.canceled) {
-      showToast(getString('common.cancel'));
-      return;
-    }
-    await BackgroundService.start<TaskData>(importEpubAction, {
-      taskName: 'Import Epub',
-      taskTitle: getString('advancedSettingsScreen.parseEpub'),
-      taskDesc: getString('common.parsing'),
-      taskIcon: { name: 'notification_icon', type: 'drawable' },
-      color: '#00adb5',
-      parameters: {
-        delay: 500,
-        sourceUri: epubFile.assets[0].uri,
-        filename: epubFile.assets[0].name,
-      },
-      progressBar: { value: 0, max: 4 },
-    });
-  } catch (e: any) {
-    // BackgroundService.catch cant catch Error from importEpubAction
-    // this catch the aboves
-    // importEpubAction catches itself
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: getString('advancedSettingsScreen.importError'),
-        body: e.message,
-      },
-      trigger: null,
-    });
-    await BackgroundService.stop();
+    cnt += 1;
   }
 };

@@ -12,7 +12,8 @@ import { getString } from '@strings/translations';
 import { useTheme } from '@hooks/persisted';
 import { updateLibrary } from '@services/updates';
 import { LibraryScreenProps } from '@navigators/types';
-import { importEpub } from '@services/epub/import';
+import * as DocumentPicker from 'expo-document-picker';
+import ServiceManager from '@services/ServiceManager';
 
 interface Props {
   categoryId: number;
@@ -84,7 +85,25 @@ export const LibraryView: React.FC<Props> = ({
                 : {
                     iconName: 'book-arrow-up-outline',
                     title: getString('advancedSettingsScreen.importEpub'),
-                    onPress: importEpub,
+                    onPress: () => {
+                      DocumentPicker.getDocumentAsync({
+                        type: 'application/epub+zip',
+                        copyToCacheDirectory: true,
+                        multiple: true,
+                      }).then(res => {
+                        if (!res.canceled) {
+                          ServiceManager.manager.addTask(
+                            res.assets.map(asset => ({
+                              name: 'IMPORT_EPUB',
+                              data: {
+                                filename: asset.name,
+                                uri: asset.uri,
+                              },
+                            })),
+                          );
+                        }
+                      });
+                    },
                   },
             ]}
           />
