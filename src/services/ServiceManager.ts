@@ -60,6 +60,9 @@ export default class ServiceManager {
   static async lauch() {
     // retrieve class instance because this is running in different context
     const manager = ServiceManager.manager;
+    const doneTasks: Record<Task['name'], number> = {
+      'IMPORT_EPUB': 0,
+    };
     manager.isRunning = true;
     while (true) {
       const currentTask = manager.getTaskList()[0];
@@ -68,6 +71,7 @@ export default class ServiceManager {
       }
       try {
         await manager.executeTask(currentTask);
+        doneTasks[currentTask.name] += 1;
       } catch (error: any) {
         await Notifications.scheduleNotificationAsync({
           content: {
@@ -80,6 +84,15 @@ export default class ServiceManager {
         setMMKVObject(manager.STORE_KEY, manager.getTaskList().slice(1));
       }
     }
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: 'Background tasks done',
+        body: Object.keys(doneTasks)
+          .map(key => `${key}: ${doneTasks[key as Task['name']]}`)
+          .join('\n'),
+      },
+      trigger: null,
+    });
     manager.stop();
   }
   getTaskList() {
