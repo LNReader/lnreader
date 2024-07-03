@@ -10,7 +10,6 @@ import { LibraryNovelInfo } from '@database/types';
 
 import { getString } from '@strings/translations';
 import { useTheme } from '@hooks/persisted';
-import { updateLibrary } from '@services/updates';
 import { LibraryScreenProps } from '@navigators/types';
 import * as DocumentPicker from 'expo-document-picker';
 import ServiceManager from '@services/ServiceManager';
@@ -61,7 +60,10 @@ export const LibraryView: React.FC<Props> = ({
       return;
     }
     setRefreshing(true);
-    updateLibrary(categoryId);
+    ServiceManager.manager.addTask({
+      name: 'UPDATE_LIBRARY',
+      data: categoryId,
+    });
     setRefreshing(false);
   };
 

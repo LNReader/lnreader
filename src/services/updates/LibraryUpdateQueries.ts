@@ -24,7 +24,7 @@ const updateNovelMetadata = (
     if (cover) {
       const novelCoverPath = novelDir + '/cover.png';
       const novelCoverUri = 'file://' + novelCoverPath;
-      await downloadFile(
+      downloadFile(
         cover,
         novelCoverPath,
         getPlugin(pluginId)?.imageRequestInit,

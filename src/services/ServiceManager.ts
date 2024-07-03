@@ -4,14 +4,20 @@ import * as Notifications from 'expo-notifications';
 import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import { importEpub } from './epub/import';
 import { getString } from '@strings/translations';
+import { updateLibrary } from './updates';
 
-type Task = {
-  name: 'IMPORT_EPUB';
-  data: {
-    filename: string;
-    uri: string;
-  };
-};
+type Task =
+  | {
+      name: 'IMPORT_EPUB';
+      data: {
+        filename: string;
+        uri: string;
+      };
+    }
+  | {
+      name: 'UPDATE_LIBRARY';
+      data?: number;
+    };
 
 export default class ServiceManager {
   private STORE_KEY = 'BACKGROUND_ACTION';
@@ -52,6 +58,8 @@ export default class ServiceManager {
     switch (task.name) {
       case 'IMPORT_EPUB':
         return importEpub(task.data);
+      case 'UPDATE_LIBRARY':
+        return updateLibrary(task.data);
       default:
         return;
     }
@@ -62,6 +70,7 @@ export default class ServiceManager {
     const manager = ServiceManager.manager;
     const doneTasks: Record<Task['name'], number> = {
       'IMPORT_EPUB': 0,
+      'UPDATE_LIBRARY': 0,
     };
     manager.isRunning = true;
     while (true) {
@@ -88,6 +97,7 @@ export default class ServiceManager {
       content: {
         title: 'Background tasks done',
         body: Object.keys(doneTasks)
+          .filter(key => doneTasks[key as Task['name']] > 0)
           .map(key => `${key}: ${doneTasks[key as Task['name']]}`)
           .join('\n'),
       },

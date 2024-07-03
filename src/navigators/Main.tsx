@@ -32,7 +32,6 @@ import MalTopNovels from '../screens/browse/discover/MalTopNovels';
 import AniListTopNovels from '../screens/browse/discover/AniListTopNovels';
 import NewUpdateDialog from '../components/NewUpdateDialog';
 import BrowseSettings from '../screens/browse/BrowseSettings';
-import { updateLibrary } from '@services/updates';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
 import Color from 'color';
@@ -43,6 +42,7 @@ import {
   isRepoUrlDuplicate,
 } from '@database/queries/RepositoryQueries';
 import { showToast } from '@utils/showToast';
+import ServiceManager from '@services/ServiceManager';
 const Stack = createStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
@@ -65,7 +65,7 @@ const MainNavigator = () => {
 
   useEffect(() => {
     if (updateLibraryOnLaunch) {
-      updateLibrary();
+      ServiceManager.manager.addTask({ name: 'UPDATE_LIBRARY' });
     }
     if (isOnboarded) {
       // hack this helps app has enough time to initialize database;

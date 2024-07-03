@@ -37,7 +37,6 @@ import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/Source
 import { Row } from '@components/Common';
 import { LibraryScreenProps } from '@navigators/types';
 import { NovelInfo } from '@database/types';
-import { updateLibrary } from '@services/updates';
 import * as DocumentPicker from 'expo-document-picker';
 import ServiceManager from '@services/ServiceManager';
 
@@ -187,13 +186,20 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
         menuButtons={[
           {
             title: getString('libraryScreen.extraMenu.updateLibrary'),
-            onPress: updateLibrary,
+            onPress: () =>
+              ServiceManager.manager.addTask({
+                name: 'UPDATE_LIBRARY',
+              }),
           },
           {
             title: getString('libraryScreen.extraMenu.updateCategory'),
             onPress: () =>
               //2 = local category
-              library[index].id !== 2 && updateLibrary(library[index].id),
+              library[index].id !== 2 &&
+              ServiceManager.manager.addTask({
+                name: 'UPDATE_LIBRARY',
+                data: library[index].id,
+              }),
           },
           {
             title: getString('libraryScreen.extraMenu.importEpub'),
