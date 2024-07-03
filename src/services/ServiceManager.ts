@@ -7,6 +7,11 @@ import { getString } from '@strings/translations';
 import { updateLibrary } from './updates';
 import { DriveFile } from '@api/drive/types';
 import { createDriveBackup, driveRestore } from './backup/drive';
+import {
+  createSelfHostBackup,
+  SelfHostData,
+  selfHostRestore,
+} from './backup/selfhost';
 
 type Task =
   | {
@@ -21,7 +26,9 @@ type Task =
       data?: number;
     }
   | { name: 'DRIVE_BACKUP'; data: DriveFile }
-  | { name: 'DRIVE_RESTORE'; data: DriveFile };
+  | { name: 'DRIVE_RESTORE'; data: DriveFile }
+  | { name: 'SELF_HOST_BACKUP'; data: SelfHostData }
+  | { name: 'SELF_HOST_RESTORE'; data: SelfHostData };
 
 export default class ServiceManager {
   private STORE_KEY = 'BACKGROUND_ACTION';
@@ -68,6 +75,10 @@ export default class ServiceManager {
         return createDriveBackup(task.data);
       case 'DRIVE_RESTORE':
         return driveRestore(task.data);
+      case 'SELF_HOST_BACKUP':
+        return createSelfHostBackup(task.data);
+      case 'SELF_HOST_RESTORE':
+        return selfHostRestore(task.data);
       default:
         return;
     }
@@ -81,6 +92,8 @@ export default class ServiceManager {
       'UPDATE_LIBRARY': 0,
       'DRIVE_BACKUP': 0,
       'DRIVE_RESTORE': 0,
+      'SELF_HOST_BACKUP': 0,
+      'SELF_HOST_RESTORE': 0,
     };
     manager.isRunning = true;
     while (true) {
