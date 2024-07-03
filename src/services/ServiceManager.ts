@@ -5,6 +5,8 @@ import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import { importEpub } from './epub/import';
 import { getString } from '@strings/translations';
 import { updateLibrary } from './updates';
+import { DriveFile } from '@api/drive/types';
+import { createDriveBackup, driveRestore } from './backup/drive';
 
 type Task =
   | {
@@ -17,7 +19,9 @@ type Task =
   | {
       name: 'UPDATE_LIBRARY';
       data?: number;
-    };
+    }
+  | { name: 'DRIVE_BACKUP'; data: DriveFile }
+  | { name: 'DRIVE_RESTORE'; data: DriveFile };
 
 export default class ServiceManager {
   private STORE_KEY = 'BACKGROUND_ACTION';
@@ -54,12 +58,16 @@ export default class ServiceManager {
       });
     }
   }
-  async executeTask(task: Task): Promise<void> {
+  async executeTask(task: Task) {
     switch (task.name) {
       case 'IMPORT_EPUB':
         return importEpub(task.data);
       case 'UPDATE_LIBRARY':
         return updateLibrary(task.data);
+      case 'DRIVE_BACKUP':
+        return createDriveBackup(task.data);
+      case 'DRIVE_RESTORE':
+        return driveRestore(task.data);
       default:
         return;
     }
@@ -71,6 +79,8 @@ export default class ServiceManager {
     const doneTasks: Record<Task['name'], number> = {
       'IMPORT_EPUB': 0,
       'UPDATE_LIBRARY': 0,
+      'DRIVE_BACKUP': 0,
+      'DRIVE_RESTORE': 0,
     };
     manager.isRunning = true;
     while (true) {
