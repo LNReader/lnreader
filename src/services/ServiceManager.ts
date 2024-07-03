@@ -12,6 +12,7 @@ import {
   SelfHostData,
   selfHostRestore,
 } from './backup/selfhost';
+import { migrateNovel, MigrateNovelData } from './migrate/migrateNovel';
 
 type Task =
   | {
@@ -28,7 +29,8 @@ type Task =
   | { name: 'DRIVE_BACKUP'; data: DriveFile }
   | { name: 'DRIVE_RESTORE'; data: DriveFile }
   | { name: 'SELF_HOST_BACKUP'; data: SelfHostData }
-  | { name: 'SELF_HOST_RESTORE'; data: SelfHostData };
+  | { name: 'SELF_HOST_RESTORE'; data: SelfHostData }
+  | { name: 'MIGRATE_NOVEL'; data: MigrateNovelData };
 
 export default class ServiceManager {
   private STORE_KEY = 'BACKGROUND_ACTION';
@@ -79,6 +81,8 @@ export default class ServiceManager {
         return createSelfHostBackup(task.data);
       case 'SELF_HOST_RESTORE':
         return selfHostRestore(task.data);
+      case 'MIGRATE_NOVEL':
+        return migrateNovel(task.data);
       default:
         return;
     }
@@ -94,6 +98,7 @@ export default class ServiceManager {
       'DRIVE_RESTORE': 0,
       'SELF_HOST_BACKUP': 0,
       'SELF_HOST_RESTORE': 0,
+      'MIGRATE_NOVEL': 0,
     };
     manager.isRunning = true;
     while (true) {
