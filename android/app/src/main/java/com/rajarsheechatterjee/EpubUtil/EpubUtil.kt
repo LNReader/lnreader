@@ -124,8 +124,12 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
         if (tocFile.exists()) {
             val tocParser = initParse(tocFile)
             var label = ""
+            while(tocParser.next() != XmlPullParser.END_DOCUMENT){
+                if(tocParser.name == "navMap") break;
+            }
             while (tocParser.next() != XmlPullParser.END_DOCUMENT) {
                 val tag = tocParser.name
+                if(tag == "navMap") break;
                 if (tag != null) {
                     if (tag == "text") {
                         label = readText(tocParser)
