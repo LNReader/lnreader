@@ -33,7 +33,7 @@ const UpdatesScreen = () => {
     showLastUpdateTime,
     error,
   } = useUpdates();
-  const { queue } = useDownload();
+  const { downloadQueue } = useDownload();
   const { searchText, setSearchText, clearSearchbar } = useSearch();
   const onChangeText = (text: string) => {
     setSearchText(text);
@@ -73,7 +73,7 @@ const UpdatesScreen = () => {
   useFocusEffect(
     useCallback(() => {
       getUpdates();
-    }, [queue]),
+    }, [downloadQueue]),
   );
 
   return (

@@ -4,7 +4,7 @@ import { TrackerMetadata, getTracker } from './useTracker';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import {
-  getNovel as _getNovel,
+  getNovelByPath,
   deleteCachedNovels as _deleteCachedNovels,
   getCachedNovels as _getCachedNovels,
   insertNovelAndChapters,
@@ -315,13 +315,13 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   );
 
   const getNovel = useCallback(async () => {
-    let novel = await _getNovel(novelPath, pluginId);
+    let novel = await getNovelByPath(novelPath, pluginId);
     if (!novel) {
       const sourceNovel = await fetchNovel(pluginId, novelPath).catch(() => {
         throw new Error(getString('updatesScreen.unableToGetNovel'));
       });
       await insertNovelAndChapters(pluginId, sourceNovel);
-      novel = await _getNovel(novelPath, pluginId);
+      novel = await getNovelByPath(novelPath, pluginId);
       if (!novel) {
         return;
       }

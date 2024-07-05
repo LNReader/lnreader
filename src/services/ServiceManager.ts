@@ -13,8 +13,9 @@ import {
   selfHostRestore,
 } from './backup/selfhost';
 import { migrateNovel, MigrateNovelData } from './migrate/migrateNovel';
+import { downloadChapter } from './download/downloadChapter';
 
-type Task =
+export type BackgroundTask =
   | {
       name: 'IMPORT_EPUB';
       data: {
@@ -30,20 +31,24 @@ type Task =
   | { name: 'DRIVE_RESTORE'; data: DriveFile }
   | { name: 'SELF_HOST_BACKUP'; data: SelfHostData }
   | { name: 'SELF_HOST_RESTORE'; data: SelfHostData }
-  | { name: 'MIGRATE_NOVEL'; data: MigrateNovelData };
+  | { name: 'MIGRATE_NOVEL'; data: MigrateNovelData }
+  | {
+      name: 'DOWNLOAD_CHAPTER';
+      data: { chapterId: number; novelName: string; chapterName: string };
+    };
 
 export default class ServiceManager {
-  private STORE_KEY = 'BACKGROUND_ACTION';
+  STORE_KEY = 'APP_SERVICE';
   private static instance?: ServiceManager;
-  private isRunning: boolean;
-  private constructor() {
-    this.isRunning = false;
-  }
+  private constructor() {}
   static get manager() {
     if (!this.instance) {
       this.instance = new ServiceManager();
     }
     return this.instance;
+  }
+  get isRunning() {
+    return BackgroundService.isRunning();
   }
   start() {
     if (!this.isRunning) {
@@ -63,11 +68,10 @@ export default class ServiceManager {
           trigger: null,
         });
         BackgroundService.stop();
-        this.isRunning = false;
       });
     }
   }
-  async executeTask(task: Task) {
+  async executeTask(task: BackgroundTask) {
     switch (task.name) {
       case 'IMPORT_EPUB':
         return importEpub(task.data);
@@ -83,6 +87,8 @@ export default class ServiceManager {
         return selfHostRestore(task.data);
       case 'MIGRATE_NOVEL':
         return migrateNovel(task.data);
+      case 'DOWNLOAD_CHAPTER':
+        return downloadChapter(task.data);
       default:
         return;
     }
@@ -91,7 +97,7 @@ export default class ServiceManager {
   static async lauch() {
     // retrieve class instance because this is running in different context
     const manager = ServiceManager.manager;
-    const doneTasks: Record<Task['name'], number> = {
+    const doneTasks: Record<BackgroundTask['name'], number> = {
       'IMPORT_EPUB': 0,
       'UPDATE_LIBRARY': 0,
       'DRIVE_BACKUP': 0,
@@ -99,9 +105,9 @@ export default class ServiceManager {
       'SELF_HOST_BACKUP': 0,
       'SELF_HOST_RESTORE': 0,
       'MIGRATE_NOVEL': 0,
+      'DOWNLOAD_CHAPTER': 0,
     };
-    manager.isRunning = true;
-    while (true) {
+    while (BackgroundService.isRunning()) {
       const currentTask = manager.getTaskList()[0];
       if (!currentTask) {
         break;
@@ -121,26 +127,28 @@ export default class ServiceManager {
         setMMKVObject(manager.STORE_KEY, manager.getTaskList().slice(1));
       }
     }
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: 'Background tasks done',
-        body: Object.keys(doneTasks)
-          .filter(key => doneTasks[key as Task['name']] > 0)
-          .map(key => `${key}: ${doneTasks[key as Task['name']]}`)
-          .join('\n'),
-      },
-      trigger: null,
-    });
-    manager.stop();
+
+    if (manager.getTaskList().length === 0) {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Background tasks done',
+          body: Object.keys(doneTasks)
+            .filter(key => doneTasks[key as BackgroundTask['name']] > 0)
+            .map(key => `${key}: ${doneTasks[key as BackgroundTask['name']]}`)
+            .join('\n'),
+        },
+        trigger: null,
+      });
+    }
   }
   getTaskList() {
-    return getMMKVObject<Array<Task>>(this.STORE_KEY) || [];
+    return getMMKVObject<Array<BackgroundTask>>(this.STORE_KEY) || [];
   }
-  addTask(tasks: Task | Task[]) {
+  addTask(tasks: BackgroundTask | BackgroundTask[]) {
     setMMKVObject(this.STORE_KEY, this.getTaskList().concat(tasks));
     this.start();
   }
-  removeTasksByName(name: string) {
+  removeTasksByName(name: BackgroundTask['name']) {
     const taskList = this.getTaskList();
     if (taskList[0]?.name === name) {
       this.pause();
@@ -160,7 +168,6 @@ export default class ServiceManager {
     setMMKVObject(this.STORE_KEY, []);
   }
   pause() {
-    this.isRunning = false;
     BackgroundService.stop();
   }
   resume() {
@@ -168,7 +175,6 @@ export default class ServiceManager {
   }
   stop() {
     BackgroundService.stop();
-    this.isRunning = false;
     this.clearTaskList();
   }
 }

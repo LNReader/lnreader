@@ -3,11 +3,10 @@ import BackgroundService from 'react-native-background-actions';
 
 import { NovelInfo, ChapterInfo } from '@database/types';
 import {
-  getNovel,
+  getNovelByPath,
   insertNovelAndChapters,
 } from '@database/queries/NovelQueries';
 import { getNovelChapters } from '@database/queries/ChapterQueries';
-import { downloadChapter } from '@database/queries/ChapterQueries';
 
 import { fetchNovel } from '@services/plugin/fetch';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
@@ -20,6 +19,7 @@ import {
   NOVEL_SETTINSG_PREFIX,
 } from '@hooks/persisted/useNovel';
 import { sleep } from '@utils/sleep';
+import ServiceManager from '@services/ServiceManager';
 
 export interface MigrateNovelData {
   pluginId: string;
@@ -57,14 +57,14 @@ export const migrateNovel = async ({
   toNovelPath,
 }: MigrateNovelData) => {
   let fromChapters = await getNovelChapters(fromNovel.id);
-  let toNovel = await getNovel(toNovelPath, pluginId);
+  let toNovel = await getNovelByPath(toNovelPath, pluginId);
   let toChapters: ChapterInfo[];
   if (toNovel) {
     toChapters = await getNovelChapters(toNovel.id);
   } else {
     const fetchedNovel = await fetchNovel(pluginId, toNovelPath);
     await insertNovelAndChapters(pluginId, fetchedNovel);
-    toNovel = await getNovel(toNovelPath, pluginId);
+    toNovel = await getNovelByPath(toNovelPath, pluginId);
     if (!toNovel) {
       return;
     }
@@ -152,7 +152,14 @@ export const migrateNovel = async ({
     );
 
     if (fromChapter.isDownloaded) {
-      await downloadChapter(pluginId, toNovel.id, toChapter.id, toChapter.path);
+      ServiceManager.manager.addTask({
+        name: 'DOWNLOAD_CHAPTER',
+        data: {
+          chapterId: toChapter.id,
+          novelName: toNovel.name,
+          chapterName: toChapter.name,
+        },
+      });
       await sleep(1000);
     }
 
