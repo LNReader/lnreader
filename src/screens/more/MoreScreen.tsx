@@ -11,7 +11,7 @@ import Switch from '@components/Switch/Switch';
 
 const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
   const theme = useTheme();
-  const { queue } = useDownload();
+  const { downloadQueue } = useDownload();
   const {
     incognitoMode = false,
     downloadedOnlyMode = false,
@@ -108,7 +108,9 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
         <List.Divider theme={theme} />
         <List.Item
           title={getString('moreScreen.downloadQueue')}
-          description={queue.length > 0 ? queue.length + ' remaining' : ''}
+          description={
+            downloadQueue.length > 0 ? downloadQueue.length + ' remaining' : ''
+          }
           icon="progress-download"
           onPress={() =>
             navigation.navigate('MoreStack', {

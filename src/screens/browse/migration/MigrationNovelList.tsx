@@ -3,9 +3,7 @@ import { StyleSheet, FlatList, Text, View, FlatListProps } from 'react-native';
 import { Portal, Modal } from 'react-native-paper';
 import GlobalSearchNovelCover from '../globalsearch/GlobalSearchNovelCover';
 
-import { migrateNovel } from '@services/migrate/migrateNovel';
 import { showToast } from '@utils/showToast';
-
 import { Button } from '@components';
 import { getString } from '@strings/translations';
 import { MigrateNovelScreenProps } from '@navigators/types';
@@ -13,6 +11,7 @@ import { NovelInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
 import { SourceSearchResult } from './MigrationNovels';
 import { NovelItem } from '@plugins/types';
+import ServiceManager from '@services/ServiceManager';
 
 interface MigrationNovelListProps {
   data: SourceSearchResult;
@@ -121,9 +120,14 @@ const MigrationNovelList = ({
             <Button
               onPress={() => {
                 hideMigrateNovelDialog();
-                migrateNovel(pluginId, fromNovel, selectedNovel.path).catch(
-                  error => showToast(error.message),
-                );
+                ServiceManager.manager.addTask({
+                  name: 'MIGRATE_NOVEL',
+                  data: {
+                    pluginId,
+                    fromNovel,
+                    toNovelPath: selectedNovel.path,
+                  },
+                });
               }}
               title={getString('novelScreen.migrate')}
             />

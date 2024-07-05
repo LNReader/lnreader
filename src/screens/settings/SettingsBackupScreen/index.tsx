@@ -1,21 +1,17 @@
 import React from 'react';
-
 import { ScreenContainer } from '@components/Common';
-
 import { useTheme } from '@hooks/persisted';
 import { Appbar, List } from '@components';
 import { Portal } from 'react-native-paper';
 import { useBoolean } from '@hooks';
 import { BackupSettingsScreenProps } from '@navigators/types';
 import GoogleDriveModal from './Components/GoogleDriveModal';
-import { useMMKVString } from 'react-native-mmkv';
 import SelfHostModal from './Components/SelfHostModal';
 import {
   createBackup as deprecatedCreateBackup,
   restoreBackup as deprecatedRestoreBackup,
 } from '@services/backup/legacy';
 import { ScrollView } from 'react-native-gesture-handler';
-import { BACKGROUND_ACTION } from '@services/constants';
 import { getString } from '@strings/translations';
 
 const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
@@ -31,8 +27,6 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
     setFalse: closeSelfHostModal,
     setTrue: openSelfHostModal,
   } = useBoolean();
-
-  const [hasAction] = useMMKVString(BACKGROUND_ACTION);
 
   return (
     <>
@@ -52,7 +46,6 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
               description={getString('backupScreen.selfHostDesc')}
               theme={theme}
               onPress={openSelfHostModal}
-              disabled={Boolean(hasAction)}
             />
 
             <List.Item
@@ -60,7 +53,6 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
               description={getString('backupScreen.googeDriveDesc')}
               theme={theme}
               onPress={openGoogleDriveModal}
-              disabled={Boolean(hasAction)}
             />
             <List.SubHeader theme={theme}>
               {getString('backupScreen.legacyBackup')}
@@ -72,7 +64,6 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
               description={getString('backupScreen.createBackupDesc')}
               onPress={deprecatedCreateBackup}
               theme={theme}
-              disabled={Boolean(hasAction)}
             />
             <List.Item
               title={`${getString('backupScreen.restoreBackup')} (${getString(
@@ -81,7 +72,6 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
               description={getString('backupScreen.restoreBackupDesc')}
               onPress={() => deprecatedRestoreBackup()}
               theme={theme}
-              disabled={Boolean(hasAction)}
             />
             <List.InfoItem
               title={getString('backupScreen.restoreLargeBackupsWarning')}

@@ -9,14 +9,11 @@ import { showToast } from '@utils/showToast';
 import dayjs from 'dayjs';
 import { NovelInfo } from '@database/types';
 import { sleep } from '@utils/sleep';
-import { MMKVStorage } from '@utils/mmkv/mmkv';
-import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
 import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
 
 export const createBackup = async () => {
   try {
-    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.BACKUP);
     const novels = await getLibraryNovelsFromDb();
 
     const folder = await FileManager.pickFolder();
@@ -33,7 +30,6 @@ export const createBackup = async () => {
   } catch (error: any) {
     showToast(error.message);
   } finally {
-    MMKVStorage.delete(BACKGROUND_ACTION);
     BackgroundService.stop();
   }
 };
@@ -44,7 +40,6 @@ interface TaskData {
 
 export const restoreBackup = async (filePath?: string) => {
   try {
-    MMKVStorage.set(BACKGROUND_ACTION, BackgoundAction.RESTORE);
     const backup = await DocumentPicker.getDocumentAsync({
       copyToCacheDirectory: false,
     });
@@ -149,7 +144,6 @@ export const restoreBackup = async (filePath?: string) => {
           });
         }
       }).finally(() => {
-        MMKVStorage.delete(BACKGROUND_ACTION);
         BackgroundService.stop();
       });
 
