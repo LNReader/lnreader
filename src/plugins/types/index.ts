@@ -53,6 +53,8 @@ export interface PluginItem {
   version: string;
   url: string; // the url of raw code
   iconUrl: string;
+  customJS?: string;
+  customCSS?: string;
   hasUpdate?: boolean;
 }
 
