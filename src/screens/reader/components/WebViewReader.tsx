@@ -26,6 +26,7 @@ import { getBatteryLevelSync } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
+import { PLUGIN_STORAGE } from '@utils/Storages';
 
 type WebViewPostEvent = {
   type: string;
@@ -87,6 +88,8 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
   const batteryLevel = useMemo(getBatteryLevelSync, []);
   const layoutHeight = Dimensions.get('window').height;
   const plugin = getPlugin(novel?.pluginId);
+  const pluginCustomJS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.js`;
+  const pluginCustomCSS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.css`;
 
   useEffect(() => {
     const mmkvListener = MMKVStorage.addOnValueChangedListener(key => {
@@ -132,7 +135,6 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
       showsVerticalScrollIndicator={false}
       javaScriptEnabled={true}
       onLayout={async () => onLayout()}
-      injectedJavaScriptObject={{ customValue: 'myCustomValue' }}
       onMessage={ev => {
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
@@ -220,6 +222,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       }
                     </style>
                     <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
+                    <link rel="stylesheet" href="${pluginCustomCSS}">
                     <style>${readerSettings.customCSS}</style>
                     <script>
                       var initSettings = {
@@ -280,6 +283,7 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                     </body>
                     <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
                     <script src="${assetsUriPrefix}/js/index.js"></script>
+                    <script src="${pluginCustomJS}"></script>
                     <script>
                       async function fn(){
                         ${readerSettings.customJS}

@@ -11,6 +11,7 @@ import { ThemeColors } from '@theme/types';
 import { coverPlaceholderColor } from '@theme/colors';
 import { getString } from '@strings/translations';
 import { HistoryScreenProps } from '@navigators/types';
+import { defaultCover } from '@plugins/helpers/constants';
 
 interface HistoryCardProps {
   history: History;
@@ -50,7 +51,10 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             })
           }
         >
-          <Image source={{ uri: history.novelCover }} style={styles.cover} />
+          <Image
+            source={{ uri: history.novelCover || defaultCover }}
+            style={styles.cover}
+          />
         </Pressable>
         <View style={styles.detailsContainer}>
           <Text

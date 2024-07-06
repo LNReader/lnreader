@@ -91,11 +91,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const theme = useTheme();
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
 
-  const {
-    queue: downloadQueue,
-    downloadChapter,
-    downloadChapters,
-  } = useDownload();
+  const { downloadQueue, downloadChapter, downloadChapters } = useDownload();
 
   const [selected, setSelected] = useState<ChapterInfo[]>([]);
   const [editInfoModal, showEditInfoModal] = useState(false);
@@ -435,7 +431,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
               renderItem={({ item }) => (
                 <ChapterItem
                   isDownloading={downloadQueue.some(
-                    c => c.chapter.id === item.id,
+                    c => c.data.chapterId === item.id,
                   )}
                   isLocal={novel.isLocal}
                   theme={theme}

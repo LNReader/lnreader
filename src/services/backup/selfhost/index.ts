@@ -1,14 +1,17 @@
-import { DriveFile } from '@api/drive/types';
 import { sleep } from '@utils/sleep';
 import BackgroundService from 'react-native-background-actions';
-import { exists } from '@api/drive';
+import { download, upload } from '@api/remote';
 import { getString } from '@strings/translations';
 import { CACHE_DIR_PATH, prepareBackupData, restoreData } from '../utils';
-import { download, updateMetadata, uploadMedia } from '@api/drive/request';
 import { ZipBackupName } from '../types';
 import { ROOT_STORAGE } from '@utils/Storages';
 
-export const createDriveBackup = (backupFolder: DriveFile) => {
+export interface SelfHostData {
+  host: string;
+  backupFolder: string;
+}
+
+export const createSelfHostBackup = ({ host, backupFolder }: SelfHostData) => {
   return BackgroundService.updateNotification({
     taskDesc: getString('backupScreen.preparingData'),
     progressBar: {
@@ -28,19 +31,8 @@ export const createDriveBackup = (backupFolder: DriveFile) => {
         },
       }),
     )
-    .then(() => sleep(500))
-    .then(() => uploadMedia(CACHE_DIR_PATH))
-    .then(file =>
-      updateMetadata(
-        file.id,
-        {
-          name: ZipBackupName.DATA,
-          mimeType: 'application/zip',
-          parents: [backupFolder.id],
-        },
-        file.parents[0],
-      ),
-    )
+    .then(() => sleep(200))
+    .then(() => upload(host, backupFolder, ZipBackupName.DATA, CACHE_DIR_PATH))
     .then(() =>
       BackgroundService.updateNotification({
         taskDesc: getString('backupScreen.uploadingDownloadedFiles'),
@@ -51,31 +43,14 @@ export const createDriveBackup = (backupFolder: DriveFile) => {
         },
       }),
     )
-    .then(() => uploadMedia(ROOT_STORAGE))
-    .then(file =>
-      updateMetadata(
-        file.id,
-        {
-          name: ZipBackupName.DOWNLOAD,
-          mimeType: 'application/zip',
-          parents: [backupFolder.id],
-        },
-        file.parents[0],
-      ),
+    .then(() => sleep(200))
+    .then(() =>
+      upload(host, backupFolder, ZipBackupName.DOWNLOAD, ROOT_STORAGE),
     );
 };
 
-export const driveRestore = async (backupFolder: DriveFile) => {
-  const zipDataFile = await exists(ZipBackupName.DATA, false, backupFolder.id);
-  const zipDownloadFile = await exists(
-    ZipBackupName.DOWNLOAD,
-    false,
-    backupFolder.id,
-  );
-  if (!zipDataFile || !zipDownloadFile) {
-    throw new Error(getString('backupScreen.invalidBackupFolder'));
-  }
-  await BackgroundService.updateNotification({
+export const selfHostRestore = ({ host, backupFolder }: SelfHostData) => {
+  return BackgroundService.updateNotification({
     taskDesc: getString('backupScreen.downloadingData'),
     progressBar: {
       indeterminate: true,
@@ -83,8 +58,9 @@ export const driveRestore = async (backupFolder: DriveFile) => {
       max: 3,
     },
   })
-    .then(() => download(zipDataFile, CACHE_DIR_PATH))
-    .then(() => sleep(500))
+    .then(() =>
+      download(host, backupFolder, ZipBackupName.DATA, CACHE_DIR_PATH),
+    )
     .then(() =>
       BackgroundService.updateNotification({
         taskDesc: getString('backupScreen.restoringData'),
@@ -95,8 +71,8 @@ export const driveRestore = async (backupFolder: DriveFile) => {
         },
       }),
     )
+    .then(() => sleep(200))
     .then(() => restoreData(CACHE_DIR_PATH))
-    .then(() => sleep(500))
     .then(() =>
       BackgroundService.updateNotification({
         taskDesc: getString('backupScreen.downloadingDownloadedFiles'),
@@ -107,5 +83,8 @@ export const driveRestore = async (backupFolder: DriveFile) => {
         },
       }),
     )
-    .then(() => download(zipDownloadFile, ROOT_STORAGE));
+    .then(() => sleep(200))
+    .then(() =>
+      download(host, backupFolder, ZipBackupName.DOWNLOAD, ROOT_STORAGE),
+    );
 };

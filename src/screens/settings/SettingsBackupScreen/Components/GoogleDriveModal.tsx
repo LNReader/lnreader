@@ -10,9 +10,9 @@ import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
 import { exists, getBackups, makeDir } from '@api/drive';
-import { createBackup, driveRestore } from '@services/backup/drive';
 import { DriveFile } from '@api/drive/types';
 import dayjs from 'dayjs';
+import ServiceManager from '@services/ServiceManager';
 
 enum BackupModal {
   UNAUTHORIZED,
@@ -133,7 +133,10 @@ function CreateBackup({
           onPress={() => {
             prepare().then(folder => {
               closeModal();
-              return createBackup(folder);
+              ServiceManager.manager.addTask({
+                name: 'DRIVE_BACKUP',
+                data: folder,
+              });
             });
           }}
         />
@@ -176,7 +179,10 @@ function RestoreBackup({
             style={styles.btnOutline}
             onPress={() => {
               closeModal();
-              driveRestore(item);
+              ServiceManager.manager.addTask({
+                name: 'DRIVE_RESTORE',
+                data: item,
+              });
             }}
           >
             <Text style={{ color: theme.primary }}>

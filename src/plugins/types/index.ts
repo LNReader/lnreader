@@ -1,6 +1,7 @@
 import { FilterToValues, Filters } from './filterTypes';
 
 export interface NovelItem {
+  id: undefined;
   name: string;
   path: string;
   cover?: string;
@@ -52,6 +53,8 @@ export interface PluginItem {
   version: string;
   url: string; // the url of raw code
   iconUrl: string;
+  customJS?: string;
+  customCSS?: string;
   hasUpdate?: boolean;
 }
 

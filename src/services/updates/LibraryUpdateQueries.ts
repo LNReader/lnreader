@@ -1,12 +1,11 @@
 import { fetchNovel, fetchPage } from '../plugin/fetch';
-import { downloadChapter } from '../../database/queries/ChapterQueries';
-
 import * as SQLite from 'expo-sqlite';
 import { ChapterItem, SourceNovel } from '@plugins/types';
 import { getPlugin, LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { downloadFile } from '@plugins/helpers/fetch';
+import ServiceManager from '@services/ServiceManager';
 const db = SQLite.openDatabase('lnreader.db');
 
 const updateNovelMetadata = (
@@ -24,7 +23,7 @@ const updateNovelMetadata = (
     if (cover) {
       const novelCoverPath = novelDir + '/cover.png';
       const novelCoverUri = 'file://' + novelCoverPath;
-      await downloadFile(
+      downloadFile(
         cover,
         novelCoverPath,
         getPlugin(pluginId)?.imageRequestInit,
@@ -76,7 +75,7 @@ const updateNovelTotalPages = (novelId: number, totalPages: number) => {
 };
 
 const updateNovelChapters = (
-  pluginId: string,
+  novelName: string,
   novelId: number,
   chapters: ChapterItem[],
   downloadNewChapters?: boolean,
@@ -113,9 +112,14 @@ const updateNovelChapters = (
           (txObj, { insertId }) => {
             if (insertId && insertId >= 0) {
               if (downloadNewChapters) {
-                downloadChapter(pluginId, novelId, insertId, path).catch(
-                  reject,
-                );
+                ServiceManager.manager.addTask({
+                  name: 'DOWNLOAD_CHAPTER',
+                  data: {
+                    chapterId: insertId,
+                    novelName: novelName,
+                    chapterName: name,
+                  },
+                });
               }
             } else {
               tx.executeSql(
@@ -178,7 +182,7 @@ const updateNovel = async (
     await updateNovelTotalPages(novelId, novel.totalPages);
   }
   await updateNovelChapters(
-    pluginId,
+    novel.name,
     novelId,
     novel.chapters || [],
     downloadNewChapters,
