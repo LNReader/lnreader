@@ -126,27 +126,29 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
         }
         onLongPress={selectNovel}
       >
-        {item.id ? (
-          <View style={styles.badgeContainer}>
-            {libraryStatus && <InLibraryBadge theme={theme} />}
-            {showDownloadBadges && item.chaptersDownloaded > 0 ? (
-              <DownloadBadge
-                showUnreadBadges={showUnreadBadges}
-                chaptersDownloaded={item.chaptersDownloaded}
-                chaptersUnread={item.chaptersUnread}
-                theme={theme}
-              />
-            ) : null}
-            {showUnreadBadges && item.chaptersUnread > 0 ? (
-              <UnreadBadge
-                theme={theme}
-                chaptersDownloaded={item.chaptersDownloaded}
-                chaptersUnread={item.chaptersUnread}
-                showDownloadBadges={showDownloadBadges}
-              />
-            ) : null}
-          </View>
-        ) : null}
+        <View style={styles.badgeContainer}>
+          {libraryStatus ? <InLibraryBadge theme={theme} /> : null}
+          {item.id ? (
+            <>
+              {showDownloadBadges && item.chaptersDownloaded > 0 ? (
+                <DownloadBadge
+                  showUnreadBadges={showUnreadBadges}
+                  chaptersDownloaded={item.chaptersDownloaded}
+                  chaptersUnread={item.chaptersUnread}
+                  theme={theme}
+                />
+              ) : null}
+              {showUnreadBadges && item.chaptersUnread > 0 ? (
+                <UnreadBadge
+                  theme={theme}
+                  chaptersDownloaded={item.chaptersDownloaded}
+                  chaptersUnread={item.chaptersUnread}
+                  showDownloadBadges={showDownloadBadges}
+                />
+              ) : null}
+            </>
+          ) : null}
+        </View>
         <Image
           source={{ uri, headers: { 'User-Agent': getUserAgent() } }}
           style={[
