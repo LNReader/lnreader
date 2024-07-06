@@ -10,7 +10,16 @@ export const sanitizeChapterText = (
   options?: Options,
 ): string => {
   // List of disallowed CSS properties
-  const disallowedCSSProperties: RegExp[] = [/^font-family$/, /^font-size$/];
+  const disallowedCSSProperties: RegExp[] = [
+    /^background-color$/,
+    /^color$/,
+    /^font-family$/,
+    /^font-size$/,
+    /^margin$/,
+    /^margin-.+$/,
+    /^padding$/,
+    /^padding-.+$/,
+  ];
 
   // Create a transform function for the specified tags
   const createTransformFunction = () => {
