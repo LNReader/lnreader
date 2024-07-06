@@ -21,6 +21,7 @@ import { useLibrarySettings } from '@hooks/persisted';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
 import { getString } from '@strings/translations';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
+import { defaultCover } from '@plugins/helpers/constants';
 
 interface UnreadBadgeProps {
   chaptersDownloaded: number;
@@ -91,7 +92,7 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
 
   const selectNovel = () => onLongPress(item);
 
-  const uri = item.cover;
+  const uri = item.cover || defaultCover;
   if (item.completeRow) {
     if (!addSkeletonLoading) {
       return <></>;
