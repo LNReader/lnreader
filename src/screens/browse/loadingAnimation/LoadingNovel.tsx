@@ -100,7 +100,7 @@ const createStyleSheet = (pictureHeight: number, pictureWidth: number) => {
       borderRadius: 4,
     },
     listLoadingContainer: {
-      marginHorizontal: 12,
+      marginHorizontal: 8,
       marginVertical: 8,
       flexDirection: 'row',
       alignItems: 'center',

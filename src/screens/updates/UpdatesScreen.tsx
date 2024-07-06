@@ -10,7 +10,6 @@ import { Update } from '@database/types';
 
 import { useSearch } from '@hooks';
 import { useDownload, useUpdates } from '@hooks/persisted';
-import { updateLibrary } from '@services/updates';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import { useTheme } from '@hooks/persisted';
@@ -19,6 +18,7 @@ import UpdateNovelCard from './components/UpdateNovelCard';
 import { useFocusEffect } from '@react-navigation/native';
 import { deleteChapter } from '@database/queries/ChapterQueries';
 import { showToast } from '@utils/showToast';
+import ServiceManager from '@services/ServiceManager';
 
 const UpdatesScreen = () => {
   const theme = useTheme();
@@ -33,7 +33,7 @@ const UpdatesScreen = () => {
     showLastUpdateTime,
     error,
   } = useUpdates();
-  const { queue } = useDownload();
+  const { downloadQueue } = useDownload();
   const { searchText, setSearchText, clearSearchbar } = useSearch();
   const onChangeText = (text: string) => {
     setSearchText(text);
@@ -73,7 +73,7 @@ const UpdatesScreen = () => {
   useFocusEffect(
     useCallback(() => {
       getUpdates();
-    }, [queue]),
+    }, [downloadQueue]),
   );
 
   return (
@@ -88,7 +88,8 @@ const UpdatesScreen = () => {
         rightIcons={[
           {
             iconName: 'reload',
-            onPress: () => updateLibrary(),
+            onPress: () =>
+              ServiceManager.manager.addTask({ name: 'UPDATE_LIBRARY' }),
           },
         ]}
       />
@@ -142,7 +143,9 @@ const UpdatesScreen = () => {
           refreshControl={
             <RefreshControl
               refreshing={false}
-              onRefresh={() => updateLibrary()}
+              onRefresh={() =>
+                ServiceManager.manager.addTask({ name: 'UPDATE_LIBRARY' })
+              }
               colors={[theme.onPrimary]}
               progressBackgroundColor={theme.primary}
             />

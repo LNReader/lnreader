@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
 import {
   FAB,
@@ -14,21 +14,26 @@ import { showToast } from '../../utils/showToast';
 import { getString } from '@strings/translations';
 import { Appbar, EmptyView } from '@components';
 import { DownloadQueueScreenProps } from '@navigators/types';
-import { useMMKVString } from 'react-native-mmkv';
-import { BACKGROUND_ACTION, BackgoundAction } from '@services/constants';
+import ServiceManager from '@services/ServiceManager';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
   const theme = useTheme();
-  const [currentAction] = useMMKVString(BACKGROUND_ACTION);
-  const isDownloading = useMemo(
-    () => currentAction === BackgoundAction.DOWNLOAD_CHAPTER,
-    [currentAction],
-  );
-  const { queue, resumeDowndload, pauseDownload, cancelDownload } =
+  const { bottom } = useSafeAreaInsets();
+  const { downloadQueue, resumeDowndload, pauseDownload, cancelDownload } =
     useDownload();
+  const [isDownloading, setIsDownloading] = useState(
+    ServiceManager.manager.isRunning,
+  );
   const [visible, setVisible] = useState(false);
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
+  useEffect(() => {
+    if (downloadQueue.length === 0) {
+      setIsDownloading(false);
+    }
+  }, [downloadQueue]);
+
   return (
     <>
       <Appbar
@@ -40,7 +45,7 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
           visible={visible}
           onDismiss={closeMenu}
           anchor={
-            queue.length ? (
+            downloadQueue.length ? (
               <MaterialAppbar.Action
                 icon="dots-vertical"
                 iconColor={theme.onSurface}
@@ -53,6 +58,7 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
           <Menu.Item
             onPress={() => {
               cancelDownload();
+              setIsDownloading(false);
               showToast(getString('downloadScreen.cancelled'));
               closeMenu();
             }}
@@ -63,18 +69,18 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
       </Appbar>
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
-        keyExtractor={item =>
-          item.novel.pluginId + '_' + item.chapter.path.toString()
-        }
-        data={queue}
+        keyExtractor={item => 'download_chapter_' + item.data.chapterId}
+        data={downloadQueue}
         renderItem={({ item }) => (
           <View style={{ padding: 16 }}>
-            <Text style={{ color: theme.onSurface }}>{item.chapter.name}</Text>
+            <Text style={{ color: theme.onSurface }}>
+              {item.data.chapterName}
+            </Text>
             <ProgressBar
               indeterminate={
                 isDownloading &&
-                queue.length > 0 &&
-                queue[0].chapter.id === item.chapter.id
+                downloadQueue.length > 0 &&
+                downloadQueue[0].data.chapterId === item.data.chapterId
               }
               color={theme.primary}
               style={{ marginTop: 8 }}
@@ -89,9 +95,9 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
           />
         }
       />
-      {queue.length > 0 ? (
+      {downloadQueue.length > 0 ? (
         <FAB
-          style={[styles.fab, { backgroundColor: theme.primary }]}
+          style={[styles.fab, { backgroundColor: theme.primary, bottom }]}
           color={theme.onPrimary}
           label={
             isDownloading
@@ -101,7 +107,13 @@ const DownloadQueue = ({ navigation }: DownloadQueueScreenProps) => {
           uppercase={false}
           icon={isDownloading ? 'pause' : 'play'}
           onPress={() => {
-            isDownloading ? pauseDownload() : resumeDowndload();
+            if (isDownloading) {
+              pauseDownload();
+              setIsDownloading(false);
+            } else {
+              resumeDowndload();
+              setIsDownloading(true);
+            }
           }}
         />
       ) : null}

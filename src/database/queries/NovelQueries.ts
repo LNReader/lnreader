@@ -78,7 +78,22 @@ export const getAllNovels = async (): Promise<NovelInfo[]> => {
   );
 };
 
-export const getNovel = async (
+export const getNovelById = async (
+  novelId: number,
+): Promise<NovelInfo | null> => {
+  return new Promise(resolve =>
+    db.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Novel WHERE id = ?',
+        [novelId],
+        (txObj, { rows }) => resolve(rows.item(0)),
+        txnErrorCallback,
+      );
+    }),
+  );
+};
+
+export const getNovelByPath = async (
   novelPath: string,
   pluginId: string,
 ): Promise<NovelInfo | null> => {
@@ -101,7 +116,7 @@ export const switchNovelToLibrary = async (
   novelPath: string,
   pluginId: string,
 ) => {
-  const novel = await getNovel(novelPath, pluginId);
+  const novel = await getNovelByPath(novelPath, pluginId);
   if (novel) {
     db.transaction(tx => {
       tx.executeSql(

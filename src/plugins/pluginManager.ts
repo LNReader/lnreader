@@ -9,7 +9,7 @@ import qs from 'qs';
 import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
-import { fetchApi, fetchProto, fetchText } from './helpers/fetch';
+import { downloadFile, fetchApi, fetchProto, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
 import { Storage, LocalStorage, SessionStorage } from './helpers/storage';
 import { encode, decode } from 'urlencode';
@@ -61,32 +61,40 @@ const initPlugin = (pluginId: string, rawCode: string) => {
 const plugins: Record<string, Plugin | undefined> = {};
 
 const installPlugin = async (
-  pluginId: string,
-  url: string,
+  _plugin: PluginItem,
 ): Promise<Plugin | undefined> => {
   try {
-    return await fetch(url, {
+    const rawCode = await fetch(_plugin.url, {
       headers: { 'pragma': 'no-cache', 'cache-control': 'no-cache' },
-    })
-      .then(res => res.text())
-      .then(async rawCode => {
-        const plugin = initPlugin(pluginId, rawCode);
-        if (!plugin) {
-          return undefined;
-        }
-        let currentPlugin = plugins[plugin.id];
-        if (!currentPlugin || newer(plugin.version, currentPlugin.version)) {
-          plugins[plugin.id] = plugin;
-          currentPlugin = plugin;
+    }).then(res => res.text());
+    const plugin = initPlugin(_plugin.id, rawCode);
+    if (!plugin) {
+      return undefined;
+    }
+    let currentPlugin = plugins[plugin.id];
+    if (!currentPlugin || newer(plugin.version, currentPlugin.version)) {
+      plugins[plugin.id] = plugin;
+      currentPlugin = plugin;
 
-          // save plugin code;
-          const pluginDir = `${PLUGIN_STORAGE}/${pluginId}`;
-          await FileManager.mkdir(pluginDir);
-          const filePath = pluginDir + '/index.js';
-          await FileManager.writeFile(filePath, rawCode);
-        }
-        return currentPlugin;
-      });
+      // save plugin code;
+      const pluginDir = `${PLUGIN_STORAGE}/${plugin.id}`;
+      await FileManager.mkdir(pluginDir);
+      const pluginPath = pluginDir + '/index.js';
+      const customJSPath = pluginDir + '/custom.js';
+      const customCSSPath = pluginDir + '/custom.css';
+      if (_plugin.customJS) {
+        await downloadFile(_plugin.customJS, customJSPath);
+      } else if (await FileManager.exists(customJSPath)) {
+        FileManager.unlink(customJSPath);
+      }
+      if (_plugin.customCSS) {
+        await downloadFile(_plugin.customCSS, customCSSPath);
+      } else if (await FileManager.exists(customCSSPath)) {
+        FileManager.unlink(customCSSPath);
+      }
+      await FileManager.writeFile(pluginPath, rawCode);
+    }
+    return currentPlugin;
   } catch (e: any) {
     throw e;
   }
@@ -106,7 +114,7 @@ const uninstallPlugin = async (_plugin: PluginItem) => {
 };
 
 const updatePlugin = async (plugin: PluginItem) => {
-  return installPlugin(plugin.id, plugin.url);
+  return installPlugin(plugin);
 };
 
 const fetchPlugins = async (): Promise<PluginItem[]> => {

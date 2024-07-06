@@ -1,7 +1,6 @@
 import { SELF_HOST_BACKUP } from '@hooks/persisted/useSelfHost';
 import { TRACKER } from '@hooks/persisted/useTracker';
 import { LAST_UPDATE_TIME } from '@hooks/persisted/useUpdates';
-import { BACKGROUND_ACTION } from '@services/constants';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { version } from '../../../package.json';
 import {
@@ -18,6 +17,7 @@ import { BackupCategory } from '@database/types';
 import { BackupEntryName } from './types';
 import FileManager from '@native/FileManager';
 import { ROOT_STORAGE } from '@utils/Storages';
+import ServiceManager from '@services/ServiceManager';
 
 const APP_STORAGE_URI = 'file://' + ROOT_STORAGE;
 
@@ -26,7 +26,7 @@ export const CACHE_DIR_PATH =
 
 const backupMMKVData = () => {
   const excludeKeys = [
-    BACKGROUND_ACTION,
+    ServiceManager.manager.STORE_KEY,
     TRACKER,
     SELF_HOST_BACKUP,
     LAST_UPDATE_TIME,

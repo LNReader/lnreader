@@ -14,6 +14,7 @@ import { useDownload, useTheme } from '@hooks/persisted';
 import { noop } from 'lodash-es';
 import { RootStackParamList } from '@navigators/types';
 import { FlatList } from 'react-native-gesture-handler';
+import { defaultCover } from '@plugins/helpers/constants';
 
 const NovelCover = ({
   uri,
@@ -41,7 +42,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   deleteChapter,
 }) => {
   const { navigate } = useNavigation<NavigationProp<RootStackParamList>>();
-  const { downloadChapter, queue } = useDownload();
+  const { downloadChapter, downloadQueue } = useDownload();
   const theme = useTheme();
 
   const handleDownloadChapter = useCallback(
@@ -92,7 +93,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         left={() => (
           <NovelCover
             navigateToNovel={navigateToNovel}
-            uri={chapterList[0].novelCover}
+            uri={chapterList[0].novelCover || defaultCover}
           />
         )}
         descriptionStyle={{ fontSize: 12 }}
@@ -110,7 +111,9 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
             return (
               <ChapterItem
                 isLocal={false}
-                isDownloading={queue.some(c => c.chapter.id === item.id)}
+                isDownloading={downloadQueue.some(
+                  c => c.data.chapterId === item.id,
+                )}
                 isUpdateCard
                 novelName={chapterList[0].novelName}
                 chapter={item}
@@ -123,7 +126,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                   <View style={styles.novelCover}>
                     <NovelCover
                       navigateToNovel={navigateToNovel}
-                      uri={chapterList[0].novelCover}
+                      uri={chapterList[0].novelCover || defaultCover}
                     />
                   </View>
                 }
@@ -138,7 +141,9 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     return (
       <ChapterItem
         isLocal={false}
-        isDownloading={queue.some(c => c.chapter.id === chapterList[0].id)}
+        isDownloading={downloadQueue.some(
+          c => c.data.chapterId === chapterList[0].id,
+        )}
         isUpdateCard
         novelName={chapterList[0].novelName}
         chapter={chapterList[0]}
@@ -151,7 +156,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
           <View style={styles.novelCover}>
             <NovelCover
               navigateToNovel={navigateToNovel}
-              uri={chapterList[0].novelCover}
+              uri={chapterList[0].novelCover || defaultCover}
             />
           </View>
         }
