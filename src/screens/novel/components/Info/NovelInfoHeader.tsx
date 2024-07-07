@@ -213,7 +213,7 @@ const NovelInfoHeader = ({
               {`${chapters?.length} ${getString('novelScreen.chapters')}`}
             </Text>
           </View>
-          {page ? (
+          {page && Number(page) ? (
             <IconButton
               icon="reload"
               iconColor={theme.onSurface}
