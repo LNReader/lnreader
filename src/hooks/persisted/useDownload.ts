@@ -1,15 +1,18 @@
 import { ChapterInfo, NovelInfo } from '@database/types';
 import ServiceManager, { BackgroundTask } from '@services/ServiceManager';
+import { useMemo } from 'react';
 import { useMMKVObject } from 'react-native-mmkv';
 
 export const DOWNLOAD_QUEUE = 'DOWNLOAD';
 export const CHAPTER_DOWNLOADING = 'CHAPTER_DOWNLOADING';
 
-const defaultQueue: BackgroundTask[] = [];
-
 export default function useDownload() {
-  const [queue = defaultQueue] = useMMKVObject<BackgroundTask[]>(
+  const [queue] = useMMKVObject<BackgroundTask[]>(
     ServiceManager.manager.STORE_KEY,
+  );
+  const downloadQueue = useMemo(
+    () => queue?.filter(t => t.name === 'DOWNLOAD_CHAPTER') || [],
+    [queue],
   );
 
   const downloadChapter = (novel: NovelInfo, chapter: ChapterInfo) =>
@@ -40,7 +43,7 @@ export default function useDownload() {
     ServiceManager.manager.removeTasksByName('DOWNLOAD_CHAPTER');
 
   return {
-    downloadQueue: queue.filter(t => t.name === 'DOWNLOAD_CHAPTER'),
+    downloadQueue,
     resumeDowndload,
     downloadChapter,
     downloadChapters,
