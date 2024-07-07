@@ -10,21 +10,13 @@ export const sanitizeChapterText = (
   options?: Options,
 ): string => {
   // List of disallowed CSS properties
-  const allowedCSSProperties: RegExp[] = [
-    /^align-items$/,
-    /^background-color$/,
-    /^border.*$/,
-    /^display$/,
-    /^font-weight$/,
-    /^justify-content$/,
-    /^margin.*$/,
-    /^padding.*$/,
-    /^position$/,
-    /^text-align$/,
-    /^text-decoration$/,
-    /^text-justify$/,
-    /^text-shadow$/,
-    /^text-transform$/,
+  const disallowedCSSProperties: RegExp[] = [
+    /^color$/,
+    /^font.*$/,
+    /^line-height$/,
+    /^max.*$/,
+    /^min.*$/,
+    /^text-indent$/,
   ];
 
   // Create a transform function for the specified tags
@@ -34,7 +26,7 @@ export const sanitizeChapterText = (
         const styles = attribs.style.split(';');
         const allowedStyles = styles.filter((style: string) => {
           const [property] = style.split(':');
-          return allowedCSSProperties.some(regex =>
+          return !disallowedCSSProperties.some(regex =>
             regex.test(property.trim()),
           );
         });
@@ -46,24 +38,16 @@ export const sanitizeChapterText = (
           },
         };
       }
-      // Only remove the style attribute if it's present
-      if (attribs.style) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { _style, ...rest } = attribs;
-        return {
-          tagName: tagName,
-          attribs: rest,
-        };
-      } else {
-        return {
-          tagName: tagName,
-          attribs: attribs,
-        };
-      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { _style, ...rest } = attribs;
+      return {
+        tagName: tagName,
+        attribs: rest,
+      };
     };
   };
 
-  // List of allowed tags
+  // List of styled tags
   const styledTags = sanitizeHtml.defaults.allowedTags.concat([
     'div',
     'p',
