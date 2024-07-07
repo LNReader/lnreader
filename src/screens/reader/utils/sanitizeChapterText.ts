@@ -46,25 +46,26 @@ export const sanitizeChapterText = (
           },
         };
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { style, ...rest } = attribs;
-      return {
-        tagName: tagName,
-        attribs: rest,
-      };
+      // Only remove the style attribute if it's present
+      if (attribs.style) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { _style, ...rest } = attribs;
+        return {
+          tagName: tagName,
+          attribs: rest,
+        };
+      } else {
+        return {
+          tagName: tagName,
+          attribs: attribs,
+        };
+      }
     };
   };
 
   // List of allowed tags
-  const allowedTags = sanitizeHtml.defaults.allowedTags.concat([
-    'a',
-    'b',
+  const styledTags = sanitizeHtml.defaults.allowedTags.concat([
     'div',
-    'em',
-    'i',
-    'img',
-    'li',
-    'ol',
     'p',
     'span',
   ]);
@@ -73,17 +74,28 @@ export const sanitizeChapterText = (
   const transformTags: {
     [key: string]: (tagName: string, attribs: any) => any;
   } = {};
-  allowedTags.forEach(tag => {
+  styledTags.forEach(tag => {
     transformTags[tag] = createTransformFunction();
   });
 
   let text = sanitizeHtml(html, {
-    allowedTags: allowedTags,
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+      'a',
+      'b',
+      'div',
+      'em',
+      'i',
+      'img',
+      'li',
+      'ol',
+      'p',
+      'span',
+    ]),
     allowedAttributes: {
-      'a': ['href', 'class', 'id', 'style'],
+      'a': ['href', 'class', 'id'],
       'div': ['class', 'id', 'style'],
-      'img': ['src', 'class', 'id', 'style'],
-      'ol': ['reversed', 'start', 'type'],
+      'img': ['src', 'class', 'id'],
+      'ol': ['reversed', 'start'],
       'p': ['class', 'id', 'style'],
       'span': ['class', 'id', 'style'],
     },
