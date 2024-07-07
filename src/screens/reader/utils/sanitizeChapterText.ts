@@ -10,21 +10,13 @@ export const sanitizeChapterText = (
   options?: Options,
 ): string => {
   // List of disallowed CSS properties
-  const allowedCSSProperties: RegExp[] = [
-    /^align-items$/,
-    /^background-color$/,
-    /^border.*$/,
-    /^display$/,
-    /^font-weight$/,
-    /^justify-content$/,
-    /^margin.*$/,
-    /^padding.*$/,
-    /^position$/,
-    /^text-align$/,
-    /^text-decoration$/,
-    /^text-justify$/,
-    /^text-shadow$/,
-    /^text-transform$/,
+  const disallowedCSSProperties: RegExp[] = [
+    /^color$/,
+    /^font.*$/,
+    /^line-height$/,
+    /^max.*$/,
+    /^min.*$/,
+    /^text-indent$/,
   ];
 
   // Create a transform function for the specified tags
@@ -34,7 +26,7 @@ export const sanitizeChapterText = (
         const styles = attribs.style.split(';');
         const allowedStyles = styles.filter((style: string) => {
           const [property] = style.split(':');
-          return allowedCSSProperties.some(regex =>
+          return !disallowedCSSProperties.some(regex =>
             regex.test(property.trim()),
           );
         });
@@ -47,7 +39,7 @@ export const sanitizeChapterText = (
         };
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { style, ...rest } = attribs;
+      const { _style, ...rest } = attribs;
       return {
         tagName: tagName,
         attribs: rest,
@@ -55,16 +47,9 @@ export const sanitizeChapterText = (
     };
   };
 
-  // List of allowed tags
-  const allowedTags = sanitizeHtml.defaults.allowedTags.concat([
-    'a',
-    'b',
+  // List of styled tags
+  const styledTags = sanitizeHtml.defaults.allowedTags.concat([
     'div',
-    'em',
-    'i',
-    'img',
-    'li',
-    'ol',
     'p',
     'span',
   ]);
@@ -73,17 +58,28 @@ export const sanitizeChapterText = (
   const transformTags: {
     [key: string]: (tagName: string, attribs: any) => any;
   } = {};
-  allowedTags.forEach(tag => {
+  styledTags.forEach(tag => {
     transformTags[tag] = createTransformFunction();
   });
 
   let text = sanitizeHtml(html, {
-    allowedTags: allowedTags,
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+      'a',
+      'b',
+      'div',
+      'em',
+      'i',
+      'img',
+      'li',
+      'ol',
+      'p',
+      'span',
+    ]),
     allowedAttributes: {
-      'a': ['href', 'class', 'id', 'style'],
+      'a': ['href', 'class', 'id'],
       'div': ['class', 'id', 'style'],
-      'img': ['src', 'class', 'id', 'style'],
-      'ol': ['reversed', 'start', 'type'],
+      'img': ['src', 'class', 'id'],
+      'ol': ['reversed', 'start'],
       'p': ['class', 'id', 'style'],
       'span': ['class', 'id', 'style'],
     },
