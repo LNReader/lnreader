@@ -351,7 +351,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         novelSettings.filter,
         page,
       );
-      if (!chapters.length) {
+      if (!chapters.length && Number(page)) {
         const sourcePage = await fetchPage(pluginId, novelPath, page);
         const sourceChapters = sourcePage.chapters.map(ch => {
           return {
@@ -368,14 +368,14 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         );
       }
       setChapters(chapters);
-      setLoading(false);
     }
+    setLoading(false);
   }, [novel, novelSettings, pageIndex]);
   useEffect(() => {
     getNovel();
   }, []);
   useEffect(() => {
-    getChapters();
+    getChapters().catch(e => showToast(e.message));
   }, [getChapters]);
 
   return {
