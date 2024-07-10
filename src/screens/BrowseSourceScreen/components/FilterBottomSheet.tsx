@@ -57,6 +57,9 @@ const FilterItem: React.FC<FilterItemProps> = ({
       filter,
       selectedFilters[filterKey],
     );
+    const label =
+      filter.options.find(option => option.value === value)?.label ||
+      'whatever';
     return (
       <View style={styles.pickerContainer}>
         <Menu
@@ -83,7 +86,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
                     {` ${filter.label} `}
                   </Text>
                 }
-                value={value || 'whatever'}
+                value={label}
                 editable={false}
                 theme={{ colors: { background: 'transparent' } }}
                 outlineColor={isVisible ? theme.primary : theme.onSurface}
