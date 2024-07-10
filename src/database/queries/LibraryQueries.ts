@@ -104,7 +104,9 @@ export const getLibraryWithCategory = ({
   }
 
   if (searchText) {
-    query += ` AND name LIKE '%${searchText}%' `;
+    const newSearchText = searchText.replace(/'/g, "\\'");
+
+    query += ` AND name LIKE '%${newSearchText}%' `;
   }
 
   if (sortOrder) {
