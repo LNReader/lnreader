@@ -272,7 +272,7 @@ const AvailablePluginCard = ({
       <Animated.View style={{ flexDirection: 'row' }}>
         <Animated.Image
           source={{ uri: plugin.iconUrl }}
-          style={[styles.icon, imageStyles]}
+          style={[styles.icon, imageStyles, { backgroundColor: theme.surface }]}
         />
         <Animated.View style={styles.details}>
           <Animated.Text

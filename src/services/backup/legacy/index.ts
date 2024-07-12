@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import { NovelInfo } from '@database/types';
 import { sleep } from '@utils/sleep';
 import { getString } from '@strings/translations';
+import * as FileSystem from 'expo-file-system';
 import FileManager from '@native/FileManager';
 
 export const createBackup = async () => {
@@ -38,23 +39,18 @@ interface TaskData {
   delay: number;
 }
 
-export const restoreBackup = async (filePath?: string) => {
+export const restoreBackup = async () => {
   try {
     const backup = await DocumentPicker.getDocumentAsync({
-      copyToCacheDirectory: false,
+      copyToCacheDirectory: true,
     });
     let novelsString = '';
 
     if (backup.assets && backup.assets[0]) {
-      novelsString = FileManager.readFile(backup.assets[0].uri);
-    } else if (filePath) {
-      if (!(await FileManager.exists(filePath))) {
-        showToast(getString('backupScreen.legacy.noErrorNovel'));
-        return; //neither backup nor error backup
-      }
-      novelsString = FileManager.readFile(filePath);
+      novelsString = await FileSystem.StorageAccessFramework.readAsStringAsync(
+        backup.assets[0].uri,
+      );
     }
-
     const novels: NovelInfo[] = await JSON.parse(novelsString);
     if (novels.length === 0) {
       showToast(getString('backupScreen.legacy.noAvailableBackup'));
@@ -71,81 +67,50 @@ export const restoreBackup = async (filePath?: string) => {
       progressBar: { max: novels.length, value: 0 },
     };
 
-    const restoreBackupBackgroundAction = async (taskData?: TaskData) =>
-      await new Promise<void>(async resolve => {
-        const errorNovels = [];
-        for (
-          let i = 0;
-          BackgroundService.isRunning() && i < novels.length;
-          i++
-        ) {
-          try {
-            if (BackgroundService.isRunning()) {
-              const plugin = getPlugin(novels[i].pluginId);
-              if (!plugin) {
-                errorNovels.push(novels[i]);
-                continue;
-              }
-              await BackgroundService.updateNotification({
-                taskTitle: novels[i].name,
-                taskDesc: '(' + (i + 1) + '/' + novels.length + ')',
-                progressBar: { max: novels.length, value: i + 1 },
-              });
-              await restoreLibrary(novels[i]).catch(error => {
-                throw error;
-              });
-
-              if (novels.length === i + 1) {
-                Notifications.scheduleNotificationAsync({
-                  content: {
-                    title: getString('backupScreen.legacy.libraryRestored'),
-                    body: getString('backupScreen.legacy.novelsRestored', {
-                      num: novels.length,
-                    }),
-                  },
-                  trigger: null,
-                });
-                resolve();
-              }
-
-              const nextNovelIndex = i + 1;
-
-              if (
-                nextNovelIndex in novels &&
-                novels[nextNovelIndex].pluginId === novels[i].pluginId
-              ) {
-                await sleep(taskData?.delay || 0);
-              }
+    const restoreBackupBackgroundAction = async (taskData?: TaskData) => {
+      let errorString = '';
+      let restoredNovelsCount = 0;
+      for (let i = 0; BackgroundService.isRunning() && i < novels.length; i++) {
+        try {
+          if (BackgroundService.isRunning()) {
+            const plugin = getPlugin(novels[i].pluginId);
+            if (!plugin) {
+              throw new Error(`No plugin found with id ${novels[i].pluginId}`);
             }
-          } catch (e) {
-            errorNovels.push(novels[i]);
-            continue;
+            BackgroundService.updateNotification({
+              taskTitle: novels[i].name,
+              taskDesc: '(' + (i + 1) + '/' + novels.length + ')',
+              progressBar: { max: novels.length, value: i + 1 },
+            });
+            await restoreLibrary(novels[i]);
+            restoredNovelsCount += 1;
+            const nextNovelIndex = i + 1;
+
+            if (
+              nextNovelIndex in novels &&
+              novels[nextNovelIndex].pluginId === novels[i].pluginId
+            ) {
+              await sleep(taskData?.delay || 0);
+            }
           }
+        } catch (e) {
+          errorString += e + '\n';
         }
-        const errorPath =
-          FileManager.ExternalDirectoryPath + '/errorNovels.json';
-        if (errorNovels.length > 0) {
-          await FileManager.writeFile(errorPath, JSON.stringify(errorNovels));
-          Notifications.scheduleNotificationAsync({
-            content: {
-              title: getString('backupScreen.legacy.libraryRestored'),
-              body: getString('backupScreen.legacy.novelsRestoredError', {
-                num: errorNovels.length,
-              }),
-            },
-            trigger: null,
-          });
-          resolve();
-        } else {
-          FileManager.exists(errorPath).then(exist => {
-            if (exist) {
-              FileManager.unlink(errorPath);
-            }
-          });
-        }
-      }).finally(() => {
-        BackgroundService.stop();
+      }
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: getString('backupScreen.legacy.libraryRestored'),
+          body:
+            getString('backupScreen.legacy.novelsRestored', {
+              num: restoredNovelsCount,
+            }) +
+            '\n' +
+            errorString,
+        },
+        trigger: null,
       });
+      BackgroundService.stop();
+    };
 
     if (novels.length > 0) {
       await BackgroundService.start<TaskData>(
