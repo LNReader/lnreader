@@ -73,7 +73,11 @@ export const sanitizeChapterText = (
       'li',
       'ol',
       'p',
+      's',
       'span',
+      'strong',
+      'u',
+      'ul',
     ]),
     allowedAttributes: {
       'a': ['href', 'class', 'id'],
