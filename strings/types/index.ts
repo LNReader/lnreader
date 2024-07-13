@@ -220,6 +220,7 @@ export interface StringMap {
   'generalSettingsScreen.chapterSort': 'string';
   'generalSettingsScreen.desc': 'string';
   'generalSettingsScreen.disableHapticFeedback': 'string';
+  'generalSettingsScreen.disableHapticFeedbackDescription': 'string';
   'generalSettingsScreen.displayMode': 'string';
   'generalSettingsScreen.downloadNewChapters': 'string';
   'generalSettingsScreen.epub': 'string';

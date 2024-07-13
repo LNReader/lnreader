@@ -255,6 +255,7 @@
     "chapterSort": "Default chapter sort",
     "desc": "(Descending)",
     "disableHapticFeedback": "Disable haptic feedback",
+    "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
     "displayMode": "Display Mode",
     "downloadNewChapters": "Download new chapters",
     "epub": "EPUB",
