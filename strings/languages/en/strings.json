@@ -165,6 +165,9 @@
     "setCategories": "Set categories",
     "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library"
   },
+  "repositories": {
+    "emptyMsg": "You have no repositories. Add your first plugin repository to get started."
+  },
   "common": {
     "about": "About",
     "add": "Add",
@@ -252,6 +255,7 @@
     "chapterSort": "Default chapter sort",
     "desc": "(Descending)",
     "disableHapticFeedback": "Disable haptic feedback",
+    "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
     "displayMode": "Display Mode",
     "downloadNewChapters": "Download new chapters",
     "epub": "EPUB",
@@ -439,6 +443,7 @@
       "textSize": "Text size",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "verticalSeekbar": "Vertical Seekbar",
+      "keepScreenOn": "Keep screen on",
       "volumeButtonsScroll": "Volume buttons scroll"
     },
     "drawer": {

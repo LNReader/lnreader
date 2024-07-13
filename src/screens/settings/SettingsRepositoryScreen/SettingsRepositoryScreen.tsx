@@ -65,7 +65,7 @@ const SettingsBrowseScreen = () => {
           ListEmptyComponent={
             <EmptyView
               icon="Σ(ಠ_ಠ)"
-              description={getString('categories.emptyMsg')}
+              description={getString('repositories.emptyMsg')}
               theme={theme}
             />
           }

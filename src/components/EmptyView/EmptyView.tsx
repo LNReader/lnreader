@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   text: {
+    textAlign: 'center',
     marginTop: 16,
   },
   buttonWrapper: {
