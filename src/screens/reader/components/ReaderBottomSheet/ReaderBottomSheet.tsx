@@ -31,6 +31,7 @@ const ReaderTab: React.FC = () => {
 const GeneralTab: React.FC = () => {
   const theme = useTheme();
   const {
+    keepScreenOn,
     fullScreenMode,
     autoScroll,
     verticalSeekbar,
@@ -119,6 +120,14 @@ const GeneralTab: React.FC = () => {
         value={bionicReading}
         theme={theme}
       />
+      <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.keepScreenOn')}
+        onPress={() =>
+          setChapterGeneralSettings({ keepScreenOn: !keepScreenOn })
+        }
+        value={keepScreenOn}
+        theme={theme}
+      />
     </View>
   );
 };
@@ -179,7 +188,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   );
 
   return (
-    <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[360, 560]}>
+    <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[360, 600]}>
       <BottomSheetView
         style={[styles.bottomSheetContainer, { backgroundColor }]}
       >

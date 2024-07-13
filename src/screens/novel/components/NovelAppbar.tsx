@@ -7,8 +7,12 @@ import Animated, {
   interpolateColor,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import EpubIconButton from './EpubIconButton';
+import { ChapterInfo, NovelInfo } from '@database/types';
 
 const NovelAppbar = ({
+  novel,
+  chapters,
   theme,
   isLocal,
   downloadChapters,
@@ -21,6 +25,8 @@ const NovelAppbar = ({
   showJumpToChapterModal,
   headerOpacity,
 }: {
+  novel: NovelInfo;
+  chapters: ChapterInfo[];
   theme: ThemeColors;
   isLocal: boolean;
   downloadChapters: (amount: number | 'all' | 'unread') => void;
@@ -52,6 +58,7 @@ const NovelAppbar = ({
       <Appbar.Header theme={{ colors: { ...theme, surface: 'transparent' } }}>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="" />
+        <EpubIconButton theme={theme} novel={novel} chapters={chapters} />
         <Appbar.Action icon="share-variant" onPress={shareNovel} />
         <Appbar.Action
           icon="text-box-search-outline"

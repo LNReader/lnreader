@@ -342,6 +342,18 @@ export const updateChapterProgress = async (
   });
 };
 
+export const updateChapterProgressByIds = async (
+  chapterIds: number[],
+  progress: number,
+) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      `UPDATE Chapter SET progress = ? WHERE id in (${chapterIds.join(',')})`,
+      [progress],
+    );
+  });
+};
+
 const bookmarkChapterQuery =
   'UPDATE Chapter SET bookmark = (CASE WHEN bookmark = 0 THEN 1 ELSE 0 END) WHERE id = ?';
 

@@ -226,6 +226,9 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
           </List.SubHeader>
           <SettingSwitch
             label={getString('generalSettingsScreen.disableHapticFeedback')}
+            description={getString(
+              'generalSettingsScreen.disableHapticFeedbackDescription',
+            )}
             value={disableHapticFeedback}
             onPress={() =>
               setAppSettings({ disableHapticFeedback: !disableHapticFeedback })

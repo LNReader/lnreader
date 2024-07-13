@@ -72,6 +72,7 @@ export interface LibrarySettings {
 }
 
 export interface ChapterGeneralSettings {
+  keepScreenOn: boolean;
   fullScreenMode: boolean;
   swipeGestures: boolean;
   showScrollPercentage: boolean;
@@ -106,6 +107,10 @@ export interface ChapterReaderSettings {
     rate?: number;
     pitch?: number;
   };
+  epubLocation: string;
+  epubUseAppTheme: boolean;
+  epubUseCustomCSS: boolean;
+  epubUseCustomJS: boolean;
 }
 
 const initialAppSettings: AppSettings = {
@@ -155,6 +160,7 @@ const initialBrowseSettings: BrowseSettings = {
 };
 
 export const initialChapterGeneralSettings: ChapterGeneralSettings = {
+  keepScreenOn: true,
   fullScreenMode: true,
   swipeGestures: false,
   showScrollPercentage: true,
@@ -183,6 +189,10 @@ export const initialChapterReaderSettings: ChapterReaderSettings = {
     rate: 1,
     pitch: 1,
   },
+  epubLocation: '',
+  epubUseAppTheme: false,
+  epubUseCustomCSS: false,
+  epubUseCustomJS: false,
 };
 
 export const useAppSettings = () => {
