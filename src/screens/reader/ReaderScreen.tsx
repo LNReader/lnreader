@@ -14,8 +14,6 @@ import * as Speech from 'expo-speech';
 
 import VolumeButtonListener from '@native/volumeButtonListener';
 
-import { useKeepAwake } from 'expo-keep-awake';
-
 import {
   getNextChapter,
   getPrevChapter,
@@ -52,6 +50,7 @@ import WebView from 'react-native-webview';
 import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
+import KeepScreenAwake from './components/KeepScreenAwake';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
@@ -94,7 +93,6 @@ export const ChapterContent = ({
   drawerRef,
   setLastRead,
 }: ChapterContentProps) => {
-  useKeepAwake();
   const { novel, chapter } = route.params;
   const webViewRef = useRef<WebView>(null);
   const readerSheetRef = useRef(null);
@@ -108,6 +106,7 @@ export const ChapterContent = ({
     autoScrollOffset,
     // verticalSeekbar = true,
     removeExtraParagraphSpacing,
+    keepScreenOn,
   } = useChapterGeneralSettings();
   const { incognitoMode } = useLibrarySettings();
 
@@ -329,6 +328,7 @@ export const ChapterContent = ({
   }
   return (
     <>
+      {keepScreenOn ? <KeepScreenAwake /> : null}
       <WebViewReader
         data={{ novel, chapter }}
         html={chapterText}

@@ -442,6 +442,7 @@
       "textSize": "Text size",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "verticalSeekbar": "Vertical Seekbar",
+      "keepScreenOn": "Keep screen on",
       "volumeButtonsScroll": "Volume buttons scroll"
     },
     "drawer": {

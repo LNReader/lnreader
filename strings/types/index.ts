@@ -364,6 +364,7 @@ export interface StringMap {
   'readerScreen.bottomSheet.textSize': 'string';
   'readerScreen.bottomSheet.useChapterDrawerSwipeNavigation': 'string';
   'readerScreen.bottomSheet.verticalSeekbar': 'string';
+  'readerScreen.bottomSheet.keepScreenOn': 'string';
   'readerScreen.bottomSheet.volumeButtonsScroll': 'string';
   'readerScreen.drawer.scrollToBottom': 'string';
   'readerScreen.drawer.scrollToCurrentChapter': 'string';
