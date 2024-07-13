@@ -107,6 +107,10 @@ export interface ChapterReaderSettings {
     rate?: number;
     pitch?: number;
   };
+  epubLocation: string;
+  epubUseAppTheme: boolean;
+  epubUseCustomCSS: boolean;
+  epubUseCustomJS: boolean;
 }
 
 const initialAppSettings: AppSettings = {
@@ -185,6 +189,10 @@ export const initialChapterReaderSettings: ChapterReaderSettings = {
     rate: 1,
     pitch: 1,
   },
+  epubLocation: '',
+  epubUseAppTheme: false,
+  epubUseCustomCSS: false,
+  epubUseCustomJS: false,
 };
 
 export const useAppSettings = () => {

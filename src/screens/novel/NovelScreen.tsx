@@ -375,6 +375,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           <Portal>
             {selected.length === 0 ? (
               <NovelAppbar
+                novel={novel}
+                chapters={chapters}
                 deleteChapters={deleteChs}
                 downloadChapters={downloadChs}
                 showEditInfoModal={showEditInfoModal}

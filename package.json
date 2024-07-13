@@ -15,6 +15,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@cd-z/react-native-epub-creator": "^2.0.4",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@react-native-community/slider": "^4.4.2",
     "@react-native-cookies/cookies": "^6.2.1",
@@ -56,12 +57,14 @@
     "react-native-pager-view": "6.2.0",
     "react-native-paper": "^5.12.0",
     "react-native-reanimated": "^3.3.0",
+    "react-native-saf-x": "^2.2.3",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "^3.22.0",
     "react-native-shimmer-placeholder": "^2.0.9",
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "^13.2.2",
+    "react-native-zip-archive": "^7.0.0",
     "sanitize-html": "^2.13.0",
     "urlencode": "^2.0.0"
   },
