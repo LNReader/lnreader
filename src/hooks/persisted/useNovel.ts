@@ -30,6 +30,7 @@ import dayjs from 'dayjs';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import FileManager from '@native/FileManager';
+import { useAppSettings } from './useSettings';
 
 // store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
 // store key: '<PREFIX>_<novel.id>',
@@ -145,6 +146,10 @@ export const useNovel = (novelPath: string, pluginId: string) => {
       `${NOVEL_SETTINSG_PREFIX}_${pluginId}_${novelPath}`,
     );
 
+  const { defaultChapterSort } = useAppSettings();
+
+  const sort = novelSettings.sort || defaultChapterSort;
+
   const openPage = useCallback((index: number) => {
     setPageIndex(index);
   }, []);
@@ -153,7 +158,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     if (novel) {
       _getPageChapters(
         novel.id,
-        novelSettings.sort,
+        sort,
         novelSettings.filter,
         pages[pageIndex],
       ).then(chapters => setChapters(chapters));
@@ -347,7 +352,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     if (novel && page) {
       let chapters = await _getPageChapters(
         novel.id,
-        novelSettings.sort,
+        sort,
         novelSettings.filter,
         page,
       );
@@ -362,7 +367,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         await insertChapters(novel.id, sourceChapters);
         chapters = await _getPageChapters(
           novel.id,
-          novelSettings.sort,
+          sort,
           novelSettings.filter,
           page,
         );
