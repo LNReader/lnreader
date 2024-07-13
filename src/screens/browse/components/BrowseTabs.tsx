@@ -9,6 +9,7 @@ import {
   RefreshControl,
   ListRenderItem,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useBrowseSettings, usePlugins } from '@hooks/persisted';
 import { PluginItem } from '@plugins/types';
 import {
@@ -20,8 +21,8 @@ import { coverPlaceholderColor } from '@theme/colors';
 import { ThemeColors } from '@theme/types';
 import { Swipeable } from 'react-native-gesture-handler';
 import { getString } from '@strings/translations';
-import { BrowseScreenProps } from '@navigators/types';
-import { Button, IconButtonV2 } from '@components';
+import { BrowseScreenProps, MoreStackScreenProps } from '@navigators/types';
+import { Button, EmptyView, IconButtonV2 } from '@components';
 import TrackerCard from '../discover/TrackerCard';
 import { showToast } from '@utils/showToast';
 import Animated, {
@@ -325,6 +326,8 @@ const AvailablePluginCard = ({
 };
 
 export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
+  const navigation = useNavigation<MoreStackScreenProps['navigation']>();
+
   const [refreshing, setRefreshing] = useState(false);
   const {
     filteredAvailablePlugins,
@@ -373,6 +376,28 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
       showsVerticalScrollIndicator={false}
       removeClippedSubviews={true}
       keyExtractor={item => item.id + '_available'}
+      contentContainerStyle={{ flexGrow: 1 }}
+      ListEmptyComponent={
+        <EmptyView
+          icon="(･Д･。"
+          description=" No repositories yet. Add your first plugin repository to get
+            started."
+          actions={[
+            {
+              iconName: 'cog-outline',
+              title: 'Add Repository',
+              onPress: () =>
+                navigation.navigate('MoreStack', {
+                  screen: 'SettingsStack',
+                  params: {
+                    screen: 'RespositorySettings',
+                  },
+                }),
+            },
+          ]}
+          theme={theme}
+        />
+      }
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
