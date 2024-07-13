@@ -165,6 +165,9 @@
     "setCategories": "Set categories",
     "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library"
   },
+  "repositories": {
+    "emptyMsg": "You have no repositories. Add your first plugin repository to get started."
+  },
   "common": {
     "about": "About",
     "add": "Add",

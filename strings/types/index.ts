@@ -143,6 +143,7 @@ export interface StringMap {
   'categories.local': 'string';
   'categories.setCategories': 'string';
   'categories.setModalEmptyMsg': 'string';
+  'repositories.emptyMsg': 'string';
   'common.about': 'string';
   'common.add': 'string';
   'common.all': 'string';
