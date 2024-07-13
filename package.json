@@ -8,7 +8,7 @@
     "prestart": "node scripts/setEnvFile.cjs Debug",
     "start": "react-native start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
+    "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\" ./scripts",
     "buildRelease": "node scripts/setEnvFile.cjs Release && cd android && ./gradlew clean && ./gradlew assembleRelease",
     "open": "open ./android/app/build/outputs/apk/release/",
     "strings": "node scripts/stringTypes.cjs",
