@@ -16,8 +16,28 @@ let data =
   os.EOL +
   `RELEASE_DATE=${formattedDate}`;
 
-fs.writeFile(path.join(__dirname, '..', '.env'), data, 'utf8', err => {
+fs.readFile(path.join(__dirname, '..', '.env'), 'utf8', (err, existingData) => {
   if (err) {
     console.log(err);
+    return;
   }
+
+  const existingEnvData = existingData
+    .split(os.EOL)
+    .filter(line => {
+      return (
+        !line.startsWith('BUILD_TYPE=') &&
+        !line.startsWith('GIT_HASH=') &&
+        !line.startsWith('RELEASE_DATE=')
+      );
+    })
+    .join(os.EOL);
+
+  data += os.EOL + existingData;
+
+  fs.writeFile(path.join(__dirname, '..', '.env'), data, 'utf8', err => {
+    if (err) {
+      console.log(err);
+    }
+  });
 });
