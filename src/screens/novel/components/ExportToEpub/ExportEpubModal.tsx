@@ -94,19 +94,17 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
         let sourceId =${novel.pluginId};
         let chapterId ="";
         let novelId =${novel.id};
-        let html = document.querySelector("chapter").innerHTML;
+        let html = document.querySelector("#chapter").innerHTML;
           
         ${readerSettings.customJS}
         `,
     [novel, readerSettings],
   );
-  console.log(novel.cover);
 
   const createEpub = async (uri: string) => {
     var epub = new EpubBuilder(
       {
         title: novel.name,
-        fileName: novel.name.replace(/\s/g, ''),
         language: 'en',
         cover: novel.cover,
         description: novel.summary,
@@ -120,6 +118,7 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
 
     try {
       await epub.prepare();
+
       for (let i = 0; i < chapters.length; i++) {
         const chapter = chapters[i];
         const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${novel.id}/${chapter.id}/index.html`;
@@ -130,7 +129,7 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
             title:
               chapter.name?.trim() ?? 'Chapter ' + (chapter.chapterNumber || i),
             fileName: 'Chapter' + i,
-            htmlBody: `<div data-plugin-id='${novel.pluginId}' data-novel-id='${chapter.novelId}' data-chapter-id='${chapter.id}'>${downloaded}</div>`,
+            htmlBody: `<div id="chapter" data-plugin-id='${novel.pluginId}' data-novel-id='${chapter.novelId}' data-chapter-id='${chapter.id}'>${downloaded}</div>`,
           });
         }
       }

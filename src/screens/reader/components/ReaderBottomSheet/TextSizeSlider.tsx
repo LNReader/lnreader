@@ -11,7 +11,6 @@ const TextSizeSlider: React.FC = () => {
   const theme = useTheme();
 
   const { textSize, setChapterReaderSettings } = useChapterReaderSettings();
-  console.log(textSize);
 
   return (
     <View style={styles.container}>

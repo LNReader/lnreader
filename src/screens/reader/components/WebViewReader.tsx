@@ -135,7 +135,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       mmkvListener.remove();
     };
   }, []);
-  console.log(readerSettings.textSize);
   if (loading) {
     return <ChapterLoadingScreen onPress={onPress} />;
   }

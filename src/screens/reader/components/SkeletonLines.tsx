@@ -30,13 +30,6 @@ const SkeletonLines = ({
     lineHeight,
     textSize,
   );
-  console.log(
-    containerWidth,
-    containerHeight,
-    containerMargin === undefined ? 0 : containerMargin,
-    lineHeight,
-    textSize,
-  );
 
   const createLines = () => {
     let availableHeight: number = percentToNumberV(containerHeight) - 10;
@@ -63,7 +56,6 @@ const SkeletonLines = ({
     const skeletonWidth: number = width
       ? Number(width)
       : percentToNumberH('90%');
-    console.log(textSize);
 
     const skeletonHeight = 1.5 * 15;
     if (typeof color !== 'string') {
