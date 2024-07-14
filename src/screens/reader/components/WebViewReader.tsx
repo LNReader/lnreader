@@ -279,6 +279,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                   <body>
                     <div class="chapterCtn"> 
                       <chapter 
+                        id="chapter"
                         data-page-reader='${pageReader}'
                         data-plugin-id='${novel.pluginId}'
                         data-novel-id='${chapter.novelId}'

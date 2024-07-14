@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Modal, TextInput, Text } from 'react-native-paper';
+import { Modal, TextInput, Text } from 'react-native-paper'; //@ts-ignore
 import { openDocumentTree } from 'react-native-saf-x';
 
 import { Button, List, SwitchItem } from '@components';

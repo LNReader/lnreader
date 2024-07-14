@@ -67,7 +67,7 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
                --theme-outline: ${theme.outline};
                --theme-rippleColor: ${theme.rippleColor};
              }
-             ` + css
+             ` + (css as string).replace(/chapter/g, '#chapter')
           : ''
       }
       ${
