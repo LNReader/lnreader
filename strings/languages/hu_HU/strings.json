@@ -186,7 +186,7 @@
       "fontStyle": "Betűtípus",
       "fullscreen": "Teljes képernyő",
       "lineHeight": "Sormagasság",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "renderHml": "Render HTML",
       "scrollAmount": "Görgetés mértéke (alapértelmezetten a képernyő magassága)",

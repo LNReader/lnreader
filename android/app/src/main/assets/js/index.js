@@ -23,7 +23,10 @@ const selectVolumeIcon =
  * @type {import("./type").Reader}
  */
 class Reader {
-  constructor() {
+  constructor(swipeHandler, toolWrapper) {
+    this.swipeHandler = swipeHandler;
+    this.toolWrapper = toolWrapper;
+
     this.selection = window.getSelection();
     this.viewport = document.querySelector('meta[name=viewport]');
     this.footerWrapper = document.getElementById('reader-footer-wrapper');
@@ -34,24 +37,34 @@ class Reader {
       getComputedStyle(document.querySelector('html')).getPropertyValue(
         'padding-top',
       ),
+      10,
     );
     this.chapter = document.querySelector('chapter');
     this.rawHTML = this.chapter.innerHTML;
     this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
     this.layoutHeight = window.innerHeight;
-    this.pluginId = this.chapter.getAttribute('data-plugin-id');
-    this.novelId = this.chapter.getAttribute('data-novel-id');
-    this.chapterId = this.chapter.getAttribute('data-chapter-id');
-    this.saveProgressInterval = setInterval(
-      () =>
+    this.pluginId = getInt('plugin-id');
+    this.novelId = getInt('novel-id');
+    this.chapterId = getInt('chapter-id');
+    this.chapterWidth = this.chapter.scrollWidth;
+    this.layoutWidth = window.innerWidth;
+    this.pageReader = this.chapter.getAttribute('data-page-reader') === 'true';
+    this.saveProgressInterval = setInterval(() => {
+      if (!this.pageReader) {
         this.post({
           type: 'save',
           data: parseInt(
             ((window.scrollY + this.layoutHeight) / this.chapterHeight) * 100,
+            10,
           ),
-        }),
-      autoSaveInterval,
-    );
+        });
+      } else {
+        this.post({
+          type: 'save',
+          data: parseInt((getPage() / getPages()) * 100, 10),
+        });
+      }
+    }, autoSaveInterval);
     this.time.innerText = new Date().toLocaleTimeString(undefined, {
       hour: '2-digit',
       minute: '2-digit',
@@ -63,13 +76,17 @@ class Reader {
         minute: '2-digit',
         hour12: false,
       });
-    }, 60000);
+    }, 10000);
     this.updateBatteryLevel(batteryLevel);
     this.updateGeneralSettings(initSettings);
   }
-
   refresh = () => {
-    this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
+    if (!this.pageReader) {
+      this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
+    } else {
+      this.percentage.innerText = getPage() + 1 + '/' + (getPages() + 1);
+      this.chapterWidth = this.chapter.scrollWidth;
+    }
   };
   post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
   updateReaderSettings = settings => {
@@ -126,9 +143,9 @@ class Reader {
       this.chapter.innerHTML = this.rawHTML;
     }
     if (settings.swipeGestures) {
-      swipeHandler.enable();
+      this.swipeHandler.enable();
     } else {
-      swipeHandler.disable();
+      this.swipeHandler.disable();
     }
     if (!this.showScrollPercentage && !this.showBatteryAndTime) {
       this.footerWrapper.classList.add('d-none');
@@ -148,13 +165,9 @@ class Reader {
       }
     }
     if (!this.verticalSeekbar) {
-      toolWrapper.$.classList.add('horizontal');
+      this.toolWrapper.$.classList.add('horizontal');
     } else {
-      toolWrapper.$.classList.remove('horizontal');
-    }
-    if (scrollHandler) {
-      scrollHandler.refresh();
-      scrollHandler.update();
+      this.toolWrapper.$.classList.remove('horizontal');
     }
   };
   updateBatteryLevel = level => {
@@ -202,11 +215,12 @@ class ScrollHandler {
           </div>
           
         </div>
-        <div class="scrollbar-item scrollbar-text">
+        <div id="scrollbar-percentage-max" class="scrollbar-item scrollbar-text">
           100
         </div>
       `;
     this.percentage = this.$.querySelector('#scrollbar-percentage');
+    this.percentageMax = this.$.querySelector('#scrollbar-percentage-max');
     this.progress = this.$.querySelector('#scrollbar-progress');
     this.thumb = this.$.querySelector('#scrollbar-thumb-wrapper');
     this.slider = this.$.querySelector('#scrollbar-slider');
@@ -214,6 +228,7 @@ class ScrollHandler {
     this.sliderOffsetY = this.slider.getBoundingClientRect().top;
     this.lock = false;
     window.onscroll = () => !this.lock && this.update();
+    window.ontouchend = () => !this.lock && this.update();
     this.thumb.ontouchstart = () => (this.lock = true);
     this.thumb.ontouchend = () => (this.lock = false);
     this.thumb.ontouchmove = e => {
@@ -227,6 +242,42 @@ class ScrollHandler {
     };
   }
   update = ratio => {
+    if (this.reader.pageReader) {
+      setTimeout(() => this.updateHorizontal(ratio), 10);
+    } else {
+      this.updateVertical(ratio);
+    }
+  };
+  updateHorizontal = ratio => {
+    this.reader.refresh();
+    const totalPages = getPages();
+    const currentPage = getPage();
+
+    this.percentageMax.innerHTML = totalPages + 1;
+    const percentage = parseInt((currentPage / totalPages) * 100, 10);
+    if (this.toolWrapper.visible) {
+      if (this.reader.verticalSeekbar) {
+        this.progress.style.height = percentage + '%';
+        this.progress.style.width = '100%';
+      } else {
+        this.progress.style.height = '100%';
+        this.progress.style.width = percentage + '%';
+      }
+      this.percentage.innerText = currentPage + 1;
+    }
+    if (this.lock) {
+      let newPage = parseInt(totalPages * ratio, 10);
+      newPage = newPage > totalPages ? totalPages : newPage;
+      setPage(newPage);
+      this.reader.chapter.style.transform =
+        'translate(-' + newPage * 100 + '%)';
+    }
+    if (this.reader.percentage) {
+      this.reader.refresh();
+    }
+  };
+
+  updateVertical = ratio => {
     if (ratio === undefined) {
       ratio =
         (window.scrollY + this.reader.layoutHeight) / this.reader.chapterHeight;
@@ -234,7 +285,7 @@ class ScrollHandler {
     if (ratio > 1) {
       ratio = 1;
     }
-    const percentage = parseInt(ratio * 100);
+    const percentage = parseInt(ratio * 100, 10);
     if (this.toolWrapper.visible) {
       if (this.reader.verticalSeekbar) {
         this.progress.style.height = percentage + '%';
@@ -268,6 +319,22 @@ class ScrollHandler {
     this.reader.refresh();
     this.refresh();
     this.update();
+  };
+  onDOMCreation = progress => {
+    this.onShow();
+    if (this.reader.pageReader) {
+      const totalPages = getPages();
+      let page = Math.round((totalPages * progress) / 100);
+      setPage(page >= totalPages ? totalPages : page);
+      this.reader.chapter.style.transform = 'translate(-' + page * 100 + '%)';
+    } else {
+      window.scrollTo({
+        top:
+          (this.reader.chapterHeight * progress) / 100 -
+          this.reader.layoutHeight,
+        behavior: 'smooth',
+      });
+    }
   };
 }
 
@@ -531,17 +598,7 @@ class ContextMenu {
     });
   }
 
-  closeMenu() {
-    if (this.isOpened) {
-      this.isOpened = false;
-      this.contextMenu.remove();
-    }
-  }
-
   init() {
-    this.reader.chapter.addEventListener('click', () => {
-      this.closeMenu(this.contextMenu);
-    });
     document.addEventListener('contextmenu', e => {
       e.preventDefault();
       if (e.target instanceof HTMLImageElement) {
@@ -568,12 +625,13 @@ class ContextMenu {
         clientX + this.contextMenu.scrollWidth >= window.innerWidth
           ? window.innerWidth - this.contextMenu.scrollWidth - 20
           : clientX;
+      const page = getPage();
       this.contextMenu.setAttribute(
         'style',
         `--width: ${this.contextMenu.scrollWidth}px;
         --height: ${this.contextMenu.scrollHeight}px;
         --top: ${positionY}px;
-        --left: ${positionX}px;`,
+        --left: ${positionX + window.innerWidth * page}px;`,
       );
     });
   }
@@ -631,12 +689,12 @@ class ImageModal {
 try {
   var swipeHandler = new SwipeHandler();
   var toolWrapper = new ToolWrapper();
-  var reader = new Reader();
+  var reader = new Reader(swipeHandler, toolWrapper);
   var scrollHandler = new ScrollHandler(reader, toolWrapper);
   var tts = new TextToSpeech(reader);
   toolWrapper.tools = [scrollHandler, tts];
-  imageModal = new ImageModal(reader);
-  const contextMenu = new ContextMenu(reader);
+  var imageModal = new ImageModal(reader);
+  var contextMenu = new ContextMenu(reader);
   contextMenu.init();
 } catch (e) {
   alert(e);

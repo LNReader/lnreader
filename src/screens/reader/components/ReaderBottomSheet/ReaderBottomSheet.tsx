@@ -12,9 +12,11 @@ import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
 import TextSizeSlider from './TextSizeSlider';
 import ReaderThemeSelector from './ReaderThemeSelector';
 import ReaderTextAlignSelector from './ReaderTextAlignSelector';
-import ReaderLineHeight from './ReaderLineHeight';
+import ReaderValueChange from './ReaderValueChange';
 import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ReaderTab: React.FC = () => {
   return (
@@ -22,7 +24,17 @@ const ReaderTab: React.FC = () => {
       <TextSizeSlider />
       <ReaderThemeSelector />
       <ReaderTextAlignSelector />
-      <ReaderLineHeight />
+      <ReaderValueChange
+        label={getString('readerScreen.bottomSheet.lineHeight')}
+        valueKey="lineHeight"
+      />
+      <ReaderValueChange
+        label={getString('readerScreen.bottomSheet.padding')}
+        valueKey="padding"
+        valueChange={0.5}
+        min={1}
+        max={10}
+      />
       <ReaderFontPicker />
     </View>
   );
@@ -39,13 +51,14 @@ const GeneralTab: React.FC = () => {
     showScrollPercentage,
     useVolumeButtons,
     swipeGestures,
+    pageReader = false,
     removeExtraParagraphSpacing,
     bionicReading,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
 
   return (
-    <View>
+    <ScrollView>
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.fullscreen')}
         onPress={() =>
@@ -95,6 +108,12 @@ const GeneralTab: React.FC = () => {
         theme={theme}
       />
       <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.pageReader')}
+        onPress={() => setChapterGeneralSettings({ pageReader: !pageReader })}
+        value={pageReader}
+        theme={theme}
+      />
+      <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.removeExtraSpacing')}
         onPress={() =>
           setChapterGeneralSettings({
@@ -128,7 +147,7 @@ const GeneralTab: React.FC = () => {
         value={keepScreenOn}
         theme={theme}
       />
-    </View>
+    </ScrollView>
   );
 };
 
@@ -166,31 +185,40 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
     [],
   );
 
-  const renderTabBar = (props: any) => (
-    <TabBar
-      {...props}
-      indicatorStyle={{ backgroundColor: theme.primary }}
-      style={[
-        {
-          backgroundColor: tabHeaderColor,
-          borderBottomColor: theme.outline,
-          borderBottomWidth: 0.5,
-        },
-        styles.tabBar,
-      ]}
-      renderLabel={({ route, color }) => (
-        <Text style={{ color }}>{route.title}</Text>
-      )}
-      inactiveColor={theme.onSurfaceVariant}
-      activeColor={theme.primary}
-      pressColor={color(theme.primary).alpha(0.12).string()}
-    />
-  );
-
+  const renderTabBar = (props: any) => {
+    return (
+      <TabBar
+        {...props}
+        indicatorStyle={{ backgroundColor: theme.primary }}
+        style={[
+          {
+            backgroundColor: tabHeaderColor,
+            borderBottomColor: theme.outline,
+            borderBottomWidth: 0.5,
+          },
+          styles.tabBar,
+        ]}
+        renderLabel={({ route, color }) => (
+          <Text style={{ color }}>{route.title}</Text>
+        )}
+        inactiveColor={theme.onSurfaceVariant}
+        activeColor={theme.primary}
+        pressColor={color(theme.primary).alpha(0.12).string()}
+      />
+    );
+  };
+  const { bottom } = useSafeAreaInsets();
   return (
-    <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[360, 600]}>
+    <BottomSheet
+      bottomSheetRef={bottomSheetRef}
+      snapPoints={[360, 600]}
+      backgroundStyle={{ backgroundColor }}
+    >
       <BottomSheetView
-        style={[styles.bottomSheetContainer, { backgroundColor }]}
+        style={[
+          styles.bottomSheetContainer,
+          { backgroundColor, marginBottom: bottom },
+        ]}
       >
         <TabView
           navigationState={{ index, routes }}

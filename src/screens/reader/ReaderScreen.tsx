@@ -104,6 +104,7 @@ export const ChapterContent = ({
     autoScroll,
     autoScrollInterval,
     autoScrollOffset,
+    pageReader = false,
     // verticalSeekbar = true,
     removeExtraParagraphSpacing,
     keepScreenOn,
@@ -183,7 +184,7 @@ export const ChapterContent = ({
         getPrevChapter(chapter.novelId, chapter.id),
       ]);
       setChapter(sourceChapter);
-      setAdjacentChapter([nextChap, prevChap]);
+      setAdjacentChapter([nextChap!, prevChap!]);
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -199,15 +200,19 @@ export const ChapterContent = ({
     }
   }, [chapter]);
 
-  const scrollTo = useCallback(
-    (offsetY: number) => {
-      webViewRef.current?.injectJavaScript(`(()=>{
-        window.scrollTo({top:${offsetY},behavior:'smooth',})
-      })()`);
-    },
-    [webViewRef],
-  );
-
+  const scrollToStart = () =>
+    requestAnimationFrame(() => {
+      webViewRef?.current?.injectJavaScript(
+        !pageReader
+          ? `(()=>{
+                window.scrollTo({top:0,behavior:'smooth'})
+              })()`
+          : `(()=>{
+              document.querySelector('chapter').setAttribute('data-page',0);
+              document.querySelector("chapter").style.transform = 'translate(0%)';
+            })()`,
+      );
+    });
   let scrollInterval: NodeJS.Timeout;
   useEffect(() => {
     if (autoScroll) {
@@ -334,6 +339,7 @@ export const ChapterContent = ({
         html={chapterText}
         nextChapter={nextChapter}
         webViewRef={webViewRef}
+        pageReader={pageReader}
         saveProgress={saveProgress}
         onLayout={() => {
           useVolumeButtons && onLayout();
@@ -358,7 +364,7 @@ export const ChapterContent = ({
             nextChapter={nextChapter}
             prevChapter={prevChapter}
             readerSheetRef={readerSheetRef}
-            scrollTo={scrollTo}
+            scrollToStart={scrollToStart}
             navigateToChapterBySwipe={navigateToChapterBySwipe}
             navigation={navigation}
             openDrawer={openDrawer}
