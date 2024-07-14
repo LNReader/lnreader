@@ -11,6 +11,10 @@ import { useChapterReaderSettings } from '@hooks/persisted';
 import { showToast } from '@utils/showToast';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import FileManager from '@native/FileManager';
+import color from 'color';
+//@ts-ignore
+import css from './../../../../android/app/src/main/assets/css/index';
+// import style from './index.css';
 
 interface ExportEpubModalProps {
   theme: ThemeColors;
@@ -39,36 +43,34 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
       `${
         epubUseAppTheme
           ? `
-              html {
-                scroll-behavior: smooth;
-                overflow-x: hidden;
-                padding-top: ${StatusBar.currentHeight};
-                word-wrap: break-word;
-              }
-              body {
-                padding-left: ${readerSettings.padding}%;
-                padding-right: ${readerSettings.padding}%;
-                padding-bottom: 40px;
-                font-size: ${readerSettings.textSize}px;
-                color: ${readerSettings.textColor};
-                text-align: ${readerSettings.textAlign};
-                line-height: ${readerSettings.lineHeight};
-                font-family: "${readerSettings.fontFamily}";
-                background-color: "${readerSettings.theme}";
-              }
-              hr {
-                margin-top: 20px;
-                margin-bottom: 20px;
-              }
-              a {
-                color: ${theme.primary};
-              }
-              img {
-                display: block;
-                width: auto;
-                height: auto;
-                max-width: 100%;
-            }`
+          :root {
+                      --StatusBar-currentHeight: ${StatusBar.currentHeight};
+                      --readerSettings-theme: ${readerSettings.theme};
+                      --readerSettings-padding: ${readerSettings.padding}%;
+                      --readerSettings-textSize: ${
+                        readerSettings.textSize / 10
+                      }rem;
+                      --readerSettings-textColor: ${readerSettings.textColor};
+                      --readerSettings-textAlign: ${readerSettings.textAlign};
+                      --readerSettings-lineHeight: ${readerSettings.lineHeight};
+                      --readerSettings-fontFamily: ${readerSettings.fontFamily};
+                      --theme-primary: ${theme.primary};
+                      --theme-onPrimary: ${theme.onPrimary};
+                      --theme-secondary: ${theme.secondary};
+                      --theme-tertiary: ${theme.tertiary};
+                      --theme-onTertiary: ${theme.onTertiary};
+                      --theme-onSecondary: ${theme.onSecondary};
+                      --theme-surface: ${theme.surface};
+                      --theme-surface-0-9: ${color(theme.surface)
+                        .alpha(0.9)
+                        .toString()};
+                      --theme-onSurface: ${theme.onSurface};
+                      --theme-surfaceVariant: ${theme.surfaceVariant};
+                      --theme-onSurfaceVariant: ${theme.onSurfaceVariant};
+                      --theme-outline: ${theme.outline};
+                      --theme-rippleColor: ${theme.rippleColor};
+                      }
+             ` + css
           : ''
       }
       ${
@@ -117,17 +119,7 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
       },
       uri,
     );
-    console.log({
-      title: novel.name,
-      fileName: novel.name.replace(/\s/g, ''),
-      language: 'en',
-      cover: novel.cover,
-      description: novel.summary,
-      author: novel.author,
-      bookId: novel.pluginId.toString(),
-      stylesheet: epubStyle || undefined,
-      js: epubUseCustomJS ? epubJS : undefined,
-    });
+
     try {
       await epub.prepare();
       for (let i = 0; i < chapters.length; i++) {
@@ -135,12 +127,6 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
         const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${novel.id}/${chapter.id}/index.html`;
         if (await FileManager.exists(filePath)) {
           const downloaded = FileManager.readFile(filePath);
-          console.log({
-            title:
-              chapter.name?.trim() ?? 'Chapter ' + (chapter.chapterNumber || i),
-            fileName: 'Chapter' + i,
-            htmlBody: `<chapter data-novel-id='${novel.pluginId}' data-chapter-id='${chapter.id}'>${downloaded}</chapter>`,
-          });
 
           await epub.addChapter({
             title:

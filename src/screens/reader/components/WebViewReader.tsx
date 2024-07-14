@@ -214,7 +214,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       --StatusBar-currentHeight: ${StatusBar.currentHeight};
                       --readerSettings-theme: ${readerSettings.theme};
                       --readerSettings-padding: ${readerSettings.padding}%;
-                      --readerSettings-textSize: ${readerSettings.textSize}px;
+                      --readerSettings-textSize: ${
+                        readerSettings.textSize / 10
+                      }rem;
                       --readerSettings-textColor: ${readerSettings.textColor};
                       --readerSettings-textAlign: ${readerSettings.textAlign};
                       --readerSettings-lineHeight: ${readerSettings.lineHeight};
