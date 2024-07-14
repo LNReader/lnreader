@@ -10,13 +10,13 @@ import { Text } from 'react-native-paper';
 import { useAppSettings, useTheme } from '@hooks/persisted';
 import { FlashList, ViewToken } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
-import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
 import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
 import { NovelSettings } from '@hooks/persisted/useNovel';
 import renderListChapter from './RenderListChapter';
+import getInitialInsets from '@database/utils/getInitialInsets';
 
 type ChapterDrawerProps = ChapterScreenProps & {
   chapters: ChapterInfo[];
@@ -43,11 +43,11 @@ const ChapterDrawer = ({
   setPageIndex,
 }: ChapterDrawerProps) => {
   const theme = useTheme();
-  const insets = useSafeAreaInsets();
+
   const { defaultChapterSort } = useAppSettings();
   const listRef = useRef<FlashList<ChapterInfo>>(null);
 
-  const styles = createStylesheet(theme, insets);
+  const styles = createStylesheet(theme);
 
   const { chapter, novel: novelItem } = route.params;
   const { sort = defaultChapterSort } = novelSettings;
@@ -175,7 +175,7 @@ const ChapterDrawer = ({
   );
 };
 
-const createStylesheet = (theme: ThemeColors, insets: EdgeInsets) => {
+const createStylesheet = (theme: ThemeColors) => {
   return StyleSheet.create({
     drawer: {
       flex: 1,
@@ -222,7 +222,7 @@ const createStylesheet = (theme: ThemeColors, insets: EdgeInsets) => {
     footer: {
       marginTop: 4,
       paddingTop: 8,
-      paddingBottom: insets.bottom,
+      paddingBottom: getInitialInsets().bottom,
       borderTopWidth: 1,
       borderTopColor: theme.outline,
     },

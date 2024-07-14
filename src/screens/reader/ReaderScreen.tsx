@@ -326,6 +326,7 @@ export const ChapterContent = ({
       />
     );
   }
+
   return (
     <>
       {keepScreenOn ? <KeepScreenAwake /> : null}

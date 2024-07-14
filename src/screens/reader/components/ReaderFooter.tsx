@@ -8,6 +8,7 @@ import { ChapterInfo, NovelInfo } from '@database/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { ChapterScreenProps } from '@navigators/types';
 import { useDeviceOrientation } from '@hooks/index';
+import getInitialInsets from '@database/utils/getInitialInsets';
 
 interface ChapterFooterProps {
   theme: ThemeColors;
@@ -40,6 +41,10 @@ const ChapterFooter = ({
     radius: 50,
   };
   const orientation = useDeviceOrientation();
+  let bottom = 0;
+  if (orientation === 'potrait') {
+    bottom = getInitialInsets().bottom;
+  }
   return (
     <Animated.View
       entering={FadeIn.duration(150)}
@@ -48,7 +53,7 @@ const ChapterFooter = ({
         styles.footer,
         {
           backgroundColor: color(theme.surface).alpha(0.9).string(),
-          paddingBottom: orientation === 'potrait' ? 40 : 0,
+          paddingBottom: bottom,
         },
       ]}
     >
