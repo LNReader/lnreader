@@ -99,12 +99,14 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
           value={useAppTheme.value}
           onPress={useAppTheme.toggle}
           theme={theme}
+          style={styles.switch}
         />
         <SwitchItem
           label={getString('novelScreen.convertToEpubModal.useCustomCSS')}
           value={useCustomCSS.value}
           onPress={useCustomCSS.toggle}
           theme={theme}
+          style={styles.switch}
         />
         <SwitchItem
           label={getString('novelScreen.convertToEpubModal.useCustomJS')}
@@ -114,11 +116,13 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
           value={useCustomJS.value}
           onPress={useCustomJS.toggle}
           theme={theme}
+          style={styles.switch}
         />
       </View>
       <List.InfoItem
         title={getString('novelScreen.convertToEpubModal.chaptersWarning')}
         theme={theme}
+        paddingHorizontal={20}
       />
       <View style={styles.modalFooterCtn}>
         <Button title={getString('common.submit')} onPress={onSubmit} />
@@ -136,19 +140,18 @@ const styles = StyleSheet.create({
     borderRadius: 32,
   },
   settings: {
-    marginTop: 12,
-    padding: 24,
+    paddingBottom: 24,
+  },
+  switch: {
+    paddingHorizontal: 20,
   },
   modalHeaderCtn: {
     padding: 20,
-    paddingTop: 32,
-    paddingBottom: 0,
   },
   modalFooterCtn: {
     flexDirection: 'row-reverse',
-    paddingHorizontal: 20,
+    padding: 20,
     paddingTop: 8,
-    paddingBottom: 20,
   },
   modalTitle: {
     fontSize: 24,
