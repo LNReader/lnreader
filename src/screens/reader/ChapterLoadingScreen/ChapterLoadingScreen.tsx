@@ -5,7 +5,7 @@ import color from 'color';
 import SkeletonLines from '../components/SkeletonLines';
 import { useChapterReaderSettings } from '@hooks/persisted';
 
-const ChapterLoadingScreen = () => {
+const ChapterLoadingScreen = ({ onPress }: { onPress: () => void }) => {
   const {
     theme: backgroundColor,
     padding,
@@ -14,9 +14,9 @@ const ChapterLoadingScreen = () => {
   } = useChapterReaderSettings();
 
   return (
-    <View style={{ backgroundColor }}>
+    <View style={{ backgroundColor }} onTouchEnd={onPress}>
       <SkeletonLines
-        containerMargin={padding + '%'}
+        containerMargin={`${padding}%`}
         containerHeight={'100%'}
         containerWidth={'100%'}
         color={

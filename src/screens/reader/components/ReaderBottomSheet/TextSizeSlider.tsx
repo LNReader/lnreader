@@ -11,6 +11,7 @@ const TextSizeSlider: React.FC = () => {
   const theme = useTheme();
 
   const { textSize, setChapterReaderSettings } = useChapterReaderSettings();
+  console.log(textSize);
 
   return (
     <View style={styles.container}>
@@ -20,9 +21,9 @@ const TextSizeSlider: React.FC = () => {
       <Slider
         style={styles.slider}
         value={textSize}
-        minimumValue={12}
-        maximumValue={20}
-        step={1}
+        minimumValue={0.2}
+        maximumValue={3}
+        step={0.1}
         minimumTrackTintColor={theme.primary}
         maximumTrackTintColor={TRACK_TINT_COLOR}
         thumbTintColor={theme.primary}

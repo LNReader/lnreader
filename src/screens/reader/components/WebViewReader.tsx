@@ -28,6 +28,7 @@ import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
 import { PLUGIN_STORAGE } from '@utils/Storages';
 import { useChapterContext } from '../ChapterContext';
+import ChapterLoadingScreen from '../ChapterLoadingScreen/ChapterLoadingScreen';
 
 type WebViewPostEvent = {
   type: string;
@@ -38,6 +39,7 @@ type WebViewReaderProps = {
   html: string;
   nextChapter: ChapterInfo;
   webViewRef: React.RefObject<WebView>;
+  loading: boolean;
   saveProgress(percentage: number): void;
   onPress(): void;
   navigateChapter(position: 'NEXT' | 'PREV'): void;
@@ -62,6 +64,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     nextChapter,
     webViewRef,
     pageReader,
+    loading,
     saveProgress,
     onPress,
     navigateChapter,
@@ -132,6 +135,11 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       mmkvListener.remove();
     };
   }, []);
+  console.log(readerSettings.textSize);
+  if (loading) {
+    return <ChapterLoadingScreen onPress={onPress} />;
+  }
+
   const debugging = `
      // Debug
      console = new Object();
@@ -214,9 +222,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       --StatusBar-currentHeight: ${StatusBar.currentHeight};
                       --readerSettings-theme: ${readerSettings.theme};
                       --readerSettings-padding: ${readerSettings.padding}%;
-                      --readerSettings-textSize: ${
-                        readerSettings.textSize / 10
-                      }rem;
+                      --readerSettings-textSize: ${readerSettings.textSize}rem;
                       --readerSettings-textColor: ${readerSettings.textColor};
                       --readerSettings-textAlign: ${readerSettings.textAlign};
                       --readerSettings-lineHeight: ${readerSettings.lineHeight};

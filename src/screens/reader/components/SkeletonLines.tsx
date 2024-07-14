@@ -16,9 +16,9 @@ const SkeletonLines = ({
   width?: string | number;
   lineHeight: number;
   textSize: number;
-  containerWidth: string | number;
-  containerHeight: string | number;
-  containerMargin?: string | number;
+  containerWidth: `${number}%` | number;
+  containerHeight: `${number}%` | number;
+  containerMargin?: `${number}%` | number;
   color?: string;
   highlightColor?: string;
 }) => {
@@ -30,12 +30,19 @@ const SkeletonLines = ({
     lineHeight,
     textSize,
   );
+  console.log(
+    containerWidth,
+    containerHeight,
+    containerMargin === undefined ? 0 : containerMargin,
+    lineHeight,
+    textSize,
+  );
 
   const createLines = () => {
     let availableHeight: number = percentToNumberV(containerHeight) - 10;
     let res: boolean[] = [];
     let numberOfLongLines = 0;
-    const height = textSize * lineHeight;
+    const height = lineHeight * 10;
 
     while (availableHeight > height) {
       if (Math.random() * 4 > 1 && numberOfLongLines <= 5) {
@@ -56,7 +63,9 @@ const SkeletonLines = ({
     const skeletonWidth: number = width
       ? Number(width)
       : percentToNumberH('90%');
-    const skeletonHeight = textSize;
+    console.log(textSize);
+
+    const skeletonHeight = 1.5 * 15;
     if (typeof color !== 'string') {
       color = '#ebebeb';
     }
@@ -122,9 +131,9 @@ const percentToNumberH = (number: number | string): number => {
 };
 
 const createStyleSheet = (
-  containerWidth: number | string,
-  containerHeight: number | string,
-  containerMargin: number | string,
+  containerWidth: number | `${number}%`,
+  containerHeight: number | `${number}%`,
+  containerMargin: number | `${number}%`,
   lineHeight: number,
   textSize: number,
 ) => {
@@ -135,15 +144,16 @@ const createStyleSheet = (
       height: containerHeight,
       backgroundColor: 'transparent',
       margin: containerMargin,
+      marginTop: '6%',
     },
     lineDefault: {
       marginLeft: 0,
       marginRight: 0,
       borderRadius: 8,
-      marginBottom: textSize * (lineHeight - 1),
+      marginBottom: lineHeight * 10,
     },
     gap: {
-      height: textSize * (lineHeight - 1),
+      height: lineHeight * 10,
       margin: 8,
     },
   });
