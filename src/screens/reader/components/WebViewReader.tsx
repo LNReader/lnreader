@@ -27,7 +27,6 @@ import { getBatteryLevelSync } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
-import { createHorizontalReaderPages } from './stringCreators/horizontalReaderPages';
 import { PLUGIN_STORAGE } from '@utils/Storages';
 
 type WebViewPostEvent = {
@@ -49,7 +48,6 @@ type WebViewReaderProps = {
   onPress(): void;
   onLayout(): void;
   navigateToChapterBySwipe(name: string): void;
-  onWebViewNavigationStateChange({ url }: WebViewNavigation): void;
   pageReader: boolean;
 };
 

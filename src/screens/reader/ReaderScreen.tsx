@@ -184,7 +184,7 @@ export const ChapterContent = ({
         getPrevChapter(chapter.novelId, chapter.id),
       ]);
       setChapter(sourceChapter);
-      setAdjacentChapter([nextChap, prevChap]);
+      setAdjacentChapter([nextChap!, prevChap!]);
     } catch (e: any) {
       setError(e.message);
     } finally {
