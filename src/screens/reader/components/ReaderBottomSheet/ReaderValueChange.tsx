@@ -17,6 +17,7 @@ interface ReaderValueChangeProps {
   decimals?: number;
   min?: number;
   max?: number;
+  unit?: '%' | 'px' | 'rem';
 }
 
 const ReaderValueChange: React.FC<ReaderValueChangeProps> = ({
@@ -27,10 +28,13 @@ const ReaderValueChange: React.FC<ReaderValueChangeProps> = ({
   decimals = 1,
   min = 1.3,
   max = 2,
+  unit = '%',
 }) => {
   const theme = useTheme();
   const { setChapterReaderSettings, ...settings } = useChapterReaderSettings();
-
+  if (!valueKey) {
+    throw new Error('ValueKey has to be defined');
+  }
   return (
     <View style={styles.container}>
       <Text style={[{ color: theme.onSurfaceVariant }, labelStyle]}>
@@ -50,7 +54,7 @@ const ReaderValueChange: React.FC<ReaderValueChangeProps> = ({
           theme={theme}
         />
         <Text style={[styles.value, { color: theme.onSurface }]}>
-          {`${((settings[valueKey] * 10) / 10).toFixed(decimals)}%`}
+          {`${settings[valueKey].toFixed(decimals)}${unit}`}
         </Text>
         <IconButtonV2
           name="plus"
