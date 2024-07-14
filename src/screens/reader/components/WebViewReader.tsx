@@ -151,8 +151,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
         // eslint-disable-next-line no-console
         console.info(`[Console] ${JSON.stringify(dataPayload.msg, null, 2)}`);
       } else if (false) {
-        // eslint-disable-next-line no-console
-        if (dataPayload.type !== 'save') console.log(dataPayload);
+        if (dataPayload.type !== 'save') {
+          console.log(dataPayload);
+        }
       }
     }
   };
@@ -168,7 +169,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       showsVerticalScrollIndicator={false}
       javaScriptEnabled={true}
       onLayout={async () => onLayout()}
-      injectedJavaScriptObject={{ customValue: 'myCustomValue' }}
       onMessage={(ev: { nativeEvent: { data: string } }) => {
         __DEV__ && onMessage(ev);
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
