@@ -7,7 +7,7 @@ import Animated, {
   interpolateColor,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import ExportEpubModal from './ExportEpubModal';
+import ExportEpubModal from './ExportToEpub/ExportEpubModal';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { useBoolean } from '@hooks/index';
 

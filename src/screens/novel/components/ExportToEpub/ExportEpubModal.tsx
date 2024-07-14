@@ -13,7 +13,7 @@ import { NOVEL_STORAGE } from '@utils/Storages';
 import FileManager from '@native/FileManager';
 import color from 'color';
 //@ts-ignore
-import css from './../../../../android/app/src/main/assets/css/index';
+import css from '../../../../../android/app/src/main/assets/css/index';
 // import style from './index.css';
 
 interface ExportEpubModalProps {
@@ -43,33 +43,30 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
       `${
         epubUseAppTheme
           ? `
-          :root {
-                      --StatusBar-currentHeight: ${StatusBar.currentHeight};
-                      --readerSettings-theme: ${readerSettings.theme};
-                      --readerSettings-padding: ${readerSettings.padding}%;
-                      --readerSettings-textSize: ${
-                        readerSettings.textSize / 10
-                      }rem;
-                      --readerSettings-textColor: ${readerSettings.textColor};
-                      --readerSettings-textAlign: ${readerSettings.textAlign};
-                      --readerSettings-lineHeight: ${readerSettings.lineHeight};
-                      --readerSettings-fontFamily: ${readerSettings.fontFamily};
-                      --theme-primary: ${theme.primary};
-                      --theme-onPrimary: ${theme.onPrimary};
-                      --theme-secondary: ${theme.secondary};
-                      --theme-tertiary: ${theme.tertiary};
-                      --theme-onTertiary: ${theme.onTertiary};
-                      --theme-onSecondary: ${theme.onSecondary};
-                      --theme-surface: ${theme.surface};
-                      --theme-surface-0-9: ${color(theme.surface)
-                        .alpha(0.9)
-                        .toString()};
-                      --theme-onSurface: ${theme.onSurface};
-                      --theme-surfaceVariant: ${theme.surfaceVariant};
-                      --theme-onSurfaceVariant: ${theme.onSurfaceVariant};
-                      --theme-outline: ${theme.outline};
-                      --theme-rippleColor: ${theme.rippleColor};
-                      }
+             :root {
+               --StatusBar-currentHeight: ${StatusBar.currentHeight};
+               --readerSettings-theme: ${readerSettings.theme};
+               --readerSettings-padding: ${readerSettings.padding}%;
+               --readerSettings-textSize: ${readerSettings.textSize / 10}rem;
+               --readerSettings-textColor: ${readerSettings.textColor};
+               --readerSettings-textAlign: ${readerSettings.textAlign};
+               --readerSettings-lineHeight: ${readerSettings.lineHeight}rem;
+               --theme-primary: ${theme.primary};
+               --theme-onPrimary: ${theme.onPrimary};
+               --theme-secondary: ${theme.secondary};
+               --theme-tertiary: ${theme.tertiary};
+               --theme-onTertiary: ${theme.onTertiary};
+               --theme-onSecondary: ${theme.onSecondary};
+               --theme-surface: ${theme.surface};
+               --theme-surface-0-9: ${color(theme.surface)
+                 .alpha(0.9)
+                 .toString()};
+               --theme-onSurface: ${theme.onSurface};
+               --theme-surfaceVariant: ${theme.surfaceVariant};
+               --theme-onSurfaceVariant: ${theme.onSurfaceVariant};
+               --theme-outline: ${theme.outline};
+               --theme-rippleColor: ${theme.rippleColor};
+             }
              ` + css
           : ''
       }
@@ -103,6 +100,7 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
         `,
     [novel, readerSettings],
   );
+  console.log(novel.cover);
 
   const createEpub = async (uri: string) => {
     var epub = new EpubBuilder(
@@ -132,7 +130,7 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
             title:
               chapter.name?.trim() ?? 'Chapter ' + (chapter.chapterNumber || i),
             fileName: 'Chapter' + i,
-            htmlBody: `<chapter data-novel-id='${novel.pluginId}' data-chapter-id='${chapter.id}'>${downloaded}</chapter>`,
+            htmlBody: `<div data-plugin-id='${novel.pluginId}' data-novel-id='${chapter.novelId}' data-chapter-id='${chapter.id}'>${downloaded}</div>`,
           });
         }
       }
