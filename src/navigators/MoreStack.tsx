@@ -10,7 +10,7 @@ import ReaderSettings from '../screens/settings/SettingsReaderScreen/SettingsRea
 import BackupSettings from '../screens/settings/SettingsBackupScreen';
 import AdvancedSettings from '../screens/settings/SettingsAdvancedScreen';
 import GeneralSettings from '../screens/settings/SettingsGeneralScreen/SettingsGeneralScreen';
-import DownloadQueue from '../screens/more/DownloadQueueScreen';
+import TaskQueue from '../screens/more/TaskQueueScreen';
 import Downloads from '../screens/more/DownloadsScreen';
 import AppearanceSettings from '../screens/settings/SettingsAppearanceScreen';
 import CategoriesScreen from '@screens/Categories/CategoriesScreen';
@@ -43,7 +43,7 @@ const MoreStack = () => (
   <Stack.Navigator screenOptions={stackNavigatorConfig}>
     <Stack.Screen name="SettingsStack" component={SettingsStack} />
     <Stack.Screen name="About" component={About} />
-    <Stack.Screen name="DownloadQueue" component={DownloadQueue} />
+    <Stack.Screen name="TaskQueue" component={TaskQueue} />
     <Stack.Screen name="Downloads" component={Downloads} />
     <Stack.Screen name="Categories" component={CategoriesScreen} />
     <Stack.Screen name="Statistics" component={StatsScreen} />

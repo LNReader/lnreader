@@ -52,6 +52,7 @@ export const ThemePicker = ({
               elevation: 2,
               borderRadius: 50,
               padding: 1.6,
+              zIndex: 1,
             }}
           />
         ) : null}

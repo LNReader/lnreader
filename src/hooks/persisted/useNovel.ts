@@ -13,9 +13,10 @@ import {
 import {
   bookmarkChapter as _bookmarkChapter,
   markChapterRead as _markChapterRead,
+  markChaptersRead as _markChaptersRead,
   markPreviuschaptersRead as _markPreviuschaptersRead,
   markPreviousChaptersUnread as _markPreviousChaptersUnread,
-  markChapterUnread as _markChapterUnread,
+  markChaptersUnread as _markChaptersUnread,
   deleteChapter as _deleteChapter,
   deleteChapters as _deleteChapters,
   getPageChapters as _getPageChapters,
@@ -30,6 +31,7 @@ import dayjs from 'dayjs';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import FileManager from '@native/FileManager';
+import { useAppSettings } from './useSettings';
 
 // store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
 // store key: '<PREFIX>_<novel.id>',
@@ -145,6 +147,10 @@ export const useNovel = (novelPath: string, pluginId: string) => {
       `${NOVEL_SETTINSG_PREFIX}_${pluginId}_${novelPath}`,
     );
 
+  const { defaultChapterSort } = useAppSettings();
+
+  const sort = novelSettings.sort || defaultChapterSort;
+
   const openPage = useCallback((index: number) => {
     setPageIndex(index);
   }, []);
@@ -153,7 +159,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     if (novel) {
       _getPageChapters(
         novel.id,
-        novelSettings.sort,
+        sort,
         novelSettings.filter,
         pages[pageIndex],
       ).then(chapters => setChapters(chapters));
@@ -229,10 +235,12 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   };
 
   const markChaptersRead = (_chapters: ChapterInfo[]) => {
-    _chapters.map(chapter => _markChapterRead(chapter.id));
+    const chapterIds = _chapters.map(chapter => chapter.id);
+    _markChaptersRead(chapterIds);
+
     setChapters(
       chapters.map(chapter => {
-        if (_chapters.some(c => c.id === chapter.id)) {
+        if (chapterIds.includes(chapter.id)) {
           return {
             ...chapter,
             unread: false,
@@ -255,10 +263,12 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   };
 
   const markChaptersUnread = (_chapters: ChapterInfo[]) => {
-    _chapters.map(chapter => _markChapterUnread(chapter.id));
+    const chapterIds = _chapters.map(chapter => chapter.id);
+    _markChaptersUnread(chapterIds);
+
     setChapters(
       chapters.map(chapter => {
-        if (_chapters.some(c => c.id === chapter.id)) {
+        if (chapterIds.includes(chapter.id)) {
           return {
             ...chapter,
             unread: true,
@@ -347,7 +357,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     if (novel && page) {
       let chapters = await _getPageChapters(
         novel.id,
-        novelSettings.sort,
+        sort,
         novelSettings.filter,
         page,
       );
@@ -362,7 +372,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         await insertChapters(novel.id, sourceChapters);
         chapters = await _getPageChapters(
           novel.id,
-          novelSettings.sort,
+          sort,
           novelSettings.filter,
           page,
         );
