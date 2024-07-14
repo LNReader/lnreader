@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { IconButton, Portal } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 import ChooseEpubLocationModal from './ChooseEpubLocationModal';
 import { StatusBar } from 'react-native';
 import { ThemeColors } from '@theme/types';
@@ -8,27 +8,25 @@ import EpubBuilder from '@cd-z/react-native-epub-creator';
 import { ChapterInfo, NovelInfo } from '@database/types';
 
 import { useChapterReaderSettings } from '@hooks/persisted';
-import { useBoolean } from '@hooks/index';
 import { showToast } from '@utils/showToast';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import FileManager from '@native/FileManager';
 
-interface EpubIconButtonProps {
+interface ExportEpubModalProps {
   theme: ThemeColors;
   novel: NovelInfo;
   chapters: ChapterInfo[];
+  isVisible: boolean;
+  onClose: () => void;
 }
 
-const EpubIconButton: React.FC<EpubIconButtonProps> = ({
+const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
   theme,
   novel,
   chapters,
+  isVisible,
+  onClose,
 }) => {
-  const {
-    value: isVisible,
-    setTrue: showModal,
-    setFalse: hideModal,
-  } = useBoolean(false);
   const readerSettings = useChapterReaderSettings();
   const {
     epubUseAppTheme = false,
@@ -160,22 +158,15 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
       await epub.discardChanges();
     }
   };
+
   return (
-    <>
-      <IconButton
-        icon="book-arrow-down-outline"
-        iconColor={theme.onBackground}
-        size={21}
-        onPress={showModal}
+    <Portal>
+      <ChooseEpubLocationModal
+        isVisible={isVisible}
+        hideModal={onClose}
+        onSubmit={createEpub}
       />
-      <Portal>
-        <ChooseEpubLocationModal
-          isVisible={isVisible}
-          hideModal={hideModal}
-          onSubmit={createEpub}
-        />
-      </Portal>
-    </>
+    </Portal>
   );
 };
-export default EpubIconButton;
+export default ExportEpubModal;
