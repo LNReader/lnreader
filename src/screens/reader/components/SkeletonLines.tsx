@@ -28,7 +28,6 @@ const SkeletonLines = ({
     containerHeight,
     containerMargin === undefined ? 0 : containerMargin,
     lineHeight,
-    textSize,
   );
 
   const createLines = () => {
@@ -127,7 +126,6 @@ const createStyleSheet = (
   containerHeight: number | `${number}%`,
   containerMargin: number | `${number}%`,
   lineHeight: number,
-  textSize: number,
 ) => {
   return StyleSheet.create({
     container: {
