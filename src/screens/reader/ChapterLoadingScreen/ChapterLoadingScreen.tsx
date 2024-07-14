@@ -9,7 +9,6 @@ const ChapterLoadingScreen = ({ onPress }: { onPress: () => void }) => {
   const {
     theme: backgroundColor,
     padding,
-    textSize,
     lineHeight,
   } = useChapterReaderSettings();
 
@@ -33,7 +32,6 @@ const ChapterLoadingScreen = ({ onPress }: { onPress: () => void }) => {
               : color(backgroundColor).negate().darken(0.92).toString()
             : color(backgroundColor).darken(0.08).toString()
         }
-        textSize={textSize}
         lineHeight={lineHeight}
       />
     </View>

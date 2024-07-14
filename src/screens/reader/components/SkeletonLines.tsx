@@ -6,7 +6,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 const SkeletonLines = ({
   width,
   lineHeight,
-  textSize,
   containerWidth,
   containerHeight,
   containerMargin,
@@ -15,7 +14,6 @@ const SkeletonLines = ({
 }: {
   width?: string | number;
   lineHeight: number;
-  textSize: number;
   containerWidth: `${number}%` | number;
   containerHeight: `${number}%` | number;
   containerMargin?: `${number}%` | number;
