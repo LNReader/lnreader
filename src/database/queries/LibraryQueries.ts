@@ -96,7 +96,7 @@ export const getLibraryWithCategory = ({
   downloadedOnlyMode?: boolean;
 }): Promise<LibraryNovelInfo[]> => {
   let query = getLibraryWithCategoryQuery;
-  let preparedArgument: (string | number | null)[] = []
+  let preparedArgument: (string | number | null)[] = [];
 
   if (filter) {
     query += ` AND ${filter} `;
@@ -106,8 +106,8 @@ export const getLibraryWithCategory = ({
   }
 
   if (searchText) {
-    query += ` AND name LIKE ?' `;
-    preparedArgument.push(`%${searchText}%`)
+    query += ' AND name LIKE ? ';
+    preparedArgument.push(`%${searchText}%`);
   }
 
   if (sortOrder) {
