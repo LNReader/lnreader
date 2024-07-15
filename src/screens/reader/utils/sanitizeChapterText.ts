@@ -19,6 +19,7 @@ export const sanitizeChapterText = (
       'div',
       'ol',
       'li',
+      'title',
     ]),
     allowedAttributes: {
       'img': ['src', 'class', 'id'],
