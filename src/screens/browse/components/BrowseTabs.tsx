@@ -5,9 +5,7 @@ import {
   View,
   Text,
   StyleSheet,
-  SectionList,
   RefreshControl,
-  ListRenderItem,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useBrowseSettings, usePlugins } from '@hooks/persisted';
@@ -30,7 +28,6 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { groupBy } from 'lodash-es';
 
 interface AvailableTabProps {
   searchText: string;
@@ -248,7 +245,7 @@ export const InstalledTab = memo(
 );
 
 interface AvailablePluginCardProps {
-  plugin: PluginItem;
+  plugin: PluginItem & { header: boolean };
   theme: ThemeColors;
   installPlugin: (plugin: PluginItem) => Promise<void>;
 }
@@ -270,61 +267,76 @@ const AvailablePluginCard = ({
     lineHeight: ratio.value * 20,
   }));
   return (
-    <Animated.View
-      style={[styles.container, { backgroundColor: theme.surface }, viewStyles]}
-    >
-      <Animated.View style={{ flexDirection: 'row' }}>
-        <Animated.Image
-          source={{ uri: plugin.iconUrl }}
-          style={[styles.icon, imageStyles, { backgroundColor: theme.surface }]}
-        />
-        <Animated.View style={styles.details}>
-          <Animated.Text
-            numberOfLines={1}
+    <View>
+      {plugin.header ? (
+        <Text style={[styles.listHeader, { color: theme.onSurfaceVariant }]}>
+          {plugin.lang}
+        </Text>
+      ) : null}
+      <Animated.View
+        style={[
+          styles.container,
+          { backgroundColor: theme.surface },
+          viewStyles,
+        ]}
+      >
+        <Animated.View style={{ flexDirection: 'row' }}>
+          <Animated.Image
+            source={{ uri: plugin.iconUrl }}
             style={[
-              {
-                color: theme.onSurface,
-              },
-              styles.name,
-              textStyles,
+              styles.icon,
+              imageStyles,
+              { backgroundColor: theme.surface },
             ]}
-          >
-            {plugin.name}
-          </Animated.Text>
-          <Animated.Text
-            numberOfLines={1}
-            style={[
-              { color: theme.onSurfaceVariant },
-              styles.addition,
-              textStyles,
-            ]}
-          >
-            {`${plugin.lang} - ${plugin.version}`}
-          </Animated.Text>
+          />
+          <Animated.View style={styles.details}>
+            <Animated.Text
+              numberOfLines={1}
+              style={[
+                {
+                  color: theme.onSurface,
+                },
+                styles.name,
+                textStyles,
+              ]}
+            >
+              {plugin.name}
+            </Animated.Text>
+            <Animated.Text
+              numberOfLines={1}
+              style={[
+                { color: theme.onSurfaceVariant },
+                styles.addition,
+                textStyles,
+              ]}
+            >
+              {`${plugin.lang} - ${plugin.version}`}
+            </Animated.Text>
+          </Animated.View>
         </Animated.View>
+        <IconButtonV2
+          name="download-outline"
+          color={theme.primary}
+          onPress={() => {
+            ratio.value = withTiming(0, { duration: 500 });
+            installPlugin(plugin)
+              .then(() => {
+                showToast(
+                  getString('browseScreen.installedPlugin', {
+                    name: plugin.name,
+                  }),
+                );
+              })
+              .catch((error: Error) => {
+                showToast(error.message);
+                ratio.value = 1;
+              });
+          }}
+          size={22}
+          theme={theme}
+        />
       </Animated.View>
-      <IconButtonV2
-        name="download-outline"
-        color={theme.primary}
-        onPress={() => {
-          ratio.value = withTiming(0, { duration: 500 });
-          installPlugin(plugin)
-            .then(() => {
-              showToast(
-                getString('browseScreen.installedPlugin', {
-                  name: plugin.name,
-                }),
-              );
-            })
-            .catch((error: Error) => {
-              showToast(error.message);
-              ratio.value = 1;
-            });
-        }}
-        size={22}
-        theme={theme}
-      />
-    </Animated.View>
+    </View>
   );
 };
 
@@ -332,78 +344,55 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
   const navigation = useNavigation<MoreStackScreenProps['navigation']>();
 
   const [refreshing, setRefreshing] = useState(false);
-  const {
-    filteredAvailablePlugins,
-    languagesFilter,
-    refreshPlugins,
-    installPlugin,
-  } = usePlugins();
+  const { filteredAvailablePlugins, refreshPlugins, installPlugin } =
+    usePlugins();
 
-  const sections = useMemo(() => {
-    const list = [];
-    const lowerCaseSearchText = searchText.toLocaleLowerCase();
-    const group = groupBy(
-      searchText
-        ? filteredAvailablePlugins.filter(
-            plg =>
-              plg.name.toLocaleLowerCase().includes(lowerCaseSearchText) ||
-              plg.id.toLocaleLowerCase().includes(lowerCaseSearchText),
-          )
-        : filteredAvailablePlugins,
-      'lang',
-    );
-    for (const language of languagesFilter) {
-      if (group[language]?.length) {
-        list.push({
-          header: language,
-          data: group[language],
-        });
-      }
+  const searchedPlugins = useMemo(() => {
+    let res = filteredAvailablePlugins;
+    if (searchText) {
+      const lowerCaseSearchText = searchText.toLocaleLowerCase();
+      res = filteredAvailablePlugins.filter(
+        plg =>
+          plg.name.toLocaleLowerCase().includes(lowerCaseSearchText) ||
+          plg.id.includes(lowerCaseSearchText),
+      );
     }
-    return list;
+    let previousLang: string | null = null;
+    return res
+      .sort((a, b) => a.lang.localeCompare(b.lang))
+      .map(plg => {
+        if (plg.lang !== previousLang) {
+          previousLang = plg.lang;
+          return { ...plg, header: true };
+        } else {
+          return { ...plg, header: false };
+        }
+      });
   }, [searchText, filteredAvailablePlugins]);
 
-  const renderItem: ListRenderItem<PluginItem> = useCallback(
-    ({ item }) => {
-      return (
-        <AvailablePluginCard
-          plugin={item}
-          theme={theme}
-          installPlugin={installPlugin}
-        />
-      );
-    },
-    [theme, sections],
-  );
+  const renderItem: FlashListRenderItem<PluginItem & { header: boolean }> =
+    useCallback(
+      ({ item }) => {
+        return (
+          <AvailablePluginCard
+            plugin={item}
+            theme={theme}
+            installPlugin={installPlugin}
+          />
+        );
+      },
+      [theme, searchedPlugins],
+    );
 
   return (
-    <SectionList
-      sections={sections}
-      showsVerticalScrollIndicator={false}
+    <FlashList
+      estimatedItemSize={64}
+      data={searchedPlugins}
+      extraData={theme}
+      renderItem={renderItem}
       removeClippedSubviews={true}
+      showsVerticalScrollIndicator={false}
       keyExtractor={item => item.id + '_available'}
-      contentContainerStyle={{ flexGrow: 1 }}
-      ListEmptyComponent={
-        <EmptyView
-          icon="(･Д･。"
-          description=" No repositories yet. Add your first plugin repository to get
-            started."
-          actions={[
-            {
-              iconName: 'cog-outline',
-              title: 'Add Repository',
-              onPress: () =>
-                navigation.navigate('MoreStack', {
-                  screen: 'SettingsStack',
-                  params: {
-                    screen: 'RespositorySettings',
-                  },
-                }),
-            },
-          ]}
-          theme={theme}
-        />
-      }
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -419,13 +408,28 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
           progressBackgroundColor={theme.primary}
         />
       }
-      renderItem={renderItem}
-      renderSectionHeader={({ section: { header, data } }) =>
-        data.length ? (
-          <Text style={[styles.listHeader, { color: theme.onSurfaceVariant }]}>
-            {header}
-          </Text>
-        ) : null
+      ListEmptyComponent={
+        <View style={{ marginTop: 100 }}>
+          <EmptyView
+            icon="(･Д･。"
+            description=" No repositories yet. Add your first plugin repository to get
+                started."
+            actions={[
+              {
+                iconName: 'cog-outline',
+                title: 'Add Repository',
+                onPress: () =>
+                  navigation.navigate('MoreStack', {
+                    screen: 'SettingsStack',
+                    params: {
+                      screen: 'RespositorySettings',
+                    },
+                  }),
+              },
+            ]}
+            theme={theme}
+          />
+        </View>
       }
     />
   );
@@ -466,9 +470,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 8,
-  },
-  spinner: {
-    marginRight: 12,
-    marginLeft: -1,
   },
 });
