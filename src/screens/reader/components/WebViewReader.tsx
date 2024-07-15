@@ -51,6 +51,18 @@ type WebViewReaderProps = {
   pageReader: boolean;
 };
 
+const onLogMessage = (payload: { nativeEvent: { data: string } }) => {
+  let dataPayload;
+  try {
+    dataPayload = JSON.parse(payload.nativeEvent.data);
+  } catch (e) {}
+  if (dataPayload) {
+    if (dataPayload.type === 'console') {
+      console.info(`[Console] ${JSON.stringify(dataPayload.msg, null, 2)}`);
+    }
+  }
+};
+
 const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const {
     data: { chapter, novel },
@@ -139,24 +151,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
      console.warn = console.log;
      console.error = console.log;
      `;
-  //@ts-ignore
-  const onMessage = payload => {
-    let dataPayload;
-    try {
-      dataPayload = JSON.parse(payload.nativeEvent.data);
-    } catch (e) {}
-
-    if (dataPayload) {
-      if (dataPayload.type === 'console') {
-        // eslint-disable-next-line no-console
-        console.info(`[Console] ${JSON.stringify(dataPayload.msg, null, 2)}`);
-      } else if (false) {
-        if (dataPayload.type !== 'save') {
-          console.log(dataPayload);
-        }
-      }
-    }
-  };
 
   return (
     <WebView
@@ -170,7 +164,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       javaScriptEnabled={true}
       onLayout={async () => onLayout()}
       onMessage={(ev: { nativeEvent: { data: string } }) => {
-        __DEV__ && onMessage(ev);
+        __DEV__ && onLogMessage(ev);
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
           case 'hide':

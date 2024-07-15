@@ -1,5 +1,5 @@
 import { View, ScrollView, StatusBar, Dimensions } from 'react-native';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
@@ -139,7 +139,11 @@ const SettingsReaderScreen = () => {
   `;
 
   const readerBackgroundColor = readerSettings.theme;
-
+  useEffect(() => {
+    return () => {
+      Speech.stop();
+    };
+  }, []);
   return (
     <>
       <Appbar
