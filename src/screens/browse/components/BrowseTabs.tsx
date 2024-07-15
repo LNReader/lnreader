@@ -68,8 +68,11 @@ export const InstalledTab = memo(
 
     const searchedPlugins = useMemo(() => {
       if (searchText) {
-        return filteredInstalledPlugins.filter(plg =>
-          plg.name.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()),
+        const lowerCaseSearchText = searchText.toLocaleLowerCase();
+        return filteredInstalledPlugins.filter(
+          plg =>
+            plg.name.toLocaleLowerCase().includes(lowerCaseSearchText) ||
+            plg.id.includes(lowerCaseSearchText),
         );
       } else {
         return filteredInstalledPlugins;
@@ -338,10 +341,13 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
 
   const sections = useMemo(() => {
     const list = [];
+    const lowerCaseSearchText = searchText.toLocaleLowerCase();
     const group = groupBy(
       searchText
-        ? filteredAvailablePlugins.filter(plg =>
-            plg.name.toLocaleLowerCase().includes(searchText.toLowerCase()),
+        ? filteredAvailablePlugins.filter(
+            plg =>
+              plg.name.toLocaleLowerCase().includes(lowerCaseSearchText) ||
+              plg.id.toLocaleLowerCase().includes(lowerCaseSearchText),
           )
         : filteredAvailablePlugins,
       'lang',
