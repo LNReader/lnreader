@@ -1,0 +1,197 @@
+import {
+  getNextChapter,
+  getPrevChapter,
+  markChapterRead,
+  updateChapterProgress,
+} from '@database/queries/ChapterQueries';
+import { insertHistory } from '@database/queries/HistoryQueries';
+import { ChapterInfo, NovelInfo } from '@database/types';
+import {
+  useChapterGeneralSettings,
+  useLibrarySettings,
+  useNovel,
+  useTrackedNovel,
+  useTracker,
+} from '@hooks/persisted';
+import FileManager from '@native/FileManager';
+import { fetchChapter } from '@services/plugin/fetch';
+import { NOVEL_STORAGE } from '@utils/Storages';
+import { RefObject, useCallback, useEffect, useState } from 'react';
+import { sanitizeChapterText } from '../utils/sanitizeChapterText';
+import { parseChapterNumber } from '@utils/parseChapterNumber';
+import WebView from 'react-native-webview';
+import { useFullscreenMode } from '@hooks';
+import { Dimensions, NativeEventEmitter } from 'react-native';
+import VolumeButtonListener from '@native/volumeButtonListener';
+import * as Speech from 'expo-speech';
+import { defaultTo } from 'lodash-es';
+
+const emmiter = new NativeEventEmitter(VolumeButtonListener);
+
+export default function useChapter(
+  novel: NovelInfo,
+  initialChapter: ChapterInfo,
+  webViewRef: RefObject<WebView>,
+) {
+  const { setLastRead } = useNovel(novel.path, novel.pluginId);
+  const [hidden, setHidden] = useState(true);
+  const [chapter, setChapter] = useState(initialChapter);
+  const [chapterText, setChapterText] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
+    ChapterInfo[]
+  >([]);
+  const {
+    autoScroll,
+    autoScrollInterval,
+    autoScrollOffset,
+    useVolumeButtons,
+    removeExtraParagraphSpacing,
+  } = useChapterGeneralSettings();
+  const { incognitoMode } = useLibrarySettings();
+  const [error, setError] = useState<string>();
+  const { tracker } = useTracker();
+  const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
+  const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
+
+  const connectVolumeButton = () => {
+    VolumeButtonListener.connect();
+    VolumeButtonListener.preventDefault();
+    emmiter.addListener('VolumeUp', () => {
+      webViewRef.current?.injectJavaScript(`(()=>{
+          window.scrollBy({top: -${
+            Dimensions.get('window').height * 0.75
+          }, behavior: 'smooth'})
+        })()`);
+    });
+    emmiter.addListener('VolumeDown', () => {
+      webViewRef.current?.injectJavaScript(`(()=>{
+          window.scrollBy({top: ${
+            Dimensions.get('window').height * 0.75
+          }, behavior: 'smooth'})
+        })()`);
+    });
+  };
+
+  useEffect(() => {
+    if (useVolumeButtons) {
+      connectVolumeButton();
+    } else {
+      VolumeButtonListener.disconnect();
+      emmiter.removeAllListeners('VolumeUp');
+      emmiter.removeAllListeners('VolumeDown');
+      // this is just for sure, without it app still works properly
+    }
+    return () => {
+      VolumeButtonListener.disconnect();
+      emmiter.removeAllListeners('VolumeUp');
+      emmiter.removeAllListeners('VolumeDown');
+      Speech.stop();
+    };
+  }, [useVolumeButtons, chapter]);
+
+  const getChapter = async () => {
+    try {
+      const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
+      let text = '';
+      if (await FileManager.exists(filePath)) {
+        text = FileManager.readFile(filePath);
+      } else {
+        await fetchChapter(novel.pluginId, chapter.path)
+          .then(res => {
+            text = res;
+          })
+          .catch(e => setError(e.message));
+      }
+      setChapterText(
+        sanitizeChapterText(text, {
+          removeExtraParagraphSpacing,
+        }),
+      );
+      const [nextChap, prevChap] = await Promise.all([
+        getNextChapter(chapter.novelId, chapter.id),
+        getPrevChapter(chapter.novelId, chapter.id),
+      ]);
+      setAdjacentChapter([nextChap!, prevChap!]);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  let scrollInterval: NodeJS.Timeout;
+  useEffect(() => {
+    if (autoScroll) {
+      scrollInterval = setInterval(() => {
+        webViewRef.current?.injectJavaScript(`(()=>{
+          window.scrollBy({top:${defaultTo(
+            autoScrollOffset,
+            Dimensions.get('window').height,
+          )},behavior:'smooth'})
+        })()`);
+      }, autoScrollInterval * 1000);
+    } else {
+      clearInterval(scrollInterval);
+    }
+
+    return () => clearInterval(scrollInterval);
+  }, [autoScroll, webViewRef]);
+
+  const updateTracker = () => {
+    const chapterNumber = parseChapterNumber(novel.name, chapter.name);
+    if (tracker && trackedNovel && chapterNumber > trackedNovel.progress) {
+      updateNovelProgess(tracker, chapterNumber);
+    }
+  };
+
+  const saveProgress = useCallback(
+    (percentage: number) => {
+      if (!incognitoMode) {
+        updateChapterProgress(chapter.id, percentage > 100 ? 100 : percentage);
+      }
+
+      if (!incognitoMode && percentage >= 97) {
+        // a relative number
+        markChapterRead(chapter.id);
+        updateTracker();
+      }
+    },
+    [chapter],
+  );
+
+  const hideHeader = () => {
+    if (!hidden) {
+      webViewRef.current?.injectJavaScript('toolWrapper.hide()');
+      setImmersiveMode();
+    } else {
+      webViewRef.current?.injectJavaScript('toolWrapper.show()');
+      showStatusAndNavBar();
+    }
+    setHidden(!hidden);
+  };
+
+  useEffect(() => {
+    getChapter();
+    if (!incognitoMode) {
+      insertHistory(chapter.id);
+      setLastRead(chapter);
+    }
+  }, [chapter]);
+  return {
+    hidden,
+    chapter,
+    nextChapter,
+    prevChapter,
+    error,
+    loading,
+    chapterText,
+    setChapter,
+    setHidden,
+    setLoading,
+    setError,
+    getChapter,
+    saveProgress,
+    hideHeader,
+  };
+}

@@ -1,61 +1,33 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from 'react';
-import {
-  Dimensions,
-  NativeEventEmitter,
-  DrawerLayoutAndroid,
-} from 'react-native';
-import * as Speech from 'expo-speech';
+import React, { useRef, useCallback } from 'react';
+import { DrawerLayoutAndroid } from 'react-native';
 
-import VolumeButtonListener from '@native/volumeButtonListener';
-
-import {
-  getNextChapter,
-  getPrevChapter,
-  markChapterRead,
-  updateChapterProgress,
-} from '@database/queries/ChapterQueries';
-import { fetchChapter } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
 import {
   useChapterGeneralSettings,
-  useLibrarySettings,
   useTheme,
-  useTrackedNovel,
-  useTracker,
   useNovel,
 } from '@hooks/persisted';
-import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';
 
-import { insertHistory } from '@database/queries/HistoryQueries';
 import WebViewReader from './components/WebViewReader';
-import { useFullscreenMode } from '@hooks';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
-import { defaultTo } from 'lodash-es';
-import { sanitizeChapterText } from './utils/sanitizeChapterText';
 import ChapterDrawer from './components/ChapterDrawer';
 import ChapterLoadingScreen from './ChapterLoadingScreen/ChapterLoadingScreen';
 import { ErrorScreenV2 } from '@components';
 import { ChapterScreenProps } from '@navigators/types';
-import { ChapterInfo } from '@database/types';
 import WebView from 'react-native-webview';
 import { getString } from '@strings/translations';
-import FileManager from '@native/FileManager';
-import { NOVEL_STORAGE } from '@utils/Storages';
 import KeepScreenAwake from './components/KeepScreenAwake';
+import useChapter from './hooks/useChapter';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
-  const { chapters, novelSettings, pages, setLastRead, setPageIndex } =
-    useNovel(route.params.novel.path, route.params.novel.pluginId);
+  const { chapters, novelSettings, pages, setPageIndex } = useNovel(
+    route.params.novel.path,
+    route.params.novel.pluginId,
+  );
   return (
     <DrawerLayoutAndroid
       ref={drawerRef}
@@ -76,7 +48,6 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
         route={route}
         navigation={navigation}
         drawerRef={drawerRef}
-        setLastRead={setLastRead}
       />
     </DrawerLayoutAndroid>
   );
@@ -84,121 +55,33 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
 
 type ChapterContentProps = ChapterScreenProps & {
   drawerRef: React.RefObject<DrawerLayoutAndroid>;
-  setLastRead: (chapter: ChapterInfo | undefined) => void;
 };
 
 export const ChapterContent = ({
   route,
   navigation,
   drawerRef,
-  setLastRead,
 }: ChapterContentProps) => {
   const { novel, chapter } = route.params;
   const webViewRef = useRef<WebView>(null);
   const readerSheetRef = useRef(null);
-
   const theme = useTheme();
+  const { pageReader = false, keepScreenOn } = useChapterGeneralSettings();
 
   const {
-    useVolumeButtons,
-    autoScroll,
-    autoScrollInterval,
-    autoScrollOffset,
-    pageReader = false,
-    // verticalSeekbar = true,
-    removeExtraParagraphSpacing,
-    keepScreenOn,
-  } = useChapterGeneralSettings();
-  const { incognitoMode } = useLibrarySettings();
-
-  const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
-
-  const [hidden, setHidden] = useState(true);
-
-  const { tracker } = useTracker();
-  const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
-
-  const [sourceChapter, setChapter] = useState({ ...chapter, chapterText: '' });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>();
-  const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
-    ChapterInfo[]
-  >([]);
-
-  const emmiter = useRef(new NativeEventEmitter(VolumeButtonListener));
-
-  const connectVolumeButton = () => {
-    VolumeButtonListener.connect();
-    VolumeButtonListener.preventDefault();
-    emmiter.current.addListener('VolumeUp', () => {
-      webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top: -${
-            Dimensions.get('window').height * 0.75
-          }, behavior: 'smooth'})
-        })()`);
-    });
-    emmiter.current.addListener('VolumeDown', () => {
-      webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top: ${
-            Dimensions.get('window').height * 0.75
-          }, behavior: 'smooth'})
-        })()`);
-    });
-  };
-
-  useEffect(() => {
-    if (useVolumeButtons) {
-      connectVolumeButton();
-    } else {
-      VolumeButtonListener.disconnect();
-      emmiter.current.removeAllListeners('VolumeUp');
-      emmiter.current.removeAllListeners('VolumeDown');
-      // this is just for sure, without it app still works properly
-    }
-    return () => {
-      VolumeButtonListener.disconnect();
-      emmiter.current.removeAllListeners('VolumeUp');
-      emmiter.current.removeAllListeners('VolumeDown');
-      Speech.stop();
-    };
-  }, [useVolumeButtons, chapter]);
-
-  const onLayout = useCallback(() => {
-    setTimeout(() => connectVolumeButton());
-  }, []);
-
-  const getChapter = async () => {
-    try {
-      const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
-      if (await FileManager.exists(filePath)) {
-        sourceChapter.chapterText = FileManager.readFile(filePath);
-      } else {
-        await fetchChapter(novel.pluginId, chapter.path)
-          .then(res => {
-            sourceChapter.chapterText = res;
-          })
-          .catch(e => setError(e.message));
-      }
-      const [nextChap, prevChap] = await Promise.all([
-        getNextChapter(chapter.novelId, chapter.id),
-        getPrevChapter(chapter.novelId, chapter.id),
-      ]);
-      setChapter(sourceChapter);
-      setAdjacentChapter([nextChap!, prevChap!]);
-    } catch (e: any) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getChapter();
-    if (!incognitoMode) {
-      insertHistory(chapter.id);
-      setLastRead(chapter);
-    }
-  }, [chapter]);
+    hidden,
+    loading,
+    error,
+    prevChapter,
+    nextChapter,
+    chapterText,
+    setError,
+    setLoading,
+    getChapter,
+    setChapter,
+    saveProgress,
+    hideHeader,
+  } = useChapter(novel, chapter, webViewRef);
 
   const scrollToStart = () =>
     requestAnimationFrame(() => {
@@ -213,56 +96,6 @@ export const ChapterContent = ({
             })()`,
       );
     });
-  let scrollInterval: NodeJS.Timeout;
-  useEffect(() => {
-    if (autoScroll) {
-      scrollInterval = setInterval(() => {
-        webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top:${defaultTo(
-            autoScrollOffset,
-            Dimensions.get('window').height,
-          )},behavior:'smooth'})
-        })()`);
-      }, autoScrollInterval * 1000);
-    } else {
-      clearInterval(scrollInterval);
-    }
-
-    return () => clearInterval(scrollInterval);
-  }, [autoScroll, webViewRef]);
-
-  const updateTracker = () => {
-    const chapterNumber = parseChapterNumber(novel.name, chapter.name);
-    if (tracker && trackedNovel && chapterNumber > trackedNovel.progress) {
-      updateNovelProgess(tracker, chapterNumber);
-    }
-  };
-
-  const saveProgress = useCallback(
-    (percentage: number) => {
-      if (!incognitoMode) {
-        updateChapterProgress(chapter.id, percentage > 100 ? 100 : percentage);
-      }
-
-      if (!incognitoMode && percentage >= 97) {
-        // a relative number
-        markChapterRead(chapter.id);
-        updateTracker();
-      }
-    },
-    [chapter],
-  );
-
-  const hideHeader = () => {
-    if (!hidden) {
-      webViewRef.current?.injectJavaScript('toolWrapper.hide()');
-      setImmersiveMode();
-    } else {
-      webViewRef.current?.injectJavaScript('toolWrapper.show()');
-      showStatusAndNavBar();
-    }
-    setHidden(!hidden);
-  };
 
   const navigateToChapterBySwipe = (actionName: string) => {
     let navChapter;
@@ -285,14 +118,6 @@ export const ChapterContent = ({
             : getString('readerScreen.noPreviousChapter'),
         );
   };
-
-  const chapterText = useMemo(
-    () =>
-      sanitizeChapterText(sourceChapter.chapterText, {
-        removeExtraParagraphSpacing,
-      }),
-    [sourceChapter.chapterText],
-  );
 
   const openDrawer = useCallback(() => {
     drawerRef.current?.openDrawer();
@@ -341,9 +166,6 @@ export const ChapterContent = ({
         webViewRef={webViewRef}
         pageReader={pageReader}
         saveProgress={saveProgress}
-        onLayout={() => {
-          useVolumeButtons && onLayout();
-        }}
         onPress={hideHeader}
         navigateToChapterBySwipe={navigateToChapterBySwipe}
       />
@@ -352,7 +174,7 @@ export const ChapterContent = ({
         <>
           <ReaderAppbar
             novelName={novel.name}
-            chapter={sourceChapter}
+            chapter={chapter}
             setChapter={setChapter}
             goBack={navigation.goBack}
             theme={theme}

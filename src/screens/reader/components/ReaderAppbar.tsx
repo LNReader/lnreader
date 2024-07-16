@@ -11,10 +11,10 @@ import { bookmarkChapter } from '@database/queries/ChapterQueries';
 
 interface ReaderAppbarProps {
   novelName: string;
-  chapter: ChapterInfo & { chapterText: string };
+  chapter: ChapterInfo;
   theme: ThemeColors;
   goBack: () => void;
-  setChapter: (chapter: ChapterInfo & { chapterText: string }) => void;
+  setChapter: (chapter: ChapterInfo) => void;
 }
 
 const ReaderAppbar = ({
