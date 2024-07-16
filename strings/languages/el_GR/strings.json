@@ -186,7 +186,7 @@
       "fontStyle": "Στυλ γραμματοσειράς",
       "fullscreen": "Πλήρης Οθόνη",
       "lineHeight": "Ύψος Γραμμής",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Αφαίρεση επιπλέον απόστασης παραγράφων",
       "renderHml": "Render HTML",
       "scrollAmount": "Scroll amount (screen height by default)",

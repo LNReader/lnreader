@@ -7,7 +7,7 @@ import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import ReaderTextAlignSelector from '@screens/reader/components/ReaderBottomSheet/ReaderTextAlignSelector';
 import ReaderTextSize from '../ReaderTextSize';
-import ReaderLineHeight from '@screens/reader/components/ReaderBottomSheet/ReaderLineHeight';
+import ReaderValueChange from '@screens/reader/components/ReaderBottomSheet/ReaderValueChange';
 import ReaderThemeSelector from '@screens/reader/components/ReaderBottomSheet/ReaderThemeSelector';
 import {
   presetReaderThemes,
@@ -93,7 +93,18 @@ const ReaderThemeSettings = () => {
       ) : null}
       <ReaderTextAlignSelector labelStyle={labelStyle} />
       <ReaderTextSize labelStyle={labelStyle} />
-      <ReaderLineHeight labelStyle={labelStyle} />
+      <ReaderValueChange
+        labelStyle={labelStyle}
+        label={getString('readerScreen.bottomSheet.lineHeight')}
+        valueKey="lineHeight"
+      />
+      <ReaderValueChange
+        labelStyle={labelStyle}
+        label={getString('readerScreen.bottomSheet.padding')}
+        valueKey="padding"
+        valueChange={0.5}
+        max={10}
+      />
       <List.Item
         title={getString('readerScreen.bottomSheet.fontStyle')}
         description={currentFontName}

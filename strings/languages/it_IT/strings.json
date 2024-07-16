@@ -186,7 +186,7 @@
       "fontStyle": "Stile del font",
       "fullscreen": "Schermo Intero",
       "lineHeight": "Altezza riga",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Rimuovi spaziatura extra",
       "renderHml": "Renderizza HTML",
       "scrollAmount": "Quantità di scorrimento (altezza schermo di default)",

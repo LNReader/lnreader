@@ -5,13 +5,17 @@ import { getString } from '@strings/translations';
 import { List } from '@components';
 
 import { MoreHeader } from './components/MoreHeader';
-import { useDownload, useLibrarySettings, useTheme } from '@hooks/persisted';
+import { useLibrarySettings, useTheme } from '@hooks/persisted';
 import { MoreStackScreenProps } from '@navigators/types';
 import Switch from '@components/Switch/Switch';
+import { useMMKVObject } from 'react-native-mmkv';
+import ServiceManager, { BackgroundTask } from '@services/ServiceManager';
 
 const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
   const theme = useTheme();
-  const { downloadQueue } = useDownload();
+  const [taskQueue] = useMMKVObject<BackgroundTask[]>(
+    ServiceManager.manager.STORE_KEY,
+  );
   const {
     incognitoMode = false,
     downloadedOnlyMode = false,
@@ -107,14 +111,16 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
         </Pressable>
         <List.Divider theme={theme} />
         <List.Item
-          title={getString('moreScreen.downloadQueue')}
+          title={'Task Queue'}
           description={
-            downloadQueue.length > 0 ? downloadQueue.length + ' remaining' : ''
+            taskQueue && taskQueue.length > 0
+              ? taskQueue.length + ' remaining'
+              : ''
           }
           icon="progress-download"
           onPress={() =>
             navigation.navigate('MoreStack', {
-              screen: 'DownloadQueue',
+              screen: 'TaskQueue',
             })
           }
           theme={theme}

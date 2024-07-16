@@ -186,7 +186,7 @@
       "fontStyle": "Font style",
       "fullscreen": "Fullscreen",
       "lineHeight": "Line Height",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "renderHml": "Render HTML",
       "scrollAmount": "Scroll amount (screen height by default)",
