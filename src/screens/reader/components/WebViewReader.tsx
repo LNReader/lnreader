@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Dimensions,
   NativeEventEmitter,
@@ -28,6 +27,7 @@ import * as Speech from 'expo-speech';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
 import { PLUGIN_STORAGE } from '@utils/Storages';
+import { useChapterContext } from '../ChapterContext';
 
 type WebViewPostEvent = {
   type: string;
@@ -35,12 +35,6 @@ type WebViewPostEvent = {
 };
 
 type WebViewReaderProps = {
-  data: {
-    novel: {
-      pluginId: string;
-    };
-    chapter: ChapterInfo;
-  };
   html: string;
   nextChapter: ChapterInfo;
   webViewRef: React.RefObject<WebView>;
@@ -64,7 +58,6 @@ const onLogMessage = (payload: { nativeEvent: { data: string } }) => {
 
 const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const {
-    data: { chapter, novel },
     html,
     nextChapter,
     webViewRef,
@@ -73,6 +66,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     onPress,
     navigateToChapterBySwipe,
   } = props;
+  const { novel, chapter } = useChapterContext();
   const assetsUriPrefix = useMemo(
     () => (__DEV__ ? 'http://localhost:8081/assets' : 'file:///android_asset'),
     [],

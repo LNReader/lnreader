@@ -15,15 +15,10 @@ import { getString } from '@strings/translations';
 import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
-import { NovelSettings } from '@hooks/persisted/useNovel';
+import { useNovel } from '@hooks/persisted/useNovel';
 import renderListChapter from './RenderListChapter';
+import { useChapterContext } from '@screens/reader/ChapterContext';
 
-type ChapterDrawerProps = ChapterScreenProps & {
-  chapters: ChapterInfo[];
-  novelSettings: NovelSettings;
-  pages: string[];
-  setPageIndex: (value: number) => void;
-};
 type ButtonProperties = {
   text: string;
   index?: number;
@@ -35,13 +30,15 @@ type ButtonsProperties = {
 };
 
 const ChapterDrawer = ({
-  route,
   navigation,
-  chapters,
-  novelSettings,
-  pages,
-  setPageIndex,
-}: ChapterDrawerProps) => {
+}: {
+  navigation: ChapterScreenProps['navigation'];
+}) => {
+  const { novel: novelItem, chapter } = useChapterContext();
+  const { chapters, novelSettings, pages, setPageIndex } = useNovel(
+    novelItem.path,
+    novelItem.pluginId,
+  );
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { defaultChapterSort } = useAppSettings();
@@ -49,7 +46,6 @@ const ChapterDrawer = ({
 
   const styles = createStylesheet(theme, insets);
 
-  const { chapter, novel: novelItem } = route.params;
   const { sort = defaultChapterSort } = novelSettings;
   const listAscending = sort === 'ORDER BY position ASC';
 

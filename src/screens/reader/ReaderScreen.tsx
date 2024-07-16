@@ -2,11 +2,7 @@ import React, { useRef, useCallback } from 'react';
 import { DrawerLayoutAndroid } from 'react-native';
 
 import { showToast } from '@utils/showToast';
-import {
-  useChapterGeneralSettings,
-  useTheme,
-  useNovel,
-} from '@hooks/persisted';
+import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';
@@ -21,35 +17,28 @@ import WebView from 'react-native-webview';
 import { getString } from '@strings/translations';
 import KeepScreenAwake from './components/KeepScreenAwake';
 import useChapter from './hooks/useChapter';
+import { ChapterContextProvider, useChapterContext } from './ChapterContext';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
-  const { chapters, novelSettings, pages, setPageIndex } = useNovel(
-    route.params.novel.path,
-    route.params.novel.pluginId,
-  );
   return (
-    <DrawerLayoutAndroid
-      ref={drawerRef}
-      drawerWidth={300}
-      drawerPosition="left"
-      renderNavigationView={() => (
-        <ChapterDrawer
+    <ChapterContextProvider
+      novel={route.params.novel}
+      initialChapter={route.params.chapter}
+    >
+      <DrawerLayoutAndroid
+        ref={drawerRef}
+        drawerWidth={300}
+        drawerPosition="left"
+        renderNavigationView={() => <ChapterDrawer navigation={navigation} />}
+      >
+        <ChapterContent
           route={route}
           navigation={navigation}
-          chapters={chapters}
-          novelSettings={novelSettings}
-          pages={pages}
-          setPageIndex={setPageIndex}
+          drawerRef={drawerRef}
         />
-      )}
-    >
-      <ChapterContent
-        route={route}
-        navigation={navigation}
-        drawerRef={drawerRef}
-      />
-    </DrawerLayoutAndroid>
+      </DrawerLayoutAndroid>
+    </ChapterContextProvider>
   );
 };
 
@@ -58,11 +47,10 @@ type ChapterContentProps = ChapterScreenProps & {
 };
 
 export const ChapterContent = ({
-  route,
   navigation,
   drawerRef,
 }: ChapterContentProps) => {
-  const { novel, chapter } = route.params;
+  const { novel, chapter } = useChapterContext();
   const webViewRef = useRef<WebView>(null);
   const readerSheetRef = useRef(null);
   const theme = useTheme();
@@ -78,10 +66,9 @@ export const ChapterContent = ({
     setError,
     setLoading,
     getChapter,
-    setChapter,
     saveProgress,
     hideHeader,
-  } = useChapter(novel, chapter, webViewRef);
+  } = useChapter(webViewRef);
 
   const scrollToStart = () =>
     requestAnimationFrame(() => {
@@ -160,7 +147,6 @@ export const ChapterContent = ({
     <>
       {keepScreenOn ? <KeepScreenAwake /> : null}
       <WebViewReader
-        data={{ novel, chapter }}
         html={chapterText}
         nextChapter={nextChapter}
         webViewRef={webViewRef}
@@ -172,17 +158,9 @@ export const ChapterContent = ({
       <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       {!hidden ? (
         <>
-          <ReaderAppbar
-            novelName={novel.name}
-            chapter={chapter}
-            setChapter={setChapter}
-            goBack={navigation.goBack}
-            theme={theme}
-          />
+          <ReaderAppbar goBack={navigation.goBack} theme={theme} />
           <ReaderFooter
             theme={theme}
-            chapter={chapter}
-            novel={novel}
             nextChapter={nextChapter}
             prevChapter={prevChapter}
             readerSheetRef={readerSheetRef}

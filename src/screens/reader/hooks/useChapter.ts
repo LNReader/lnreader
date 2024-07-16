@@ -5,7 +5,7 @@ import {
   updateChapterProgress,
 } from '@database/queries/ChapterQueries';
 import { insertHistory } from '@database/queries/HistoryQueries';
-import { ChapterInfo, NovelInfo } from '@database/types';
+import { ChapterInfo } from '@database/types';
 import {
   useChapterGeneralSettings,
   useLibrarySettings,
@@ -25,17 +25,14 @@ import { Dimensions, NativeEventEmitter } from 'react-native';
 import VolumeButtonListener from '@native/volumeButtonListener';
 import * as Speech from 'expo-speech';
 import { defaultTo } from 'lodash-es';
+import { useChapterContext } from '../ChapterContext';
 
 const emmiter = new NativeEventEmitter(VolumeButtonListener);
 
-export default function useChapter(
-  novel: NovelInfo,
-  initialChapter: ChapterInfo,
-  webViewRef: RefObject<WebView>,
-) {
+export default function useChapter(webViewRef: RefObject<WebView>) {
+  const { novel, chapter } = useChapterContext();
   const { setLastRead } = useNovel(novel.path, novel.pluginId);
   const [hidden, setHidden] = useState(true);
-  const [chapter, setChapter] = useState(initialChapter);
   const [chapterText, setChapterText] = useState('');
   const [loading, setLoading] = useState(true);
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
@@ -186,7 +183,6 @@ export default function useChapter(
     error,
     loading,
     chapterText,
-    setChapter,
     setHidden,
     setLoading,
     setError,

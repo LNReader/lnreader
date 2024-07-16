@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 import color from 'color';
 
@@ -6,24 +6,20 @@ import { Text } from 'react-native-paper';
 import { IconButtonV2 } from '../../../components';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { ThemeColors } from '@theme/types';
-import { ChapterInfo } from '@database/types';
 import { bookmarkChapter } from '@database/queries/ChapterQueries';
+import { useChapterContext } from '../ChapterContext';
 
 interface ReaderAppbarProps {
-  novelName: string;
-  chapter: ChapterInfo;
   theme: ThemeColors;
   goBack: () => void;
-  setChapter: (chapter: ChapterInfo) => void;
 }
 
-const ReaderAppbar = ({
-  novelName,
-  chapter,
-  goBack,
-  theme,
-  setChapter,
-}: ReaderAppbarProps) => {
+const ReaderAppbar = ({ goBack, theme }: ReaderAppbarProps) => {
+  const { chapter, novel } = useChapterContext();
+  const [bookmarked, setBookmarked] = useState(chapter.bookmark);
+  useEffect(() => {
+    setBookmarked(chapter.bookmark);
+  }, [chapter]);
   return (
     <Animated.View
       entering={FadeIn.duration(150)}
@@ -49,7 +45,7 @@ const ReaderAppbar = ({
             style={[styles.title, { color: theme.onSurface }]}
             numberOfLines={1}
           >
-            {novelName}
+            {novel.name}
           </Text>
           <Text
             style={[styles.subtitle, { color: theme.onSurfaceVariant }]}
@@ -59,15 +55,10 @@ const ReaderAppbar = ({
           </Text>
         </View>
         <IconButtonV2
-          name={chapter.bookmark ? 'bookmark' : 'bookmark-outline'}
+          name={bookmarked ? 'bookmark' : 'bookmark-outline'}
           size={24}
           onPress={() => {
-            bookmarkChapter(chapter.id).then(() =>
-              setChapter({
-                ...chapter,
-                bookmark: !chapter.bookmark,
-              }),
-            );
+            bookmarkChapter(chapter.id).then(() => setBookmarked(!bookmarked));
           }}
           color={theme.onSurface}
           theme={theme}
