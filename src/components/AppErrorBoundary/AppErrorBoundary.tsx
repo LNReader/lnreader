@@ -4,6 +4,7 @@ import ErrorBoundary from 'react-native-error-boundary';
 
 import { Button, List } from '@components';
 import { useTheme } from '@hooks/persisted';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ErrorFallbackProps {
   error: Error;
@@ -17,7 +18,9 @@ export const ErrorFallback: React.FC<ErrorFallbackProps> = ({
   const theme = useTheme();
 
   return (
-    <View style={[styles.mainCtn, { backgroundColor: theme.background }]}>
+    <SafeAreaView
+      style={[styles.mainCtn, { backgroundColor: theme.background }]}
+    >
       <StatusBar translucent={true} backgroundColor="transparent" />
       <View style={styles.errorInfoCtn}>
         <Text style={[styles.errorTitle, { color: theme.onSurface }]}>
@@ -48,12 +51,12 @@ export const ErrorFallback: React.FC<ErrorFallbackProps> = ({
         style={styles.buttonCtn}
         mode="contained"
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
 interface AppErrorBoundaryProps {
-  children: React.ReactNode | React.ReactElement;
+  children: React.ReactElement;
 }
 
 const AppErrorBoundary: React.FC<AppErrorBoundaryProps> = ({ children }) => {

@@ -186,7 +186,7 @@
       "fontStyle": "字体样式",
       "fullscreen": "全屏",
       "lineHeight": "行高",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "renderHml": "渲染HTML",
       "scrollAmount": "Scroll amount (screen height by default)",

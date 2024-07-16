@@ -35,29 +35,27 @@ const downloadFiles = async (
   novelId: number,
   chapterId: number,
 ): Promise<void> => {
-  try {
-    const folder = await createChapterFolder(NOVEL_STORAGE, {
-      pluginId: plugin.id,
-      novelId,
-      chapterId,
-    }).catch(error => {
-      throw error;
-    });
-    const loadedCheerio = cheerio.load(html);
-    const imgs = loadedCheerio('img').toArray();
-    for (let i = 0; i < imgs.length; i++) {
-      const elem = loadedCheerio(imgs[i]);
-      const url = elem.attr('src');
-      if (url) {
-        const fileurl = folder + i + '.b64.png';
-        elem.attr('src', `file://${fileurl}`);
+  const folder = await createChapterFolder(NOVEL_STORAGE, {
+    pluginId: plugin.id,
+    novelId,
+    chapterId,
+  });
+  const loadedCheerio = cheerio.load(html);
+  const imgs = loadedCheerio('img').toArray();
+  for (let i = 0; i < imgs.length; i++) {
+    const elem = loadedCheerio(imgs[i]);
+    const url = elem.attr('src');
+    if (url) {
+      const fileurl = folder + i + '.b64.png';
+      elem.attr('src', `file://${fileurl}`);
+      try {
         await downloadFile(url, fileurl, plugin.imageRequestInit);
+      } catch (e) {
+        elem.attr('alt', String(e));
       }
     }
-    await FileManager.writeFile(folder + '/index.html', loadedCheerio.html());
-  } catch (error) {
-    throw error;
   }
+  await FileManager.writeFile(folder + '/index.html', loadedCheerio.html());
 };
 
 export const downloadChapter = async ({ chapterId }: { chapterId: number }) => {

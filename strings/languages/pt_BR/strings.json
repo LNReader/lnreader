@@ -186,7 +186,7 @@
       "fontStyle": "Estilo da fonte",
       "fullscreen": "Tela cheia",
       "lineHeight": "Altura da linha",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Remover espaçamento extra dos parágrafos",
       "renderHml": "Renderizar HTML",
       "scrollAmount": "Valor da rolagem (Padrão: altura da tela)",

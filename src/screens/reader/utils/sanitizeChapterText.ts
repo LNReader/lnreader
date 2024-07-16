@@ -76,6 +76,7 @@ export const sanitizeChapterText = (
       's',
       'span',
       'strong',
+      'title',
       'u',
       'ul',
     ]),

@@ -195,11 +195,33 @@ export const markChapterRead = async (chapterId: number) => {
   });
 };
 
+export const markChaptersRead = async (chapterIds: number[]) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      `UPDATE Chapter SET \`unread\` = 0 WHERE id IN (${chapterIds.join(',')})`,
+      undefined,
+      noop,
+      txnErrorCallback,
+    );
+  });
+};
+
 const markChapterUnreadQuery = 'UPDATE Chapter SET `unread` = 1 WHERE id = ?';
 
 export const markChapterUnread = async (chapterId: number) => {
   db.transaction(tx => {
     tx.executeSql(markChapterUnreadQuery, [chapterId], noop, txnErrorCallback);
+  });
+};
+
+export const markChaptersUnread = async (chapterIds: number[]) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      `UPDATE Chapter SET \`unread\` = 1 WHERE id IN (${chapterIds.join(',')})`,
+      undefined,
+      noop,
+      txnErrorCallback,
+    );
   });
 };
 

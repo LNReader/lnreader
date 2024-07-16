@@ -50,6 +50,13 @@ export default class ServiceManager {
   get isRunning() {
     return BackgroundService.isRunning();
   }
+  isMultiplicableTask(task: BackgroundTask) {
+    return (
+      ['DOWNLOAD_CHAPTER', 'IMPORT_EPUB', 'MIGRATE_NOVEL'] as Array<
+        BackgroundTask['name']
+      >
+    ).includes(task.name);
+  }
   start() {
     if (!this.isRunning) {
       BackgroundService.start(ServiceManager.lauch, {
@@ -141,12 +148,32 @@ export default class ServiceManager {
       });
     }
   }
+  getTaskDescription(task: BackgroundTask) {
+    switch (task.name) {
+      case 'DOWNLOAD_CHAPTER':
+        return task.data.chapterName;
+      case 'IMPORT_EPUB':
+        return task.data.filename;
+      case 'MIGRATE_NOVEL':
+        return task.data.fromNovel.name;
+      default:
+        return task.data?.toString() || 'No data';
+    }
+  }
   getTaskList() {
     return getMMKVObject<Array<BackgroundTask>>(this.STORE_KEY) || [];
   }
   addTask(tasks: BackgroundTask | BackgroundTask[]) {
-    setMMKVObject(this.STORE_KEY, this.getTaskList().concat(tasks));
-    this.start();
+    const currentTasks = this.getTaskList();
+    const addableTasks = (Array.isArray(tasks) ? tasks : [tasks]).filter(
+      task =>
+        this.isMultiplicableTask(task) ||
+        !currentTasks.some(_t => _t.name === task.name),
+    );
+    if (addableTasks.length) {
+      setMMKVObject(this.STORE_KEY, currentTasks.concat(addableTasks));
+      this.start();
+    }
   }
   removeTasksByName(name: BackgroundTask['name']) {
     const taskList = this.getTaskList();

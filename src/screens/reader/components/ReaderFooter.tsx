@@ -4,19 +4,18 @@ import { IconButton } from 'react-native-paper';
 import color from 'color';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { ThemeColors } from '@theme/types';
-import { ChapterInfo, NovelInfo } from '@database/types';
+import { ChapterInfo } from '@database/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { ChapterScreenProps } from '@navigators/types';
 import { useDeviceOrientation } from '@hooks/index';
+import { useChapterContext } from '../ChapterContext';
 
 interface ChapterFooterProps {
   theme: ThemeColors;
-  novel: NovelInfo;
-  chapter: ChapterInfo;
   nextChapter: ChapterInfo;
   prevChapter: ChapterInfo;
   readerSheetRef: React.RefObject<BottomSheetModalMethods>;
-  scrollTo: (offsetY: number) => void;
+  scrollToStart: () => void;
   navigateToChapterBySwipe: (actionName: string) => void;
   navigation: ChapterScreenProps['navigation'];
   openDrawer: () => void;
@@ -24,16 +23,15 @@ interface ChapterFooterProps {
 
 const ChapterFooter = ({
   theme,
-  novel,
-  chapter,
   nextChapter,
   prevChapter,
   readerSheetRef,
-  scrollTo,
+  scrollToStart,
   navigateToChapterBySwipe,
   navigation,
   openDrawer,
 }: ChapterFooterProps) => {
+  const { novel, chapter } = useChapterContext();
   const rippleConfig = {
     color: theme.rippleColor,
     borderless: true,
@@ -83,7 +81,7 @@ const ChapterFooter = ({
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
-          onPress={() => scrollTo(0)}
+          onPress={() => scrollToStart()}
         >
           <IconButton
             icon="format-vertical-align-top"

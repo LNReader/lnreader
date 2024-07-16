@@ -195,7 +195,7 @@
       "fontStyle": "Шрифт",
       "fullscreen": "Полноэкранный",
       "lineHeight": "Высота строки",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Удалить дополнительный интервал параграфа",
       "renderHml": "Рендер HTML",
       "scrollAmount": "Смещение автопрокрутки (высота экрана по умолчанию)",

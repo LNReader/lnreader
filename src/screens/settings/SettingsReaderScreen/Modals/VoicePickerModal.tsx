@@ -1,33 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { Portal, Modal, overlay, TextInput } from 'react-native-paper';
+import {
+  Portal,
+  Modal,
+  overlay,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
 import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
-import { Voice, getAvailableVoicesAsync } from 'expo-speech';
+import { Voice } from 'expo-speech';
 import { FlashList } from '@shopify/flash-list';
 
 interface VoicePickerModalProps {
   visible: boolean;
   onDismiss: () => void;
+  voices: Voice[];
 }
 
 const VoicePickerModal: React.FC<VoicePickerModalProps> = ({
   onDismiss,
   visible,
+  voices,
 }) => {
   const theme = useTheme();
-  const [voices, setVoices] = useState<Voice[]>([]);
   const [searchedVoices, setSearchedVoices] = useState<Voice[]>([]);
   const [searchText, setSearchText] = useState('');
   const { setChapterReaderSettings, tts } = useChapterReaderSettings();
-  useEffect(() => {
-    getAvailableVoicesAsync().then(res => {
-      res.sort((a, b) => a.name.localeCompare(b.name));
-      setVoices([{ name: 'System', language: 'System' } as Voice, ...res]);
-    });
-  }, []);
+
   return (
     <Portal>
       <Modal
@@ -76,6 +78,13 @@ const VoicePickerModal: React.FC<VoicePickerModalProps> = ({
           keyExtractor={item => item.identifier || 'system'}
           estimatedItemSize={64}
           removeClippedSubviews={true}
+          ListEmptyComponent={
+            <ActivityIndicator
+              size={24}
+              style={{ marginTop: 16 }}
+              color={theme.primary}
+            />
+          }
         />
       </Modal>
     </Portal>
