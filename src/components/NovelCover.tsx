@@ -112,9 +112,9 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
         },
         styles.standardNovelCover,
         isSelected && {
-            backgroundColor: theme.primary,
-          } &&
-          styles.selectedNovelCover,
+          backgroundColor: theme.primary,
+          ...styles.selectedNovelCover,
+        },
       ]}
     >
       <Pressable

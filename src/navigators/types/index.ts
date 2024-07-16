@@ -65,7 +65,7 @@ export type MoreStackScreenProps = CompositeScreenProps<
 export type MoreStackParamList = {
   SettingsStack: NavigatorScreenParams<SettingsStackParamList>;
   About: undefined;
-  DownloadQueue: undefined;
+  TaskQueue: undefined;
   Downloads: undefined;
   Categories: undefined;
   Statistics: undefined;
@@ -94,9 +94,9 @@ export type DownloadsScreenProps = StackScreenProps<
   MoreStackParamList,
   'Downloads'
 >;
-export type DownloadQueueScreenProps = StackScreenProps<
+export type TaskQueueScreenProps = StackScreenProps<
   MoreStackParamList,
-  'DownloadQueue'
+  'TaskQueue'
 >;
 export type BrowseSourceScreenProps = StackScreenProps<
   RootStackParamList,

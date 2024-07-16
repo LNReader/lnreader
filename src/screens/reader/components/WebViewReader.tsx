@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Dimensions,
   NativeEventEmitter,
@@ -27,6 +27,7 @@ import * as Speech from 'expo-speech';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
 import { PLUGIN_STORAGE } from '@utils/Storages';
+import { useChapterContext } from '../ChapterContext';
 
 type WebViewPostEvent = {
   type: string;
@@ -34,32 +35,38 @@ type WebViewPostEvent = {
 };
 
 type WebViewReaderProps = {
-  data: {
-    novel: {
-      pluginId: string;
-    };
-    chapter: ChapterInfo;
-  };
   html: string;
   nextChapter: ChapterInfo;
   webViewRef: React.RefObject<WebView>;
   saveProgress(percentage: number): void;
   onPress(): void;
-  onLayout(): void;
   navigateToChapterBySwipe(name: string): void;
+  pageReader: boolean;
 };
 
-const WebViewReader: FC<WebViewReaderProps> = props => {
+const onLogMessage = (payload: { nativeEvent: { data: string } }) => {
+  let dataPayload;
+  try {
+    dataPayload = JSON.parse(payload.nativeEvent.data);
+  } catch (e) {}
+  if (dataPayload) {
+    if (dataPayload.type === 'console') {
+      console.info(`[Console] ${JSON.stringify(dataPayload.msg, null, 2)}`);
+    }
+  }
+};
+
+const WebViewReader: React.FC<WebViewReaderProps> = props => {
   const {
-    data: { chapter, novel },
     html,
     nextChapter,
     webViewRef,
+    pageReader,
     saveProgress,
     onPress,
-    onLayout,
     navigateToChapterBySwipe,
   } = props;
+  const { novel, chapter } = useChapterContext();
   const assetsUriPrefix = useMemo(
     () => (__DEV__ ? 'http://localhost:8081/assets' : 'file:///android_asset'),
     [],
@@ -124,9 +131,22 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
       subscription.remove();
       mmkvListener.remove();
     };
-  });
+  }, []);
+  const debugging = `
+     // Debug
+     console = new Object();
+     console.log = function(log) {
+      reader.post({"type": "console", "msg": log});
+     };
+     console.debug = console.log;
+     console.info = console.log;
+     console.warn = console.log;
+     console.error = console.log;
+     `;
+
   return (
     <WebView
+      injectedJavaScript={debugging}
       ref={webViewRef}
       style={{ backgroundColor: readerSettings.theme }}
       allowFileAccess={true}
@@ -134,8 +154,8 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
       scalesPageToFit={true}
       showsVerticalScrollIndicator={false}
       javaScriptEnabled={true}
-      onLayout={async () => onLayout()}
-      onMessage={ev => {
+      onMessage={(ev: { nativeEvent: { data: string } }) => {
+        __DEV__ && onLogMessage(ev);
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
           case 'hide':
@@ -184,9 +204,11 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
         method: plugin?.imageRequestInit?.method,
         body: plugin?.imageRequestInit?.body,
         html: `
+        <!DOCTYPE html>
                 <html>
                   <head>
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+                    <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
                     <style>
                     :root {
                       --StatusBar-currentHeight: ${StatusBar.currentHeight};
@@ -214,14 +236,21 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                       --theme-rippleColor: ${theme.rippleColor};
                       --chapterCtn-height: ${layoutHeight - 140};
                       }
+                      
                       @font-face {
                         font-family: ${readerSettings.fontFamily};
                         src: url("file:///android_asset/fonts/${
                           readerSettings.fontFamily
                         }.ttf");
                       }
-                    </style>
-                    <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
+                      </style>
+                      ${
+                        pageReader
+                          ? `
+                          <link rel="stylesheet" href="${assetsUriPrefix}/css/horizontal.css">
+                        `
+                          : ''
+                      }
                     <link rel="stylesheet" href="${pluginCustomCSS}">
                     <style>${readerSettings.customCSS}</style>
                     <script>
@@ -241,13 +270,14 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                     </script>
                   </head>
                   <body>
-                    <div class="chapterCtn" onclick="reader.post({type:'hide'})">
+                    <div class="chapterCtn"> 
                       <chapter 
+                        data-page-reader='${pageReader}'
                         data-plugin-id='${novel.pluginId}'
                         data-novel-id='${chapter.novelId}'
                         data-chapter-id='${chapter.id}'
                       >
-                        ${html}
+                      ${html}
                       </chapter>
                       <div class="hidden" id="ToolWrapper">
                           <div id="TTS-Controller"></div>
@@ -264,6 +294,9 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                           </div>
                       </div>
                     </div>
+                    ${
+                      !pageReader
+                        ? `
                     <div class="infoText">
                       ${getString(
                         'readerScreen.finished',
@@ -279,24 +312,30 @@ const WebViewReader: FC<WebViewReaderProps> = props => {
                         : `<div class="infoText">
                           ${getString('readerScreen.noNextChapter')}
                         </div>`
+                    }`
+                        : ''
                     }
                     </body>
+                    <script>
+                        // Debug
+                        console = new Object();
+                        console.log = function(log) {
+                         reader.post({"type": "console", "msg": log});
+                        };
+                        console.debug = console.log;
+                        console.info = console.log;
+                        console.warn = console.log;
+                        console.error = console.log;
+                    </script>
                     <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
+                    <script src="${assetsUriPrefix}/js/default.js"></script>
+                    <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                     <script src="${assetsUriPrefix}/js/index.js"></script>
+                    <script src="${assetsUriPrefix}/js/setup.js"></script>
+                    <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                     <script src="${pluginCustomJS}"></script>
                     <script>
-                      async function fn(){
-                        ${readerSettings.customJS}
-                        // scroll to saved position
-                        reader.refresh();
-                        window.scrollTo({
-                          top: reader.chapterHeight * ${
-                            chapter.progress
-                          } / 100 - reader.layoutHeight,
-                          behavior: 'smooth',
-                        });
-                      }
-                      document.addEventListener("DOMContentLoaded", fn);
+                        setup(${chapter.progress},${readerSettings.customJS})
                     </script>
                 </html>
                 `,

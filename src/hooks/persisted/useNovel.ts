@@ -13,9 +13,10 @@ import {
 import {
   bookmarkChapter as _bookmarkChapter,
   markChapterRead as _markChapterRead,
+  markChaptersRead as _markChaptersRead,
   markPreviuschaptersRead as _markPreviuschaptersRead,
   markPreviousChaptersUnread as _markPreviousChaptersUnread,
-  markChapterUnread as _markChapterUnread,
+  markChaptersUnread as _markChaptersUnread,
   deleteChapter as _deleteChapter,
   deleteChapters as _deleteChapters,
   getPageChapters as _getPageChapters,
@@ -234,10 +235,12 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   };
 
   const markChaptersRead = (_chapters: ChapterInfo[]) => {
-    _chapters.map(chapter => _markChapterRead(chapter.id));
+    const chapterIds = _chapters.map(chapter => chapter.id);
+    _markChaptersRead(chapterIds);
+
     setChapters(
       chapters.map(chapter => {
-        if (_chapters.some(c => c.id === chapter.id)) {
+        if (chapterIds.includes(chapter.id)) {
           return {
             ...chapter,
             unread: false,
@@ -260,10 +263,12 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   };
 
   const markChaptersUnread = (_chapters: ChapterInfo[]) => {
-    _chapters.map(chapter => _markChapterUnread(chapter.id));
+    const chapterIds = _chapters.map(chapter => chapter.id);
+    _markChaptersUnread(chapterIds);
+
     setChapters(
       chapters.map(chapter => {
-        if (_chapters.some(c => c.id === chapter.id)) {
+        if (chapterIds.includes(chapter.id)) {
           return {
             ...chapter,
             unread: true,

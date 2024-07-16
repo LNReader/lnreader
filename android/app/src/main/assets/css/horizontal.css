@@ -1,0 +1,25 @@
+* {
+    touch-action: none;
+}
+
+body {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+html {
+    height: 100vh;
+}
+
+chapter {
+    /* height: calc(100% - 3% - var(--readerSettings-padding) - 2rem); */
+    height: 90vh;
+    display: flexbox;
+    flex-direction: column;
+    flex-wrap: wrap;
+    column-gap: 0;
+    column-width: 100vw;
+    transition: 200ms;
+    padding-top: calc(3% + var(--readerSettings-padding));
+}

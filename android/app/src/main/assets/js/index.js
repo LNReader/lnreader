@@ -9,21 +9,20 @@ const volumeIcon =
   '<svg height="24" viewBox="0 -960 960 960" width="24"><path d="M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm440 40v-322q47 22 73.5 66t26.5 96q0 51-26.5 94.5T560-320Z"/></svg>';
 const selectAllIcon =
   '<svg height="24" viewBox="0 -960 960 960" width="24"><path d="M280-280v-400h400v400H280Zm80-80h240v-240H360v240ZM200-200v80q-33 0-56.5-23.5T120-200h80Zm-80-80v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm80-160h-80q0-33 23.5-56.5T200-840v80Zm80 640v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80q0 33-23.5 56.5T760-120Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80q33 0 56.5 23.5T840-760h-80Z"/></svg>';
-const translateIcon =
-  '<svg height="24" viewBox="0 -960 960 960" width="24"><path d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"/></svg>';
 const resumeIcon =
   '<svg height="24" viewBox="0 -960 960 960" width="24"><path d="M240-240v-480h80v480h-80Zm160 0 400-240-400-240v480Z"/></svg>';
 const pauseIcon =
   '<svg height="24" viewBox="0 -960 960 960" width="24"><path d="M560-200v-560h160v560H560Zm-320 0v-560h160v560H240Z"/></svg>';
-const stopIcon =
-  '<svg height="24" viewBox="0 -960 960 960" width="24"><path d="M320-320h320v-320H320v320ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/></svg>';
 const selectVolumeIcon =
   '<svg height="24" viewBox="0 -960 960 960" width="24"><path d="M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 127-78 224.5T560-131Zm-80-29L280-360H120v-240h160l200-200v640Zm80-160v-322q47 22 73.5 66t26.5 96q0 51-26.5 94.5T560-320ZM40-680v-240h240v80H120v160H40ZM680-40v-80h160v-160h80v240H680Z"/></svg>';
 /**
  * @type {import("./type").Reader}
  */
 class Reader {
-  constructor() {
+  constructor(swipeHandler, toolWrapper) {
+    this.swipeHandler = swipeHandler;
+    this.toolWrapper = toolWrapper;
+
     this.selection = window.getSelection();
     this.viewport = document.querySelector('meta[name=viewport]');
     this.footerWrapper = document.getElementById('reader-footer-wrapper');
@@ -34,24 +33,34 @@ class Reader {
       getComputedStyle(document.querySelector('html')).getPropertyValue(
         'padding-top',
       ),
+      10,
     );
     this.chapter = document.querySelector('chapter');
     this.rawHTML = this.chapter.innerHTML;
     this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
     this.layoutHeight = window.innerHeight;
-    this.pluginId = this.chapter.getAttribute('data-plugin-id');
-    this.novelId = this.chapter.getAttribute('data-novel-id');
-    this.chapterId = this.chapter.getAttribute('data-chapter-id');
-    this.saveProgressInterval = setInterval(
-      () =>
+    this.pluginId = getInt('plugin-id');
+    this.novelId = getInt('novel-id');
+    this.chapterId = getInt('chapter-id');
+    this.chapterWidth = this.chapter.scrollWidth;
+    this.layoutWidth = window.innerWidth;
+    this.pageReader = this.chapter.getAttribute('data-page-reader') === 'true';
+    this.saveProgressInterval = setInterval(() => {
+      if (!this.pageReader) {
         this.post({
           type: 'save',
           data: parseInt(
             ((window.scrollY + this.layoutHeight) / this.chapterHeight) * 100,
+            10,
           ),
-        }),
-      autoSaveInterval,
-    );
+        });
+      } else {
+        this.post({
+          type: 'save',
+          data: parseInt((getPage() / getPages()) * 100, 10),
+        });
+      }
+    }, autoSaveInterval);
     this.time.innerText = new Date().toLocaleTimeString(undefined, {
       hour: '2-digit',
       minute: '2-digit',
@@ -63,13 +72,17 @@ class Reader {
         minute: '2-digit',
         hour12: false,
       });
-    }, 60000);
+    }, 10000);
     this.updateBatteryLevel(batteryLevel);
     this.updateGeneralSettings(initSettings);
   }
-
   refresh = () => {
-    this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
+    if (!this.pageReader) {
+      this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
+    } else {
+      this.percentage.innerText = getPage() + 1 + '/' + (getPages() + 1);
+      this.chapterWidth = this.chapter.scrollWidth;
+    }
   };
   post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
   updateReaderSettings = settings => {
@@ -126,9 +139,9 @@ class Reader {
       this.chapter.innerHTML = this.rawHTML;
     }
     if (settings.swipeGestures) {
-      swipeHandler.enable();
+      this.swipeHandler.enable();
     } else {
-      swipeHandler.disable();
+      this.swipeHandler.disable();
     }
     if (!this.showScrollPercentage && !this.showBatteryAndTime) {
       this.footerWrapper.classList.add('d-none');
@@ -148,13 +161,9 @@ class Reader {
       }
     }
     if (!this.verticalSeekbar) {
-      toolWrapper.$.classList.add('horizontal');
+      this.toolWrapper.$.classList.add('horizontal');
     } else {
-      toolWrapper.$.classList.remove('horizontal');
-    }
-    if (scrollHandler) {
-      scrollHandler.refresh();
-      scrollHandler.update();
+      this.toolWrapper.$.classList.remove('horizontal');
     }
   };
   updateBatteryLevel = level => {
@@ -202,11 +211,12 @@ class ScrollHandler {
           </div>
           
         </div>
-        <div class="scrollbar-item scrollbar-text">
+        <div id="scrollbar-percentage-max" class="scrollbar-item scrollbar-text">
           100
         </div>
       `;
     this.percentage = this.$.querySelector('#scrollbar-percentage');
+    this.percentageMax = this.$.querySelector('#scrollbar-percentage-max');
     this.progress = this.$.querySelector('#scrollbar-progress');
     this.thumb = this.$.querySelector('#scrollbar-thumb-wrapper');
     this.slider = this.$.querySelector('#scrollbar-slider');
@@ -214,6 +224,7 @@ class ScrollHandler {
     this.sliderOffsetY = this.slider.getBoundingClientRect().top;
     this.lock = false;
     window.onscroll = () => !this.lock && this.update();
+    window.ontouchend = () => !this.lock && this.update();
     this.thumb.ontouchstart = () => (this.lock = true);
     this.thumb.ontouchend = () => (this.lock = false);
     this.thumb.ontouchmove = e => {
@@ -227,6 +238,42 @@ class ScrollHandler {
     };
   }
   update = ratio => {
+    if (this.reader.pageReader) {
+      setTimeout(() => this.updateHorizontal(ratio), 10);
+    } else {
+      this.updateVertical(ratio);
+    }
+  };
+  updateHorizontal = ratio => {
+    this.reader.refresh();
+    const totalPages = getPages();
+    const currentPage = getPage();
+
+    this.percentageMax.innerHTML = totalPages + 1;
+    const percentage = parseInt((currentPage / totalPages) * 100, 10);
+    if (this.toolWrapper.visible) {
+      if (this.reader.verticalSeekbar) {
+        this.progress.style.height = percentage + '%';
+        this.progress.style.width = '100%';
+      } else {
+        this.progress.style.height = '100%';
+        this.progress.style.width = percentage + '%';
+      }
+      this.percentage.innerText = currentPage + 1;
+    }
+    if (this.lock) {
+      let newPage = parseInt(totalPages * ratio, 10);
+      newPage = newPage > totalPages ? totalPages : newPage;
+      setPage(newPage);
+      this.reader.chapter.style.transform =
+        'translate(-' + newPage * 100 + '%)';
+    }
+    if (this.reader.percentage) {
+      this.reader.refresh();
+    }
+  };
+
+  updateVertical = ratio => {
     if (ratio === undefined) {
       ratio =
         (window.scrollY + this.reader.layoutHeight) / this.reader.chapterHeight;
@@ -234,7 +281,7 @@ class ScrollHandler {
     if (ratio > 1) {
       ratio = 1;
     }
-    const percentage = parseInt(ratio * 100);
+    const percentage = parseInt(ratio * 100, 10);
     if (this.toolWrapper.visible) {
       if (this.reader.verticalSeekbar) {
         this.progress.style.height = percentage + '%';
@@ -268,6 +315,22 @@ class ScrollHandler {
     this.reader.refresh();
     this.refresh();
     this.update();
+  };
+  onDOMCreation = progress => {
+    this.onShow();
+    if (this.reader.pageReader) {
+      const totalPages = getPages();
+      let page = Math.round((totalPages * progress) / 100);
+      setPage(page >= totalPages ? totalPages : page);
+      this.reader.chapter.style.transform = 'translate(-' + page * 100 + '%)';
+    } else {
+      window.scrollTo({
+        top:
+          (this.reader.chapterHeight * progress) / 100 -
+          this.reader.layoutHeight,
+        behavior: 'smooth',
+      });
+    }
   };
 }
 
@@ -379,7 +442,6 @@ class TextToSpeech {
     if (!this.leaf.hasChildNodes()) {
       return false;
     }
-    const a = [];
     for (let i = 0; i < this.leaf.childNodes.length; i++) {
       if (
         !this.readableNodeNames.includes(this.leaf.childNodes.item(i).nodeName)
@@ -568,12 +630,13 @@ class ContextMenu {
         clientX + this.contextMenu.scrollWidth >= window.innerWidth
           ? window.innerWidth - this.contextMenu.scrollWidth - 20
           : clientX;
+      const page = getPage();
       this.contextMenu.setAttribute(
         'style',
         `--width: ${this.contextMenu.scrollWidth}px;
         --height: ${this.contextMenu.scrollHeight}px;
         --top: ${positionY}px;
-        --left: ${positionX}px;`,
+        --left: ${positionX + window.innerWidth * page}px;`,
       );
     });
   }
@@ -631,12 +694,12 @@ class ImageModal {
 try {
   var swipeHandler = new SwipeHandler();
   var toolWrapper = new ToolWrapper();
-  var reader = new Reader();
+  var reader = new Reader(swipeHandler, toolWrapper);
   var scrollHandler = new ScrollHandler(reader, toolWrapper);
   var tts = new TextToSpeech(reader);
   toolWrapper.tools = [scrollHandler, tts];
-  imageModal = new ImageModal(reader);
-  const contextMenu = new ContextMenu(reader);
+  var imageModal = new ImageModal(reader);
+  var contextMenu = new ContextMenu(reader);
   contextMenu.init();
 } catch (e) {
   alert(e);

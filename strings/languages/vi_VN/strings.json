@@ -186,7 +186,7 @@
       "fontStyle": "Phông chữ",
       "fullscreen": "Toàn màn hình",
       "lineHeight": "Chiều cao dòng",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Xoá khoảng trống thừa",
       "renderHml": "WebView",
       "scrollAmount": "Scroll amount (screen height by default)",
