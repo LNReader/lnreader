@@ -1,9 +1,9 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
-  padding-top: var(--StatusBar-currentHeight);
   word-wrap: break-word;
   padding: 0;
+  padding-top: var(--StatusBar-currentHeight);
 }
 
 ::selection {

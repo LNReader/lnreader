@@ -26,21 +26,20 @@ function getPage() {
 function tapChapter(event) {
   const { clientX, clientY } = event;
   const { x, y } = { x: clientX / bounds.width, y: clientY / bounds.height };
-
   if (y < 0.2) {
-    movePage('prev');
+    pageAction('prev');
   } else if (y > 0.8) {
-    movePage('next');
+    pageAction('next');
   } else if (x < 0.33) {
-    movePage('prev');
+    pageAction('prev');
   } else if (x > 0.66) {
-    movePage('next');
+    pageAction('next');
   } else {
-    movePage();
+    pageAction();
   }
 }
 
-function movePage(panel) {
+function pageAction(panel) {
   switch (panel) {
     case 'next':
       if (page === pages) {

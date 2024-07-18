@@ -13,7 +13,6 @@ html {
 }
 
 chapter {
-    /* height: calc(100% - 3% - var(--readerSettings-padding) - 2rem); */
     height: 90vh;
     display: flexbox;
     flex-direction: column;
@@ -21,5 +20,4 @@ chapter {
     column-gap: 0;
     column-width: 100vw;
     transition: 200ms;
-    padding-top: calc(3% + var(--readerSettings-padding));
 }
