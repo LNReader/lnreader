@@ -34,6 +34,8 @@ export interface ChapterInfo {
   updatedTime: string | null;
   chapterNumber?: number;
   page: string;
+  sourceNovelId?: string;
+  sourceChapterId?: string;
   progress: number | null;
   position?: number;
 }

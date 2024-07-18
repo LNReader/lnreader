@@ -13,6 +13,8 @@ export interface ChapterItem {
   chapterNumber?: number;
   releaseTime?: string;
   page?: string;
+  sourceNovelId?: string;
+  sourceChapterId?: string;
 }
 
 export enum NovelStatus {

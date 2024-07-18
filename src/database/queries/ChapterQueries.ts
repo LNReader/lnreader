@@ -12,8 +12,8 @@ import { NOVEL_STORAGE } from '@utils/Storages';
 
 const db = SQLite.openDatabase('lnreader.db');
 const insertChapterQuery = `
-INSERT OR IGNORE INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
-VALUES (?, ?, ?, ?, ?, ?, ?)
+INSERT OR IGNORE INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, sourceNovelId, sourceChapterId, position)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 `;
 
 export const insertChapters = async (
@@ -34,6 +34,8 @@ export const insertChapters = async (
           novelId,
           chapter.chapterNumber || null,
           chapter.page || '1',
+          chapter.sourceNovelId || '',
+          chapter.sourceChapterId || '',
           index,
         ],
         (txObj, { insertId }) => {
