@@ -1,5 +1,5 @@
 import { LibraryFilter } from '@screens/library/constants/constants';
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 import { LibraryNovelInfo, NovelInfo } from '../types';
 import { txnErrorCallback } from '../utils/helpers';
 

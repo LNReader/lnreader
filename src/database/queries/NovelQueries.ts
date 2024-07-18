@@ -1,4 +1,4 @@
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 const db = SQLite.openDatabase('lnreader.db');
 
 import * as DocumentPicker from 'expo-document-picker';

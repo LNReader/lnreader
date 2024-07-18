@@ -1,4 +1,4 @@
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 import * as cheerio from 'cheerio';
 import BackgroundService from 'react-native-background-actions';
 import FileManager from '@native/FileManager';

@@ -1,4 +1,4 @@
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 import { showToast } from '@utils/showToast';
 import { ChapterInfo, DownloadedChapter } from '../types';
 import { ChapterItem } from '@plugins/types';

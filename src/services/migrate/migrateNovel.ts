@@ -1,4 +1,4 @@
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 import BackgroundService from 'react-native-background-actions';
 
 import { NovelInfo, ChapterInfo } from '@database/types';

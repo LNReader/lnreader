@@ -1,4 +1,4 @@
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 import { noop } from 'lodash-es';
 import { BackupCategory, Category, NovelCategory, CCategory } from '../types';
 import { showToast } from '@utils/showToast';

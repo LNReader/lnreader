@@ -1,4 +1,4 @@
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 import { countBy } from 'lodash-es';
 import { LibraryStats } from '../types';
 import { txnErrorCallback } from '../utils/helpers';

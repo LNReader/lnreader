@@ -1,6 +1,6 @@
 import { History } from '@database/types';
 import { txnErrorCallback } from '@database/utils/helpers';
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 import { noop } from 'lodash-es';
 const db = SQLite.openDatabase('lnreader.db');
 

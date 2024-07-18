@@ -1,5 +1,5 @@
 import { fetchNovel, fetchPage } from '../plugin/fetch';
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 import { ChapterItem, SourceNovel } from '@plugins/types';
 import { getPlugin, LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import FileManager from '@native/FileManager';

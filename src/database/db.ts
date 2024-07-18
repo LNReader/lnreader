@@ -1,4 +1,4 @@
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 import {
   createCategoriesTableQuery,
   createCategoryDefaultQuery,
