@@ -151,6 +151,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
       });
     }
   }
+  console.log('route.novel');
 
   return (
     <>
@@ -257,8 +258,10 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           })),
         }}
         renderTabBar={renderTabBar}
-        renderScene={({ route }) =>
-          isLoading ? (
+        renderScene={({ route }) => {
+          console.log(route);
+
+          return isLoading ? (
             <SourceScreenSkeletonLoading theme={theme} />
           ) : (
             <>
@@ -283,8 +286,8 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
                 navigation={navigation}
               />
             </>
-          )
-        }
+          );
+        }}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
       />

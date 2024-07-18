@@ -66,6 +66,7 @@ export const LibraryView: React.FC<Props> = ({
     });
     setRefreshing(false);
   };
+  console.log('d', novels);
 
   return (
     <View style={{ flex: 1 }}>
