@@ -77,3 +77,11 @@ web-build/
 src/sources/en/generators/
 *.lockb
 .tool-versions
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

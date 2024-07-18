@@ -76,7 +76,8 @@ ext {
 
 android {
     ndkVersion rootProject.ext.ndkVersion
-
+    
+    buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
     namespace "com.rajarsheechatterjee.LNReader"
     defaultConfig {

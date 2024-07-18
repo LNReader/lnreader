@@ -18,47 +18,35 @@ import expo.modules.ApplicationLifecycleDispatcher.onConfigurationChanged
 import expo.modules.ReactNativeHostWrapper
 
 class MainApplication : Application(), ReactApplication {
-    private val mReactNativeHost: ReactNativeHost =
-        ReactNativeHostWrapper(this, object : DefaultReactNativeHost(this) {
-            override fun getUseDeveloperSupport(): Boolean {
-                return BuildConfig.DEBUG
+    override val reactNativeHost: ReactNativeHost =
+      object : DefaultReactNativeHost(this) {
+        override fun getPackages(): List<ReactPackage> =
+            PackageList(this).packages.apply {
+                add(VolumeButtonListenerPackage())
+                add(ZipArchivePackage())
+                add(FileManagerPackage())
+                add(EpubUtilPackage())
             }
+ 
+        override fun getJSMainModuleName(): String = "index"
+ 
+        override fun getUseDeveloperSupport(): Boolean = BuildConfig.DEBUG
+ 
+        override val isNewArchEnabled: Boolean = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
+        override val isHermesEnabled: Boolean = BuildConfig.IS_HERMES_ENABLED
+      }
 
-            override fun getPackages(): List<ReactPackage> {
-                val packages: MutableList<ReactPackage> = PackageList(this).packages
-                packages.add(VolumeButtonListenerPackage())
-                packages.add(ZipArchivePackage())
-                packages.add(FileManagerPackage())
-                packages.add(EpubUtilPackage())
-                return packages
-            }
 
-            override fun getJSMainModuleName(): String {
-                return "index"
-            }
 
-            override val isNewArchEnabled: Boolean
-                get() = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
-            override val isHermesEnabled: Boolean
-                get() = BuildConfig.IS_HERMES_ENABLED
-        })
-
-    override fun getReactNativeHost(): ReactNativeHost {
-        return mReactNativeHost
-    }
-
+      override val reactHost: ReactHost
+      get() = getDefaultReactHost(applicationContext, reactNativeHost)
+   
     override fun onCreate() {
-        super.onCreate()
-        SoLoader.init(this,  /* native exopackage */false)
-        if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-            // If you opted-in for the New Architecture, we load the native entry point for this app.
-            load()
-        }
-        onApplicationCreate(this)
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        onConfigurationChanged(this, newConfig)
+      super.onCreate()
+      SoLoader.init(this, false)
+      if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+        // If you opted-in for the New Architecture, we load the native entry point for this app.
+        load()
+      }
     }
 }
