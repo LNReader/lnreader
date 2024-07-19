@@ -1,14 +1,13 @@
 import { LibraryFilter } from '@screens/library/constants/constants';
-import * as SQLite from 'expo-sqlite/legacy';
 import { LibraryNovelInfo, NovelInfo } from '../types';
 import { txnErrorCallback } from '../utils/helpers';
+import getDb from '@database/openDB';
 
-const db = SQLite.openDatabase('lnreader.db');
-
-export const getNovelsWithCategory = (
+export const getNovelsWithCategory = async (
   categoryId: number,
   onlyOngoingNovels?: boolean,
 ): Promise<NovelInfo[]> => {
+  const db = await getDb();
   let query = `
     SELECT
     * 
@@ -35,9 +34,10 @@ export const getNovelsWithCategory = (
   );
 };
 
-export const getLibraryNovelsFromDb = (
+export const getLibraryNovelsFromDb = async (
   onlyOngoingNovels?: boolean,
 ): Promise<NovelInfo[]> => {
+  const db = await getDb();
   let getLibraryNovelsQuery = 'SELECT * FROM Novel WHERE inLibrary = 1';
 
   if (onlyOngoingNovels) {
@@ -84,7 +84,7 @@ const getLibraryWithCategoryQuery = `
   ) WHERE 1 = 1 
 `;
 
-export const getLibraryWithCategory = ({
+export const getLibraryWithCategory = async ({
   filter,
   searchText,
   sortOrder,
@@ -95,6 +95,7 @@ export const getLibraryWithCategory = ({
   searchText?: string;
   downloadedOnlyMode?: boolean;
 }): Promise<LibraryNovelInfo[]> => {
+  const db = await getDb();
   let query = getLibraryWithCategoryQuery;
   if (filter) {
     query += ` AND ${filter} `;

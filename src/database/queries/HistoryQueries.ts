@@ -1,11 +1,10 @@
 import { History } from '@database/types';
 import { txnErrorCallback } from '@database/utils/helpers';
-import * as SQLite from 'expo-sqlite/legacy';
 import { noop } from 'lodash-es';
-const db = SQLite.openDatabase('lnreader.db');
 
 import { showToast } from '../../utils/showToast';
 import { getString } from '@strings/translations';
+import getDb from '@database/openDB';
 
 const getHistoryQuery = `
     SELECT 
@@ -19,6 +18,7 @@ const getHistoryQuery = `
     `;
 
 export const getHistoryFromDb = async (): Promise<History[]> => {
+  const db = await getDb();
   return new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
@@ -34,6 +34,7 @@ export const getHistoryFromDb = async (): Promise<History[]> => {
 };
 
 export const insertHistory = async (chapterId: number) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(
       "UPDATE Chapter SET readTime = datetime('now','localtime') WHERE id = ?",
@@ -45,6 +46,7 @@ export const insertHistory = async (chapterId: number) => {
 };
 
 export const deleteChapterHistory = async (chapterId: number) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(
       'UPDATE Chapter SET readTime = NULL WHERE id = ?',
@@ -56,6 +58,7 @@ export const deleteChapterHistory = async (chapterId: number) => {
 };
 
 export const deleteAllHistory = async () => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql('UPDATE CHAPTER SET readTime = NULL');
   });

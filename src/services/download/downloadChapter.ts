@@ -1,4 +1,3 @@
-import * as SQLite from 'expo-sqlite/legacy';
 import * as cheerio from 'cheerio';
 import BackgroundService from 'react-native-background-actions';
 import FileManager from '@native/FileManager';
@@ -10,8 +9,7 @@ import { getString } from '@strings/translations';
 import { getChapter } from '@database/queries/ChapterQueries';
 import { sleep } from '@utils/sleep';
 import { getNovelById } from '@database/queries/NovelQueries';
-
-const db = SQLite.openDatabase('lnreader.db');
+import getDb from '@database/openDB';
 
 const createChapterFolder = async (
   path: string,
@@ -59,6 +57,7 @@ const downloadFiles = async (
 };
 
 export const downloadChapter = async ({ chapterId }: { chapterId: number }) => {
+  const db = await getDb();
   const chapter = await getChapter(chapterId);
   if (!chapter) {
     throw new Error('Chapter not found with id: ' + chapterId);

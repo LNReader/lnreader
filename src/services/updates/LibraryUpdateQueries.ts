@@ -1,18 +1,18 @@
 import { fetchNovel, fetchPage } from '../plugin/fetch';
-import * as SQLite from 'expo-sqlite/legacy';
 import { ChapterItem, SourceNovel } from '@plugins/types';
 import { getPlugin, LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { downloadFile } from '@plugins/helpers/fetch';
 import ServiceManager from '@services/ServiceManager';
-const db = SQLite.openDatabase('lnreader.db');
+import getDb from '@database/openDB';
 
-const updateNovelMetadata = (
+const updateNovelMetadata = async (
   pluginId: string,
   novelId: number,
   novel: SourceNovel,
 ) => {
+  const db = await getDb();
   return new Promise(async (resolve, reject) => {
     let { name, cover, summary, author, artist, genres, status, totalPages } =
       novel;
@@ -58,7 +58,8 @@ const updateNovelMetadata = (
   });
 };
 
-const updateNovelTotalPages = (novelId: number, totalPages: number) => {
+const updateNovelTotalPages = async (novelId: number, totalPages: number) => {
+  const db = await getDb();
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
@@ -74,13 +75,14 @@ const updateNovelTotalPages = (novelId: number, totalPages: number) => {
   });
 };
 
-const updateNovelChapters = (
+const updateNovelChapters = async (
   novelName: string,
   novelId: number,
   chapters: ChapterItem[],
   downloadNewChapters?: boolean,
   page?: string,
 ) => {
+  const db = await getDb();
   return new Promise((resolve, reject) => {
     db.transaction(async tx => {
       for (let position = 0; position < chapters.length; position++) {

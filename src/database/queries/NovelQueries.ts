@@ -1,6 +1,3 @@
-import * as SQLite from 'expo-sqlite/legacy';
-const db = SQLite.openDatabase('lnreader.db');
-
 import * as DocumentPicker from 'expo-document-picker';
 
 import { fetchNovel } from '@services/plugin/fetch';
@@ -16,11 +13,13 @@ import { NOVEL_STORAGE } from '@utils/Storages';
 import FileManager from '@native/FileManager';
 import { downloadFile } from '@plugins/helpers/fetch';
 import { getPlugin } from '@plugins/pluginManager';
+import getDb from '@database/openDB';
 
 export const insertNovelAndChapters = async (
   pluginId: string,
   sourceNovel: SourceNovel,
 ): Promise<number | undefined> => {
+  const db = await getDb();
   const insertNovelQuery =
     'INSERT INTO Novel (path, pluginId, name, cover, summary, author, artist, status, genres, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   const novelId: number | undefined = await new Promise(resolve => {
@@ -69,6 +68,7 @@ export const insertNovelAndChapters = async (
 };
 
 export const getAllNovels = async (): Promise<NovelInfo[]> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql('SELECT * FROM Novel', [], (txObj, { rows }) =>
@@ -81,6 +81,7 @@ export const getAllNovels = async (): Promise<NovelInfo[]> => {
 export const getNovelById = async (
   novelId: number,
 ): Promise<NovelInfo | null> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -97,6 +98,7 @@ export const getNovelByPath = async (
   novelPath: string,
   pluginId: string,
 ): Promise<NovelInfo | null> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -116,6 +118,7 @@ export const switchNovelToLibrary = async (
   novelPath: string,
   pluginId: string,
 ) => {
+  const db = await getDb();
   const novel = await getNovelByPath(novelPath, pluginId);
   if (novel) {
     db.transaction(tx => {
@@ -170,7 +173,8 @@ export const switchNovelToLibrary = async (
 };
 
 // allow to delete local novels
-export const removeNovelsFromLibrary = (novelIds: Array<number>) => {
+export const removeNovelsFromLibrary = async (novelIds: Array<number>) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(
       `UPDATE Novel SET inLibrary = 0 WHERE id IN (${novelIds.join(', ')});`,
@@ -182,7 +186,8 @@ export const removeNovelsFromLibrary = (novelIds: Array<number>) => {
   showToast(getString('browseScreen.removeFromLibrary'));
 };
 
-export const getCachedNovels = (): Promise<NovelInfo[]> => {
+export const getCachedNovels = async (): Promise<NovelInfo[]> => {
+  const db = await getDb();
   return new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
@@ -195,6 +200,7 @@ export const getCachedNovels = (): Promise<NovelInfo[]> => {
   });
 };
 export const deleteCachedNovels = async () => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(
       'DELETE FROM Novel WHERE inLibrary = 0',
@@ -210,6 +216,7 @@ const restoreFromBackupQuery =
   'INSERT OR REPLACE INTO Novel (path, name, pluginId, cover, summary, author, artist, status, genres, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const restoreLibrary = async (novel: NovelInfo) => {
+  const db = await getDb();
   const sourceNovel = await fetchNovel(novel.pluginId, novel.path).catch(e => {
     throw e;
   });
@@ -261,6 +268,7 @@ export const restoreLibrary = async (novel: NovelInfo) => {
 };
 
 export const updateNovelInfo = async (info: NovelInfo) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(
       'UPDATE Novel SET name = ?, cover = ?, path = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ?, isLocal = ? WHERE id = ?',
@@ -283,6 +291,7 @@ export const updateNovelInfo = async (info: NovelInfo) => {
 };
 
 export const pickCustomNovelCover = async (novel: NovelInfo) => {
+  const db = await getDb();
   const image = await DocumentPicker.getDocumentAsync({ type: 'image/*' });
   if (image.assets && image.assets[0]) {
     const novelDir = NOVEL_STORAGE + '/' + novel.pluginId + '/' + novel.id;
@@ -308,6 +317,7 @@ export const updateNovelCategoryById = async (
   novelId: number,
   categoryIds: number[],
 ) => {
+  const db = await getDb();
   db.transaction(tx => {
     categoryIds.forEach(categoryId => {
       tx.executeSql(
@@ -324,6 +334,7 @@ export const updateNovelCategories = async (
   novelIds: number[],
   categoryIds: number[],
 ): Promise<void> => {
+  const db = await getDb();
   let queries: string[] = [];
   queries.push(
     `DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(
@@ -369,6 +380,7 @@ const restoreObjectQuery = (table: string, obj: any) => {
 };
 
 export const _restoreNovelAndChapters = async (backupNovel: BackupNovel) => {
+  const db = await getDb();
   const { chapters, ...novel } = backupNovel;
   await new Promise(resolve => {
     db.transaction(tx => {

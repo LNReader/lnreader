@@ -1,4 +1,3 @@
-import * as SQLite from 'expo-sqlite/legacy';
 import {
   createCategoriesTableQuery,
   createCategoryDefaultQuery,
@@ -13,12 +12,10 @@ import {
 import { dbTxnErrorCallback } from './utils/helpers';
 import { noop } from 'lodash-es';
 import { createRepositoryTableQuery } from './tables/RepositoryTable';
+import getDb from './openDB';
 
-const dbName = 'lnreader.db';
-
-const db = SQLite.openDatabase(dbName);
-
-export const createTables = () => {
+export const createTables = async () => {
+  const db = await getDb();
   db.exec([{ sql: 'PRAGMA foreign_keys = ON', args: [] }], false, () => {});
   db.transaction(tx => {
     tx.executeSql(createNovelTableQuery);
@@ -29,16 +26,19 @@ export const createTables = () => {
     tx.executeSql(createChapterTableQuery);
     tx.executeSql(createChapterNovelIdIndexQuery);
   });
+  console.log('create reop');
 
   db.transaction(tx => {
     tx.executeSql(createRepositoryTableQuery);
   });
+  console.log('end create', db);
 };
 
 /**
  * For Testing
  */
-export const deleteDatabase = async () => {
+export async function deleteDatabase() {
+  const db = await getDb();
   db.transaction(
     tx => {
       tx.executeSql('DROP TABLE Category');
@@ -51,4 +51,4 @@ export const deleteDatabase = async () => {
     dbTxnErrorCallback,
     noop,
   );
-};
+}

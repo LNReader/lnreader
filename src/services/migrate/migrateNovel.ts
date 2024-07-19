@@ -1,4 +1,3 @@
-import * as SQLite from 'expo-sqlite/legacy';
 import BackgroundService from 'react-native-background-actions';
 
 import { NovelInfo, ChapterInfo } from '@database/types';
@@ -20,14 +19,13 @@ import {
 } from '@hooks/persisted/useNovel';
 import { sleep } from '@utils/sleep';
 import ServiceManager from '@services/ServiceManager';
+import getDb from '@database/openDB';
 
 export interface MigrateNovelData {
   pluginId: string;
   fromNovel: NovelInfo;
   toNovelPath: string;
 }
-
-const db = SQLite.openDatabase('lnreader.db');
 
 const migrateNovelMetaDataQuery =
   'UPDATE Novel SET cover = ?, summary = ?, author = ?, artist = ?, status = ?, genres = ?, inLibrary = 1  WHERE id = ?';
@@ -56,6 +54,7 @@ export const migrateNovel = async ({
   fromNovel,
   toNovelPath,
 }: MigrateNovelData) => {
+  const db = await getDb();
   let fromChapters = await getNovelChapters(fromNovel.id);
   let toNovel = await getNovelByPath(toNovelPath, pluginId);
   let toChapters: ChapterInfo[];

@@ -9,8 +9,8 @@ import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
+import getDb from '@database/openDB';
 
-const db = SQLite.openDatabase('lnreader.db');
 const insertChapterQuery = `
 INSERT OR IGNORE INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
 VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -20,6 +20,7 @@ export const insertChapters = async (
   novelId: number,
   chapters?: ChapterItem[],
 ) => {
+  const db = await getDb();
   if (!chapters?.length) {
     return;
   }
@@ -63,9 +64,10 @@ export const insertChapters = async (
 const getPageChaptersQuery = (sort = 'ORDER BY position ASC', filter = '') =>
   `SELECT * FROM Chapter WHERE novelId = ? AND page = ? ${filter} ${sort}`;
 
-export const getCustomPages = (
+export const getCustomPages = async (
   novelId: number,
 ): Promise<{ page: string }[]> => {
+  const db = await getDb();
   return new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
@@ -77,7 +79,10 @@ export const getCustomPages = (
   });
 };
 
-export const getNovelChapters = (novelId: number): Promise<ChapterInfo[]> => {
+export const getNovelChapters = async (
+  novelId: number,
+): Promise<ChapterInfo[]> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -93,6 +98,7 @@ export const getNovelChapters = (novelId: number): Promise<ChapterInfo[]> => {
 export const getChapter = async (
   chapterId: number,
 ): Promise<ChapterInfo | null> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -105,12 +111,13 @@ export const getChapter = async (
   );
 };
 
-export const getPageChapters = (
+export const getPageChapters = async (
   novelId: number,
   sort?: string,
   filter?: string,
   page?: string,
 ): Promise<ChapterInfo[]> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -134,10 +141,11 @@ const getPrevChapterQuery = `
     id < ?
   `;
 
-export const getPrevChapter = (
+export const getPrevChapter = async (
   novelId: number,
   chapterId: number,
 ): Promise<ChapterInfo | null> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -165,10 +173,11 @@ const getNextChapterQuery = `
     id > ?
   `;
 
-export const getNextChapter = (
+export const getNextChapter = async (
   novelId: number,
   chapterId: number,
 ): Promise<ChapterInfo | null> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -187,6 +196,7 @@ export const getNextChapter = (
 const markChapterReadQuery = 'UPDATE Chapter SET `unread` = 0 WHERE id = ?';
 
 export const markChapterRead = async (chapterId: number) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(markChapterReadQuery, [chapterId], noop, (_txObj, _error) => {
       // console.log(error)
@@ -196,6 +206,7 @@ export const markChapterRead = async (chapterId: number) => {
 };
 
 export const markChaptersRead = async (chapterIds: number[]) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(
       `UPDATE Chapter SET \`unread\` = 0 WHERE id IN (${chapterIds.join(',')})`,
@@ -209,12 +220,14 @@ export const markChaptersRead = async (chapterIds: number[]) => {
 const markChapterUnreadQuery = 'UPDATE Chapter SET `unread` = 1 WHERE id = ?';
 
 export const markChapterUnread = async (chapterId: number) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(markChapterUnreadQuery, [chapterId], noop, txnErrorCallback);
   });
 };
 
 export const markChaptersUnread = async (chapterIds: number[]) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(
       `UPDATE Chapter SET \`unread\` = 1 WHERE id IN (${chapterIds.join(',')})`,
@@ -229,6 +242,7 @@ const markAllChaptersReadQuery =
   'UPDATE Chapter SET `unread` = 0 WHERE novelId = ?';
 
 export const markAllChaptersRead = async (novelId: number) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(markAllChaptersReadQuery, [novelId], noop, txnErrorCallback);
   });
@@ -238,6 +252,7 @@ const markAllChaptersUnreadQuery =
   'UPDATE Chapter SET `unread` = 1 WHERE novelId = ?';
 
 export const markAllChaptersUnread = async (novelId: number) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(
       markAllChaptersUnreadQuery,
@@ -267,6 +282,7 @@ export const deleteChapter = async (
   novelId: number,
   chapterId: number,
 ) => {
+  const db = await getDb();
   const updateIsDownloadedQuery =
     'UPDATE Chapter SET isDownloaded = 0 WHERE id = ?';
 
@@ -282,6 +298,7 @@ export const deleteChapters = async (
   novelId: number,
   chapters?: ChapterInfo[],
 ) => {
+  const db = await getDb();
   if (!chapters?.length) {
     return;
   }
@@ -307,6 +324,7 @@ export const deleteChapters = async (
 };
 
 export const deleteDownloads = async (chapters: DownloadedChapter[]) => {
+  const db = await getDb();
   await Promise.all(
     chapters?.map(chapter => {
       deleteDownloadedFiles(chapter.pluginId, chapter.novelId, chapter.id);
@@ -320,6 +338,7 @@ export const deleteDownloads = async (chapters: DownloadedChapter[]) => {
 };
 
 const getReadDownloadedChapters = async (): Promise<DownloadedChapter[]> => {
+  const db = await getDb();
   return new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
@@ -336,6 +355,7 @@ const getReadDownloadedChapters = async (): Promise<DownloadedChapter[]> => {
 };
 
 export const deleteReadChaptersFromDb = async () => {
+  const db = await getDb();
   const chapters = await getReadDownloadedChapters();
   await Promise.all(
     chapters?.map(chapter => {
@@ -356,6 +376,7 @@ export const updateChapterProgress = async (
   chapterId: number,
   progress: number,
 ) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql('UPDATE Chapter SET progress = ? WHERE id = ?', [
       progress,
@@ -368,6 +389,7 @@ export const updateChapterProgressByIds = async (
   chapterIds: number[],
   progress: number,
 ) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(
       `UPDATE Chapter SET progress = ? WHERE id in (${chapterIds.join(',')})`,
@@ -380,6 +402,7 @@ const bookmarkChapterQuery =
   'UPDATE Chapter SET bookmark = (CASE WHEN bookmark = 0 THEN 1 ELSE 0 END) WHERE id = ?';
 
 export const bookmarkChapter = async (chapterId: number) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(bookmarkChapterQuery, [chapterId]);
   });
@@ -392,6 +415,7 @@ export const markPreviuschaptersRead = async (
   chapterId: number,
   novelId: number,
 ) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(
       markPreviuschaptersReadQuery,
@@ -412,6 +436,7 @@ export const markPreviousChaptersUnread = async (
   chapterId: number,
   novelId: number,
 ) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(
       markPreviousChaptersUnreadQuery,
@@ -435,7 +460,8 @@ const getDownloadedChaptersQuery = `
     WHERE Chapter.isDownloaded = 1
   `;
 
-export const getDownloadedChapters = (): Promise<DownloadedChapter[]> => {
+export const getDownloadedChapters = async (): Promise<DownloadedChapter[]> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -465,7 +491,8 @@ ON Chapter.novelId = Novel.id AND Chapter.updatedTime IS NOT NULL
 ORDER BY Chapter.updatedTime DESC
 `;
 
-export const getUpdatesFromDb = (): Promise<Update[]> => {
+export const getUpdatesFromDb = async (): Promise<Update[]> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -478,7 +505,8 @@ export const getUpdatesFromDb = (): Promise<Update[]> => {
   );
 };
 
-export const clearUpdates = () => {
+export const clearUpdates = async () => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql(
       'UPDATE Chapter SET updatedTime = NULL',

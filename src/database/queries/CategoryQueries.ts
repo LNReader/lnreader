@@ -1,16 +1,16 @@
-import * as SQLite from 'expo-sqlite/legacy';
 import { noop } from 'lodash-es';
 import { BackupCategory, Category, NovelCategory, CCategory } from '../types';
 import { showToast } from '@utils/showToast';
 import { txnErrorCallback } from '../utils/helpers';
 import { getString } from '@strings/translations';
-const db = SQLite.openDatabase('lnreader.db');
+import getDb from '@database/openDB';
 
 const getCategoriesQuery = `
   SELECT * FROM Category ORDER BY sort
 	`;
 
 export const getCategoriesFromDb = async (): Promise<Category[]> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -26,6 +26,7 @@ export const getCategoriesFromDb = async (): Promise<Category[]> => {
 export const getCategoriesWithCount = async (
   novelIds: number[],
 ): Promise<CCategory[]> => {
+  const db = await getDb();
   const getCategoriesWithCountQuery = `
   SELECT *, novelsCount 
   FROM Category LEFT JOIN 
@@ -53,10 +54,12 @@ export const getCategoriesWithCount = async (
 
 const createCategoryQuery = 'INSERT INTO Category (name) VALUES (?)';
 
-export const createCategory = (categoryName: string): void =>
+export const createCategory = async (categoryName: string): Promise<void> => {
+  const db = await getDb();
   db.transaction(tx =>
     tx.executeSql(createCategoryQuery, [categoryName], noop, txnErrorCallback),
   );
+};
 
 const beforeDeleteCategoryQuery = `
     UPDATE NovelCategory SET categoryId = (SELECT id FROM Category WHERE sort = 1)
@@ -69,7 +72,8 @@ const beforeDeleteCategoryQuery = `
 `;
 const deleteCategoryQuery = 'DELETE FROM Category WHERE id = ?';
 
-export const deleteCategoryById = (category: Category): void => {
+export const deleteCategoryById = async (category: Category): Promise<void> => {
+  const db = await getDb();
   if (category.sort === 1 || category.id === 2) {
     return showToast(getString('categories.cantDeleteDefault'));
   }
@@ -86,10 +90,11 @@ export const deleteCategoryById = (category: Category): void => {
 
 const updateCategoryQuery = 'UPDATE Category SET name = ? WHERE id = ?';
 
-export const updateCategory = (
+export const updateCategory = async (
   categoryId: number,
   categoryName: string,
-): void =>
+) => {
+  const db = await getDb();
   db.transaction(tx =>
     tx.executeSql(
       updateCategoryQuery,
@@ -98,14 +103,16 @@ export const updateCategory = (
       txnErrorCallback,
     ),
   );
+};
 
 const isCategoryNameDuplicateQuery = `
   SELECT COUNT(*) as isDuplicate FROM Category WHERE name = ?
 	`;
 
-export const isCategoryNameDuplicate = (
+export const isCategoryNameDuplicate = async (
   categoryName: string,
 ): Promise<boolean> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -123,7 +130,8 @@ export const isCategoryNameDuplicate = (
 
 const updateCategoryOrderQuery = 'UPDATE Category SET sort = ? WHERE id = ?';
 
-export const updateCategoryOrderInDb = (categories: Category[]): void => {
+export const updateCategoryOrderInDb = async (categories: Category[]) => {
+  const db = await getDb();
   // Do not set local as default one
   if (categories.length && categories[0].id === 2) {
     return;
@@ -140,7 +148,8 @@ export const updateCategoryOrderInDb = (categories: Category[]): void => {
   });
 };
 
-export const getAllNovelCategories = (): Promise<NovelCategory[]> => {
+export const getAllNovelCategories = async (): Promise<NovelCategory[]> => {
+  const db = await getDb();
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
@@ -153,7 +162,8 @@ export const getAllNovelCategories = (): Promise<NovelCategory[]> => {
   );
 };
 
-export const _restoreCategory = (category: BackupCategory) => {
+export const _restoreCategory = async (category: BackupCategory) => {
+  const db = await getDb();
   db.transaction(tx => {
     tx.executeSql('DELETE FROM Category WHERE id = ? OR sort = ?', [
       category.id,

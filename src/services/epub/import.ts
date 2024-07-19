@@ -1,5 +1,3 @@
-import * as SQLite from 'expo-sqlite/legacy';
-const db = SQLite.openDatabase('lnreader.db');
 import BackgroundService from 'react-native-background-actions';
 import ZipArchive from '@native/ZipArchive';
 import dayjs from 'dayjs';
@@ -12,8 +10,9 @@ import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
 import EpubUtil from '@native/EpubUtil';
 import { NOVEL_STORAGE } from '@utils/Storages';
+import getDb from '@database/openDB';
 
-const insertLocalNovel = (
+const insertLocalNovel = async (
   name: string,
   path: string,
   cover?: string,
@@ -21,6 +20,7 @@ const insertLocalNovel = (
   artist?: string,
   summary?: string,
 ): Promise<number> => {
+  const db = await getDb();
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
@@ -68,13 +68,14 @@ const insertLocalNovel = (
   });
 };
 
-const insertLocalChapter = (
+const insertLocalChapter = async (
   novelId: number,
   fakeId: number,
   name: string,
   path: string,
   releaseTime: string,
 ): Promise<string[]> => {
+  const db = await getDb();
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
