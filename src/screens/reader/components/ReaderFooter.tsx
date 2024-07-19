@@ -16,7 +16,7 @@ interface ChapterFooterProps {
   prevChapter: ChapterInfo;
   readerSheetRef: React.RefObject<BottomSheetModalMethods>;
   scrollToStart: () => void;
-  navigateToChapterBySwipe: (actionName: string) => void;
+  navigateChapter(position: 'NEXT' | 'PREV'): void;
   navigation: ChapterScreenProps['navigation'];
   openDrawer: () => void;
 }
@@ -27,7 +27,7 @@ const ChapterFooter = ({
   prevChapter,
   readerSheetRef,
   scrollToStart,
-  navigateToChapterBySwipe,
+  navigateChapter,
   navigation,
   openDrawer,
 }: ChapterFooterProps) => {
@@ -54,7 +54,7 @@ const ChapterFooter = ({
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
-          onPress={() => navigateToChapterBySwipe('SWIPE_RIGHT')}
+          onPress={() => navigateChapter('PREV')}
         >
           <IconButton
             icon="chevron-left"
@@ -114,7 +114,7 @@ const ChapterFooter = ({
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
-          onPress={() => navigateToChapterBySwipe('SWIPE_LEFT')}
+          onPress={() => navigateChapter('NEXT')}
         >
           <IconButton
             icon="chevron-right"

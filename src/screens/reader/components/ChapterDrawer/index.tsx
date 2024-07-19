@@ -12,7 +12,6 @@ import { FlashList, ViewToken } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
-import { ChapterScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
 import { useNovel } from '@hooks/persisted/useNovel';
@@ -29,12 +28,13 @@ type ButtonsProperties = {
   down: ButtonProperties;
 };
 
-const ChapterDrawer = ({
-  navigation,
-}: {
-  navigation: ChapterScreenProps['navigation'];
-}) => {
-  const { novel: novelItem, chapter } = useChapterContext();
+const ChapterDrawer = () => {
+  const {
+    novel: novelItem,
+    chapter,
+    setChapter,
+    setLoading,
+  } = useChapterContext();
   const { chapters, novelSettings, pages, setPageIndex } = useNovel(
     novelItem.path,
     novelItem.pluginId,
@@ -139,14 +139,17 @@ const ChapterDrawer = ({
           ref={listRef}
           onViewableItemsChanged={checkViewableItems}
           data={chapters}
+          extraData={chapter}
           renderItem={val =>
             renderListChapter({
               item: val.item,
-              novelItem,
               styles,
               theme,
-              navigation,
               chapterId: chapter.id,
+              onPress: () => {
+                setLoading(true);
+                setChapter(val.item);
+              },
             })
           }
           estimatedItemSize={60}

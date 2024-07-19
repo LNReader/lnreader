@@ -26,15 +26,17 @@ import VolumeButtonListener from '@native/volumeButtonListener';
 import * as Speech from 'expo-speech';
 import { defaultTo } from 'lodash-es';
 import { useChapterContext } from '../ChapterContext';
+import { showToast } from '@utils/showToast';
+import { getString } from '@strings/translations';
 
 const emmiter = new NativeEventEmitter(VolumeButtonListener);
 
 export default function useChapter(webViewRef: RefObject<WebView>) {
-  const { novel, chapter } = useChapterContext();
+  const { novel, chapter, setChapter, loading, setLoading } =
+    useChapterContext();
   const { setLastRead } = useNovel(novel.path, novel.pluginId);
   const [hidden, setHidden] = useState(true);
   const [chapterText, setChapterText] = useState('');
-  const [loading, setLoading] = useState(true);
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
     ChapterInfo[]
   >([]);
@@ -168,13 +170,43 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
     setHidden(!hidden);
   };
 
+  const navigateChapter = (position: 'NEXT' | 'PREV') => {
+    let navChapter;
+    if (position === 'NEXT') {
+      navChapter = nextChapter;
+    } else if (position === 'PREV') {
+      navChapter = prevChapter;
+    } else {
+      return;
+    }
+
+    if (navChapter) {
+      setLoading(true);
+      setChapter(navChapter);
+    } else {
+      showToast(
+        position === 'NEXT'
+          ? getString('readerScreen.noNextChapter')
+          : getString('readerScreen.noPreviousChapter'),
+      );
+    }
+  };
+
   useEffect(() => {
-    getChapter();
+    setLoading(true);
+    getChapter().finally(() => setLoading(false));
     if (!incognitoMode) {
       insertHistory(chapter.id);
       setLastRead(chapter);
     }
   }, [chapter]);
+
+  const refetch = () => {
+    setLoading(true);
+    setError('');
+    getChapter().finally(() => setLoading(false));
+  };
+
   return {
     hidden,
     chapter,
@@ -184,10 +216,9 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
     loading,
     chapterText,
     setHidden,
-    setLoading,
-    setError,
-    getChapter,
     saveProgress,
     hideHeader,
+    navigateChapter,
+    refetch,
   };
 }
