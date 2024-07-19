@@ -8,7 +8,6 @@ const getRepositoriesQuery = 'SELECT * FROM Repository';
 
 export const getRepositoriesFromDb = async (): Promise<Repository[]> => {
   const db = await getDb();
-  console.log(db);
 
   return new Promise(resolve =>
     db.transaction(

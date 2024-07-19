@@ -2,7 +2,7 @@ import * as SQLite from 'expo-sqlite/legacy';
 
 const dbName = 'lnreader.db';
 let db: null | SQLite.SQLiteDatabase = null;
-export default function getDb() {
+export default async function getDb() {
   if (db !== null) {
     console.log('returned saved db');
 

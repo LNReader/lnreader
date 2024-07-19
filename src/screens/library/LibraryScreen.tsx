@@ -151,7 +151,6 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
       });
     }
   }
-  console.log('route.novel');
 
   return (
     <>
@@ -187,10 +186,15 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
         menuButtons={[
           {
             title: getString('libraryScreen.extraMenu.updateLibrary'),
-            onPress: () =>
+            onPress: () => {
               ServiceManager.manager.addTask({
                 name: 'UPDATE_LIBRARY',
-              }),
+              });
+            },
+
+            // ServiceManager.manager.addTask({
+            //   name: 'UPDATE_LIBRARY',
+            // }),
           },
           {
             title: getString('libraryScreen.extraMenu.updateCategory'),

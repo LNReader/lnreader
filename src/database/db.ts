@@ -26,12 +26,10 @@ export const createTables = async () => {
     tx.executeSql(createChapterTableQuery);
     tx.executeSql(createChapterNovelIdIndexQuery);
   });
-  console.log('create reop');
 
   db.transaction(tx => {
     tx.executeSql(createRepositoryTableQuery);
   });
-  console.log('end create', db);
 };
 
 /**

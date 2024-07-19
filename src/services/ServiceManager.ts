@@ -164,6 +164,8 @@ export default class ServiceManager {
     return getMMKVObject<Array<BackgroundTask>>(this.STORE_KEY) || [];
   }
   addTask(tasks: BackgroundTask | BackgroundTask[]) {
+    console.log('added task');
+
     const currentTasks = this.getTaskList();
     const addableTasks = (Array.isArray(tasks) ? tasks : [tasks]).filter(
       task =>
