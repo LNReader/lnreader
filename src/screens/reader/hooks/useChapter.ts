@@ -28,6 +28,7 @@ import { defaultTo } from 'lodash-es';
 import { useChapterContext } from '../ChapterContext';
 import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
+import { getPlugin } from '@plugins/pluginManager';
 
 const emmiter = new NativeEventEmitter(VolumeButtonListener);
 
@@ -146,6 +147,8 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
 
   const saveProgress = useCallback(
     (percentage: number) => {
+      const plugin = getPlugin(novel.pluginId);
+
       if (!incognitoMode) {
         updateChapterProgress(chapter.id, percentage > 100 ? 100 : percentage);
       }
@@ -154,6 +157,9 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
         // a relative number
         markChapterRead(chapter.id);
         updateTracker();
+        if (plugin?.trackProgress) {
+          plugin.trackProgress(novel.path, chapter.path);
+        }
       }
     },
     [chapter],

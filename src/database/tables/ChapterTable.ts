@@ -12,8 +12,6 @@ export const createChapterTableQuery = `
         updatedTime TEXT,
         chapterNumber REAL NULL,
         page TEXT DEFAULT "1",
-        sourceNovelId TEXT DEFAULT "novel id",
-        sourceChapterId TEXT DEFAULT "chapter id",
         position INTEGER DEFAULT 0,
         progress INTEGER,
         UNIQUE(path, novelId),
