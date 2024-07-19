@@ -7,16 +7,17 @@ import React, {
 } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { useAppSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { FlashList, ViewToken } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
 import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
-import { useNovel } from '@hooks/persisted/useNovel';
 import renderListChapter from './RenderListChapter';
 import { useChapterContext } from '@screens/reader/ChapterContext';
+import { getNovelChapters } from '@database/queries/ChapterQueries';
+import FLashSectionList from '@components/FlashSectionList';
 
 type ButtonProperties = {
   text: string;
@@ -35,20 +36,24 @@ const ChapterDrawer = () => {
     setChapter,
     setLoading,
   } = useChapterContext();
-  const { chapters, novelSettings, pages, setPageIndex } = useNovel(
-    novelItem.path,
-    novelItem.pluginId,
-  );
+  const [chapters, setChapters] = useState<ChapterInfo[]>([]);
+  // const { chapters, novelSettings, pages, setPageIndex } = useNovel(
+  //   novelItem.path,
+  //   novelItem.pluginId,
+  // );
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const { defaultChapterSort } = useAppSettings();
+  // const { defaultChapterSort } = useAppSettings();
   const listRef = useRef<FlashList<ChapterInfo>>(null);
 
   const styles = createStylesheet(theme, insets);
 
-  const { sort = defaultChapterSort } = novelSettings;
-  const listAscending = sort === 'ORDER BY position ASC';
-
+  // const { sort = defaultChapterSort } = novelSettings;
+  // const listAscending = sort === 'ORDER BY position ASC';
+  useEffect(() => {
+    getNovelChapters(novelItem.id).then(setChapters);
+  });
+  const listAscending = true;
   const defaultButtonLayout: ButtonsProperties = {
     up: {
       text: getString('readerScreen.drawer.scrollToTop'),
@@ -59,14 +64,6 @@ const ChapterDrawer = () => {
       index: undefined,
     },
   };
-
-  useEffect(() => {
-    let pageIndex = pages.indexOf(chapter.page);
-    if (pageIndex === -1) {
-      pageIndex = 0;
-    }
-    setPageIndex(pageIndex);
-  }, [chapter, pages, setPageIndex]);
 
   const scrollToIndex = useMemo(() => {
     if (chapters.length < 1) {
@@ -135,11 +132,17 @@ const ChapterDrawer = () => {
       {scrollToIndex === undefined ? (
         <LoadingScreenV2 theme={theme} />
       ) : (
-        <FlashList
-          ref={listRef}
+        <FLashSectionList
+          listRef={listRef}
+          sectionField="page"
           onViewableItemsChanged={checkViewableItems}
           data={chapters}
           extraData={chapter}
+          renderSectionHeader={item => (
+            <View style={styles.chapterCtn}>
+              <Text style={{ color: theme.onSurfaceVariant }}>{item.page}</Text>
+            </View>
+          )}
           renderItem={val =>
             renderListChapter({
               item: val.item,

@@ -81,7 +81,7 @@ export const getNovelChapters = (novelId: number): Promise<ChapterInfo[]> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT * FROM Chapter WHERE novelId = ?',
+        'SELECT * FROM Chapter WHERE novelId = ? ORDER BY CAST (page as INTEGER)',
         [novelId],
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
