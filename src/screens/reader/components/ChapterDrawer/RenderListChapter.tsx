@@ -2,10 +2,8 @@ import React from 'react';
 import { View, Pressable, TextStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import color from 'color';
-import { ChapterInfo, NovelInfo } from '@database/types';
+import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '@navigators/types';
 import { StyleProp } from 'react-native';
 import { ViewStyle } from 'react-native';
 
@@ -15,32 +13,20 @@ type Styles = {
   chapterNameCtn: StyleProp<TextStyle>;
   releaseDateCtn: StyleProp<TextStyle>;
 };
-type Navigation = StackNavigationProp<RootStackParamList, 'Chapter', undefined>;
 
 type Props = {
   item: ChapterInfo;
-  novelItem: NovelInfo;
   styles: Styles;
   theme: ThemeColors;
-  navigation: Navigation;
   chapterId: number;
+  onPress: () => void;
 };
-const changeChapter = (
-  item: ChapterInfo,
-  navigation: Navigation,
-  novelItem: NovelInfo,
-) => {
-  navigation.replace('Chapter', {
-    novel: novelItem,
-    chapter: item,
-  });
-};
+
 const renderListChapter = ({
   item,
-  novelItem,
   styles,
   theme,
-  navigation,
+  onPress,
   chapterId,
 }: Props) => {
   return (
@@ -54,7 +40,7 @@ const renderListChapter = ({
     >
       <Pressable
         android_ripple={{ color: theme.rippleColor }}
-        onPress={() => changeChapter(item, navigation, novelItem)}
+        onPress={onPress}
         style={styles.chapterCtn}
       >
         <Text

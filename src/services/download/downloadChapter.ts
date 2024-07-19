@@ -46,7 +46,7 @@ const downloadFiles = async (
     const elem = loadedCheerio(imgs[i]);
     const url = elem.attr('src');
     if (url) {
-      const fileurl = folder + i + '.b64.png';
+      const fileurl = `${folder}/${i}.b64.png`;
       elem.attr('src', `file://${fileurl}`);
       try {
         await downloadFile(url, fileurl, plugin.imageRequestInit);
