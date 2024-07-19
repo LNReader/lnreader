@@ -1,7 +1,6 @@
 import React, { useRef, useCallback } from 'react';
 import { DrawerLayoutAndroid } from 'react-native';
 
-import { showToast } from '@utils/showToast';
 import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
 
 import ReaderAppbar from './components/ReaderAppbar';
@@ -30,7 +29,7 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
         ref={drawerRef}
         drawerWidth={300}
         drawerPosition="left"
-        renderNavigationView={() => <ChapterDrawer navigation={navigation} />}
+        renderNavigationView={() => <ChapterDrawer />}
       >
         <ChapterContent
           route={route}
@@ -63,11 +62,10 @@ export const ChapterContent = ({
     prevChapter,
     nextChapter,
     chapterText,
-    setError,
-    setLoading,
-    getChapter,
     saveProgress,
     hideHeader,
+    navigateChapter,
+    refetch,
   } = useChapter(webViewRef);
 
   const scrollToStart = () =>
@@ -84,36 +82,10 @@ export const ChapterContent = ({
       );
     });
 
-  const navigateToChapterBySwipe = (actionName: string) => {
-    let navChapter;
-    if (actionName === 'SWIPE_LEFT') {
-      navChapter = nextChapter;
-    } else if (actionName === 'SWIPE_RIGHT') {
-      navChapter = prevChapter;
-    } else {
-      return;
-    }
-
-    navChapter
-      ? navigation.replace('Chapter', {
-          novel: novel,
-          chapter: navChapter,
-        })
-      : showToast(
-          actionName === 'SWIPE_LEFT'
-            ? getString('readerScreen.noNextChapter')
-            : getString('readerScreen.noPreviousChapter'),
-        );
-  };
-
   const openDrawer = useCallback(() => {
     drawerRef.current?.openDrawer();
     hideHeader();
   }, [drawerRef, hideHeader]);
-
-  if (loading) {
-    return <ChapterLoadingScreen />;
-  }
 
   if (error) {
     return (
@@ -123,11 +95,7 @@ export const ChapterContent = ({
           {
             iconName: 'refresh',
             title: getString('common.retry'),
-            onPress: () => {
-              setError('');
-              setLoading(true);
-              getChapter();
-            },
+            onPress: refetch,
           },
           {
             iconName: 'earth',
@@ -146,15 +114,19 @@ export const ChapterContent = ({
   return (
     <>
       {keepScreenOn ? <KeepScreenAwake /> : null}
-      <WebViewReader
-        html={chapterText}
-        nextChapter={nextChapter}
-        webViewRef={webViewRef}
-        pageReader={pageReader}
-        saveProgress={saveProgress}
-        onPress={hideHeader}
-        navigateToChapterBySwipe={navigateToChapterBySwipe}
-      />
+      {loading ? (
+        <ChapterLoadingScreen />
+      ) : (
+        <WebViewReader
+          html={chapterText}
+          nextChapter={nextChapter}
+          webViewRef={webViewRef}
+          pageReader={pageReader}
+          saveProgress={saveProgress}
+          onPress={hideHeader}
+          navigateChapter={navigateChapter}
+        />
+      )}
       <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       {!hidden ? (
         <>
@@ -165,7 +137,7 @@ export const ChapterContent = ({
             prevChapter={prevChapter}
             readerSheetRef={readerSheetRef}
             scrollToStart={scrollToStart}
-            navigateToChapterBySwipe={navigateToChapterBySwipe}
+            navigateChapter={navigateChapter}
             navigation={navigation}
             openDrawer={openDrawer}
           />

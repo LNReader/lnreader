@@ -40,7 +40,7 @@ type WebViewReaderProps = {
   webViewRef: React.RefObject<WebView>;
   saveProgress(percentage: number): void;
   onPress(): void;
-  navigateToChapterBySwipe(name: string): void;
+  navigateChapter(position: 'NEXT' | 'PREV'): void;
   pageReader: boolean;
 };
 
@@ -64,7 +64,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     pageReader,
     saveProgress,
     onPress,
-    navigateToChapterBySwipe,
+    navigateChapter,
   } = props;
   const { novel, chapter } = useChapterContext();
   const assetsUriPrefix = useMemo(
@@ -162,10 +162,10 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
             onPress();
             break;
           case 'next':
-            navigateToChapterBySwipe('SWIPE_LEFT');
+            navigateChapter('NEXT');
             break;
           case 'prev':
-            navigateToChapterBySwipe('SWIPE_RIGHT');
+            navigateChapter('PREV');
             break;
           case 'save':
             if (event.data && typeof event.data === 'number') {

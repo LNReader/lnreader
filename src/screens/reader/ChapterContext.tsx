@@ -5,12 +5,16 @@ const defaultValue = {} as {
   novel: NovelInfo;
   chapter: ChapterInfo;
   setChapter: (chapter: ChapterInfo) => void;
+  loading: boolean;
+  setLoading: (value: boolean) => void;
 };
 
 const ChapterContext = createContext<{
   novel: NovelInfo;
   chapter: ChapterInfo;
   setChapter: (chapter: ChapterInfo) => void;
+  loading: boolean;
+  setLoading: (value: boolean) => void;
 }>(defaultValue);
 
 export function ChapterContextProvider({
@@ -23,9 +27,10 @@ export function ChapterContextProvider({
   initialChapter: ChapterInfo;
 }) {
   const [chapter, setChapter] = useState(initialChapter);
+  const [loading, setLoading] = useState(true);
   return (
     <ChapterContext.Provider
-      value={{ novel: novel, chapter: chapter, setChapter: c => setChapter(c) }}
+      value={{ novel, chapter, setChapter, loading, setLoading }}
     >
       {children}
     </ChapterContext.Provider>
@@ -33,6 +38,7 @@ export function ChapterContextProvider({
 }
 
 export const useChapterContext = () => {
-  const { novel, chapter, setChapter } = useContext(ChapterContext);
-  return { novel, chapter, setChapter };
+  const { novel, chapter, setChapter, loading, setLoading } =
+    useContext(ChapterContext);
+  return { novel, chapter, setChapter, loading, setLoading };
 };
