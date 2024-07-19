@@ -28,6 +28,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import FLashSectionList from '@components/FlashSectionList';
 
 interface AvailableTabProps {
   searchText: string;
@@ -245,7 +246,7 @@ export const InstalledTab = memo(
 );
 
 interface AvailablePluginCardProps {
-  plugin: PluginItem & { header: boolean };
+  plugin: PluginItem;
   theme: ThemeColors;
   installPlugin: (plugin: PluginItem) => Promise<void>;
 }
@@ -267,76 +268,61 @@ const AvailablePluginCard = ({
     lineHeight: ratio.value * 20,
   }));
   return (
-    <View>
-      {plugin.header ? (
-        <Text style={[styles.listHeader, { color: theme.onSurfaceVariant }]}>
-          {plugin.lang}
-        </Text>
-      ) : null}
-      <Animated.View
-        style={[
-          styles.container,
-          { backgroundColor: theme.surface },
-          viewStyles,
-        ]}
-      >
-        <Animated.View style={{ flexDirection: 'row' }}>
-          <Animated.Image
-            source={{ uri: plugin.iconUrl }}
-            style={[
-              styles.icon,
-              imageStyles,
-              { backgroundColor: theme.surface },
-            ]}
-          />
-          <Animated.View style={styles.details}>
-            <Animated.Text
-              numberOfLines={1}
-              style={[
-                {
-                  color: theme.onSurface,
-                },
-                styles.name,
-                textStyles,
-              ]}
-            >
-              {plugin.name}
-            </Animated.Text>
-            <Animated.Text
-              numberOfLines={1}
-              style={[
-                { color: theme.onSurfaceVariant },
-                styles.addition,
-                textStyles,
-              ]}
-            >
-              {`${plugin.lang} - ${plugin.version}`}
-            </Animated.Text>
-          </Animated.View>
-        </Animated.View>
-        <IconButtonV2
-          name="download-outline"
-          color={theme.primary}
-          onPress={() => {
-            ratio.value = withTiming(0, { duration: 500 });
-            installPlugin(plugin)
-              .then(() => {
-                showToast(
-                  getString('browseScreen.installedPlugin', {
-                    name: plugin.name,
-                  }),
-                );
-              })
-              .catch((error: Error) => {
-                showToast(error.message);
-                ratio.value = 1;
-              });
-          }}
-          size={22}
-          theme={theme}
+    <Animated.View
+      style={[styles.container, { backgroundColor: theme.surface }, viewStyles]}
+    >
+      <Animated.View style={{ flexDirection: 'row' }}>
+        <Animated.Image
+          source={{ uri: plugin.iconUrl }}
+          style={[styles.icon, imageStyles, { backgroundColor: theme.surface }]}
         />
+        <Animated.View style={styles.details}>
+          <Animated.Text
+            numberOfLines={1}
+            style={[
+              {
+                color: theme.onSurface,
+              },
+              styles.name,
+              textStyles,
+            ]}
+          >
+            {plugin.name}
+          </Animated.Text>
+          <Animated.Text
+            numberOfLines={1}
+            style={[
+              { color: theme.onSurfaceVariant },
+              styles.addition,
+              textStyles,
+            ]}
+          >
+            {`${plugin.lang} - ${plugin.version}`}
+          </Animated.Text>
+        </Animated.View>
       </Animated.View>
-    </View>
+      <IconButtonV2
+        name="download-outline"
+        color={theme.primary}
+        onPress={() => {
+          ratio.value = withTiming(0, { duration: 500 });
+          installPlugin(plugin)
+            .then(() => {
+              showToast(
+                getString('browseScreen.installedPlugin', {
+                  name: plugin.name,
+                }),
+              );
+            })
+            .catch((error: Error) => {
+              showToast(error.message);
+              ratio.value = 1;
+            });
+        }}
+        size={22}
+        theme={theme}
+      />
+    </Animated.View>
   );
 };
 
@@ -357,42 +343,36 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
           plg.id.includes(lowerCaseSearchText),
       );
     }
-    let previousLang: string | null = null;
-    return res
-      .sort((a, b) => a.lang.localeCompare(b.lang))
-      .map(plg => {
-        if (plg.lang !== previousLang) {
-          previousLang = plg.lang;
-          return { ...plg, header: true };
-        } else {
-          return { ...plg, header: false };
-        }
-      });
+    return res.sort((a, b) => a.lang.localeCompare(b.lang));
   }, [searchText, filteredAvailablePlugins]);
 
-  const renderItem: FlashListRenderItem<PluginItem & { header: boolean }> =
-    useCallback(
-      ({ item }) => {
-        return (
-          <AvailablePluginCard
-            plugin={item}
-            theme={theme}
-            installPlugin={installPlugin}
-          />
-        );
-      },
-      [theme, searchedPlugins],
-    );
+  const renderItem: FlashListRenderItem<PluginItem> = useCallback(
+    ({ item }) => {
+      return (
+        <AvailablePluginCard
+          plugin={item}
+          theme={theme}
+          installPlugin={installPlugin}
+        />
+      );
+    },
+    [theme, searchedPlugins],
+  );
 
   return (
-    <FlashList
+    <FLashSectionList
+      sectionField="lang"
       estimatedItemSize={64}
       data={searchedPlugins}
       extraData={theme}
       renderItem={renderItem}
+      renderSectionHeader={item => (
+        <Text style={[styles.listHeader, { color: theme.onSurfaceVariant }]}>
+          {item.lang}
+        </Text>
+      )}
       removeClippedSubviews={true}
-      showsVerticalScrollIndicator={false}
-      keyExtractor={item => item.id + '_available'}
+      keyExtractor={(item, index) => item.id + '_available_' + index}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
