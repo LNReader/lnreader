@@ -1,12 +1,9 @@
 function setup(progress, customJS) {
-  document
-    .querySelector('.chapterCtn')
-    .addEventListener('click', e => onTap(e));
-
   document.addEventListener('DOMContentLoaded', startup);
-
+  
   async function startup() {
     customJS;
+    document.querySelector("#chapterCtn").addEventListener("click", onTap)
     //? scroll to saved position
     if (reader.pageReader) {
       setTimeout(() => {

@@ -93,7 +93,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     [],
   );
   const batteryLevel = useMemo(getBatteryLevelSync, []);
-  const layoutHeight = Dimensions.get('window').height;
+  const layoutHeight = Dimensions.get('screen').height;
+
   const plugin = getPlugin(novel?.pluginId);
   const pluginCustomJS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.js`;
   const pluginCustomCSS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.css`;
@@ -211,7 +212,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
                     <style>
                     :root {
-                      --StatusBar-currentHeight: ${StatusBar.currentHeight};
+                      --StatusBar-currentHeight: ${StatusBar.currentHeight}px;
                       --readerSettings-theme: ${readerSettings.theme};
                       --readerSettings-padding: ${readerSettings.padding}%;
                       --readerSettings-textSize: ${readerSettings.textSize}px;
@@ -270,7 +271,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     </script>
                   </head>
                   <body>
-                    <div class="chapterCtn"> 
+                    <div id="chapterCtn"> 
                       <chapter 
                         data-page-reader='${pageReader}'
                         data-plugin-id='${novel.pluginId}'
@@ -286,8 +287,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       <div id="Image-Modal">
                         <img id="Image-Modal-img">
                       </div>
-                      <div id="reader-footer-wrapper">
-                          <div id="reader-footer">
+                      <div id="reader-footer-wrapper" >
+                          <div id="reader-footer" >
                               <div id="reader-battery" class="reader-footer-item"></div>
                               <div id="reader-percentage" class="reader-footer-item"></div>
                               <div id="reader-time" class="reader-footer-item"></div>
@@ -319,8 +320,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     <script>
                         // Debug
                         console = new Object();
-                        console.log = function(log) {
-                         reader.post({"type": "console", "msg": log});
+                        console.log = function(...log) {
+                         reader.post({"type": "console", "msg": log.join(" ")});
                         };
                         console.debug = console.log;
                         console.info = console.log;
@@ -329,13 +330,12 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     </script>
                     <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
                     <script src="${assetsUriPrefix}/js/default.js"></script>
-                    <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                     <script src="${assetsUriPrefix}/js/index.js"></script>
-                    <script src="${assetsUriPrefix}/js/setup.js"></script>
                     <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                     <script src="${pluginCustomJS}"></script>
+                    <script src="${assetsUriPrefix}/js/setup.js"></script>
                     <script>
-                        setup(${chapter.progress},${readerSettings.customJS})
+                      setup(${chapter.progress},${readerSettings.customJS})
                     </script>
                 </html>
                 `,
