@@ -186,10 +186,15 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
         menuButtons={[
           {
             title: getString('libraryScreen.extraMenu.updateLibrary'),
-            onPress: () =>
+            onPress: () => {
               ServiceManager.manager.addTask({
                 name: 'UPDATE_LIBRARY',
-              }),
+              });
+            },
+
+            // ServiceManager.manager.addTask({
+            //   name: 'UPDATE_LIBRARY',
+            // }),
           },
           {
             title: getString('libraryScreen.extraMenu.updateCategory'),
@@ -257,8 +262,10 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           })),
         }}
         renderTabBar={renderTabBar}
-        renderScene={({ route }) =>
-          isLoading ? (
+        renderScene={({ route }) => {
+          console.log(route);
+
+          return isLoading ? (
             <SourceScreenSkeletonLoading theme={theme} />
           ) : (
             <>
@@ -283,8 +290,8 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
                 navigation={navigation}
               />
             </>
-          )
-        }
+          );
+        }}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
       />

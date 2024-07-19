@@ -29,20 +29,34 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
       setIsLoading(true);
     }
 
-    const [categories, novels] = await Promise.all([
-      getCategoriesFromDb(),
-      getLibraryWithCategory({
-        searchText,
-        filter,
-        sortOrder,
-        downloadedOnlyMode,
-      }),
-    ]);
+    // const [categories, novels] = await Promise.all([
+    //   getCategoriesFromDb(),
+    //   getLibraryWithCategory({
+    //     searchText,
+    //     filter,
+    //     sortOrder,
+    //     downloadedOnlyMode,
+    //   }),
+    // ]);
+    console.log('start get cat');
+
+    const categories = await getCategoriesFromDb();
+    console.log('start get lib');
+
+    const novels = await getLibraryWithCategory({
+      searchText,
+      filter,
+      sortOrder,
+      downloadedOnlyMode,
+    });
+    console.log('end get stuff');
+    console.log(categories, novels);
 
     const res = categories.map(category => ({
       ...category,
       novels: novels.filter(novel => novel.category === category.name),
     }));
+    console.log(res);
 
     setLibrary(res);
     setIsLoading(false);

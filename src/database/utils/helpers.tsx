@@ -1,10 +1,12 @@
 import { showToast } from '@utils/showToast';
-import { SQLError, SQLTransaction } from 'expo-sqlite';
+import { SQLError, SQLTransaction } from 'expo-sqlite/legacy';
 
 export const txnErrorCallback = (
   txn: SQLTransaction,
   error: SQLError,
 ): boolean => {
+  console.log('txnError');
+
   showToast(error.message);
   return false;
 };

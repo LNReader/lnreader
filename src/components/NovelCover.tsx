@@ -53,7 +53,7 @@ interface INovelCover<TNovel> {
   libraryStatus: boolean;
   theme: ThemeColors;
   isSelected: boolean;
-  addSkeletonLoading: boolean;
+  addSkeletonLoading?: boolean;
   onLongPress: (item: TNovel) => void;
   selectedNovelIds: number[];
 }
