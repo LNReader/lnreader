@@ -58,7 +58,6 @@ const NovelAppbar = ({
       <Appbar.Header theme={{ colors: { ...theme, surface: 'transparent' } }}>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="" />
-        <EpubIconButton theme={theme} novel={novel} chapters={chapters} />
         <Appbar.Action icon="share-variant" onPress={shareNovel} />
         <Appbar.Action
           icon="text-box-search-outline"
@@ -66,6 +65,7 @@ const NovelAppbar = ({
             showJumpToChapterModal(true);
           }}
         />
+        <EpubIconButton theme={theme} novel={novel} chapters={chapters} />
         {!isLocal && (
           <Menu
             visible={downloadMenu}
