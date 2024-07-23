@@ -34,7 +34,7 @@ export const sanitizeChapterText = (
       text = text
         .replace(/([\u200B-\u200D\uFEFF])(?<=<p>\1)/g, '')
         .replace(/(?:<br>\s*<\/?br>)+/g, '')
-        .replace(/<br>\s*(?=<\/?p>)/g, '')
+        .replace(/<br>\s*(?=<\/?p>)/g, '');
     }
   } else {
     text = getString('readerScreen.emptyChapterMessage');
