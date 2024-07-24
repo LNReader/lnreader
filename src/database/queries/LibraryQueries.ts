@@ -96,6 +96,8 @@ export const getLibraryWithCategory = ({
   downloadedOnlyMode?: boolean;
 }): Promise<LibraryNovelInfo[]> => {
   let query = getLibraryWithCategoryQuery;
+  let preparedArgument: (string | number | null)[] = [];
+
   if (filter) {
     query += ` AND ${filter} `;
   }
@@ -104,17 +106,19 @@ export const getLibraryWithCategory = ({
   }
 
   if (searchText) {
-    query += ` AND name LIKE '%${searchText}%' `;
+    query += ' AND name LIKE ? ';
+    preparedArgument.push(`%${searchText}%`);
   }
 
   if (sortOrder) {
     query += ` ORDER BY ${sortOrder} `;
   }
+
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         query,
-        [],
+        preparedArgument,
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
       );
