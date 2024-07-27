@@ -382,7 +382,9 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
             {selected.length === 0 ? (
               <NovelAppbar
                 novel={novel}
-                chapters={sort.includes('DESC') ? chapters.slice().reverse() : chapters}
+                chapters={
+                  sort.includes('DESC') ? chapters.slice().reverse() : chapters
+                }
                 deleteChapters={deleteChs}
                 downloadChapters={downloadChs}
                 showEditInfoModal={showEditInfoModal}

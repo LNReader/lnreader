@@ -4,6 +4,7 @@ html {
   overflow-x: hidden;
   padding-top: var(--StatusBar-currentHeight);
   word-wrap: break-word;
+  padding: 0;
 }
 
 ::selection {
@@ -17,8 +18,9 @@ html {
 }
 
 body {
-  padding-left: var(--readerSettings-padding);
-  padding-right: var(--readerSettings-padding);
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
   padding-bottom: 40px;
 
   font-size: var(--readerSettings-textSize);
@@ -30,7 +32,14 @@ body {
 }
 
 chapter {
+  width: 100%;
   display: block;
+}
+
+chapter > * {
+  max-width: 100vw;
+  padding-left: var(--readerSettings-padding);
+  padding-right: var(--readerSettings-padding);
 }
 
 hr {
@@ -76,7 +85,9 @@ td {
 
 .nextButton,
 .infoText {
-  width: 100%;
+  margin-left: var(--readerSettings-padding);
+  margin-right: var(--readerSettings-padding);
+  width: calc(100% - var(--readerSettings-padding) * 2);
   border-radius: 50px;
   border-width: 1;
   color: var(--theme-onPrimary);
@@ -174,7 +185,7 @@ td {
   border-radius: 1.2rem;
   background-color: var(--theme-surface-0-9);
   touch-action: none;
-  font-size: 16px;
+  font-size: 14px;
   user-select: none;
 }
 
@@ -301,9 +312,11 @@ td {
 .reader-footer-item {
   flex: 1;
 }
+
 .reader-footer-item:first-child {
   text-align: left;
 }
+
 .reader-footer-item:last-child {
   text-align: right;
 }
@@ -314,15 +327,14 @@ td {
 }
 
 .contextMenu {
-  position: absolute;
-  height: 0;
-  overflow: hidden;
-  background: var(--theme-surface-0-9);
-  -webkit-backdrop-filter: blur(1px);
-  backdrop-filter: blur(1px);
   position: fixed;
+  background: var(--theme-surface-0-9);
+  height: 0;
   top: var(--top);
   left: var(--left);
+  overflow: hidden;
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
   -webkit-animation: menuAnimation 0.4s 0s both;
   animation: menuAnimation 0.4s 0s both;
   transform-origin: left;
@@ -342,9 +354,8 @@ td {
   color: var(--theme-onSurface);
   background: 0;
   border: 0;
-  white-space: nowrap;
-  width: 100%;
   border-radius: 4px;
+  white-space: nowrap;
   padding: 6px 24px 6px 7px;
   text-align: left;
   display: flex;
@@ -362,6 +373,7 @@ td {
 .contextMenu-button svg {
   fill: var(--theme-onSurface);
 }
+
 .contextMenu-button span {
   margin-left: 4px;
 }
