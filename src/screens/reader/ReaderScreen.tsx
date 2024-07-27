@@ -9,7 +9,6 @@ import ReaderFooter from './components/ReaderFooter';
 import WebViewReader from './components/WebViewReader';
 import ReaderBottomSheetV2 from './components/ReaderBottomSheet/ReaderBottomSheet';
 import ChapterDrawer from './components/ChapterDrawer';
-import ChapterLoadingScreen from './ChapterLoadingScreen/ChapterLoadingScreen';
 import { ErrorScreenV2 } from '@components';
 import { ChapterScreenProps } from '@navigators/types';
 import WebView from 'react-native-webview';
@@ -114,19 +113,18 @@ export const ChapterContent = ({
   return (
     <>
       {keepScreenOn ? <KeepScreenAwake /> : null}
-      {loading ? (
-        <ChapterLoadingScreen />
-      ) : (
-        <WebViewReader
-          html={chapterText}
-          nextChapter={nextChapter}
-          webViewRef={webViewRef}
-          pageReader={pageReader}
-          saveProgress={saveProgress}
-          onPress={hideHeader}
-          navigateChapter={navigateChapter}
-        />
-      )}
+
+      <WebViewReader
+        html={chapterText}
+        nextChapter={nextChapter}
+        webViewRef={webViewRef}
+        pageReader={pageReader}
+        loading={loading}
+        saveProgress={saveProgress}
+        onPress={hideHeader}
+        navigateChapter={navigateChapter}
+      />
+
       <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       {!hidden ? (
         <>

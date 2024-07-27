@@ -96,7 +96,7 @@ class Reader {
     );
     document.documentElement.style.setProperty(
       '--readerSettings-textSize',
-      settings.textSize + 'px',
+      settings.textSize + 'rem',
     );
     document.documentElement.style.setProperty(
       '--readerSettings-textColor',
@@ -108,7 +108,7 @@ class Reader {
     );
     document.documentElement.style.setProperty(
       '--readerSettings-lineHeight',
-      settings.lineHeight,
+      settings.lineHeight+"rem",
     );
     document.documentElement.style.setProperty(
       '--readerSettings-fontFamily',
