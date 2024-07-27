@@ -80,13 +80,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       initialChapterReaderSettings,
     [],
   );
-  const {
-    showScrollPercentage,
-    swipeGestures,
-    showBatteryAndTime,
-    verticalSeekbar,
-    bionicReading,
-  } = useMemo(
+  const chapterGeneralSettings = useMemo(
     () =>
       getMMKVObject<ChapterGeneralSettings>(CHAPTER_GENERAL_SETTINGS) ||
       initialChapterGeneralSettings,
@@ -132,21 +126,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       mmkvListener.remove();
     };
   }, []);
-  const debugging = `
-     // Debug
-     console = new Object();
-     console.log = function(log) {
-      reader.post({"type": "console", "msg": log});
-     };
-     console.debug = console.log;
-     console.info = console.log;
-     console.warn = console.log;
-     console.error = console.log;
-     `;
 
   return (
     <WebView
-      injectedJavaScript={debugging}
       ref={webViewRef}
       style={{ backgroundColor: readerSettings.theme }}
       allowFileAccess={true}
@@ -253,46 +235,13 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       }
                     <link rel="stylesheet" href="${pluginCustomCSS}">
                     <style>${readerSettings.customCSS}</style>
-                    <script>
-                      var initSettings = {
-                        showScrollPercentage: ${showScrollPercentage},
-                        swipeGestures: ${swipeGestures},
-                        showBatteryAndTime: ${showBatteryAndTime},
-                        verticalSeekbar: ${verticalSeekbar},
-                        bionicReading: ${bionicReading},
-                      }
-                      var batteryLevel = ${batteryLevel};
-                      var autoSaveInterval = 2222;
-                      var { NOVEL, CHAPTER } = ${JSON.stringify({
-                        NOVEL: novel,
-                        CHAPTER: chapter,
-                      })}
-                    </script>
                   </head>
                   <body>
                     <div class="chapterCtn"> 
-                      <chapter 
-                        data-page-reader='${pageReader}'
-                        data-plugin-id='${novel.pluginId}'
-                        data-novel-id='${chapter.novelId}'
-                        data-chapter-id='${chapter.id}'
-                      >
-                      ${html}
+                      <chapter data-page-reader='${pageReader}'>
+                        ${html}
                       </chapter>
-                      <div class="hidden" id="ToolWrapper">
-                          <div id="TTS-Controller"></div>
-                          <div id="ScrollBar"></div>
-                      </div>
-                      <div id="Image-Modal">
-                        <img id="Image-Modal-img">
-                      </div>
-                      <div id="reader-footer-wrapper">
-                          <div id="reader-footer">
-                              <div id="reader-battery" class="reader-footer-item"></div>
-                              <div id="reader-percentage" class="reader-footer-item"></div>
-                              <div id="reader-time" class="reader-footer-item"></div>
-                          </div>
-                      </div>
+                      <div id="reader-ui"></div>
                     </div>
                     ${
                       !pageReader
@@ -317,22 +266,20 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     }
                     </body>
                     <script>
-                        // Debug
-                        console = new Object();
-                        console.log = function(log) {
-                         reader.post({"type": "console", "msg": log});
-                        };
-                        console.debug = console.log;
-                        console.info = console.log;
-                        console.warn = console.log;
-                        console.error = console.log;
+                      var initialReaderConfig = ${JSON.stringify({
+                        readerSettings,
+                        chapterGeneralSettings,
+                        novel,
+                        chapter,
+                        batteryLevel,
+                        autoSaveInterval: 2222,
+                        DEBUG: __DEV__,
+                      })}
                     </script>
-                    <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
-                    <script src="${assetsUriPrefix}/js/default.js"></script>
+                    <script src="${assetsUriPrefix}/js/van.js"></script>
                     <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
+                    <script src="${assetsUriPrefix}/js/core.js"></script>
                     <script src="${assetsUriPrefix}/js/index.js"></script>
-                    <script src="${assetsUriPrefix}/js/setup.js"></script>
-                    <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                     <script src="${pluginCustomJS}"></script>
                     <script>
                         setup(${chapter.progress},${readerSettings.customJS})
