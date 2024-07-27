@@ -6,7 +6,7 @@ import {
 
 interface UpdateCallbackMap {
   generalSettings: Array<(settings: ChapterGeneralSettings) => void>;
-  batterLevel: Array<(level: number) => void>;
+  batteryLevel: Array<(level: number) => void>;
   hidden: Array<(hidden: boolean) => void>;
 }
 
@@ -22,6 +22,7 @@ export interface Reader {
   chapterGeneralSettings: ChapterGeneralSettings;
   chapterReaderSettings: ChapterReaderSettings;
   autoSaveInterval: number;
+  initalBatteryLevel: number;
 
   //layout props
   paddingTop: number;

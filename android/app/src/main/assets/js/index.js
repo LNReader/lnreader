@@ -22,8 +22,7 @@ const Scrollbar = ({ horizontal }) => {
       });
     }
   };
-  window.onscroll = () => !lock && update();
-
+  window.addEventListener('scroll', () => !lock && update());
   return div(
     { id: 'ScrollBar' },
     div(
@@ -101,8 +100,84 @@ const ToolWrapper = () => {
   );
 };
 
+const Footer = () => {
+  const displaySettings = van.state(reader.chapterGeneralSettings);
+  const percentage = van.state(0);
+  const battery = van.state(reader.initalBatteryLevel);
+  const time = van.state(
+    new Date().toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }),
+  );
+  reader.subscribe(
+    'generalSettings',
+    settings => (displaySettings.val = settings),
+  );
+  window.addEventListener('scroll', () => {
+    let ratio = (window.scrollY + reader.layoutHeight) / reader.chapterHeight;
+    if (ratio > 1) {
+      ratio = 1;
+    }
+    percentage.val = parseInt(ratio * 100);
+  });
+  reader.subscribe('batteryLevel', level => (battery.val = level));
+  setInterval(() => {
+    time.val = new Date().toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+  }, 10000);
+  return div(
+    {
+      id: 'reader-footer-wrapper',
+      class: () =>
+        displaySettings.val.showBatteryAndTime ||
+        displaySettings.val.showScrollPercentage
+          ? ''
+          : 'd-none',
+    },
+    div(
+      { id: 'reader-footer' },
+
+      div(
+        {
+          id: 'reader-battery',
+          class: () =>
+            `reader-footer-item ${
+              displaySettings.val.showBatteryAndTime ? '' : 'hidden'
+            }`,
+        },
+        () => Math.ceil(battery.val * 100) + '%',
+      ),
+      div(
+        {
+          id: 'reader-percentage',
+          class: () =>
+            `reader-footer-item ${
+              displaySettings.val.showScrollPercentage ? '' : 'hidden'
+            }`,
+        },
+        () => percentage.val + '%',
+      ),
+      div(
+        {
+          id: 'reader-time',
+          class: () =>
+            `reader-footer-item ${
+              displaySettings.val.showBatteryAndTime ? '' : 'hidden'
+            }`,
+        },
+        time,
+      ),
+    ),
+  );
+};
+
 const ReaderUI = () => {
-  return div(ToolWrapper());
+  return div(ToolWrapper(), Footer());
 };
 
 van.add(document.getElementById('reader-ui'), ReaderUI());

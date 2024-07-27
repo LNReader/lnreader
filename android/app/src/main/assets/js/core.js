@@ -16,6 +16,7 @@ window.reader = new (function () {
   this.chapterReaderSettings = readerSettings;
   this.autoSaveInterval = autoSaveInterval;
   this.rawHTML = this.chapterElement.innerHTML;
+  this.initalBatteryLevel = batteryLevel;
 
   //layout props
   this.viewport = document.querySelector('meta[name=viewport]');
