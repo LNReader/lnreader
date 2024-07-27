@@ -76,6 +76,7 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString('novelScreen.convertToEpubModal.chooseLocation')}
         </Text>
+
         <TextInput
           onChangeText={setUri}
           value={uri}
@@ -84,6 +85,7 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
           mode="outlined"
           theme={{ colors: { ...theme } }}
           underlineColor={theme.outline}
+          editable={false}
           dense
           right={
             <TextInput.Icon
