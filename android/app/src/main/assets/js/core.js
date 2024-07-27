@@ -1,14 +1,13 @@
-const {
-  readerSettings,
-  chapterGeneralSettings,
-  novel,
-  chapter,
-  batteryLevel,
-  autoSaveInterval,
-  DEBUG,
-} = initialReaderConfig;
-
 window.reader = new (function () {
+  const {
+    readerSettings,
+    chapterGeneralSettings,
+    novel,
+    chapter,
+    batteryLevel,
+    autoSaveInterval,
+    DEBUG,
+  } = initialReaderConfig;
   this.chapterElement = document.querySelector('chapter');
   this.selection = window.getSelection();
   this.novel = novel;
@@ -33,7 +32,9 @@ window.reader = new (function () {
   this.updateCallbacks = {
     generalSettings: [],
     batteryLevel: [],
+    hidden: [],
   };
+
   this.post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
   this.subscribe = (name, callback) =>
     this.updateCallbacks[name].push(callback);
@@ -42,6 +43,15 @@ window.reader = new (function () {
       callback(settings);
     }
   };
+  this.refresh = () => {
+    if (!this.chapterGeneralSettings.pageReader) {
+      this.chapterHeight = this.chapterElement.scrollHeight + this.paddingTop;
+    } else {
+      this.chapterWidth = this.chapterElement.scrollWidth;
+    }
+  };
+
+  // methods used by app
   this.updateReaderSettings = settings => {
     document.documentElement.style.setProperty(
       '--readerSettings-theme',
@@ -90,18 +100,13 @@ window.reader = new (function () {
       callback(level);
     }
   };
-
-  this.refresh = () => {
-    if (!this.pageReader) {
-      this.chapterHeight = this.chapter.scrollHeight + this.paddingTop;
-    } else {
-      this.percentage.innerText = getPage() + 1 + '/' + (getPages() + 1);
-      this.chapterWidth = this.chapter.scrollWidth;
+  this.updateHidden = hidden => {
+    for (const callback of this.updateCallbacks.hidden) {
+      callback(hidden);
     }
   };
 
   // init actions
-
   document.onclick = e => {
     if (this.chapterGeneralSettings.pageReader) {
       tapChapter(e);
@@ -127,16 +132,15 @@ window.reader = new (function () {
     }
   }, this.autoSaveInterval);
 
+  if (DEBUG) {
+    console = new Object();
+    console.log = function (...data) {
+      reader.post({ 'type': 'console', 'msg': data?.join(' ') });
+    };
+    console.debug = console.log;
+    console.info = console.log;
+    console.warn = console.log;
+    console.error = console.log;
+  }
   // end reader
 })();
-
-if (DEBUG) {
-  console = new Object();
-  console.log = function (...data) {
-    reader.post({ 'type': 'console', 'msg': data?.join(' ') });
-  };
-  console.debug = console.log;
-  console.info = console.log;
-  console.warn = console.log;
-  console.error = console.log;
-}

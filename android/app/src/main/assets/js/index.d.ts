@@ -7,20 +7,27 @@ import {
 interface UpdateCallbackMap {
   generalSettings: Array<(settings: ChapterGeneralSettings) => void>;
   batterLevel: Array<(level: number) => void>;
+  hidden: Array<(hidden: boolean) => void>;
 }
 
 export interface Reader {
-  // props
+  // element
   chapterElemet: HTMLElement;
+  viewport: HTMLMetaElement;
   selection: Selection;
+
   updateCallbacks: UpdateCallbackMap;
   novel: NovelInfo;
   chapter: ChapterInfo;
   chapterGeneralSettings: ChapterGeneralSettings;
   chapterReaderSettings: ChapterReaderSettings;
   autoSaveInterval: number;
+
+  //layout props
+  paddingTop: number;
   layoutHeight: number;
   chapterHeight: number;
+  layoutWidth: number;
 
   // methods used by webview
   post: (obj: Record<string, any>) => void;
@@ -31,10 +38,10 @@ export interface Reader {
   refresh: () => void;
 
   // methods used by app
+  updateHidden: (hidden: boolean) => void;
   updateGeneralSettings: (settings: ChapterGeneralSettings) => void;
   updateReaderSettings: (settings: ChapterReaderSettings) => void;
   updateBatteryLevel: (level: number) => void;
-  click: () => void;
 }
 
 declare global {
