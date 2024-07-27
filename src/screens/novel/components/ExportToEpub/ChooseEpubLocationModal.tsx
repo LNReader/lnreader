@@ -126,6 +126,11 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
         theme={theme}
         paddingHorizontal={20}
       />
+      <List.InfoItem
+        title={getString('novelScreen.convertToEpubModal.settingsWarning')}
+        theme={theme}
+        paddingHorizontal={20}
+      />
       <View style={styles.modalFooterCtn}>
         <Button title={getString('common.submit')} onPress={onSubmit} />
         <Button title={getString('common.cancel')} onPress={hideModal} />
