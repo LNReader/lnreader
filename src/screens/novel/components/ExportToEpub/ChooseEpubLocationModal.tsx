@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Modal, TextInput, Text } from 'react-native-paper'; //@ts-ignore
-import { openDocumentTree } from 'react-native-saf-x';
+import { Modal, TextInput, Text } from 'react-native-paper';
 
 import { Button, List, SwitchItem } from '@components';
 
@@ -9,6 +8,7 @@ import { useBoolean } from '@hooks';
 import { getString } from '@strings/translations';
 import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 import { showToast } from '@utils/showToast';
+import FileManager from '@native/FileManager';
 
 interface ChooseEpubLocationModalProps {
   isVisible: boolean;
@@ -54,9 +54,9 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
 
   const openFolderPicker = async () => {
     try {
-      const resultUri = await openDocumentTree(true);
+      const resultUri = await FileManager.pickFolder();
       if (resultUri) {
-        setUri(resultUri.uri);
+        setUri(resultUri);
       }
     } catch (error: any) {
       showToast(error.message);
