@@ -16,8 +16,8 @@
     "globally": "глобально",
     "searchResults": "Результати пошуку",
     "chapters": "Глави",
-    "submit": "Submit",
-    "retry": "Retry"
+    "submit": "Надіслати",
+    "retry": "Повторити"
   },
   "library": "Бібліотека",
   "libraryScreen": {
@@ -34,10 +34,10 @@
         "dateAdded": "За датою додання",
         "alphabetically": "За алфавітом",
         "totalChapters": "За загальною кількістю розділів",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last read",
-        "lastUpdated": "Last updated"
+        "download": "Завантажено",
+        "unread": "Не прочитано",
+        "lastRead": "Останні прочитані",
+        "lastUpdated": "Востаннє оновлено"
       },
       "display": {
         "displayMode": "Режим відображення",
@@ -56,9 +56,9 @@
   "updatesScreen": {
     "searchbar": "Пошук оновлень",
     "lastUpdatedAt": "Останнє оновлення бібліотеки:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates",
-    "updatesLower": "updates"
+    "newChapters": "нові Розділи",
+    "emptyView": "Немає останніх оновлень",
+    "updatesLower": "оновлення"
   },
   "history": "Історія",
   "historyScreen": {
@@ -88,25 +88,25 @@
       "lineHeight": "Висота рядка",
       "fontStyle": "Стиль шрифту",
       "fullscreen": "Повноекранний режим",
-      "bionicReading": "Bionic Reading",
+      "bionicReading": "Біонічне читання",
       "renderHml": "Рендер HTML",
       "autoscroll": "Автопрокрутка",
       "verticalSeekbar": "Вертикальна навігаційна панель",
       "showBatteryAndTime": "Показувати стан батареї | час",
       "showProgressPercentage": "Показувати прогрес",
       "swipeGestures": "Проведіть вліво або вправо для навігації між главами",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "readerPages": "Торкніться зліва або справа, щоб переходити між сторінками в застосунку для читання (Експериментальне)",
       "allowTextSelection": "Дозволити виділяти текст",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
-      "scrollAmount": "Scroll amount (screen height by default)",
-      "showSwipeMargins": "Show swipe margins"
+      "useChapterDrawerSwipeNavigation": "Проведіть вправо, щоб відкрити ящик",
+      "removeExtraSpacing": "Видалити додатковий інтервал між абзацами",
+      "volumeButtonsScroll": "Прокрутка кнопками гучності",
+      "scrollAmount": "Обсяг прокручування (висота екрана за умовчанням)",
+      "showSwipeMargins": "Показати поля для гортання"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "Прокрутити до поточного розділу",
+      "scrollToTop": "Прокрутити догори",
+      "scrollToBottom": "Прокрутити донизу"
     }
   },
   "novelScreen": {
@@ -122,23 +122,23 @@
       "display": "Відображення"
     },
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
-      "chapterName": "Chapter Name",
-      "chapterNumber": "Chapter Number",
+      "jumpToChapter": "Перейти до Розділу",
+      "openChapter": "Відкрити Розділ",
+      "chapterName": "Назва розділу",
+      "chapterNumber": "Номер розділу",
       "error": {
-        "validChapterName": "Enter a valid chapter name",
-        "validChapterNumber": "Enter a valid chapter number"
+        "validChapterName": "Введіть дійсну назву розділу",
+        "validChapterNumber": "Введіть дійсний номер розділу"
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
-      "pathToFolder": "Path to EPUB save folder",
-      "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use custom CSS",
-      "useCustomJS": "Use custom JS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers",
-      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
+      "chooseLocation": "Виберіть каталог зберігання EPUB",
+      "pathToFolder": "Шлях до теки збереження EPUB",
+      "useReaderTheme": "Використовуйте тему застосунку для читання",
+      "useCustomCSS": "Використовувати користувацький CSS",
+      "useCustomJS": "Використовувати користувацьку JS",
+      "useCustomJSWarning": "Може підтримуватися не всіма застосунками для читання EPUB",
+      "chaptersWarning": "У EPUB включено лише завантажені розділи"
     }
   },
   "more": "Більше",
@@ -147,31 +147,31 @@
     "settingsScreen": {
       "generalSettings": "Загальне",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
+        "display": "Відображення",
+        "displayMode": "Режим відображення",
+        "itemsPerRow": "Елементів на рядок",
+        "itemsPerRowLibrary": "Елементів на рядок у бібліотеці",
+        "novelBadges": "Значки новел",
+        "novelSort": "Сортування новел",
+        "updateLibrary": "Оновлення бібліотеки при запуску",
+        "useFAB": "Використовувати FAB в бібліотеці",
+        "novel": "Новела",
+        "chapterSort": "Сортування розділу за замовчуванням",
+        "bySource": "За джерелом",
+        "asc": "(Зростання)",
+        "desc": "(Спадання)",
+        "globalUpdate": "Глобальне оновлення",
+        "updateOngoing": "Оновлювати лише поточні новели",
+        "refreshMetadata": "Автоматично оновлювати метадані",
+        "refreshMetadataDescription": "Перевірте наявність нової обкладинки та деталей під час оновлення бібліотеки",
+        "updateTime": "Показати час останнього оновлення",
+        "autoDownload": "Автоматичне завантаження",
         "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
+        "epubLocation": "Місце знаходження EPUB",
+        "epubLocationDescription": "Місце, де ви відкриваєте та експортуєте файли EPUB.",
+        "downloadNewChapters": "Завантажити нові розділи",
+        "disableHapticFeedback": "Вимкнути тактильний зворотний зв'язок",
+        "jumpToLastReadChapter": "Перейти до останнього прочитаного розділу в списку"
       },
       "readerSettings": {
         "title": "Тайтл",
@@ -187,14 +187,14 @@
         "saveCustomTheme": "Зберегти тему",
         "deleteCustomTheme": "Видалити тему",
         "customCSS": "Довільний CSS",
-        "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset."
+        "customJS": "Користувацький JS",
+        "openCSSFile": "Відкрити CSS файл",
+        "openJSFile": "Відкрити JS файл",
+        "notSaved": "Не збережено",
+        "cssHint": "Підказка: Ви можете створити спеціальну конфігурацію CSS джерела з ідентифікатором джерела. (#sourceId-[SOURCEID])",
+        "jsHint": "Підказка: У вас є доступ до наступних змінних: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "Ти впевнений? Ваш власний CSS буде скинуто.",
+        "clearCustomJS": "Ти впевнений? Ваш власний JS буде скинуто."
       },
       "browseSettings": "Налаштування джерел",
       "browseSettingsScreen": {
@@ -209,14 +209,14 @@
     "noResultsFound": "Нічого не знайдено"
   },
   "statsScreen": {
-    "title": "Statistics",
-    "titlesInLibrary": "Titles in library",
-    "totalChapters": "Total chapters",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "title": "Статистика",
+    "titlesInLibrary": "Назви у бібліотеці",
+    "totalChapters": "Всього розділів",
+    "readChapters": "Прочитані розділи",
+    "unreadChapters": "Непрочитані розділи",
+    "downloadedChapters": "Завантажені розділи",
+    "genreDistribution": "Розподіл за жанром",
+    "statusDistribution": "Розподіл за статусом"
   },
   "globalSearch": {
     "searchIn": "Пошук новели в",
@@ -254,9 +254,9 @@
     "downloadedOnly": "Тільки завантажені"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads",
-    "downloadsLower": "downloads"
+    "dbInfo": "Завантаження зберігаються в базі даних SQLite.",
+    "downloadChapters": "завантажених Розділів",
+    "noDownloads": "Немає завантажень",
+    "downloadsLower": "завантаження"
   }
 }
