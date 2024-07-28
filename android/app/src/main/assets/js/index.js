@@ -2,7 +2,7 @@
  * UI components register events for updating from app via reader.
  * UI components send events back via reader.post.
  */
-const { div, p } = van.tags;
+const { div, p, img } = van.tags;
 
 const Scrollbar = () => {
   const horizontal = van.derive(
@@ -109,6 +109,56 @@ const ToolWrapper = () => {
   );
 };
 
+const ImageModal = ({ src }) => {
+  return div(
+    {
+      id: 'Image-Modal',
+      class: () => (src.val ? 'show' : ''),
+      onclick: e => {
+        if (e.target.id !== 'Image-Modal-img') {
+          e.stopPropagation();
+          src.val = '';
+        }
+      },
+    },
+    img({
+      id: 'Image-Modal-img',
+      src: src,
+      alt: () => (src.val ? `Cant not render image from ${src.val}` : ''),
+    }),
+  );
+};
+
+const ModalWrapper = () => {
+  const imgSrc = van.state('');
+  const showImage = src => {
+    imgSrc.val = src;
+    reader.viewport.setAttribute(
+      'content',
+      'width=device-width, initial-scale=1.0, maximum-scale=10',
+    );
+  };
+  const hideImage = () => {
+    imgSrc.val = '';
+    reader.viewport.setAttribute(
+      'content',
+      'width=device-width, initial-scale=1.0, maximum-scale=1.0',
+    );
+  };
+
+  reader.chapterElemet.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    if (e.target instanceof HTMLImageElement) {
+      if (!imgSrc.val) {
+        showImage(e.target.src);
+      } else {
+        hideImage();
+      }
+    }
+  });
+  return div(ImageModal({ src: imgSrc }));
+};
+
 const Footer = () => {
   const percentage = van.state(0);
   const time = van.state(
@@ -179,7 +229,7 @@ const Footer = () => {
 };
 
 const ReaderUI = () => {
-  return div(ToolWrapper(), Footer());
+  return div(ToolWrapper(), ModalWrapper(), Footer());
 };
 
 van.add(document.getElementById('reader-ui'), ReaderUI());
