@@ -161,10 +161,10 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
 
   const hideHeader = () => {
     if (!hidden) {
-      webViewRef.current?.injectJavaScript('reader.updateHidden(true)');
+      webViewRef.current?.injectJavaScript('reader.hidden.val = true');
       setImmersiveMode();
     } else {
-      webViewRef.current?.injectJavaScript('reader.updateHidden(false)');
+      webViewRef.current?.injectJavaScript('reader.hidden.val = false');
       showStatusAndNavBar();
     }
     setHidden(!hidden);

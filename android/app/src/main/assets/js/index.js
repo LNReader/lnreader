@@ -4,7 +4,10 @@
  */
 const { div, p } = van.tags;
 
-const Scrollbar = ({ horizontal }) => {
+const Scrollbar = () => {
+  const horizontal = van.derive(
+    () => !reader.generalSettings.val.verticalSeekbar,
+  );
   let lock = false;
   const percentage = van.state(0);
   const update = ratio => {
@@ -83,37 +86,29 @@ const Scrollbar = ({ horizontal }) => {
 };
 
 const ToolWrapper = () => {
-  const horizontal = van.state(!reader.chapterGeneralSettings.verticalSeekbar);
-  const isHidden = van.state(true);
-  reader.subscribe('hidden', hidden => (isHidden.val = hidden));
-  reader.subscribe(
-    'generalSettings',
-    settings => (horizontal.val = !settings.verticalSeekbar),
+  const horizontal = van.derive(
+    () => !reader.generalSettings.val.verticalSeekbar,
   );
   return div(
     {
       id: 'ToolWrapper',
       class: () =>
-        `${isHidden.val ? 'hidden' : ''} ${horizontal.val ? 'horizontal' : ''}`,
+        `${reader.hidden.val ? 'hidden' : ''} ${
+          horizontal.val ? 'horizontal' : ''
+        }`,
     },
-    Scrollbar({ horizontal: horizontal }),
+    Scrollbar(),
   );
 };
 
 const Footer = () => {
-  const displaySettings = van.state(reader.chapterGeneralSettings);
   const percentage = van.state(0);
-  const battery = van.state(reader.initalBatteryLevel);
   const time = van.state(
     new Date().toLocaleTimeString(undefined, {
       hour: '2-digit',
       minute: '2-digit',
       hour12: false,
     }),
-  );
-  reader.subscribe(
-    'generalSettings',
-    settings => (displaySettings.val = settings),
   );
   window.addEventListener('scroll', () => {
     let ratio = (window.scrollY + reader.layoutHeight) / reader.chapterHeight;
@@ -122,7 +117,6 @@ const Footer = () => {
     }
     percentage.val = parseInt(ratio * 100);
   });
-  reader.subscribe('batteryLevel', level => (battery.val = level));
   setInterval(() => {
     time.val = new Date().toLocaleTimeString(undefined, {
       hour: '2-digit',
@@ -134,8 +128,8 @@ const Footer = () => {
     {
       id: 'reader-footer-wrapper',
       class: () =>
-        displaySettings.val.showBatteryAndTime ||
-        displaySettings.val.showScrollPercentage
+        reader.generalSettings.val.showBatteryAndTime ||
+        reader.generalSettings.val.showScrollPercentage
           ? ''
           : 'd-none',
     },
@@ -147,17 +141,17 @@ const Footer = () => {
           id: 'reader-battery',
           class: () =>
             `reader-footer-item ${
-              displaySettings.val.showBatteryAndTime ? '' : 'hidden'
+              reader.generalSettings.val.showBatteryAndTime ? '' : 'hidden'
             }`,
         },
-        () => Math.ceil(battery.val * 100) + '%',
+        () => Math.ceil(reader.batteryLevel.val * 100) + '%',
       ),
       div(
         {
           id: 'reader-percentage',
           class: () =>
             `reader-footer-item ${
-              displaySettings.val.showScrollPercentage ? '' : 'hidden'
+              reader.generalSettings.val.showScrollPercentage ? '' : 'hidden'
             }`,
         },
         () => percentage.val + '%',
@@ -167,7 +161,7 @@ const Footer = () => {
           id: 'reader-time',
           class: () =>
             `reader-footer-item ${
-              displaySettings.val.showBatteryAndTime ? '' : 'hidden'
+              reader.generalSettings.val.showBatteryAndTime ? '' : 'hidden'
             }`,
         },
         time,

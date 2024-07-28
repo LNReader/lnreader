@@ -8,18 +8,23 @@ window.reader = new (function () {
     autoSaveInterval,
     DEBUG,
   } = initialReaderConfig;
+
+  // state
+  this.hidden = van.state(true);
+  this.batteryLevel = van.state(batteryLevel);
+  this.readerSettings = van.state(readerSettings);
+  this.generalSettings = van.state(chapterGeneralSettings);
+
   this.chapterElement = document.querySelector('chapter');
   this.selection = window.getSelection();
+  this.viewport = document.querySelector('meta[name=viewport]');
+
   this.novel = novel;
   this.chapter = chapter;
-  this.chapterGeneralSettings = chapterGeneralSettings;
-  this.chapterReaderSettings = readerSettings;
   this.autoSaveInterval = autoSaveInterval;
   this.rawHTML = this.chapterElement.innerHTML;
-  this.initalBatteryLevel = batteryLevel;
 
   //layout props
-  this.viewport = document.querySelector('meta[name=viewport]');
   this.paddingTop = parseInt(
     getComputedStyle(document.querySelector('html')).getPropertyValue(
       'padding-top',
@@ -30,30 +35,17 @@ window.reader = new (function () {
   this.layoutHeight = window.innerHeight;
   this.layoutWidth = window.innerWidth;
 
-  this.updateCallbacks = {
-    generalSettings: [],
-    batteryLevel: [],
-    hidden: [],
-  };
-
   this.post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
-  this.subscribe = (name, callback) =>
-    this.updateCallbacks[name].push(callback);
-  this.updateGeneralSettings = settings => {
-    for (const callback of this.updateCallbacks.generalSettings) {
-      callback(settings);
-    }
-  };
   this.refresh = () => {
-    if (!this.chapterGeneralSettings.pageReader) {
+    if (!this.generalSettings.val.pageReader) {
       this.chapterHeight = this.chapterElement.scrollHeight + this.paddingTop;
     } else {
       this.chapterWidth = this.chapterElement.scrollWidth;
     }
   };
 
-  // methods used by app
-  this.updateReaderSettings = settings => {
+  van.derive(() => {
+    const settings = this.readerSettings.val;
     document.documentElement.style.setProperty(
       '--readerSettings-theme',
       settings.theme,
@@ -95,21 +87,11 @@ window.reader = new (function () {
       // have no affect with a font declared in head
       document.fonts.forEach(fontFace => document.fonts.delete(fontFace));
     }
-  };
-  this.updateBatteryLevel = level => {
-    for (const callback of this.updateCallbacks.batteryLevel) {
-      callback(level);
-    }
-  };
-  this.updateHidden = hidden => {
-    for (const callback of this.updateCallbacks.hidden) {
-      callback(hidden);
-    }
-  };
+  });
 
   // init actions
   document.onclick = e => {
-    if (this.chapterGeneralSettings.pageReader) {
+    if (this.generalSettings.val.pageReader) {
       tapChapter(e);
     } else {
       this.post({ type: 'hide' });
@@ -117,7 +99,7 @@ window.reader = new (function () {
   };
 
   setInterval(() => {
-    if (!this.chapterGeneralSettings.pageReader) {
+    if (!this.generalSettings.val.pageReader) {
       this.post({
         type: 'save',
         data: parseInt(

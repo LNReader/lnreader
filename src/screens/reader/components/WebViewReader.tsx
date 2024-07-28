@@ -97,16 +97,16 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       switch (key) {
         case CHAPTER_READER_SETTINGS:
           webViewRef.current?.injectJavaScript(
-            `reader.updateReaderSettings(${MMKVStorage.getString(
+            `reader.readerSettings.val = ${MMKVStorage.getString(
               CHAPTER_READER_SETTINGS,
-            )})`,
+            )}`,
           );
           break;
         case CHAPTER_GENERAL_SETTINGS:
           webViewRef.current?.injectJavaScript(
-            `reader.updateGeneralSettings(${MMKVStorage.getString(
+            `reader.generalSettings.val = ${MMKVStorage.getString(
               CHAPTER_GENERAL_SETTINGS,
-            )})`,
+            )}`,
           );
           break;
       }
@@ -116,7 +116,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
       'RNDeviceInfo_batteryLevelDidChange',
       (level: number) => {
         webViewRef.current?.injectJavaScript(
-          `reader.updateBatteryLevel(${level})`,
+          `reader.batteryLevel.val = ${level}`,
         );
       },
     );

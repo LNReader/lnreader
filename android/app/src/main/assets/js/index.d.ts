@@ -3,6 +3,7 @@ import {
   ChapterGeneralSettings,
   ChapterReaderSettings,
 } from '@hooks/persisted/useSettings';
+import { State } from './van';
 
 interface UpdateCallbackMap {
   generalSettings: Array<(settings: ChapterGeneralSettings) => void>;
@@ -16,13 +17,15 @@ export interface Reader {
   viewport: HTMLMetaElement;
   selection: Selection;
 
-  updateCallbacks: UpdateCallbackMap;
+  // state
+  hidden: State<boolean>;
+  generalSettings: State<ChapterGeneralSettings>;
+  readerSettings: State<ChapterReaderSettings>;
+  batteryLevel: State<number>;
+
   novel: NovelInfo;
   chapter: ChapterInfo;
-  chapterGeneralSettings: ChapterGeneralSettings;
-  chapterReaderSettings: ChapterReaderSettings;
   autoSaveInterval: number;
-  initalBatteryLevel: number;
 
   //layout props
   paddingTop: number;
@@ -30,19 +33,8 @@ export interface Reader {
   chapterHeight: number;
   layoutWidth: number;
 
-  // methods used by webview
   post: (obj: Record<string, any>) => void;
-  subscribe<T extends keyof UpdateCallbackMap>(
-    name: T,
-    callback: UpdateCallbackMap[T][number],
-  ): void;
   refresh: () => void;
-
-  // methods used by app
-  updateHidden: (hidden: boolean) => void;
-  updateGeneralSettings: (settings: ChapterGeneralSettings) => void;
-  updateReaderSettings: (settings: ChapterReaderSettings) => void;
-  updateBatteryLevel: (level: number) => void;
 }
 
 declare global {
