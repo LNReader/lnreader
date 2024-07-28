@@ -26,6 +26,14 @@ const Scrollbar = () => {
     }
   };
   window.addEventListener('scroll', () => !lock && update());
+  window.addEventListener('DOMContentLoaded', () => {
+    window.scrollTo({
+      top:
+        (reader.chapterHeight * reader.chapter.progress) / 100 -
+        reader.layoutHeight,
+      behavior: 'smooth',
+    });
+  });
   return div(
     { id: 'ScrollBar' },
     div(
