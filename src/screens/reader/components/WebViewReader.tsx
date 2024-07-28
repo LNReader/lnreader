@@ -181,7 +181,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
         }
       }}
       source={{
-        baseUrl: plugin?.site,
+        baseUrl: !chapter.isDownloaded ? plugin?.site : undefined,
         headers: plugin?.imageRequestInit?.headers,
         method: plugin?.imageRequestInit?.method,
         body: plugin?.imageRequestInit?.body,
@@ -237,12 +237,10 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     <style>${readerSettings.customCSS}</style>
                   </head>
                   <body>
-                    <div class="chapterCtn"> 
-                      <chapter data-page-reader='${pageReader}'>
-                        ${html}
-                      </chapter>
-                      <div id="reader-ui"></div>
-                    </div>
+                    <chapter data-page-reader='${pageReader}'>
+                      ${html}
+                    </chapter>
+                    <div id="reader-ui"></div>
                     ${
                       !pageReader
                         ? `
@@ -281,9 +279,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                     <script src="${assetsUriPrefix}/js/core.js"></script>
                     <script src="${assetsUriPrefix}/js/index.js"></script>
                     <script src="${pluginCustomJS}"></script>
-                    <script>
-                        setup(${chapter.progress},${readerSettings.customJS})
-                    </script>
                 </html>
                 `,
       }}

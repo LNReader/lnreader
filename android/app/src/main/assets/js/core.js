@@ -127,3 +127,128 @@ window.reader = new (function () {
   }
   // end reader
 })();
+
+window.tts = new (function () {
+  this.readableNodeNames = [
+    '#text',
+    'B',
+    'I',
+    'SPAN',
+    'EM',
+    'BR',
+    'STRONG',
+    'A',
+  ];
+  this.prevElement = null;
+  this.currentElement = reader.chapterElement;
+  this.started = false;
+  this.reading = false;
+
+  this.readable = element => {
+    ele = element ?? this.currentElement;
+    if (
+      ele.nodeName !== 'SPAN' &&
+      this.readableNodeNames.includes(ele.nodeName)
+    ) {
+      return false;
+    }
+    if (!ele.hasChildNodes()) {
+      return false;
+    }
+    for (let i = 0; i < ele.childNodes.length; i++) {
+      if (!this.readableNodeNames.includes(ele.childNodes.item(i).nodeName)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // if can find a readable node, else stop tts
+  this.findNextTextNode = () => {
+    if (!this.started) {
+      this.started = true;
+      if (this.readable()) {
+        return true;
+      }
+    } else if (this.currentElement.isSameNode(reader.chapterElement)) {
+      return false;
+    }
+    // node is read -> next node or parent node
+    if (this.currentElement.isSameNode(this.prevElement)) {
+      this.prevElement = this.currentElement;
+      if (this.currentElement.nextElementSibling) {
+        this.currentElement = this.currentElement.nextElementSibling;
+      } else {
+        this.currentElement = this.currentElement.parentElement;
+      }
+      return this.findNextTextNode();
+    }
+
+    if (this.readable()) {
+      return true;
+    }
+    if (this.prevElement?.parentElement.isSameNode(this.currentElement)) {
+      // is backtracking
+      this.prevElement = this.currentElement;
+      if (this.currentElement.nextElementSibling) {
+        this.currentElement = this.currentElement.nextElementSibling;
+      } else {
+        this.currentElement = this.currentElement.parentElement;
+      }
+      return this.findNextTextNode();
+    }
+    if (this.currentElement.firstElementChild) {
+      // go deeper
+      this.prevElement = this.currentElement;
+      this.currentElement = this.currentElement.firstElementChild;
+      return this.findNextTextNode();
+    }
+    return false;
+  };
+
+  this.next = () => {
+    try {
+      this.currentElement?.classList?.remove('highlight');
+      if (this.findNextTextNode()) {
+        this.reading = true;
+        this.speak();
+      } else {
+        this.reading = false;
+      }
+    } catch (e) {
+      alert(e);
+    }
+  };
+
+  this.start = element => {
+    this.stop();
+    this.currentElement = element ?? reader.chapterElement;
+    this.next();
+  };
+
+  this.resume = () => {
+    if (!this.reading) {
+      this.next();
+    }
+  };
+
+  this.stop = () => {
+    reader.post({ type: 'stop-speak' });
+    this.currentElement?.classList?.remove('highlight');
+    this.prevElement = null;
+    this.currentElement = reader.chapterElement;
+    this.started = false;
+    this.reading = false;
+  };
+
+  this.pause = () => {
+    this.reading = false;
+    reader.post({ type: 'stop-speak' });
+  };
+
+  this.speak = () => {
+    this.prevElement = this.currentElement;
+    this.currentElement.classList.add('highlight');
+    reader.post({ type: 'speak', data: this.currentElement?.innerText });
+  };
+})();

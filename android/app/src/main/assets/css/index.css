@@ -159,23 +159,6 @@ td {
   right: unset;
 }
 
-#TTS-Controller {
-  display: block;
-}
-
-#ToolWrapper.horizontal > #TTS-Controller {
-  margin-left: 4px;
-}
-
-#TTS-Controller button {
-  background: var(--theme-surface-0-9);
-  border: 0;
-}
-
-#TTS-Controller svg {
-  fill: var(--theme-onSurface);
-}
-
 #ToolWrapper > #ScrollBar {
   margin-top: 8px;
   width: 2.4rem;
@@ -325,110 +308,6 @@ td {
   background-color: var(--theme-secondary);
 }
 
-.contextMenu {
-  position: fixed;
-  background: var(--theme-surface-0-9);
-  height: 0;
-  top: var(--top);
-  left: var(--left);
-  overflow: hidden;
-  -webkit-backdrop-filter: blur(1px);
-  backdrop-filter: blur(1px);
-  -webkit-animation: menuAnimation 0.4s 0s both;
-  animation: menuAnimation 0.4s 0s both;
-  transform-origin: left;
-  list-style: none;
-  margin: 4px;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  z-index: 999999999;
-}
-
-.contextMenu-item {
-  padding: 4px;
-}
-
-.contextMenu-button {
-  color: var(--theme-onSurface);
-  background: 0;
-  border: 0;
-  border-radius: 4px;
-  white-space: nowrap;
-  padding: 6px 24px 6px 7px;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-  width: 100%;
-  -webkit-animation: menuItemAnimation 0.2s 0s both;
-  animation: menuItemAnimation 0.2s 0s both;
-  font-family: var(--readerSettings-fontFamily);
-  cursor: pointer;
-  user-select: none;
-  -webkit-tap-highlight-color: var(--theme-rippleColor);
-}
-
-.contextMenu-button svg {
-  fill: var(--theme-onSurface);
-}
-
-.contextMenu-button span {
-  margin-left: 4px;
-}
-
-@-webkit-keyframes menuAnimation {
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-
-  100% {
-    height: var(--height);
-    opacity: 1;
-    border-radius: 8px;
-    transform: scale(1);
-  }
-}
-
-@keyframes menuAnimation {
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-
-  100% {
-    height: var(--height);
-    opacity: 1;
-    border-radius: 8px;
-    transform: scale(1);
-  }
-}
-
-@-webkit-keyframes menuItemAnimation {
-  0% {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes menuItemAnimation {
-  0% {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 #Image-Modal {
   position: fixed;
   left: 0;
@@ -449,4 +328,43 @@ td {
 #Image img {
   display: block;
   width: 100%;
+}
+
+#TTS-Controller {
+  position: fixed;
+  top: 50%;
+  left: 32px;
+  opacity: 0.5;
+}
+
+#TTS-Controller button {
+  background: var(--theme-surface-0-9);
+  outline: none;
+  border-width: 0;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  padding: 4px;
+  border-radius: 100%;
+  transform: translate(-75%, -75%);
+  transition: 1s;
+}
+
+#TTS-Controller.active{
+  opacity: 1;
+}
+
+#TTS-Controller.active button {
+  padding: 16px;
+}
+
+#TTS-Controller svg {
+  fill: var(--theme-onSurface);
+  width: 20px;
+  height: 20px;
+}
+
+#TTS-Controller.active svg {
+  width: 24px;
+  height: 24px;
 }

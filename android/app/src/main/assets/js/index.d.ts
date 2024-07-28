@@ -13,7 +13,7 @@ interface UpdateCallbackMap {
 
 export interface Reader {
   // element
-  chapterElemet: HTMLElement;
+  chapterElement: HTMLElement;
   viewport: HTMLMetaElement;
   selection: Selection;
 
@@ -37,6 +37,17 @@ export interface Reader {
   refresh: () => void;
 }
 
+interface TTS {
+  started: boolean;
+  reading: boolean;
+  start: (element?: HTMLElement) => void;
+  resume: () => void;
+  stop: () => void;
+  pause: () => void;
+  readable: (element?: HTMLElement) => void;
+}
+
 declare global {
   const reader: Reader;
+  const tts: TTS;
 }
