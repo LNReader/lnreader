@@ -155,11 +155,11 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
 
       if (!incognitoMode && percentage >= 97) {
         // a relative number
-        markChapterRead(chapter.id);
-        updateTracker();
-        if (plugin?.trackProgress) {
+        if (plugin?.trackProgress && chapter.unread) {
           plugin.trackProgress(novel.path, chapter.path);
         }
+        markChapterRead(chapter.id);
+        updateTracker();
       }
     },
     [chapter],

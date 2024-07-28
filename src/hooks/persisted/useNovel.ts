@@ -14,7 +14,7 @@ import {
   bookmarkChapter as _bookmarkChapter,
   markChapterRead as _markChapterRead,
   markChaptersRead as _markChaptersRead,
-  markPreviuschaptersRead as _markPreviuschaptersRead,
+  markPreviousChaptersRead as _markPreviousChaptersRead,
   markPreviousChaptersUnread as _markPreviousChaptersUnread,
   markChaptersUnread as _markChaptersUnread,
   deleteChapter as _deleteChapter,
@@ -32,6 +32,7 @@ import { parseChapterNumber } from '@utils/parseChapterNumber';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import FileManager from '@native/FileManager';
 import { useAppSettings } from './useSettings';
+import { getPlugin } from '@plugins/pluginManager';
 
 // store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
 // store key: '<PREFIX>_<novel.id>',
@@ -195,6 +196,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     _chapters.map(_chapter => {
       _bookmarkChapter(_chapter.id);
     });
+
     setChapters(
       chapters.map(chapter => {
         if (_chapters.some(_c => _c.id === chapter.id)) {
@@ -208,19 +210,36 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     );
   };
 
-  const markPreviouschaptersRead = (chapterId: number) => {
+  const markPreviousChaptersRead = (chapterId: number) => {
     if (novel) {
-      _markPreviuschaptersRead(chapterId, novel.id);
+      _markPreviousChaptersRead(chapterId, novel.id);
+
+      let lastTrackedChapterId: number | null = null;
       setChapters(
-        chapters.map(chapter =>
-          chapter.id <= chapterId ? { ...chapter, unread: false } : chapter,
-        ),
+        chapters.map(chapter => {
+          if (chapter.id <= chapterId) {
+            lastTrackedChapterId = chapter.id;
+            return { ...chapter, unread: false };
+          }
+          return chapter;
+        }),
       );
+      // Track progress for the last chapter marked as read
+      const plugin = getPlugin(novel.pluginId);
+      if (lastTrackedChapterId !== null && plugin?.trackProgress) {
+        const lastTrackedChapter = chapters.find(
+          chapter => chapter.id === lastTrackedChapterId,
+        );
+        if (lastTrackedChapter) {
+          plugin.trackProgress(novel.path, lastTrackedChapter.path);
+        }
+      }
     }
   };
 
   const markChapterRead = (chapterId: number) => {
     _markChapterRead(chapterId);
+
     setChapters(
       chapters.map(c => {
         if (c.id !== chapterId) {
@@ -236,6 +255,13 @@ export const useNovel = (novelPath: string, pluginId: string) => {
 
   const markChaptersRead = (_chapters: ChapterInfo[]) => {
     const chapterIds = _chapters.map(chapter => chapter.id);
+    if (novel) {
+      const plugin = getPlugin(novel.pluginId);
+      if (plugin?.trackProgress) {
+        const chapterPath = _chapters.map(chapter => chapter.path).pop()!;
+        plugin.trackProgress?.(novel.path, chapterPath);
+      }
+    }
     _markChaptersRead(chapterIds);
 
     setChapters(
@@ -404,7 +430,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     sortAndFilterChapters,
     followNovel,
     bookmarkChapters,
-    markPreviouschaptersRead,
+    markPreviousChaptersRead,
     markChaptersRead,
     markPreviousChaptersUnread,
     markChaptersUnread,
