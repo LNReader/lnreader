@@ -245,6 +245,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                       })}
                     </script>
                     <script src="${assetsUriPrefix}/js/van.js"></script>
+                    <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
                     <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
                     <script src="${assetsUriPrefix}/js/core.js"></script>
                     <script src="${assetsUriPrefix}/js/index.js"></script>

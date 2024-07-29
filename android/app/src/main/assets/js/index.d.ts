@@ -26,6 +26,7 @@ export interface Reader {
   novel: NovelInfo;
   chapter: ChapterInfo;
   autoSaveInterval: number;
+  rawHTML: string;
 
   //layout props
   paddingTop: number;

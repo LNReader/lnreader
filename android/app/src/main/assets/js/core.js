@@ -296,3 +296,19 @@ document.onclick = e => {
     }
   });
 })();
+
+// text options
+(function () {
+  van.derive(() => {
+    let html = reader.rawHTML;
+    if (reader.generalSettings.val.bionicReading) {
+      html = textVide.textVide(reader.rawHTML);
+    }
+
+    if (reader.generalSettings.val.removeExtraParagraphSpacing) {
+      html = html.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
+    }
+
+    reader.chapterElement.innerHTML = html;
+  });
+})();
