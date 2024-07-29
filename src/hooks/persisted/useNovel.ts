@@ -214,24 +214,27 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     if (novel) {
       _markPreviousChaptersRead(chapterId, novel.id);
 
-      let lastTrackedChapterId: number | null = null;
       setChapters(
         chapters.map(chapter => {
           if (chapter.id <= chapterId) {
-            lastTrackedChapterId = chapter.id;
             return { ...chapter, unread: false };
           }
           return chapter;
         }),
       );
-      // Track progress for the last chapter marked as read
+
+      // Track progress if the plugin supports it
       const plugin = getPlugin(novel.pluginId);
-      if (lastTrackedChapterId !== null && plugin?.trackProgress) {
-        const lastTrackedChapter = chapters.find(
-          chapter => chapter.id === lastTrackedChapterId,
+      if (plugin?.trackProgress) {
+        const chapterPosition = chapters.find(
+          chapter => chapter.id === chapterId,
+        )?.position;
+        const trackedChapter = chapters.find(
+          chapter => chapter.position === chapterPosition,
         );
-        if (lastTrackedChapter) {
-          plugin.trackProgress(novel.path, lastTrackedChapter.path);
+
+        if (trackedChapter) {
+          plugin.trackProgress(novel.path, trackedChapter.path);
         }
       }
     }
@@ -254,55 +257,104 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   };
 
   const markChaptersRead = (_chapters: ChapterInfo[]) => {
-    const chapterIds = _chapters.map(chapter => chapter.id);
     if (novel) {
+      const chapterIds = _chapters.map(chapter => chapter.id);
+      _markChaptersRead(chapterIds);
+
+      setChapters(
+        chapters.map(chapter => {
+          if (chapterIds.includes(chapter.id)) {
+            return {
+              ...chapter,
+              unread: false,
+            };
+          }
+          return chapter;
+        }),
+      );
+
+      // Track progress if the plugin supports it
       const plugin = getPlugin(novel.pluginId);
       if (plugin?.trackProgress) {
-        const chapterPath = _chapters.map(chapter => chapter.path).pop()!;
-        plugin.trackProgress?.(novel.path, chapterPath);
+        // Sort the selected chapters based on the position
+        const sortedChapters = [..._chapters].sort((a, b) => {
+          return b.position! - a.position!;
+        });
+        const trackedChapter = sortedChapters[0];
+
+        plugin.trackProgress?.(novel.path, trackedChapter.path);
       }
     }
-    _markChaptersRead(chapterIds);
-
-    setChapters(
-      chapters.map(chapter => {
-        if (chapterIds.includes(chapter.id)) {
-          return {
-            ...chapter,
-            unread: false,
-          };
-        }
-        return chapter;
-      }),
-    );
   };
 
   const markPreviousChaptersUnread = (chapterId: number) => {
     if (novel) {
       _markPreviousChaptersUnread(chapterId, novel.id);
+
       setChapters(
-        chapters.map(chapter =>
-          chapter.id <= chapterId ? { ...chapter, unread: true } : chapter,
-        ),
+        chapters.map(chapter => {
+          if (chapter.id >= chapterId) {
+            return { ...chapter, unread: true };
+          }
+          return chapter;
+        }),
       );
+
+      // Track progress if the plugin supports it
+      const plugin = getPlugin(novel.pluginId);
+      if (plugin?.trackProgress) {
+        const chapterPosition = chapters.find(
+          chapter => chapter.id === chapterId,
+        )?.position;
+        const trackedChapter =
+          chapters.find(chapter => chapter.position === chapterPosition! - 1) ||
+          chapters.find(chapter => chapter.position === chapterPosition);
+
+        if (trackedChapter) {
+          plugin.trackProgress(novel.path, trackedChapter.path);
+        }
+      }
     }
   };
 
   const markChaptersUnread = (_chapters: ChapterInfo[]) => {
-    const chapterIds = _chapters.map(chapter => chapter.id);
-    _markChaptersUnread(chapterIds);
+    if (novel) {
+      const chapterIds = _chapters.map(chapter => chapter.id);
+      _markChaptersUnread(chapterIds);
 
-    setChapters(
-      chapters.map(chapter => {
-        if (chapterIds.includes(chapter.id)) {
-          return {
-            ...chapter,
-            unread: true,
-          };
+      setChapters(
+        chapters.map(chapter => {
+          if (chapterIds.includes(chapter.id)) {
+            return {
+              ...chapter,
+              unread: true,
+            };
+          }
+          return chapter;
+        }),
+      );
+
+      // Track progress if the plugin supports it
+      const plugin = getPlugin(novel.pluginId);
+      if (plugin?.trackProgress) {
+        // Sort the selected chapters based on the position
+        const sortedChapters = [..._chapters].sort((a, b) => {
+          return a.position! - b.position!;
+        });
+        const firstChapterPosition = chapters.find(
+          chapter => chapter.id === sortedChapters[0].id,
+        )?.position;
+        const trackedChapter =
+          chapters.find(
+            chapter => chapter.position === firstChapterPosition! - 1,
+          ) ||
+          chapters.find(chapter => chapter.position === firstChapterPosition);
+
+        if (trackedChapter) {
+          plugin.trackProgress(novel.path, trackedChapter.path);
         }
-        return chapter;
-      }),
-    );
+      }
+    }
   };
 
   const deleteChapter = (_chapter: ChapterInfo) => {
