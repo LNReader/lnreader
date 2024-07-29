@@ -147,17 +147,19 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
 
   const saveProgress = useCallback(
     (percentage: number) => {
-      const plugin = getPlugin(novel.pluginId);
-
       if (!incognitoMode) {
         updateChapterProgress(chapter.id, percentage > 100 ? 100 : percentage);
       }
 
       if (!incognitoMode && percentage >= 97) {
         // a relative number
+
+        // Track progress if the plugin supports it
+        const plugin = getPlugin(novel.pluginId);
         if (plugin?.trackProgress && chapter.unread) {
           plugin.trackProgress(novel.path, chapter.path);
         }
+
         markChapterRead(chapter.id);
         updateTracker();
       }
