@@ -212,32 +212,47 @@ export const useNovel = (novelPath: string, pluginId: string) => {
 
   const markPreviousChaptersRead = (chapterId: number) => {
     if (novel) {
+      // Track progress if the plugin supports it
+      const plugin = getPlugin(novel.pluginId);
+      if (plugin?.trackProgress) {
+        const chapterPosition = chapters.find(
+          chapter => chapter.id === chapterId,
+        )?.position;
+        const trackedChapter = chapters.find(
+          chapter => chapter.position === chapterPosition,
+        );
+
+        if (trackedChapter) {
+          plugin.trackProgress(novel.path, trackedChapter.path);
+        }
+      }
       _markPreviousChaptersRead(chapterId, novel.id);
 
-      let lastTrackedChapterId: number | null = null;
       setChapters(
         chapters.map(chapter => {
           if (chapter.id <= chapterId) {
-            lastTrackedChapterId = chapter.id;
             return { ...chapter, unread: false };
           }
           return chapter;
         }),
       );
-      // Track progress for the last chapter marked as read
-      const plugin = getPlugin(novel.pluginId);
-      if (lastTrackedChapterId !== null && plugin?.trackProgress) {
-        const lastTrackedChapter = chapters.find(
-          chapter => chapter.id === lastTrackedChapterId,
-        );
-        if (lastTrackedChapter) {
-          plugin.trackProgress(novel.path, lastTrackedChapter.path);
-        }
-      }
     }
   };
 
   const markChapterRead = (chapterId: number) => {
+    if (novel) {
+      // Track progress if the plugin supports it
+      const plugin = getPlugin(novel.pluginId);
+      if (plugin?.trackProgress) {
+        const selectedChapter = chapters.find(
+          chapter => chapter.id === chapterId,
+        );
+
+        if (selectedChapter) {
+          plugin.trackProgress(novel.path, selectedChapter.path);
+        }
+      }
+    }
     _markChapterRead(chapterId);
 
     setChapters(
@@ -254,14 +269,20 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   };
 
   const markChaptersRead = (_chapters: ChapterInfo[]) => {
-    const chapterIds = _chapters.map(chapter => chapter.id);
     if (novel) {
+      // Track progress if the plugin supports it
       const plugin = getPlugin(novel.pluginId);
       if (plugin?.trackProgress) {
-        const chapterPath = _chapters.map(chapter => chapter.path).pop()!;
-        plugin.trackProgress?.(novel.path, chapterPath);
+        // Sort the selected chapters based on the position
+        const sortedChapters = [..._chapters].sort((a, b) => {
+          return b.position! - a.position!;
+        });
+        const trackedChapter = sortedChapters[0];
+
+        plugin.trackProgress?.(novel.path, trackedChapter.path);
       }
     }
+    const chapterIds = _chapters.map(chapter => chapter.id);
     _markChaptersRead(chapterIds);
 
     setChapters(
@@ -279,16 +300,56 @@ export const useNovel = (novelPath: string, pluginId: string) => {
 
   const markPreviousChaptersUnread = (chapterId: number) => {
     if (novel) {
+      // Track progress if the plugin supports it
+      const plugin = getPlugin(novel.pluginId);
+      if (plugin?.trackProgress) {
+        const chapterPosition = chapters.find(
+          chapter => chapter.id === chapterId,
+        )?.position;
+        const trackedChapter =
+          chapters.find(chapter => chapter.position === chapterPosition! - 1) ||
+          chapters.find(chapter => chapter.position === chapterPosition);
+
+        if (trackedChapter) {
+          plugin.trackProgress(novel.path, trackedChapter.path);
+        }
+      }
       _markPreviousChaptersUnread(chapterId, novel.id);
+
       setChapters(
-        chapters.map(chapter =>
-          chapter.id <= chapterId ? { ...chapter, unread: true } : chapter,
-        ),
+        chapters.map(chapter => {
+          if (chapter.id >= chapterId) {
+            return { ...chapter, unread: true };
+          }
+          return chapter;
+        }),
       );
     }
   };
 
   const markChaptersUnread = (_chapters: ChapterInfo[]) => {
+    if (novel) {
+      // Track progress if the plugin supports it
+      const plugin = getPlugin(novel.pluginId);
+      if (plugin?.trackProgress) {
+        // Sort the selected chapters based on the position
+        const sortedChapters = [..._chapters].sort((a, b) => {
+          return a.position! - b.position!;
+        });
+        const firstChapterPosition = chapters.find(
+          chapter => chapter.id === sortedChapters[0].id,
+        )?.position;
+        const trackedChapter =
+          chapters.find(
+            chapter => chapter.position === firstChapterPosition! - 1,
+          ) ||
+          chapters.find(chapter => chapter.position === firstChapterPosition);
+
+        if (trackedChapter) {
+          plugin.trackProgress(novel.path, trackedChapter.path);
+        }
+      }
+    }
     const chapterIds = _chapters.map(chapter => chapter.id);
     _markChaptersUnread(chapterIds);
 

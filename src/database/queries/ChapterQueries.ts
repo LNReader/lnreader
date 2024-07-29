@@ -406,7 +406,7 @@ export const markPreviousChaptersRead = async (
 };
 
 const markPreviousChaptersUnreadQuery =
-  'UPDATE Chapter SET `unread` = 1 WHERE id <= ? AND novelId = ?';
+  'UPDATE Chapter SET `unread` = 1 WHERE id >= ? AND novelId = ?';
 
 export const markPreviousChaptersUnread = async (
   chapterId: number,
