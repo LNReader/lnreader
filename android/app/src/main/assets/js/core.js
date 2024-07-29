@@ -89,15 +89,6 @@ window.reader = new (function () {
     }
   });
 
-  // init actions
-  document.onclick = e => {
-    if (this.generalSettings.val.pageReader) {
-      tapChapter(e);
-    } else {
-      this.post({ type: 'hide' });
-    }
-  };
-
   setInterval(() => {
     if (!this.generalSettings.val.pageReader) {
       this.post({
@@ -251,4 +242,57 @@ window.tts = new (function () {
     this.currentElement.classList.add('highlight');
     reader.post({ type: 'speak', data: this.currentElement?.innerText });
   };
+})();
+
+// click handler
+document.onclick = e => {
+  if (reader.generalSettings.val.pageReader) {
+    tapChapter(e);
+  } else {
+    reader.post({ type: 'hide' });
+  }
+};
+
+// swipe handler
+(function () {
+  this.initialX = null;
+  this.initialY = null;
+
+  touchStartHandler = e => {
+    this.initialX = e.changedTouches[0].screenX;
+    this.initialY = e.changedTouches[0].screenY;
+  };
+
+  /**
+   * @param {TouchEvent} e
+   */
+  touchEndHandler = e => {
+    let diffX = e.changedTouches[0].screenX - this.initialX;
+    let diffY = e.changedTouches[0].screenY - this.initialY;
+    if (
+      e.target.id?.startsWith('scrollbar') ||
+      e.target.id === 'Image-Modal-img'
+    ) {
+      return;
+    }
+    if (Math.abs(diffX) > Math.abs(diffY) * 2 && Math.abs(diffX) > 180) {
+      if (diffX < 0 && this.initialX >= window.innerWidth / 2) {
+        e.preventDefault();
+        reader.post({ type: 'next' });
+      } else if (diffX > 0 && this.initialX <= window.innerWidth / 2) {
+        e.preventDefault();
+        reader.post({ type: 'prev' });
+      }
+    }
+  };
+
+  van.derive(() => {
+    if (reader.generalSettings.val.swipeGestures) {
+      document.addEventListener('touchstart', this.touchStartHandler);
+      document.addEventListener('touchend', this.touchEndHandler);
+    } else {
+      document.removeEventListener('touchstart', this.touchStartHandler);
+      document.removeEventListener('touchend', this.touchEndHandler);
+    }
+  });
 })();

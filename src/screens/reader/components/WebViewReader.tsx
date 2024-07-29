@@ -41,7 +41,6 @@ type WebViewReaderProps = {
   saveProgress(percentage: number): void;
   onPress(): void;
   navigateChapter(position: 'NEXT' | 'PREV'): void;
-  pageReader: boolean;
 };
 
 const onLogMessage = (payload: { nativeEvent: { data: string } }) => {
@@ -56,23 +55,16 @@ const onLogMessage = (payload: { nativeEvent: { data: string } }) => {
   }
 };
 
+const { RNDeviceInfo } = NativeModules;
+const deviceInfoEmitter = new NativeEventEmitter(RNDeviceInfo);
+
+const assetsUriPrefix = __DEV__
+  ? 'http://localhost:8081/assets'
+  : 'file:///android_asset';
+
 const WebViewReader: React.FC<WebViewReaderProps> = props => {
-  const {
-    html,
-    nextChapter,
-    webViewRef,
-    pageReader,
-    saveProgress,
-    onPress,
-    navigateChapter,
-  } = props;
+  const { html, webViewRef, saveProgress, onPress, navigateChapter } = props;
   const { novel, chapter } = useChapterContext();
-  const assetsUriPrefix = useMemo(
-    () => (__DEV__ ? 'http://localhost:8081/assets' : 'file:///android_asset'),
-    [],
-  );
-  const { RNDeviceInfo } = NativeModules;
-  const deviceInfoEmitter = new NativeEventEmitter(RNDeviceInfo);
   const theme = useTheme();
   const readerSettings = useMemo(
     () =>
@@ -226,42 +218,20 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                         }.ttf");
                       }
                       </style>
-                      ${
-                        pageReader
-                          ? `
-                          <link rel="stylesheet" href="${assetsUriPrefix}/css/horizontal.css">
-                        `
-                          : ''
-                      }
+ 
                     <link rel="stylesheet" href="${pluginCustomCSS}">
                     <style>${readerSettings.customCSS}</style>
                   </head>
                   <body>
-                    <chapter data-page-reader='${pageReader}'>
+                    <chapter>
                       ${html}
                     </chapter>
                     <div id="reader-ui"></div>
-                    ${
-                      !pageReader
-                        ? `
-                    <div class="infoText">
+                     <div class="infoText">
                       ${getString(
                         'readerScreen.finished',
                       )}: ${chapter.name.trim()}
                     </div>
-                    ${
-                      nextChapter
-                        ? `<button class="nextButton" onclick="reader.post({type:'next'})">
-                            ${getString('readerScreen.nextChapter', {
-                              name: nextChapter.name,
-                            })}
-                          </button>`
-                        : `<div class="infoText">
-                          ${getString('readerScreen.noNextChapter')}
-                        </div>`
-                    }`
-                        : ''
-                    }
                     </body>
                     <script>
                       var initialReaderConfig = ${JSON.stringify({
