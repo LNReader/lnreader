@@ -245,13 +245,56 @@ window.tts = new (function () {
 })();
 
 // click handler
-document.onclick = e => {
-  if (reader.generalSettings.val.pageReader) {
-    tapChapter(e);
-  } else {
-    reader.post({ type: 'hide' });
-  }
-};
+(function () {
+  const detectTapPosition = (x, y, horizontal) => {
+    if (horizontal) {
+      if (x < 0.33) {
+        return 'left';
+      }
+      if (x > 0.66) {
+        return 'right';
+      }
+    } else {
+      if (y < 0.33) {
+        return 'top';
+      }
+      if (y > 0.66) {
+        return 'bottom';
+      }
+    }
+    return 'center';
+  };
+  document.onclick = e => {
+    const { clientX, clientY } = e;
+    const { x, y } = {
+      x: clientX / reader.layoutWidth,
+      y: clientY / reader.layoutHeight,
+    };
+    if (reader.generalSettings.val.pageReader) {
+      const position = detectTapPosition(x, y, true);
+      tapChapter(e);
+    } else {
+      if (reader.generalSettings.val.tapToScroll) {
+        const position = detectTapPosition(x, y, false);
+        if (position === 'top') {
+          window.scrollBy({
+            top: -reader.layoutHeight * 0.75,
+            behavior: 'smooth',
+          });
+          return;
+        }
+        if (position === 'bottom') {
+          window.scrollBy({
+            top: reader.layoutHeight * 0.75,
+            behavior: 'smooth',
+          });
+          return;
+        }
+      }
+      reader.post({ type: 'hide' });
+    }
+  };
+})();
 
 // swipe handler
 (function () {

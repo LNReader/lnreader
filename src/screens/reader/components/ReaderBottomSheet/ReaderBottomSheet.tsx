@@ -54,6 +54,7 @@ const GeneralTab: React.FC = () => {
     pageReader = false,
     removeExtraParagraphSpacing,
     bionicReading,
+    tapToScroll = false,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
 
@@ -137,6 +138,12 @@ const GeneralTab: React.FC = () => {
           setChapterGeneralSettings({ bionicReading: !bionicReading })
         }
         value={bionicReading}
+        theme={theme}
+      />
+      <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.tapToScroll')}
+        onPress={() => setChapterGeneralSettings({ tapToScroll: !tapToScroll })}
+        value={tapToScroll}
         theme={theme}
       />
       <ReaderSheetPreferenceItem
