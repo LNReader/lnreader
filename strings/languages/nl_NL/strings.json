@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Toon batterij en tijd",
       "showProgressPercentage": "Voortgangspercentage weergeven",
       "swipeGestures": "Veeg naar links of rechts om tussen de hoofdstukken te navigeren",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Tekstselectie toestaan",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Remove extra paragraph spacing",
@@ -169,7 +170,8 @@
         "epubLocation": "EPUB Location",
         "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "disableHapticFeedback": "Disable haptic feedback",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Lezer",
