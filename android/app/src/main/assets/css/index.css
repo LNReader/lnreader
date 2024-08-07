@@ -3,7 +3,6 @@ html {
   overflow-x: hidden;
   padding-top: var(--StatusBar-currentHeight);
   word-wrap: break-word;
-  padding: 0;
 }
 
 ::selection {
@@ -19,7 +18,6 @@ html {
 body {
   margin-left: 0;
   margin-right: 0;
-  padding: 0;
   padding-bottom: 40px;
 
   font-size: var(--readerSettings-textSize);
@@ -30,15 +28,22 @@ body {
   font-family: var(--readerSettings-fontFamily);
 }
 
-chapter {
-  width: 100%;
-  display: block;
+body.page-reader { 
+  overflow: hidden;
+  padding: 0;
 }
 
-chapter > * {
-  max-width: 100vw;
+#LNReader-chapter {
   padding-left: var(--readerSettings-padding);
   padding-right: var(--readerSettings-padding);
+}
+
+body.page-reader > #LNReader-chapter{
+  height: calc(90vh);
+  padding-top: calc(2vh);
+  column-width: calc(100vw - var(--readerSettings-padding) * 2);
+  column-gap: calc(var(--readerSettings-padding) * 2);
+  transition: 200ms;
 }
 
 hr {
@@ -113,11 +118,6 @@ td {
   color: inherit;
   padding-top: 16px;
   padding-bottom: 16px;
-}
-
-.chapterCtn {
-  min-height: var(--chapterCtn-height);
-  margin-bottom: auto;
 }
 
 .d-none {

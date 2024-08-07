@@ -15,7 +15,7 @@ window.reader = new (function () {
   this.readerSettings = van.state(readerSettings);
   this.generalSettings = van.state(chapterGeneralSettings);
 
-  this.chapterElement = document.querySelector('chapter');
+  this.chapterElement = document.querySelector('#LNReader-chapter');
   this.selection = window.getSelection();
   this.viewport = document.querySelector('meta[name=viewport]');
 
@@ -32,8 +32,8 @@ window.reader = new (function () {
     10,
   );
   this.chapterHeight = this.chapterElement.scrollHeight + this.paddingTop;
-  this.layoutHeight = window.innerHeight;
-  this.layoutWidth = window.innerWidth;
+  this.layoutHeight = window.screen.height;
+  this.layoutWidth = window.screen.width;
 
   this.post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
   this.refresh = () => {
@@ -52,7 +52,7 @@ window.reader = new (function () {
     );
     document.documentElement.style.setProperty(
       '--readerSettings-padding',
-      settings.padding + '%',
+      settings.padding + 'px',
     );
     document.documentElement.style.setProperty(
       '--readerSettings-textSize',
@@ -244,6 +244,40 @@ window.tts = new (function () {
   };
 })();
 
+window.pageReader = new (function () {
+  this.page = 0;
+  this.totalPages = 1;
+
+  this.pageToPercentage = pageNumber => {
+    return Math.round((pageNumber / this.totalPages) * 100);
+  };
+
+  this.percentageToPage = percentage => {
+    const pageNumber = Math.round((percentage / 100) * this.totalPages) + 1;
+    return Math.min(pageNumber, this.totalPages);
+  };
+
+  this.movePage = destPage => {
+    destPage = parseInt(destPage);
+    if (destPage >= 0 && destPage < this.totalPages) {
+      this.page = destPage;
+      reader.chapterElement.style.transform =
+        'translateX(-' + this.page * 100 + '%)';
+    }
+  };
+
+  van.derive(() => {
+    if (reader.generalSettings.val.pageReader) {
+      document.body.classList.add('page-reader');
+      reader.refresh();
+      this.totalPages = parseInt(reader.chapterWidth / reader.layoutWidth - 1);
+    } else {
+      reader.chapterElement.style = '';
+      document.body.classList.remove('page-reader');
+    }
+  });
+})();
+
 // click handler
 (function () {
   const detectTapPosition = (x, y, horizontal) => {
@@ -272,7 +306,14 @@ window.tts = new (function () {
     };
     if (reader.generalSettings.val.pageReader) {
       const position = detectTapPosition(x, y, true);
-      tapChapter(e);
+      if (position === 'left') {
+        pageReader.movePage(pageReader.page - 1);
+        return;
+      }
+      if (position === 'right') {
+        pageReader.movePage(pageReader.page + 1);
+        return;
+      }
     } else {
       if (reader.generalSettings.val.tapToScroll) {
         const position = detectTapPosition(x, y, false);
@@ -291,8 +332,8 @@ window.tts = new (function () {
           return;
         }
       }
-      reader.post({ type: 'hide' });
     }
+    reader.post({ type: 'hide' });
   };
 })();
 
@@ -301,24 +342,44 @@ window.tts = new (function () {
   this.initialX = null;
   this.initialY = null;
 
-  touchStartHandler = e => {
+  document.addEventListener('touchstart', e => {
     this.initialX = e.changedTouches[0].screenX;
     this.initialY = e.changedTouches[0].screenY;
-  };
+  });
 
-  /**
-   * @param {TouchEvent} e
-   */
-  touchEndHandler = e => {
-    let diffX = e.changedTouches[0].screenX - this.initialX;
-    let diffY = e.changedTouches[0].screenY - this.initialY;
+  document.addEventListener('touchmove', e => {
+    if (reader.generalSettings.val.pageReader) {
+      const diffX =
+        (e.changedTouches[0].screenX - this.initialX) / reader.layoutWidth;
+      reader.chapterElement.style.transform =
+        'translateX(-' + (pageReader.page - diffX) * 100 + '%)';
+    }
+  });
+
+  document.addEventListener('touchend', e => {
+    const diffX = e.changedTouches[0].screenX - this.initialX;
+    const diffY = e.changedTouches[0].screenY - this.initialY;
+    if (reader.generalSettings.val.pageReader) {
+      const diffXPercentage = diffX / reader.layoutWidth;
+      if (diffXPercentage < -0.3) {
+        pageReader.movePage(pageReader.page + 1);
+      } else if (diffXPercentage > 0.3) {
+        pageReader.movePage(pageReader.page - 1);
+      } else {
+        pageReader.movePage(pageReader.page);
+      }
+    }
     if (
       e.target.id?.startsWith('scrollbar') ||
       e.target.id === 'Image-Modal-img'
     ) {
       return;
     }
-    if (Math.abs(diffX) > Math.abs(diffY) * 2 && Math.abs(diffX) > 180) {
+    if (
+      reader.generalSettings.val.swipeGestures &&
+      Math.abs(diffX) > Math.abs(diffY) * 2 &&
+      Math.abs(diffX) > 180
+    ) {
       if (diffX < 0 && this.initialX >= window.innerWidth / 2) {
         e.preventDefault();
         reader.post({ type: 'next' });
@@ -326,16 +387,6 @@ window.tts = new (function () {
         e.preventDefault();
         reader.post({ type: 'prev' });
       }
-    }
-  };
-
-  van.derive(() => {
-    if (reader.generalSettings.val.swipeGestures) {
-      document.addEventListener('touchstart', this.touchStartHandler);
-      document.addEventListener('touchend', this.touchEndHandler);
-    } else {
-      document.removeEventListener('touchstart', this.touchStartHandler);
-      document.removeEventListener('touchend', this.touchEndHandler);
     }
   });
 })();
@@ -351,7 +402,6 @@ window.tts = new (function () {
     if (reader.generalSettings.val.removeExtraParagraphSpacing) {
       html = html.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
     }
-
     reader.chapterElement.innerHTML = html;
   });
 })();

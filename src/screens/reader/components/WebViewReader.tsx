@@ -1,10 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import {
-  Dimensions,
-  NativeEventEmitter,
-  NativeModules,
-  StatusBar,
-} from 'react-native';
+import { NativeEventEmitter, NativeModules, StatusBar } from 'react-native';
 import WebView from 'react-native-webview';
 import color from 'color';
 
@@ -79,7 +74,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     [],
   );
   const batteryLevel = useMemo(getBatteryLevelSync, []);
-  const layoutHeight = Dimensions.get('window').height;
   const plugin = getPlugin(novel?.pluginId);
   const pluginCustomJS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.js`;
   const pluginCustomCSS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.css`;
@@ -179,79 +173,75 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
         body: plugin?.imageRequestInit?.body,
         html: `
         <!DOCTYPE html>
-                <html>
-                  <head>
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-                    <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
-                    <style>
-                    :root {
-                      --StatusBar-currentHeight: ${StatusBar.currentHeight};
-                      --readerSettings-theme: ${readerSettings.theme};
-                      --readerSettings-padding: ${readerSettings.padding}%;
-                      --readerSettings-textSize: ${readerSettings.textSize}px;
-                      --readerSettings-textColor: ${readerSettings.textColor};
-                      --readerSettings-textAlign: ${readerSettings.textAlign};
-                      --readerSettings-lineHeight: ${readerSettings.lineHeight};
-                      --readerSettings-fontFamily: ${readerSettings.fontFamily};
-                      --theme-primary: ${theme.primary};
-                      --theme-onPrimary: ${theme.onPrimary};
-                      --theme-secondary: ${theme.secondary};
-                      --theme-tertiary: ${theme.tertiary};
-                      --theme-onTertiary: ${theme.onTertiary};
-                      --theme-onSecondary: ${theme.onSecondary};
-                      --theme-surface: ${theme.surface};
-                      --theme-surface-0-9: ${color(theme.surface)
-                        .alpha(0.9)
-                        .toString()};
-                      --theme-onSurface: ${theme.onSurface};
-                      --theme-surfaceVariant: ${theme.surfaceVariant};
-                      --theme-onSurfaceVariant: ${theme.onSurfaceVariant};
-                      --theme-outline: ${theme.outline};
-                      --theme-rippleColor: ${theme.rippleColor};
-                      --chapterCtn-height: ${layoutHeight - 140};
-                      }
-                      
-                      @font-face {
-                        font-family: ${readerSettings.fontFamily};
-                        src: url("file:///android_asset/fonts/${
-                          readerSettings.fontFamily
-                        }.ttf");
-                      }
-                      </style>
- 
-                    <link rel="stylesheet" href="${pluginCustomCSS}">
-                    <style>${readerSettings.customCSS}</style>
-                  </head>
-                  <body>
-                    <chapter>
-                      ${html}
-                    </chapter>
-                    <div id="reader-ui"></div>
-                     <div class="infoText">
-                      ${getString(
-                        'readerScreen.finished',
-                      )}: ${chapter.name.trim()}
-                    </div>
-                    </body>
-                    <script>
-                      var initialReaderConfig = ${JSON.stringify({
-                        readerSettings,
-                        chapterGeneralSettings,
-                        novel,
-                        chapter,
-                        batteryLevel,
-                        autoSaveInterval: 2222,
-                        DEBUG: __DEV__,
-                      })}
-                    </script>
-                    <script src="${assetsUriPrefix}/js/van.js"></script>
-                    <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
-                    <script src="${assetsUriPrefix}/js/horizontalScroll.js"></script>
-                    <script src="${assetsUriPrefix}/js/core.js"></script>
-                    <script src="${assetsUriPrefix}/js/index.js"></script>
-                    <script src="${pluginCustomJS}"></script>
-                </html>
-                `,
+          <html>
+            <head>
+              <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+              <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
+              <style>
+              :root {
+                --StatusBar-currentHeight: ${StatusBar.currentHeight};
+                --readerSettings-theme: ${readerSettings.theme};
+                --readerSettings-padding: ${readerSettings.padding}px;
+                --readerSettings-textSize: ${readerSettings.textSize}px;
+                --readerSettings-textColor: ${readerSettings.textColor};
+                --readerSettings-textAlign: ${readerSettings.textAlign};
+                --readerSettings-lineHeight: ${readerSettings.lineHeight};
+                --readerSettings-fontFamily: ${readerSettings.fontFamily};
+                --theme-primary: ${theme.primary};
+                --theme-onPrimary: ${theme.onPrimary};
+                --theme-secondary: ${theme.secondary};
+                --theme-tertiary: ${theme.tertiary};
+                --theme-onTertiary: ${theme.onTertiary};
+                --theme-onSecondary: ${theme.onSecondary};
+                --theme-surface: ${theme.surface};
+                --theme-surface-0-9: ${color(theme.surface)
+                  .alpha(0.9)
+                  .toString()};
+                --theme-onSurface: ${theme.onSurface};
+                --theme-surfaceVariant: ${theme.surfaceVariant};
+                --theme-onSurfaceVariant: ${theme.onSurfaceVariant};
+                --theme-outline: ${theme.outline};
+                --theme-rippleColor: ${theme.rippleColor};
+                }
+                
+                @font-face {
+                  font-family: ${readerSettings.fontFamily};
+                  src: url("file:///android_asset/fonts/${
+                    readerSettings.fontFamily
+                  }.ttf");
+                }
+                </style>
+
+              <link rel="stylesheet" href="${pluginCustomCSS}">
+              <style>${readerSettings.customCSS}</style>
+            </head>
+            <body class="${
+              chapterGeneralSettings.pageReader ? 'page-reader' : ''
+            }">
+              <div id="LNReader-chapter">
+                ${html}  
+              </div>
+              <div id="reader-ui"></div>
+              </div>
+              </body>
+              <script>
+                var initialReaderConfig = ${JSON.stringify({
+                  readerSettings,
+                  chapterGeneralSettings,
+                  novel,
+                  chapter,
+                  batteryLevel,
+                  autoSaveInterval: 2222,
+                  DEBUG: __DEV__,
+                })}
+              </script>
+              <script src="${assetsUriPrefix}/js/van.js"></script>
+              <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
+              <script src="${assetsUriPrefix}/js/core.js"></script>
+              <script src="${assetsUriPrefix}/js/index.js"></script>
+              <script src="${pluginCustomJS}"></script>
+          </html>
+          `,
       }}
     />
   );

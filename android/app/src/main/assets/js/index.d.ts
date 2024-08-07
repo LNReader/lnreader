@@ -5,12 +5,6 @@ import {
 } from '@hooks/persisted/useSettings';
 import { State } from './van';
 
-interface UpdateCallbackMap {
-  generalSettings: Array<(settings: ChapterGeneralSettings) => void>;
-  batteryLevel: Array<(level: number) => void>;
-  hidden: Array<(hidden: boolean) => void>;
-}
-
 export interface Reader {
   // element
   chapterElement: HTMLElement;
@@ -31,8 +25,14 @@ export interface Reader {
   //layout props
   paddingTop: number;
   layoutHeight: number;
-  chapterHeight: number;
   layoutWidth: number;
+  chapterHeight: number;
+  chapterWidth: number;
+
+  // page props
+  page: number;
+  totalPages: number;
+  movePage: (page: number) => void;
 
   post: (obj: Record<string, any>) => void;
   refresh: () => void;
