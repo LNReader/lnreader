@@ -37,10 +37,10 @@ window.reader = new (function () {
 
   this.post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
   this.refresh = () => {
-    if (!this.generalSettings.val.pageReader) {
-      this.chapterHeight = this.chapterElement.scrollHeight + this.paddingTop;
-    } else {
+    if (this.generalSettings.val.pageReader) {
       this.chapterWidth = this.chapterElement.scrollWidth;
+    } else {
+      this.chapterHeight = this.chapterElement.scrollHeight + this.paddingTop;
     }
   };
 
@@ -101,7 +101,7 @@ window.reader = new (function () {
     } else {
       this.post({
         type: 'save',
-        data: parseInt((getPage() / getPages()) * 100, 10),
+        data: parseInt((pageReader.page.val / pageReader.totalPages) * 100),
       });
     }
   }, this.autoSaveInterval);
@@ -263,15 +263,28 @@ window.pageReader = new (function () {
 
   van.derive(() => {
     if (reader.generalSettings.val.pageReader) {
+      let ratio = (window.scrollY + reader.layoutHeight) / reader.chapterHeight;
+      if (ratio >= 1) {
+        ratio = 0.99;
+      }
       document.body.classList.add('page-reader');
       reader.refresh();
       this.totalPages = parseInt(
         (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
           reader.layoutWidth,
       );
+      this.page.val = parseInt(this.totalPages * ratio);
+      this.movePage(this.page.val);
     } else {
       reader.chapterElement.style = '';
       document.body.classList.remove('page-reader');
+      reader.refresh();
+      window.scrollTo({
+        top:
+          (reader.chapterHeight * this.page.val) / this.totalPages -
+          reader.layoutHeight,
+        behavior: 'smooth',
+      });
     }
   });
 })();

@@ -33,12 +33,21 @@ const Scrollbar = () => {
     // wait for content is rendered
     setTimeout(() => {
       reader.refresh();
-      window.scrollTo({
-        top:
-          (reader.chapterHeight * reader.chapter.progress) / 100 -
-          reader.layoutHeight,
-        behavior: 'smooth',
-      });
+      if (reader.generalSettings.val.pageReader) {
+        pageReader.movePage(
+          parseInt(
+            pageReader.totalPages *
+              Math.min(0.99, reader.chapter.progress / 100),
+          ),
+        );
+      } else {
+        window.scrollTo({
+          top:
+            (reader.chapterHeight * reader.chapter.progress) / 100 -
+            reader.layoutHeight,
+          behavior: 'smooth',
+        });
+      }
     }, 100);
   });
   return div(
