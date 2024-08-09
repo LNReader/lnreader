@@ -263,10 +263,10 @@ window.pageReader = new (function () {
 
   van.derive(() => {
     if (reader.generalSettings.val.pageReader) {
-      let ratio = (window.scrollY + reader.layoutHeight) / reader.chapterHeight;
-      if (ratio >= 1) {
-        ratio = 0.99;
-      }
+      const ratio = Math.min(
+        0.99,
+        (window.scrollY + reader.layoutHeight) / reader.chapterHeight,
+      );
       document.body.classList.add('page-reader');
       reader.refresh();
       this.totalPages = parseInt(
@@ -288,6 +288,27 @@ window.pageReader = new (function () {
     }
   });
 })();
+
+window.addEventListener('DOMContentLoaded', async () => {
+  // wait for content is rendered
+  setTimeout(() => {
+    reader.refresh();
+    if (reader.generalSettings.val.pageReader) {
+      pageReader.movePage(
+        parseInt(
+          pageReader.totalPages * Math.min(0.99, reader.chapter.progress / 100),
+        ),
+      );
+    } else {
+      window.scrollTo({
+        top:
+          (reader.chapterHeight * reader.chapter.progress) / 100 -
+          reader.layoutHeight,
+        behavior: 'smooth',
+      });
+    }
+  }, 100);
+});
 
 // click handler
 (function () {
