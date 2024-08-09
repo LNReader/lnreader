@@ -245,7 +245,7 @@ window.tts = new (function () {
 })();
 
 window.pageReader = new (function () {
-  this.page = 0;
+  this.page = van.state(0);
   this.totalPages = 1;
 
   this.movePage = destPage => {
@@ -253,19 +253,22 @@ window.pageReader = new (function () {
     if (destPage < 0) {
       return reader.post({ type: 'prev' });
     }
-    if (destPage > this.totalPages) {
+    if (destPage >= this.totalPages) {
       return reader.post({ type: 'next' });
     }
-    this.page = destPage;
+    this.page.val = destPage;
     reader.chapterElement.style.transform =
-      'translateX(-' + this.page * 100 + '%)';
+      'translateX(-' + destPage * 100 + '%)';
   };
 
   van.derive(() => {
     if (reader.generalSettings.val.pageReader) {
       document.body.classList.add('page-reader');
       reader.refresh();
-      this.totalPages = parseInt(reader.chapterWidth / reader.layoutWidth);
+      this.totalPages = parseInt(
+        (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
+          reader.layoutWidth,
+      );
     } else {
       reader.chapterElement.style = '';
       document.body.classList.remove('page-reader');
@@ -302,11 +305,11 @@ window.pageReader = new (function () {
     if (reader.generalSettings.val.pageReader) {
       const position = detectTapPosition(x, y, true);
       if (position === 'left') {
-        pageReader.movePage(pageReader.page - 1);
+        pageReader.movePage(pageReader.page.val - 1);
         return;
       }
       if (position === 'right') {
-        pageReader.movePage(pageReader.page + 1);
+        pageReader.movePage(pageReader.page.val + 1);
         return;
       }
     } else {
@@ -347,7 +350,7 @@ window.pageReader = new (function () {
       const diffX =
         (e.changedTouches[0].screenX - this.initialX) / reader.layoutWidth;
       reader.chapterElement.style.transform =
-        'translateX(-' + (pageReader.page - diffX) * 100 + '%)';
+        'translateX(-' + (pageReader.page.val - diffX) * 100 + '%)';
     }
   });
 
@@ -357,11 +360,11 @@ window.pageReader = new (function () {
     if (reader.generalSettings.val.pageReader) {
       const diffXPercentage = diffX / reader.layoutWidth;
       if (diffXPercentage < -0.3) {
-        pageReader.movePage(pageReader.page + 1);
+        pageReader.movePage(pageReader.page.val + 1);
       } else if (diffXPercentage > 0.3) {
-        pageReader.movePage(pageReader.page - 1);
+        pageReader.movePage(pageReader.page.val - 1);
       } else {
-        pageReader.movePage(pageReader.page);
+        pageReader.movePage(pageReader.page.val);
       }
     }
     if (

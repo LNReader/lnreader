@@ -218,7 +218,10 @@ const Footer = () => {
               reader.generalSettings.val.showScrollPercentage ? '' : 'hidden'
             }`,
         },
-        () => percentage.val + '%',
+        () =>
+          reader.generalSettings.val.pageReader
+            ? `${pageReader.page.val + 1}/${pageReader.totalPages}`
+            : percentage.val + '%',
       ),
       div(
         {

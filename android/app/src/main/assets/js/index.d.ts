@@ -34,7 +34,7 @@ export interface Reader {
 }
 
 interface PageReader {
-  page: number;
+  page: State<number>;
   totalPages: number;
   movePage: (page: number) => void;
 }
