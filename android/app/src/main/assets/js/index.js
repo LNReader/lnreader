@@ -108,9 +108,11 @@ const ToolWrapper = () => {
     {
       id: 'ToolWrapper',
       class: () =>
-        `${reader.hidden.val ? 'hidden' : ''} ${
-          horizontal.val ? 'horizontal' : ''
-        }`,
+        `${
+          reader.hidden.val || reader.generalSettings.val.pageReader
+            ? 'hidden'
+            : ''
+        } ${horizontal.val ? 'horizontal' : ''}`,
     },
     Scrollbar(),
   );
