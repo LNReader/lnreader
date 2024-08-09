@@ -248,29 +248,24 @@ window.pageReader = new (function () {
   this.page = 0;
   this.totalPages = 1;
 
-  this.pageToPercentage = pageNumber => {
-    return Math.round((pageNumber / this.totalPages) * 100);
-  };
-
-  this.percentageToPage = percentage => {
-    const pageNumber = Math.round((percentage / 100) * this.totalPages) + 1;
-    return Math.min(pageNumber, this.totalPages);
-  };
-
   this.movePage = destPage => {
     destPage = parseInt(destPage);
-    if (destPage >= 0 && destPage < this.totalPages) {
-      this.page = destPage;
-      reader.chapterElement.style.transform =
-        'translateX(-' + this.page * 100 + '%)';
+    if (destPage < 0) {
+      return reader.post({ type: 'prev' });
     }
+    if (destPage > this.totalPages) {
+      return reader.post({ type: 'next' });
+    }
+    this.page = destPage;
+    reader.chapterElement.style.transform =
+      'translateX(-' + this.page * 100 + '%)';
   };
 
   van.derive(() => {
     if (reader.generalSettings.val.pageReader) {
       document.body.classList.add('page-reader');
       reader.refresh();
-      this.totalPages = parseInt(reader.chapterWidth / reader.layoutWidth - 1);
+      this.totalPages = parseInt(reader.chapterWidth / reader.layoutWidth);
     } else {
       reader.chapterElement.style = '';
       document.body.classList.remove('page-reader');

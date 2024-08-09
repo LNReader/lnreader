@@ -29,13 +29,14 @@ export interface Reader {
   chapterHeight: number;
   chapterWidth: number;
 
-  // page props
+  post: (obj: Record<string, any>) => void;
+  refresh: () => void;
+}
+
+interface PageReader {
   page: number;
   totalPages: number;
   movePage: (page: number) => void;
-
-  post: (obj: Record<string, any>) => void;
-  refresh: () => void;
 }
 
 interface TTS {
@@ -51,4 +52,5 @@ interface TTS {
 declare global {
   const reader: Reader;
   const tts: TTS;
+  const pageReader: PageReader;
 }
