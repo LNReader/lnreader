@@ -19,8 +19,14 @@ export interface Reader {
 
   novel: NovelInfo;
   chapter: ChapterInfo;
+  nextChapter?: ChapterInfo;
   autoSaveInterval: number;
   rawHTML: string;
+  strings: {
+    finished: string;
+    nextChapter: string;
+    noNextChapter: string;
+  };
 
   //layout props
   paddingTop: number;

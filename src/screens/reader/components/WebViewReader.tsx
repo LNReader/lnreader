@@ -31,7 +31,7 @@ type WebViewPostEvent = {
 
 type WebViewReaderProps = {
   html: string;
-  nextChapter: ChapterInfo;
+  nextChapter?: ChapterInfo;
   webViewRef: React.RefObject<WebView>;
   saveProgress(percentage: number): void;
   onPress(): void;
@@ -57,8 +57,14 @@ const assetsUriPrefix = __DEV__
   ? 'http://localhost:8081/assets'
   : 'file:///android_asset';
 
-const WebViewReader: React.FC<WebViewReaderProps> = props => {
-  const { html, webViewRef, saveProgress, onPress, navigateChapter } = props;
+const WebViewReader: React.FC<WebViewReaderProps> = ({
+  html,
+  webViewRef,
+  nextChapter,
+  saveProgress,
+  onPress,
+  navigateChapter,
+}) => {
   const { novel, chapter } = useChapterContext();
   const theme = useTheme();
   const readerSettings = useMemo(
@@ -230,9 +236,19 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
                   chapterGeneralSettings,
                   novel,
                   chapter,
+                  nextChapter,
                   batteryLevel,
                   autoSaveInterval: 2222,
                   DEBUG: __DEV__,
+                  strings: {
+                    finished: `${getString(
+                      'readerScreen.finished',
+                    )}: ${chapter.name.trim()}`,
+                    nextChapter: getString('readerScreen.nextChapter', {
+                      name: nextChapter?.name,
+                    }),
+                    noNextChapter: getString('readerScreen.noNextChapter'),
+                  },
                 })}
               </script>
               <script src="${assetsUriPrefix}/js/van.js"></script>

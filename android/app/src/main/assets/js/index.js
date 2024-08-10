@@ -7,6 +7,23 @@ const resumeIcon =
 
 const { div, p, img, button } = van.tags;
 
+const ChapterEnding = () => {
+  return () =>
+    reader.generalSettings.val.pageReader
+      ? div()
+      : div(div({ class: 'info-text' }, reader.strings.finished), () =>
+          reader.nextChapter
+            ? button(
+                {
+                  class: 'next-button',
+                  onclick: () => reader.post({ type: 'next' }),
+                },
+                reader.strings.nextChapter,
+              )
+            : div({ class: 'info-text' }, reader.strings.noNextChapter),
+        );
+};
+
 const Scrollbar = () => {
   const horizontal = van.derive(
     () => !reader.generalSettings.val.verticalSeekbar,
@@ -34,7 +51,10 @@ const Scrollbar = () => {
       });
     }
   };
-  window.addEventListener('scroll', () => !lock && update());
+  window.addEventListener(
+    'scroll',
+    () => !lock && !reader.generalSettings.val.pageReader && update(),
+  );
   return div(
     { id: 'ScrollBar' },
     div(
@@ -313,7 +333,13 @@ const TTSController = () => {
 };
 
 const ReaderUI = () => {
-  return div(ToolWrapper(), TTSController(), ModalWrapper(), Footer());
+  return div(
+    ToolWrapper(),
+    TTSController(),
+    ModalWrapper(),
+    Footer(),
+    ChapterEnding(),
+  );
 };
 
 van.add(document.getElementById('reader-ui'), ReaderUI());

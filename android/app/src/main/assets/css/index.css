@@ -87,8 +87,8 @@ td {
   visibility: hidden;
 }
 
-.nextButton,
-.infoText {
+.next-button,
+.info-text {
   margin-left: var(--readerSettings-padding);
   margin-right: var(--readerSettings-padding);
   width: calc(100% - var(--readerSettings-padding) * 2);
@@ -102,7 +102,7 @@ td {
   user-select: none;
 }
 
-.nextButton {
+.next-button {
   min-height: 40px;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -110,7 +110,7 @@ td {
   padding: 0 16px;
 }
 
-.infoText {
+.info-text {
   background-color: transparent;
   text-align: center;
   border: none;

@@ -4,9 +4,11 @@ window.reader = new (function () {
     chapterGeneralSettings,
     novel,
     chapter,
+    nextChapter,
     batteryLevel,
     autoSaveInterval,
     DEBUG,
+    strings,
   } = initialReaderConfig;
 
   // state
@@ -21,6 +23,8 @@ window.reader = new (function () {
 
   this.novel = novel;
   this.chapter = chapter;
+  this.nextChapter = nextChapter;
+  this.strings = strings;
   this.autoSaveInterval = autoSaveInterval;
   this.rawHTML = this.chapterElement.innerHTML;
 
@@ -101,7 +105,9 @@ window.reader = new (function () {
     } else {
       this.post({
         type: 'save',
-        data: parseInt((pageReader.page.val / pageReader.totalPages) * 100),
+        data: parseInt(
+          ((pageReader.page.val + 1) / pageReader.totalPages) * 100,
+        ),
       });
     }
   }, this.autoSaveInterval);
@@ -262,29 +268,41 @@ window.pageReader = new (function () {
   };
 
   van.derive(() => {
+    // ignore if initial or other states change
+    if (
+      reader.generalSettings.val.pageReader ===
+      reader.generalSettings.oldVal.pageReader
+    ) {
+      return;
+    }
     if (reader.generalSettings.val.pageReader) {
       const ratio = Math.min(
         0.99,
         (window.scrollY + reader.layoutHeight) / reader.chapterHeight,
       );
       document.body.classList.add('page-reader');
-      reader.refresh();
-      this.totalPages = parseInt(
-        (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
-          reader.layoutWidth,
-      );
-      this.page.val = parseInt(this.totalPages * ratio);
-      this.movePage(this.page.val);
+      setTimeout(() => {
+        reader.refresh();
+        this.totalPages = parseInt(
+          (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
+            reader.layoutWidth,
+        );
+        if (reader.chapterWidth > reader.layoutWidth) {
+        }
+        this.movePage(this.totalPages * ratio);
+      }, 100);
     } else {
       reader.chapterElement.style = '';
       document.body.classList.remove('page-reader');
-      reader.refresh();
-      window.scrollTo({
-        top:
-          (reader.chapterHeight * this.page.val) / this.totalPages -
-          reader.layoutHeight,
-        behavior: 'smooth',
-      });
+      setTimeout(() => {
+        reader.refresh();
+        window.scrollTo({
+          top:
+            (reader.chapterHeight * (this.page.val + 1)) / this.totalPages -
+            reader.layoutHeight,
+          behavior: 'smooth',
+        });
+      }, 100);
     }
   });
 })();
@@ -294,6 +312,10 @@ window.addEventListener('DOMContentLoaded', async () => {
   setTimeout(() => {
     reader.refresh();
     if (reader.generalSettings.val.pageReader) {
+      pageReader.totalPages = parseInt(
+        (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
+          reader.layoutWidth,
+      );
       pageReader.movePage(
         parseInt(
           pageReader.totalPages * Math.min(0.99, reader.chapter.progress / 100),
@@ -400,6 +422,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       } else {
         pageReader.movePage(pageReader.page.val);
       }
+      return;
     }
     if (
       e.target.id?.startsWith('scrollbar') ||
