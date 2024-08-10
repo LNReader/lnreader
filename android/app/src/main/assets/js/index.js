@@ -259,10 +259,11 @@ const Footer = () => {
   );
 };
 
-// Do not use state for this component to keep perfomance
 const TTSController = () => {
   let controllerElement = null;
   let hoverElement = null;
+  let clientX = null;
+  let clientY = null;
   return div(
     {
       id: 'TTS-Controller',
@@ -275,15 +276,14 @@ const TTSController = () => {
       },
       ontouchmove: e => {
         e.preventDefault();
-        controllerElement.style.left = `${e.changedTouches[0].clientX}px`;
-        controllerElement.style.top = `${e.changedTouches[0].clientY}px`;
-        const hoverElements = document.elementsFromPoint(
-          e.changedTouches[0].clientX,
-          e.changedTouches[0].clientY,
-        );
+        clientX = e.changedTouches[0].clientX;
+        clientY = e.changedTouches[0].clientY;
+        controllerElement.style.left = `${clientX}px`;
+        controllerElement.style.top = `${clientY}px`;
+        const hoverElements = document.elementsFromPoint(clientX, clientY);
         let isChapterChild = false;
         const newHoverElement = hoverElements.reverse().find(e => {
-          if (e.tagName === 'CHAPTER') {
+          if (e.id === 'LNReader-chapter') {
             isChapterChild = true;
           }
           if (e.id.includes('scrollbar')) {
@@ -302,20 +302,23 @@ const TTSController = () => {
           hoverElement = null;
         }
       },
-      ontouchend: e => {
+      ontouchend: () => {
         controllerElement.style.transition = '1s';
         controllerElement.classList.remove('active');
-        controllerElement.style.left = '32px';
-        let top =
-          e.changedTouches[0].clientY < 120 ? 120 : e.changedTouches[0].clientY;
-        if (top + 120 > reader.layoutHeight) {
-          top = reader.layoutHeight - 120;
+        controllerElement.style.left = '20px';
+        if (clientX && clientY) {
+          let top = clientY < 120 ? 120 : clientY;
+          if (top + 120 > reader.layoutHeight) {
+            top = reader.layoutHeight - 120;
+          }
+          controllerElement.style.top = `${top}px`;
+          if (hoverElement) {
+            tts.start(hoverElement);
+            controllerElement.firstElementChild.innerHTML = pauseIcon;
+          }
         }
-        controllerElement.style.top = `${top}px`;
-        if (hoverElement) {
-          tts.start(hoverElement);
-          controllerElement.firstElementChild.innerHTML = pauseIcon;
-        }
+        clientX = null;
+        clientY = null;
       },
       onclick: e => {
         e.stopPropagation();

@@ -225,8 +225,18 @@ window.tts = new (function () {
 
   this.resume = () => {
     if (!this.reading) {
-      this.next();
+      if (this.currentElement) {
+        this.speak();
+        this.reading = true;
+      } else {
+        this.next();
+      }
     }
+  };
+
+  this.pause = () => {
+    this.reading = false;
+    reader.post({ type: 'stop-speak' });
   };
 
   this.stop = () => {
@@ -236,11 +246,6 @@ window.tts = new (function () {
     this.currentElement = reader.chapterElement;
     this.started = false;
     this.reading = false;
-  };
-
-  this.pause = () => {
-    this.reading = false;
-    reader.post({ type: 'stop-speak' });
   };
 
   this.speak = () => {
