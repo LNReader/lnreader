@@ -106,7 +106,7 @@ window.reader = new (function () {
       this.post({
         type: 'save',
         data: parseInt(
-          ((pageReader.page.val + 1) / pageReader.totalPages) * 100,
+          ((pageReader.page.val + 1) / pageReader.totalPages.val) * 100,
         ),
       });
     }
@@ -263,14 +263,14 @@ window.tts = new (function () {
 
 window.pageReader = new (function () {
   this.page = van.state(0);
-  this.totalPages = 1;
+  this.totalPages = van.state(0);
 
   this.movePage = destPage => {
     destPage = parseInt(destPage);
     if (destPage < 0) {
       return reader.post({ type: 'prev' });
     }
-    if (destPage >= this.totalPages) {
+    if (destPage >= this.totalPages.val) {
       return reader.post({ type: 'next' });
     }
     this.page.val = destPage;
@@ -294,13 +294,13 @@ window.pageReader = new (function () {
       document.body.classList.add('page-reader');
       setTimeout(() => {
         reader.refresh();
-        this.totalPages = parseInt(
+        this.totalPages.val = parseInt(
           (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
             reader.layoutWidth,
         );
         if (reader.chapterWidth > reader.layoutWidth) {
         }
-        this.movePage(this.totalPages * ratio);
+        this.movePage(this.totalPages.val * ratio);
       }, 100);
     } else {
       reader.chapterElement.style = '';
@@ -309,7 +309,7 @@ window.pageReader = new (function () {
         reader.refresh();
         window.scrollTo({
           top:
-            (reader.chapterHeight * (this.page.val + 1)) / this.totalPages -
+            (reader.chapterHeight * (this.page.val + 1)) / this.totalPages.val -
             reader.layoutHeight,
           behavior: 'smooth',
         });
@@ -323,13 +323,14 @@ window.addEventListener('DOMContentLoaded', async () => {
   setTimeout(() => {
     reader.refresh();
     if (reader.generalSettings.val.pageReader) {
-      pageReader.totalPages = parseInt(
+      pageReader.totalPages.val = parseInt(
         (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
           reader.layoutWidth,
       );
       pageReader.movePage(
         parseInt(
-          pageReader.totalPages * Math.min(0.99, reader.chapter.progress / 100),
+          pageReader.totalPages.val *
+            Math.min(0.99, reader.chapter.progress / 100),
         ),
       );
     } else {

@@ -32,7 +32,7 @@ const Scrollbar = () => {
     }
     if (reader.generalSettings.val.pageReader) {
       pageReader.movePage(
-        parseInt(pageReader.totalPages * Math.min(0.99, ratio)),
+        parseInt(pageReader.totalPages.val * Math.min(0.99, ratio)),
       );
       return;
     }
@@ -66,7 +66,7 @@ const Scrollbar = () => {
             id: 'scrollbar-progress',
             style: () => {
               const percentageValue = reader.generalSettings.val.pageReader
-                ? ((pageReader.page.val + 1) / pageReader.totalPages) * 100
+                ? ((pageReader.page.val + 1) / pageReader.totalPages.val) * 100
                 : percentage.val;
               return horizontal.val
                 ? `width: ${percentageValue}%; height: 100%;`
@@ -110,7 +110,7 @@ const Scrollbar = () => {
         id: 'scrollbar-percentage-max',
       },
       () =>
-        reader.generalSettings.val.pageReader ? pageReader.totalPages : 100,
+        reader.generalSettings.val.pageReader ? pageReader.totalPages.val : 100,
     ),
   );
 };
@@ -235,7 +235,7 @@ const Footer = () => {
         },
         () =>
           reader.generalSettings.val.pageReader
-            ? `${pageReader.page.val + 1}/${pageReader.totalPages}`
+            ? `${pageReader.page.val + 1}/${pageReader.totalPages.val}`
             : percentage.val + '%',
       ),
       div(
@@ -260,6 +260,8 @@ const TTSController = () => {
   return div(
     {
       id: 'TTS-Controller',
+      class: () =>
+        `${reader.generalSettings.val.TTSEnable === false ? 'hidden' : ''}`,
       ontouchstart: () => {
         if (!controllerElement) {
           controllerElement = document.getElementById('TTS-Controller');
