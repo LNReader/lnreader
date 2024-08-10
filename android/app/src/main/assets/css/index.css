@@ -303,8 +303,8 @@ td {
   text-align: right;
 }
 
-.highlight {
-  color: var(--theme-onSecondary);
+.highlight, .highlight *{
+  color: var(--theme-onSecondary) !important;
   background-color: var(--theme-secondary);
 }
 

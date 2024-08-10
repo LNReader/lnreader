@@ -211,6 +211,9 @@ window.tts = new (function () {
         this.speak();
       } else {
         this.reading = false;
+        this.stop();
+        document.getElementById('TTS-Controller').firstElementChild.innerHTML =
+          volumnIcon;
       }
     } catch (e) {
       alert(e);
@@ -225,7 +228,10 @@ window.tts = new (function () {
 
   this.resume = () => {
     if (!this.reading) {
-      if (this.currentElement) {
+      if (
+        this.currentElement &&
+        this.currentElement.id !== 'LNReader-chapter'
+      ) {
         this.speak();
         this.reading = true;
       } else {
@@ -401,12 +407,12 @@ window.addEventListener('DOMContentLoaded', async () => {
   this.initialX = null;
   this.initialY = null;
 
-  document.addEventListener('touchstart', e => {
+  reader.chapterElement.addEventListener('touchstart', e => {
     this.initialX = e.changedTouches[0].screenX;
     this.initialY = e.changedTouches[0].screenY;
   });
 
-  document.addEventListener('touchmove', e => {
+  reader.chapterElement.addEventListener('touchmove', e => {
     if (reader.generalSettings.val.pageReader) {
       const diffX =
         (e.changedTouches[0].screenX - this.initialX) / reader.layoutWidth;
@@ -415,7 +421,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  document.addEventListener('touchend', e => {
+  reader.chapterElement.addEventListener('touchend', e => {
     const diffX = e.changedTouches[0].screenX - this.initialX;
     const diffY = e.changedTouches[0].screenY - this.initialY;
     if (reader.generalSettings.val.pageReader) {

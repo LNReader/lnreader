@@ -251,6 +251,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
                   },
                 })}
               </script>
+              <script src="${assetsUriPrefix}/js/icons.js"></script>
               <script src="${assetsUriPrefix}/js/van.js"></script>
               <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
               <script src="${assetsUriPrefix}/js/core.js"></script>
