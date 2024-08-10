@@ -20,6 +20,12 @@ const Scrollbar = () => {
     if (ratio > 1) {
       ratio = 1;
     }
+    if (reader.generalSettings.val.pageReader) {
+      pageReader.movePage(
+        parseInt(pageReader.totalPages * Math.min(0.99, ratio)),
+      );
+      return;
+    }
     percentage.val = parseInt(ratio * 100);
     if (lock) {
       window.scrollTo({
@@ -33,7 +39,10 @@ const Scrollbar = () => {
     { id: 'ScrollBar' },
     div(
       { class: 'scrollbar-item scrollbar-text', id: 'scrollbar-percentage' },
-      percentage,
+      () =>
+        reader.generalSettings.val.pageReader
+          ? pageReader.page.val + 1
+          : percentage.val,
     ),
     div(
       { class: 'scrollbar-item', id: 'scrollbar-slider' },
@@ -42,10 +51,14 @@ const Scrollbar = () => {
         div(
           {
             id: 'scrollbar-progress',
-            style: () =>
-              horizontal.val
-                ? `width: ${percentage.val}%; height: 100%;`
-                : `height: ${percentage.val}%; width: 100%;`,
+            style: () => {
+              const percentageValue = reader.generalSettings.val.pageReader
+                ? ((pageReader.page.val + 1) / pageReader.totalPages) * 100
+                : percentage.val;
+              return horizontal.val
+                ? `width: ${percentageValue}%; height: 100%;`
+                : `height: ${percentageValue}%; width: 100%;`;
+            },
           },
           div(
             {
@@ -83,7 +96,8 @@ const Scrollbar = () => {
         class: 'scrollbar-item scrollbar-text',
         id: 'scrollbar-percentage-max',
       },
-      100,
+      () =>
+        reader.generalSettings.val.pageReader ? pageReader.totalPages : 100,
     ),
   );
 };
@@ -96,11 +110,9 @@ const ToolWrapper = () => {
     {
       id: 'ToolWrapper',
       class: () =>
-        `${
-          reader.hidden.val || reader.generalSettings.val.pageReader
-            ? 'hidden'
-            : ''
-        } ${horizontal.val ? 'horizontal' : ''}`,
+        `${reader.hidden.val ? 'hidden' : ''} ${
+          horizontal.val ? 'horizontal' : ''
+        }`,
     },
     Scrollbar(),
   );
