@@ -257,6 +257,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
               <script src="${assetsUriPrefix}/js/core.js"></script>
               <script src="${assetsUriPrefix}/js/index.js"></script>
               <script src="${pluginCustomJS}"></script>
+              <script>
+                ${readerSettings.customJS}
+              </script>
           </html>
           `,
       }}
