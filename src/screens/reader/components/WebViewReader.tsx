@@ -19,8 +19,6 @@ import {
 } from '@hooks/persisted/useSettings';
 import { getBatteryLevelSync } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
-import * as Clipboard from 'expo-clipboard';
-import { showToast } from '@utils/showToast';
 import { PLUGIN_STORAGE } from '@utils/Storages';
 import { useChapterContext } from '../ChapterContext';
 
@@ -163,13 +161,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
           case 'stop-speak':
             Speech.stop();
             break;
-          case 'copy':
-            if (event.data && typeof event.data === 'string') {
-              Clipboard.setStringAsync(event.data).then(() => {
-                showToast(getString('common.copiedToClipboard', { name: '' }));
-              });
-            }
-            break;
         }
       }}
       source={{
@@ -228,7 +219,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
                 ${html}  
               </div>
               <div id="reader-ui"></div>
-              </div>
               </body>
               <script>
                 var initialReaderConfig = ${JSON.stringify({
