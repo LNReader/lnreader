@@ -176,7 +176,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
               <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
               <style>
               :root {
-                --StatusBar-currentHeight: ${StatusBar.currentHeight};
+                --StatusBar-currentHeight: ${StatusBar.currentHeight}px;
                 --readerSettings-theme: ${readerSettings.theme};
                 --readerSettings-padding: ${readerSettings.padding}px;
                 --readerSettings-textSize: ${readerSettings.textSize}px;
