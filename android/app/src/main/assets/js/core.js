@@ -465,7 +465,10 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (reader.generalSettings.val.removeExtraParagraphSpacing) {
-      html = html.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
+      html = html
+        .replace(/([\u200B-\u200D\uFEFF]|&nbsp;)(?<=<p>\1)/g, '')
+        .replace(/(?:<br>\s*<\/?br>)+/g, '')
+        .replace(/<br>\s*(?=<\/?p>)/g, '');
     }
     reader.chapterElement.innerHTML = html;
   });
