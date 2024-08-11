@@ -221,6 +221,8 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       bottomSheetRef={bottomSheetRef}
       snapPoints={[360, 600]}
       backgroundStyle={{ backgroundColor }}
+      bottomInset={bottom}
+      containerStyle={{ borderRadius: 8 }}
     >
       <TabView
         navigationState={{ index, routes }}
@@ -228,7 +230,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
         renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
-        style={[styles.tabView, { marginBottom: bottom }]}
+        style={styles.tabView}
       />
     </BottomSheet>
   );
@@ -237,11 +239,6 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
 export default ReaderBottomSheetV2;
 
 const styles = StyleSheet.create({
-  bottomSheetContainer: {
-    flex: 1,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-  },
   tabView: {
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
