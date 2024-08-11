@@ -2,7 +2,7 @@ import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import React, { Ref, useMemo, useState } from 'react';
 import color from 'color';
 
-import { BottomSheetView, BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
@@ -15,7 +15,6 @@ import ReaderTextAlignSelector from './ReaderTextAlignSelector';
 import ReaderValueChange from './ReaderValueChange';
 import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ReaderTab: React.FC = () => {
@@ -61,7 +60,7 @@ const GeneralTab: React.FC = () => {
   } = useChapterGeneralSettings();
 
   return (
-    <ScrollView>
+    <BottomSheetScrollView showsVerticalScrollIndicator={false}>
       <ReaderSheetPreferenceItem
         label={getString('readerScreen.bottomSheet.fullscreen')}
         onPress={() =>
@@ -156,7 +155,7 @@ const GeneralTab: React.FC = () => {
         value={keepScreenOn}
         theme={theme}
       />
-    </ScrollView>
+    </BottomSheetScrollView>
   );
 };
 
@@ -222,22 +221,17 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       bottomSheetRef={bottomSheetRef}
       snapPoints={[360, 600]}
       backgroundStyle={{ backgroundColor }}
+      bottomInset={bottom}
+      containerStyle={{ borderRadius: 8 }}
     >
-      <BottomSheetView
-        style={[
-          styles.bottomSheetContainer,
-          { backgroundColor, marginBottom: bottom },
-        ]}
-      >
-        <TabView
-          navigationState={{ index, routes }}
-          renderTabBar={renderTabBar}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          style={styles.tabView}
-        />
-      </BottomSheetView>
+      <TabView
+        navigationState={{ index, routes }}
+        renderTabBar={renderTabBar}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+        style={styles.tabView}
+      />
     </BottomSheet>
   );
 };
@@ -245,11 +239,6 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
 export default ReaderBottomSheetV2;
 
 const styles = StyleSheet.create({
-  bottomSheetContainer: {
-    flex: 1,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-  },
   tabView: {
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
