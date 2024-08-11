@@ -298,8 +298,6 @@ window.pageReader = new (function () {
           (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
             reader.layoutWidth,
         );
-        if (reader.chapterWidth > reader.layoutWidth) {
-        }
         this.movePage(this.totalPages.val * ratio);
       }, 100);
     } else {
