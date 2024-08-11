@@ -31,9 +31,11 @@ const ReaderTab: React.FC = () => {
       <ReaderValueChange
         label={getString('readerScreen.bottomSheet.padding')}
         valueKey="padding"
-        valueChange={0.5}
-        min={1}
-        max={10}
+        valueChange={2}
+        min={0}
+        max={50}
+        decimals={0}
+        unit="px"
       />
       <ReaderFontPicker />
     </View>
@@ -54,6 +56,7 @@ const GeneralTab: React.FC = () => {
     pageReader = false,
     removeExtraParagraphSpacing,
     bionicReading,
+    tapToScroll = false,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
 
@@ -137,6 +140,12 @@ const GeneralTab: React.FC = () => {
           setChapterGeneralSettings({ bionicReading: !bionicReading })
         }
         value={bionicReading}
+        theme={theme}
+      />
+      <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.tapToScroll')}
+        onPress={() => setChapterGeneralSettings({ tapToScroll: !tapToScroll })}
+        value={tapToScroll}
         theme={theme}
       />
       <ReaderSheetPreferenceItem

@@ -28,6 +28,7 @@ const GeneralSettings: React.FC = () => {
     autoScrollInterval = 10,
     autoScrollOffset = null,
     bionicReading = false,
+    tapToScroll = false,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
 
@@ -81,6 +82,12 @@ const GeneralSettings: React.FC = () => {
         onPress={() =>
           setChapterGeneralSettings({ bionicReading: !bionicReading })
         }
+        theme={theme}
+      />
+      <SettingSwitch
+        label={getString('readerScreen.bottomSheet.tapToScroll')}
+        value={tapToScroll}
+        onPress={() => setChapterGeneralSettings({ tapToScroll: !tapToScroll })}
         theme={theme}
       />
       <SettingSwitch

@@ -1,14 +1,7 @@
 import { getString } from '@strings/translations';
 import sanitizeHtml from 'sanitize-html';
 
-interface Options {
-  removeExtraParagraphSpacing?: boolean;
-}
-
-export const sanitizeChapterText = (
-  html: string,
-  options?: Options,
-): string => {
+export const sanitizeChapterText = (html: string): string => {
   let text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
       'img',
@@ -30,12 +23,5 @@ export const sanitizeChapterText = (
     },
     allowedSchemes: ['data', 'http', 'https', 'file'],
   });
-  if (text) {
-    if (options?.removeExtraParagraphSpacing) {
-      text = text.replace(/<\s*br[^>]*>/gi, '\n').replace(/\n{2,}/g, '\n\n');
-    }
-  } else {
-    text = getString('readerScreen.emptyChapterMessage');
-  }
-  return text;
+  return text || getString('readerScreen.emptyChapterMessage');
 };

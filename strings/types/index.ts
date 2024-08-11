@@ -349,6 +349,7 @@ export interface StringMap {
   'readerScreen.bottomSheet.allowTextSelection': 'string';
   'readerScreen.bottomSheet.autoscroll': 'string';
   'readerScreen.bottomSheet.bionicReading': 'string';
+  'readerScreen.bottomSheet.tapToScroll': 'string';
   'readerScreen.bottomSheet.color': 'string';
   'readerScreen.bottomSheet.fontStyle': 'string';
   'readerScreen.bottomSheet.fullscreen': 'string';
