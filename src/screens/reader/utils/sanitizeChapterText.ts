@@ -7,8 +7,6 @@ export const sanitizeChapterText = (html: string): string => {
     /^color$/,
     /^font.*$/,
     /^line-height$/,
-    /^max.*$/,
-    /^min.*$/,
     /^text-indent$/,
   ];
 
@@ -41,11 +39,7 @@ export const sanitizeChapterText = (html: string): string => {
   };
 
   // List of styled tags
-  const styledTags = sanitizeHtml.defaults.allowedTags.concat([
-    'div',
-    'p',
-    'span',
-  ]);
+  const styledTags = sanitizeHtml.defaults.allowedTags;
 
   // Generate the transformTags object
   const transformTags: {
@@ -56,27 +50,21 @@ export const sanitizeChapterText = (html: string): string => {
   });
 
   let text = sanitizeHtml(html, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-      'a',
-      'b',
-      'div',
-      'em',
-      'i',
-      'img',
-      'li',
-      'ol',
-      'p',
-      's',
-      'span',
-      'strong',
-      'title',
-      'u',
-      'ul',
-    ]),
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'title']),
     allowedAttributes: {
-      'a': ['href', 'class', 'id'],
+      'a': ['href', 'name', 'target', 'class', 'id'],
       'div': ['class', 'id', 'style'],
-      'img': ['src', 'class', 'id'],
+      'img': [
+        'src',
+        'srcset',
+        'alt',
+        'title',
+        'width',
+        'height',
+        'loading',
+        'class',
+        'id',
+      ],
       'ol': ['reversed', 'start'],
       'p': ['class', 'id', 'style'],
       'span': ['class', 'id', 'style'],
