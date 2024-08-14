@@ -121,7 +121,6 @@ export const ChapterContent = ({
           html={chapterText}
           nextChapter={nextChapter}
           webViewRef={webViewRef}
-          pageReader={pageReader}
           saveProgress={saveProgress}
           onPress={hideHeader}
           navigateChapter={navigateChapter}

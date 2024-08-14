@@ -1,2 +1,3 @@
 **/node_modules
-android
+android/**/js/van.js
+android/**/js/text-vibe.js
