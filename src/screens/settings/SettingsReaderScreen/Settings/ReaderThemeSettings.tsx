@@ -102,8 +102,11 @@ const ReaderThemeSettings = () => {
         labelStyle={labelStyle}
         label={getString('readerScreen.bottomSheet.padding')}
         valueKey="padding"
-        valueChange={0.5}
-        max={10}
+        valueChange={2}
+        min={0}
+        max={50}
+        decimals={0}
+        unit="px"
       />
       <List.Item
         title={getString('readerScreen.bottomSheet.fontStyle')}

@@ -41,13 +41,8 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
     ChapterInfo[]
   >([]);
-  const {
-    autoScroll,
-    autoScrollInterval,
-    autoScrollOffset,
-    useVolumeButtons,
-    removeExtraParagraphSpacing,
-  } = useChapterGeneralSettings();
+  const { autoScroll, autoScrollInterval, autoScrollOffset, useVolumeButtons } =
+    useChapterGeneralSettings();
   const { incognitoMode } = useLibrarySettings();
   const [error, setError] = useState<string>();
   const { tracker } = useTracker();
@@ -103,11 +98,7 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
           })
           .catch(e => setError(e.message));
       }
-      setChapterText(
-        sanitizeChapterText(text, {
-          removeExtraParagraphSpacing,
-        }),
-      );
+      setChapterText(sanitizeChapterText(text));
       const [nextChap, prevChap] = await Promise.all([
         getNextChapter(chapter.novelId, chapter.id),
         getPrevChapter(chapter.novelId, chapter.id),
@@ -169,10 +160,10 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
 
   const hideHeader = () => {
     if (!hidden) {
-      webViewRef.current?.injectJavaScript('toolWrapper.hide()');
+      webViewRef.current?.injectJavaScript('reader.hidden.val = true');
       setImmersiveMode();
     } else {
-      webViewRef.current?.injectJavaScript('toolWrapper.show()');
+      webViewRef.current?.injectJavaScript('reader.hidden.val = false');
       showStatusAndNavBar();
     }
     setHidden(!hidden);
