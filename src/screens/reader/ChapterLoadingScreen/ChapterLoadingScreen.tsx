@@ -16,7 +16,7 @@ const ChapterLoadingScreen = () => {
   return (
     <View style={{ backgroundColor }}>
       <SkeletonLines
-        containerMargin={padding + '%'}
+        containerMargin={padding}
         containerHeight={'100%'}
         containerWidth={'100%'}
         color={
