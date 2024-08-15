@@ -177,7 +177,7 @@ export const initialChapterGeneralSettings: ChapterGeneralSettings = {
   removeExtraParagraphSpacing: false,
   bionicReading: false,
   tapToScroll: false,
-  TTSEnable: true,
+  TTSEnable: false,
 };
 
 export const initialChapterReaderSettings: ChapterReaderSettings = {
