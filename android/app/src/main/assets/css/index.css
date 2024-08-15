@@ -344,7 +344,7 @@ td {
   align-items: center;
   padding: 4px;
   border-radius: 100%;
-  transition: 1s;
+  transition: .5s;
 }
 
 #TTS-Controller.active{
