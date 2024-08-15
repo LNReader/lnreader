@@ -467,5 +467,3 @@ window.addEventListener('DOMContentLoaded', async () => {
     reader.chapterElement.innerHTML = html;
   });
 })();
-
-console.log(reader.paddingTop);
