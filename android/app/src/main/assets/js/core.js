@@ -30,7 +30,7 @@ window.reader = new (function () {
 
   //layout props
   this.paddingTop = parseInt(
-    getComputedStyle(document.querySelector('html')).getPropertyValue(
+    getComputedStyle(document.querySelector('body')).getPropertyValue(
       'padding-top',
     ),
     10,
@@ -467,3 +467,5 @@ window.addEventListener('DOMContentLoaded', async () => {
     reader.chapterElement.innerHTML = html;
   });
 })();
+
+console.log(reader.paddingTop);
