@@ -185,7 +185,7 @@ export const initialChapterReaderSettings: ChapterReaderSettings = {
   textColor: '#CCCCCC',
   textSize: 16,
   textAlign: 'left',
-  padding: 4,
+  padding: 16,
   fontFamily: '',
   lineHeight: 1.5,
   customCSS: '',
