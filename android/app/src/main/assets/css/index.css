@@ -1,7 +1,6 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
-  padding-top: var(--StatusBar-currentHeight);
   word-wrap: break-word;
 }
 
@@ -19,6 +18,7 @@ body {
   margin-left: 0;
   margin-right: 0;
   padding-bottom: 40px;
+  padding-top: var(--StatusBar-currentHeight);
 
   font-size: var(--readerSettings-textSize);
   background-color: var(--readerSettings-theme);
@@ -30,7 +30,6 @@ body {
 
 body.page-reader { 
   overflow: hidden;
-  padding: 0;
 }
 
 #LNReader-chapter {
@@ -344,7 +343,7 @@ td {
   align-items: center;
   padding: 4px;
   border-radius: 100%;
-  transition: 1s;
+  transition: .5s;
 }
 
 #TTS-Controller.active{
