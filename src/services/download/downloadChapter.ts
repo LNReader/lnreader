@@ -40,16 +40,17 @@ const downloadFiles = async (
     novelId,
     chapterId,
   });
-  const loadedCheerio = cheerio.load(html, { baseURI: plugin.site });
+  const loadedCheerio = cheerio.load(html);
   const imgs = loadedCheerio('img').toArray();
   for (let i = 0; i < imgs.length; i++) {
     const elem = loadedCheerio(imgs[i]);
     const url = elem.attr('src');
     if (url) {
+      const absoluteURL = new URL(url, plugin.site).href;
       const fileurl = `${folder}/${i}.b64.png`;
       elem.attr('src', `file://${fileurl}`);
       try {
-        await downloadFile(url, fileurl, plugin.imageRequestInit);
+        await downloadFile(absoluteURL, fileurl, plugin.imageRequestInit);
       } catch (e) {
         elem.attr('alt', String(e));
       }
