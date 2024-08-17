@@ -260,8 +260,7 @@ const TTSController = () => {
   return div(
     {
       id: 'TTS-Controller',
-      class: () =>
-        `${reader.generalSettings.val.TTSEnable === false ? 'hidden' : ''}`,
+      class: () => `${reader.generalSettings.val.TTSEnable ? '' : 'hidden'}`,
       ontouchstart: () => {
         if (!controllerElement) {
           controllerElement = document.getElementById('TTS-Controller');
