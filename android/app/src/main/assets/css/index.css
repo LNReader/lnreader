@@ -159,7 +159,7 @@ td {
 #ToolWrapper > #ScrollBar {
   margin-top: 8px;
   width: 2.4rem;
-  height: 45vh;
+  height: 50vh;
   min-height: 200px;
   border-radius: 1.2rem;
   background-color: var(--theme-surface-0-9);
@@ -217,7 +217,7 @@ td {
 
 #ToolWrapper.horizontal > #ScrollBar {
   display: flex;
-  width: 80vw;
+  width: 95.5vw;
   height: 2.4rem;
   min-height: unset;
   align-items: center;
