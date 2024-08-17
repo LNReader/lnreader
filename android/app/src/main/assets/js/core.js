@@ -30,7 +30,7 @@ window.reader = new (function () {
 
   //layout props
   this.paddingTop = parseInt(
-    getComputedStyle(document.querySelector('html')).getPropertyValue(
+    getComputedStyle(document.querySelector('body')).getPropertyValue(
       'padding-top',
     ),
     10,
@@ -162,15 +162,13 @@ window.tts = new (function () {
 
   // if can find a readable node, else stop tts
   this.findNextTextNode = () => {
-    if (!this.started) {
-      this.started = true;
-      if (this.readable()) {
-        return true;
-      }
-    } else if (this.currentElement.isSameNode(reader.chapterElement)) {
+    if (this.currentElement.isSameNode(reader.chapterElement) && this.started) {
       return false;
+    } else {
+      this.started = true;
     }
-    // node is read -> next node or parent node
+
+    // is read, have to go next or go back
     if (this.currentElement.isSameNode(this.prevElement)) {
       this.prevElement = this.currentElement;
       if (this.currentElement.nextElementSibling) {
@@ -179,28 +177,27 @@ window.tts = new (function () {
         this.currentElement = this.currentElement.parentElement;
       }
       return this.findNextTextNode();
-    }
-
-    if (this.readable()) {
-      return true;
-    }
-    if (this.prevElement?.parentElement.isSameNode(this.currentElement)) {
-      // is backtracking
-      this.prevElement = this.currentElement;
-      if (this.currentElement.nextElementSibling) {
+    } else {
+      // can read? read it
+      if (this.readable()) {
+        return true;
+      }
+      if (
+        !this.prevElement?.parentElement?.isSameNode(this.currentElement) &&
+        this.currentElement.firstElementChild
+      ) {
+        // go deep
+        this.prevElement = this.currentElement;
+        this.currentElement = this.currentElement.firstElementChild;
+      } else if (this.currentElement.nextElementSibling) {
+        this.prevElement = this.currentElement;
         this.currentElement = this.currentElement.nextElementSibling;
       } else {
+        this.prevElement = this.currentElement;
         this.currentElement = this.currentElement.parentElement;
       }
       return this.findNextTextNode();
     }
-    if (this.currentElement.firstElementChild) {
-      // go deeper
-      this.prevElement = this.currentElement;
-      this.currentElement = this.currentElement.firstElementChild;
-      return this.findNextTextNode();
-    }
-    return false;
   };
 
   this.next = () => {
