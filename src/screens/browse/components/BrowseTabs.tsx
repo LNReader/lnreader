@@ -157,7 +157,7 @@ export const InstalledTab = memo(
                 </View>
               </View>
               <View style={{ flex: 1 }} />
-              {item.hasUpdate ? (
+              {item.hasUpdate || __DEV__ ? (
                 <IconButtonV2
                   name="download-outline"
                   size={22}
