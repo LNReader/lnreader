@@ -471,7 +471,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           '',
         )
         .replace(/(?:<br>\s*<\/?br>)+/g, '')
-        .replace(/<br>[\s\u00a]*(?=<\/?p(?: class\"[^>]+)?>)/g, '');
+        .replace(/<br>(\s*(?=<\/?p(?: class\"[^>]+)?>)|(?<=<\/?p>\s*<br>))/g, '')
     }
     reader.chapterElement.innerHTML = html;
   });
