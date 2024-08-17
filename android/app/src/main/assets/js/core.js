@@ -468,10 +468,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       html = html
         .replace(/(&nbsp;)(?<=<p[^>]*>\s*\1)/g, '')
         .replace(/(?:<br>\s*<\/?br>)+/g, '')
-        .replace(
-          /<br>(?:(?=<\/?p[^>]*>)|(?<=<\/?p>\s*<br>))\s*/g,
-          '',
-        );
+        .replace(/<br>(?:(?=<\/?p[^>]*>)|(?<=<\/?p>\s*<br>))\s*/g, '');
     }
     reader.chapterElement.innerHTML = html;
   });
