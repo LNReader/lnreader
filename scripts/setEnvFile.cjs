@@ -33,7 +33,9 @@ fs.readFile(path.join(__dirname, '..', '.env'), 'utf8', (err, existingData) => {
     })
     .join(os.EOL);
 
-  data += os.EOL + existingData;
+  if (existingEnvData) {
+    data += os.EOL + existingEnvData;
+  }
 
   fs.writeFile(path.join(__dirname, '..', '.env'), data, 'utf8', err => {
     if (err) {
