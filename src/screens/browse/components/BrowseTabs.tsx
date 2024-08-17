@@ -64,15 +64,18 @@ export const InstalledTab = memo(
     );
 
     const searchedPlugins = useMemo(() => {
+      const sortedInstalledPlugins = filteredInstalledPlugins.sort(
+        (plgFirst, plgSecond) => plgFirst.name.localeCompare(plgSecond.name),
+      );
       if (searchText) {
         const lowerCaseSearchText = searchText.toLocaleLowerCase();
-        return filteredInstalledPlugins.filter(
+        return sortedInstalledPlugins.filter(
           plg =>
             plg.name.toLocaleLowerCase().includes(lowerCaseSearchText) ||
             plg.id.includes(lowerCaseSearchText),
         );
       } else {
-        return filteredInstalledPlugins;
+        return sortedInstalledPlugins;
       }
     }, [searchText, filteredInstalledPlugins]);
 
