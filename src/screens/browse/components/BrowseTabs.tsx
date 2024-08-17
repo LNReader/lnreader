@@ -83,6 +83,8 @@ export const InstalledTab = memo(
       ({ item }) => {
         return (
           <Swipeable
+            dragOffsetFromLeftEdge={62}
+            dragOffsetFromRightEdge={62}
             renderLeftActions={(progress, dragX, ref) => {
               return (
                 <View
