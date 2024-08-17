@@ -466,10 +466,10 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     if (reader.generalSettings.val.removeExtraParagraphSpacing) {
       html = html
-        .replace(/(&nbsp;)(?<=<p(?:[^>]*)?>\s*\1)/g, '')
+        .replace(/(&nbsp;)(?<=<p[^>]*>\s*\1)/g, '')
         .replace(/(?:<br>\s*<\/?br>)+/g, '')
         .replace(
-          /<br>(?:(?=<\/?p(?:[^>]*)?>)|(?<=<\/?p>\s*<br>))\s*/g,
+          /<br>(?:(?=<\/?p[^>]*>)|(?<=<\/?p>\s*<br>))\s*/g,
           '',
         );
     }
