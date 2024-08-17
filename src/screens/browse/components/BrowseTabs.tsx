@@ -64,15 +64,18 @@ export const InstalledTab = memo(
     );
 
     const searchedPlugins = useMemo(() => {
+      const sortedInstalledPlugins = filteredInstalledPlugins.sort(
+        (plgFirst, plgSecond) => plgFirst.name.localeCompare(plgSecond.name),
+      );
       if (searchText) {
         const lowerCaseSearchText = searchText.toLocaleLowerCase();
-        return filteredInstalledPlugins.filter(
+        return sortedInstalledPlugins.filter(
           plg =>
             plg.name.toLocaleLowerCase().includes(lowerCaseSearchText) ||
             plg.id.includes(lowerCaseSearchText),
         );
       } else {
-        return filteredInstalledPlugins;
+        return sortedInstalledPlugins;
       }
     }, [searchText, filteredInstalledPlugins]);
 
@@ -80,6 +83,8 @@ export const InstalledTab = memo(
       ({ item }) => {
         return (
           <Swipeable
+            dragOffsetFromLeftEdge={30}
+            dragOffsetFromRightEdge={30}
             renderLeftActions={(progress, dragX, ref) => {
               return (
                 <View
@@ -154,7 +159,7 @@ export const InstalledTab = memo(
                 </View>
               </View>
               <View style={{ flex: 1 }} />
-              {item.hasUpdate ? (
+              {item.hasUpdate || __DEV__ ? (
                 <IconButtonV2
                   name="download-outline"
                   size={22}

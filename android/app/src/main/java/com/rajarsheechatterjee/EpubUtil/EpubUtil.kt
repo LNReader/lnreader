@@ -124,12 +124,12 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
         if (tocFile.exists()) {
             val tocParser = initParse(tocFile)
             var label = ""
-            while(tocParser.next() != XmlPullParser.END_DOCUMENT){
-                if(tocParser.name == "navMap") break;
+            while (tocParser.next() != XmlPullParser.END_DOCUMENT) {
+                if (tocParser.name == "navMap") break
             }
             while (tocParser.next() != XmlPullParser.END_DOCUMENT) {
                 val tag = tocParser.name
-                if(tag == "navMap") break;
+                if (tag == "navMap") break
                 if (tag != null) {
                     if (tag == "text") {
                         label = readText(tocParser)
@@ -143,7 +143,7 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
                 }
             }
         } else {
-            throw Error("Table of content doesn't exist!")
+            throw Exception("Table of content (toc.ncx) does not exist!")
         }
         var cover: String? = null
         while (parser.next() != XmlPullParser.END_DOCUMENT) {

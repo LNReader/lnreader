@@ -138,7 +138,7 @@ export default function usePlugins() {
 
   const updatePlugin = (plugin: PluginItem) => {
     return _update(plugin).then(_plg => {
-      if (plugin.version === _plg?.version) {
+      if (plugin.version === _plg?.version && !__DEV__) {
         throw new Error('No update found!');
       }
       if (_plg) {
