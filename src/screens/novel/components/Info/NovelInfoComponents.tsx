@@ -271,36 +271,29 @@ const NovelRating = ({
   rating: number;
 }) => {
   const totalStars = 5;
-  const starSize = 24;
+  const starSize = 20;
 
-  const renderStars = () => {
-    return Array.from({ length: totalStars }).map((_, index) => {
-      const filledStars = Math.floor(rating);
-      const isHalfStar = rating - index > 0 && rating - index < 1;
-      const starOpacity =
-        index < filledStars ? 1 : isHalfStar ? rating - index : 0;
-
-      return (
-        <IconButton
-          key={index}
-          icon={
-            starOpacity === 1
-              ? 'star'
-              : starOpacity > 0
-              ? 'star-half-full'
-              : 'star-outline'
-          }
-          size={starSize}
-          iconColor={starOpacity > 0 ? theme.primary : theme.onBackground}
-          style={{ margin: 0 }}
-        />
-      );
-    });
+  const getStarIcon = (index: number) => {
+    if (rating >= index + 1) {
+      return 'star';
+    }
+    if (rating >= index + 0.5) {
+      return 'star-half-full';
+    }
+    return 'star-outline';
   };
 
   return (
-    <View style={{ alignItems: 'center', marginVertical: 8 }}>
-      <View style={styles.starsContainer}>{renderStars()}</View>
+    <View style={styles.starsContainer}>
+      {Array.from({ length: totalStars }, (_, index) => (
+        <IconButton
+          key={index}
+          icon={getStarIcon(index)}
+          size={starSize}
+          iconColor={theme.primary}
+          style={styles.star}
+        />
+      ))}
     </View>
   );
 };
@@ -369,5 +362,8 @@ const styles = StyleSheet.create({
   starsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  star: {
+    margin: 0,
   },
 });
