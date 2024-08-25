@@ -16,6 +16,7 @@ import {
   NovelThumbnail,
   NovelTitle,
   NovelGenres,
+  NovelRating,
 } from './NovelInfoComponents';
 import { Row } from '@components/Common';
 import ReadButton from './ReadButton';
@@ -86,7 +87,7 @@ const NovelInfoHeader = ({
       (getMMKVObject<PluginItem[]>(AVAILABLE_PLUGINS) || []).find(
         plugin => plugin.id === novel.pluginId,
       )?.name || novel.pluginId,
-    [],
+    [novel.pluginId],
   );
 
   return (
@@ -160,6 +161,9 @@ const NovelInfoHeader = ({
                   pluginName}
               </NovelInfo>
             </Row>
+            {novel.rating ? (
+              <NovelRating theme={theme} rating={novel.rating} />
+            ) : null}
           </View>
         </NovelInfoContainer>
       </CoverImage>
