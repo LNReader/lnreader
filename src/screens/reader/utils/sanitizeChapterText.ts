@@ -7,6 +7,7 @@ export const sanitizeChapterText = (html: string): string => {
     /^color$/,
     /^font.*$/,
     /^line-height$/,
+    /^text-align.*$/,
     /^text-indent$/,
   ];
 
