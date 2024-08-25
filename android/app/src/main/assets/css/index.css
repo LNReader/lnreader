@@ -96,6 +96,7 @@ td {
   font-family: var(--readerSettings-fontFamily);
   font-size: 16px;
   border-width: 0;
+  user-select: none;
 }
 
 .next-button {
