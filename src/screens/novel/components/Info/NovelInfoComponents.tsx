@@ -294,9 +294,6 @@ const NovelRating = ({
           style={styles.star}
         />
       ))}
-      <Text style={[styles.rating, { color: theme.onSurfaceVariant }]}>
-        ({rating.toFixed(1)})
-      </Text>
     </View>
   );
 };
@@ -334,6 +331,7 @@ const styles = StyleSheet.create({
   },
   novelTitle: {
     fontSize: 20,
+    marginBottom: 4,
   },
   novelInfo: {
     fontSize: 14,
@@ -365,15 +363,10 @@ const styles = StyleSheet.create({
   starsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: -1,
     marginBottom: 4,
   },
   star: {
-    marginVertical: -8,
-    marginHorizontal: -7,
-  },
-  rating: {
-    fontSize: 14,
-    marginLeft: 1,
+    margin: -8,
+    marginRight: -7,
   },
 });

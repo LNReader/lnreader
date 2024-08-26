@@ -164,6 +164,7 @@ const NovelInfoHeader = ({
             {novel.rating ? (
               <Row>
                 <NovelRating theme={theme} rating={novel.rating} />
+                <NovelInfo theme={theme}>({novel.rating.toFixed(1)})</NovelInfo>
               </Row>
             ) : null}
           </View>
