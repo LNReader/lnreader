@@ -131,7 +131,7 @@ const NovelInfoHeader = ({
                   name="fountain-pen-tip"
                   size={14}
                   color={theme.onSurfaceVariant}
-                  style={{ marginRight: 4 }}
+                  style={styles.icon}
                 />
                 <NovelInfo theme={theme}>{novel.author}</NovelInfo>
               </Row>
@@ -142,7 +142,7 @@ const NovelInfoHeader = ({
                   name="palette-outline"
                   size={14}
                   color={theme.onSurfaceVariant}
-                  style={{ marginRight: 4 }}
+                  style={styles.icon}
                 />
                 <NovelInfo theme={theme}>{novel.artist}</NovelInfo>
               </Row>
@@ -152,7 +152,7 @@ const NovelInfoHeader = ({
                 name={getStatusIcon(novel.status)}
                 size={14}
                 color={theme.onSurfaceVariant}
-                style={{ marginRight: 4 }}
+                style={styles.icon}
               />
               <NovelInfo theme={theme}>
                 {(translateNovelStatus(novel.status) ||
@@ -162,7 +162,9 @@ const NovelInfoHeader = ({
               </NovelInfo>
             </Row>
             {novel.rating ? (
-              <NovelRating theme={theme} rating={novel.rating} />
+              <Row>
+                <NovelRating theme={theme} rating={novel.rating} />
+              </Row>
             ) : null}
           </View>
         </NovelInfoContainer>
@@ -264,5 +266,9 @@ const styles = StyleSheet.create({
   },
   infoItem: {
     marginVertical: 2,
+  },
+  icon: {
+    marginRight: 4,
+    marginBottom: 4,
   },
 });

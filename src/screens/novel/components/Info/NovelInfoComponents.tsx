@@ -271,7 +271,7 @@ const NovelRating = ({
   rating: number;
 }) => {
   const totalStars = 5;
-  const starSize = 20;
+  const starSize = 18;
 
   const getStarIcon = (index: number) => {
     if (rating >= index + 1) {
@@ -294,6 +294,9 @@ const NovelRating = ({
           style={styles.star}
         />
       ))}
+      <Text style={[styles.rating, { color: theme.onSurfaceVariant }]}>
+        ({rating.toFixed(1)})
+      </Text>
     </View>
   );
 };
@@ -362,8 +365,15 @@ const styles = StyleSheet.create({
   starsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft: -1,
+    marginBottom: 4,
   },
   star: {
-    margin: 0,
+    marginVertical: -8,
+    marginHorizontal: -7,
+  },
+  rating: {
+    fontSize: 14,
+    marginLeft: 1,
   },
 });
