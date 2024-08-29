@@ -215,7 +215,7 @@ const EditInfoModal = ({
           <Button
             onPress={() => {
               setNovel(novelInfo);
-              updateNovelInfo(novel);
+              updateNovelInfo(novelInfo);
               hideModal();
             }}
           >
