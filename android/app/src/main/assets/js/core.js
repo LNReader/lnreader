@@ -467,8 +467,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (reader.generalSettings.val.removeExtraParagraphSpacing) {
       html = html
         .replace(/(&nbsp;)(?<=<p[^>]*>\s*\1)/g, '')
-        .replace(/(?:<br>\s*<\/?br>\s*)+(?=<\/?(?:p|h[1-5]|br)\b[^>]*>)/g, '')
-        .replace(/<br>(?:(?=\s*<\/?p[^>]*>)|(?<=<\/?p>\s*<br>))\s*/g, '');
+        .replace(/(?:<br>\s*<\/?br>\s*)+(?:(?=<(?!br>))|(?<=(?<!<br)>\s*<br>\s*<\/?br>\s*))/g, '')
+        .replace(/<br>(?:(?=\s*<\/?p[^>]*>|\s*<br>\s*<br>)|(?<=<\/?p>\s*<br>))\s*/g, '');
     }
     reader.chapterElement.innerHTML = html;
   });
