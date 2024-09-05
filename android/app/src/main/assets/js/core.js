@@ -469,7 +469,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         .replace(/(&nbsp;)(?<=<p[^>]*>\s*\1)/g, '')
         .replace(/(?:<br>\s*)+(?=<br>\s*<br>)/g, '')
         .replace(
-          /(?:<br>\s*<\/?br>\s*)+(?:(?=<(?!br>))|(?<=(?<!<br)>\s*<br>\s*<\/?br>\s*))/g,
+          /(?:<br>\s*<\/?br>\s*)+(?:(?=<)|(?<=>\s*<br>\s*<\/?br>\s*))/g,
           '',
         )
         .replace(
