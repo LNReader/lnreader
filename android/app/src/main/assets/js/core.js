@@ -472,10 +472,7 @@ window.addEventListener('DOMContentLoaded', async () => {
           /(?:<br>\s*<\/?br>\s*)+(?:(?=<)|(?<=>\s*<br>\s*<\/?br>\s*))/g,
           '',
         )//look-around double br. If a tag is near, delete the double br.
-        .replace(
-          /<br>(?:(?=\s*<\/?p[^>]*>)|(?<=<\/?p>\s*<br>))\s*/g,
-          '',
-        );
+        .replace(/<br>(?:(?=\s*<\/?p[^>]*>)|(?<=<\/?p>\s*<br>))\s*/g, '');
     }
     reader.chapterElement.innerHTML = html;
   });
