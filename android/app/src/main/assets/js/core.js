@@ -467,13 +467,13 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (reader.generalSettings.val.removeExtraParagraphSpacing) {
       html = html
         .replace(/(?:&nbsp;\s*)+(?=<\/?p[^>]*>)/g, '')
-        .replace(/(?:<br>\s*)+(?=<br>\s*<br>)/g, '')
+        .replace(/(?:<br>\s*)+(?=<br>\s*<br>)/g, '')//force max 2 consecutive <br>, chaining regex
         .replace(
           /(?:<br>\s*<\/?br>\s*)+(?:(?=<)|(?<=>\s*<br>\s*<\/?br>\s*))/g,
           '',
-        )
+        )//look-around double br. If a tag is near, delete the double br.
         .replace(
-          /<br>(?:(?=\s*<\/?p[^>]*>|\s*<br>\s*<br>)|(?<=<\/?p>\s*<br>))\s*/g,
+          /<br>(?:(?=\s*<\/?p[^>]*>)|(?<=<\/?p>\s*<br>))\s*/g,
           '',
         );
     }
