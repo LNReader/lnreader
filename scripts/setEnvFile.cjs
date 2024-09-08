@@ -16,13 +16,12 @@ let data =
   os.EOL +
   `RELEASE_DATE=${formattedDate}`;
 
-fs.readFile(path.join(__dirname, '..', '.env'), 'utf8', (err, existingData) => {
-  if (err) {
-    console.log(err);
-    return;
-  }
+let existingEnvData = '';
 
-  const existingEnvData = existingData
+fs.readFile(path.join(__dirname, '..', '.env'), 'utf8', (err, existingData) => {
+  if (err) return;
+
+  existingEnvData = existingData
     .split(os.EOL)
     .filter(line => {
       return (
@@ -32,14 +31,14 @@ fs.readFile(path.join(__dirname, '..', '.env'), 'utf8', (err, existingData) => {
       );
     })
     .join(os.EOL);
+});
 
-  if (existingEnvData) {
-    data += os.EOL + existingEnvData;
+if (existingEnvData) {
+  data += os.EOL + existingEnvData;
+}
+
+fs.writeFile(path.join(__dirname, '..', '.env'), data, 'utf8', err => {
+  if (err) {
+    console.log(err);
   }
-
-  fs.writeFile(path.join(__dirname, '..', '.env'), data, 'utf8', err => {
-    if (err) {
-      console.log(err);
-    }
-  });
 });
