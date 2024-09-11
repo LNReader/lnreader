@@ -469,9 +469,9 @@ window.addEventListener('DOMContentLoaded', async () => {
         .replace(/(?:&nbsp;\s*)+(?=<\/?p[^>]*>)/g, '')
         .replace(/(?:<br>\s*)+(?=<br>\s*<br>)/g, '') //force max 2 consecutive <br>, chaining regex
         .replace(
-          /(?:<br>\s*<\/?br>\s*)+(?:(?=<)|(?<=>\s*<br>\s*<\/?br>\s*))/g,
+          /(?:<br>\s*<\/?br>\s*)+(?:(?=<(?!em>|[iab]>|strong>|span>))|(?<=(?<!\/em|\/[iab]|\/strong|\/span)>\s*<br>\s*<\/?br>\s*))/g,
           '',
-        ) //look-around double br. If a tag is near, delete the double br.
+        ) //look-around double br. If certain tags aren't near, delete the double br.
         .replace(/<br>(?:(?=\s*<\/?p[^>]*>)|(?<=<\/?p>\s*<br>))\s*/g, '');
     }
     reader.chapterElement.innerHTML = html;
