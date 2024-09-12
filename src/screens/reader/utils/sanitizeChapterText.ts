@@ -55,17 +55,7 @@ export const sanitizeChapterText = (html: string): string => {
     allowedAttributes: {
       'a': ['href', 'name', 'target', 'class', 'id'],
       'div': ['class', 'id', 'style'],
-      'img': [
-        'src',
-        'srcset',
-        'alt',
-        'title',
-        'width',
-        'height',
-        'loading',
-        'class',
-        'id',
-      ],
+      'img': ['src', 'srcset', 'alt', 'title', 'class', 'id'],
       'ol': ['reversed', 'start'],
       'p': ['class', 'id', 'style'],
       'span': ['class', 'id', 'style'],
