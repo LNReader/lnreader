@@ -466,7 +466,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     if (reader.generalSettings.val.removeExtraParagraphSpacing) {
       html = html
-        .replace(/(?:&nbsp;)+(?=<\/?p[^>]*>)\s*/g, '')
+        .replace(/(?:&nbsp;)+(?=\s*<\/?p[^>]*>)\s*/g, '')
         .replace(/(?:<br>\s*)+(?=<br>\s*<br>)/g, '') //force max 2 consecutive <br>, chaining regex
         .replace(
           /(?:<br>\s*<\/?br>\s*)+(?:(?=<(?!em>|[iab]>|strong>|span>))|(?<=(?<!\/em|\/[iab]|\/strong|\/span)>\s*<br>\s*<\/?br>\s*))/g,
