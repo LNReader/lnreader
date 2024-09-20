@@ -22,8 +22,16 @@ interface ListItemProps {
   right?: string;
 }
 
-const Section = ({ children }: { children: ReactNode }) => (
-  <PaperList.Section style={styles.listSection}>{children}</PaperList.Section>
+const Section = ({
+  children,
+  style,
+}: {
+  style?: ViewStyle;
+  children: ReactNode;
+}) => (
+  <PaperList.Section style={[styles.listSection, style]}>
+    {children}
+  </PaperList.Section>
 );
 
 const SubHeader = ({
