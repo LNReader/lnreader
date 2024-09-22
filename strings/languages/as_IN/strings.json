@@ -1,262 +1,262 @@
 {
   "common": {
-    "cancel": "Cancel",
-    "ok": "Ok",
-    "save": "Save",
-    "clear": "Clear",
-    "reset": "Reset",
-    "search": "Search",
-    "install": "Install",
-    "newUpdateAvailable": "New update available",
-    "categories": "Categories",
-    "add": "Add",
-    "edit": "Edit",
-    "name": "Name",
-    "searchFor": "Search for",
-    "globally": "globally",
-    "searchResults": "Search results",
-    "chapters": "Chapters",
-    "submit": "Submit",
-    "retry": "Retry"
+    "cancel": "বাতিল",
+    "ok": "হ’ব",
+    "save": "সংৰক্ষণ",
+    "clear": "পৰিষ্কাৰ",
+    "reset": "পুনৰায় স্থাপন",
+    "search": "সন্ধান",
+    "install": "স্থাপন",
+    "newUpdateAvailable": "নতুন আপডেট উপলব্ধ",
+    "categories": "শ্ৰেণীবিভাজন",
+    "add": "যোগ কৰক",
+    "edit": "সম্পাদনা কৰক",
+    "name": "নাম",
+    "searchFor": "সন্ধান কৰক",
+    "globally": "বিশ্বব্যাপী",
+    "searchResults": "সন্ধান ফলাফল",
+    "chapters": "অধ্যায়সমূহ",
+    "submit": "জমা দিয়ক",
+    "retry": "পুনৰ চেষ্টা কৰক"
   },
-  "library": "Library",
+  "library": "পুথিভঁৰাল",
   "libraryScreen": {
-    "searchbar": "Search library",
-    "empty": "Your library is empty. Add series to your library from Browse.",
+    "searchbar": "পুথিভঁৰালত সন্ধান কৰক",
+    "empty": "আপোনাৰ পুথিভঁৰাল খালী। ‘ব্ৰাউজ’ৰ পৰা শৃংখলা যোগ কৰক।",
     "bottomSheet": {
       "filters": {
-        "downloaded": "Downloaded",
-        "unread": "Unread",
-        "completed": "Completed",
-        "started": "Started"
+        "downloaded": "ডাউনলোড কৰা",
+        "unread": "নপঢ়া",
+        "completed": "সম্পূৰ্ণ",
+        "started": "আৰম্ভ কৰা"
       },
       "sortOrders": {
-        "dateAdded": "Date added",
-        "alphabetically": "Alphabetically",
-        "totalChapters": "Total chapters",
-        "download": "Downloaded",
-        "unread": "Unread",
-        "lastRead": "Last read",
-        "lastUpdated": "Last updated"
+        "dateAdded": "যোগ কৰা তাৰিখ",
+        "alphabetically": "আখৰবাৰ অনুসৰি",
+        "totalChapters": "মুঠ অধ্যায়সমূহ",
+        "download": "ডাউনলোড কৰা",
+        "unread": "পঢ়া নাই",
+        "lastRead": "শেষত পঢ়া",
+        "lastUpdated": "শেষত আপডেট কৰা"
       },
       "display": {
-        "displayMode": "Display mode",
-        "compact": "Compact grid",
-        "comfortable": "Comfortable grid",
-        "noTitle": "Cover only grid",
-        "list": "List",
-        "badges": "Badges",
-        "downloadBadges": "Download badges",
-        "unreadBadges": "Unread badges",
-        "showNoOfItems": "Show number of items"
+        "displayMode": "প্ৰদৰ্শন মোড",
+        "compact": "সঙ্কলিত জালিকা",
+        "comfortable": "সুবিধাজনক জালিকা",
+        "noTitle": "ক’ভাৰ মাথোন জালিকা",
+        "list": "তালিকা",
+        "badges": "বেজসমূহ",
+        "downloadBadges": "ডাউনলোড বেজসমূহ",
+        "unreadBadges": "নপঢ়া বেজসমূহ",
+        "showNoOfItems": "আইটেমৰ সংখ্যা দেখুৱাওক"
       }
     }
   },
-  "updates": "Updates",
+  "updates": "আপডেট",
   "updatesScreen": {
-    "searchbar": "Search updates",
-    "lastUpdatedAt": "Library last updated:",
-    "newChapters": "new Chapters",
-    "emptyView": "No recent updates",
-    "updatesLower": "updates"
+    "searchbar": "আপডেটত সন্ধান কৰক",
+    "lastUpdatedAt": "শেষ আপডেট কৰা:",
+    "newChapters": "নতুন অধ্যায়সমূহ",
+    "emptyView": "কোনো সাম্প্ৰতিক আপডেট নাই",
+    "updatesLower": "আপডেটসমূহ"
   },
-  "history": "History",
+  "history": "ইতিহাস",
   "historyScreen": {
-    "searchbar": "Search history",
-    "clearHistorWarning": "Are you sure? All history will be lost."
+    "searchbar": "ইতিহাসত সন্ধান কৰক",
+    "clearHistorWarning": "আপুনি নিশ্চিত? সকলো ইতিহাস হেৰাই যাব।"
   },
-  "browse": "Browse",
+  "browse": "ব্ৰাউজ কৰক",
   "browseScreen": {
-    "discover": "Discover",
-    "searchbar": "Search sources",
-    "globalSearch": "Global search",
-    "listEmpty": "Enable languages from settings",
-    "lastUsed": "Last used",
-    "pinned": "Pinned",
-    "all": "All",
-    "latest": "Latest",
-    "addedToLibrary": "Added to library",
-    "removeFromLibrary": "Removed from library"
+    "discover": "আবিষ্কাৰ কৰক",
+    "searchbar": "উৎসত সন্ধান কৰক",
+    "globalSearch": "বিশ্বব্যাপী সন্ধান",
+    "listEmpty": "ছেটিংছৰ পৰা ভাষা সক্ৰিয় কৰক",
+    "lastUsed": "শেষত ব্যৱহৃত",
+    "pinned": "পিন কৰা",
+    "all": "সকলো",
+    "latest": "সাম্প্ৰতিক",
+    "addedToLibrary": "পুথিভঁৰালত যোগ কৰা হৈছে",
+    "removeFromLibrary": "পুথিভঁৰালৰ পৰা আঁতৰ কৰা হৈছে"
   },
   "readerScreen": {
-    "finished": "Finished",
-    "noNextChapter": "There's no next chapter",
+    "finished": "শেষ",
+    "noNextChapter": "পৰবর্তী অধ্যায় নাই",
     "bottomSheet": {
-      "textSize": "Text size",
-      "color": "Color",
-      "textAlign": "Text align",
-      "lineHeight": "Line Height",
-      "fontStyle": "Font style",
-      "fullscreen": "Fullscreen",
-      "bionicReading": "Bionic Reading",
-      "renderHml": "Render HTML",
-      "autoscroll": "AutoScroll",
-      "verticalSeekbar": "Vertical Seekbar",
-      "showBatteryAndTime": "Show battery and time",
-      "showProgressPercentage": "Show progress percentage",
-      "swipeGestures": "Swipe left or right to navigate between chapters",
-      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
-      "allowTextSelection": "Allow text selection",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
-      "removeExtraSpacing": "Remove extra paragraph spacing",
-      "volumeButtonsScroll": "Volume buttons scroll",
-      "scrollAmount": "Scroll amount (screen height by default)",
-      "showSwipeMargins": "Show swipe margins"
+      "textSize": "আখৰৰ আকাৰ",
+      "color": "ৰঙ",
+      "textAlign": "আখৰ সজ্জা",
+      "lineHeight": "পংক্তিৰ উচ্চতা",
+      "fontStyle": "ফণ্টৰ শৈলী",
+      "fullscreen": "সম্পূৰ্ণপর্দা",
+      "bionicReading": "বায়নিক পঢ়া",
+      "renderHml": "এইচটিএমএল প্ৰদৰ্শন",
+      "autoscroll": "স্বয়ংস্ক্ৰল",
+      "verticalSeekbar": "উলম্ব চাইকবাৰ",
+      "showBatteryAndTime": "ব্যাটাৰী আৰু সময় দেখুৱাওক",
+      "showProgressPercentage": "প্ৰগতিৰ শতাংশ দেখুৱাওক",
+      "swipeGestures": "স্বাইপ কৰি অধ্যায়ৰ মাজত যাব",
+      "readerPages": "পৃষ্ঠাত ক্লিক কৰি পৃষ্ঠাবোৰ পঢ়ক",
+      "allowTextSelection": "আখৰ বাচনিৰ অনুমতি",
+      "useChapterDrawerSwipeNavigation": "ড্ৰয়াৰ খুলিবলৈ স্বাইপ কৰক",
+      "removeExtraSpacing": "অতিরিক্ত স্থান আঁতৰাওক",
+      "volumeButtonsScroll": "ভলিউম বুটামৰ সৈতে স্ক্ৰল কৰক",
+      "scrollAmount": "স্ক্ৰল পৰিমাণ (প্ৰদৰ্শন উচ্চতা অনুযায়ী)",
+      "showSwipeMargins": "স্বাইপৰ মাৰ্জিন দেখুৱাওক"
     },
     "drawer": {
-      "scrollToCurrentChapter": "Scroll to current chapter",
-      "scrollToTop": "Scroll to top",
-      "scrollToBottom": "Scroll to bottom"
+      "scrollToCurrentChapter": "বৰ্তমান অধ্যায়লৈ স্ক্ৰল কৰক",
+      "scrollToTop": "শীৰ্ষলৈ স্ক্ৰল কৰক",
+      "scrollToBottom": "তললৈ স্ক্ৰল কৰক"
     }
   },
   "novelScreen": {
-    "addToLibaray": "Add to library",
-    "inLibaray": "In library",
-    "continueReading": "Continue reading",
-    "chapters": "chapters",
-    "migrate": "Migrate",
-    "noSummary": "No summary",
+    "addToLibaray": "পুথিভঁৰালত যোগ কৰক",
+    "inLibaray": "পুথিভঁৰালত আছে",
+    "continueReading": "পঢ়া অব্যাহত ৰাখক",
+    "chapters": "অধ্যায়সমূহ",
+    "migrate": "স্থানান্তৰিত কৰক",
+    "noSummary": "কোনো সংক্ষিপ্তসাৰ নাই",
     "bottomSheet": {
-      "filter": "Filter",
-      "sort": "Sort",
-      "display": "Display"
+      "filter": "চানেকি",
+      "sort": "শ্ৰেণীবদ্ধ কৰক",
+      "display": "প্ৰদৰ্শন"
     },
     "jumpToChapterModal": {
-      "jumpToChapter": "Jump to Chapter",
-      "openChapter": "Open Chapter",
-      "chapterName": "Chapter Name",
-      "chapterNumber": "Chapter Number",
+      "jumpToChapter": "অধ্যায়লৈ যাওক",
+      "openChapter": "অধ্যায় খুলক",
+      "chapterName": "অধ্যায়ৰ নাম",
+      "chapterNumber": "অধ্যায় নম্বৰ",
       "error": {
-        "validChapterName": "Enter a valid chapter name",
-        "validChapterNumber": "Enter a valid chapter number"
+        "validChapterName": "বৈধ অধ্যায়ৰ নাম দিন",
+        "validChapterNumber": "বৈধ অধ্যায় নম্বৰ দিন"
       }
     },
     "convertToEpubModal": {
-      "chooseLocation": "Select EPUB storage directory",
-      "pathToFolder": "Path to EPUB save folder",
-      "useReaderTheme": "Use reader theme",
-      "useCustomCSS": "Use custom CSS",
-      "useCustomJS": "Use custom JS",
-      "useCustomJSWarning": "May not be supported by all EPUB readers",
-      "chaptersWarning": "Only downloaded chapters are included in the EPUB"
+      "chooseLocation": "ইপাব সংৰক্ষণৰ স্থান বাচনি কৰক",
+      "pathToFolder": "ইপাব সংৰক্ষণৰ ফোল্ডাৰৰ পথ",
+      "useReaderTheme": "পাঠক থীম ব্যৱহাৰ কৰক",
+      "useCustomCSS": "নিজস্ব CSS ব্যৱহাৰ কৰক",
+      "useCustomJS": "নিজস্ব JS ব্যৱহাৰ কৰক",
+      "useCustomJSWarning": "সমস্ত ইপাব পাঠকৰ দ্বাৰা সমৰ্থিত নাও হ'ব পাৰে",
+      "chaptersWarning": "কেৱল ডাউনলোড কৰা অধ্যায়সমূহ ইপাবত অন্তৰ্ভুক্ত হ'ব"
     }
   },
-  "more": "More",
+  "more": "অধিক",
   "moreScreen": {
-    "settings": "Settings",
+    "settings": "ছেটিংছ",
     "settingsScreen": {
-      "generalSettings": "General",
+      "generalSettings": "সাধাৰণ",
       "generalSettingsScreen": {
-        "display": "Display",
-        "displayMode": "Display Mode",
-        "itemsPerRow": "Items per row",
-        "itemsPerRowLibrary": "Items per row in library",
-        "novelBadges": "Novel Badges",
-        "novelSort": "Novel Sort",
-        "updateLibrary": "Update library on launch",
-        "useFAB": "Use FAB in Library",
-        "novel": "Novel",
-        "chapterSort": "Default chapter sort",
-        "bySource": "By source",
-        "asc": "(Ascending)",
-        "desc": "(Descending)",
-        "globalUpdate": "Global update",
-        "updateOngoing": "Only update ongoing novels",
-        "refreshMetadata": "Automatically refresh metadata",
-        "refreshMetadataDescription": "Check for new cover and details when updating library",
-        "updateTime": "Show last update time",
-        "autoDownload": "Auto-download",
-        "epub": "EPUB",
-        "epubLocation": "EPUB Location",
-        "epubLocationDescription": "The place where you open and export your EPUB files.",
-        "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback",
-        "jumpToLastReadChapter": "Jump to last read chapter in list"
+        "display": "প্ৰদৰ্শন",
+        "displayMode": "প্ৰদৰ্শন মোড",
+        "itemsPerRow": "প্ৰতি শাৰীত আইটেমসমূহ",
+        "itemsPerRowLibrary": "পুথিভঁৰালত প্ৰতি শাৰীত আইটেমসমূহ",
+        "novelBadges": "উপন্যাস বেজসমূহ",
+        "novelSort": "উপন্যাস শ্ৰেণীবদ্ধকৰণ",
+        "updateLibrary": "লঞ্চত পুথিভঁৰাল আপডেট কৰক",
+        "useFAB": "পুথিভঁৰালত FAB ব্যৱহাৰ কৰক",
+        "novel": "উপন্যাস",
+        "chapterSort": "অধ্যায়ৰ শ্ৰেণীবদ্ধকৰণ",
+        "bySource": "উৎস অনুসৰি",
+        "asc": "(আৰোহী)",
+        "desc": "(অবৰোহী)",
+        "globalUpdate": "বিশ্বব্যাপী আপডেট",
+        "updateOngoing": "মাত্ৰ চলমান উপন্যাসসমূহ আপডেট কৰক",
+        "refreshMetadata": "স্বয়ংক্ৰিয়ভাৱে মেটাডেটা সজীৱ কৰক",
+        "refreshMetadataDescription": "পুথিভঁৰাল আপডেটৰ সময়ত নতুন ক'ভাৰ আৰু বিবৰণৰ সন্ধান কৰক",
+        "updateTime": "শেহতীয়া আপডেট সময় দেখুৱাওক",
+        "autoDownload": "স্বয়ংক্ৰিয় ডাউনলোড",
+        "epub": "ইপাব",
+        "epubLocation": "ইপাব স্থান",
+        "epubLocationDescription": "য’ত আপুনি আপোনাৰ ইপাব ফাইল খুলিব আৰু ৰপ্তানি কৰিব পাৰিব।",
+        "downloadNewChapters": "নতুন অধ্যায়সমূহ ডাউনলোড কৰক",
+        "disableHapticFeedback": "হেপ্টিক ফিডব্যাক নিষ্ক্ৰিয় কৰক",
+        "jumpToLastReadChapter": "অন্তিম পঢ়া অধ্যায়লৈ তালিকাত যাওক"
       },
       "readerSettings": {
-        "title": "Reader",
-        "readerTheme": "Reader theme",
-        "preset": "Preset",
-        "backgroundColor": "Background color",
-        "textColor": "Text color",
-        "backgroundColorModal": "Reader background color",
-        "textColorModal": "Reader text color",
-        "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
-        "autoScrollInterval": "Auto scroll interval (in seconds)",
-        "autoScrollOffset": "Auto scroll offset (screen height by default)",
-        "saveCustomTheme": "Save custom theme",
-        "deleteCustomTheme": "Delete custom theme",
-        "customCSS": "Custom CSS",
-        "customJS": "Custom JS",
-        "openCSSFile": "Open CSS file",
-        "openJSFile": "Open JS file",
-        "notSaved": "Not saved",
-        "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-        "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
-        "clearCustomJS": "Are you sure? Your custom JS would be reset."
+        "title": "পাঠক",
+        "readerTheme": "পাঠকৰ থিম",
+        "preset": "প্ৰিছেট",
+        "backgroundColor": "পৃষ্ঠভূমিৰ ৰঙ",
+        "textColor": "লিপিৰ ৰঙ",
+        "backgroundColorModal": "পাঠকৰ পৃষ্ঠভূমিৰ ৰঙ",
+        "textColorModal": "পাঠকৰ লিপিৰ ৰঙ",
+        "verticalSeekbarDesc": "অনুভূমিক আৰু উলম্ব সিক বাৰৰ মাজত সলনি কৰক",
+        "autoScrollInterval": "স্বয়ংক্ৰিয় স্ক্ৰলৰ সময় (সেকেণ্ডত)",
+        "autoScrollOffset": "স্বয়ংক্ৰিয় স্ক্ৰলৰ অফচেট (স্বাভাৱিকভাৱে স্ক্ৰিনৰ উচ্চতা অনুসৰি)",
+        "saveCustomTheme": "কাস্টম থিম সংৰক্ষণ কৰক",
+        "deleteCustomTheme": "কাস্টম থিম মচক",
+        "customCSS": "কাস্টম CSS",
+        "customJS": "কাস্টম JS",
+        "openCSSFile": "CSS ফাইল খোলক",
+        "openJSFile": "JS ফাইল খোলক",
+        "notSaved": "সংৰক্ষণ কৰা হোৱা নাই",
+        "cssHint": "ইঙ্গিত: আপুনি উৎস ID সহ ক্ৰমান্বয়িক CSS কনফিগাৰেশ্যন সৃষ্টি কৰিব পাৰে। (#sourceId-[SOURCEID])",
+        "jsHint": "ইঙ্গিত: আপুনি তলৰ ভেৰিয়েবলসমূহ পাব: html, novelName, chapterName, sourceId, chapterId, novelId",
+        "clearCustomCSS": "আপুনি নিশ্চিত নেকি? আপোনাৰ কাস্টম CSS ৰিছেট হ'ব।",
+        "clearCustomJS": "আপুনি নিশ্চিত নেকি? আপোনাৰ কাস্টম JS ৰিছেট হ'ব।"
       },
-      "browseSettings": "Browse Settings",
+      "browseSettings": "ব্ৰাউজ স্থাপনাসমূহ",
       "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Only show pinned sources",
-        "languages": "Languages",
-        "searchAllSources": "Search all sources",
-        "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+        "onlyShowPinnedSources": "মাত্ৰ পিন কৰা উৎসসমূহ দেখুৱাওক",
+        "languages": "ভাষাসমূহ",
+        "searchAllSources": "সকলো উৎসত অনুসন্ধান কৰক",
+        "searchAllWarning": "অতি বেছি উৎসত অনুসন্ধান কৰিলে অনুপলব্ধ হব পাৰে আৰু এপ ফ্ৰীজ হব পাৰে।"
       }
     }
   },
   "sourceScreen": {
-    "noResultsFound": "No results found"
+    "noResultsFound": "কোনো ফলাফল পোৱা নাযায়"
   },
   "statsScreen": {
-    "title": "Statistics",
-    "titlesInLibrary": "Titles in library",
-    "totalChapters": "Total chapters",
-    "readChapters": "Read chapters",
-    "unreadChapters": "Unread chapters",
-    "downloadedChapters": "Downloaded chapters",
-    "genreDistribution": "Genre distribution",
-    "statusDistribution": "Status distribution"
+    "title": "পৰিসংখ্যা",
+    "titlesInLibrary": "গ্ৰন্থাগাৰত শিৰোনামসমূহ",
+    "totalChapters": "মুঠ অধ্যায়সমূহ",
+    "readChapters": "পঢ়া অধ্যায়সমূহ",
+    "unreadChapters": "নপঢ়া অধ্যায়সমূহ",
+    "downloadedChapters": "ডাউনলোড কৰা অধ্যায়সমূহ",
+    "genreDistribution": "শ্ৰেণীবিভাগৰ বিতৰণ",
+    "statusDistribution": "স্থিতিৰ বিতৰণ"
   },
   "globalSearch": {
-    "searchIn": "Search a novel in",
-    "allSources": "all sources",
-    "pinnedSources": "pinned sources"
+    "searchIn": "উৎসত উপন্যাস অনুসন্ধান কৰক",
+    "allSources": "সকলো উৎস",
+    "pinnedSources": "পিন কৰা উৎস"
   },
   "advancedSettings": {
-    "deleteReadChapters": "Delete read chapters",
-    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted."
+    "deleteReadChapters": "পঢ়া অধ্যায়সমূহ মচক",
+    "deleteReadChaptersDialogTitle": "আপুনি নিশ্চিত নেকি? পঢ়া সকল অধ্যায় মচি দিয়া হ'ব।"
   },
   "date": {
     "calendar": {
-      "sameDay": "[Today]",
-      "nextDay": "[Tomorrow]",
-      "lastDay": "[Yesterday]",
-      "lastWeek": "[Last] dddd"
+      "sameDay": "[আজি]",
+      "nextDay": "[কাইলৈ]",
+      "lastDay": "[কালিৰ]",
+      "lastWeek": "[শেষ] dddd"
     }
   },
   "categories": {
-    "addCategories": "Add category",
-    "editCategories": "Rename category",
-    "setCategories": "Set categories",
-    "header": "Edit categories",
-    "emptyMsg": "You have no categories. Tap the plus button to create one for organizing your library",
-    "setModalEmptyMsg": "You have no categories. Tap the Edit button to create one for organizing your library",
+    "addCategories": "শ্ৰেণী যোগ কৰক",
+    "editCategories": "শ্ৰেণীৰ নাম সলনি কৰক",
+    "setCategories": "শ্ৰেণীবিভাগ স্থাপন কৰক",
+    "header": "শ্ৰেণীবিভাগ সম্পাদনা কৰক",
+    "emptyMsg": "আপোনাৰ কোনো শ্ৰেণী নাই। আপোনাৰ গ্ৰন্থাগাৰ সংগঠিত কৰিবলৈ প্লাছ বুটামত টেপ কৰক",
+    "setModalEmptyMsg": "আপোনাৰ কোনো শ্ৰেণী নাই। সম্পাদনা বুটামত টেপ কৰি এটি সৃষ্টি কৰক",
     "deleteModal": {
-      "header": "Delete category",
-      "desc": "Do you wish to delete category"
+      "header": "শ্ৰেণী মচক",
+      "desc": "আপুনি শ্ৰেণী মচিব বিচাৰে নেকি?"
     },
-    "duplicateError": "A category with this name already exists!",
-    "defaultCategory": "Default category"
+    "duplicateError": "এই নামৰ শ্ৰেণী ইতিমধ্যে বিদ্যমান!",
+    "defaultCategory": "ডিফল্ট শ্ৰেণী"
   },
   "settings": {
-    "icognitoMode": "Incognito mode",
-    "downloadedOnly": "Downloaded only"
+    "icognitoMode": "গুপ্ত মুড",
+    "downloadedOnly": "মাত্ৰ ডাউনলোড কৰা"
   },
   "downloadScreen": {
-    "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "noDownloads": "No downloads",
-    "downloadsLower": "downloads"
+    "dbInfo": "ডাউনলোডসমূহ SQLite ডেটাবেছত সংৰক্ষিত হৈ থাকে।",
+    "downloadChapters": "ডাউনলোড কৰা অধ্যায়সমূহ",
+    "noDownloads": "কোনো ডাউনলোড নাই",
+    "downloadsLower": "ডাউনলোডসমূহ"
   }
 }
