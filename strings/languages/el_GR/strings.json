@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Εμφάνιση μπαταρίας και ώρας",
       "showProgressPercentage": "Εμφάνιση ποσοστού προόδου",
       "swipeGestures": "Σύρετε αριστερά ή δεξιά για περιήγηση μεταξύ κεφαλαίων",
+      "readerPages": "Tap left or right to navigate through pages in the reader (Experimental)",
       "allowTextSelection": "Allow text selection",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "removeExtraSpacing": "Αφαίρεση επιπλέον απόστασης παραγράφων",
@@ -169,7 +170,8 @@
         "epubLocation": "EPUB Location",
         "epubLocationDescription": "The place where you open and export your EPUB files.",
         "downloadNewChapters": "Download new chapters",
-        "disableHapticFeedback": "Disable haptic feedback"
+        "disableHapticFeedback": "Disable haptic feedback",
+        "jumpToLastReadChapter": "Jump to last read chapter in list"
       },
       "readerSettings": {
         "title": "Reader",

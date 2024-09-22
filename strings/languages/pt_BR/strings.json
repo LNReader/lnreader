@@ -56,7 +56,7 @@
   "updatesScreen": {
     "searchbar": "Procurar por atualizações",
     "lastUpdatedAt": "Biblioteca atualizada pela última vez:",
-    "newChapters": "novos Capítulos",
+    "newChapters": "Novos Capítulos",
     "emptyView": "Sem atualizações recentes",
     "updatesLower": "atualizações"
   },
@@ -95,6 +95,7 @@
       "showBatteryAndTime": "Mostrar bateria e hora",
       "showProgressPercentage": "Exibir porcentagem do progresso",
       "swipeGestures": "Deslize para esquerda/direita para navegar entre capítulos",
+      "readerPages": "Toque no lado esquerdo ou direito para navegar pelas páginas no leitor (experimental)",
       "allowTextSelection": "Permitir seleção de texto",
       "useChapterDrawerSwipeNavigation": "Deslize para a direita para abrir a gaveta",
       "removeExtraSpacing": "Remover espaçamento extra dos parágrafos",
@@ -169,7 +170,8 @@
         "epubLocation": "Localização do EPUB",
         "epubLocationDescription": "O local onde você abre e exporta seus arquivos EPUB.",
         "downloadNewChapters": "Baixar novos capítulos",
-        "disableHapticFeedback": "Desativar o feedback tátil"
+        "disableHapticFeedback": "Desativar o feedback tátil",
+        "jumpToLastReadChapter": "Ir para o último capítulo lido na lista"
       },
       "readerSettings": {
         "title": "Leitor",
