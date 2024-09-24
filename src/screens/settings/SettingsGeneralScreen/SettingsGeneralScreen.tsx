@@ -50,6 +50,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
     ['lastUpdatedAt', 'libraryScreen.bottomSheet.sortOrders.lastUpdated'],
   ]);
   const {
+    disableLoadingAnimations,
     updateLibraryOnLaunch,
     downloadNewChapters,
     onlyUpdateOngoingNovels,
@@ -229,6 +230,19 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             value={disableHapticFeedback}
             onPress={() =>
               setAppSettings({ disableHapticFeedback: !disableHapticFeedback })
+            }
+            theme={theme}
+          />
+          <SettingSwitch
+            label={getString('generalSettingsScreen.disableLoadingAnimations')}
+            description={getString(
+              'generalSettingsScreen.disableLoadingAnimationsDesc',
+            )}
+            value={disableLoadingAnimations}
+            onPress={() =>
+              setAppSettings({
+                disableLoadingAnimations: !disableLoadingAnimations,
+              })
             }
             theme={theme}
           />
