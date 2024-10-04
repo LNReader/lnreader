@@ -42,7 +42,7 @@ export const insertChapters = async (
               `
                 UPDATE Chapter SET
                   page = ?, position = ?
-                WHERE path = ? AND novelId = ? (AND page != ? OR position != ?)
+                WHERE path = ? AND novelId = ? AND (page != ? OR position != ?)
               `,
               [
                 chapter.page || '1',
