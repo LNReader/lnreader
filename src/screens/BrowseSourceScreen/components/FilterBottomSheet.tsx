@@ -29,6 +29,7 @@ import { getValueFor } from './filterUtils';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Switch from '@components/Switch/Switch';
 
 const insertOrRemoveIntoArray = (array: string[], val: string): string[] =>
   array.indexOf(val) > -1 ? array.filter(ele => ele !== val) : [...array, val];
@@ -56,6 +57,43 @@ const FilterItem: React.FC<FilterItemProps> = ({
     setFalse: closeCard,
   } = useBoolean();
   const { width: screenWidth } = useWindowDimensions();
+  if (filter.type === FilterTypes.TextInput) {
+    const value = getValueFor<(typeof filter)['type']>(
+      filter,
+      selectedFilters[filterKey],
+    );
+    return (
+      <View style={styles.textContainer}>
+        <TextInput
+          style={{ flex: 1, width: screenWidth - 48 }}
+          mode="outlined"
+          label={
+            <Text
+              style={[
+                styles.label,
+                {
+                  color: theme.onSurface,
+                  backgroundColor: overlay(2, theme.surface),
+                },
+              ]}
+            >
+              {` ${filter.label} `}
+            </Text>
+          }
+          defaultValue={value}
+          theme={{ colors: { background: 'transparent' } }}
+          outlineColor={theme.onSurface}
+          textColor={theme.onSurface}
+          onChangeText={text =>
+            setSelectedFilters(prevState => ({
+              ...prevState,
+              [filterKey]: { value: text, type: FilterTypes.TextInput },
+            }))
+          }
+        />
+      </View>
+    );
+  }
   if (filter.type === FilterTypes.Picker) {
     const value = getValueFor<(typeof filter)['type']>(
       filter,
@@ -83,7 +121,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
                       styles.label,
                       {
                         color: isVisible ? theme.primary : theme.onSurface,
-                        backgroundColor: theme.surface,
+                        backgroundColor: overlay(2, theme.surface),
                       },
                     ]}
                   >
@@ -163,6 +201,42 @@ const FilterItem: React.FC<FilterItemProps> = ({
             })
           : null}
       </View>
+    );
+  }
+  if (filter.type === FilterTypes.Switch) {
+    const value = getValueFor<(typeof filter)['type']>(
+      filter,
+      selectedFilters[filterKey],
+    );
+    return (
+      <Pressable
+        android_ripple={{ color: theme.rippleColor }}
+        style={[styles.container]}
+        onPress={() => {
+          setSelectedFilters(prevState => ({
+            ...prevState,
+            [filterKey]: { value: !value, type: FilterTypes.Switch },
+          }));
+        }}
+      >
+        <View style={styles.switchContainer}>
+          <View style={styles.switchLabelContainer}>
+            <Text style={[{ color: theme.onSurface }, styles.switchLabel]}>
+              {filter.label}
+            </Text>
+          </View>
+          <Switch
+            value={value}
+            onValueChange={() => {
+              setSelectedFilters(prevState => ({
+                ...prevState,
+                [filterKey]: { value: !value, type: FilterTypes.Switch },
+              }));
+            }}
+            theme={theme}
+          />
+        </View>
+      </Pressable>
     );
   }
   if (filter.type === FilterTypes.ExcludableCheckboxGroup) {
@@ -343,6 +417,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 8,
     paddingTop: 8,
+  },
+  switchLabelContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  switchLabel: {
+    fontSize: 16,
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 8,
+    paddingHorizontal: 24,
+  },
+  textContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 8,
+    paddingHorizontal: 24,
   },
   pickerContainer: {
     flex: 1,
