@@ -29,6 +29,7 @@ import { getValueFor } from './filterUtils';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SwitchItem } from '@components';
 
 const insertOrRemoveIntoArray = (array: string[], val: string): string[] =>
   array.indexOf(val) > -1 ? array.filter(ele => ele !== val) : [...array, val];
@@ -56,6 +57,27 @@ const FilterItem: React.FC<FilterItemProps> = ({
     setFalse: closeCard,
   } = useBoolean();
   const { width: screenWidth } = useWindowDimensions();
+  if (filter.type === FilterTypes.Switch) {
+    const value = getValueFor<(typeof filter)['type']>(
+      filter,
+      selectedFilters[filterKey],
+    );
+    return (
+      <View style={styles.switchContainer}>
+        <SwitchItem
+          theme={theme}
+          label={filter.label}
+          onPress={() => {
+            setSelectedFilters(prevState => ({
+              ...prevState,
+              [filterKey]: { value: !value, type: FilterTypes.Switch },
+            }));
+          }}
+          value={value}
+        />
+      </View>
+    );
+  }
   if (filter.type === FilterTypes.Picker) {
     const value = getValueFor<(typeof filter)['type']>(
       filter,
@@ -343,6 +365,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 8,
     paddingTop: 8,
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 8,
+    paddingHorizontal: 24,
   },
   pickerContainer: {
     flex: 1,
