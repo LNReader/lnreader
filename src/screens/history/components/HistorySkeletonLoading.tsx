@@ -4,12 +4,14 @@ import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeColors } from '@theme/types';
 import getLoadingColors from '@utils/getLoadingColors';
+import { useAppSettings } from '@hooks/persisted/index';
 
 interface Props {
   theme: ThemeColors;
 }
 
 const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
+  const { disableLoadingAnimations } = useAppSettings();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 
   const [highlightColor, backgroundColor] = getLoadingColors(theme);
@@ -23,6 +25,7 @@ const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={19.3}
             width={Math.random() * 40 + 50}
+            stopAutoRun={disableLoadingAnimations}
           />
         ) : null}
         <View style={styles.chapterCtn} key={index}>
@@ -31,6 +34,7 @@ const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={80}
             width={56}
+            stopAutoRun={disableLoadingAnimations}
           />
           <View style={styles.textCtn}>
             <ShimmerPlaceHolder
@@ -38,12 +42,14 @@ const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
               shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
               height={16}
               width={208.7}
+              stopAutoRun={disableLoadingAnimations}
             />
             <ShimmerPlaceHolder
               style={styles.text}
               shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
               height={12}
               width={208.7}
+              stopAutoRun={disableLoadingAnimations}
             />
           </View>
           <View style={styles.buttonCtn}>
@@ -52,6 +58,7 @@ const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
               shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
               height={24}
               width={24}
+              stopAutoRun={disableLoadingAnimations}
             />
           </View>
           <View style={styles.buttonCtn}>
@@ -60,6 +67,7 @@ const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
               shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
               height={24}
               width={24}
+              stopAutoRun={disableLoadingAnimations}
             />
           </View>
         </View>

@@ -126,6 +126,7 @@ export interface StringMap {
   'browseScreen.updateFailed': 'string';
   'browseScreen.updatedTo': 'string';
   'browseSettings': 'string';
+  'browseSettingsScreen.concurrentSearches': 'string';
   'browseSettingsScreen.languages': 'string';
   'browseSettingsScreen.onlyShowPinnedSources': 'string';
   'browseSettingsScreen.searchAllSources': 'string';
@@ -238,6 +239,8 @@ export interface StringMap {
   'generalSettingsScreen.refreshMetadata': 'string';
   'generalSettingsScreen.refreshMetadataDescription': 'string';
   'generalSettingsScreen.sortOrder': 'string';
+  'generalSettingsScreen.disableLoadingAnimations': 'string';
+  'generalSettingsScreen.disableLoadingAnimationsDesc': 'string';
   'generalSettingsScreen.updateLibrary': 'string';
   'generalSettingsScreen.updateLibraryDesc': 'string';
   'generalSettingsScreen.updateOngoing': 'string';
