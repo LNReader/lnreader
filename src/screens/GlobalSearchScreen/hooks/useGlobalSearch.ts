@@ -19,6 +19,7 @@ export interface GlobalSearchResult {
 export const useGlobalSearch = ({ defaultSearchText }: Props) => {
   const isMounted = useRef(true); //if user closes the search screen, cancel the search
   const isFocused = useRef(true); //if the user opens a sub-screen (e.g. novel screen), pause the search
+  const lastSearch = useRef(''); //if the user changes search, cancel running searches
   useEffect(
     () => () => {
       isMounted.current = false;
@@ -41,6 +42,10 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
   const { globalSearchConcurrency = 1 } = useBrowseSettings();
 
   const globalSearch = (searchText: string) => {
+    if (lastSearch.current === searchText) {
+      return;
+    }
+    lastSearch.current = searchText;
     const defaultResult: GlobalSearchResult[] = filteredInstalledPlugins.map(
       plugin => ({
         isLoading: true,
@@ -51,6 +56,7 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
     );
 
     setSearchResults(defaultResult.sort(novelResultSorter));
+    setProgress(0);
 
     let running = 0;
 
@@ -87,10 +93,6 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
             )
             .sort(novelResultSorter),
         );
-      } finally {
-        setProgress(
-          prevState => prevState + 1 / filteredInstalledPlugins.length,
-        );
       }
     }
 
@@ -105,13 +107,18 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
           while (running >= globalSearchConcurrency || !isFocused.current) {
             await new Promise(resolve => setTimeout(resolve, 100));
           }
-          if (!isMounted.current) {
+          if (!isMounted.current || lastSearch.current !== searchText) {
             break;
           }
           running++;
           searchInPlugin(_plugin)
             .then(() => {
               running--;
+              if (lastSearch.current === searchText) {
+                setProgress(
+                  prevState => prevState + 1 / filteredInstalledPlugins.length,
+                );
+              }
             })
             .catch(() => {
               running--;
@@ -119,13 +126,18 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
         }
       } else {
         for (let _plugin of filteredSortedInstalledPlugins) {
-          if (!isMounted.current) {
+          if (!isMounted.current || lastSearch.current !== searchText) {
             break;
           }
           while (!isFocused.current) {
             await new Promise(resolve => setTimeout(resolve, 100));
           }
           await searchInPlugin(_plugin);
+          if (lastSearch.current === searchText) {
+            setProgress(
+              prevState => prevState + 1 / filteredInstalledPlugins.length,
+            );
+          }
         }
       }
     })();
