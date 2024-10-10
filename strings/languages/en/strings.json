@@ -139,7 +139,12 @@
     "tryAgain": "Try again in a moment",
     "uninstalledPlugin": "Uninstalled %{name}",
     "updateFailed": "Update failed",
-    "updatedTo": "Updated to %{version}"
+    "updatedTo": "Updated to %{version}",
+    "settings": {
+      "title": "Plugin Settings",
+      "description": "Add settings in format '<key>=<value>' separated by ';'. Restart app to apply the settings.",
+      "placeholder": "Example: 'email=example@example.com;password=example123'"
+    }
   },
   "browseSettings": "Browse Settings",
   "browseSettingsScreen": {
