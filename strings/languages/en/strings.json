@@ -142,8 +142,7 @@
     "updatedTo": "Updated to %{version}",
     "settings": {
       "title": "Plugin Settings",
-      "description": "Add settings in format '<key>=<value>' separated by ';'. Restart app to apply the settings.",
-      "placeholder": "Example: 'email=example@example.com;password=example123'"
+      "description": "Fill in the plugin settings. Restart app to apply the settings."
     }
   },
   "browseSettings": "Browse Settings",

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Modal, overlay, TextInput } from 'react-native-paper';
 import { Button } from '@components/index';
@@ -6,25 +6,97 @@ import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { Storage } from '@plugins/helpers/storage';
 
+interface PluginSetting {
+  value: string;
+  label: string;
+}
+
+interface PluginSettings {
+  [key: string]: PluginSetting;
+}
+
 interface SourceSettingsModal {
   visible: boolean;
   onDismiss: () => void;
   title: string;
-  placeholder?: string;
   description?: string;
   pluginId: string;
+  pluginSettings?: PluginSettings;
 }
 
 const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
   onDismiss,
   visible,
   title,
-  placeholder,
   description,
   pluginId,
+  pluginSettings,
 }) => {
   const theme = useTheme();
-  const [text, setText] = useState('');
+
+  const [formValues, setFormValues] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    if (pluginSettings) {
+      const storage = new Storage(pluginId);
+
+      const loadFormValues = async () => {
+        const loadedValues = await Promise.all(
+          Object.keys(pluginSettings).map(async key => {
+            const storedValue = await storage.get(key);
+            return {
+              key,
+              value:
+                storedValue !== null ? storedValue : pluginSettings[key].value,
+            };
+          }),
+        );
+
+        const initialFormValues = Object.fromEntries(
+          loadedValues.map(({ key, value }) => [key, value]),
+        );
+
+        setFormValues(initialFormValues);
+      };
+
+      loadFormValues();
+    }
+  }, [pluginSettings, pluginId]);
+
+  const handleChange = (key: string, value: string) => {
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [key]: value,
+    }));
+  };
+
+  const handleSave = () => {
+    const storage = new Storage(pluginId);
+    Object.entries(formValues).forEach(([key, value]) => {
+      storage.set(key, value);
+    });
+    onDismiss();
+  };
+
+  if (!pluginSettings || Object.keys(pluginSettings).length === 0) {
+    return (
+      <Modal
+        visible={visible}
+        onDismiss={onDismiss}
+        contentContainerStyle={[
+          styles.modalContainer,
+          { backgroundColor: overlay(2, theme.surface) },
+        ]}
+      >
+        <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
+          {title}
+        </Text>
+        <Text style={[{ color: theme.onSurfaceVariant }]}>
+          {description || 'No settings available.'}
+        </Text>
+      </Modal>
+    );
+  }
 
   return (
     <Modal
@@ -39,34 +111,25 @@ const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
         {title}
       </Text>
       <Text style={[{ color: theme.onSurfaceVariant }]}>{description}</Text>
-      <TextInput
-        multiline
-        mode="outlined"
-        onChangeText={setText}
-        placeholder={placeholder}
-        placeholderTextColor={theme.onSurfaceDisabled}
-        underlineColor={theme.outline}
-        style={[{ color: theme.onSurface }, styles.textInput]}
-        theme={{ colors: { ...theme } }}
-      />
+
+      {Object.entries(pluginSettings).map(([key, setting]) => (
+        <TextInput
+          key={key}
+          mode="outlined"
+          label={setting.label}
+          value={formValues[key] || ''}
+          onChangeText={value => handleChange(key, value)}
+          placeholder={`Enter ${setting.label}`}
+          placeholderTextColor={theme.onSurfaceDisabled}
+          underlineColor={theme.outline}
+          style={[{ color: theme.onSurface }, styles.textInput]}
+          theme={{ colors: { ...theme } }}
+        />
+      ))}
+
       <View style={styles.customCSSButtons}>
         <Button
-          onPress={() => {
-            const settings = text
-              .trim()
-              .split(';')
-              .map(settingString => {
-                const settingArray = settingString.split('=');
-
-                return {
-                  key: settingArray[0],
-                  value: settingArray[1],
-                };
-              });
-            const storage = new Storage(pluginId);
-            settings.forEach(set => storage.set(set.key, set.value));
-            onDismiss();
-          }}
+          onPress={handleSave}
           style={styles.button}
           title={getString('common.save')}
           mode="contained"
@@ -85,7 +148,7 @@ const styles = StyleSheet.create({
     borderRadius: 28,
   },
   textInput: {
-    height: 220,
+    height: 50,
     borderRadius: 14,
     marginTop: 16,
     marginBottom: 8,
