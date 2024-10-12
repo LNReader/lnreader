@@ -42,7 +42,7 @@ const useFullscreenMode = () => {
        * But in hexa, ##xxxxxx00 could be another color
        */
       changeNavigationBarColor(
-        Color(theme.surface).alpha(0.05).hexa(),
+        Color(theme.surface).alpha(0.01).hexa(),
         theme.isDark,
       );
       setStatusBarColor(theme);
