@@ -108,6 +108,7 @@ export default function usePlugins() {
         const actualPlugin: PluginItem = {
           ...plugin,
           version: _plg.version,
+          hasSettings: !!_plg.pluginSettings,
         };
         // safe
         if (!installedPlugins.some(plg => plg.id === plugin.id)) {
