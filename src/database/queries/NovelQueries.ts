@@ -22,7 +22,7 @@ export const insertNovelAndChapters = async (
   sourceNovel: SourceNovel,
 ): Promise<number | undefined> => {
   const insertNovelQuery =
-    'INSERT INTO Novel (path, pluginId, name, cover, summary, author, artist, status, genres, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    'INSERT INTO Novel (path, pluginId, name, cover, summary, author, artist, status, genres, rating, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   const novelId: number | undefined = await new Promise(resolve => {
     db.transaction(tx => {
       tx.executeSql(
@@ -37,6 +37,7 @@ export const insertNovelAndChapters = async (
           sourceNovel.artist || null,
           sourceNovel.status || null,
           sourceNovel.genres || null,
+          sourceNovel.rating || 0,
           sourceNovel.totalPages || 0,
         ],
         async (txObj, resultSet) => resolve(resultSet.insertId),
@@ -207,7 +208,7 @@ export const deleteCachedNovels = async () => {
 };
 
 const restoreFromBackupQuery =
-  'INSERT OR REPLACE INTO Novel (path, name, pluginId, cover, summary, author, artist, status, genres, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  'INSERT OR REPLACE INTO Novel (path, name, pluginId, cover, summary, author, artist, status, genres, rating, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
 export const restoreLibrary = async (novel: NovelInfo) => {
   const sourceNovel = await fetchNovel(novel.pluginId, novel.path).catch(e => {
@@ -227,6 +228,7 @@ export const restoreLibrary = async (novel: NovelInfo) => {
           novel.artist || '',
           novel.status || '',
           novel.genres || '',
+          novel.rating || 0,
           sourceNovel.totalPages || 0,
         ],
         async (txObj, { insertId }) => resolve(insertId),
@@ -263,7 +265,7 @@ export const restoreLibrary = async (novel: NovelInfo) => {
 export const updateNovelInfo = async (info: NovelInfo) => {
   db.transaction(tx => {
     tx.executeSql(
-      'UPDATE Novel SET name = ?, cover = ?, path = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ?, isLocal = ? WHERE id = ?',
+      'UPDATE Novel SET name = ?, cover = ?, path = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ?, rating = ?, isLocal = ? WHERE id = ?',
       [
         info.name,
         info.cover || '',
@@ -273,6 +275,7 @@ export const updateNovelInfo = async (info: NovelInfo) => {
         info.artist || '',
         info.genres || '',
         info.status || '',
+        info.rating || 0,
         Number(info.isLocal),
         info.id,
       ],
