@@ -23,6 +23,7 @@ const GlobalSearchScreen = (props: Props) => {
   const theme = useTheme();
   const { searchText, setSearchText, clearSearchbar } = useSearch(
     props?.route?.params?.searchText,
+    false,
   );
   const onChangeText = (text: string) => setSearchText(text);
   const onSubmitEditing = () => globalSearch(searchText);

@@ -31,7 +31,7 @@ import MigrateNovel from '../screens/browse/migration/MigrationNovels';
 import MalTopNovels from '../screens/browse/discover/MalTopNovels';
 import AniListTopNovels from '../screens/browse/discover/AniListTopNovels';
 import NewUpdateDialog from '../components/NewUpdateDialog';
-import BrowseSettings from '../screens/browse/BrowseSettings';
+import BrowseSettings from '../screens/browse/settings/BrowseSettings';
 import WebviewScreen from '@screens/WebviewScreen/WebviewScreen';
 import { RootStackParamList } from './types';
 import Color from 'color';
