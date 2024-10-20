@@ -54,7 +54,8 @@ export default function usePlugins() {
                 installedPlugin => installedPlugin.id === avalilablePlugin.id,
               ),
           )
-          .filter(plg => filter.includes(plg.lang)),
+          .filter(plg => filter.includes(plg.lang))
+          .filter(plg => plg.down === false),
         'name',
       ),
     );
@@ -67,6 +68,9 @@ export default function usePlugins() {
       fetchedPlugins.filter(plg => {
         const finded = installedPlugins.find(v => v.id === plg.id);
         if (finded) {
+          if (plg.version === finded.version) {
+            finded.down = plg.down;
+          }
           if (!finded.newVersion || newer(plg.version, finded.version)) {
             finded.newVersion = plg.version;
             finded.iconUrl = plg.iconUrl;
@@ -109,6 +113,7 @@ export default function usePlugins() {
           ...plugin,
           version: _plg.version,
           newVersion: _plg.version,
+          down: _plg.down,
         };
         // safe
         if (!installedPlugins.some(plg => plg.id === plugin.id)) {
@@ -157,6 +162,7 @@ export default function usePlugins() {
               name: _plg.name,
               version: _plg.version,
               newVersion: _plg.version,
+              down: _plg.down,
             };
             if (newPlugin.id === lastUsedPlugin?.id) {
               setLastUsedPlugin(newPlugin);

@@ -56,6 +56,7 @@ export interface PluginItem {
   iconUrl: string;
   customJS?: string;
   customCSS?: string;
+  down?: boolean;
 }
 
 export interface ImageRequestInit {

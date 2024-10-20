@@ -24,6 +24,7 @@ import { Button, EmptyView, IconButtonV2 } from '@components';
 import TrackerCard from '../discover/TrackerCard';
 import { showToast } from '@utils/showToast';
 import Animated, { useSharedValue, withTiming } from 'react-native-reanimated';
+import { newer } from '@utils/compareVersion';
 
 interface AvailableTabProps {
   searchText: string;
@@ -151,7 +152,7 @@ export const InstalledTab = memo(
                     style={[{ color: theme.onSurfaceVariant }, styles.addition]}
                   >
                     {`${item.lang}\n${item.version}${
-                      item.newVersion != item.version
+                      newer(item.newVersion, item.version)
                         ? ` → ${item.newVersion}`
                         : ''
                     }`}
@@ -159,7 +160,7 @@ export const InstalledTab = memo(
                 </View>
               </View>
               <View style={{ flex: 1 }} />
-              {item.newVersion != item.version || __DEV__ ? (
+              {newer(item.newVersion, item.version) || __DEV__ ? (
                 <IconButtonV2
                   name="download-outline"
                   size={22}
@@ -176,11 +177,39 @@ export const InstalledTab = memo(
                   theme={theme}
                 />
               ) : null}
-              <Button
-                title={getString('browseScreen.latest')}
-                textColor={theme.primary}
-                onPress={() => navigateToSource(item, true)}
-              />
+              {!item.down ? (
+                <Button
+                  title={getString('browseScreen.latest')}
+                  textColor={theme.primary}
+                  onPress={() => navigateToSource(item, true)}
+                  style={{ paddingVertical: 4, paddingHorizontal: 8 }}
+                />
+              ) : (
+                <Button
+                  title={'Broken'}
+                  textColor={theme.onError}
+                  style={{
+                    backgroundColor: theme.error,
+                  }}
+                  onPress={() =>
+                    newer(item.newVersion, item.version)
+                      ? updatePlugin(item).then(() =>
+                          showToast(
+                            getString('browseScreen.updatedTo', {
+                              version: item.newVersion,
+                            }),
+                          ),
+                        )
+                      : uninstallPlugin(item).then(() =>
+                          showToast(
+                            getString('browseScreen.uninstalledPlugin', {
+                              name: item.name,
+                            }),
+                          ),
+                        )
+                  }
+                />
+              )}
             </Pressable>
           </Swipeable>
         );
