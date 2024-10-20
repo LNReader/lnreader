@@ -23,11 +23,8 @@ import { BrowseScreenProps, MoreStackScreenProps } from '@navigators/types';
 import { Button, EmptyView, IconButtonV2 } from '@components';
 import TrackerCard from '../discover/TrackerCard';
 import { showToast } from '@utils/showToast';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { useSharedValue, withTiming } from 'react-native-reanimated';
+import { newer } from '@utils/compareVersion';
 
 interface AvailableTabProps {
   searchText: string;
@@ -151,15 +148,19 @@ export const InstalledTab = memo(
                     {item.name}
                   </Text>
                   <Text
-                    numberOfLines={1}
+                    numberOfLines={2}
                     style={[{ color: theme.onSurfaceVariant }, styles.addition]}
                   >
-                    {`${item.lang} - ${item.version}`}
+                    {`${item.lang}\n${item.version}${
+                      newer(item.newVersion, item.version)
+                        ? ` → ${item.newVersion}`
+                        : ''
+                    }`}
                   </Text>
                 </View>
               </View>
               <View style={{ flex: 1 }} />
-              {item.hasUpdate || __DEV__ ? (
+              {newer(item.newVersion, item.version) || __DEV__ ? (
                 <IconButtonV2
                   name="download-outline"
                   size={22}
@@ -176,11 +177,39 @@ export const InstalledTab = memo(
                   theme={theme}
                 />
               ) : null}
-              <Button
-                title={getString('browseScreen.latest')}
-                textColor={theme.primary}
-                onPress={() => navigateToSource(item, true)}
-              />
+              {!item.down ? (
+                <Button
+                  title={getString('browseScreen.latest')}
+                  textColor={theme.primary}
+                  onPress={() => navigateToSource(item, true)}
+                  style={{ paddingVertical: 4, paddingHorizontal: 8 }}
+                />
+              ) : (
+                <Button
+                  title={'Broken'}
+                  textColor={theme.onError}
+                  style={{
+                    backgroundColor: theme.error,
+                  }}
+                  onPress={() =>
+                    newer(item.newVersion, item.version)
+                      ? updatePlugin(item).then(() =>
+                          showToast(
+                            getString('browseScreen.updatedTo', {
+                              version: item.newVersion,
+                            }),
+                          ),
+                        )
+                      : uninstallPlugin(item).then(() =>
+                          showToast(
+                            getString('browseScreen.uninstalledPlugin', {
+                              name: item.name,
+                            }),
+                          ),
+                        )
+                  }
+                />
+              )}
             </Pressable>
           </Swipeable>
         );
@@ -261,16 +290,6 @@ const AvailablePluginCard = ({
   installPlugin,
 }: AvailablePluginCardProps) => {
   const ratio = useSharedValue(1);
-  const imageStyles = useAnimatedStyle(() => ({
-    height: ratio.value * 40,
-  }));
-  const viewStyles = useAnimatedStyle(() => ({
-    height: ratio.value * 64,
-    paddingVertical: ratio.value * 12,
-  }));
-  const textStyles = useAnimatedStyle(() => ({
-    lineHeight: ratio.value * 20,
-  }));
   return (
     <View>
       {plugin.header ? (
@@ -279,20 +298,12 @@ const AvailablePluginCard = ({
         </Text>
       ) : null}
       <Animated.View
-        style={[
-          styles.container,
-          { backgroundColor: theme.surface },
-          viewStyles,
-        ]}
+        style={[styles.container, { backgroundColor: theme.surface }]}
       >
         <Animated.View style={{ flexDirection: 'row' }}>
           <Animated.Image
             source={{ uri: plugin.iconUrl }}
-            style={[
-              styles.icon,
-              imageStyles,
-              { backgroundColor: theme.surface },
-            ]}
+            style={[styles.icon, { backgroundColor: theme.surface }]}
           />
           <Animated.View style={styles.details}>
             <Animated.Text
@@ -302,20 +313,15 @@ const AvailablePluginCard = ({
                   color: theme.onSurface,
                 },
                 styles.name,
-                textStyles,
               ]}
             >
               {plugin.name}
             </Animated.Text>
             <Animated.Text
-              numberOfLines={1}
-              style={[
-                { color: theme.onSurfaceVariant },
-                styles.addition,
-                textStyles,
-              ]}
+              numberOfLines={2}
+              style={[{ color: theme.onSurfaceVariant }, styles.addition]}
             >
-              {`${plugin.lang} - ${plugin.version}`}
+              {`${plugin.lang}\n${plugin.version}`}
             </Animated.Text>
           </Animated.View>
         </Animated.View>
@@ -455,8 +461,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   icon: {
-    height: 40,
-    width: 40,
+    height: 45,
+    width: 45,
     borderRadius: 4,
     backgroundColor: coverPlaceholderColor,
   },
@@ -465,7 +471,7 @@ const styles = StyleSheet.create({
   },
   addition: {
     fontSize: 12,
-    lineHeight: 20,
+    lineHeight: 15,
   },
   name: {
     fontWeight: 'bold',

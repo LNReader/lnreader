@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   sourceIcon: {
-    width: 40,
-    height: 40,
+    width: 45,
+    height: 45,
     borderRadius: 4,
   },
   sourceDetailsContainer: {

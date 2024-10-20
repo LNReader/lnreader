@@ -51,11 +51,12 @@ export interface PluginItem {
   site: string;
   lang: string;
   version: string;
+  newVersion: string;
   url: string; // the url of raw code
   iconUrl: string;
   customJS?: string;
   customCSS?: string;
-  hasUpdate?: boolean;
+  down?: boolean;
 }
 
 export interface ImageRequestInit {
