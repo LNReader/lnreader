@@ -132,7 +132,7 @@ const Icon = ({ icon, theme }: { icon: string; theme: ThemeColors }) => (
 
 interface ColorItemProps {
   title: string;
-  description: string;
+  description?: string;
   theme: ThemeColors;
   onPress: () => void;
 }
