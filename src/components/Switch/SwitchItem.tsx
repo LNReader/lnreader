@@ -33,8 +33,8 @@ const SwitchItem: React.FC<SwitchItemProps> = ({
 }) => (
   <Pressable
     android_ripple={{ color: theme.rippleColor }}
-    style={[styles.container, style]}
     onPress={onPress}
+    style={[styles.container, style]}
   >
     <View style={styles.labelContainer}>
       <Text style={[{ color: theme.onSurface }, styles.label]}>{label}</Text>
@@ -57,24 +57,50 @@ const SwitchItem: React.FC<SwitchItemProps> = ({
 export default SwitchItem;
 
 const styles = StyleSheet.create({
+  // wrapper: { height: 'auto' },
+  // container: {
+  //   flex: 1,
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   paddingVertical: 12,
+  //   alignItems: 'center',
+  //   // minHeight: 48,
+  //   // height: 'auto',
+  //   flexShrink: 1,
+  //   // flexBasis: 'auto',
+  //   // alignSelf: 'center',
+  //   content: 'fill',
+  // },
+  // labelContainer: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  // },
+  // label: {
+  //   fontSize: 16,
+  // },
+  // description: {
+  //   fontSize: 12,
+  //   lineHeight: 20,
+  // },
+  // switch: {
+  //   marginLeft: 8,
+  // },
   container: {
-    alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 12,
   },
-  description: {
-    fontSize: 12,
-    lineHeight: 20,
+  labelContainer: {
+    flex: 1,
+    flexDirection: 'column',
   },
   label: {
     fontSize: 16,
   },
-  labelContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  description: {
+    fontSize: 12,
   },
   switch: {
-    marginLeft: 8,
+    alignSelf: 'center',
   },
 });
