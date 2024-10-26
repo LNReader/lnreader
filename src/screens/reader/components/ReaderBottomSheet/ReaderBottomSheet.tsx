@@ -47,23 +47,11 @@ type TabViewLabelProps = {
 const ReaderTab: React.FC = React.memo(() => (
   <Suspense fallback={<></>}>
     <View style={styles.readerTab}>
-      <TextSizeSlider />
-      <ReaderThemeSelector />
-      <ReaderTextAlignSelector />
-      <ReaderValueChange
-        label={getString('readerScreen.bottomSheet.lineHeight')}
-        valueKey="lineHeight"
-      />
-      <ReaderValueChange
-        label={getString('readerScreen.bottomSheet.padding')}
-        valueKey="padding"
-        valueChange={2}
-        min={0}
-        max={50}
-        decimals={0}
-        unit="px"
-      />
-      <ReaderFontPicker />
+      <List.Section>
+        {settings.map((v, i) => (
+          <RenderSettings key={'readerTab' + i} setting={v} />
+        ))}
+      </List.Section>
     </View>
   </Suspense>
 ));
