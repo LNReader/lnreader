@@ -139,7 +139,11 @@
     "tryAgain": "Try again in a moment",
     "uninstalledPlugin": "Uninstalled %{name}",
     "updateFailed": "Update failed",
-    "updatedTo": "Updated to %{version}"
+    "updatedTo": "Updated to %{version}",
+    "settings": {
+      "title": "Plugin Settings",
+      "description": "Fill in the plugin settings. Restart app to apply the settings."
+    }
   },
   "browseSettings": "Browse Settings",
   "browseSettingsScreen": {

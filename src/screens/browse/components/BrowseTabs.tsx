@@ -28,6 +28,10 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { Portal } from 'react-native-paper';
+import SourceSettingsModal from './Modals/SourceSettings';
+import { useBoolean } from '@hooks';
+import { getPlugin } from '@plugins/pluginManager';
 
 interface AvailableTabProps {
   searchText: string;
@@ -50,6 +54,11 @@ export const InstalledTab = memo(
       updatePlugin,
     } = usePlugins();
     const { showMyAnimeList, showAniList } = useBrowseSettings();
+    const settingsModal = useBoolean();
+    const [selectedPluginId, setSelectedPluginId] = useState<string>('');
+
+    const pluginSettings = getPlugin(selectedPluginId)?.pluginSettings;
+
     const navigateToSource = useCallback(
       (plugin: PluginItem, showLatestNovels?: boolean) => {
         navigation.navigate('SourceScreen', {
@@ -159,6 +168,18 @@ export const InstalledTab = memo(
                 </View>
               </View>
               <View style={{ flex: 1 }} />
+              {item.hasSettings ? (
+                <IconButtonV2
+                  name="cog-outline"
+                  size={22}
+                  color={theme.primary}
+                  onPress={() => {
+                    setSelectedPluginId(item.id);
+                    settingsModal.setTrue();
+                  }}
+                  theme={theme}
+                />
+              ) : null}
               {item.hasUpdate || __DEV__ ? (
                 <IconButtonV2
                   name="download-outline"
@@ -242,6 +263,17 @@ export const InstalledTab = memo(
             >
               {getString('browseScreen.installedPlugins')}
             </Text>
+
+            <Portal>
+              <SourceSettingsModal
+                visible={settingsModal.value}
+                onDismiss={settingsModal.setFalse}
+                title={getString('browseScreen.settings.title')}
+                description={getString('browseScreen.settings.description')}
+                pluginId={selectedPluginId}
+                pluginSettings={pluginSettings}
+              />
+            </Portal>
           </>
         }
       />
