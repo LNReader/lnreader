@@ -50,7 +50,7 @@ const downloadFiles = async (
       elem.attr('src', `file://${fileurl}`);
       try {
         const absoluteURL = new URL(url, plugin.site).href;
-        await downloadFile(absoluteURL, fileurl, plugin.imageRequestInit);
+        await downloadFile(absoluteURL.slice(0, -1), fileurl, plugin.imageRequestInit);
       } catch (e) {
         elem.attr('alt', String(e));
       }
