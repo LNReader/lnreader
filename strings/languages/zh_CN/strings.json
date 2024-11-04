@@ -1,5 +1,6 @@
 {
   "aboutScreen": {
+    "website": "Website",
     "discord": "Discord",
     "github": "Github",
     "helpTranslate": "协助翻译",
@@ -47,6 +48,7 @@
       "default": "默认",
       "lavender": "薰衣草",
       "midnightDusk": "午夜黄昏",
+      "daybreakBloom": "Daybreak Bloom",
       "strawberry": "草莓黛绮丽",
       "tako": "Tako",
       "teal": "青色",
@@ -137,10 +139,15 @@
     "tryAgain": "请稍后再试",
     "uninstalledPlugin": "已卸载 %{name}",
     "updateFailed": "更新失败",
-    "updatedTo": "已更新至 %{version}"
+    "updatedTo": "已更新至 %{version}",
+    "settings": {
+      "title": "Plugin Settings",
+      "description": "Fill in the plugin settings. Restart app to apply the settings."
+    }
   },
   "browseSettings": "浏览设置",
   "browseSettingsScreen": {
+    "concurrentSearches": "Concurrent Source Searches",
     "languages": "语言",
     "onlyShowPinnedSources": "仅显示已经置顶的源",
     "searchAllSources": "搜索所有源",
@@ -162,6 +169,9 @@
     "local": "本地",
     "setCategories": "设置分类",
     "setModalEmptyMsg": "您目前还没有分类。点击编辑按钮来创建一个分类以组织您的书库"
+  },
+  "repositories": {
+    "emptyMsg": "You have no repositories. Add your first plugin repository to get started."
   },
   "common": {
     "about": "关于",
@@ -207,6 +217,15 @@
     "sort": "排序",
     "submit": "确定"
   },
+  "webview": {
+    "refresh": "Refresh",
+    "share": "Share",
+    "openInBrowser": "Open in browser",
+    "clearCookies": "Clear cookies",
+    "cookiesCleared": "Cookies cleared",
+    "clearData": "Clear WebView data",
+    "dataDeleted": "WebView data cleared"
+  },
   "date": {
     "calendar": {
       "lastDay": "[昨天]",
@@ -240,7 +259,10 @@
     "bySource": "按源",
     "chapterSort": "默认章节排序",
     "desc": "(递减)",
+    "disableLoadingAnimations": "Disable loading animations",
+    "disableLoadingAnimationsDesc": "May improve performance on slower devices",
     "disableHapticFeedback": "禁用振动反馈",
+    "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
     "displayMode": "显示模式",
     "downloadNewChapters": "下载新章节",
     "epub": "EPUB",
@@ -311,6 +333,12 @@
       }
     },
     "empty": "您的书库是空的。请从浏览将小说添加到您的书库中。",
+    "extraMenu": {
+      "importEpub": "Import Epub",
+      "openRandom": "Open Random Entry",
+      "updateCategory": "Update Category",
+      "updateLibrary": "Update Library"
+    },
     "searchbar": "搜索书库"
   },
   "more": "更多",
@@ -406,10 +434,12 @@
       "allowTextSelection": "允许选择文本",
       "autoscroll": "自动滚动",
       "bionicReading": "仿真阅读",
+      "tapToScroll": "Tap to scroll",
       "color": "颜色",
       "fontStyle": "字体样式",
       "fullscreen": "全屏",
       "lineHeight": "行高",
+      "padding": "Padding",
       "pageReader": "阅读器中单击左右以导航页面 (实验性)",
       "removeExtraSpacing": "移除多余段落空格",
       "renderHml": "渲染 HTML",
@@ -422,6 +452,7 @@
       "textSize": "文本大小",
       "useChapterDrawerSwipeNavigation": "向右滑动以打开抽屉栏",
       "verticalSeekbar": "垂直进度条",
+      "keepScreenOn": "Keep screen on",
       "volumeButtonsScroll": "音量按键滚动"
     },
     "drawer": {
