@@ -1,262 +1,525 @@
 {
-  "common": {
-    "cancel": "Zrušit",
-    "ok": "Ok",
-    "save": "Uložit",
-    "clear": "Vymazat",
-    "reset": "Resetovat",
-    "search": "Hledat",
-    "install": "Instalovat",
-    "newUpdateAvailable": "Nová aktualizace k dispozici",
-    "categories": "Kategorie",
-    "add": "Přidat",
-    "edit": "Upravit",
-    "name": "Jméno",
-    "searchFor": "Hledat",
-    "globally": "globálně",
-    "searchResults": "Výsledky hledání",
-    "chapters": "Kapitoly",
-    "submit": "Odeslat",
-    "retry": "Opakovat"
+  "aboutScreen": {
+    "website": "Website",
+    "discord": "Discord",
+    "github": "Github",
+    "helpTranslate": "Help translate",
+    "sources": "Sources",
+    "version": "Version",
+    "whatsNew": "What's new"
   },
-  "library": "Knihovna",
-  "libraryScreen": {
-    "searchbar": "Hledat v knihovně",
-    "empty": "Vaše knihovna je prázdná. Přidejte sérii do knihovny z procházet.",
-    "bottomSheet": {
-      "filters": {
-        "downloaded": "Staženo",
-        "unread": "Nepřečteno",
-        "completed": "Dokončeno",
-        "started": "Zahájeno"
-      },
-      "sortOrders": {
-        "dateAdded": "Datum přidání",
-        "alphabetically": "Abecedně",
-        "totalChapters": "Celkem kapitol",
-        "download": "Staženo",
-        "unread": "Nepřečteno",
-        "lastRead": "Naposledy přečteno",
-        "lastUpdated": "Naposledy aktualizováno"
-      },
-      "display": {
-        "displayMode": "Režim zobrazení",
-        "compact": "Kompaktní mřížka",
-        "comfortable": "Komfortní mřížka",
-        "noTitle": "Mřížka jen s přebaly",
-        "list": "Seznam",
-        "badges": "Odznaky",
-        "downloadBadges": "Stáhnout odznaky",
-        "unreadBadges": "Nepřečtené odznaky",
-        "showNoOfItems": "Zobrazit počet položek"
-      }
+  "advancedSettings": "Advanced",
+  "advancedSettingsScreen": {
+    "cachedNovelsDeletedToast": "Cached novels deleted",
+    "chapterInsertFailed": "chapter insert failed",
+    "clearCachedNovels": "Clear cached novels",
+    "clearCachedNovelsDesc": "Delete cached novels which not in your library",
+    "clearDatabaseWarning": "Are you sure? Read and Downloaded chapters and progress of non-library novels will be lost.",
+    "clearUpdatesMessage": "Updates cleared.",
+    "clearUpdatesTab": "Clear updates tab",
+    "clearUpdatesWarning": "Are you sure? Updates tab will be cleared.",
+    "clearupdatesTabDesc": "Clears chapter entries in updates tab",
+    "dataManagement": "Data Management",
+    "deleteReadChapters": "Delete read chapters",
+    "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted.",
+    "importEpub": "Import Epub",
+    "importError": "Import Error",
+    "importNovel": "Import Novel",
+    "importStaticFiles": "Import Static Files",
+    "novelInsertFailed": "novel insert failed",
+    "parseEpub": "Parse Epub",
+    "useFAB": "Use FAB instead of button",
+    "userAgent": "User Agent"
+  },
+  "appearance": "Appearance",
+  "appearanceScreen": {
+    "accentColor": "Accent Color",
+    "alwaysShowNavLabels": "Always show nav labels",
+    "appTheme": "App theme",
+    "darkTheme": "Dark Theme",
+    "hideBackdrop": "Hide backdrop",
+    "lightTheme": "Light Theme",
+    "navbar": "Navbar",
+    "novelInfo": "Novel info",
+    "pureBlackDarkMode": "Pure black dark mode",
+    "showHistoryInTheNav": "Show history in the nav",
+    "showUpdatesInTheNav": "Show updates in the nav",
+    "theme": {
+      "default": "Default",
+      "lavender": "Lavender",
+      "midnightDusk": "Midnight Dusk",
+      "daybreakBloom": "Daybreak Bloom",
+      "strawberry": "Strawberry Daiquiri",
+      "tako": "Tako",
+      "teal": "Teal",
+      "turquoise": "Turquoise",
+      "yotsuba": "Yotsuba"
     }
   },
-  "updates": "Aktualizace",
-  "updatesScreen": {
-    "searchbar": "Hledat aktualizace",
-    "lastUpdatedAt": "Poslední aktualizace knihovny:",
-    "newChapters": "nová kapitola",
-    "emptyView": "Žádné nedávné aktualizace",
-    "updatesLower": "aktualizace"
-  },
-  "history": "Historie",
-  "historyScreen": {
-    "searchbar": "Historie hledání",
-    "clearHistorWarning": "Jste si jistí? Celá historie bude stracena."
+  "backupScreen": {
+    "backupName": "Backup name",
+    "createBackup": "Create backup",
+    "createBackupDesc": "Can be used to restore current library",
+    "createBackupWarning": "Create backup may not work on devices with Android 9 or lower.",
+    "downloadingData": "Downloading Data",
+    "downloadingDownloadedFiles": "Downloading Downloaded files",
+    "drive": {
+      "backup": "Drive Backup",
+      "backupInterruped": "Drive Backup Interruped",
+      "googleDriveBackup": "Google Drive Backup",
+      "restore": "Drive Restore",
+      "restoreInterruped": "Drive Restore Interruped"
+    },
+    "googeDrive": "Googe Drive",
+    "googeDriveDesc": "Backup to your Google Drive",
+    "invalidBackupFolder": "Invalid backup folder",
+    "legacy": {
+      "backupCreated": "Backup created %{fileName}",
+      "libraryRestored": "Library Restored",
+      "noAvailableBackup": "There's no available backup",
+      "noErrorNovel": "There's no error novel",
+      "novelsRestored": "%{num} novels restored",
+      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
+      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+    },
+    "legacyBackup": "Legacy Backup",
+    "noBackupFound": "No backup found",
+    "noDataProvided": "No data provided",
+    "preparingData": "Preparing Data",
+    "remote": {
+      "backup": "Self Host Backup",
+      "backupInterruped": "Self Host Backup Interruped",
+      "host": "Host",
+      "restore": "Self Host Restore",
+      "restoreInterruped": "Self Host Restore Interruped",
+      "unknownHost": "Unknown host"
+    },
+    "remoteBackup": "Remote Backup",
+    "restoreBackup": "Restore backup",
+    "restoreBackupDesc": "Restore library from backup file",
+    "restoreError": "Restore error",
+    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
+    "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
+    "restorinBackup": "Restoring backup",
+    "restoringData": "Restoring Data",
+    "selfHost": "Self Host",
+    "selfHostDesc": "Backup to your server",
+    "uploadingData": "Uploading Data",
+    "uploadingDownloadedFiles": "Uploading Downloaded files"
   },
   "browse": "Procházet",
   "browseScreen": {
-    "discover": "Objevit",
-    "searchbar": "Zdroje hledání",
-    "globalSearch": "Globální vyhledávání",
-    "listEmpty": "Povolit jazyky z nastavení",
-    "lastUsed": "Naposledy použité",
-    "pinned": "Připnuté ",
-    "all": "Vše",
-    "latest": "Poslední",
     "addedToLibrary": "Přidáno do knihovny",
-    "removeFromLibrary": "Odstraněno z knihovny"
-  },
-  "readerScreen": {
-    "finished": "Dokončeno",
-    "noNextChapter": "Nejsou žádné další kapitoly",
-    "bottomSheet": {
-      "textSize": "Velikost textu",
-      "color": "Barva",
-      "textAlign": "Zarovnání textu",
-      "lineHeight": "Výška řádku",
-      "fontStyle": "Styl písma",
-      "fullscreen": "Celá obrazovka",
-      "bionicReading": "Bionické čtení",
-      "renderHml": "Vykreslit HTML",
-      "autoscroll": "Automaticky posouvat",
-      "verticalSeekbar": "Vertikální posuvník",
-      "showBatteryAndTime": "Zobrazit indikátor baterie a čas",
-      "showProgressPercentage": "Ukázat postup v procentech",
-      "swipeGestures": "Potahněte do leva nebo do prava pro navigaci mezi kapitolami",
-      "pageReader": "Klepněte vlevo nebo vpravo pro procházení stránek v čtečce (experimentální)",
-      "allowTextSelection": "Povolit výběr textu",
-      "useChapterDrawerSwipeNavigation": "Přejetím doprava otevřete nabídku",
-      "removeExtraSpacing": "Odstranit extra prostor mezi paragrafy",
-      "volumeButtonsScroll": "Posun pomocí tlačítek hlasitosti",
-      "scrollAmount": "Vzdálenost posunu (jako výchozí velikost výška obrazovky)",
-      "showSwipeMargins": "Zobrazit okraje tahu"
+    "available": "Available",
+    "discover": "Objevit",
+    "globalSearch": "Globální vyhledávání",
+    "installFailed": "Installation failed: %{name}",
+    "installed": "Installed",
+    "installedPlugin": "Installed %{name}",
+    "installedPlugins": "Installed plugins",
+    "lastUsed": "Naposledy použité",
+    "latest": "Poslední",
+    "listEmpty": "Povolit jazyky z nastavení",
+    "migration": {
+      "anotherServiceIsRunning": "Another service is running",
+      "dialogMessage": "Migrate %{url}?",
+      "migratingToNewSource": "Migrating %{name} to new source",
+      "migrationError": "Migration error",
+      "novelAlreadyInLibrary": "Novel already in library",
+      "novelMigrated": "Novel Migrated",
+      "selectSource": "Select Source",
+      "selectSourceDesc": "Select a Source To Migrate From"
     },
-    "drawer": {
-      "scrollToCurrentChapter": "Přejít na aktuální kapitolu",
-      "scrollToTop": "Přejít na začátek",
-      "scrollToBottom": "Přejít na konec"
+    "noSource": "Your library does not have any novels from this source",
+    "pinned": "Připnuté ",
+    "pluginsHostError": "Plugins host error",
+    "removeFromLibrary": "Odstraněno z knihovny",
+    "searchbar": "Zdroje hledání",
+    "selectNovel": "Select Novel",
+    "tryAgain": "Try again in a moment",
+    "uninstalledPlugin": "Uninstalled %{name}",
+    "updateFailed": "Update failed",
+    "updatedTo": "Updated to %{version}",
+    "settings": {
+      "title": "Plugin Settings",
+      "description": "Fill in the plugin settings. Restart app to apply the settings."
     }
+  },
+  "browseSettings": "Browse Settings",
+  "browseSettingsScreen": {
+    "concurrentSearches": "Concurrent Source Searches",
+    "languages": "Languages",
+    "onlyShowPinnedSources": "Only show pinned sources",
+    "searchAllSources": "Search all sources",
+    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+  },
+  "categories": {
+    "addCategories": "Přidat kategorii",
+    "cantDeleteDefault": "You cant delete default category",
+    "default": "Default",
+    "defaultCategory": "Výchozí kategorie",
+    "deleteModal": {
+      "desc": "Přejete si odstranit kategorii",
+      "header": "Smazat kategorii"
+    },
+    "duplicateError": "Kategorie s tímto názvem již existuje!",
+    "editCategories": "Přejmenovat kategorii",
+    "emptyMsg": "Nemáte žádné kategorie. Klepněte na tlačítko plus pro vytvoření nové kategorie",
+    "header": "Upravit kategorie",
+    "local": "Local",
+    "setCategories": "Nastavit kategorie",
+    "setModalEmptyMsg": "Nemáte žádné kategorie. Klepněte na tlačítko editovat pro vytvoření nové kategorie"
+  },
+  "repositories": {
+    "emptyMsg": "You have no repositories. Add your first plugin repository to get started."
+  },
+  "common": {
+    "about": "About",
+    "add": "Přidat",
+    "all": "All",
+    "backup": "Backup",
+    "cancel": "Zrušit",
+    "categories": "Kategorie",
+    "chapters": "Kapitoly",
+    "clear": "Vymazat",
+    "copiedToClipboard": "Copied to clipboard: %{name}",
+    "delete": "Delete",
+    "deleted": "Deleted %{name}",
+    "deprecated": "Deprecated",
+    "display": "Display",
+    "done": "Done",
+    "downloads": "Downloads",
+    "edit": "Upravit",
+    "example": "Example",
+    "filter": "Filter",
+    "globally": "globálně",
+    "install": "Instalovat",
+    "logout": "Logout",
+    "name": "Jméno",
+    "newUpdateAvailable": "Nová aktualizace k dispozici",
+    "ok": "Ok",
+    "parsing": "Parsing",
+    "pause": "Pause",
+    "preparing": "Preparing",
+    "remove": "Remove",
+    "reset": "Resetovat",
+    "restore": "Restore",
+    "resume": "Resume",
+    "retry": "Opakovat",
+    "save": "Uložit",
+    "search": "Hledat",
+    "searchFor": "Hledat",
+    "searchResults": "Výsledky hledání",
+    "settings": "Settings",
+    "show": "Show",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "sort": "Sort",
+    "submit": "Odeslat"
+  },
+  "webview": {
+    "refresh": "Refresh",
+    "share": "Share",
+    "openInBrowser": "Open in browser",
+    "clearCookies": "Clear cookies",
+    "cookiesCleared": "Cookies cleared",
+    "clearData": "Clear WebView data",
+    "dataDeleted": "WebView data cleared"
+  },
+  "date": {
+    "calendar": {
+      "lastDay": "[Včera]",
+      "lastWeek": "[poslední] dddd",
+      "nextDay": "[Zítra]",
+      "sameDay": "[Dnes]"
+    }
+  },
+  "downloadScreen": {
+    "cancelDownloads": "Cancel downloads",
+    "cancelled": "Downloads cancelled.",
+    "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
+    "chapterName": "Chapter: %{name}",
+    "completed": "Download completed",
+    "dbInfo": "Stahování jsou uložena v databázi SQLite.",
+    "downloadChapters": "stažené kapitoly",
+    "downloader": "Downloader",
+    "downloading": "Downloading",
+    "downloadingNovel": "Downloading: %{name}",
+    "downloadsLower": "stažené",
+    "failed": "Download failed: %{message}",
+    "noDownloads": "Žádné stažené",
+    "pluginNotFound": "Plugin not found!",
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
+    "serviceRunning": "Another service is running. Queued chapters"
+  },
+  "generalSettings": "General",
+  "generalSettingsScreen": {
+    "asc": "(Ascending)",
+    "autoDownload": "Auto-download",
+    "bySource": "By source",
+    "chapterSort": "Default chapter sort",
+    "desc": "(Descending)",
+    "disableLoadingAnimations": "Disable loading animations",
+    "disableLoadingAnimationsDesc": "May improve performance on slower devices",
+    "disableHapticFeedback": "Disable haptic feedback",
+    "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
+    "displayMode": "Display Mode",
+    "downloadNewChapters": "Download new chapters",
+    "epub": "EPUB",
+    "epubLocation": "EPUB Location",
+    "epubLocationDescription": "The place where you open and export your EPUB files.",
+    "globalUpdate": "Global update",
+    "gridSize": "Grid size",
+    "gridSizeDesc": "%{num} per row",
+    "itemsPerRow": "Items per row",
+    "itemsPerRowLibrary": "Items per row in library",
+    "jumpToLastReadChapter": "Jump to last read chapter in list",
+    "novel": "Novel",
+    "novelBadges": "Novel Badges",
+    "novelSort": "Novel Sort",
+    "refreshMetadata": "Automatically refresh metadata",
+    "refreshMetadataDescription": "Check for new cover and details when updating library",
+    "sortOrder": "Sort Order",
+    "updateLibrary": "Update library on launch",
+    "updateLibraryDesc": "Not recommended for low devices",
+    "updateOngoing": "Only update ongoing novels",
+    "updateTime": "Show last update time",
+    "useFAB": "Use FAB in Library"
+  },
+  "globalSearch": {
+    "allSources": "všechny zdroje",
+    "pinnedSources": "připnuté zdroje",
+    "searchIn": "Hledat novelu v"
+  },
+  "history": "Historie",
+  "historyScreen": {
+    "chapter": "Chapter",
+    "clearHistorWarning": "Jste si jistí? Celá historie bude stracena.",
+    "deleted": "History deleted.",
+    "nothingReadRecently": "Nothing read recently",
+    "searchbar": "Historie hledání"
+  },
+  "library": "Knihovna",
+  "libraryScreen": {
+    "bottomSheet": {
+      "display": {
+        "badges": "Odznaky",
+        "comfortable": "Komfortní mřížka",
+        "compact": "Kompaktní mřížka",
+        "displayMode": "Režim zobrazení",
+        "download": "Download",
+        "downloadBadges": "Stáhnout odznaky",
+        "list": "Seznam",
+        "noTitle": "Mřížka jen s přebaly",
+        "numberOfItems": "Number of Items",
+        "showNoOfItems": "Zobrazit počet položek",
+        "unread": "Unread",
+        "unreadBadges": "Nepřečtené odznaky"
+      },
+      "filters": {
+        "completed": "Dokončeno",
+        "downloaded": "Staženo",
+        "started": "Zahájeno",
+        "unread": "Nepřečteno"
+      },
+      "sortOrders": {
+        "alphabetically": "Abecedně",
+        "dateAdded": "Datum přidání",
+        "download": "Staženo",
+        "lastRead": "Naposledy přečteno",
+        "lastUpdated": "Naposledy aktualizováno",
+        "totalChapters": "Celkem kapitol",
+        "unread": "Nepřečteno"
+      }
+    },
+    "empty": "Vaše knihovna je prázdná. Přidejte sérii do knihovny z procházet.",
+    "extraMenu": {
+      "importEpub": "Import Epub",
+      "openRandom": "Open Random Entry",
+      "updateCategory": "Update Category",
+      "updateLibrary": "Update Library"
+    },
+    "searchbar": "Hledat v knihovně"
+  },
+  "more": "Více",
+  "moreScreen": {
+    "downloadOnly": "Downloaded only",
+    "downloadOnlyDesc": "Filters all novels in your library",
+    "downloadQueue": "Download queue",
+    "incognitoMode": "Incognito mode",
+    "incognitoModeDesc": "Pauses reading history"
   },
   "novelScreen": {
     "addToLibaray": "Přidat do knihovny",
-    "inLibaray": "V knihovně",
-    "continueReading": "Pokračovat ve čtení",
-    "chapters": "kapitoly",
-    "migrate": "Migrovat",
-    "noSummary": "Žádné shrnutí",
     "bottomSheet": {
-      "filter": "Filtr",
-      "sort": "Seřadit",
-      "display": "Zobrazit"
+      "displays": {
+        "chapterNumber": "Chapter number",
+        "sourceTitle": "Source title"
+      },
+      "filters": {
+        "bookmarked": "Bookmarked",
+        "downloaded": "Downloaded",
+        "unread": "Unread"
+      },
+      "order": {
+        "byChapterName": "By chapter name",
+        "bySource": "By source"
+      }
     },
+    "chapterChapnum": "Chapter %{num}",
+    "chapters": "kapitoly",
+    "continueReading": "Pokračovat ve čtení",
+    "convertToEpubModal": {
+      "chaptersWarning": "Jenom stažené kapitoly jsou obsaženy v EPUB",
+      "chooseLocation": "Vyberte složku úložiště EPUB",
+      "pathToFolder": "Cesta k složce pro ukládání EPUB",
+      "useCustomCSS": "Použít vlastní CSS",
+      "useCustomJS": "Použít vlastní JS",
+      "useCustomJSWarning": "Nemusí být podporováno všemi čtečkami EPUB",
+      "useReaderTheme": "Použít motiv čtečky"
+    },
+    "deleteChapterError": "Cant delete chapter chapter folder",
+    "deleteMessage": "Delete downloaded chapters?",
+    "deletedAllDownloads": "Deleted all Downloads",
+    "download": {
+      "custom": "Custom",
+      "customAmount": "Download custom amount",
+      "delete": "Delete downloads",
+      "next": "Next chapter",
+      "next10": "Next 10 chapter",
+      "next5": "Next 5 chapter",
+      "unread": "Unread"
+    },
+    "edit": {
+      "addTag": "Add Tag",
+      "author": "Author: %{author}",
+      "cover": "Edit cover",
+      "info": "Edit info",
+      "status": "Status:",
+      "summary": "Description: %{summary}...",
+      "title": "Title: %{title}"
+    },
+    "inLibaray": "V knihovně",
     "jumpToChapterModal": {
-      "jumpToChapter": "Přeskočit na kapitolu",
-      "openChapter": "Otevřít kapitolu",
       "chapterName": "Název kapitoly",
       "chapterNumber": "Číslo kapitoly",
       "error": {
         "validChapterName": "Zadejte platný název kapitoly",
         "validChapterNumber": "Zadejte platné číslo kapitoly"
-      }
+      },
+      "jumpToChapter": "Přeskočit na kapitolu",
+      "openChapter": "Otevřít kapitolu"
     },
-    "convertToEpubModal": {
-      "chooseLocation": "Vyberte složku úložiště EPUB",
-      "pathToFolder": "Cesta k složce pro ukládání EPUB",
-      "useReaderTheme": "Použít motiv čtečky",
-      "useCustomCSS": "Použít vlastní CSS",
-      "useCustomJS": "Použít vlastní JS",
-      "useCustomJSWarning": "Nemusí být podporováno všemi čtečkami EPUB",
-      "chaptersWarning": "Jenom stažené kapitoly jsou obsaženy v EPUB"
-    }
+    "migrate": "Migrovat",
+    "noSummary": "Žádné shrnutí",
+    "progress": "Progress %{progress} %",
+    "readChaptersDeleted": "Read chapters deleted",
+    "startReadingChapters": "Start reading %{name}",
+    "status": {
+      "cancelled": "Cancelled",
+      "completed": "Completed",
+      "licensed": "Licensed",
+      "onHiatus": "On Hiatus",
+      "ongoing": "Ongoing",
+      "publishingFinished": "Publishing Finished",
+      "unknown": "Unknown"
+    },
+    "tracked": "Tracked",
+    "tracking": "Tracking",
+    "unknownStatus": "Unknown status",
+    "updatedToast": "Updated %{name}"
   },
-  "more": "Více",
-  "moreScreen": {
-    "settings": "Nastavení",
-    "settingsScreen": {
-      "generalSettings": "Obecné",
-      "generalSettingsScreen": {
-        "display": "Zobrazení",
-        "displayMode": "Režim zobrazení",
-        "itemsPerRow": "Položek v rádce",
-        "itemsPerRowLibrary": "Položky na řádek v knihovně",
-        "novelBadges": "Odznaky novel",
-        "novelSort": "Seřazení novel",
-        "updateLibrary": "Aktualizovat knihovnu při startu",
-        "useFAB": "Použít FAB v knihovně",
-        "novel": "Novela",
-        "chapterSort": "Výchozí seřazení kapitol",
-        "bySource": "Podle zdroje",
-        "asc": "(vzestupně)",
-        "desc": "(sestupně)",
-        "globalUpdate": "Globální aktualizace",
-        "updateOngoing": "Aktualizovat jen pokračující novely",
-        "refreshMetadata": "Automaticky aktualizovat metadata",
-        "refreshMetadataDescription": "Zkontrolovat nové obálky a podrobnosti při aktualizaci knihovny",
-        "updateTime": "Zobrazit čas poslední aktualizace",
-        "autoDownload": "Automatické stahování",
-        "epub": "EPUB",
-        "epubLocation": "Umístění EPUB",
-        "epubLocationDescription": "Místo, kde otevřete a exportujete vaše soubory EPUB.",
-        "downloadNewChapters": "Stáhnout nové kapitoly",
-        "disableHapticFeedback": "Vypnout hmatovou odezvu",
-        "jumpToLastReadChapter": "Přejít na poslední přečtenou kapitolu v seznamu"
-      },
-      "readerSettings": {
-        "title": "Čtečka",
-        "readerTheme": "Motiv čtečky",
-        "preset": "Předvolba",
-        "backgroundColor": "Barva pozadí",
-        "textColor": "Barva textu",
-        "backgroundColorModal": "Barva pozadí čtečky",
-        "textColorModal": "Barva textu čtečky",
-        "verticalSeekbarDesc": "Přepnout mezi svislým a vodorovným vyhledávacím panelem",
-        "autoScrollInterval": "Automatický interval posunu (ve vteřinách)",
-        "autoScrollOffset": "Automatická vzdálenost posunu (výška obrazovky jako výchozí)",
-        "saveCustomTheme": "Uložit vlastní motiv",
-        "deleteCustomTheme": "Smazat vlastní motiv",
-        "customCSS": "Vlastní CSS",
-        "customJS": "Vlastní JS",
-        "openCSSFile": "Otevřít soubor CSS",
-        "openJSFile": "Otevřít soubor JS",
-        "notSaved": "Neuloženo",
-        "cssHint": "Tip: Můžete vytvořit zdrojovou specifickou CSS konfiguraci se zdrojovým ID. (#sourceId-[SOURCEID])",
-        "jsHint": "Tip: Máte přístup k následujícím proměnným: html, novelName, chapterName, sourceId, chapterId, novelId",
-        "clearCustomCSS": "Jste si jisti? Vaše vlastní CSS bude obnoveno.",
-        "clearCustomJS": "Jste si jisti? Vaše vlastní JS bude obnoven."
-      },
-      "browseSettings": "Procházet nastavení",
-      "browseSettingsScreen": {
-        "onlyShowPinnedSources": "Zobrazit jen připnuté zdroje",
-        "languages": "Jazyky",
-        "searchAllSources": "Prohledat všechny zdroje",
-        "searchAllWarning": "Prohledávání velkého množství zdrojů může zaseknout aplikaci do té doby než je hledání hotovo."
-      }
-    }
+  "readerScreen": {
+    "bottomSheet": {
+      "allowTextSelection": "Povolit výběr textu",
+      "autoscroll": "Automaticky posouvat",
+      "bionicReading": "Bionické čtení",
+      "tapToScroll": "Tap to scroll",
+      "color": "Barva",
+      "fontStyle": "Styl písma",
+      "fullscreen": "Celá obrazovka",
+      "lineHeight": "Výška řádku",
+      "padding": "Padding",
+      "pageReader": "Klepněte vlevo nebo vpravo pro procházení stránek v čtečce (experimentální)",
+      "removeExtraSpacing": "Odstranit extra prostor mezi paragrafy",
+      "renderHml": "Vykreslit HTML",
+      "scrollAmount": "Vzdálenost posunu (jako výchozí velikost výška obrazovky)",
+      "showBatteryAndTime": "Zobrazit indikátor baterie a čas",
+      "showProgressPercentage": "Ukázat postup v procentech",
+      "showSwipeMargins": "Zobrazit okraje tahu",
+      "swipeGestures": "Potahněte do leva nebo do prava pro navigaci mezi kapitolami",
+      "textAlign": "Zarovnání textu",
+      "textSize": "Velikost textu",
+      "useChapterDrawerSwipeNavigation": "Přejetím doprava otevřete nabídku",
+      "verticalSeekbar": "Vertikální posuvník",
+      "keepScreenOn": "Keep screen on",
+      "volumeButtonsScroll": "Posun pomocí tlačítek hlasitosti"
+    },
+    "drawer": {
+      "scrollToBottom": "Přejít na konec",
+      "scrollToCurrentChapter": "Přejít na aktuální kapitolu",
+      "scrollToTop": "Přejít na začátek"
+    },
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p>",
+    "finished": "Dokončeno",
+    "nextChapter": "Next: %{name}",
+    "noNextChapter": "Nejsou žádné další kapitoly",
+    "noPreviousChapter": "There's no previous chapter"
+  },
+  "readerSettings": {
+    "autoScrollInterval": "Auto scroll interval (in seconds)",
+    "autoScrollOffset": "Auto scroll offset (screen height by default)",
+    "backgroundColor": "Background color",
+    "backgroundColorModal": "Reader background color",
+    "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
+    "clearCustomJS": "Are you sure? Your custom JS would be reset.",
+    "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
+    "customCSS": "Custom CSS",
+    "customJS": "Custom JS",
+    "deleteCustomTheme": "Delete custom theme",
+    "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "notSaved": "Not saved",
+    "openCSSFile": "Open CSS file",
+    "openJSFile": "Open JS file",
+    "preset": "Preset",
+    "readerTheme": "Reader theme",
+    "saveCustomTheme": "Save custom theme",
+    "textColor": "Text color",
+    "textColorModal": "Reader text color",
+    "title": "Reader",
+    "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar"
   },
   "sourceScreen": {
     "noResultsFound": "Nebyly nalezeny žádné výsledky"
   },
   "statsScreen": {
+    "downloadedChapters": "Stažené kapitoly",
+    "genreDistribution": "Rozložení žánrů",
+    "readChapters": "Prečíst kapitoly",
+    "sources": "Sources",
+    "statusDistribution": "Rozložení statusu",
     "title": "Statistiky",
     "titlesInLibrary": "Názvy v knihovně",
     "totalChapters": "Kapitol dohromady",
-    "readChapters": "Prečíst kapitoly",
-    "unreadChapters": "Nepřečtené kapitoly",
-    "downloadedChapters": "Stažené kapitoly",
-    "genreDistribution": "Rozložení žánrů",
-    "statusDistribution": "Rozložení statusu"
+    "unreadChapters": "Nepřečtené kapitoly"
   },
-  "globalSearch": {
-    "searchIn": "Hledat novelu v",
-    "allSources": "všechny zdroje",
-    "pinnedSources": "připnuté zdroje"
+  "tracking": "Tracking",
+  "trackingScreen": {
+    "logOutMessage": "Log out from %{name}?",
+    "revalidate": "Revalidate",
+    "services": "Services"
   },
-  "advancedSettings": {
-    "deleteReadChapters": "Odstranit přečtené kapitoly",
-    "deleteReadChaptersDialogTitle": "Jste si jistí? Všechny kapitoly označeny jako přečtené budou odstraněny."
-  },
-  "date": {
-    "calendar": {
-      "sameDay": "[Dnes]",
-      "nextDay": "[Zítra]",
-      "lastDay": "[Včera]",
-      "lastWeek": "[poslední] dddd"
-    }
-  },
-  "categories": {
-    "addCategories": "Přidat kategorii",
-    "editCategories": "Přejmenovat kategorii",
-    "setCategories": "Nastavit kategorie",
-    "header": "Upravit kategorie",
-    "emptyMsg": "Nemáte žádné kategorie. Klepněte na tlačítko plus pro vytvoření nové kategorie",
-    "setModalEmptyMsg": "Nemáte žádné kategorie. Klepněte na tlačítko editovat pro vytvoření nové kategorie",
-    "deleteModal": {
-      "header": "Smazat kategorii",
-      "desc": "Přejete si odstranit kategorii"
-    },
-    "duplicateError": "Kategorie s tímto názvem již existuje!",
-    "defaultCategory": "Výchozí kategorie"
-  },
-  "settings": {
-    "icognitoMode": "Anonymní režim",
-    "downloadedOnly": "Pouze stažené"
-  },
-  "downloadScreen": {
-    "dbInfo": "Stahování jsou uložena v databázi SQLite.",
-    "downloadChapters": "stažené kapitoly",
-    "noDownloads": "Žádné stažené",
-    "downloadsLower": "stažené"
+  "updates": "Aktualizace",
+  "updatesScreen": {
+    "deletedChapters": "Deleted %{num} chapters",
+    "emptyView": "Žádné nedávné aktualizace",
+    "lastUpdatedAt": "Poslední aktualizace knihovny:",
+    "libraryUpdated": "Library Updated",
+    "newChapters": "nová kapitola",
+    "novelsUpdated": "%{num} novels updated",
+    "searchbar": "Hledat aktualizace",
+    "unableToGetNovel": "Unable to get novel",
+    "updatesLower": "aktualizace",
+    "updatingLibrary": "Updating library"
   }
 }
