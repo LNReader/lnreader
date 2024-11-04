@@ -1,5 +1,6 @@
 {
   "aboutScreen": {
+    "website": "Website",
     "discord": "Discord",
     "github": "Github",
     "helpTranslate": "Aidez à traduire",
@@ -128,7 +129,7 @@
       "novelMigrated": "Novel Migrated",
       "selectSource": "Select Source",
       "selectSourceDesc": "Select a Source To Migrate From"
-    },    
+    },
     "noSource": "Your library does not have any novels from this source",
     "pinned": "Épinglé",
     "pluginsHostError": "Plugins host error",
@@ -138,10 +139,15 @@
     "tryAgain": "Réessayez dans un instant",
     "uninstalledPlugin": "Désinstallé %{name}",
     "updateFailed": "Mise à jour échouée",
-    "updatedTo": "Mis à jour %{version}"
+    "updatedTo": "Mis à jour %{version}",
+    "settings": {
+      "title": "Plugin Settings",
+      "description": "Fill in the plugin settings. Restart app to apply the settings."
+    }
   },
   "browseSettings": "Parcourir les paramètres",
   "browseSettingsScreen": {
+    "concurrentSearches": "Concurrent Source Searches",
     "languages": "Langues",
     "onlyShowPinnedSources": "Afficher uniquement les sources épinglées",
     "searchAllSources": "Rechercher toutes les sources",
@@ -163,6 +169,9 @@
     "local": "Local",
     "setCategories": "Définir les catégories",
     "setModalEmptyMsg": "Vous n'avez pas de catégories. Appuyez sur le bouton Modifier pour en créer une pour organiser votre bibliothèque"
+  },
+  "repositories": {
+    "emptyMsg": "You have no repositories. Add your first plugin repository to get started."
   },
   "common": {
     "about": "À propos",
@@ -194,6 +203,7 @@
     "preparing": "Preparing",
     "remove": "Retirer",
     "reset": "Réinitialiser",
+    "restore": "Restore",
     "resume": "Resume",
     "retry": "Réessayer",
     "save": "Sauvegarder",
@@ -249,7 +259,10 @@
     "bySource": "Par Source",
     "chapterSort": "Tri des chapitres par défaut",
     "desc": "(Descendant)",
+    "disableLoadingAnimations": "Disable loading animations",
+    "disableLoadingAnimationsDesc": "May improve performance on slower devices",
     "disableHapticFeedback": "Désactiver le retour haptique",
+    "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
     "displayMode": "Mode d'affichage",
     "downloadNewChapters": "Télécharger les nouveaux chapitres",
     "epub": "EPUB",
@@ -320,6 +333,12 @@
       }
     },
     "empty": "Votre bibliothèque est vide. Ajouter des séries à votre bibliothèque à partir de Parcourir",
+    "extraMenu": {
+      "importEpub": "Import Epub",
+      "openRandom": "Open Random Entry",
+      "updateCategory": "Update Category",
+      "updateLibrary": "Update Library"
+    },
     "searchbar": "Rechercher dans la bibliothèque"
   },
   "more": "Plus",
@@ -415,10 +434,12 @@
       "allowTextSelection": "Permettre la sélection du texte",
       "autoscroll": "Scroll automatique",
       "bionicReading": "Bionic Reading",
+      "tapToScroll": "Tap to scroll",
       "color": "Couleur",
       "fontStyle": "Style de police",
       "fullscreen": "Plein écran",
       "lineHeight": "Hauteur de la ligne",
+      "padding": "Padding",
       "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Supprimer l'espacement de paragraphe supplémentaire",
       "renderHml": "Rendre l'HTML",
@@ -431,6 +452,7 @@
       "textSize": "Taille du texte",
       "useChapterDrawerSwipeNavigation": "Balayez vers la droite pour ouvrir le tiroir",
       "verticalSeekbar": "Barre de recherche verticale",
+      "keepScreenOn": "Keep screen on",
       "volumeButtonsScroll": "Défilement avec boutons de volume"
     },
     "drawer": {
