@@ -16,7 +16,7 @@ import { createRepositoryTableQuery } from './tables/RepositoryTable';
 
 const dbName = 'lnreader.db';
 
-const db = SQLite.openDatabase(dbName);
+export const db = SQLite.openDatabase(dbName);
 
 export const createTables = () => {
   db.exec([{ sql: 'PRAGMA foreign_keys = ON', args: [] }], false, () => {});
