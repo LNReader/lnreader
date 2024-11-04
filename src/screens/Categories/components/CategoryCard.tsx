@@ -50,8 +50,8 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
                   ? overlay(2, theme.surface2)
                   : theme.primaryContainer
                 : category.id === 2
-                ? theme.tertiaryContainer
-                : theme.secondaryContainer,
+                  ? theme.tertiaryContainer
+                  : theme.secondaryContainer,
           },
         ]}
       >

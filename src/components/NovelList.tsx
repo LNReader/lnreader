@@ -13,10 +13,9 @@ import { useDeviceOrientation } from '@hooks';
 
 export type NovelListRenderItem = ListRenderItem<LibraryNovelInfo | NovelItem>;
 
-type listDataItem =
-  | (LibraryNovelInfo | NovelItem) & {
-      completeRow?: number;
-    };
+type listDataItem = (LibraryNovelInfo | NovelItem) & {
+  completeRow?: number;
+};
 
 interface NovelListProps extends FlatListProps<LibraryNovelInfo | NovelItem> {
   inSource?: boolean;

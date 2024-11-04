@@ -50,7 +50,7 @@ export const myAnimeListTracker: Tracker = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: URLSearchParams({
+      body: new URLSearchParams({
         client_id: clientId,
         grant_type: 'authorization_code',
         code,
@@ -71,7 +71,7 @@ export const myAnimeListTracker: Tracker = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: URLSearchParams({
+      body: new URLSearchParams({
         grant_type: 'refresh_token',
         refresh_token: auth.refreshToken,
       }).toString(),
@@ -142,7 +142,7 @@ export const myAnimeListTracker: Tracker = {
         Authorization: `Bearer ${auth.accessToken}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: URLSearchParams({
+      body: new URLSearchParams({
         status,
         is_rereading: repeating,
         num_chapters_read: payload.progress,

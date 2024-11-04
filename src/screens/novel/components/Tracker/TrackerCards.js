@@ -103,8 +103,8 @@ export const TrackedItemCard = ({
                   trackItem.score,
                 )
               : trackItem.score === 0
-              ? '-'
-              : trackItem.score}
+                ? '-'
+                : trackItem.score}
           </Text>
         </TouchableRipple>
       </View>
