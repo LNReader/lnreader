@@ -4,12 +4,14 @@ import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeColors } from '@theme/types';
 import getLoadingColors from '@utils/getLoadingColors';
+import { useAppSettings } from '@hooks/persisted/index';
 
 interface Props {
   theme: ThemeColors;
 }
 
 const NovelScreenLoading: React.FC<Props> = ({ theme }) => {
+  const { disableLoadingAnimations } = useAppSettings();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   const styles = createStyleSheet();
 
@@ -23,6 +25,7 @@ const NovelScreenLoading: React.FC<Props> = ({ theme }) => {
           shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
           height={150}
           width={100}
+          stopAutoRun={disableLoadingAnimations}
         />
         <View style={styles.novelTopText}>
           <ShimmerPlaceHolder
@@ -30,18 +33,21 @@ const NovelScreenLoading: React.FC<Props> = ({ theme }) => {
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={25}
             width={240}
+            stopAutoRun={disableLoadingAnimations}
           />
           <ShimmerPlaceHolder
             style={styles.text}
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={20}
             width={240}
+            stopAutoRun={disableLoadingAnimations}
           />
           <ShimmerPlaceHolder
             style={styles.text}
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={20}
             width={240}
+            stopAutoRun={disableLoadingAnimations}
           />
         </View>
       </View>
@@ -57,18 +63,21 @@ const NovelScreenLoading: React.FC<Props> = ({ theme }) => {
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={56}
             width={90}
+            stopAutoRun={disableLoadingAnimations}
           />
           <ShimmerPlaceHolder
             style={styles.icon}
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={56}
             width={90}
+            stopAutoRun={disableLoadingAnimations}
           />
           <ShimmerPlaceHolder
             style={styles.icon}
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={56}
             width={90}
+            stopAutoRun={disableLoadingAnimations}
           />
         </View>
         <View style={styles.novelInformationText}>
@@ -77,12 +86,14 @@ const NovelScreenLoading: React.FC<Props> = ({ theme }) => {
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={16}
             width={350}
+            stopAutoRun={disableLoadingAnimations}
           />
           <ShimmerPlaceHolder
             style={styles.text}
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={16}
             width={350}
+            stopAutoRun={disableLoadingAnimations}
           />
         </View>
         <View style={styles.novelInformationChips}>
@@ -91,12 +102,14 @@ const NovelScreenLoading: React.FC<Props> = ({ theme }) => {
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={32}
             width={60}
+            stopAutoRun={disableLoadingAnimations}
           />
           <ShimmerPlaceHolder
             style={styles.chip}
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={32}
             width={60}
+            stopAutoRun={disableLoadingAnimations}
           />
         </View>
       </View>
@@ -111,12 +124,14 @@ const NovelScreenLoading: React.FC<Props> = ({ theme }) => {
           shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
           height={20}
           width={350}
+          stopAutoRun={disableLoadingAnimations}
         />
         <ShimmerPlaceHolder
           style={styles.text}
           shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
           height={16}
           width={350}
+          stopAutoRun={disableLoadingAnimations}
         />
       </View>
     );
@@ -131,6 +146,7 @@ const NovelScreenLoading: React.FC<Props> = ({ theme }) => {
           shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
           height={30}
           width={350}
+          stopAutoRun={disableLoadingAnimations}
         />
         {items.map(renderLoadingChapter)}
       </View>
