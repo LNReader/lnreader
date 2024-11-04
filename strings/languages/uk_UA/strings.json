@@ -1,22 +1,153 @@
 {
+  "aboutScreen": {
+    "website": "Website",
+    "discord": "Discord",
+    "github": "Github",
+    "helpTranslate": "Help translate",
+    "sources": "Sources",
+    "version": "Version",
+    "whatsNew": "What's new"
+  },
+  "advancedSettings": "Advanced",
   "advancedSettingsScreen": {
+    "cachedNovelsDeletedToast": "Cached novels deleted",
+    "chapterInsertFailed": "chapter insert failed",
+    "clearCachedNovels": "Clear cached novels",
+    "clearCachedNovelsDesc": "Delete cached novels which not in your library",
+    "clearDatabaseWarning": "Are you sure? Read and Downloaded chapters and progress of non-library novels will be lost.",
+    "clearUpdatesMessage": "Updates cleared.",
+    "clearUpdatesTab": "Clear updates tab",
+    "clearUpdatesWarning": "Are you sure? Updates tab will be cleared.",
+    "clearupdatesTabDesc": "Clears chapter entries in updates tab",
+    "dataManagement": "Data Management",
     "deleteReadChapters": "Вилучити прочитані глави",
-    "deleteReadChaptersDialogTitle": "Ви впевнені? Всі глави, позначені як прочитані, будуть видалені."
+    "deleteReadChaptersDialogTitle": "Ви впевнені? Всі глави, позначені як прочитані, будуть видалені.",
+    "importEpub": "Import Epub",
+    "importError": "Import Error",
+    "importNovel": "Import Novel",
+    "importStaticFiles": "Import Static Files",
+    "novelInsertFailed": "novel insert failed",
+    "parseEpub": "Parse Epub",
+    "useFAB": "Use FAB instead of button",
+    "userAgent": "User Agent"
+  },
+  "appearance": "Appearance",
+  "appearanceScreen": {
+    "accentColor": "Accent Color",
+    "alwaysShowNavLabels": "Always show nav labels",
+    "appTheme": "App theme",
+    "darkTheme": "Dark Theme",
+    "hideBackdrop": "Hide backdrop",
+    "lightTheme": "Light Theme",
+    "navbar": "Navbar",
+    "novelInfo": "Novel info",
+    "pureBlackDarkMode": "Pure black dark mode",
+    "showHistoryInTheNav": "Show history in the nav",
+    "showUpdatesInTheNav": "Show updates in the nav",
+    "theme": {
+      "default": "Default",
+      "lavender": "Lavender",
+      "midnightDusk": "Midnight Dusk",
+      "daybreakBloom": "Daybreak Bloom",
+      "strawberry": "Strawberry Daiquiri",
+      "tako": "Tako",
+      "teal": "Teal",
+      "turquoise": "Turquoise",
+      "yotsuba": "Yotsuba"
+    }
+  },
+  "backupScreen": {
+    "backupName": "Backup name",
+    "createBackup": "Create backup",
+    "createBackupDesc": "Can be used to restore current library",
+    "createBackupWarning": "Create backup may not work on devices with Android 9 or lower.",
+    "downloadingData": "Downloading Data",
+    "downloadingDownloadedFiles": "Downloading Downloaded files",
+    "drive": {
+      "backup": "Drive Backup",
+      "backupInterruped": "Drive Backup Interruped",
+      "googleDriveBackup": "Google Drive Backup",
+      "restore": "Drive Restore",
+      "restoreInterruped": "Drive Restore Interruped"
+    },
+    "googeDrive": "Googe Drive",
+    "googeDriveDesc": "Backup to your Google Drive",
+    "invalidBackupFolder": "Invalid backup folder",
+    "legacy": {
+      "backupCreated": "Backup created %{fileName}",
+      "libraryRestored": "Library Restored",
+      "noAvailableBackup": "There's no available backup",
+      "noErrorNovel": "There's no error novel",
+      "novelsRestored": "%{num} novels restored",
+      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
+      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+    },
+    "legacyBackup": "Legacy Backup",
+    "noBackupFound": "No backup found",
+    "noDataProvided": "No data provided",
+    "preparingData": "Preparing Data",
+    "remote": {
+      "backup": "Self Host Backup",
+      "backupInterruped": "Self Host Backup Interruped",
+      "host": "Host",
+      "restore": "Self Host Restore",
+      "restoreInterruped": "Self Host Restore Interruped",
+      "unknownHost": "Unknown host"
+    },
+    "remoteBackup": "Remote Backup",
+    "restoreBackup": "Restore backup",
+    "restoreBackupDesc": "Restore library from backup file",
+    "restoreError": "Restore error",
+    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
+    "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
+    "restorinBackup": "Restoring backup",
+    "restoringData": "Restoring Data",
+    "selfHost": "Self Host",
+    "selfHostDesc": "Backup to your server",
+    "uploadingData": "Uploading Data",
+    "uploadingDownloadedFiles": "Uploading Downloaded files"
   },
   "browse": "Огляд",
   "browseScreen": {
     "addedToLibrary": "Додано до бібліотеки",
+    "available": "Available",
     "discover": "Огляд",
     "globalSearch": "Глобальний пошук",
+    "installFailed": "Installation failed: %{name}",
+    "installed": "Installed",
+    "installedPlugin": "Installed %{name}",
+    "installedPlugins": "Installed plugins",
     "lastUsed": "Останнє використане",
     "latest": "Останні",
     "listEmpty": "Увімкнути мови з налаштувань",
+    "migration": {
+      "anotherServiceIsRunning": "Another service is running",
+      "dialogMessage": "Migrate %{url}?",
+      "migratingToNewSource": "Migrating %{name} to new source",
+      "migrationError": "Migration error",
+      "novelAlreadyInLibrary": "Novel already in library",
+      "novelMigrated": "Novel Migrated",
+      "selectSource": "Select Source",
+      "selectSourceDesc": "Select a Source To Migrate From"
+    },
+    "noSource": "Your library does not have any novels from this source",
     "pinned": "Закріплено",
+    "pluginsHostError": "Plugins host error",
     "removeFromLibrary": "Вилучено з бібліотеки",
-    "searchbar": "Шукати джерела"
+    "searchbar": "Шукати джерела",
+    "selectNovel": "Select Novel",
+    "tryAgain": "Try again in a moment",
+    "uninstalledPlugin": "Uninstalled %{name}",
+    "updateFailed": "Update failed",
+    "updatedTo": "Updated to %{version}",
+    "settings": {
+      "title": "Plugin Settings",
+      "description": "Fill in the plugin settings. Restart app to apply the settings."
+    }
   },
   "browseSettings": "Налаштування джерел",
   "browseSettingsScreen": {
+    "concurrentSearches": "Concurrent Source Searches",
     "languages": "Мови",
     "onlyShowPinnedSources": "Відображати лише закріплені джерела",
     "searchAllSources": "Шукати у всіх джерелах",
@@ -24,6 +155,8 @@
   },
   "categories": {
     "addCategories": "Додати категорію",
+    "cantDeleteDefault": "You cant delete default category",
+    "default": "Default",
     "defaultCategory": "Категорія за замовчуванням",
     "deleteModal": {
       "desc": "Ви бажаєте видалити цю категорію",
@@ -33,33 +166,65 @@
     "editCategories": "Перейменувати категорію",
     "emptyMsg": "У вас немає категорій. Натисніть на \"+\" щоб створити нову категорію для організації вашої бібліотеки",
     "header": "Редагувати категорії",
+    "local": "Local",
     "setCategories": "Встановити категорії",
     "setModalEmptyMsg": "У вас немає категорій. Натисніть кнопку Редагувати, щоб створити нову для організації вашої бібліотеки"
   },
+  "repositories": {
+    "emptyMsg": "You have no repositories. Add your first plugin repository to get started."
+  },
   "common": {
+    "about": "About",
     "add": "Додати",
     "all": "Всі",
+    "backup": "Backup",
     "cancel": "Скасувати",
     "categories": "Категорії",
     "chapters": "Глави",
     "clear": "Очистити",
+    "copiedToClipboard": "Copied to clipboard: %{name}",
+    "delete": "Delete",
+    "deleted": "Deleted %{name}",
+    "deprecated": "Deprecated",
     "display": "Display",
+    "done": "Done",
+    "downloads": "Downloads",
     "edit": "Редагувати",
+    "example": "Example",
     "filter": "Фільтр",
     "globally": "глобально",
     "install": "Встановити",
+    "logout": "Logout",
     "name": "Назва",
     "newUpdateAvailable": "Доступне нове оновлення",
     "ok": "Ок",
+    "parsing": "Parsing",
+    "pause": "Pause",
+    "preparing": "Preparing",
+    "remove": "Remove",
     "reset": "Скинути",
+    "restore": "Restore",
+    "resume": "Resume",
     "retry": "Retry",
     "save": "Зберегти",
     "search": "Пошук",
     "searchFor": "Шукати",
     "searchResults": "Результати пошуку",
     "settings": "Налаштування",
+    "show": "Show",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
     "sort": "Сортувати",
     "submit": "Submit"
+  },
+  "webview": {
+    "refresh": "Refresh",
+    "share": "Share",
+    "openInBrowser": "Open in browser",
+    "clearCookies": "Clear cookies",
+    "cookiesCleared": "Cookies cleared",
+    "clearData": "Clear WebView data",
+    "dataDeleted": "WebView data cleared"
   },
   "date": {
     "calendar": {
@@ -70,10 +235,22 @@
     }
   },
   "downloadScreen": {
+    "cancelDownloads": "Cancel downloads",
+    "cancelled": "Downloads cancelled.",
+    "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
+    "chapterName": "Chapter: %{name}",
+    "completed": "Download completed",
     "dbInfo": "Downloads are saved in a SQLite Database.",
     "downloadChapters": "downloaded Chapters",
+    "downloader": "Downloader",
+    "downloading": "Downloading",
+    "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "downloads",
-    "noDownloads": "No downloads"
+    "failed": "Download failed: %{message}",
+    "noDownloads": "No downloads",
+    "pluginNotFound": "Plugin not found!",
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
+    "serviceRunning": "Another service is running. Queued chapters"
   },
   "generalSettings": "Загальне",
   "generalSettingsScreen": {
@@ -82,13 +259,18 @@
     "bySource": "By source",
     "chapterSort": "Default chapter sort",
     "desc": "(Descending)",
+    "disableLoadingAnimations": "Disable loading animations",
+    "disableLoadingAnimationsDesc": "May improve performance on slower devices",
     "disableHapticFeedback": "Disable haptic feedback",
+    "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
     "displayMode": "Display Mode",
     "downloadNewChapters": "Download new chapters",
     "epub": "EPUB",
     "epubLocation": "EPUB Location",
     "epubLocationDescription": "The place where you open and export your EPUB files.",
     "globalUpdate": "Global update",
+    "gridSize": "Grid size",
+    "gridSizeDesc": "%{num} per row",
     "itemsPerRow": "Items per row",
     "itemsPerRowLibrary": "Items per row in library",
     "jumpToLastReadChapter": "Jump to last read chapter in list",
@@ -97,7 +279,9 @@
     "novelSort": "Novel Sort",
     "refreshMetadata": "Automatically refresh metadata",
     "refreshMetadataDescription": "Check for new cover and details when updating library",
+    "sortOrder": "Sort Order",
     "updateLibrary": "Update library on launch",
+    "updateLibraryDesc": "Not recommended for low devices",
     "updateOngoing": "Only update ongoing novels",
     "updateTime": "Show last update time",
     "useFAB": "Use FAB in Library"
@@ -109,7 +293,10 @@
   },
   "history": "Історія",
   "historyScreen": {
+    "chapter": "Chapter",
     "clearHistorWarning": "Ви впевнені? Вся історія буде втрачена.",
+    "deleted": "History deleted.",
+    "nothingReadRecently": "Nothing read recently",
     "searchbar": "Шукати в історії"
   },
   "library": "Бібліотека",
@@ -120,10 +307,13 @@
         "comfortable": "Комфортна сітка",
         "compact": "Компактна сітка",
         "displayMode": "Режим відображення",
+        "download": "Download",
         "downloadBadges": "Завантажено",
         "list": "Список",
         "noTitle": "Тільки обкладинки",
+        "numberOfItems": "Number of Items",
         "showNoOfItems": "Показати кількість елементів",
+        "unread": "Unread",
         "unreadBadges": "Не прочитано"
       },
       "filters": {
@@ -143,15 +333,40 @@
       }
     },
     "empty": "Ваша бібліотека порожня. Додайте новели з Огляду.",
+    "extraMenu": {
+      "importEpub": "Import Epub",
+      "openRandom": "Open Random Entry",
+      "updateCategory": "Update Category",
+      "updateLibrary": "Update Library"
+    },
     "searchbar": "Пошук у бібліотеці"
   },
   "more": "Більше",
   "moreScreen": {
     "downloadOnly": "Тільки завантажені",
-    "incognitoMode": "Режим інкогніто"
+    "downloadOnlyDesc": "Filters all novels in your library",
+    "downloadQueue": "Download queue",
+    "incognitoMode": "Режим інкогніто",
+    "incognitoModeDesc": "Pauses reading history"
   },
   "novelScreen": {
     "addToLibaray": "Додати до бібліотеки",
+    "bottomSheet": {
+      "displays": {
+        "chapterNumber": "Chapter number",
+        "sourceTitle": "Source title"
+      },
+      "filters": {
+        "bookmarked": "Bookmarked",
+        "downloaded": "Downloaded",
+        "unread": "Unread"
+      },
+      "order": {
+        "byChapterName": "By chapter name",
+        "bySource": "By source"
+      }
+    },
+    "chapterChapnum": "Chapter %{num}",
     "chapters": "розділи",
     "continueReading": "Продовжити читання",
     "convertToEpubModal": {
@@ -162,6 +377,27 @@
       "useCustomJS": "Use custom JS",
       "useCustomJSWarning": "May not be supported by all EPUB readers",
       "useReaderTheme": "Use reader theme"
+    },
+    "deleteChapterError": "Cant delete chapter chapter folder",
+    "deleteMessage": "Delete downloaded chapters?",
+    "deletedAllDownloads": "Deleted all Downloads",
+    "download": {
+      "custom": "Custom",
+      "customAmount": "Download custom amount",
+      "delete": "Delete downloads",
+      "next": "Next chapter",
+      "next10": "Next 10 chapter",
+      "next5": "Next 5 chapter",
+      "unread": "Unread"
+    },
+    "edit": {
+      "addTag": "Add Tag",
+      "author": "Author: %{author}",
+      "cover": "Edit cover",
+      "info": "Edit info",
+      "status": "Status:",
+      "summary": "Description: %{summary}...",
+      "title": "Title: %{title}"
     },
     "inLibaray": "У бібліотеці",
     "jumpToChapterModal": {
@@ -175,17 +411,35 @@
       "openChapter": "Open Chapter"
     },
     "migrate": "Перенести",
-    "noSummary": "Немає зведених відомостей"
+    "noSummary": "Немає зведених відомостей",
+    "progress": "Progress %{progress} %",
+    "readChaptersDeleted": "Read chapters deleted",
+    "startReadingChapters": "Start reading %{name}",
+    "status": {
+      "cancelled": "Cancelled",
+      "completed": "Completed",
+      "licensed": "Licensed",
+      "onHiatus": "On Hiatus",
+      "ongoing": "Ongoing",
+      "publishingFinished": "Publishing Finished",
+      "unknown": "Unknown"
+    },
+    "tracked": "Tracked",
+    "tracking": "Tracking",
+    "unknownStatus": "Unknown status",
+    "updatedToast": "Updated %{name}"
   },
   "readerScreen": {
     "bottomSheet": {
       "allowTextSelection": "Дозволити виділяти текст",
       "autoscroll": "Автопрокрутка",
       "bionicReading": "Bionic Reading",
+      "tapToScroll": "Tap to scroll",
       "color": "Колір",
       "fontStyle": "Стиль шрифту",
       "fullscreen": "Повноекранний режим",
       "lineHeight": "Висота рядка",
+      "padding": "Padding",
       "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Remove extra paragraph spacing",
       "renderHml": "Рендер HTML",
@@ -198,6 +452,7 @@
       "textSize": "Розмір тексту",
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "verticalSeekbar": "Вертикальна навігаційна панель",
+      "keepScreenOn": "Keep screen on",
       "volumeButtonsScroll": "Volume buttons scroll"
     },
     "drawer": {
@@ -205,8 +460,11 @@
       "scrollToCurrentChapter": "Scroll to current chapter",
       "scrollToTop": "Scroll to top"
     },
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p>",
     "finished": "Завершено",
-    "noNextChapter": "Наступний розділ не знайдено"
+    "nextChapter": "Next: %{name}",
+    "noNextChapter": "Наступний розділ не знайдено",
+    "noPreviousChapter": "There's no previous chapter"
   },
   "readerSettings": {
     "autoScrollInterval": "Інтервал автопрокрутки (в секундах)",
@@ -238,18 +496,30 @@
     "downloadedChapters": "Downloaded chapters",
     "genreDistribution": "Genre distribution",
     "readChapters": "Read chapters",
+    "sources": "Sources",
     "statusDistribution": "Status distribution",
     "title": "Statistics",
     "titlesInLibrary": "Titles in library",
     "totalChapters": "Total chapters",
     "unreadChapters": "Unread chapters"
   },
+  "tracking": "Tracking",
+  "trackingScreen": {
+    "logOutMessage": "Log out from %{name}?",
+    "revalidate": "Revalidate",
+    "services": "Services"
+  },
   "updates": "Оновлення",
   "updatesScreen": {
+    "deletedChapters": "Deleted %{num} chapters",
     "emptyView": "No recent updates",
     "lastUpdatedAt": "Останнє оновлення бібліотеки:",
+    "libraryUpdated": "Library Updated",
     "newChapters": "new Chapters",
+    "novelsUpdated": "%{num} novels updated",
     "searchbar": "Пошук оновлень",
-    "updatesLower": "updates"
+    "unableToGetNovel": "Unable to get novel",
+    "updatesLower": "updates",
+    "updatingLibrary": "Updating library"
   }
 }
