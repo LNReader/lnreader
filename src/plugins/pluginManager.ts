@@ -11,6 +11,7 @@ import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
 import { downloadFile, fetchApi, fetchProto, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
 import { Storage, LocalStorage, SessionStorage } from './helpers/storage';
+import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
 import FileManager from '@native/FileManager';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
@@ -21,6 +22,7 @@ const packages: Record<string, any> = {
   'htmlparser2': { Parser },
   'cheerio': { load },
   'dayjs': dayjs,
+  'urlencode': { encode, decode },
   '@libs/novelStatus': { NovelStatus },
   '@libs/fetch': { fetchApi, fetchText, fetchProto },
   '@libs/isAbsoluteUrl': { isUrlAbsolute },
