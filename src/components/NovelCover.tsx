@@ -37,13 +37,15 @@ interface DownloadBadgeProps {
   theme: ThemeColors;
 }
 
-type CoverItemLibrary = LibraryNovelInfo & {
-  completeRow?: number;
-};
+type CoverItemLibrary =
+  | LibraryNovelInfo & {
+      completeRow?: number;
+    };
 
-type CoverItemPlugin = NovelItem & {
-  completeRow?: number;
-};
+type CoverItemPlugin =
+  | NovelItem & {
+      completeRow?: number;
+    };
 
 interface INovelCover<TNovel> {
   item: TNovel;
