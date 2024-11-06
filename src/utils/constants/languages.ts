@@ -18,6 +18,7 @@ export const languagesMapping: Record<string, string> = {
   'zh': '中文, 汉语, 漢語',
   'ja': '日本語',
   'ko': '조선말, 한국어',
+  'multi': 'Multi',
 };
 
 export const languages = Object.values(languagesMapping);
