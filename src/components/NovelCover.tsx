@@ -86,8 +86,7 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
 
   const coverHeight = useMemo(
     () => (window.width / numColumns) * (4 / 3),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [numColumns],
+    [window.width, numColumns],
   );
 
   const selectNovel = () => onLongPress(item);

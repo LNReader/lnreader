@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { DisplayModes } from '@screens/library/constants/constants';
+import { useAppSettings } from '@hooks/persisted/index';
 
 interface Props {
   backgroundColor: string;
@@ -19,6 +20,7 @@ const LoadingNovel: React.FC<Props> = ({
   pictureWidth,
   displayMode,
 }) => {
+  const { disableLoadingAnimations } = useAppSettings();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   let randomNumber = Math.random();
   randomNumber < 0.1 ? (randomNumber = 0) : null;
@@ -35,6 +37,7 @@ const LoadingNovel: React.FC<Props> = ({
           shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
           height={pictureHeight}
           width={pictureWidth}
+          stopAutoRun={disableLoadingAnimations}
         />
         {displayMode === 2 || displayMode === 0 ? null : (
           <>
@@ -43,12 +46,14 @@ const LoadingNovel: React.FC<Props> = ({
               shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
               height={16}
               width={pictureWidth}
+              stopAutoRun={disableLoadingAnimations}
             />
             <ShimmerPlaceHolder
               style={styles.text}
               shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
               height={16}
               width={randomNumber * pictureWidth}
+              stopAutoRun={disableLoadingAnimations}
             />
           </>
         )}
@@ -64,6 +69,7 @@ const LoadingNovel: React.FC<Props> = ({
           shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
           height={40}
           width={40}
+          stopAutoRun={disableLoadingAnimations}
         />
 
         <ShimmerPlaceHolder
@@ -71,12 +77,14 @@ const LoadingNovel: React.FC<Props> = ({
           shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
           height={18}
           width={textWidth}
+          stopAutoRun={disableLoadingAnimations}
         />
         <ShimmerPlaceHolder
           style={styles.picture}
           shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
           height={20}
           width={chapterNumberWidth}
+          stopAutoRun={disableLoadingAnimations}
         />
       </View>
     );

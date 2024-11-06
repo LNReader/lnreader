@@ -147,6 +147,7 @@
   },
   "browseSettings": "Browse Settings",
   "browseSettingsScreen": {
+    "concurrentSearches": "Concurrent Source Searches",
     "languages": "Languages",
     "onlyShowPinnedSources": "Only show pinned sources",
     "searchAllSources": "Search all sources",
@@ -258,6 +259,8 @@
     "bySource": "By source",
     "chapterSort": "Default chapter sort",
     "desc": "(Descending)",
+    "disableLoadingAnimations": "Disable loading animations",
+    "disableLoadingAnimationsDesc": "May improve performance on slower devices",
     "disableHapticFeedback": "Disable haptic feedback",
     "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
     "displayMode": "Display Mode",
