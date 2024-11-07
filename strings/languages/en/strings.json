@@ -150,7 +150,8 @@
     "languages": "Languages",
     "onlyShowPinnedSources": "Only show pinned sources",
     "searchAllSources": "Search all sources",
-    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished.",
+    "multi": "Multi"
   },
   "categories": {
     "addCategories": "Add category",
