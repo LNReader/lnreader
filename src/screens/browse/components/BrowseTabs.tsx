@@ -446,27 +446,37 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
         />
       }
       ListEmptyComponent={
-        <View style={{ marginTop: 100 }}>
-          <EmptyView
-            icon="(･Д･。"
-            description=" No repositories yet. Add your first plugin repository to get
+        !filteredAvailablePlugins.length ? (
+          <View style={{ marginTop: 100 }}>
+            <EmptyView
+              icon="(･Д･。"
+              description=" No repositories yet. Add your first plugin repository to get
                 started."
-            actions={[
-              {
-                iconName: 'cog-outline',
-                title: 'Add Repository',
-                onPress: () =>
-                  navigation.navigate('MoreStack', {
-                    screen: 'SettingsStack',
-                    params: {
-                      screen: 'RespositorySettings',
-                    },
-                  }),
-              },
-            ]}
-            theme={theme}
-          />
-        </View>
+              actions={[
+                {
+                  iconName: 'cog-outline',
+                  title: 'Add Repository',
+                  onPress: () =>
+                    navigation.navigate('MoreStack', {
+                      screen: 'SettingsStack',
+                      params: {
+                        screen: 'RespositorySettings',
+                      },
+                    }),
+                },
+              ]}
+              theme={theme}
+            />
+          </View>
+        ) : (
+          <View style={{ marginTop: 100 }}>
+            <EmptyView
+              icon="(･Д･。"
+              description="No plugins available for this search term"
+              theme={theme}
+            />
+          </View>
+        )
       }
     />
   );

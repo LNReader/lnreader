@@ -5,12 +5,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeColors } from '@theme/types';
 
 import getLoadingColors from '@utils/getLoadingColors';
+import { useAppSettings } from '@hooks/persisted/index';
 
 interface Props {
   theme: ThemeColors;
 }
 
 const MalLoading: React.FC<Props> = ({ theme }) => {
+  const { disableLoadingAnimations } = useAppSettings();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   const styles = createStyleSheet(theme);
 
@@ -25,6 +27,7 @@ const MalLoading: React.FC<Props> = ({ theme }) => {
           shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
           height={120 + Math.random() * 28}
           width={100}
+          stopAutoRun={disableLoadingAnimations}
         />
         <View style={styles.loadingText}>
           <ShimmerPlaceHolder
@@ -32,18 +35,21 @@ const MalLoading: React.FC<Props> = ({ theme }) => {
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={16}
             width={Dimensions.get('window').width - 140}
+            stopAutoRun={disableLoadingAnimations}
           />
           <ShimmerPlaceHolder
             style={styles.text}
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={16}
             width={Dimensions.get('window').width - 140}
+            stopAutoRun={disableLoadingAnimations}
           />
           <ShimmerPlaceHolder
             style={styles.text}
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={16}
             width={randomNumber * (Dimensions.get('window').width - 140)}
+            stopAutoRun={disableLoadingAnimations}
           />
         </View>
       </View>

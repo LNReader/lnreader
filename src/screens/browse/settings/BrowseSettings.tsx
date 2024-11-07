@@ -2,24 +2,42 @@ import { FlatList, StyleSheet } from 'react-native';
 import React from 'react';
 import { Appbar, List, SwitchItem } from '@components';
 
-import { useBrowseSettings, usePlugins, useTheme } from '@hooks/persisted';
+import {
+  useBrowseSettings,
+  usePlugins,
+  useTheme,
+} from '@hooks/persisted/index';
 import { getString } from '@strings/translations';
 import { languages } from '@utils/constants/languages';
-import { BrowseSettingsScreenProp } from '@navigators/types';
+import { BrowseSettingsScreenProp } from '@navigators/types/index';
+import { useBoolean } from '@hooks';
+import ConcurrentSearchesModal from '@screens/browse/settings/modals/ConcurrentSearchesModal';
 
 const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
   const theme = useTheme();
   const { goBack } = navigation;
 
   const { languagesFilter, toggleLanguageFilter } = usePlugins();
-  const { showMyAnimeList, showAniList, setBrowseSettings } =
-    useBrowseSettings();
+  const {
+    showMyAnimeList,
+    showAniList,
+    globalSearchConcurrency,
+    setBrowseSettings,
+  } = useBrowseSettings();
+
+  const globalSearchConcurrencyModal = useBoolean();
 
   return (
     <>
       <Appbar
         title={getString('browseSettings')}
         handleGoBack={goBack}
+        theme={theme}
+      />
+      <ConcurrentSearchesModal
+        globalSearchConcurrency={globalSearchConcurrency ?? 1}
+        modalVisible={globalSearchConcurrencyModal.value}
+        hideModal={globalSearchConcurrencyModal.setFalse}
         theme={theme}
       />
       <FlatList
@@ -29,9 +47,10 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
             <List.SubHeader theme={theme}>
               {getString('browseScreen.globalSearch')}
             </List.SubHeader>
-            <List.InfoItem
-              title={getString('browseSettingsScreen.searchAllWarning')}
-              icon="information-outline"
+            <List.Item
+              title={getString('browseSettingsScreen.concurrentSearches')}
+              description={(globalSearchConcurrency ?? 1).toString()}
+              onPress={globalSearchConcurrencyModal.setTrue}
               theme={theme}
             />
             <List.Divider theme={theme} />

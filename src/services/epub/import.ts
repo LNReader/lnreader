@@ -1,5 +1,3 @@
-import * as SQLite from 'expo-sqlite';
-const db = SQLite.openDatabase('lnreader.db');
 import BackgroundService from 'react-native-background-actions';
 import ZipArchive from '@native/ZipArchive';
 import dayjs from 'dayjs';
@@ -12,6 +10,7 @@ import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
 import EpubUtil from '@native/EpubUtil';
 import { NOVEL_STORAGE } from '@utils/Storages';
+import { db } from '@database/db';
 
 const insertLocalNovel = (
   name: string,

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import { ProgressBar } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { getPlugin } from '@plugins/pluginManager';
 import { useBackHandler } from '@hooks';
@@ -25,6 +26,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const { name, url, pluginId, isNovel } = route.params;
   const isSave = getPlugin(pluginId)?.webStorageUtilized;
   const uri = resolveUrl(pluginId, url, isNovel);
+  const { bottom } = useSafeAreaInsets();
 
   const theme = useTheme();
   const webViewRef = useRef<WebView | null>(null);
@@ -107,6 +109,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         onMessage={({ nativeEvent }) =>
           setTempData(JSON.parse(nativeEvent.data))
         }
+        containerStyle={{ paddingBottom: bottom }}
       />
       {menuVisible ? (
         <Menu

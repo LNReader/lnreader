@@ -1,22 +1,153 @@
 {
+  "aboutScreen": {
+    "website": "Website",
+    "discord": "Discord",
+    "github": "Github",
+    "helpTranslate": "Help translate",
+    "sources": "Sources",
+    "version": "Version",
+    "whatsNew": "What's new"
+  },
+  "advancedSettings": "Advanced",
   "advancedSettingsScreen": {
+    "cachedNovelsDeletedToast": "Cached novels deleted",
+    "chapterInsertFailed": "chapter insert failed",
+    "clearCachedNovels": "Clear cached novels",
+    "clearCachedNovelsDesc": "Delete cached novels which not in your library",
+    "clearDatabaseWarning": "Are you sure? Read and Downloaded chapters and progress of non-library novels will be lost.",
+    "clearUpdatesMessage": "Updates cleared.",
+    "clearUpdatesTab": "Clear updates tab",
+    "clearUpdatesWarning": "Are you sure? Updates tab will be cleared.",
+    "clearupdatesTabDesc": "Clears chapter entries in updates tab",
+    "dataManagement": "Data Management",
     "deleteReadChapters": "Okunmuş bölümleri sil",
-    "deleteReadChaptersDialogTitle": "Emin misiniz? Okunmuş olarak işaretlenmiş olan tüm bölümler silinecektir."
+    "deleteReadChaptersDialogTitle": "Emin misiniz? Okunmuş olarak işaretlenmiş olan tüm bölümler silinecektir.",
+    "importEpub": "Import Epub",
+    "importError": "Import Error",
+    "importNovel": "Import Novel",
+    "importStaticFiles": "Import Static Files",
+    "novelInsertFailed": "novel insert failed",
+    "parseEpub": "Parse Epub",
+    "useFAB": "Use FAB instead of button",
+    "userAgent": "User Agent"
+  },
+  "appearance": "Appearance",
+  "appearanceScreen": {
+    "accentColor": "Accent Color",
+    "alwaysShowNavLabels": "Always show nav labels",
+    "appTheme": "App theme",
+    "darkTheme": "Dark Theme",
+    "hideBackdrop": "Hide backdrop",
+    "lightTheme": "Light Theme",
+    "navbar": "Navbar",
+    "novelInfo": "Novel info",
+    "pureBlackDarkMode": "Pure black dark mode",
+    "showHistoryInTheNav": "Show history in the nav",
+    "showUpdatesInTheNav": "Show updates in the nav",
+    "theme": {
+      "default": "Default",
+      "lavender": "Lavender",
+      "midnightDusk": "Midnight Dusk",
+      "daybreakBloom": "Daybreak Bloom",
+      "strawberry": "Strawberry Daiquiri",
+      "tako": "Tako",
+      "teal": "Teal",
+      "turquoise": "Turquoise",
+      "yotsuba": "Yotsuba"
+    }
+  },
+  "backupScreen": {
+    "backupName": "Backup name",
+    "createBackup": "Create backup",
+    "createBackupDesc": "Can be used to restore current library",
+    "createBackupWarning": "Create backup may not work on devices with Android 9 or lower.",
+    "downloadingData": "Downloading Data",
+    "downloadingDownloadedFiles": "Downloading Downloaded files",
+    "drive": {
+      "backup": "Drive Backup",
+      "backupInterruped": "Drive Backup Interruped",
+      "googleDriveBackup": "Google Drive Backup",
+      "restore": "Drive Restore",
+      "restoreInterruped": "Drive Restore Interruped"
+    },
+    "googeDrive": "Googe Drive",
+    "googeDriveDesc": "Backup to your Google Drive",
+    "invalidBackupFolder": "Invalid backup folder",
+    "legacy": {
+      "backupCreated": "Backup created %{fileName}",
+      "libraryRestored": "Library Restored",
+      "noAvailableBackup": "There's no available backup",
+      "noErrorNovel": "There's no error novel",
+      "novelsRestored": "%{num} novels restored",
+      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
+      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+    },
+    "legacyBackup": "Legacy Backup",
+    "noBackupFound": "No backup found",
+    "noDataProvided": "No data provided",
+    "preparingData": "Preparing Data",
+    "remote": {
+      "backup": "Self Host Backup",
+      "backupInterruped": "Self Host Backup Interruped",
+      "host": "Host",
+      "restore": "Self Host Restore",
+      "restoreInterruped": "Self Host Restore Interruped",
+      "unknownHost": "Unknown host"
+    },
+    "remoteBackup": "Remote Backup",
+    "restoreBackup": "Restore backup",
+    "restoreBackupDesc": "Restore library from backup file",
+    "restoreError": "Restore error",
+    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
+    "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
+    "restorinBackup": "Restoring backup",
+    "restoringData": "Restoring Data",
+    "selfHost": "Self Host",
+    "selfHostDesc": "Backup to your server",
+    "uploadingData": "Uploading Data",
+    "uploadingDownloadedFiles": "Uploading Downloaded files"
   },
   "browse": "Göz at",
   "browseScreen": {
     "addedToLibrary": "Kitaplığa eklendi",
+    "available": "Available",
     "discover": "Keşfet",
     "globalSearch": "Genel arama",
+    "installFailed": "Installation failed: %{name}",
+    "installed": "Installed",
+    "installedPlugin": "Installed %{name}",
+    "installedPlugins": "Installed plugins",
     "lastUsed": "Son kullanılan",
     "latest": "En son",
     "listEmpty": "Ayarlardan dilleri etkinleştirin",
+    "migration": {
+      "anotherServiceIsRunning": "Another service is running",
+      "dialogMessage": "Migrate %{url}?",
+      "migratingToNewSource": "Migrating %{name} to new source",
+      "migrationError": "Migration error",
+      "novelAlreadyInLibrary": "Novel already in library",
+      "novelMigrated": "Novel Migrated",
+      "selectSource": "Select Source",
+      "selectSourceDesc": "Select a Source To Migrate From"
+    },
+    "noSource": "Your library does not have any novels from this source",
     "pinned": "Sabitlenmiş",
+    "pluginsHostError": "Plugins host error",
     "removeFromLibrary": "Kitaplıktan kaldırıldı",
-    "searchbar": "Kaynak ara"
+    "searchbar": "Kaynak ara",
+    "selectNovel": "Select Novel",
+    "tryAgain": "Try again in a moment",
+    "uninstalledPlugin": "Uninstalled %{name}",
+    "updateFailed": "Update failed",
+    "updatedTo": "Updated to %{version}",
+    "settings": {
+      "title": "Plugin Settings",
+      "description": "Fill in the plugin settings. Restart app to apply the settings."
+    }
   },
   "browseSettings": "Göz Atma Seçenekleri",
   "browseSettingsScreen": {
+    "concurrentSearches": "Concurrent Source Searches",
     "languages": "Diller",
     "onlyShowPinnedSources": "Yalnızca sabitlenmiş kaynakları göster",
     "searchAllSources": "Tüm kaynaklarda ara",
@@ -24,6 +155,8 @@
   },
   "categories": {
     "addCategories": "Kategori ekle",
+    "cantDeleteDefault": "You cant delete default category",
+    "default": "Default",
     "defaultCategory": "Varsayılan kategori",
     "deleteModal": {
       "desc": "Şu kategoriyi silmek istiyor musunuz:",
@@ -33,33 +166,65 @@
     "editCategories": "Kategoriyi yeniden adlandır",
     "emptyMsg": "Kategoriniz bulunmuyor.  Kitaplığınızı düzenlemek için bir tane oluşturmak için artı butonuna basın",
     "header": "Kategorileri düzenle",
+    "local": "Local",
     "setCategories": "Kategorileri ayarla",
     "setModalEmptyMsg": "Hiç kategoriniz yok. Kitaplığınızı düzenlemek üzere bir tane oluşturmak için Düzenle düğmesine dokunun."
   },
+  "repositories": {
+    "emptyMsg": "You have no repositories. Add your first plugin repository to get started."
+  },
   "common": {
+    "about": "About",
     "add": "Ekle",
     "all": "Tümü",
+    "backup": "Backup",
     "cancel": "İptal",
     "categories": "Kategoriler",
     "chapters": "Bölüm",
     "clear": "Temizle",
+    "copiedToClipboard": "Copied to clipboard: %{name}",
+    "delete": "Delete",
+    "deleted": "Deleted %{name}",
+    "deprecated": "Deprecated",
     "display": "Görünüm",
+    "done": "Done",
+    "downloads": "Downloads",
     "edit": "Düzenle",
+    "example": "Example",
     "filter": "Filtre",
     "globally": "global olarak",
     "install": "Yükle",
+    "logout": "Logout",
     "name": "Ad",
     "newUpdateAvailable": "Yeni güncelleme var",
     "ok": "Tamam",
+    "parsing": "Parsing",
+    "pause": "Pause",
+    "preparing": "Preparing",
+    "remove": "Remove",
     "reset": "Sıfırla",
+    "restore": "Restore",
+    "resume": "Resume",
     "retry": "Yeniden dene",
     "save": "Kaydet",
     "search": "Ara",
     "searchFor": "Şunu ara",
     "searchResults": "Arama sonuçları",
     "settings": "Ayarlar",
+    "show": "Show",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
     "sort": "Sırala",
     "submit": "Gönder"
+  },
+  "webview": {
+    "refresh": "Refresh",
+    "share": "Share",
+    "openInBrowser": "Open in browser",
+    "clearCookies": "Clear cookies",
+    "cookiesCleared": "Cookies cleared",
+    "clearData": "Clear WebView data",
+    "dataDeleted": "WebView data cleared"
   },
   "date": {
     "calendar": {
@@ -70,10 +235,22 @@
     }
   },
   "downloadScreen": {
+    "cancelDownloads": "Cancel downloads",
+    "cancelled": "Downloads cancelled.",
+    "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
+    "chapterName": "Chapter: %{name}",
+    "completed": "Download completed",
     "dbInfo": "İndirilenler bir SQLite Veritabanında kaydedilmektedir.",
     "downloadChapters": "İndirilen bölümler",
+    "downloader": "Downloader",
+    "downloading": "Downloading",
+    "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "İndirilenler",
-    "noDownloads": "İndirme yok"
+    "failed": "Download failed: %{message}",
+    "noDownloads": "İndirme yok",
+    "pluginNotFound": "Plugin not found!",
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
+    "serviceRunning": "Another service is running. Queued chapters"
   },
   "generalSettings": "Genel",
   "generalSettingsScreen": {
@@ -82,13 +259,18 @@
     "bySource": "Kaynağa göre",
     "chapterSort": "Varsayılan bölüm sıralaması",
     "desc": "(Azalan)",
+    "disableLoadingAnimations": "Disable loading animations",
+    "disableLoadingAnimationsDesc": "May improve performance on slower devices",
     "disableHapticFeedback": "Dokunmatik geri bildirimi devre dışı bırak",
+    "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
     "displayMode": "Görünüm Modu",
     "downloadNewChapters": "Yeni bölümleri indir",
     "epub": "EPUB",
     "epubLocation": "EPUB Konumu",
     "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
     "globalUpdate": "Global güncelleme",
+    "gridSize": "Grid size",
+    "gridSizeDesc": "%{num} per row",
     "itemsPerRow": "Satır başına düşen öge",
     "itemsPerRowLibrary": "Kitaplıkta satır başına düşen öge",
     "jumpToLastReadChapter": "Jump to last read chapter in list",
@@ -97,7 +279,9 @@
     "novelSort": "Novel Sıralaması",
     "refreshMetadata": "Üst veriyi otomatik olarak yenile",
     "refreshMetadataDescription": "Kitaplığı güncellerken yeni kapak ve ayrıntıları denetle",
+    "sortOrder": "Sort Order",
     "updateLibrary": "Açılışta kitaplığı güncelle",
+    "updateLibraryDesc": "Not recommended for low devices",
     "updateOngoing": "Yalnızca devam eden novel'leri güncelle",
     "updateTime": "Son güncelleme süresini göster",
     "useFAB": "Kitaplıkta FAB kullan"
@@ -109,7 +293,10 @@
   },
   "history": "Geçmiş",
   "historyScreen": {
+    "chapter": "Chapter",
     "clearHistorWarning": "Emin misin? Tüm geçmiş kaybolacak.",
+    "deleted": "History deleted.",
+    "nothingReadRecently": "Nothing read recently",
     "searchbar": "Geçmişte ara"
   },
   "library": "Kitaplık",
@@ -120,10 +307,13 @@
         "comfortable": "Rahat ızgara",
         "compact": "Kompakt ızgara",
         "displayMode": "Görüntüleme modu",
+        "download": "Download",
         "downloadBadges": "İndirilen LN'ler için rozet göster",
         "list": "Liste",
         "noTitle": "Yalnızca kapak ızgara",
+        "numberOfItems": "Number of Items",
         "showNoOfItems": "Öğelerin sayısını göster",
+        "unread": "Unread",
         "unreadBadges": "Okunmamış LN'ler için rozet göster"
       },
       "filters": {
@@ -143,15 +333,40 @@
       }
     },
     "empty": "Kitaplığın boş. Göz at yerinden kitaplığına light novel ekleyebilirsin.",
+    "extraMenu": {
+      "importEpub": "Import Epub",
+      "openRandom": "Open Random Entry",
+      "updateCategory": "Update Category",
+      "updateLibrary": "Update Library"
+    },
     "searchbar": "Kitaplıkta ara"
   },
   "more": "Daha fazla",
   "moreScreen": {
     "downloadOnly": "Yalnızca indirilenler",
-    "incognitoMode": "Gizli mod"
+    "downloadOnlyDesc": "Filters all novels in your library",
+    "downloadQueue": "Download queue",
+    "incognitoMode": "Gizli mod",
+    "incognitoModeDesc": "Pauses reading history"
   },
   "novelScreen": {
     "addToLibaray": "Kitaplığa ekle",
+    "bottomSheet": {
+      "displays": {
+        "chapterNumber": "Chapter number",
+        "sourceTitle": "Source title"
+      },
+      "filters": {
+        "bookmarked": "Bookmarked",
+        "downloaded": "Downloaded",
+        "unread": "Unread"
+      },
+      "order": {
+        "byChapterName": "By chapter name",
+        "bySource": "By source"
+      }
+    },
+    "chapterChapnum": "Chapter %{num}",
     "chapters": "bölüm",
     "continueReading": "Okumaya devam et",
     "convertToEpubModal": {
@@ -162,6 +377,27 @@
       "useCustomJS": "Özel JS kullan",
       "useCustomJSWarning": "Tüm EPUB okuyucuları tarafından desteklenmeyebilir",
       "useReaderTheme": "Okuyucu temasını kullan"
+    },
+    "deleteChapterError": "Cant delete chapter chapter folder",
+    "deleteMessage": "Delete downloaded chapters?",
+    "deletedAllDownloads": "Deleted all Downloads",
+    "download": {
+      "custom": "Custom",
+      "customAmount": "Download custom amount",
+      "delete": "Delete downloads",
+      "next": "Next chapter",
+      "next10": "Next 10 chapter",
+      "next5": "Next 5 chapter",
+      "unread": "Unread"
+    },
+    "edit": {
+      "addTag": "Add Tag",
+      "author": "Author: %{author}",
+      "cover": "Edit cover",
+      "info": "Edit info",
+      "status": "Status:",
+      "summary": "Description: %{summary}...",
+      "title": "Title: %{title}"
     },
     "inLibaray": "Kitaplıkta",
     "jumpToChapterModal": {
@@ -175,17 +411,35 @@
       "openChapter": "Bölümü Aç"
     },
     "migrate": "Taşın",
-    "noSummary": "Özet bilgisi yok"
+    "noSummary": "Özet bilgisi yok",
+    "progress": "Progress %{progress} %",
+    "readChaptersDeleted": "Read chapters deleted",
+    "startReadingChapters": "Start reading %{name}",
+    "status": {
+      "cancelled": "Cancelled",
+      "completed": "Completed",
+      "licensed": "Licensed",
+      "onHiatus": "On Hiatus",
+      "ongoing": "Ongoing",
+      "publishingFinished": "Publishing Finished",
+      "unknown": "Unknown"
+    },
+    "tracked": "Tracked",
+    "tracking": "Tracking",
+    "unknownStatus": "Unknown status",
+    "updatedToast": "Updated %{name}"
   },
   "readerScreen": {
     "bottomSheet": {
       "allowTextSelection": "Yazı seçmeye izin ver",
       "autoscroll": "Otomatik Kaydırma",
       "bionicReading": "Biyonik Okuma",
+      "tapToScroll": "Tap to scroll",
       "color": "Renk",
       "fontStyle": "Yazı tipi",
       "fullscreen": "Tam ekran",
       "lineHeight": "Satır Yüksekliği",
+      "padding": "Padding",
       "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Ekstra paragraf boşluklarını kaldır",
       "renderHml": "HTML'yi Render'le",
@@ -198,6 +452,7 @@
       "textSize": "Yazı boyutu",
       "useChapterDrawerSwipeNavigation": "Çekmeceyi açmak için sağa kaydırın",
       "verticalSeekbar": "Dikey Arama Çubuğu",
+      "keepScreenOn": "Keep screen on",
       "volumeButtonsScroll": "Ses butonlarıyla kaydırma"
     },
     "drawer": {
@@ -205,8 +460,11 @@
       "scrollToCurrentChapter": "Mevcut bölüme kaydır",
       "scrollToTop": "Yukarı kaydır"
     },
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p>",
     "finished": "Biten",
-    "noNextChapter": "Başka bölüm yok"
+    "nextChapter": "Next: %{name}",
+    "noNextChapter": "Başka bölüm yok",
+    "noPreviousChapter": "There's no previous chapter"
   },
   "readerSettings": {
     "autoScrollInterval": "Otomatik kaydırma süresi (saniye olarak)",
@@ -238,18 +496,30 @@
     "downloadedChapters": "İndirilmiş bölüm",
     "genreDistribution": "Tür dağılımı",
     "readChapters": "Okunan bölüm",
+    "sources": "Sources",
     "statusDistribution": "Durum dağılımı",
     "title": "İstatistikler",
     "titlesInLibrary": "Kitaplıktaki başlık",
     "totalChapters": "Toplam bölüm",
     "unreadChapters": "Okunmamış bölüm"
   },
+  "tracking": "Tracking",
+  "trackingScreen": {
+    "logOutMessage": "Log out from %{name}?",
+    "revalidate": "Revalidate",
+    "services": "Services"
+  },
   "updates": "Güncellemeler",
   "updatesScreen": {
+    "deletedChapters": "Deleted %{num} chapters",
     "emptyView": "Güncelleme yok",
     "lastUpdatedAt": "Kitaplık son güncelleme:",
+    "libraryUpdated": "Library Updated",
     "newChapters": "Yeni bölüm",
+    "novelsUpdated": "%{num} novels updated",
     "searchbar": "Güncellemelerde ara",
-    "updatesLower": "güncellemeler"
+    "unableToGetNovel": "Unable to get novel",
+    "updatesLower": "güncellemeler",
+    "updatingLibrary": "Updating library"
   }
 }
