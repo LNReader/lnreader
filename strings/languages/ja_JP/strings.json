@@ -23,11 +23,9 @@
     "deleteReadChapters": "Delete read chapters",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted.",
     "importEpub": "Import Epub",
-    "importError": "Import Error",
     "importNovel": "Import Novel",
     "importStaticFiles": "Import Static Files",
     "novelInsertFailed": "novel insert failed",
-    "parseEpub": "Parse Epub",
     "useFAB": "Use FAB instead of button",
     "userAgent": "User Agent"
   },
@@ -77,28 +75,19 @@
       "backupCreated": "Backup created %{fileName}",
       "libraryRestored": "Library Restored",
       "noAvailableBackup": "There's no available backup",
-      "noErrorNovel": "There's no error novel",
-      "novelsRestored": "%{num} novels restored",
-      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
-      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+      "novelsRestored": "%{num} novels restored"
     },
     "legacyBackup": "Legacy Backup",
     "noBackupFound": "No backup found",
-    "noDataProvided": "No data provided",
     "preparingData": "Preparing Data",
     "remote": {
       "backup": "Self Host Backup",
-      "backupInterruped": "Self Host Backup Interruped",
       "host": "Host",
-      "restore": "Self Host Restore",
-      "restoreInterruped": "Self Host Restore Interruped",
       "unknownHost": "Unknown host"
     },
     "remoteBackup": "Remote Backup",
     "restoreBackup": "Restore backup",
     "restoreBackupDesc": "Restore library from backup file",
-    "restoreError": "Restore error",
-    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
     "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
     "restorinBackup": "Restoring backup",
     "restoringData": "Restoring Data",
@@ -121,22 +110,15 @@
     "latest": "Latest",
     "listEmpty": "設定から言語を有効にする",
     "migration": {
-      "anotherServiceIsRunning": "Another service is running",
       "dialogMessage": "Migrate %{url}?",
-      "migratingToNewSource": "Migrating %{name} to new source",
-      "migrationError": "Migration error",
       "novelAlreadyInLibrary": "Novel already in library",
-      "novelMigrated": "Novel Migrated",
       "selectSource": "Select Source",
       "selectSourceDesc": "Select a Source To Migrate From"
     },
     "noSource": "Your library does not have any novels from this source",
-    "pinned": "ピン留め",
-    "pluginsHostError": "Plugins host error",
     "removeFromLibrary": "ライブラリから削除",
     "searchbar": "ソースを検索",
     "selectNovel": "Select Novel",
-    "tryAgain": "Try again in a moment",
     "uninstalledPlugin": "Uninstalled %{name}",
     "updateFailed": "Update failed",
     "updatedTo": "Updated to %{version}",
@@ -148,10 +130,7 @@
   "browseSettings": "Browse Settings",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
-    "languages": "Languages",
-    "onlyShowPinnedSources": "Only show pinned sources",
-    "searchAllSources": "Search all sources",
-    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+    "languages": "Languages"
   },
   "categories": {
     "addCategories": "カテゴリーを追加",
@@ -198,7 +177,6 @@
     "name": "名前",
     "newUpdateAvailable": "新しいアップデートが見つかりました",
     "ok": "わかりました",
-    "parsing": "Parsing",
     "pause": "Pause",
     "preparing": "Preparing",
     "remove": "Remove",
@@ -241,16 +219,12 @@
     "chapterName": "Chapter: %{name}",
     "completed": "Download completed",
     "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "downloader": "Downloader",
     "downloading": "Downloading",
     "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "downloads",
-    "failed": "Download failed: %{message}",
     "noDownloads": "No downloads",
     "pluginNotFound": "Plugin not found!",
-    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
-    "serviceRunning": "Another service is running. Queued chapters"
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
   },
   "generalSettings": "General",
   "generalSettingsScreen": {
@@ -288,7 +262,6 @@
   },
   "globalSearch": {
     "allSources": "all sources",
-    "pinnedSources": "pinned sources",
     "searchIn": "Search a novel in"
   },
   "history": "履歴",
@@ -442,11 +415,9 @@
       "padding": "Padding",
       "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Remove extra paragraph spacing",
-      "renderHml": "HTMLをレンダリング",
       "scrollAmount": "Scroll amount (screen height by default)",
       "showBatteryAndTime": "バッテリーと時間を表示",
       "showProgressPercentage": "進捗率を表示",
-      "showSwipeMargins": "Show swipe margins",
       "swipeGestures": "Swipe left or right to navigate between chapters",
       "textAlign": "Text align",
       "textSize": "文字サイズ",
