@@ -23,11 +23,9 @@
     "deleteReadChapters": "Supprimer les chapitres lus",
     "deleteReadChaptersDialogTitle": "Êtes-vous sûr? Tous les chapitres marqués comme lus seront supprimés",
     "importEpub": "Importer Epub",
-    "importError": "Erreur d'importation",
     "importNovel": "Importer un roman",
     "importStaticFiles": "Import Static Files",
     "novelInsertFailed": "novel insert failed",
-    "parseEpub": "Parse Epub",
     "useFAB": "Use FAB instead of button",
     "userAgent": "User Agent"
   },
@@ -77,28 +75,19 @@
       "backupCreated": "Backup created %{fileName}",
       "libraryRestored": "Bibliothèque restaurée",
       "noAvailableBackup": "There's no available backup",
-      "noErrorNovel": "There's no error novel",
-      "novelsRestored": "%{num} novels restored",
-      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
-      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+      "novelsRestored": "%{num} novels restored"
     },
     "legacyBackup": "Legacy Backup",
     "noBackupFound": "Aucune sauvegarde trouvée",
-    "noDataProvided": "No data provided",
     "preparingData": "Preparing Data",
     "remote": {
       "backup": "Self Host Backup",
-      "backupInterruped": "Self Host Backup Interruped",
       "host": "Host",
-      "restore": "Self Host Restore",
-      "restoreInterruped": "Self Host Restore Interruped",
       "unknownHost": "Unknown host"
     },
     "remoteBackup": "Remote Backup",
     "restoreBackup": "Restore backup",
     "restoreBackupDesc": "Restore library from backup file",
-    "restoreError": "Restore error",
-    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
     "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
     "restorinBackup": "Restoring backup",
     "restoringData": "Restoring Data",
@@ -121,22 +110,15 @@
     "latest": "Dernier",
     "listEmpty": "Activer les langues à partir des paramètres",
     "migration": {
-      "anotherServiceIsRunning": "Another service is running",
       "dialogMessage": "Migrate %{url}?",
-      "migratingToNewSource": "Migrating %{name} to new source",
-      "migrationError": "Migration error",
       "novelAlreadyInLibrary": "Novel already in library",
-      "novelMigrated": "Novel Migrated",
       "selectSource": "Select Source",
       "selectSourceDesc": "Select a Source To Migrate From"
     },
     "noSource": "Your library does not have any novels from this source",
-    "pinned": "Épinglé",
-    "pluginsHostError": "Plugins host error",
     "removeFromLibrary": "Supprimé de la bibliothèque",
     "searchbar": "Rechercher des sources",
     "selectNovel": "Sélectionnez un roman",
-    "tryAgain": "Réessayez dans un instant",
     "uninstalledPlugin": "Désinstallé %{name}",
     "updateFailed": "Mise à jour échouée",
     "updatedTo": "Mis à jour %{version}",
@@ -148,10 +130,7 @@
   "browseSettings": "Parcourir les paramètres",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
-    "languages": "Langues",
-    "onlyShowPinnedSources": "Afficher uniquement les sources épinglées",
-    "searchAllSources": "Rechercher toutes les sources",
-    "searchAllWarning": "La recherche d'un grand nombre de sources peut bloquer l'application jusqu'à la fin de la recherche.."
+    "languages": "Langues"
   },
   "categories": {
     "addCategories": "Ajouter une catégorie",
@@ -198,7 +177,6 @@
     "name": "Nom",
     "newUpdateAvailable": "Nouvelle mise à jour disponible",
     "ok": "Ok",
-    "parsing": "Parsing",
     "pause": "Pause",
     "preparing": "Preparing",
     "remove": "Retirer",
@@ -241,16 +219,12 @@
     "chapterName": "Chapter: %{name}",
     "completed": "Download completed",
     "dbInfo": "Les téléchargements sont enregistrés dans une base de données SQLite.",
-    "downloadChapters": "chapitres téléchargés",
-    "downloader": "Downloader",
     "downloading": "Downloading",
     "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "télécharger",
-    "failed": "Download failed: %{message}",
     "noDownloads": "Aucun téléchargement",
     "pluginNotFound": "Plugin not found!",
-    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
-    "serviceRunning": "Another service is running. Queued chapters"
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
   },
   "generalSettings": "Général",
   "generalSettingsScreen": {
@@ -288,7 +262,6 @@
   },
   "globalSearch": {
     "allSources": "toutes les sources",
-    "pinnedSources": "sources épinglées",
     "searchIn": "Rechercher un novel dans"
   },
   "history": "Historique",
@@ -442,11 +415,9 @@
       "padding": "Padding",
       "pageReader": "Appuyez à gauche ou à droite pour naviguer dans les pages du lecteur (expérimental)",
       "removeExtraSpacing": "Supprimer l'espacement de paragraphe supplémentaire",
-      "renderHml": "Rendre l'HTML",
       "scrollAmount": "Défilement du montant (hauteur de l'écran par défaut)",
       "showBatteryAndTime": "Afficher la batterie et l'heure",
       "showProgressPercentage": "Afficher le pourcentage de progression",
-      "showSwipeMargins": "Afficher les marges de balayage",
       "swipeGestures": "Balayez vers la gauche ou la droite pour passer d'un chapitre à l'autre.",
       "textAlign": "Alignement du texte",
       "textSize": "Taille du texte",
