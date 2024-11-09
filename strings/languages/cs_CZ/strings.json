@@ -23,11 +23,9 @@
     "deleteReadChapters": "Delete read chapters",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted.",
     "importEpub": "Import Epub",
-    "importError": "Import Error",
     "importNovel": "Import Novel",
     "importStaticFiles": "Import Static Files",
     "novelInsertFailed": "novel insert failed",
-    "parseEpub": "Parse Epub",
     "useFAB": "Use FAB instead of button",
     "userAgent": "User Agent"
   },
@@ -77,28 +75,19 @@
       "backupCreated": "Backup created %{fileName}",
       "libraryRestored": "Library Restored",
       "noAvailableBackup": "There's no available backup",
-      "noErrorNovel": "There's no error novel",
-      "novelsRestored": "%{num} novels restored",
-      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
-      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+      "novelsRestored": "%{num} novels restored"
     },
     "legacyBackup": "Legacy Backup",
     "noBackupFound": "No backup found",
-    "noDataProvided": "No data provided",
     "preparingData": "Preparing Data",
     "remote": {
       "backup": "Self Host Backup",
-      "backupInterruped": "Self Host Backup Interruped",
       "host": "Host",
-      "restore": "Self Host Restore",
-      "restoreInterruped": "Self Host Restore Interruped",
       "unknownHost": "Unknown host"
     },
     "remoteBackup": "Remote Backup",
     "restoreBackup": "Restore backup",
     "restoreBackupDesc": "Restore library from backup file",
-    "restoreError": "Restore error",
-    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
     "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
     "restorinBackup": "Restoring backup",
     "restoringData": "Restoring Data",
@@ -121,22 +110,15 @@
     "latest": "Poslední",
     "listEmpty": "Povolit jazyky z nastavení",
     "migration": {
-      "anotherServiceIsRunning": "Another service is running",
       "dialogMessage": "Migrate %{url}?",
-      "migratingToNewSource": "Migrating %{name} to new source",
-      "migrationError": "Migration error",
       "novelAlreadyInLibrary": "Novel already in library",
-      "novelMigrated": "Novel Migrated",
       "selectSource": "Select Source",
       "selectSourceDesc": "Select a Source To Migrate From"
     },
     "noSource": "Your library does not have any novels from this source",
-    "pinned": "Připnuté ",
-    "pluginsHostError": "Plugins host error",
     "removeFromLibrary": "Odstraněno z knihovny",
     "searchbar": "Zdroje hledání",
     "selectNovel": "Select Novel",
-    "tryAgain": "Try again in a moment",
     "uninstalledPlugin": "Uninstalled %{name}",
     "updateFailed": "Update failed",
     "updatedTo": "Updated to %{version}",
@@ -148,10 +130,7 @@
   "browseSettings": "Browse Settings",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
-    "languages": "Languages",
-    "onlyShowPinnedSources": "Only show pinned sources",
-    "searchAllSources": "Search all sources",
-    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+    "languages": "Languages"
   },
   "categories": {
     "addCategories": "Přidat kategorii",
@@ -198,7 +177,6 @@
     "name": "Jméno",
     "newUpdateAvailable": "Nová aktualizace k dispozici",
     "ok": "Ok",
-    "parsing": "Parsing",
     "pause": "Pause",
     "preparing": "Preparing",
     "remove": "Remove",
@@ -241,16 +219,12 @@
     "chapterName": "Chapter: %{name}",
     "completed": "Download completed",
     "dbInfo": "Stahování jsou uložena v databázi SQLite.",
-    "downloadChapters": "stažené kapitoly",
-    "downloader": "Downloader",
     "downloading": "Downloading",
     "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "stažené",
-    "failed": "Download failed: %{message}",
     "noDownloads": "Žádné stažené",
     "pluginNotFound": "Plugin not found!",
-    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
-    "serviceRunning": "Another service is running. Queued chapters"
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
   },
   "generalSettings": "General",
   "generalSettingsScreen": {
@@ -288,7 +262,6 @@
   },
   "globalSearch": {
     "allSources": "všechny zdroje",
-    "pinnedSources": "připnuté zdroje",
     "searchIn": "Hledat novelu v"
   },
   "history": "Historie",
@@ -442,11 +415,9 @@
       "padding": "Padding",
       "pageReader": "Klepněte vlevo nebo vpravo pro procházení stránek v čtečce (experimentální)",
       "removeExtraSpacing": "Odstranit extra prostor mezi paragrafy",
-      "renderHml": "Vykreslit HTML",
       "scrollAmount": "Vzdálenost posunu (jako výchozí velikost výška obrazovky)",
       "showBatteryAndTime": "Zobrazit indikátor baterie a čas",
       "showProgressPercentage": "Ukázat postup v procentech",
-      "showSwipeMargins": "Zobrazit okraje tahu",
       "swipeGestures": "Potahněte do leva nebo do prava pro navigaci mezi kapitolami",
       "textAlign": "Zarovnání textu",
       "textSize": "Velikost textu",
