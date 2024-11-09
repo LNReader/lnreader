@@ -23,18 +23,16 @@
     "deleteReadChapters": "Удалять прочитанные главы",
     "deleteReadChaptersDialogTitle": "Вы уверены? Все главы, помеченные как прочитанные, будут удалены.",
     "importEpub": "Импорт Epub",
-    "importError": "Ошибка импорта",
     "importNovel": "Импорт новеллы",
     "importStaticFiles": "Импорт файлов статики",
     "novelInsertFailed": "Ошибка вставки главы",
-    "parseEpub": "Parse Epub",
     "useFAB": "Использовать FAB вместо кнопки",
     "userAgent": "User Agent"
   },
   "appearance": "Внешний вид",
   "appearanceScreen": {
     "accentColor": "Accent Color",
-    "alwaysShowNavLabels": "Always show nav labels",
+    "alwaysShowNavLabels": "Всегда показывать навигационные метки",
     "appTheme": "Тема приложения",
     "darkTheme": "Тёмная тема",
     "hideBackdrop": "Скрыть фон",
@@ -50,9 +48,9 @@
       "midnightDusk": "Midnight Dusk",
       "daybreakBloom": "Daybreak Bloom",
       "strawberry": "Strawberry Daiquiri",
-      "tako": "Tako",
+      "tako": "Тако",
       "teal": "Teal",
-      "turquoise": "Turquoise",
+      "turquoise": "Бирюзовый",
       "yotsuba": "Yotsuba"
     }
   },
@@ -77,28 +75,19 @@
       "backupCreated": "Резервная копия создана %{fileName}",
       "libraryRestored": "Библиотека восстановлена",
       "noAvailableBackup": "Нет доступных резервных копий",
-      "noErrorNovel": "Ничего не найдено",
-      "novelsRestored": "%{num} Новеллы восстановлены",
-      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
-      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+      "novelsRestored": "%{num} Новеллы восстановлены"
     },
     "legacyBackup": "Legacy Backup",
     "noBackupFound": "Резервные копии не найдены",
-    "noDataProvided": "Данные не указаны",
     "preparingData": "Подготовка данных",
     "remote": {
       "backup": "Self Host Backup",
-      "backupInterruped": "Self Host Backup Interruped",
       "host": "Host",
-      "restore": "Self Host Restore",
-      "restoreInterruped": "Self Host Restore Interruped",
       "unknownHost": "Неизвестный хост"
     },
     "remoteBackup": "Удалённое резервное копирование",
     "restoreBackup": "Восстановить из резервной копии",
     "restoreBackupDesc": "Восстановить библиотеку из файла резервной копии",
-    "restoreError": "Ошибка восстановления",
-    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
     "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
     "restorinBackup": "Восстановление резервной копии",
     "restoringData": "Восстановление данных",
@@ -121,22 +110,15 @@
     "latest": "Последние",
     "listEmpty": "Включите языки в настройках",
     "migration": {
-      "anotherServiceIsRunning": "Другая служба запущена",
       "dialogMessage": "Перенести %{url}?",
-      "migratingToNewSource": "Перенос %{name} на новый источник",
-      "migrationError": "Ошибка миграции",
       "novelAlreadyInLibrary": "Новелла уже в библиотеке",
-      "novelMigrated": "Новелла перенесена",
       "selectSource": "Выберите источник",
       "selectSourceDesc": "Выберите источник для переноса из"
     },
     "noSource": "В вашей библиотеке нет новелл из этого источника",
-    "pinned": "Закреплено",
-    "pluginsHostError": "Ошибка хоста плагина",
     "removeFromLibrary": "Удалено из библиотеки",
     "searchbar": "Поиск источника",
     "selectNovel": "Выбрать новеллу",
-    "tryAgain": "Попробовать ещё раз",
     "uninstalledPlugin": "Удалено %{name}",
     "updateFailed": "Ошибка обновления",
     "updatedTo": "Обновлено до %{version}",
@@ -148,10 +130,7 @@
   "browseSettings": "Настройки обзора",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
-    "languages": "Языки",
-    "onlyShowPinnedSources": "Показывать только закрепленные источники",
-    "searchAllSources": "Поиск по всем источникам",
-    "searchAllWarning": "Поиск по большому количеству источников может привести к зависанию приложения, пока поиск не завершится."
+    "languages": "Языки"
   },
   "categories": {
     "addCategories": "Добавить категорию",
@@ -183,7 +162,7 @@
     "chapters": "Главы",
     "clear": "Очистить",
     "copiedToClipboard": "Скопировано в буфер обмена: %{name}",
-    "delete": "Delete",
+    "delete": "Удалить",
     "deleted": "Deleted %{name}",
     "deprecated": "Deprecated",
     "display": "Вид",
@@ -198,7 +177,6 @@
     "name": "Название",
     "newUpdateAvailable": "Доступно новое обновление",
     "ok": "Ок",
-    "parsing": "Parsing",
     "pause": "Пауза",
     "preparing": "Подготовка",
     "remove": "Удалить",
@@ -241,16 +219,12 @@
     "chapterName": "Глава: %{name}",
     "completed": "Загрузка завершена",
     "dbInfo": "Загрузки сохраняются в базе данных SQLite.",
-    "downloadChapters": "загруженные главы",
-    "downloader": "Downloader",
     "downloading": "Загрузка",
-    "downloadingNovel": "Downloading: %{name}",
+    "downloadingNovel": "Загружается %{name}",
     "downloadsLower": "Загруженное",
-    "failed": "Download failed: %{message}",
     "noDownloads": "Ничего не загружено",
     "pluginNotFound": "Плагин не найден!",
-    "removeDownloadsWarning": "Вы уверены? Все загруженные главы будут удалены.",
-    "serviceRunning": "Запущен другой сервис. В очереди главы"
+    "removeDownloadsWarning": "Вы уверены? Все загруженные главы будут удалены."
   },
   "generalSettings": "Основные",
   "generalSettingsScreen": {
@@ -288,7 +262,6 @@
   },
   "globalSearch": {
     "allSources": "все источники",
-    "pinnedSources": "закреплённые источники",
     "searchIn": "Поиск новеллы в"
   },
   "history": "История",
@@ -311,7 +284,7 @@
         "downloadBadges": "Значок загруженных глав",
         "list": "Список",
         "noTitle": "Только сетка обложки",
-        "numberOfItems": "Number of Items",
+        "numberOfItems": "Количество глав",
         "showNoOfItems": "Показывать количество элементов",
         "unread": "Непрочитанные",
         "unreadBadges": "Не прочитано Значки"
@@ -442,11 +415,9 @@
       "padding": "Padding",
       "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Удалить дополнительный интервал параграфа",
-      "renderHml": "Рендер HTML",
       "scrollAmount": "Смещение автопрокрутки (высота экрана по умолчанию)",
       "showBatteryAndTime": "Показывать батарею и время",
       "showProgressPercentage": "Показывать процент прогресса",
-      "showSwipeMargins": "Показать зоны прокрутки",
       "swipeGestures": "Проведите влево или вправо для перехода между главами",
       "textAlign": "Выравнивание текста",
       "textSize": "Размер текста",
@@ -462,7 +433,7 @@
     },
     "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p>",
     "finished": "Завершено",
-    "nextChapter": "Next: %{name}",
+    "nextChapter": "Следующий: %{name}",
     "noNextChapter": "Следующей главы нет",
     "noPreviousChapter": "Предыдущей главы нет"
   },
@@ -520,6 +491,6 @@
     "searchbar": "Поиск в обновлениях",
     "unableToGetNovel": "Невозможно получить новеллу",
     "updatesLower": "обновлено",
-    "updatingLibrary": "Updating library"
+    "updatingLibrary": "Обновление библиотеки"
   }
 }
