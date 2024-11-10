@@ -11,27 +11,27 @@
   "advancedSettings": "Дополнительно",
   "advancedSettingsScreen": {
     "cachedNovelsDeletedToast": "Кэшированные новеллы удалены",
-    "chapterInsertFailed": "Ошибка вставки главы",
+    "chapterInsertFailed": "ошибка вставки главы",
     "clearCachedNovels": "Очистить кэш новелл",
     "clearCachedNovelsDesc": "Удалить кэшированные новеллы, которые не находятся в библиотеке",
     "clearDatabaseWarning": "Вы уверены? Прочитанные и загруженные главы и прогресс не библиотечных новелл будут потеряны.",
     "clearUpdatesMessage": "Обновления очищены.",
     "clearUpdatesTab": "Очистить вкладку обновления",
     "clearUpdatesWarning": "Вы уверены? Обновления будут удалены.",
-    "clearupdatesTabDesc": "Clears chapter entries in updates tab",
+    "clearupdatesTabDesc": "Очищает записи глав на вкладке обновлений",
     "dataManagement": "Управление данными",
     "deleteReadChapters": "Удалять прочитанные главы",
     "deleteReadChaptersDialogTitle": "Вы уверены? Все главы, помеченные как прочитанные, будут удалены.",
     "importEpub": "Импорт Epub",
     "importNovel": "Импорт новеллы",
     "importStaticFiles": "Импорт файлов статики",
-    "novelInsertFailed": "Ошибка вставки главы",
+    "novelInsertFailed": "ошибка вставки главы",
     "useFAB": "Использовать FAB вместо кнопки",
     "userAgent": "User Agent"
   },
   "appearance": "Внешний вид",
   "appearanceScreen": {
-    "accentColor": "Accent Color",
+    "accentColor": "Цветовой оттенок",
     "alwaysShowNavLabels": "Всегда показывать навигационные метки",
     "appTheme": "Тема приложения",
     "darkTheme": "Тёмная тема",
@@ -39,19 +39,19 @@
     "lightTheme": "Светлая тема",
     "navbar": "Навбар",
     "novelInfo": "Информация о новелле",
-    "pureBlackDarkMode": "Режим чистого черного цвета",
-    "showHistoryInTheNav": "Show history in the nav",
-    "showUpdatesInTheNav": "Show updates in the nav",
+    "pureBlackDarkMode": "Режим с чистым чёрным",
+    "showHistoryInTheNav": "Показать историю в навигации",
+    "showUpdatesInTheNav": "Показать историю в навигации",
     "theme": {
       "default": "По умолчанию",
-      "lavender": "Lavender",
-      "midnightDusk": "Midnight Dusk",
-      "daybreakBloom": "Daybreak Bloom",
-      "strawberry": "Strawberry Daiquiri",
+      "lavender": "Пурпурный",
+      "midnightDusk": "Полуночные Сумерки",
+      "daybreakBloom": "Расцвет дневного рассвета",
+      "strawberry": "Клубники Дайкири",
       "tako": "Тако",
-      "teal": "Teal",
+      "teal": "Бирюзовая",
       "turquoise": "Бирюзовый",
-      "yotsuba": "Yotsuba"
+      "yotsuba": "Ёцуба"
     }
   },
   "backupScreen": {
@@ -88,7 +88,7 @@
     "remoteBackup": "Удалённое резервное копирование",
     "restoreBackup": "Восстановить из резервной копии",
     "restoreBackupDesc": "Восстановить библиотеку из файла резервной копии",
-    "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
+    "restoreLargeBackupsWarning": "Восстановление больших резервных копий может привести к зависанию приложения до завершения восстановления",
     "restorinBackup": "Восстановление резервной копии",
     "restoringData": "Восстановление данных",
     "selfHost": "Свой сервер",
@@ -99,7 +99,7 @@
   "browse": "Обзор",
   "browseScreen": {
     "addedToLibrary": "Добавлено в библиотеку",
-    "available": "Available",
+    "available": "Расширения",
     "discover": "Узнайте больше",
     "globalSearch": "Глобальный поиск",
     "installFailed": "Не удалось установить: %{name}",
@@ -129,7 +129,7 @@
   },
   "browseSettings": "Настройки обзора",
   "browseSettingsScreen": {
-    "concurrentSearches": "Concurrent Source Searches",
+    "concurrentSearches": "Параллельный поиск источников",
     "languages": "Языки"
   },
   "categories": {
@@ -163,10 +163,10 @@
     "clear": "Очистить",
     "copiedToClipboard": "Скопировано в буфер обмена: %{name}",
     "delete": "Удалить",
-    "deleted": "Deleted %{name}",
-    "deprecated": "Deprecated",
+    "deleted": "Удалён %{name}",
+    "deprecated": "Устаревший",
     "display": "Вид",
-    "done": "Done",
+    "done": "Завершено",
     "downloads": "Загрузки",
     "edit": "Изменить",
     "example": "Example",
@@ -189,7 +189,7 @@
     "searchFor": "Искать",
     "searchResults": "Результаты поиска",
     "settings": "Настройки",
-    "show": "Show",
+    "show": "Показать",
     "signIn": "Войти",
     "signOut": "Выйти",
     "sort": "Сортировка",
@@ -308,7 +308,7 @@
     "empty": "Библиотека пуста. Добавьте новеллы из меню «Источники».",
     "extraMenu": {
       "importEpub": "Импорт Epub",
-      "openRandom": "Open Random Entry",
+      "openRandom": "Открыть случайную серию",
       "updateCategory": "Обновить категорию",
       "updateLibrary": "Обновить библиотеку"
     },
@@ -317,7 +317,7 @@
   "more": "Ещё",
   "moreScreen": {
     "downloadOnly": "Только загруженные главы",
-    "downloadOnlyDesc": "Фильтрация всех новелл в вашей библиотеке",
+    "downloadOnlyDesc": "Фильтрация всех новелл в библиотеке",
     "downloadQueue": "Очередь загрузки",
     "incognitoMode": "Режим инкогнито",
     "incognitoModeDesc": "Пауза для чтения истории"
@@ -356,7 +356,7 @@
     "deletedAllDownloads": "Удалить все загрузки",
     "download": {
       "custom": "Пользовательский",
-      "customAmount": "Download custom amount",
+      "customAmount": "Загрузить произвольную сумму",
       "delete": "Удалить загруженные",
       "next": "Следующая глава",
       "next10": "Следующие 10 глав",
@@ -412,7 +412,7 @@
       "fontStyle": "Шрифт",
       "fullscreen": "Полноэкранный",
       "lineHeight": "Высота строки",
-      "padding": "Padding",
+      "padding": "Отступ",
       "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Удалить дополнительный интервал параграфа",
       "scrollAmount": "Смещение автопрокрутки (высота экрана по умолчанию)",
@@ -467,7 +467,7 @@
     "downloadedChapters": "Загруженные главы",
     "genreDistribution": "Распределение по жанру",
     "readChapters": "Прочитанные главы",
-    "sources": "Исходный код",
+    "sources": "Источники",
     "statusDistribution": "Распределение статуса",
     "title": "Статистика",
     "titlesInLibrary": "Названия в библиотеке",
@@ -478,11 +478,11 @@
   "trackingScreen": {
     "logOutMessage": "Выйти из %{name}?",
     "revalidate": "Revalidate",
-    "services": "Services"
+    "services": "Сервисы отслеживания"
   },
   "updates": "Обновления",
   "updatesScreen": {
-    "deletedChapters": "Deleted %{num} chapters",
+    "deletedChapters": "Удалены %{num} главы",
     "emptyView": "Нет последних обновлений",
     "lastUpdatedAt": "Последнее обновление библиотеки:",
     "libraryUpdated": "Библиотека обновлена",
