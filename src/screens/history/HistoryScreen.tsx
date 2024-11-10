@@ -105,9 +105,7 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
             renderItem={({ item }) => (
               <HistoryCard
                 history={item}
-                navigation={navigation}
                 handleRemoveFromHistory={removeChapterFromHistory}
-                theme={theme}
               />
             )}
             ListEmptyComponent={

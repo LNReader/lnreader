@@ -13,74 +13,62 @@ interface Props {
 const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
   const { disableLoadingAnimations } = useAppSettings();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
-
   const [highlightColor, backgroundColor] = getLoadingColors(theme);
 
-  const renderLoadingChapter = (item: number, index: number) => {
-    return (
-      <View key={'historyLoading' + item}>
-        {index === 0 || Math.random() > 0.6 ? (
+  const renderLoadingChapter = (index: number) => (
+    <View key={`historyLoading${index}`}>
+      {index === 0 || Math.random() > 0.6 ? (
+        <ShimmerPlaceHolder
+          style={styles.date}
+          shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
+          height={19.3}
+          width={Math.random() * 40 + 50}
+          stopAutoRun={disableLoadingAnimations}
+        />
+      ) : null}
+      <View style={styles.chapterCtn}>
+        <ShimmerPlaceHolder
+          style={styles.picture}
+          shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
+          height={80}
+          width={56}
+          stopAutoRun={disableLoadingAnimations}
+        />
+        <View style={styles.textCtn}>
           <ShimmerPlaceHolder
-            style={styles.date}
+            style={styles.text}
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-            height={19.3}
-            width={Math.random() * 40 + 50}
+            height={16}
+            width={208.7}
             stopAutoRun={disableLoadingAnimations}
           />
-        ) : null}
-        <View style={styles.chapterCtn} key={index}>
           <ShimmerPlaceHolder
-            style={styles.picture}
+            style={styles.text}
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-            height={80}
-            width={56}
+            height={12}
+            width={208.7}
             stopAutoRun={disableLoadingAnimations}
           />
-          <View style={styles.textCtn}>
+        </View>
+        <View style={styles.buttonCtn}>
+          {Array.from({ length: 2 }).map((_, buttonIndex) => (
             <ShimmerPlaceHolder
-              style={styles.text}
-              shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-              height={16}
-              width={208.7}
-              stopAutoRun={disableLoadingAnimations}
-            />
-            <ShimmerPlaceHolder
-              style={styles.text}
-              shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-              height={12}
-              width={208.7}
-              stopAutoRun={disableLoadingAnimations}
-            />
-          </View>
-          <View style={styles.buttonCtn}>
-            <ShimmerPlaceHolder
+              key={buttonIndex}
               style={styles.button}
               shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
               height={24}
               width={24}
               stopAutoRun={disableLoadingAnimations}
             />
-          </View>
-          <View style={styles.buttonCtn}>
-            <ShimmerPlaceHolder
-              style={styles.button}
-              shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-              height={24}
-              width={24}
-              stopAutoRun={disableLoadingAnimations}
-            />
-          </View>
+          ))}
         </View>
       </View>
-    );
-  };
+    </View>
+  );
 
-  const items = [];
-  for (let index = 0; index < Math.random() * 3 + 3; index++) {
-    items.push(index);
-  }
+  const items = Array.from({ length: Math.floor(Math.random() * 3 + 3) });
 
-  return <View>{items.map(renderLoadingChapter)}</View>;
+  return <View>{items.map((_, index) => renderLoadingChapter(index))}</View>;
 };
 
 const styles = StyleSheet.create({

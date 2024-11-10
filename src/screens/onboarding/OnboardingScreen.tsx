@@ -49,7 +49,7 @@ export default function OnboardingScreen() {
           color: theme.onBackground,
         }}
       >
-        Yaholo!
+        Welcome
       </Text>
       <Text
         style={{
