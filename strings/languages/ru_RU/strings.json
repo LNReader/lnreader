@@ -320,7 +320,7 @@
     "downloadOnlyDesc": "Фильтрация всех новелл в библиотеке",
     "downloadQueue": "Очередь загрузки",
     "incognitoMode": "Режим инкогнито",
-    "incognitoModeDesc": "Пауза для чтения истории"
+    "incognitoModeDesc": "Приостанавливает историю чтения"
   },
   "novelScreen": {
     "addToLibaray": "Добавить в библиотеку",
@@ -431,7 +431,7 @@
       "scrollToCurrentChapter": "Прокрутка к текущей главе",
       "scrollToTop": "Прокрутить вверх"
     },
-    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p>",
+    "emptyChapterMessage": "<p>Глава пуста.</p><p>Сообщи в <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a>, если он доступен в WebView.</p>",
     "finished": "Завершено",
     "nextChapter": "Следующий: %{name}",
     "noNextChapter": "Следующей главы нет",
