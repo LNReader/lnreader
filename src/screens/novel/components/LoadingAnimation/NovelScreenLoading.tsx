@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeColors } from '@theme/types';
-import getLoadingColors from '@utils/getLoadingColors';
+import useLoadingColors from '@utils/useLoadingColors';
 import { useAppSettings, useTheme } from '@hooks/persisted/index';
 
 interface Props {
@@ -22,7 +22,7 @@ const LoadingShimmer = memo(
   }) => {
     const { disableLoadingAnimations } = useAppSettings();
     const theme = useTheme();
-    const [highlightColor, backgroundColor] = getLoadingColors(theme);
+    const [highlightColor, backgroundColor] = useLoadingColors(theme);
     const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 
     return (
@@ -68,7 +68,7 @@ const NovelInformation = memo(() => (
   </View>
 ));
 
-const ChapterItem = memo(({ index }: { index: number }) => (
+const ChapterItem = memo(() => (
   <View style={styles.chapter}>
     <LoadingShimmer style={styles.text} height={20} width={350} />
     <LoadingShimmer style={styles.text} height={16} width={350} />
@@ -83,12 +83,12 @@ const Chapters = memo(() => (
       width={350}
     />
     {[...Array(7)].map((_, i) => (
-      <ChapterItem key={i} index={i} />
+      <ChapterItem key={i} />
     ))}
   </View>
 ));
 
-const NovelScreenLoading: React.FC<Props> = ({ theme }) => {
+const NovelScreenLoading: React.FC<Props> = () => {
   return (
     <View style={styles.container}>
       <NovelTop />
