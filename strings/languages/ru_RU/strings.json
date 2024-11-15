@@ -63,7 +63,7 @@
     "downloadingDownloadedFiles": "Загрузка загруженных файлов",
     "drive": {
       "backup": "Drive Backup",
-      "backupInterruped": "Drive Backup Interruped",
+      "backupInterruped": "Резервное копирование прервано",
       "googleDriveBackup": "Бэкап Google Drive",
       "restore": "Drive Restore",
       "restoreInterruped": "Drive Restore Interruped"
@@ -77,7 +77,7 @@
       "noAvailableBackup": "Нет доступных резервных копий",
       "novelsRestored": "%{num} Новеллы восстановлены"
     },
-    "legacyBackup": "Legacy Backup",
+    "legacyBackup": "Резервное копирование (Устаревшее)",
     "noBackupFound": "Резервные копии не найдены",
     "preparingData": "Подготовка данных",
     "remote": {
@@ -255,7 +255,7 @@
     "refreshMetadataDescription": "Проверять наличие новой обложки и описания при обновлении библиотеки",
     "sortOrder": "Порядок сортировки",
     "updateLibrary": "Обновлять библиотеку при запуске",
-    "updateLibraryDesc": "Not recommended for low devices",
+    "updateLibraryDesc": "Не рекомендуется для слабых устройств",
     "updateOngoing": "Обновлять только онгоинги",
     "updateTime": "Показать время последнего обновления",
     "useFAB": "Использовать FAB в библиотеке"
