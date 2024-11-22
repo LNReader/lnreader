@@ -1,5 +1,5 @@
 import { Text } from 'react-native';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { TabView, TabBar } from 'react-native-tab-view';
 
 import { useSearch } from '@hooks';
@@ -36,6 +36,18 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
       },
     ],
     [],
+  );
+
+  useEffect(
+    () =>
+      navigation.addListener('tabPress', e => {
+        if (navigation.isFocused()) {
+          e.preventDefault();
+
+          navigation.navigate('GlobalSearchScreen', {});
+        }
+      }),
+    [navigation],
   );
 
   const [index, setIndex] = React.useState(0);
