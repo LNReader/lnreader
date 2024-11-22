@@ -8,7 +8,7 @@ const Browse = lazy(() => import('../screens/browse/BrowseScreen'));
 const More = lazy(() => import('../screens/more/MoreScreen'));
 
 import { getString } from '@strings/translations';
-import { useAppSettings, useTheme } from '@hooks/persisted';
+import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
 import { BottomNavigatorParamList } from './types';
 
 const Tab = createMaterialBottomTabNavigator<BottomNavigatorParamList>();
@@ -21,6 +21,11 @@ const BottomNavigator = () => {
     showUpdatesTab = true,
     showLabelsInNav = false,
   } = useAppSettings();
+
+  const { filteredInstalledPlugins } = usePlugins();
+  const pluginsWithUpdate = filteredInstalledPlugins.filter(
+    p => p.hasUpdate,
+  ).length;
 
   return (
     <Tab.Navigator
@@ -63,6 +68,9 @@ const BottomNavigator = () => {
         options={{
           title: getString('browse'),
           tabBarIcon: 'compass-outline',
+          tabBarBadge: pluginsWithUpdate
+            ? pluginsWithUpdate.toString()
+            : undefined,
         }}
       />
       <Tab.Screen
