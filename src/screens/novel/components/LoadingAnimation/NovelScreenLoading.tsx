@@ -68,7 +68,7 @@ const NovelInformation = memo(() => (
   </View>
 ));
 
-const ChapterItem = memo(({ index }: { index: number }) => (
+const ChapterItem = memo(() => (
   <View style={styles.chapter}>
     <LoadingShimmer style={styles.text} height={20} width={350} />
     <LoadingShimmer style={styles.text} height={16} width={350} />
@@ -88,7 +88,7 @@ const Chapters = memo(() => (
   </View>
 ));
 
-const NovelScreenLoading: React.FC<Props> = ({ theme }) => {
+const NovelScreenLoading: React.FC<Props> = () => {
   return (
     <View style={styles.container}>
       <NovelTop />
