@@ -74,18 +74,18 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
   useEffect(
     () =>
       navigation.addListener('tabPress', e => {
-        let lastNovel = history[history.length - 1];
+        let lastNovel = history[0];
         if (navigation.isFocused() && lastNovel) {
           e.preventDefault();
 
           navigation.navigate('Novel', {
-            name: lastNovel.name,
+            name: lastNovel.novelName,
             path: lastNovel.novelPath,
             pluginId: lastNovel.pluginId,
           });
         }
       }),
-    [navigation],
+    [navigation, history],
   );
 
   return (
