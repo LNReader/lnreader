@@ -6,6 +6,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useMMKVObject } from 'react-native-mmkv';
 import { useTheme } from '@hooks/persisted';
 import { darkThemes, lightThemes } from '@theme/md3';
+import { getString } from '@strings/translations';
 
 const ThemeList = ({
   theme,
@@ -66,7 +67,9 @@ const SchemeButton = ({
         onPress={onPress}
       >
         <Text style={{ color: isSelected ? theme.onPrimary : theme.onSurface }}>
-          {isDarkButton ? 'Dark' : 'Light'}
+          {isDarkButton
+            ? getString('onboardingScreen.dark')
+            : getString('onboardingScreen.light')}
         </Text>
       </Pressable>
     </View>

@@ -399,4 +399,9 @@ export interface StringMap {
   'updatesScreen.unableToGetNovel': 'string';
   'updatesScreen.updatesLower': 'string';
   'updatesScreen.updatingLibrary': 'string';
+  'onboardingScreen.welcome': 'string';
+  'onboardingScreen.pickATheme': 'string';
+  'onboardingScreen.light': 'string';
+  'onboardingScreen.dark': 'string';
+  'onboardingScreen.complete': 'string';
 }
