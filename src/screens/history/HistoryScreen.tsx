@@ -15,8 +15,9 @@ import { History } from '@database/types';
 import { getString } from '@strings/translations';
 import ClearHistoryDialog from './components/ClearHistoryDialog';
 import HistorySkeletonLoading from './components/HistorySkeletonLoading';
+import { HistoryScreenProps } from '@navigators/types';
 
-const HistoryScreen = () => {
+const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
   const theme = useTheme();
   const {
     isLoading,
