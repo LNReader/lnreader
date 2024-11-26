@@ -521,5 +521,12 @@
     "unableToGetNovel": "Không thể lấy được truyện",
     "updatesLower": "cập nhập",
     "updatingLibrary": "Đang cập nhật thư viện"
+  },
+  "onboardingScreen": {
+    "welcome": "Xin chào",
+    "pickATheme": "Hãy chọn chủ đề",
+    "light": "Sáng",
+    "dark": "Tối",
+    "complete": "Hoàn tất"
   }
 }
