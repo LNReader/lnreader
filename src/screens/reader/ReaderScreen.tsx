@@ -17,6 +17,7 @@ import { getString } from '@strings/translations';
 import KeepScreenAwake from './components/KeepScreenAwake';
 import useChapter from './hooks/useChapter';
 import { ChapterContextProvider, useChapterContext } from './ChapterContext';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
@@ -51,7 +52,7 @@ export const ChapterContent = ({
 }: ChapterContentProps) => {
   const { novel, chapter } = useChapterContext();
   const webViewRef = useRef<WebView>(null);
-  const readerSheetRef = useRef(null);
+  const readerSheetRef = useRef<BottomSheetModalMethods>(null);
   const theme = useTheme();
   const { pageReader = false, keepScreenOn } = useChapterGeneralSettings();
 
