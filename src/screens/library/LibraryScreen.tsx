@@ -102,7 +102,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           },
           styles.tabBar,
         ]}
-        tabStyle={{ width: 'auto' }}
+        tabStyle={{ width: 'auto', minWidth: 100 }}
         gap={8}
         renderLabel={({ route, color }) => (
           <Row>

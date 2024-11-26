@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from 'react';
 import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import { ThemeColors } from '@theme/types';
-import getLoadingColors from '@utils/getLoadingColors';
+import useLoadingColors from '@utils/useLoadingColors';
 import LoadingNovel from '@screens/browse/loadingAnimation/LoadingNovel';
 import { useLibrarySettings } from '@hooks/persisted';
 import { DisplayModes } from '@screens/library/constants/constants';
@@ -16,7 +16,7 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
   theme,
   completeRow,
 }) => {
-  const [highlightColor, backgroundColor] = getLoadingColors(theme);
+  const [highlightColor, backgroundColor] = useLoadingColors(theme);
 
   const { displayMode = DisplayModes.Comfortable, novelsPerRow = 3 } =
     useLibrarySettings();

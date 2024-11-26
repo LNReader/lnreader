@@ -1,249 +1,160 @@
 import React, { memo } from 'react';
-import { View, Dimensions, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeColors } from '@theme/types';
-import getLoadingColors from '@utils/getLoadingColors';
-import { useAppSettings } from '@hooks/persisted/index';
+import useLoadingColors from '@utils/useLoadingColors';
+import { useAppSettings, useTheme } from '@hooks/persisted/index';
 
 interface Props {
   theme: ThemeColors;
 }
 
-const NovelScreenLoading: React.FC<Props> = ({ theme }) => {
-  const { disableLoadingAnimations } = useAppSettings();
-  const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
-  const styles = createStyleSheet();
+const LoadingShimmer = memo(
+  ({
+    style,
+    height,
+    width,
+  }: {
+    style?: any;
+    height: number;
+    width: number | string;
+  }) => {
+    const { disableLoadingAnimations } = useAppSettings();
+    const theme = useTheme();
+    const [highlightColor, backgroundColor] = useLoadingColors(theme);
+    const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 
-  const [highlightColor, backgroundColor] = getLoadingColors(theme);
-
-  const RenderLoadingNovelTop = () => {
     return (
-      <View style={styles.novelTopContainer}>
-        <ShimmerPlaceHolder
-          style={styles.picture}
-          shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-          height={150}
-          width={100}
-          stopAutoRun={disableLoadingAnimations}
-        />
-        <View style={styles.novelTopText}>
-          <ShimmerPlaceHolder
-            style={styles.text}
-            shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-            height={25}
-            width={240}
-            stopAutoRun={disableLoadingAnimations}
-          />
-          <ShimmerPlaceHolder
-            style={styles.text}
-            shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-            height={20}
-            width={240}
-            stopAutoRun={disableLoadingAnimations}
-          />
-          <ShimmerPlaceHolder
-            style={styles.text}
-            shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-            height={20}
-            width={240}
-            stopAutoRun={disableLoadingAnimations}
-          />
-        </View>
-      </View>
+      <ShimmerPlaceHolder
+        style={style}
+        shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
+        height={height}
+        width={width}
+        stopAutoRun={disableLoadingAnimations}
+      />
     );
-  };
+  },
+);
 
-  const RenderLoadingNovelInformation = () => {
-    return (
-      <View style={styles.novelInformationContainer}>
-        <View style={styles.icons}>
-          <ShimmerPlaceHolder
-            style={styles.icon}
-            shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-            height={56}
-            width={90}
-            stopAutoRun={disableLoadingAnimations}
-          />
-          <ShimmerPlaceHolder
-            style={styles.icon}
-            shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-            height={56}
-            width={90}
-            stopAutoRun={disableLoadingAnimations}
-          />
-          <ShimmerPlaceHolder
-            style={styles.icon}
-            shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-            height={56}
-            width={90}
-            stopAutoRun={disableLoadingAnimations}
-          />
-        </View>
-        <View style={styles.novelInformationText}>
-          <ShimmerPlaceHolder
-            style={styles.text}
-            shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-            height={16}
-            width={350}
-            stopAutoRun={disableLoadingAnimations}
-          />
-          <ShimmerPlaceHolder
-            style={styles.text}
-            shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-            height={16}
-            width={350}
-            stopAutoRun={disableLoadingAnimations}
-          />
-        </View>
-        <View style={styles.novelInformationChips}>
-          <ShimmerPlaceHolder
-            style={styles.chip}
-            shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-            height={32}
-            width={60}
-            stopAutoRun={disableLoadingAnimations}
-          />
-          <ShimmerPlaceHolder
-            style={styles.chip}
-            shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-            height={32}
-            width={60}
-            stopAutoRun={disableLoadingAnimations}
-          />
-        </View>
-      </View>
-    );
-  };
+const NovelTop = memo(() => (
+  <View style={styles.headerContainer}>
+    <LoadingShimmer style={styles.picture} height={150} width={100} />
+    <View style={styles.headerText}>
+      <LoadingShimmer style={styles.text} height={25} width={240} />
+      <LoadingShimmer style={styles.text} height={20} width={240} />
+      <LoadingShimmer style={styles.text} height={20} width={240} />
+    </View>
+  </View>
+));
 
-  const renderLoadingChapter = (item: number, index: number) => {
-    return (
-      <View style={styles.chapter} key={index}>
-        <ShimmerPlaceHolder
-          style={styles.text}
-          shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-          height={20}
-          width={350}
-          stopAutoRun={disableLoadingAnimations}
-        />
-        <ShimmerPlaceHolder
-          style={styles.text}
-          shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-          height={16}
-          width={350}
-          stopAutoRun={disableLoadingAnimations}
-        />
-      </View>
-    );
-  };
+const NovelInformation = memo(() => (
+  <View style={styles.metadataContainer}>
+    <View style={styles.statsContainer}>
+      {[...Array(3)].map((_, i) => (
+        <LoadingShimmer key={i} style={styles.icon} height={56} width={90} />
+      ))}
+    </View>
+    <View style={styles.novelInformationText}>
+      {[...Array(2)].map((_, i) => (
+        <LoadingShimmer key={i} style={styles.text} height={16} width={350} />
+      ))}
+    </View>
+    <View style={styles.novelInformationChips}>
+      {[...Array(2)].map((_, i) => (
+        <LoadingShimmer key={i} style={styles.chip} height={32} width={60} />
+      ))}
+    </View>
+  </View>
+));
 
-  const RenderLoadingChapters = () => {
-    const items = [1, 2, 3, 4, 5, 6, 7];
-    return (
-      <View style={styles.chapterContainer}>
-        <ShimmerPlaceHolder
-          style={[styles.text, { marginBottom: 5 }]}
-          shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
-          height={30}
-          width={350}
-          stopAutoRun={disableLoadingAnimations}
-        />
-        {items.map(renderLoadingChapter)}
-      </View>
-    );
-  };
+const ChapterItem = memo(() => (
+  <View style={styles.chapter}>
+    <LoadingShimmer style={styles.text} height={20} width={350} />
+    <LoadingShimmer style={styles.text} height={16} width={350} />
+  </View>
+));
 
-  const RenderLoading = () => {
-    return (
-      <>
-        <RenderLoadingNovelTop />
-        <RenderLoadingNovelInformation />
-        <RenderLoadingChapters />
-      </>
-    );
-  };
+const Chapters = memo(() => (
+  <View style={styles.chapterContainer}>
+    <LoadingShimmer
+      style={[styles.text, { marginBottom: 5 }]}
+      height={30}
+      width={350}
+    />
+    {[...Array(7)].map((_, i) => (
+      <ChapterItem key={i} />
+    ))}
+  </View>
+));
 
+const NovelScreenLoading: React.FC<Props> = () => {
   return (
     <View style={styles.container}>
-      <RenderLoading />
+      <NovelTop />
+      <NovelInformation />
+      <Chapters />
     </View>
   );
 };
 
-const createStyleSheet = () => {
-  return StyleSheet.create({
-    novelTopContainer: {
-      paddingTop: 118,
-      height: 268,
-      width: '100%',
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-    },
-    novelTopText: {
-      height: 100,
-      paddingTop: 30,
-      justifyContent: 'center',
-    },
-    novelInformationContainer: {
-      marginVertical: 4,
-    },
-    icons: {
-      paddingVertical: 4,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-    },
-    icon: {
-      borderRadius: 30,
-    },
-    novelInformationText: {
-      margin: 16,
-      marginTop: 8,
-      height: 62,
-    },
-    novelInformationChips: {
-      flexDirection: 'row',
-      paddingBottom: 6,
-      paddingLeft: 8,
-    },
-    chip: {
-      marginLeft: 8,
-      borderRadius: 8,
-    },
-    chapterContainer: {
-      marginHorizontal: 16,
-    },
-    chapter: {
-      paddingVertical: 8,
-    },
-    container: {
-      flexGrow: 1,
-      marginHorizontal: 4,
-      marginBottom: 8,
-      overflow: 'hidden',
-    },
-    loadingContainer: {
-      padding: 4.8,
-      width: 124.2,
-      height: 229.1,
-      overflow: 'hidden',
-    },
-    text: {
-      borderRadius: 8,
-      marginTop: 5,
-    },
-    loadingText: {
-      margin: 10,
-      height: 10,
-      width: Dimensions.get('window').width - 140,
-    },
-    row: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-    picture: {
-      borderRadius: 8,
-    },
-  });
-};
+const styles = StyleSheet.create({
+  headerContainer: {
+    paddingTop: 118,
+    height: 268,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  headerText: {
+    height: 100,
+    paddingTop: 30,
+    justifyContent: 'center',
+  },
+  metadataContainer: {
+    marginVertical: 4,
+  },
+  statsContainer: {
+    paddingVertical: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  icon: {
+    borderRadius: 30,
+  },
+  novelInformationText: {
+    margin: 16,
+    marginTop: 8,
+    height: 62,
+  },
+  novelInformationChips: {
+    flexDirection: 'row',
+    paddingBottom: 6,
+    paddingLeft: 8,
+  },
+  chip: {
+    marginLeft: 8,
+    borderRadius: 8,
+  },
+  chapterContainer: {
+    marginHorizontal: 16,
+  },
+  chapter: {
+    paddingVertical: 8,
+  },
+  container: {
+    flexGrow: 1,
+    marginHorizontal: 4,
+    marginBottom: 8,
+    overflow: 'hidden',
+  },
+  text: {
+    borderRadius: 8,
+    marginTop: 5,
+  },
+  picture: {
+    borderRadius: 8,
+  },
+});
 
 export default memo(NovelScreenLoading);

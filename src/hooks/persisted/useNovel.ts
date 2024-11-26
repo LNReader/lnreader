@@ -164,7 +164,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         pages[pageIndex],
       ).then(chapters => setChapters(chapters));
     }
-  }, [novel, pageIndex]);
+  }, [novel, pageIndex, sort, novelSettings]);
 
   const sortAndFilterChapters = async (sort?: string, filter?: string) => {
     if (novel) {
@@ -336,9 +336,6 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         return;
       }
     }
-
-    setNovel(novel);
-
     let pages: string[];
     if (novel.totalPages > 0) {
       pages = Array(novel.totalPages)
@@ -347,38 +344,51 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     } else {
       pages = (await getCustomPages(novel.id)).map(c => c.page);
     }
+    if (pages.length) {
+      setPages(pages);
+    } else {
+      setPages(['1']);
+    }
+    setNovel(novel);
+    setLoading(false);
+  }, []);
 
-    setPages(pages.length ? pages : ['1']);
-
-    const page = pages[pageIndex] || '1';
-    let chapters = await _getPageChapters(
-      novel.id,
-      sort,
-      novelSettings.filter,
-      page,
-    );
-
-    if (!chapters.length && Number(page)) {
-      const sourcePage = await fetchPage(pluginId, novelPath, page);
-      const sourceChapters = sourcePage.chapters.map(ch => ({
-        ...ch,
-        page,
-      }));
-      await insertChapters(novel.id, sourceChapters);
-      chapters = await _getPageChapters(
+  const getChapters = useCallback(async () => {
+    const page = pages[pageIndex];
+    if (novel && page) {
+      let chapters = await _getPageChapters(
         novel.id,
         sort,
         novelSettings.filter,
         page,
       );
+      if (!chapters.length && Number(page)) {
+        const sourcePage = await fetchPage(pluginId, novelPath, page);
+        const sourceChapters = sourcePage.chapters.map(ch => {
+          return {
+            ...ch,
+            page,
+          };
+        });
+        await insertChapters(novel.id, sourceChapters);
+        chapters = await _getPageChapters(
+          novel.id,
+          sort,
+          novelSettings.filter,
+          page,
+        );
+      }
+      setChapters(chapters);
     }
-    setChapters(chapters);
-    setLoading(false);
-  }, [novelPath, pluginId, pageIndex, sort, novelSettings.filter]);
+  }, [novel, novelSettings, pageIndex]);
 
   useEffect(() => {
     getNovel();
-  }, [getNovel]);
+  }, []);
+
+  useEffect(() => {
+    getChapters().catch(e => showToast(e.message));
+  }, [getChapters]);
 
   return {
     loading,
