@@ -130,6 +130,7 @@
   "browseSettings": "Impostazioni Esplora",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
+    "multi": "Multi",
     "languages": "Lingue"
   },
   "categories": {
@@ -492,5 +493,12 @@
     "unableToGetNovel": "Unable to get novel",
     "updatesLower": "aggiornamenti",
     "updatingLibrary": "Updating library"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }
