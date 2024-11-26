@@ -130,6 +130,7 @@
   "browseSettings": "Göz Atma Seçenekleri",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
+    "multi": "Multi",
     "languages": "Diller"
   },
   "categories": {
@@ -492,5 +493,12 @@
     "unableToGetNovel": "Unable to get novel",
     "updatesLower": "güncellemeler",
     "updatingLibrary": "Updating library"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }
