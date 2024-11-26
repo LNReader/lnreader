@@ -130,6 +130,7 @@
   "browseSettings": "تصفح الإعدادات",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
+    "multi": "Multi",
     "languages": "اللغات"
   },
   "categories": {
@@ -492,5 +493,12 @@
     "unableToGetNovel": "Unable to get novel",
     "updatesLower": "التحديثات",
     "updatingLibrary": "Updating library"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }
