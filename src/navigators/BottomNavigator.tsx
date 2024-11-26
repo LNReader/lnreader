@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { lazy, useMemo } from 'react';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 
 import Library from '../screens/library/LibraryScreen';
@@ -23,9 +23,10 @@ const BottomNavigator = () => {
   } = useAppSettings();
 
   const { filteredInstalledPlugins } = usePlugins();
-  const pluginsWithUpdate = filteredInstalledPlugins.filter(
-    p => p.hasUpdate,
-  ).length;
+  const pluginsWithUpdate = useMemo(
+    () => filteredInstalledPlugins.filter(p => p.hasUpdate).length,
+    [filteredInstalledPlugins],
+  );
 
   return (
     <Tab.Navigator
