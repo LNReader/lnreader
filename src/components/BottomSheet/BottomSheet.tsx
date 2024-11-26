@@ -1,4 +1,4 @@
-import React, { RefObject, useCallback, useState } from 'react';
+import React, { RefObject, useCallback, useRef } from 'react';
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -19,7 +19,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   onChange,
   ...otherProps
 }) => {
-  const [index, setIndex] = useState(-1);
+  const indexRef = useRef<number>();
   const { bottom } = useSafeAreaInsets();
   const renderBackdrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => (
@@ -32,7 +32,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     [],
   );
   useBackHandler(() => {
-    if (index !== -1) {
+    if (indexRef.current !== -1) {
       bottomSheetRef?.current?.close();
       return true;
     }
@@ -46,7 +46,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
       containerStyle={{ paddingBottom: bottom }}
       onChange={index => {
         onChange?.(index);
-        setIndex(index);
+        indexRef.current = index;
       }}
       {...otherProps}
     >
