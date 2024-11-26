@@ -116,6 +116,7 @@ const MainNavigator = () => {
   }
 
   return (
+    // @ts-ignore
     <NavigationContainer theme={{ colors: theme, dark: theme.isDark }}>
       {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
       <Stack.Navigator screenOptions={{ headerShown: false }}>

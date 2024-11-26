@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Pressable, Text, ScrollView } from 'react-native';
 import { getString } from '@strings/translations';
 
@@ -27,6 +27,23 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
 
   const enableIncognitoMode = () =>
     setLibrarySettings({ incognitoMode: !incognitoMode });
+
+  useEffect(
+    () =>
+      navigation.addListener('tabPress', e => {
+        if (navigation.isFocused()) {
+          e.preventDefault();
+
+          navigation.navigate('MoreStack', {
+            screen: 'SettingsStack',
+            params: {
+              screen: 'Settings',
+            },
+          });
+        }
+      }),
+    [navigation],
+  );
 
   return (
     <ScrollView>
