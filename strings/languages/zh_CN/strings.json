@@ -130,6 +130,7 @@
   "browseSettings": "浏览设置",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
+    "multi": "Multi",
     "languages": "语言"
   },
   "categories": {
@@ -492,5 +493,12 @@
     "unableToGetNovel": "无法获取小说",
     "updatesLower": "更新",
     "updatingLibrary": "更新书库"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }
