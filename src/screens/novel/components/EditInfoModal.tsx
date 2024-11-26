@@ -186,10 +186,10 @@ const EditInfoModal = ({
 
         {novelInfo.genres !== undefined && novelInfo.genres !== '' ? (
           <FlatList
-            contentContainerStyle={{ marginVertical: 8 }}
+            style={{ marginVertical: 8 }}
             horizontal
             data={novelInfo.genres?.split(',')}
-            keyExtractor={(item, index) => 'novelTag' + index}
+            keyExtractor={(_, index) => 'novelTag' + index}
             renderItem={({ item }) => (
               <GenreChip theme={theme} onPress={() => removeTag(item)}>
                 {item}
