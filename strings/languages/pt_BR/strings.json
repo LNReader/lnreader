@@ -130,6 +130,7 @@
   "browseSettings": "Configurações de navegação",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
+    "multi": "Multi",
     "languages": "Idiomas"
   },
   "categories": {
@@ -492,5 +493,12 @@
     "unableToGetNovel": "Unable to get novel",
     "updatesLower": "atualizações",
     "updatingLibrary": "Updating library"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }
