@@ -32,7 +32,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     [],
   );
   useBackHandler(() => {
-    if (indexRef.current !== -1) {
+    if (typeof indexRef.current === 'number' && indexRef.current !== -1) {
       bottomSheetRef?.current?.close();
       return true;
     }
