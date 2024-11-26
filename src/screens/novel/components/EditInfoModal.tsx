@@ -49,13 +49,7 @@ const EditInfoModal = ({
     });
   };
 
-  const status = [
-    NovelStatus.Ongoing,
-    NovelStatus.OnHiatus,
-    NovelStatus.Completed,
-    NovelStatus.Unknown,
-    NovelStatus.Cancelled,
-  ];
+  const status = Object.values(NovelStatus);
 
   return (
     <Portal>
@@ -93,7 +87,9 @@ const EditInfoModal = ({
                 <Pressable
                   style={{
                     backgroundColor:
-                      novel.status === item ? theme.rippleColor : 'transparent',
+                      novelInfo.status === item
+                        ? theme.rippleColor
+                        : 'transparent',
                     paddingVertical: 6,
                     paddingHorizontal: 12,
                   }}
@@ -105,7 +101,7 @@ const EditInfoModal = ({
                   <Text
                     style={{
                       color:
-                        novel.status === item
+                        novelInfo.status === item
                           ? theme.primary
                           : theme.onSurfaceVariant,
                     }}
@@ -256,7 +252,7 @@ const GenreChip = ({
     <Text
       style={{
         fontSize: 12,
-        color: theme.onSurfaceVariant,
+        color: theme.onSecondaryContainer,
         textTransform: 'capitalize',
       }}
     >
@@ -264,7 +260,7 @@ const GenreChip = ({
     </Text>
     <MaterialCommunityIcons
       name="close"
-      color={theme.primary}
+      color={theme.onSecondaryContainer}
       size={18}
       onPress={onPress}
       style={{ marginLeft: 4 }}
