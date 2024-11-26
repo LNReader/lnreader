@@ -164,7 +164,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         pages[pageIndex],
       ).then(chapters => setChapters(chapters));
     }
-  }, [novel, pageIndex]);
+  }, [novel, pageIndex, sort, novelSettings]);
 
   const sortAndFilterChapters = async (sort?: string, filter?: string) => {
     if (novel) {
