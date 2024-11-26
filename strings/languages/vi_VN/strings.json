@@ -130,6 +130,7 @@
   "browseSettings": "Cài đặt trình tìm kiếm",
   "browseSettingsScreen": {
     "concurrentSearches": "Số nguồn tìm kiếm đồng thời",
+    "multi": "Multi",
     "languages": "Ngôn ngữ"
   },
   "categories": {
@@ -492,5 +493,12 @@
     "unableToGetNovel": "Không thể lấy được truyện",
     "updatesLower": "cập nhập",
     "updatingLibrary": "Đang cập nhật thư viện"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }
