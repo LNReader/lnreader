@@ -130,6 +130,7 @@
   "browseSettings": "Настройки обзора",
   "browseSettingsScreen": {
     "concurrentSearches": "Параллельный поиск источников",
+    "multi": "Multi",
     "languages": "Языки"
   },
   "categories": {
@@ -492,5 +493,12 @@
     "unableToGetNovel": "Невозможно получить новеллу",
     "updatesLower": "обновлено",
     "updatingLibrary": "Обновление библиотеки"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }
