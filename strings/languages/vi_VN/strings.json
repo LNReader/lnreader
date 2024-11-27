@@ -130,7 +130,7 @@
   "browseSettings": "Cài đặt trình tìm kiếm",
   "browseSettingsScreen": {
     "concurrentSearches": "Số nguồn tìm kiếm đồng thời",
-    "multi": "Multi",
+    "multi": "Đa ngữ",
     "languages": "Ngôn ngữ"
   },
   "categories": {
@@ -432,7 +432,7 @@
       "scrollToCurrentChapter": "Chương hiện tại",
       "scrollToTop": "Lên đầu"
     },
-    "emptyChapterMessage": "<p>Chương này trống.</p><p>Báo lỗi tại<a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a>nếu như chương vẫn hiện thị ở WebView.</p>",
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
     "finished": "Đã xong",
     "nextChapter": "Tiếp: %{name}",
     "noNextChapter": "Không có chương kế tiếp",
@@ -495,10 +495,10 @@
     "updatingLibrary": "Đang cập nhật thư viện"
   },
   "onboardingScreen": {
-    "welcome": "Welcome",
-    "pickATheme": "Pick a theme",
-    "light": "Light",
-    "dark": "Dark",
-    "complete": "Complete"
+    "welcome": "Xin chào",
+    "pickATheme": "Hãy chọn chủ đề",
+    "light": "Sáng",
+    "dark": "Tối",
+    "complete": "Hoàn tất"
   }
 }
