@@ -130,7 +130,7 @@
   "browseSettings": "Настройки обзора",
   "browseSettingsScreen": {
     "concurrentSearches": "Параллельный поиск источников",
-    "multi": "Multi",
+    "multi": "Многоязыковое",
     "languages": "Языки"
   },
   "categories": {
@@ -170,7 +170,7 @@
     "done": "Завершено",
     "downloads": "Загрузки",
     "edit": "Изменить",
-    "example": "Example",
+    "example": "Образец",
     "filter": "Фильтр",
     "globally": "глобально",
     "install": "Установить",
@@ -432,7 +432,7 @@
       "scrollToCurrentChapter": "Прокрутка к текущей главе",
       "scrollToTop": "Прокрутить вверх"
     },
-    "emptyChapterMessage": "<p>Глава пуста.</p><p>Сообщи в <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a>, если он доступен в WebView.</p>",
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
     "finished": "Завершено",
     "nextChapter": "Следующий: %{name}",
     "noNextChapter": "Следующей главы нет",
@@ -495,10 +495,10 @@
     "updatingLibrary": "Обновление библиотеки"
   },
   "onboardingScreen": {
-    "welcome": "Welcome",
-    "pickATheme": "Pick a theme",
-    "light": "Light",
-    "dark": "Dark",
-    "complete": "Complete"
+    "welcome": "Добро пожаловать",
+    "pickATheme": "Выберите тему",
+    "light": "Светлая",
+    "dark": "Тёмная",
+    "complete": "Готово"
   }
 }
