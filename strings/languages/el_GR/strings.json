@@ -432,7 +432,7 @@
       "scrollToCurrentChapter": "Κύλιση στο τρέχον κεφάλαιο",
       "scrollToTop": "Κύλιση προς τα πάνω"
     },
-    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p>",
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
     "finished": "Finished",
     "nextChapter": "Next: %{name}",
     "noNextChapter": "Δεν υπάρχει επόμενο κεφάλαιο",
