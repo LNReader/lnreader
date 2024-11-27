@@ -460,7 +460,7 @@
       "scrollToCurrentChapter": "Chương hiện tại",
       "scrollToTop": "Lên đầu"
     },
-    "emptyChapterMessage": "<p>Chương này trống.</p><p>Báo lỗi tại<a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a>nếu như chương vẫn hiện thị ở WebView.</p>",
+    "emptyChapterMessage": "<p>Chương này trống.</p><p>Báo lỗi tại <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> nếu như chương vẫn hiện thị ở WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
     "finished": "Đã xong",
     "nextChapter": "Tiếp: %{name}",
     "noNextChapter": "Không có chương kế tiếp",
