@@ -1,4 +1,3 @@
-import * as SQLite from 'expo-sqlite';
 import { showToast } from '@utils/showToast';
 import { ChapterInfo, DownloadedChapter } from '../types';
 import { ChapterItem } from '@plugins/types';
@@ -9,8 +8,8 @@ import { noop } from 'lodash-es';
 import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
+import { db } from '@database/db';
 
-const db = SQLite.openDatabase('lnreader.db');
 const insertChapterQuery = `
 INSERT OR IGNORE INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
 VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -42,7 +41,7 @@ export const insertChapters = async (
               `
                 UPDATE Chapter SET
                   page = ?, position = ?
-                WHERE path = ? AND novelId = ? (AND page != ? OR position != ?)
+                WHERE path = ? AND novelId = ? AND (page != ? OR position != ?)
               `,
               [
                 chapter.page || '1',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, SectionList, Text } from 'react-native';
 import dayjs from 'dayjs';
 import { Portal } from 'react-native-paper';
@@ -71,6 +71,23 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
     setFalse: closeClearHistoryDialog,
   } = useBoolean();
 
+  useEffect(
+    () =>
+      navigation.addListener('tabPress', e => {
+        let lastNovel = history[0];
+        if (navigation.isFocused() && lastNovel) {
+          e.preventDefault();
+
+          navigation.navigate('Novel', {
+            name: lastNovel.novelName,
+            path: lastNovel.novelPath,
+            pluginId: lastNovel.pluginId,
+          });
+        }
+      }),
+    [navigation, history],
+  );
+
   return (
     <>
       <SearchbarV2
@@ -105,9 +122,7 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
             renderItem={({ item }) => (
               <HistoryCard
                 history={item}
-                navigation={navigation}
                 handleRemoveFromHistory={removeChapterFromHistory}
-                theme={theme}
               />
             )}
             ListEmptyComponent={

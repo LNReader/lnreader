@@ -98,7 +98,9 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
           })
           .catch(e => setError(e.message));
       }
-      setChapterText(sanitizeChapterText(text));
+      setChapterText(
+        sanitizeChapterText(novel.pluginId, novel.name, chapter.name, text),
+      );
       const [nextChap, prevChap] = await Promise.all([
         getNextChapter(chapter.novelId, chapter.id),
         getPrevChapter(chapter.novelId, chapter.id),
