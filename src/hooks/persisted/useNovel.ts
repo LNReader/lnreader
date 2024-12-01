@@ -165,7 +165,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         pages[pageIndex],
       ).then(chapters => setChapters(chapters));
     }
-  }, [novel, pageIndex]);
+  }, [novel, pageIndex, sort, novelSettings]);
 
   const sortAndFilterChapters = async (sort?: string, filter?: string) => {
     if (novel) {
@@ -437,6 +437,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
       setPages(['1']);
     }
     setNovel(novel);
+    setLoading(false);
   }, []);
 
   const getChapters = useCallback(async () => {
@@ -466,11 +467,12 @@ export const useNovel = (novelPath: string, pluginId: string) => {
       }
       setChapters(chapters);
     }
-    setLoading(false);
   }, [novel, novelSettings, pageIndex]);
+
   useEffect(() => {
     getNovel();
   }, []);
+
   useEffect(() => {
     getChapters().catch(e => showToast(e.message));
   }, [getChapters]);

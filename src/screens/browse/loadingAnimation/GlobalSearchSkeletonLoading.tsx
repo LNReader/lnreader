@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { ThemeColors } from '@theme/types';
 import LoadingNovel from './LoadingNovel';
-import getLoadingColors from '@utils/getLoadingColors';
+import useLoadingColors from '@utils/useLoadingColors';
 import { DisplayModes } from '@screens/library/constants/constants';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 const GlobalSearchSkeletonLoading: React.FC<Props> = ({ theme }) => {
   const styles = createStyleSheet();
 
-  const [highlightColor, backgroundColor] = getLoadingColors(theme);
+  const [highlightColor, backgroundColor] = useLoadingColors(theme);
 
   const items: Array<number> = [1, 2, 3, 4];
   return (

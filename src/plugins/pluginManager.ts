@@ -5,7 +5,6 @@ import { store } from './helpers/storage';
 // packages for plugins
 import { load } from 'cheerio';
 import dayjs from 'dayjs';
-import qs from 'qs';
 import { NovelStatus, Plugin, PluginItem } from './types';
 import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
@@ -23,7 +22,6 @@ const packages: Record<string, any> = {
   'htmlparser2': { Parser },
   'cheerio': { load },
   'dayjs': dayjs,
-  'qs': qs,
   'urlencode': { encode, decode },
   '@libs/novelStatus': { NovelStatus },
   '@libs/fetch': { fetchApi, fetchText, fetchProto },

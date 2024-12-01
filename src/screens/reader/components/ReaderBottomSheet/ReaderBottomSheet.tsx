@@ -1,8 +1,8 @@
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import React, { Ref, useMemo, useState } from 'react';
+import React, { RefObject, useMemo, useState } from 'react';
 import color from 'color';
 
-import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
@@ -16,6 +16,7 @@ import ReaderValueChange from './ReaderValueChange';
 import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 const ReaderTab: React.FC = () => {
   return (
@@ -160,7 +161,7 @@ const GeneralTab: React.FC = () => {
 };
 
 interface ReaderBottomSheetV2Props {
-  bottomSheetRef: Ref<BottomSheetModal> | null;
+  bottomSheetRef: RefObject<BottomSheetModalMethods> | null;
 }
 
 const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({

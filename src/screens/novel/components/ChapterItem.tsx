@@ -107,7 +107,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                     ? theme.outline
                     : bookmark
                     ? theme.primary
-                    : theme.onSurfaceVariant,
+                    : theme.onSurface,
                 },
               ]}
               numberOfLines={1}

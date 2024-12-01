@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { lazy, useMemo } from 'react';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 
 import Library from '../screens/library/LibraryScreen';
-import Updates from '../screens/updates/UpdatesScreen';
-import History from '../screens/history/HistoryScreen';
-import Browse from '../screens/browse/BrowseScreen';
-import More from '../screens/more/MoreScreen';
+const Updates = lazy(() => import('../screens/updates/UpdatesScreen'));
+const History = lazy(() => import('../screens/history/HistoryScreen'));
+const Browse = lazy(() => import('../screens/browse/BrowseScreen'));
+const More = lazy(() => import('../screens/more/MoreScreen'));
 
 import { getString } from '@strings/translations';
-import { useAppSettings, useTheme } from '@hooks/persisted';
+import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
 import { BottomNavigatorParamList } from './types';
 
 const Tab = createMaterialBottomTabNavigator<BottomNavigatorParamList>();
@@ -21,6 +21,12 @@ const BottomNavigator = () => {
     showUpdatesTab = true,
     showLabelsInNav = false,
   } = useAppSettings();
+
+  const { filteredInstalledPlugins } = usePlugins();
+  const pluginsWithUpdate = useMemo(
+    () => filteredInstalledPlugins.filter(p => p.hasUpdate).length,
+    [filteredInstalledPlugins],
+  );
 
   return (
     <Tab.Navigator
@@ -63,6 +69,9 @@ const BottomNavigator = () => {
         options={{
           title: getString('browse'),
           tabBarIcon: 'compass-outline',
+          tabBarBadge: pluginsWithUpdate
+            ? pluginsWithUpdate.toString()
+            : undefined,
         }}
       />
       <Tab.Screen

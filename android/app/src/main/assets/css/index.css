@@ -30,6 +30,7 @@ body {
 
 body.page-reader { 
   overflow: hidden;
+  padding-bottom: unset;
 }
 
 #LNReader-chapter {
