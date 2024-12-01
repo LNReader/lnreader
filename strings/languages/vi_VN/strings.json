@@ -23,11 +23,9 @@
     "deleteReadChapters": "Xóa chương đã đọc",
     "deleteReadChaptersDialogTitle": "Bạn có chắc không? Toàn bộ chương được đánh đã đọc sẽ bị xoá.",
     "importEpub": "Nhập file Epub",
-    "importError": "Nhập file lỗi",
     "importNovel": "Nhập truyện",
     "importStaticFiles": "Nhập tệp tin tĩnh",
     "novelInsertFailed": "lỗi khi thêm truyện",
-    "parseEpub": "Phân tích Epub",
     "useFAB": "Sử dụng nút nổi",
     "userAgent": "User Agent"
   },
@@ -77,28 +75,19 @@
       "backupCreated": "Sao lưu được tạo %{fileName}",
       "libraryRestored": "Thư viện đã được khôi phục",
       "noAvailableBackup": "Không có sao lưu nào",
-      "noErrorNovel": "Không có truyện lỗi nào",
-      "novelsRestored": "%{num} truyện được khôi phục",
-      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
-      "pluginNotExist": "Nguồn với id %{id} không tồn tại!"
+      "novelsRestored": "%{num} truyện được khôi phục"
     },
     "legacyBackup": "Sao lưu cũ",
     "noBackupFound": "Không tìm thấy sao lưu",
-    "noDataProvided": "Không có dữ liệu được cung cấp",
     "preparingData": "Chuẩn bị dữ liệu",
     "remote": {
       "backup": "Sao lưu tự dựng",
-      "backupInterruped": "Sao lưu bị gián đoạn",
       "host": "Máy chủ",
-      "restore": "Khôi phục tự dụng",
-      "restoreInterruped": "Khôi phục bị gián đoạn",
       "unknownHost": "Không rõ máy chủ"
     },
     "remoteBackup": "Sao lưu từ xa",
     "restoreBackup": "Khôi phục sao lưu",
     "restoreBackupDesc": "Khôi phục thư viện từ tệp sao lưu",
-    "restoreError": "Khôi phục lỗi",
-    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
     "restoreLargeBackupsWarning": "Khôi phục sao lưu lớn có thể đóng băng ứng dụng đến khi hoàn thành",
     "restorinBackup": "Đang khôi phục sao lưu",
     "restoringData": "Đang khôi phục dữ liệu",
@@ -121,22 +110,15 @@
     "latest": "Mới nhất",
     "listEmpty": "Chọn ngôn ngữ",
     "migration": {
-      "anotherServiceIsRunning": "Another service is running",
       "dialogMessage": "Chuyển đổi sang %{url}?",
-      "migratingToNewSource": "Đang chuyển đổi %{name} sang nguồn mới",
-      "migrationError": "Chuyển đổi lỗi",
       "novelAlreadyInLibrary": "Truyện đã có trong thư viện",
-      "novelMigrated": "Truyện đã được chuyển đổi",
       "selectSource": "Chọn nguồn",
       "selectSourceDesc": "Chọn nguồn cần chuyển đổi"
     },
     "noSource": "Thư viện của bạn không có truyện nào từ nguồn này",
-    "pinned": "Đã ghim",
-    "pluginsHostError": "Lỗi nguồn lưu trữ",
     "removeFromLibrary": "Đã xoá khỏi thư viện",
     "searchbar": "Tìm nguồn truyện",
     "selectNovel": "Chọn truyện",
-    "tryAgain": "Hãy thử lại sau một lúc",
     "uninstalledPlugin": "Gỡ cài đặt %{name}",
     "updateFailed": "Cập nhật thất bại",
     "updatedTo": "Đã cập nhật lên %{version}",
@@ -148,10 +130,8 @@
   "browseSettings": "Cài đặt trình tìm kiếm",
   "browseSettingsScreen": {
     "concurrentSearches": "Số nguồn tìm kiếm đồng thời",
-    "languages": "Ngôn ngữ",
-    "onlyShowPinnedSources": "Chỉ hiện nguồn được ghim",
-    "searchAllSources": "Tìm trên tất cả các nguồn",
-    "searchAllWarning": "Tìm kiếm với lượng lớn nguồn có thể đóng băng ứng dụng cho đến khi tìm kiếm hoàn thành."
+    "multi": "Đa ngữ",
+    "languages": "Ngôn ngữ"
   },
   "categories": {
     "addCategories": "Tạo Danh mục",
@@ -198,7 +178,6 @@
     "name": "Tên",
     "newUpdateAvailable": "Đã có bản cập nhật mới",
     "ok": "Ok",
-    "parsing": "Đang phân tích",
     "pause": "Tạm dừng",
     "preparing": "Đang chuẩn bị",
     "remove": "Xoá",
@@ -241,16 +220,12 @@
     "chapterName": "Chapter: %{name}",
     "completed": "Tải xuống hoàn thành",
     "dbInfo": "Các chương tải về sẽ được lưu trong cơ sở dữ liệu SQLite.",
-    "downloadChapters": "chương đã tải về",
-    "downloader": "Trình tải xuống",
     "downloading": "Đang tải xuống",
     "downloadingNovel": "Đang tải: %{name}",
     "downloadsLower": "tải xuống",
-    "failed": "Tải xuống thất bại: %{message}",
     "noDownloads": "Không có tải xuống",
     "pluginNotFound": "Không tìm thấy nguồn!",
-    "removeDownloadsWarning": "Bạn chắc chứ? Tất cả chương đã tải xuống sẽ bị xoá.",
-    "serviceRunning": "Another service is running. Queued chapters"
+    "removeDownloadsWarning": "Bạn chắc chứ? Tất cả chương đã tải xuống sẽ bị xoá."
   },
   "generalSettings": "Chung",
   "generalSettingsScreen": {
@@ -288,7 +263,6 @@
   },
   "globalSearch": {
     "allSources": "toàn bộ nguồn",
-    "pinnedSources": "nguồn được ghim",
     "searchIn": "Tìm truyện ở"
   },
   "history": "Lịch sử",
@@ -442,11 +416,9 @@
       "padding": "Khoảng đệm",
       "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Xoá khoảng trống thừa",
-      "renderHml": "WebView",
       "scrollAmount": "Scroll amount (screen height by default)",
       "showBatteryAndTime": "Hiển thị pin và giờ",
       "showProgressPercentage": "Hiện tiến trình",
-      "showSwipeMargins": "Hiện khoảng vuốt",
       "swipeGestures": "Vuốt để đổi chương",
       "textAlign": "Căn lề",
       "textSize": "Cỡ chữ",
@@ -460,7 +432,7 @@
       "scrollToCurrentChapter": "Chương hiện tại",
       "scrollToTop": "Lên đầu"
     },
-    "emptyChapterMessage": "<p>Chương này trống.</p><p>Báo lỗi tại <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> nếu như chương vẫn hiện thị ở WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
+    "emptyChapterMessage": "<p>Chương không có nội dung.</p><p>Hãy báo cáo trên <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>Github</a> nếu bạn vẫn có thể xem được bằng WebView.</p><p>Nguồn: %{pluginId}</p><p>Truyện: %{novelName}</p><p>Chương: %{chapterName}</p>",
     "finished": "Đã xong",
     "nextChapter": "Tiếp: %{name}",
     "noNextChapter": "Không có chương kế tiếp",

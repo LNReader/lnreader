@@ -23,11 +23,9 @@
     "deleteReadChapters": "حذف الفصول المقروءة",
     "deleteReadChaptersDialogTitle": "هل أنت متأكد؟ سيتم حذف جميع الفصول المعلَّمة كمقروءة.",
     "importEpub": "Import Epub",
-    "importError": "Import Error",
     "importNovel": "Import Novel",
     "importStaticFiles": "Import Static Files",
     "novelInsertFailed": "novel insert failed",
-    "parseEpub": "Parse Epub",
     "useFAB": "Use FAB instead of button",
     "userAgent": "User Agent"
   },
@@ -77,28 +75,19 @@
       "backupCreated": "Backup created %{fileName}",
       "libraryRestored": "Library Restored",
       "noAvailableBackup": "There's no available backup",
-      "noErrorNovel": "There's no error novel",
-      "novelsRestored": "%{num} novels restored",
-      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
-      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+      "novelsRestored": "%{num} novels restored"
     },
     "legacyBackup": "Legacy Backup",
     "noBackupFound": "No backup found",
-    "noDataProvided": "No data provided",
     "preparingData": "Preparing Data",
     "remote": {
       "backup": "Self Host Backup",
-      "backupInterruped": "Self Host Backup Interruped",
       "host": "Host",
-      "restore": "Self Host Restore",
-      "restoreInterruped": "Self Host Restore Interruped",
       "unknownHost": "Unknown host"
     },
     "remoteBackup": "Remote Backup",
     "restoreBackup": "Restore backup",
     "restoreBackupDesc": "Restore library from backup file",
-    "restoreError": "Restore error",
-    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
     "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
     "restorinBackup": "Restoring backup",
     "restoringData": "Restoring Data",
@@ -121,22 +110,15 @@
     "latest": "الاخير",
     "listEmpty": "تفعيل اللغات من الاعدادات",
     "migration": {
-      "anotherServiceIsRunning": "Another service is running",
       "dialogMessage": "Migrate %{url}?",
-      "migratingToNewSource": "Migrating %{name} to new source",
-      "migrationError": "Migration error",
       "novelAlreadyInLibrary": "Novel already in library",
-      "novelMigrated": "Novel Migrated",
       "selectSource": "Select Source",
       "selectSourceDesc": "Select a Source To Migrate From"
     },
     "noSource": "Your library does not have any novels from this source",
-    "pinned": "مثبت",
-    "pluginsHostError": "Plugins host error",
     "removeFromLibrary": "تمت إزالته من المكتبة",
     "searchbar": "البحث في المصادر",
     "selectNovel": "Select Novel",
-    "tryAgain": "Try again in a moment",
     "uninstalledPlugin": "Uninstalled %{name}",
     "updateFailed": "Update failed",
     "updatedTo": "Updated to %{version}",
@@ -148,10 +130,8 @@
   "browseSettings": "تصفح الإعدادات",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
-    "languages": "اللغات",
-    "onlyShowPinnedSources": "إظهار المصادر المثبتة فقط",
-    "searchAllSources": "البحث في جميع المصادر",
-    "searchAllWarning": "البحث عن عدد كبير من المصادر قد يجمد التطبيق حتى الانتهاء من البحث."
+    "multi": "Multi",
+    "languages": "اللغات"
   },
   "categories": {
     "addCategories": "إضافة تصنيف",
@@ -198,7 +178,6 @@
     "name": "اسم",
     "newUpdateAvailable": "تحديث جديد متاح",
     "ok": "حسنآ",
-    "parsing": "Parsing",
     "pause": "Pause",
     "preparing": "Preparing",
     "remove": "Remove",
@@ -241,16 +220,12 @@
     "chapterName": "Chapter: %{name}",
     "completed": "Download completed",
     "dbInfo": "يتم حفظ التنزيلات في قاعدة بيانات SQLite",
-    "downloadChapters": "الفصول المحملة",
-    "downloader": "Downloader",
     "downloading": "Downloading",
     "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "تم التنزيل",
-    "failed": "Download failed: %{message}",
     "noDownloads": "لا توجد تحميلات",
     "pluginNotFound": "Plugin not found!",
-    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
-    "serviceRunning": "Another service is running. Queued chapters"
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
   },
   "generalSettings": "العامة",
   "generalSettingsScreen": {
@@ -288,7 +263,6 @@
   },
   "globalSearch": {
     "allSources": "جميع المصادر",
-    "pinnedSources": "المصادر المثبتة",
     "searchIn": "البحث عن رواية في"
   },
   "history": "السجل",
@@ -442,11 +416,9 @@
       "padding": "Padding",
       "pageReader": "انقر يمينا أو يساراً للتنقل بين صفحات القارئ (تجريبي)",
       "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
-      "renderHml": "عرض HTML",
       "scrollAmount": "مقدار التمرير (افتراضيًا طول الشاشة)",
       "showBatteryAndTime": "اضهر البطارية والوقت",
       "showProgressPercentage": "النسبة المئوية للتقدم",
-      "showSwipeMargins": "إظهار هوامش التمرير",
       "swipeGestures": "اسحب لليسار أو لليمين للتنقل بين الفصول",
       "textAlign": "اتجاه النص",
       "textSize": "حجم الخط",
@@ -460,7 +432,7 @@
       "scrollToCurrentChapter": "التمرير إلى الفصل الحالي",
       "scrollToTop": "التمرير إلى الأعلى"
     },
-    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p>",
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
     "finished": "انتهى",
     "nextChapter": "Next: %{name}",
     "noNextChapter": "لا يوجد فصل اخر",
@@ -521,5 +493,12 @@
     "unableToGetNovel": "Unable to get novel",
     "updatesLower": "التحديثات",
     "updatingLibrary": "Updating library"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }

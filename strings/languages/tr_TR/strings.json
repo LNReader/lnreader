@@ -23,11 +23,9 @@
     "deleteReadChapters": "Okunmuş bölümleri sil",
     "deleteReadChaptersDialogTitle": "Emin misiniz? Okunmuş olarak işaretlenmiş olan tüm bölümler silinecektir.",
     "importEpub": "Import Epub",
-    "importError": "Import Error",
     "importNovel": "Import Novel",
     "importStaticFiles": "Import Static Files",
     "novelInsertFailed": "novel insert failed",
-    "parseEpub": "Parse Epub",
     "useFAB": "Use FAB instead of button",
     "userAgent": "User Agent"
   },
@@ -77,28 +75,19 @@
       "backupCreated": "Backup created %{fileName}",
       "libraryRestored": "Library Restored",
       "noAvailableBackup": "There's no available backup",
-      "noErrorNovel": "There's no error novel",
-      "novelsRestored": "%{num} novels restored",
-      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
-      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+      "novelsRestored": "%{num} novels restored"
     },
     "legacyBackup": "Legacy Backup",
     "noBackupFound": "No backup found",
-    "noDataProvided": "No data provided",
     "preparingData": "Preparing Data",
     "remote": {
       "backup": "Self Host Backup",
-      "backupInterruped": "Self Host Backup Interruped",
       "host": "Host",
-      "restore": "Self Host Restore",
-      "restoreInterruped": "Self Host Restore Interruped",
       "unknownHost": "Unknown host"
     },
     "remoteBackup": "Remote Backup",
     "restoreBackup": "Restore backup",
     "restoreBackupDesc": "Restore library from backup file",
-    "restoreError": "Restore error",
-    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
     "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
     "restorinBackup": "Restoring backup",
     "restoringData": "Restoring Data",
@@ -121,22 +110,15 @@
     "latest": "En son",
     "listEmpty": "Ayarlardan dilleri etkinleştirin",
     "migration": {
-      "anotherServiceIsRunning": "Another service is running",
       "dialogMessage": "Migrate %{url}?",
-      "migratingToNewSource": "Migrating %{name} to new source",
-      "migrationError": "Migration error",
       "novelAlreadyInLibrary": "Novel already in library",
-      "novelMigrated": "Novel Migrated",
       "selectSource": "Select Source",
       "selectSourceDesc": "Select a Source To Migrate From"
     },
     "noSource": "Your library does not have any novels from this source",
-    "pinned": "Sabitlenmiş",
-    "pluginsHostError": "Plugins host error",
     "removeFromLibrary": "Kitaplıktan kaldırıldı",
     "searchbar": "Kaynak ara",
     "selectNovel": "Select Novel",
-    "tryAgain": "Try again in a moment",
     "uninstalledPlugin": "Uninstalled %{name}",
     "updateFailed": "Update failed",
     "updatedTo": "Updated to %{version}",
@@ -148,10 +130,8 @@
   "browseSettings": "Göz Atma Seçenekleri",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
-    "languages": "Diller",
-    "onlyShowPinnedSources": "Yalnızca sabitlenmiş kaynakları göster",
-    "searchAllSources": "Tüm kaynaklarda ara",
-    "searchAllWarning": "Büyük miktarda kaynaklarda arama yapmak işlem bitene kadar uygulamayı dondurabilir."
+    "multi": "Multi",
+    "languages": "Diller"
   },
   "categories": {
     "addCategories": "Kategori ekle",
@@ -198,7 +178,6 @@
     "name": "Ad",
     "newUpdateAvailable": "Yeni güncelleme var",
     "ok": "Tamam",
-    "parsing": "Parsing",
     "pause": "Pause",
     "preparing": "Preparing",
     "remove": "Remove",
@@ -241,16 +220,12 @@
     "chapterName": "Chapter: %{name}",
     "completed": "Download completed",
     "dbInfo": "İndirilenler bir SQLite Veritabanında kaydedilmektedir.",
-    "downloadChapters": "İndirilen bölümler",
-    "downloader": "Downloader",
     "downloading": "Downloading",
     "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "İndirilenler",
-    "failed": "Download failed: %{message}",
     "noDownloads": "İndirme yok",
     "pluginNotFound": "Plugin not found!",
-    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
-    "serviceRunning": "Another service is running. Queued chapters"
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
   },
   "generalSettings": "Genel",
   "generalSettingsScreen": {
@@ -288,7 +263,6 @@
   },
   "globalSearch": {
     "allSources": "tüm kaynaklarda",
-    "pinnedSources": "sabitlenmiş kaynaklarda",
     "searchIn": "Şurada bir novel arayın"
   },
   "history": "Geçmiş",
@@ -442,11 +416,9 @@
       "padding": "Padding",
       "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Ekstra paragraf boşluklarını kaldır",
-      "renderHml": "HTML'yi Render'le",
       "scrollAmount": "Kaydırma miktarı (varsayılan olarak ekran yüksekliği)",
       "showBatteryAndTime": "Pili ve saati göster",
       "showProgressPercentage": "İlerleme yüzdesini göster",
-      "showSwipeMargins": "Kaydırma kenar boşluklarını göster",
       "swipeGestures": "Bölümler arası gezinmek için sol veya sağa doğru kaydırın",
       "textAlign": "Yazı Hızası",
       "textSize": "Yazı boyutu",
@@ -460,7 +432,7 @@
       "scrollToCurrentChapter": "Mevcut bölüme kaydır",
       "scrollToTop": "Yukarı kaydır"
     },
-    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p>",
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
     "finished": "Biten",
     "nextChapter": "Next: %{name}",
     "noNextChapter": "Başka bölüm yok",
@@ -521,5 +493,12 @@
     "unableToGetNovel": "Unable to get novel",
     "updatesLower": "güncellemeler",
     "updatingLibrary": "Updating library"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }

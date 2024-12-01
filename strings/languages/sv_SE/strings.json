@@ -23,11 +23,9 @@
     "deleteReadChapters": "Delete read chapters",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted.",
     "importEpub": "Import Epub",
-    "importError": "Import Error",
     "importNovel": "Import Novel",
     "importStaticFiles": "Import Static Files",
     "novelInsertFailed": "novel insert failed",
-    "parseEpub": "Parse Epub",
     "useFAB": "Use FAB instead of button",
     "userAgent": "User Agent"
   },
@@ -77,28 +75,19 @@
       "backupCreated": "Backup created %{fileName}",
       "libraryRestored": "Library Restored",
       "noAvailableBackup": "There's no available backup",
-      "noErrorNovel": "There's no error novel",
-      "novelsRestored": "%{num} novels restored",
-      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
-      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+      "novelsRestored": "%{num} novels restored"
     },
     "legacyBackup": "Legacy Backup",
     "noBackupFound": "No backup found",
-    "noDataProvided": "No data provided",
     "preparingData": "Preparing Data",
     "remote": {
       "backup": "Self Host Backup",
-      "backupInterruped": "Self Host Backup Interruped",
       "host": "Host",
-      "restore": "Self Host Restore",
-      "restoreInterruped": "Self Host Restore Interruped",
       "unknownHost": "Unknown host"
     },
     "remoteBackup": "Remote Backup",
     "restoreBackup": "Restore backup",
     "restoreBackupDesc": "Restore library from backup file",
-    "restoreError": "Restore error",
-    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
     "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
     "restorinBackup": "Restoring backup",
     "restoringData": "Restoring Data",
@@ -121,22 +110,15 @@
     "latest": "Latest",
     "listEmpty": "Enable languages from settings",
     "migration": {
-      "anotherServiceIsRunning": "Another service is running",
       "dialogMessage": "Migrate %{url}?",
-      "migratingToNewSource": "Migrating %{name} to new source",
-      "migrationError": "Migration error",
       "novelAlreadyInLibrary": "Novel already in library",
-      "novelMigrated": "Novel Migrated",
       "selectSource": "Select Source",
       "selectSourceDesc": "Select a Source To Migrate From"
     },
     "noSource": "Your library does not have any novels from this source",
-    "pinned": "Pinned",
-    "pluginsHostError": "Plugins host error",
     "removeFromLibrary": "Removed from library",
     "searchbar": "Search sources",
     "selectNovel": "Select Novel",
-    "tryAgain": "Try again in a moment",
     "uninstalledPlugin": "Uninstalled %{name}",
     "updateFailed": "Update failed",
     "updatedTo": "Updated to %{version}",
@@ -148,10 +130,8 @@
   "browseSettings": "Browse Settings",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
-    "languages": "Languages",
-    "onlyShowPinnedSources": "Only show pinned sources",
-    "searchAllSources": "Search all sources",
-    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+    "multi": "Multi",
+    "languages": "Languages"
   },
   "categories": {
     "addCategories": "Add category",
@@ -198,7 +178,6 @@
     "name": "Name",
     "newUpdateAvailable": "New update available",
     "ok": "Ok",
-    "parsing": "Parsing",
     "pause": "Pause",
     "preparing": "Preparing",
     "remove": "Remove",
@@ -241,16 +220,12 @@
     "chapterName": "Chapter: %{name}",
     "completed": "Download completed",
     "dbInfo": "Downloads are saved in a SQLite Database.",
-    "downloadChapters": "downloaded Chapters",
-    "downloader": "Downloader",
     "downloading": "Downloading",
     "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "downloads",
-    "failed": "Download failed: %{message}",
     "noDownloads": "No downloads",
     "pluginNotFound": "Plugin not found!",
-    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
-    "serviceRunning": "Another service is running. Queued chapters"
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
   },
   "generalSettings": "General",
   "generalSettingsScreen": {
@@ -288,7 +263,6 @@
   },
   "globalSearch": {
     "allSources": "all sources",
-    "pinnedSources": "pinned sources",
     "searchIn": "Search a novel in"
   },
   "history": "History",
@@ -442,11 +416,9 @@
       "padding": "Padding",
       "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
       "removeExtraSpacing": "Remove extra paragraph spacing",
-      "renderHml": "Render HTML",
       "scrollAmount": "Scroll amount (screen height by default)",
       "showBatteryAndTime": "Show battery and time",
       "showProgressPercentage": "Show progress percentage",
-      "showSwipeMargins": "Show swipe margins",
       "swipeGestures": "Swipe left or right to navigate between chapters",
       "textAlign": "Text align",
       "textSize": "Text size",
@@ -460,7 +432,7 @@
       "scrollToCurrentChapter": "Scroll to current chapter",
       "scrollToTop": "Scroll to top"
     },
-    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p>",
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
     "finished": "Finished",
     "nextChapter": "Next: %{name}",
     "noNextChapter": "There's no next chapter",
@@ -521,5 +493,12 @@
     "unableToGetNovel": "Unable to get novel",
     "updatesLower": "updates",
     "updatingLibrary": "Updating library"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }

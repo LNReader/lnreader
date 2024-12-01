@@ -1,10 +1,10 @@
 {
   "aboutScreen": {
-    "website": "Website",
+    "website": "Webseite",
     "discord": "Discord",
     "github": "Github",
-    "helpTranslate": "Help translate",
-    "sources": "Sources",
+    "helpTranslate": "Hilf beim Übersetzen",
+    "sources": "Quellen",
     "version": "Version",
     "whatsNew": "What's new"
   },
@@ -23,11 +23,9 @@
     "deleteReadChapters": "Gelesene Kapitel löschen",
     "deleteReadChaptersDialogTitle": "Sind Sie sicher? Alle als gelesen markierten Kapitel werden gelöscht.",
     "importEpub": "Import Epub",
-    "importError": "Import Error",
     "importNovel": "Import Novel",
     "importStaticFiles": "Import Static Files",
     "novelInsertFailed": "novel insert failed",
-    "parseEpub": "Parse Epub",
     "useFAB": "Use FAB instead of button",
     "userAgent": "User Agent"
   },
@@ -52,7 +50,7 @@
       "strawberry": "Strawberry Daiquiri",
       "tako": "Tako",
       "teal": "Teal",
-      "turquoise": "Turquoise",
+      "turquoise": "Türkis",
       "yotsuba": "Yotsuba"
     }
   },
@@ -77,28 +75,19 @@
       "backupCreated": "Backup created %{fileName}",
       "libraryRestored": "Library Restored",
       "noAvailableBackup": "There's no available backup",
-      "noErrorNovel": "There's no error novel",
-      "novelsRestored": "%{num} novels restored",
-      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
-      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+      "novelsRestored": "%{num} novels restored"
     },
     "legacyBackup": "Legacy Backup",
     "noBackupFound": "No backup found",
-    "noDataProvided": "No data provided",
     "preparingData": "Preparing Data",
     "remote": {
       "backup": "Self Host Backup",
-      "backupInterruped": "Self Host Backup Interruped",
       "host": "Host",
-      "restore": "Self Host Restore",
-      "restoreInterruped": "Self Host Restore Interruped",
       "unknownHost": "Unknown host"
     },
     "remoteBackup": "Remote Backup",
     "restoreBackup": "Restore backup",
     "restoreBackupDesc": "Restore library from backup file",
-    "restoreError": "Restore error",
-    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
     "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
     "restorinBackup": "Restoring backup",
     "restoringData": "Restoring Data",
@@ -121,22 +110,15 @@
     "latest": "Aktuell",
     "listEmpty": "Sprachen in Einstellungen aktivieren",
     "migration": {
-      "anotherServiceIsRunning": "Another service is running",
       "dialogMessage": "Migrate %{url}?",
-      "migratingToNewSource": "Migrating %{name} to new source",
-      "migrationError": "Migration error",
       "novelAlreadyInLibrary": "Novel already in library",
-      "novelMigrated": "Novel Migrated",
       "selectSource": "Select Source",
       "selectSourceDesc": "Select a Source To Migrate From"
     },
     "noSource": "Your library does not have any novels from this source",
-    "pinned": "Angeheftet",
-    "pluginsHostError": "Plugins host error",
     "removeFromLibrary": "Aus der Bibliothek entfernt",
     "searchbar": "Quellen durchsuchen",
     "selectNovel": "Select Novel",
-    "tryAgain": "Try again in a moment",
     "uninstalledPlugin": "Uninstalled %{name}",
     "updateFailed": "Update failed",
     "updatedTo": "Updated to %{version}",
@@ -148,10 +130,8 @@
   "browseSettings": "Einstellungen durchsuchen",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
-    "languages": "Sprachen",
-    "onlyShowPinnedSources": "Nur angepinnte Quellen anzeigen",
-    "searchAllSources": "Alle Quellen durchsuchen",
-    "searchAllWarning": "Das Durchsuchen einer großen Anzahl an Quellen kann die App einfrieren, bis die Suche beendet wurde."
+    "multi": "Multi",
+    "languages": "Sprachen"
   },
   "categories": {
     "addCategories": "Kategorie hinzufügen",
@@ -198,7 +178,6 @@
     "name": "Name",
     "newUpdateAvailable": "Neues Update verfügbar",
     "ok": "Ok",
-    "parsing": "Parsing",
     "pause": "Pause",
     "preparing": "Preparing",
     "remove": "Remove",
@@ -241,16 +220,12 @@
     "chapterName": "Chapter: %{name}",
     "completed": "Download completed",
     "dbInfo": "Downloads werden in einer SQLite-Datenbank gespeichert.",
-    "downloadChapters": "Heruntergeladene Kapitel",
-    "downloader": "Downloader",
     "downloading": "Downloading",
     "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "Downloads",
-    "failed": "Download failed: %{message}",
     "noDownloads": "Keine Downloads",
     "pluginNotFound": "Plugin not found!",
-    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
-    "serviceRunning": "Another service is running. Queued chapters"
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
   },
   "generalSettings": "Allgemein",
   "generalSettingsScreen": {
@@ -288,7 +263,6 @@
   },
   "globalSearch": {
     "allSources": "Alle Quellen",
-    "pinnedSources": "Angepinnte Quellen",
     "searchIn": "Suche ein Buch in"
   },
   "history": "Verlauf",
@@ -442,11 +416,9 @@
       "padding": "Padding",
       "pageReader": "Tippe links oder rechts um durch die Seiten im Leser zu navigieren (Experimentell)",
       "removeExtraSpacing": "Extra Absatzabstand entfernen",
-      "renderHml": "HTML anzeigen",
       "scrollAmount": "Höhe des Bildlaufs (standardmäßig Bildschirmhöhe)",
       "showBatteryAndTime": "Akku und Zeit anzeigen",
       "showProgressPercentage": "Zeige Fortschritt in Prozent",
-      "showSwipeMargins": "Show swipe margins",
       "swipeGestures": "Nach links oder rechts wischen, um zwischen den Kapiteln zu wechseln",
       "textAlign": "Textausrichtung",
       "textSize": "Schriftgröße",
@@ -460,7 +432,7 @@
       "scrollToCurrentChapter": "Zum aktuellen Kapitel springen",
       "scrollToTop": "Zum Anfang springen"
     },
-    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p>",
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
     "finished": "Beendet",
     "nextChapter": "Next: %{name}",
     "noNextChapter": "Es gibt kein weiteres Kapitel",
@@ -521,5 +493,12 @@
     "unableToGetNovel": "Unable to get novel",
     "updatesLower": "Aktualisierungen",
     "updatingLibrary": "Updating library"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }

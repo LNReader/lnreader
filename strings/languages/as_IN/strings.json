@@ -23,11 +23,9 @@
     "deleteReadChapters": "Delete read chapters",
     "deleteReadChaptersDialogTitle": "Are you sure? All chapters marked as read will be deleted.",
     "importEpub": "Import Epub",
-    "importError": "Import Error",
     "importNovel": "Import Novel",
     "importStaticFiles": "Import Static Files",
     "novelInsertFailed": "novel insert failed",
-    "parseEpub": "Parse Epub",
     "useFAB": "Use FAB instead of button",
     "userAgent": "User Agent"
   },
@@ -77,28 +75,19 @@
       "backupCreated": "Backup created %{fileName}",
       "libraryRestored": "Library Restored",
       "noAvailableBackup": "There's no available backup",
-      "noErrorNovel": "There's no error novel",
-      "novelsRestored": "%{num} novels restored",
-      "novelsRestoredError": "%{num} novels got errors. Please use Restore error backup to try again.",
-      "pluginNotExist": "Plugin with id %{id} doenst exist!"
+      "novelsRestored": "%{num} novels restored"
     },
     "legacyBackup": "Legacy Backup",
     "noBackupFound": "No backup found",
-    "noDataProvided": "No data provided",
     "preparingData": "Preparing Data",
     "remote": {
       "backup": "Self Host Backup",
-      "backupInterruped": "Self Host Backup Interruped",
       "host": "Host",
-      "restore": "Self Host Restore",
-      "restoreInterruped": "Self Host Restore Interruped",
       "unknownHost": "Unknown host"
     },
     "remoteBackup": "Remote Backup",
     "restoreBackup": "Restore backup",
     "restoreBackupDesc": "Restore library from backup file",
-    "restoreError": "Restore error",
-    "restoreErrorDesc": "Using this to restore the remaining. Save your time.",
     "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
     "restorinBackup": "Restoring backup",
     "restoringData": "Restoring Data",
@@ -121,22 +110,15 @@
     "latest": "সাম্প্ৰতিক",
     "listEmpty": "ছেটিংছৰ পৰা ভাষা সক্ৰিয় কৰক",
     "migration": {
-      "anotherServiceIsRunning": "Another service is running",
       "dialogMessage": "Migrate %{url}?",
-      "migratingToNewSource": "Migrating %{name} to new source",
-      "migrationError": "Migration error",
       "novelAlreadyInLibrary": "Novel already in library",
-      "novelMigrated": "Novel Migrated",
       "selectSource": "Select Source",
       "selectSourceDesc": "Select a Source To Migrate From"
     },
     "noSource": "Your library does not have any novels from this source",
-    "pinned": "পিন কৰা",
-    "pluginsHostError": "Plugins host error",
     "removeFromLibrary": "পুথিভঁৰালৰ পৰা আঁতৰ কৰা হৈছে",
     "searchbar": "উৎসত সন্ধান কৰক",
     "selectNovel": "Select Novel",
-    "tryAgain": "Try again in a moment",
     "uninstalledPlugin": "Uninstalled %{name}",
     "updateFailed": "Update failed",
     "updatedTo": "Updated to %{version}",
@@ -148,10 +130,8 @@
   "browseSettings": "Browse Settings",
   "browseSettingsScreen": {
     "concurrentSearches": "Concurrent Source Searches",
-    "languages": "Languages",
-    "onlyShowPinnedSources": "Only show pinned sources",
-    "searchAllSources": "Search all sources",
-    "searchAllWarning": "Searching a large number of sources may freeze the app till searching is finished."
+    "multi": "Multi",
+    "languages": "Languages"
   },
   "categories": {
     "addCategories": "শ্ৰেণী যোগ কৰক",
@@ -198,7 +178,6 @@
     "name": "নাম",
     "newUpdateAvailable": "নতুন আপডেট উপলব্ধ",
     "ok": "হ’ব",
-    "parsing": "Parsing",
     "pause": "Pause",
     "preparing": "Preparing",
     "remove": "Remove",
@@ -241,16 +220,12 @@
     "chapterName": "Chapter: %{name}",
     "completed": "Download completed",
     "dbInfo": "ডাউনলোডসমূহ SQLite ডেটাবেছত সংৰক্ষিত হৈ থাকে।",
-    "downloadChapters": "ডাউনলোড কৰা অধ্যায়সমূহ",
-    "downloader": "Downloader",
     "downloading": "Downloading",
     "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "ডাউনলোডসমূহ",
-    "failed": "Download failed: %{message}",
     "noDownloads": "কোনো ডাউনলোড নাই",
     "pluginNotFound": "Plugin not found!",
-    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted.",
-    "serviceRunning": "Another service is running. Queued chapters"
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
   },
   "generalSettings": "General",
   "generalSettingsScreen": {
@@ -288,7 +263,6 @@
   },
   "globalSearch": {
     "allSources": "সকলো উৎস",
-    "pinnedSources": "পিন কৰা উৎস",
     "searchIn": "উৎসত উপন্যাস অনুসন্ধান কৰক"
   },
   "history": "ইতিহাস",
@@ -442,11 +416,9 @@
       "padding": "Padding",
       "pageReader": "পৃষ্ঠাত ক্লিক কৰি পৃষ্ঠাবোৰ পঢ়ক",
       "removeExtraSpacing": "অতিরিক্ত স্থান আঁতৰাওক",
-      "renderHml": "এইচটিএমএল প্ৰদৰ্শন",
       "scrollAmount": "স্ক্ৰল পৰিমাণ (প্ৰদৰ্শন উচ্চতা অনুযায়ী)",
       "showBatteryAndTime": "ব্যাটাৰী আৰু সময় দেখুৱাওক",
       "showProgressPercentage": "প্ৰগতিৰ শতাংশ দেখুৱাওক",
-      "showSwipeMargins": "স্বাইপৰ মাৰ্জিন দেখুৱাওক",
       "swipeGestures": "স্বাইপ কৰি অধ্যায়ৰ মাজত যাব",
       "textAlign": "আখৰ সজ্জা",
       "textSize": "আখৰৰ আকাৰ",
@@ -460,7 +432,7 @@
       "scrollToCurrentChapter": "বৰ্তমান অধ্যায়লৈ স্ক্ৰল কৰক",
       "scrollToTop": "শীৰ্ষলৈ স্ক্ৰল কৰক"
     },
-    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p>",
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
     "finished": "শেষ",
     "nextChapter": "Next: %{name}",
     "noNextChapter": "পৰবর্তী অধ্যায় নাই",
@@ -521,5 +493,12 @@
     "unableToGetNovel": "Unable to get novel",
     "updatesLower": "আপডেটসমূহ",
     "updatingLibrary": "Updating library"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }
