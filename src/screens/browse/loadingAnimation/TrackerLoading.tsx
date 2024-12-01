@@ -4,7 +4,7 @@ import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeColors } from '@theme/types';
 
-import getLoadingColors from '@utils/getLoadingColors';
+import useLoadingColors from '@utils/useLoadingColors';
 import { useAppSettings } from '@hooks/persisted/index';
 
 interface Props {
@@ -16,7 +16,7 @@ const MalLoading: React.FC<Props> = ({ theme }) => {
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   const styles = createStyleSheet(theme);
 
-  const [highlightColor, backgroundColor] = getLoadingColors(theme);
+  const [highlightColor, backgroundColor] = useLoadingColors(theme);
 
   const renderLoadingRect = (item: number, index: number) => {
     let randomNumber = Math.random();
