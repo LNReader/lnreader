@@ -3,16 +3,18 @@ import { StyleSheet, View } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeColors } from '@theme/types';
-import getLoadingColors from '@utils/getLoadingColors';
+import useLoadingColors from '@utils/useLoadingColors';
+import { useAppSettings } from '@hooks/persisted/index';
 
 interface Props {
   theme: ThemeColors;
 }
 
 const UpdatesSkeletonLoading: React.FC<Props> = ({ theme }) => {
+  const { disableLoadingAnimations } = useAppSettings();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 
-  const [highlightColor, backgroundColor] = getLoadingColors(theme);
+  const [highlightColor, backgroundColor] = useLoadingColors(theme);
 
   const renderLoadingChapter = (item: number, index: number) => {
     return (
@@ -22,6 +24,7 @@ const UpdatesSkeletonLoading: React.FC<Props> = ({ theme }) => {
           shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
           height={42}
           width={42}
+          stopAutoRun={disableLoadingAnimations}
         />
         <View>
           <ShimmerPlaceHolder
@@ -29,12 +32,14 @@ const UpdatesSkeletonLoading: React.FC<Props> = ({ theme }) => {
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={16}
             width={257.5}
+            stopAutoRun={disableLoadingAnimations}
           />
           <ShimmerPlaceHolder
             style={styles.textBottom}
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={12}
             width={257.5}
+            stopAutoRun={disableLoadingAnimations}
           />
         </View>
         <View style={styles.buttonCtn}>
@@ -43,6 +48,7 @@ const UpdatesSkeletonLoading: React.FC<Props> = ({ theme }) => {
             shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
             height={25}
             width={25}
+            stopAutoRun={disableLoadingAnimations}
           />
         </View>
       </View>

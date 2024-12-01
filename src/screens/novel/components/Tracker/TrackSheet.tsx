@@ -89,7 +89,10 @@ const TrackSheet = ({ bottomSheetRef, novel, theme }: Props) => {
 
   return (
     <>
-      <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[130, 200]}>
+      <BottomSheet
+        bottomSheetRef={bottomSheetRef}
+        snapPoints={trackedNovel ? [180] : [130]}
+      >
         <View
           style={[
             styles.contentContainer,

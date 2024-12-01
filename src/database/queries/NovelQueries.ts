@@ -1,6 +1,3 @@
-import * as SQLite from 'expo-sqlite';
-const db = SQLite.openDatabase('lnreader.db');
-
 import * as DocumentPicker from 'expo-document-picker';
 
 import { fetchNovel } from '@services/plugin/fetch';
@@ -16,6 +13,7 @@ import { NOVEL_STORAGE } from '@utils/Storages';
 import FileManager from '@native/FileManager';
 import { downloadFile } from '@plugins/helpers/fetch';
 import { getPlugin } from '@plugins/pluginManager';
+import { db } from '@database/db';
 
 export const insertNovelAndChapters = async (
   pluginId: string,

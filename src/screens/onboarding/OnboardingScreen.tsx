@@ -6,6 +6,7 @@ import { Button } from '@components';
 import PickThemeStep from './PickThemeStep';
 import { useState } from 'react';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { getString } from '@strings/translations';
 
 enum OnboardingStep {
   PICK_THEME,
@@ -25,7 +26,7 @@ export default function OnboardingScreen() {
   const renderHelptext = () => {
     switch (step) {
       case OnboardingStep.PICK_THEME:
-        return 'Pick a theme';
+        return getString('onboardingScreen.pickATheme');
       default:
         return <PickThemeStep />;
     }
@@ -49,7 +50,7 @@ export default function OnboardingScreen() {
           color: theme.onBackground,
         }}
       >
-        Yaholo!
+        {getString('onboardingScreen.welcome')}
       </Text>
       <Text
         style={{
@@ -72,7 +73,7 @@ export default function OnboardingScreen() {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <Button
           style={{ flex: 1 }}
-          title="Complete"
+          title={getString('onboardingScreen.complete')}
           mode="contained"
           onPress={() => {
             MMKVStorage.set('IS_ONBOARDED', true);

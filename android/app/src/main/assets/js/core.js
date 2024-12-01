@@ -412,6 +412,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (reader.generalSettings.val.pageReader) {
       const diffX =
         (e.changedTouches[0].screenX - this.initialX) / reader.layoutWidth;
+      reader.chapterElement.style.transition = 'unset';
       reader.chapterElement.style.transform =
         'translateX(-' + (pageReader.page.val - diffX) * 100 + '%)';
     }
@@ -421,6 +422,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const diffX = e.changedTouches[0].screenX - this.initialX;
     const diffY = e.changedTouches[0].screenY - this.initialY;
     if (reader.generalSettings.val.pageReader) {
+      reader.chapterElement.style.transition = '200ms';
       const diffXPercentage = diffX / reader.layoutWidth;
       if (diffXPercentage < -0.3) {
         pageReader.movePage(pageReader.page.val + 1);
