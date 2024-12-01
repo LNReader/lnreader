@@ -1,7 +1,12 @@
 import { getString } from '@strings/translations';
 import sanitizeHtml from 'sanitize-html';
 
-export const sanitizeChapterText = (html: string): string => {
+export const sanitizeChapterText = (
+  pluginId: string,
+  novelName: string,
+  chapterName: string,
+  html: string,
+): string => {
   let text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
       'img',
@@ -23,5 +28,12 @@ export const sanitizeChapterText = (html: string): string => {
     },
     allowedSchemes: ['data', 'http', 'https', 'file'],
   });
-  return text || getString('readerScreen.emptyChapterMessage');
+  return (
+    text ||
+    getString('readerScreen.emptyChapterMessage', {
+      pluginId,
+      novelName,
+      chapterName,
+    })
+  );
 };

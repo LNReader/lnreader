@@ -56,6 +56,7 @@ export interface PluginItem {
   customJS?: string;
   customCSS?: string;
   hasUpdate?: boolean;
+  hasSettings?: boolean;
 }
 
 export interface ImageRequestInit {
@@ -68,6 +69,7 @@ export interface ImageRequestInit {
 export interface Plugin extends PluginItem {
   imageRequestInit?: ImageRequestInit;
   filters?: Filters;
+  pluginSettings: any;
   popularNovels: (
     pageNo: number,
     options?: PopularNovelsOptions<Filters>,

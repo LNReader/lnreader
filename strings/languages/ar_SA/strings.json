@@ -1,29 +1,142 @@
 {
+  "aboutScreen": {
+    "website": "Website",
+    "discord": "Discord",
+    "github": "Github",
+    "helpTranslate": "Help translate",
+    "sources": "Sources",
+    "version": "Version",
+    "whatsNew": "What's new"
+  },
+  "advancedSettings": "Advanced",
   "advancedSettingsScreen": {
+    "cachedNovelsDeletedToast": "Cached novels deleted",
+    "chapterInsertFailed": "chapter insert failed",
+    "clearCachedNovels": "Clear cached novels",
+    "clearCachedNovelsDesc": "Delete cached novels which not in your library",
+    "clearDatabaseWarning": "Are you sure? Read and Downloaded chapters and progress of non-library novels will be lost.",
+    "clearUpdatesMessage": "Updates cleared.",
+    "clearUpdatesTab": "Clear updates tab",
+    "clearUpdatesWarning": "Are you sure? Updates tab will be cleared.",
+    "clearupdatesTabDesc": "Clears chapter entries in updates tab",
+    "dataManagement": "Data Management",
     "deleteReadChapters": "حذف الفصول المقروءة",
-    "deleteReadChaptersDialogTitle": "هل أنت متأكد؟ سيتم حذف جميع الفصول المعلَّمة كمقروءة."
+    "deleteReadChaptersDialogTitle": "هل أنت متأكد؟ سيتم حذف جميع الفصول المعلَّمة كمقروءة.",
+    "importEpub": "Import Epub",
+    "importNovel": "Import Novel",
+    "importStaticFiles": "Import Static Files",
+    "novelInsertFailed": "novel insert failed",
+    "useFAB": "Use FAB instead of button",
+    "userAgent": "User Agent"
+  },
+  "appearance": "Appearance",
+  "appearanceScreen": {
+    "accentColor": "Accent Color",
+    "alwaysShowNavLabels": "Always show nav labels",
+    "appTheme": "App theme",
+    "darkTheme": "Dark Theme",
+    "hideBackdrop": "Hide backdrop",
+    "lightTheme": "Light Theme",
+    "navbar": "Navbar",
+    "novelInfo": "Novel info",
+    "pureBlackDarkMode": "Pure black dark mode",
+    "showHistoryInTheNav": "Show history in the nav",
+    "showUpdatesInTheNav": "Show updates in the nav",
+    "theme": {
+      "default": "Default",
+      "lavender": "Lavender",
+      "midnightDusk": "Midnight Dusk",
+      "daybreakBloom": "Daybreak Bloom",
+      "strawberry": "Strawberry Daiquiri",
+      "tako": "Tako",
+      "teal": "Teal",
+      "turquoise": "Turquoise",
+      "yotsuba": "Yotsuba"
+    }
+  },
+  "backupScreen": {
+    "backupName": "Backup name",
+    "createBackup": "Create backup",
+    "createBackupDesc": "Can be used to restore current library",
+    "createBackupWarning": "Create backup may not work on devices with Android 9 or lower.",
+    "downloadingData": "Downloading Data",
+    "downloadingDownloadedFiles": "Downloading Downloaded files",
+    "drive": {
+      "backup": "Drive Backup",
+      "backupInterruped": "Drive Backup Interruped",
+      "googleDriveBackup": "Google Drive Backup",
+      "restore": "Drive Restore",
+      "restoreInterruped": "Drive Restore Interruped"
+    },
+    "googeDrive": "Googe Drive",
+    "googeDriveDesc": "Backup to your Google Drive",
+    "invalidBackupFolder": "Invalid backup folder",
+    "legacy": {
+      "backupCreated": "Backup created %{fileName}",
+      "libraryRestored": "Library Restored",
+      "noAvailableBackup": "There's no available backup",
+      "novelsRestored": "%{num} novels restored"
+    },
+    "legacyBackup": "Legacy Backup",
+    "noBackupFound": "No backup found",
+    "preparingData": "Preparing Data",
+    "remote": {
+      "backup": "Self Host Backup",
+      "host": "Host",
+      "unknownHost": "Unknown host"
+    },
+    "remoteBackup": "Remote Backup",
+    "restoreBackup": "Restore backup",
+    "restoreBackupDesc": "Restore library from backup file",
+    "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
+    "restorinBackup": "Restoring backup",
+    "restoringData": "Restoring Data",
+    "selfHost": "Self Host",
+    "selfHostDesc": "Backup to your server",
+    "uploadingData": "Uploading Data",
+    "uploadingDownloadedFiles": "Uploading Downloaded files"
   },
   "browse": "تصفح",
   "browseScreen": {
     "addedToLibrary": "تمت الإضافة إلى المكتبة",
+    "available": "Available",
     "discover": "استكشف",
     "globalSearch": "بحث عام",
+    "installFailed": "Installation failed: %{name}",
+    "installed": "Installed",
+    "installedPlugin": "Installed %{name}",
+    "installedPlugins": "Installed plugins",
     "lastUsed": "اخر استخدام",
     "latest": "الاخير",
     "listEmpty": "تفعيل اللغات من الاعدادات",
-    "pinned": "مثبت",
+    "migration": {
+      "dialogMessage": "Migrate %{url}?",
+      "novelAlreadyInLibrary": "Novel already in library",
+      "selectSource": "Select Source",
+      "selectSourceDesc": "Select a Source To Migrate From"
+    },
+    "noSource": "Your library does not have any novels from this source",
     "removeFromLibrary": "تمت إزالته من المكتبة",
-    "searchbar": "البحث في المصادر"
+    "searchbar": "البحث في المصادر",
+    "selectNovel": "Select Novel",
+    "uninstalledPlugin": "Uninstalled %{name}",
+    "updateFailed": "Update failed",
+    "updatedTo": "Updated to %{version}",
+    "settings": {
+      "title": "Plugin Settings",
+      "description": "Fill in the plugin settings. Restart app to apply the settings."
+    }
   },
   "browseSettings": "تصفح الإعدادات",
   "browseSettingsScreen": {
-    "languages": "اللغات",
-    "onlyShowPinnedSources": "إظهار المصادر المثبتة فقط",
-    "searchAllSources": "البحث في جميع المصادر",
-    "searchAllWarning": "البحث عن عدد كبير من المصادر قد يجمد التطبيق حتى الانتهاء من البحث."
+    "concurrentSearches": "Concurrent Source Searches",
+    "multi": "Multi",
+    "languages": "اللغات"
   },
   "categories": {
     "addCategories": "إضافة تصنيف",
+    "cantDeleteDefault": "You cant delete default category",
+    "default": "Default",
     "defaultCategory": "التصنيف الافتراضي",
     "deleteModal": {
       "desc": "هل ترغب في حذف التصنيف",
@@ -33,33 +146,64 @@
     "editCategories": "إعادة تسمية التصنيف",
     "emptyMsg": "ليس لديك تصنيف. اضغط على زر علامة الزائد لإنشاء واحد لتنظيم مكتبتك",
     "header": "تعديل التصنيف",
+    "local": "Local",
     "setCategories": "حدد التصنيف",
     "setModalEmptyMsg": "ليس لديك تصنيف. اضغط على زر تعديل لإنشاء واحد لتنظيم مكتبتك"
   },
+  "repositories": {
+    "emptyMsg": "You have no repositories. Add your first plugin repository to get started."
+  },
   "common": {
+    "about": "About",
     "add": "إضافة",
     "all": "الجميع",
+    "backup": "Backup",
     "cancel": "الغاء",
     "categories": "تصنيفات",
     "chapters": "فصول",
     "clear": "تنظيف",
+    "copiedToClipboard": "Copied to clipboard: %{name}",
+    "delete": "Delete",
+    "deleted": "Deleted %{name}",
+    "deprecated": "Deprecated",
     "display": "عرض",
+    "done": "Done",
+    "downloads": "Downloads",
     "edit": "تعديل",
+    "example": "Example",
     "filter": "التصفية",
     "globally": "عالمي",
     "install": "تثبيت",
+    "logout": "Logout",
     "name": "اسم",
     "newUpdateAvailable": "تحديث جديد متاح",
     "ok": "حسنآ",
+    "pause": "Pause",
+    "preparing": "Preparing",
+    "remove": "Remove",
     "reset": "إعادة تعيين",
+    "restore": "Restore",
+    "resume": "Resume",
     "retry": "أعد المحاولة",
     "save": "تثبيت",
     "search": "بحث",
     "searchFor": "بحث عن",
     "searchResults": "نتائج البحث",
     "settings": "الإعدادات",
+    "show": "Show",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
     "sort": "الفرز",
     "submit": "إرسال"
+  },
+  "webview": {
+    "refresh": "Refresh",
+    "share": "Share",
+    "openInBrowser": "Open in browser",
+    "clearCookies": "Clear cookies",
+    "cookiesCleared": "Cookies cleared",
+    "clearData": "Clear WebView data",
+    "dataDeleted": "WebView data cleared"
   },
   "date": {
     "calendar": {
@@ -70,10 +214,18 @@
     }
   },
   "downloadScreen": {
+    "cancelDownloads": "Cancel downloads",
+    "cancelled": "Downloads cancelled.",
+    "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
+    "chapterName": "Chapter: %{name}",
+    "completed": "Download completed",
     "dbInfo": "يتم حفظ التنزيلات في قاعدة بيانات SQLite",
-    "downloadChapters": "الفصول المحملة",
+    "downloading": "Downloading",
+    "downloadingNovel": "Downloading: %{name}",
     "downloadsLower": "تم التنزيل",
-    "noDownloads": "لا توجد تحميلات"
+    "noDownloads": "لا توجد تحميلات",
+    "pluginNotFound": "Plugin not found!",
+    "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
   },
   "generalSettings": "العامة",
   "generalSettingsScreen": {
@@ -82,13 +234,18 @@
     "bySource": "حسب المصدر",
     "chapterSort": "الفرز الافتراضي للفصول",
     "desc": "ترتيب تنازلي",
+    "disableLoadingAnimations": "Disable loading animations",
+    "disableLoadingAnimationsDesc": "May improve performance on slower devices",
     "disableHapticFeedback": "تعطيل الاهتزاز",
+    "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
     "displayMode": "وضع العرض",
     "downloadNewChapters": "تحميل فصول جديدة",
     "epub": "EPUB",
     "epubLocation": "موقع EPUB",
     "epubLocationDescription": "مكان لحفظ ملفات EPUB وتصديرها.",
     "globalUpdate": "التحديث الشامل",
+    "gridSize": "Grid size",
+    "gridSizeDesc": "%{num} per row",
     "itemsPerRow": "العناصر في كل صف",
     "itemsPerRowLibrary": "العناصر لكل صف في المكتبة",
     "jumpToLastReadChapter": "Jump to last read chapter in list",
@@ -97,19 +254,23 @@
     "novelSort": "فرز الروايات",
     "refreshMetadata": "تحديث البيانات الوصفية تلقائيًا",
     "refreshMetadataDescription": "تحقق من الغلاف الجديد ",
+    "sortOrder": "Sort Order",
     "updateLibrary": "تحديث المكتبة عند تشغيل التطبيق",
+    "updateLibraryDesc": "Not recommended for low devices",
     "updateOngoing": "تحديث الروايات الجارية فقط",
     "updateTime": "وقت آخر تحديث",
     "useFAB": "استخدام FAB في المكتبة"
   },
   "globalSearch": {
     "allSources": "جميع المصادر",
-    "pinnedSources": "المصادر المثبتة",
     "searchIn": "البحث عن رواية في"
   },
   "history": "السجل",
   "historyScreen": {
+    "chapter": "Chapter",
     "clearHistorWarning": "هل أنت متأكد؟ سيتم مسح كل التاريخ.",
+    "deleted": "History deleted.",
+    "nothingReadRecently": "Nothing read recently",
     "searchbar": "سجل البحث"
   },
   "library": "المكتبة",
@@ -120,10 +281,13 @@
         "comfortable": "الشبكة المريحة",
         "compact": "الشبكة المدمجة",
         "displayMode": "نمط العرض",
+        "download": "Download",
         "downloadBadges": "تحميل الاوسمة",
         "list": "القائمة",
         "noTitle": "تغطية الشبكة فقط",
+        "numberOfItems": "Number of Items",
         "showNoOfItems": "إظهار عدد العناصر",
+        "unread": "Unread",
         "unreadBadges": "شارات الغير مقروء"
       },
       "filters": {
@@ -143,25 +307,71 @@
       }
     },
     "empty": "مكتبتك فارغة، أضف رواية الى مكتبتك من خلال \"تصفح\".",
+    "extraMenu": {
+      "importEpub": "Import Epub",
+      "openRandom": "Open Random Entry",
+      "updateCategory": "Update Category",
+      "updateLibrary": "Update Library"
+    },
     "searchbar": "البحث في المكتبة"
   },
   "more": "المزيد",
   "moreScreen": {
     "downloadOnly": "التنزيلات فقط",
-    "incognitoMode": "الوضع المخفي"
+    "downloadOnlyDesc": "Filters all novels in your library",
+    "downloadQueue": "Download queue",
+    "incognitoMode": "الوضع المخفي",
+    "incognitoModeDesc": "Pauses reading history"
   },
   "novelScreen": {
     "addToLibaray": "إضافة إلى المكتبة",
+    "bottomSheet": {
+      "displays": {
+        "chapterNumber": "Chapter number",
+        "sourceTitle": "Source title"
+      },
+      "filters": {
+        "bookmarked": "Bookmarked",
+        "downloaded": "Downloaded",
+        "unread": "Unread"
+      },
+      "order": {
+        "byChapterName": "By chapter name",
+        "bySource": "By source"
+      }
+    },
+    "chapterChapnum": "Chapter %{num}",
     "chapters": "الفصول",
     "continueReading": "متابعة القراءة",
     "convertToEpubModal": {
-      "chaptersWarning": "الفصول التي تم تنزيلها فقط مدرجة في EPUB",
+      "chaptersWarning": "الفصول المحملة فقط مدرجة في EPUB",
       "chooseLocation": "حدد مسار تخزين ملفات EPUB",
       "pathToFolder": "مسار مجلد لحفظ EPUB",
-      "useCustomCSS": "استخدام CSS حسب التفضيل",
-      "useCustomJS": "استخدام JS حسب التفضيل",
+      "useCustomCSS": "استخدام CSS مخصص",
+      "useCustomJS": "استخدام JS مخصص",
       "useCustomJSWarning": "قد لا يكون مدعوماً من كل قراء EPUB",
       "useReaderTheme": "استخدام قالب القارئ"
+    },
+    "deleteChapterError": "Cant delete chapter chapter folder",
+    "deleteMessage": "Delete downloaded chapters?",
+    "deletedAllDownloads": "Deleted all Downloads",
+    "download": {
+      "custom": "Custom",
+      "customAmount": "Download custom amount",
+      "delete": "Delete downloads",
+      "next": "Next chapter",
+      "next10": "Next 10 chapter",
+      "next5": "Next 5 chapter",
+      "unread": "Unread"
+    },
+    "edit": {
+      "addTag": "Add Tag",
+      "author": "Author: %{author}",
+      "cover": "Edit cover",
+      "info": "Edit info",
+      "status": "Status:",
+      "summary": "Description: %{summary}...",
+      "title": "Title: %{title}"
     },
     "inLibaray": "في المكتبة",
     "jumpToChapterModal": {
@@ -175,29 +385,46 @@
       "openChapter": "فتح الفصل"
     },
     "migrate": "نقل",
-    "noSummary": "لا يوجد ملخص"
+    "noSummary": "لا يوجد ملخص",
+    "progress": "Progress %{progress} %",
+    "readChaptersDeleted": "Read chapters deleted",
+    "startReadingChapters": "Start reading %{name}",
+    "status": {
+      "cancelled": "Cancelled",
+      "completed": "Completed",
+      "licensed": "Licensed",
+      "onHiatus": "On Hiatus",
+      "ongoing": "Ongoing",
+      "publishingFinished": "Publishing Finished",
+      "unknown": "Unknown"
+    },
+    "tracked": "Tracked",
+    "tracking": "Tracking",
+    "unknownStatus": "Unknown status",
+    "updatedToast": "Updated %{name}"
   },
   "readerScreen": {
     "bottomSheet": {
       "allowTextSelection": "السماح باختيار النص",
       "autoscroll": "تدوير تلقائي",
-      "bionicReading": "الكلمات ثنائية الخط",
+      "bionicReading": "القراءة الثنائية",
+      "tapToScroll": "Tap to scroll",
       "color": "اللون",
       "fontStyle": "نمط الخط",
       "fullscreen": "تكبير الشاشة",
       "lineHeight": "ارتفاع الخط",
-      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
+      "padding": "Padding",
+      "pageReader": "انقر يمينا أو يساراً للتنقل بين صفحات القارئ (تجريبي)",
       "removeExtraSpacing": "إزالة المسافات الزائدة بين الفقرات",
-      "renderHml": "عرض HTML",
       "scrollAmount": "مقدار التمرير (افتراضيًا طول الشاشة)",
       "showBatteryAndTime": "اضهر البطارية والوقت",
       "showProgressPercentage": "النسبة المئوية للتقدم",
-      "showSwipeMargins": "إظهار هوامش التمرير",
       "swipeGestures": "اسحب لليسار أو لليمين للتنقل بين الفصول",
       "textAlign": "اتجاه النص",
       "textSize": "حجم الخط",
       "useChapterDrawerSwipeNavigation": "مرر يمينا لفتح القائمة الجانبية",
       "verticalSeekbar": "شريط البحث العمودي",
+      "keepScreenOn": "Keep screen on",
       "volumeButtonsScroll": "تمرير أزرار الصوت"
     },
     "drawer": {
@@ -205,8 +432,11 @@
       "scrollToCurrentChapter": "التمرير إلى الفصل الحالي",
       "scrollToTop": "التمرير إلى الأعلى"
     },
+    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
     "finished": "انتهى",
-    "noNextChapter": "لا يوجد فصل اخر"
+    "nextChapter": "Next: %{name}",
+    "noNextChapter": "لا يوجد فصل اخر",
+    "noPreviousChapter": "There's no previous chapter"
   },
   "readerSettings": {
     "autoScrollInterval": "فترة التمرير التلقائي (بالثواني)",
@@ -238,18 +468,37 @@
     "downloadedChapters": "الفصول المحملة",
     "genreDistribution": "توزيع الأنواع",
     "readChapters": "الفصول المقروء",
+    "sources": "Sources",
     "statusDistribution": "توزيع الحالات",
     "title": "الإحصائيات",
     "titlesInLibrary": "العناوين في المكتبة",
     "totalChapters": "مجموع الفصول",
     "unreadChapters": "الفصول الغير مقروء"
   },
+  "tracking": "Tracking",
+  "trackingScreen": {
+    "logOutMessage": "Log out from %{name}?",
+    "revalidate": "Revalidate",
+    "services": "Services"
+  },
   "updates": "التحديثات",
   "updatesScreen": {
+    "deletedChapters": "Deleted %{num} chapters",
     "emptyView": "لا توجد تحديثات",
     "lastUpdatedAt": "آخر تحديث للمكتبة:",
+    "libraryUpdated": "Library Updated",
     "newChapters": "فصول جديدة",
+    "novelsUpdated": "%{num} novels updated",
     "searchbar": "البحث في التحديثات",
-    "updatesLower": "التحديثات"
+    "unableToGetNovel": "Unable to get novel",
+    "updatesLower": "التحديثات",
+    "updatingLibrary": "Updating library"
+  },
+  "onboardingScreen": {
+    "welcome": "Welcome",
+    "pickATheme": "Pick a theme",
+    "light": "Light",
+    "dark": "Dark",
+    "complete": "Complete"
   }
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
@@ -85,6 +85,18 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
 
   const bottomSheetRef = useRef<BottomSheetModal | null>(null);
 
+  useEffect(
+    () =>
+      navigation.addListener('tabPress', e => {
+        if (navigation.isFocused()) {
+          e.preventDefault();
+
+          bottomSheetRef.current?.present?.();
+        }
+      }),
+    [navigation],
+  );
+
   const renderTabBar = (
     props: SceneRendererProps & { navigationState: State },
   ) =>
@@ -102,7 +114,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           },
           styles.tabBar,
         ]}
-        tabStyle={{ width: 'auto' }}
+        tabStyle={{ width: 'auto', minWidth: 100 }}
         gap={8}
         renderLabel={({ route, color }) => (
           <Row>

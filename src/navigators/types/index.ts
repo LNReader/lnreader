@@ -53,6 +53,11 @@ export type HistoryScreenProps = CompositeScreenProps<
   StackScreenProps<RootStackParamList>
 >;
 
+export type UpdateScreenProps = CompositeScreenProps<
+  MaterialBottomTabScreenProps<BottomNavigatorParamList, 'Updates'>,
+  StackScreenProps<RootStackParamList>
+>;
+
 export type BrowseScreenProps = CompositeScreenProps<
   MaterialBottomTabScreenProps<BottomNavigatorParamList, 'Browse'>,
   StackScreenProps<RootStackParamList>

@@ -1,37 +1,38 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
-import { Image } from 'react-native';
 
 import { IconButtonV2 } from '@components';
 
-import { History, NovelInfo } from '@database/types';
-import { ThemeColors } from '@theme/types';
-import { coverPlaceholderColor } from '@theme/colors';
-import { getString } from '@strings/translations';
-import { HistoryScreenProps } from '@navigators/types';
 import { defaultCover } from '@plugins/helpers/constants';
+import { getString } from '@strings/translations';
+import { useTheme } from '@hooks/persisted';
+
+import { History, NovelInfo } from '@database/types';
+import { HistoryScreenProps } from '@navigators/types';
+
+import { coverPlaceholderColor } from '@theme/colors';
 
 interface HistoryCardProps {
   history: History;
   handleRemoveFromHistory: (chapterId: number) => void;
-  navigation: HistoryScreenProps['navigation'];
-  theme: ThemeColors;
 }
 
 const HistoryCard: React.FC<HistoryCardProps> = ({
   history,
-  navigation,
   handleRemoveFromHistory,
-  theme,
 }) => {
+  const theme = useTheme();
+  const { navigate } = useNavigation<HistoryScreenProps['navigation']>();
+
   return (
     <Pressable
       style={styles.container}
       android_ripple={{ color: theme.rippleColor }}
       onPress={() =>
-        navigation.navigate('Chapter', {
+        navigate('Chapter', {
           novel: {
             path: history.novelPath,
             name: history.novelName,
@@ -44,7 +45,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
       <View style={styles.imageAndNameContainer}>
         <Pressable
           onPress={() =>
-            navigation.navigate('Novel', {
+            navigate('Novel', {
               name: history.name,
               path: history.novelPath,
               pluginId: history.pluginId,
@@ -110,7 +111,6 @@ const styles = StyleSheet.create({
   novelName: {
     marginBottom: 4,
   },
-  chapterName: {},
   imageAndNameContainer: {
     flex: 1,
     flexDirection: 'row',

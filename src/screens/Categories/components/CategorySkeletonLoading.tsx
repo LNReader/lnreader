@@ -3,7 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeColors } from '@theme/types';
-import getLoadingColors from '@utils/getLoadingColors';
+import useLoadingColors from '@utils/useLoadingColors';
+import { useAppSettings } from '@hooks/persisted/index';
 
 interface Props {
   width: number;
@@ -12,9 +13,10 @@ interface Props {
 }
 
 const CategorySkeletonLoading: React.FC<Props> = ({ height, width, theme }) => {
+  const { disableLoadingAnimations } = useAppSettings();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 
-  const [highlightColor, backgroundColor] = getLoadingColors(theme);
+  const [highlightColor, backgroundColor] = useLoadingColors(theme);
 
   const renderLoadingCard = (item: number, index: number) => {
     return (
@@ -24,6 +26,7 @@ const CategorySkeletonLoading: React.FC<Props> = ({ height, width, theme }) => {
           shimmerColors={[backgroundColor, highlightColor, backgroundColor]}
           height={height}
           width={width}
+          stopAutoRun={disableLoadingAnimations}
         />
       </View>
     );

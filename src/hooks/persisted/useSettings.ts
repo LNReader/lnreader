@@ -28,6 +28,7 @@ export interface AppSettings {
   showUpdatesTab: boolean;
   showLabelsInNav: boolean;
   useFabForContinueReading: boolean;
+  disableLoadingAnimations: boolean;
 
   /**
    * Library settings
@@ -56,6 +57,7 @@ export interface AppSettings {
 export interface BrowseSettings {
   showMyAnimeList: boolean;
   showAniList: boolean;
+  globalSearchConcurrency?: number;
 }
 
 export interface LibrarySettings {
@@ -132,6 +134,7 @@ const initialAppSettings: AppSettings = {
   showUpdatesTab: true,
   showLabelsInNav: true,
   useFabForContinueReading: false,
+  disableLoadingAnimations: false,
 
   /**
    * Library settings
@@ -160,6 +163,7 @@ const initialAppSettings: AppSettings = {
 const initialBrowseSettings: BrowseSettings = {
   showMyAnimeList: true,
   showAniList: true,
+  globalSearchConcurrency: 3,
 };
 
 export const initialChapterGeneralSettings: ChapterGeneralSettings = {
