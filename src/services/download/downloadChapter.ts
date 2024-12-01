@@ -1,4 +1,3 @@
-import * as SQLite from 'expo-sqlite';
 import * as cheerio from 'cheerio';
 import BackgroundService from 'react-native-background-actions';
 import FileManager from '@native/FileManager';
@@ -10,8 +9,7 @@ import { getString } from '@strings/translations';
 import { getChapter } from '@database/queries/ChapterQueries';
 import { sleep } from '@utils/sleep';
 import { getNovelById } from '@database/queries/NovelQueries';
-
-const db = SQLite.openDatabase('lnreader.db');
+import { db } from '@database/db';
 
 const createChapterFolder = async (
   path: string,
@@ -47,7 +45,7 @@ const downloadFiles = async (
     const url = elem.attr('src');
     if (url) {
       const fileurl = `${folder}/${i}.b64.png`;
-      elem.attr('src', `file://${fileurl}`);
+      elem.attr('src', 'file://' + fileurl);
       try {
         const absoluteURL = new URL(url, plugin.site).href;
         await downloadFile(absoluteURL, fileurl, plugin.imageRequestInit);
