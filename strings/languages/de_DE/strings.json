@@ -1,10 +1,10 @@
 {
   "aboutScreen": {
-    "website": "Website",
+    "website": "Webseite",
     "discord": "Discord",
     "github": "Github",
-    "helpTranslate": "Help translate",
-    "sources": "Sources",
+    "helpTranslate": "Hilf beim Übersetzen",
+    "sources": "Quellen",
     "version": "Version",
     "whatsNew": "What's new"
   },
@@ -50,7 +50,7 @@
       "strawberry": "Strawberry Daiquiri",
       "tako": "Tako",
       "teal": "Teal",
-      "turquoise": "Turquoise",
+      "turquoise": "Türkis",
       "yotsuba": "Yotsuba"
     }
   },
