@@ -216,7 +216,7 @@
   "downloadScreen": {
     "cancelDownloads": "Отменить загрузки",
     "cancelled": "Загрузки отменены.",
-    "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
+    "chapterEmptyOrScrapeError": "Либо глава пуста, либо приложению не удалось ее обработать",
     "chapterName": "Глава: %{name}",
     "completed": "Загрузка завершена",
     "dbInfo": "Загрузки сохраняются в базе данных SQLite.",
@@ -352,7 +352,7 @@
       "useCustomJSWarning": "Может поддерживаться не всеми читателями EPUB",
       "useReaderTheme": "Использовать тему для чтения"
     },
-    "deleteChapterError": "Cant delete chapter chapter folder",
+    "deleteChapterError": "Не могу удалить папку с главами",
     "deleteMessage": "Удалить загруженные главы?",
     "deletedAllDownloads": "Удалить все загрузки",
     "download": {
@@ -387,7 +387,7 @@
     "migrate": "Перенос",
     "noSummary": "Нет сводки",
     "progress": "Прогресс %{progress}%",
-    "readChaptersDeleted": "Read chapters deleted",
+    "readChaptersDeleted": "Прочитанные главы удалены",
     "startReadingChapters": "Начать чтение %{name}",
     "status": {
       "cancelled": "Отменено",
@@ -478,7 +478,7 @@
   "tracking": "Отслеживание",
   "trackingScreen": {
     "logOutMessage": "Выйти из %{name}?",
-    "revalidate": "Revalidate",
+    "revalidate": "Подтвердите еще раз",
     "services": "Сервисы отслеживания"
   },
   "updates": "Обновления",
