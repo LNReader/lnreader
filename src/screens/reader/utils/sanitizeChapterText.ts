@@ -18,9 +18,6 @@ export const sanitizeChapterText = (
       'span': ['class', 'id'],
     },
     allowedSchemes: ['data', 'http', 'https', 'file'],
-    allowedSchemesByTag: {
-      img: ['http', 'https', 'data', 'file', 'blob'],
-    },
   });
   return (
     text ||
