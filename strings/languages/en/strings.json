@@ -238,6 +238,8 @@
     "disableLoadingAnimationsDesc": "May improve performance on slower devices",
     "disableHapticFeedback": "Disable haptic feedback",
     "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
+    "disableStoringImages": "Disable storing images",
+    "disableStoringImagesDescription": "No images downloaded in chapters, or created in epubs",
     "displayMode": "Display Mode",
     "downloadNewChapters": "Download new chapters",
     "epub": "EPUB",
@@ -425,7 +427,8 @@
       "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "verticalSeekbar": "Vertical Seekbar",
       "keepScreenOn": "Keep screen on",
-      "volumeButtonsScroll": "Volume buttons scroll"
+      "volumeButtonsScroll": "Volume buttons scroll",
+      "disableReaderImages": "Disable reader images"
     },
     "drawer": {
       "scrollToBottom": "Scroll to bottom",
@@ -459,7 +462,8 @@
     "textColor": "Text color",
     "textColorModal": "Reader text color",
     "title": "Reader",
-    "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar"
+    "verticalSeekbarDesc": "Switch between vertical and horizontal seekbar",
+    "disableReaderImagesDesc": "Images will not appear in reader mode"
   },
   "sourceScreen": {
     "noResultsFound": "No results found"
