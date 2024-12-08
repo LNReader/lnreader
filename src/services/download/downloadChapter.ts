@@ -10,6 +10,7 @@ import { getChapter } from '@database/queries/ChapterQueries';
 import { sleep } from '@utils/sleep';
 import { getNovelById } from '@database/queries/NovelQueries';
 import { db } from '@database/db';
+import { sanitizeChapterText } from '../../screens/reader/utils/sanitizeChapterText';
 
 const createChapterFolder = async (
   path: string,
@@ -57,7 +58,13 @@ const downloadFiles = async (
   await FileManager.writeFile(folder + '/index.html', loadedCheerio.html());
 };
 
-export const downloadChapter = async ({ chapterId }: { chapterId: number }) => {
+export const downloadChapter = async ({
+  chapterId,
+  disableImages,
+}: {
+  chapterId: number;
+  disableImages: boolean;
+}) => {
   const chapter = await getChapter(chapterId);
   if (!chapter) {
     throw new Error('Chapter not found with id: ' + chapterId);
@@ -83,7 +90,14 @@ export const downloadChapter = async ({ chapterId }: { chapterId: number }) => {
   });
   const chapterText = await plugin.parseChapter(chapter.path);
   if (chapterText && chapterText.length) {
-    await downloadFiles(chapterText, plugin, novel.id, chapter.id);
+    sanitizedText = sanitizeChapterText(
+      novel.pluginId,
+      novel.name,
+      chapter.name,
+      chapterText,
+      disableImages,
+    );
+    await downloadFiles(sanitizedText, plugin, novel.id, chapter.id);
     db.transaction(tx => {
       tx.executeSql('UPDATE Chapter SET isDownloaded = 1 WHERE id = ?', [
         chapter.id,

@@ -6,7 +6,7 @@ export const sanitizeChapterText = (
   novelName: string,
   chapterName: string,
   html: string,
-  disableReaderImages = false,
+  disableImages = false,
 ): string => {
   const extraTags: string[] = ['i', 'em', 'b', 'a', 'div', 'ol', 'li', 'title'];
 
@@ -17,7 +17,7 @@ export const sanitizeChapterText = (
     'ol': ['reversed', 'start', 'type'],
   };
 
-  if (!disableReaderImages) {
+  if (!disableImages) {
     extraTags.push('img');
     extraAttributes.img = ['src', 'class', 'id'];
   }

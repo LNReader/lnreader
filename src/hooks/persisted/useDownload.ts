@@ -2,6 +2,7 @@ import { ChapterInfo, NovelInfo } from '@database/types';
 import ServiceManager, { BackgroundTask } from '@services/ServiceManager';
 import { useMemo } from 'react';
 import { useMMKVObject } from 'react-native-mmkv';
+import { useAppSettings } from '@hooks/persisted';
 
 export const DOWNLOAD_QUEUE = 'DOWNLOAD';
 export const CHAPTER_DOWNLOADING = 'CHAPTER_DOWNLOADING';
@@ -15,11 +16,14 @@ export default function useDownload() {
     [queue],
   );
 
+  const { disableStoringImages } = useAppSettings();
+
   const downloadChapter = (novel: NovelInfo, chapter: ChapterInfo) =>
     ServiceManager.manager.addTask({
       name: 'DOWNLOAD_CHAPTER',
       data: {
         chapterId: chapter.id,
+        disableImages: disableStoringImages,
         novelName: novel.name,
         chapterName: chapter.name,
       },
@@ -30,6 +34,7 @@ export default function useDownload() {
         name: 'DOWNLOAD_CHAPTER',
         data: {
           chapterId: chapter.id,
+          disableImages: disableStoringImages,
           novelName: novel.name,
           chapterName: chapter.name,
         },

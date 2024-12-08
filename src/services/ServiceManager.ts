@@ -34,7 +34,12 @@ export type BackgroundTask =
   | { name: 'MIGRATE_NOVEL'; data: MigrateNovelData }
   | {
       name: 'DOWNLOAD_CHAPTER';
-      data: { chapterId: number; novelName: string; chapterName: string };
+      data: {
+        chapterId: number;
+        disableImages: boolean;
+        novelName: string;
+        chapterName: string;
+      };
     };
 
 export default class ServiceManager {
