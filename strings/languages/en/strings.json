@@ -239,7 +239,7 @@
     "disableHapticFeedback": "Disable haptic feedback",
     "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
     "disableStoringImages": "Disable storing images",
-    "disableStoringImagesDescription": "No images downloaded in chapters, or created in epubs",
+    "disableStoringImagesDescription": "No images in downloaded chapters",
     "displayMode": "Display Mode",
     "downloadNewChapters": "Download new chapters",
     "epub": "EPUB",
