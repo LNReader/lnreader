@@ -164,7 +164,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
         }
       }}
       source={{
-        baseUrl: !chapter.isDownloaded ? chapter.path : undefined,
+        baseUrl: !chapter.isDownloaded ? plugin?.site : undefined,
         headers: plugin?.imageRequestInit?.headers,
         method: plugin?.imageRequestInit?.method,
         body: plugin?.imageRequestInit?.body,
