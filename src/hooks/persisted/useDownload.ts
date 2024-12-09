@@ -28,6 +28,7 @@ export default function useDownload() {
         chapterName: chapter.name,
       },
     });
+
   const downloadChapters = (novel: NovelInfo, chapters: ChapterInfo[]) =>
     ServiceManager.manager.addTask(
       chapters.map(chapter => ({
@@ -40,6 +41,7 @@ export default function useDownload() {
         },
       })),
     );
+
   const resumeDowndload = () => ServiceManager.manager.resume();
 
   const pauseDownload = () => ServiceManager.manager.pause();

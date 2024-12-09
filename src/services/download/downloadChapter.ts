@@ -39,14 +39,18 @@ const downloadFiles = async (
     novelId,
     chapterId,
   });
+
   const loadedCheerio = cheerio.load(html);
   const imgs = loadedCheerio('img').toArray();
+
   for (let i = 0; i < imgs.length; i++) {
     const elem = loadedCheerio(imgs[i]);
     const url = elem.attr('src');
+
     if (url) {
       const fileurl = `${folder}/${i}.b64.png`;
       elem.attr('src', 'file://' + fileurl);
+
       try {
         const absoluteURL = new URL(url, plugin.site).href;
         await downloadFile(absoluteURL, fileurl, plugin.imageRequestInit);
@@ -72,6 +76,7 @@ export const downloadChapter = async ({
   if (chapter.isDownloaded) {
     return;
   }
+
   const novel = await getNovelById(chapter.novelId);
   if (!novel) {
     throw new Error('Novel not found for chapter: ' + chapter.name);
@@ -80,6 +85,7 @@ export const downloadChapter = async ({
   if (!plugin) {
     throw new Error(getString('downloadScreen.pluginNotFound'));
   }
+
   await BackgroundService.updateNotification({
     taskTitle: getString('downloadScreen.downloadingNovel', {
       name: novel.name,
@@ -88,16 +94,18 @@ export const downloadChapter = async ({
       name: chapter.name,
     }),
   });
-  const chapterText = await plugin.parseChapter(chapter.path);
+
+  let chapterText = await plugin.parseChapter(chapter.path);
   if (chapterText && chapterText.length) {
-    sanitizedText = sanitizeChapterText(
+    chapterText = sanitizeChapterText(
       novel.pluginId,
       novel.name,
       chapter.name,
       chapterText,
       disableImages,
     );
-    await downloadFiles(sanitizedText, plugin, novel.id, chapter.id);
+
+    await downloadFiles(chapterText, plugin, novel.id, chapter.id);
     db.transaction(tx => {
       tx.executeSql('UPDATE Chapter SET isDownloaded = 1 WHERE id = ?', [
         chapter.id,

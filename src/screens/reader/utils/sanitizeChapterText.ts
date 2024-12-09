@@ -27,6 +27,7 @@ export const sanitizeChapterText = (
     allowedAttributes: extraAttributes,
     allowedSchemes: ['data', 'http', 'https', 'file'],
   });
+
   return (
     text ||
     getString('readerScreen.emptyChapterMessage', {
