@@ -57,6 +57,7 @@ const GeneralTab: React.FC = () => {
     removeExtraParagraphSpacing,
     bionicReading,
     tapToScroll = false,
+    disableReaderImages = false,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
 
@@ -154,6 +155,16 @@ const GeneralTab: React.FC = () => {
           setChapterGeneralSettings({ keepScreenOn: !keepScreenOn })
         }
         value={keepScreenOn}
+        theme={theme}
+      />
+      <ReaderSheetPreferenceItem
+        label={getString('readerScreen.bottomSheet.disableReaderImages')}
+        onPress={() =>
+          setChapterGeneralSettings({
+            disableReaderImages: !disableReaderImages,
+          })
+        }
+        value={disableReaderImages}
         theme={theme}
       />
     </BottomSheetScrollView>
