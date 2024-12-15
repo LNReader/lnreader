@@ -40,8 +40,13 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
     ChapterInfo[]
   >([]);
-  const { autoScroll, autoScrollInterval, autoScrollOffset, useVolumeButtons } =
-    useChapterGeneralSettings();
+  const {
+    autoScroll,
+    autoScrollInterval,
+    autoScrollOffset,
+    useVolumeButtons,
+    disableReaderImages,
+  } = useChapterGeneralSettings();
   const { incognitoMode } = useLibrarySettings();
   const [error, setError] = useState<string>();
   const { tracker } = useTracker();
@@ -98,7 +103,13 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
           .catch(e => setError(e.message));
       }
       setChapterText(
-        sanitizeChapterText(novel.pluginId, novel.name, chapter.name, text),
+        sanitizeChapterText(
+          novel.pluginId,
+          novel.name,
+          chapter.name,
+          text,
+          disableReaderImages,
+        ),
       );
       const [nextChap, prevChap] = await Promise.all([
         getNextChapter(chapter.novelId, chapter.id),
