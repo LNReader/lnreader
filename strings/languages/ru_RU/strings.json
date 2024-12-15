@@ -81,7 +81,7 @@
     "noBackupFound": "Резервные копии не найдены",
     "preparingData": "Подготовка данных",
     "remote": {
-      "backup": "Self Host Backup",
+      "backup": "Резервное копирование",
       "host": "Сервер",
       "unknownHost": "Неизвестный хост"
     },
@@ -432,7 +432,7 @@
       "scrollToCurrentChapter": "Прокрутка к текущей главе",
       "scrollToTop": "Прокрутить вверх"
     },
-    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
+    "emptyChapterMessage": "<p>Глава пуста.</p><p>Сообщите на GitHub, <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> если он доступен в WebView.</p><p>Плагин: %{pluginId}</p><p>Новелла: %{novelName}</p><p>Глава: %{chapterName}</p>",
     "finished": "Завершено",
     "nextChapter": "Следующий: %{name}",
     "noNextChapter": "Следующей главы нет",
