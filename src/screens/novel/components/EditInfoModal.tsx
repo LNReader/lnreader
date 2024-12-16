@@ -171,11 +171,13 @@ const EditInfoModal = ({
           mode="outlined"
           onChangeText={text => setNewGenre(text)}
           onSubmitEditing={() => {
+            const newGenreTrimmed = newGenre.trim();
+
             setNovelInfo(prevVal => ({
               ...prevVal,
               genres: novelInfo.genres
-                ? `${novelInfo.genres},`
-                : '' + newGenre.trim(),
+                ? `${novelInfo.genres},` + newGenreTrimmed
+                : newGenreTrimmed,
             }));
             setNewGenre('');
           }}
