@@ -173,6 +173,10 @@ const EditInfoModal = ({
           onSubmitEditing={() => {
             const newGenreTrimmed = newGenre.trim();
 
+            if (newGenreTrimmed === '') {
+              return;
+            }
+
             setNovelInfo(prevVal => ({
               ...prevVal,
               genres: novelInfo.genres
