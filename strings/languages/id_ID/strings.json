@@ -309,7 +309,7 @@
     "empty": "Pustaka kamu kosong. Tambahkan serial ke pustaka kamu dari Jelajah.\n",
     "extraMenu": {
       "importEpub": "Import Epub",
-      "openRandom": "Open Random Entry",
+      "openRandom": "",
       "updateCategory": "Update Category",
       "updateLibrary": "Update Library"
     },
