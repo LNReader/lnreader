@@ -6,28 +6,28 @@ export const sanitizeChapterText = (
   novelName: string,
   chapterName: string,
   html: string,
+  disableImages = false,
 ): string => {
+  const extraTags: string[] = ['i', 'em', 'b', 'a', 'div', 'ol', 'li', 'title'];
+
+  const extraAttributes: { [key: string]: string[] } = {
+    'a': ['href', 'class', 'id'],
+    'div': ['class', 'id'],
+    'p': ['class', 'id'],
+    'ol': ['reversed', 'start', 'type'],
+  };
+
+  if (!disableImages) {
+    extraTags.push('img');
+    extraAttributes.img = ['src', 'class', 'id'];
+  }
+
   let text = sanitizeHtml(html, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-      'img',
-      'i',
-      'em',
-      'b',
-      'a',
-      'div',
-      'ol',
-      'li',
-      'title',
-    ]),
-    allowedAttributes: {
-      'img': ['src', 'class', 'id'],
-      'a': ['href', 'class', 'id'],
-      'div': ['class', 'id'],
-      'p': ['class', 'id'],
-      'ol': ['reversed', 'start', 'type'],
-    },
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat(extraTags),
+    allowedAttributes: extraAttributes,
     allowedSchemes: ['data', 'http', 'https', 'file'],
   });
+
   return (
     text ||
     getString('readerScreen.emptyChapterMessage', {

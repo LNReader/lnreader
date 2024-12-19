@@ -10,6 +10,7 @@ import { getChapter } from '@database/queries/ChapterQueries';
 import { sleep } from '@utils/sleep';
 import { getNovelById } from '@database/queries/NovelQueries';
 import { db } from '@database/db';
+import { sanitizeChapterText } from '../../screens/reader/utils/sanitizeChapterText';
 
 const createChapterFolder = async (
   path: string,
@@ -38,14 +39,18 @@ const downloadFiles = async (
     novelId,
     chapterId,
   });
+
   const loadedCheerio = cheerio.load(html);
   const imgs = loadedCheerio('img').toArray();
+
   for (let i = 0; i < imgs.length; i++) {
     const elem = loadedCheerio(imgs[i]);
     const url = elem.attr('src');
+
     if (url) {
       const fileurl = `${folder}/${i}.b64.png`;
       elem.attr('src', 'file://' + fileurl);
+
       try {
         const absoluteURL = new URL(url, plugin.site).href;
         await downloadFile(absoluteURL, fileurl, plugin.imageRequestInit);
@@ -57,7 +62,13 @@ const downloadFiles = async (
   await FileManager.writeFile(folder + '/index.html', loadedCheerio.html());
 };
 
-export const downloadChapter = async ({ chapterId }: { chapterId: number }) => {
+export const downloadChapter = async ({
+  chapterId,
+  disableImages,
+}: {
+  chapterId: number;
+  disableImages: boolean;
+}) => {
   const chapter = await getChapter(chapterId);
   if (!chapter) {
     throw new Error('Chapter not found with id: ' + chapterId);
@@ -65,6 +76,7 @@ export const downloadChapter = async ({ chapterId }: { chapterId: number }) => {
   if (chapter.isDownloaded) {
     return;
   }
+
   const novel = await getNovelById(chapter.novelId);
   if (!novel) {
     throw new Error('Novel not found for chapter: ' + chapter.name);
@@ -73,6 +85,7 @@ export const downloadChapter = async ({ chapterId }: { chapterId: number }) => {
   if (!plugin) {
     throw new Error(getString('downloadScreen.pluginNotFound'));
   }
+
   await BackgroundService.updateNotification({
     taskTitle: getString('downloadScreen.downloadingNovel', {
       name: novel.name,
@@ -81,8 +94,17 @@ export const downloadChapter = async ({ chapterId }: { chapterId: number }) => {
       name: chapter.name,
     }),
   });
-  const chapterText = await plugin.parseChapter(chapter.path);
+
+  let chapterText = await plugin.parseChapter(chapter.path);
   if (chapterText && chapterText.length) {
+    chapterText = sanitizeChapterText(
+      novel.pluginId,
+      novel.name,
+      chapter.name,
+      chapterText,
+      disableImages,
+    );
+
     await downloadFiles(chapterText, plugin, novel.id, chapter.id);
     db.transaction(tx => {
       tx.executeSql('UPDATE Chapter SET isDownloaded = 1 WHERE id = ?', [
