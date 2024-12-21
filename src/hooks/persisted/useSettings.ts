@@ -19,6 +19,7 @@ export interface AppSettings {
 
   incognitoMode: boolean;
   disableHapticFeedback: boolean;
+  disableStoringImages: boolean;
 
   /**
    * Appearence settings
@@ -89,6 +90,7 @@ export interface ChapterGeneralSettings {
   bionicReading: boolean;
   tapToScroll: boolean;
   TTSEnable: boolean;
+  disableReaderImages: boolean;
 }
 
 export interface ReaderTheme {
@@ -125,6 +127,7 @@ const initialAppSettings: AppSettings = {
 
   incognitoMode: false,
   disableHapticFeedback: false,
+  disableStoringImages: false,
 
   /**
    * Appearence settings
@@ -182,6 +185,7 @@ export const initialChapterGeneralSettings: ChapterGeneralSettings = {
   bionicReading: false,
   tapToScroll: false,
   TTSEnable: false,
+  disableReaderImages: false,
 };
 
 export const initialChapterReaderSettings: ChapterReaderSettings = {

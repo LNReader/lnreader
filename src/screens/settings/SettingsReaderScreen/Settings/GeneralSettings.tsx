@@ -29,6 +29,7 @@ const GeneralSettings: React.FC = () => {
     autoScrollOffset = null,
     bionicReading = false,
     tapToScroll = false,
+    disableReaderImages = false,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
 
@@ -94,6 +95,17 @@ const GeneralSettings: React.FC = () => {
         label={getString('readerScreen.bottomSheet.pageReader')}
         value={pageReader}
         onPress={() => setChapterGeneralSettings({ pageReader: !pageReader })}
+        theme={theme}
+      />
+      <SettingSwitch
+        label={getString('readerScreen.bottomSheet.disableReaderImages')}
+        description={getString('readerSettings.disableReaderImagesDesc')}
+        value={disableReaderImages}
+        onPress={() =>
+          setChapterGeneralSettings({
+            disableReaderImages: !disableReaderImages,
+          })
+        }
         theme={theme}
       />
       <SettingSwitch
