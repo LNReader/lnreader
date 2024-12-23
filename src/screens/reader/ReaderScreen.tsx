@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { DrawerLayoutAndroid } from 'react-native';
 
 import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
@@ -64,6 +64,10 @@ export const ChapterContent = ({
   const theme = useTheme();
   const { pageReader = false, keepScreenOn } = useChapterGeneralSettings();
   const [bookmarked, setBookmarked] = useState(chapter.bookmark);
+
+  useEffect(() => {
+    setBookmarked(chapter.bookmark);
+  }, [chapter]);
 
   const {
     hidden,

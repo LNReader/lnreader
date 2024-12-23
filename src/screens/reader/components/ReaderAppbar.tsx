@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 import color from 'color';
 
@@ -21,10 +21,6 @@ const ReaderAppbar = ({
   setBookmarked,
 }: ReaderAppbarProps) => {
   const { chapter, novel } = useChapterContext();
-
-  useEffect(() => {
-    setBookmarked(chapter.bookmark);
-  }, [chapter]);
 
   return (
     <Animated.View
