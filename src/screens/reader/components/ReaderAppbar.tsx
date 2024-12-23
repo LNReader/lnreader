@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
 import color from 'color';
 
@@ -14,12 +14,18 @@ interface ReaderAppbarProps {
   goBack: () => void;
 }
 
-const ReaderAppbar = ({ goBack, theme }: ReaderAppbarProps) => {
+const ReaderAppbar = ({
+  goBack,
+  theme,
+  bookmarked,
+  setBookmarked,
+}: ReaderAppbarProps) => {
   const { chapter, novel } = useChapterContext();
-  const [bookmarked, setBookmarked] = useState(chapter.bookmark);
+
   useEffect(() => {
     setBookmarked(chapter.bookmark);
   }, [chapter]);
+
   return (
     <Animated.View
       entering={FadeIn.duration(150)}
