@@ -58,6 +58,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
     refreshNovelMetadata,
     disableHapticFeedback,
     useLibraryFAB,
+    disableStoringImages,
     setAppSettings,
   } = useAppSettings();
 
@@ -245,6 +246,19 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             onPress={() =>
               setAppSettings({
                 disableLoadingAnimations: !disableLoadingAnimations,
+              })
+            }
+            theme={theme}
+          />
+          <SettingSwitch
+            label={getString('generalSettingsScreen.disableStoringImages')}
+            description={getString(
+              'generalSettingsScreen.disableStoringImagesDescription',
+            )}
+            value={disableStoringImages}
+            onPress={() =>
+              setAppSettings({
+                disableStoringImages: !disableStoringImages,
               })
             }
             theme={theme}
