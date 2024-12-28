@@ -93,48 +93,47 @@ export default class ServiceManager {
       });
     }
   }
-  async executeTask(task: QueuedBackgroundTask) {
-    let setMeta = (
-      transformer: (meta: BackgroundTaskMetadata) => BackgroundTaskMetadata,
-    ) => {
-      let taskList = [...this.getTaskList()];
-      taskList[0] = {
-        ...taskList[0],
-        meta: transformer(taskList[0].meta),
-      };
-
-      if (taskList[0].meta.isRunning) {
-        BackgroundService.updateNotification({
-          taskTitle: taskList[0].meta.name,
-          taskDesc: taskList[0].meta.progressText,
-          progressBar: {
-            indeterminate: taskList[0].meta.progress === undefined,
-            value: (taskList[0].meta.progress || 0) * 100,
-            max: 100,
-          },
-        });
-      }
-
-      setMMKVObject(this.STORE_KEY, taskList);
+  setMeta(
+    transformer: (meta: BackgroundTaskMetadata) => BackgroundTaskMetadata,
+  ) {
+    let taskList = [...this.getTaskList()];
+    taskList[0] = {
+      ...taskList[0],
+      meta: transformer(taskList[0].meta),
     };
 
+    if (taskList[0].meta.isRunning) {
+      BackgroundService.updateNotification({
+        taskTitle: taskList[0].meta.name,
+        taskDesc: taskList[0].meta.progressText,
+        progressBar: {
+          indeterminate: taskList[0].meta.progress === undefined,
+          value: (taskList[0].meta.progress || 0) * 100,
+          max: 100,
+        },
+      });
+    }
+
+    setMMKVObject(this.STORE_KEY, taskList);
+  }
+  async executeTask(task: QueuedBackgroundTask) {
     switch (task.task.name) {
       case 'IMPORT_EPUB':
-        return importEpub(task.task.data, setMeta);
+        return importEpub(task.task.data, this.setMeta);
       case 'UPDATE_LIBRARY':
-        return updateLibrary(task.task.data || {}, setMeta);
+        return updateLibrary(task.task.data || {}, this.setMeta);
       case 'DRIVE_BACKUP':
-        return createDriveBackup(task.task.data, setMeta);
+        return createDriveBackup(task.task.data, this.setMeta);
       case 'DRIVE_RESTORE':
-        return driveRestore(task.task.data, setMeta);
+        return driveRestore(task.task.data, this.setMeta);
       case 'SELF_HOST_BACKUP':
-        return createSelfHostBackup(task.task.data, setMeta);
+        return createSelfHostBackup(task.task.data, this.setMeta);
       case 'SELF_HOST_RESTORE':
-        return selfHostRestore(task.task.data, setMeta);
+        return selfHostRestore(task.task.data, this.setMeta);
       case 'MIGRATE_NOVEL':
-        return migrateNovel(task.task.data, setMeta);
+        return migrateNovel(task.task.data, this.setMeta);
       case 'DOWNLOAD_CHAPTER':
-        return downloadChapter(task.task.data, setMeta);
+        return downloadChapter(task.task.data, this.setMeta);
       default:
         return;
     }
