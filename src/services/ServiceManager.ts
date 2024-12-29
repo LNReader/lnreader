@@ -96,7 +96,7 @@ export default class ServiceManager {
   setMeta(
     transformer: (meta: BackgroundTaskMetadata) => BackgroundTaskMetadata,
   ) {
-    let taskList = [...ServiceManager.manager.getTaskList()];
+    let taskList = [...this.getTaskList()];
     taskList[0] = {
       ...taskList[0],
       meta: transformer(taskList[0].meta),
