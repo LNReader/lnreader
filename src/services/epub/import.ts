@@ -90,11 +90,12 @@ const insertLocalChapter = (
             let chapterText: string = '';
             try {
               path = decodeURI(path);
-            } catch {
-              // nothing to do
+            } catch (error) {
+              console.warn('Path decoding error:', error);
             }
             chapterText = FileManager.readFile(path);
             if (!chapterText) {
+              reject(new Error('Failed to read chapter content.'));
               return;
             }
             const staticPaths: string[] = [];
@@ -104,16 +105,15 @@ const insertLocalChapter = (
               /(href|src)=(["'])(.*?)\2/g,
               ($0, $1, $2, $3: string) => {
                 if ($3) {
-                  staticPaths.push(epubContentDir + '/' + $3);
+                  staticPaths.push(`${epubContentDir}/${$3}`);
                 }
-                return `${$1}="file://${novelDir}/${$3
-                  .split(/[\\\/]/)
-                  ?.pop()}"`;
+                const sanitizedPath = $3.replace(/^[\\/]+/, '').replace(/[\\/]+$/, '');
+                return `${$1}="file://${novelDir}/${sanitizedPath.split(/[\\\/]/).pop()}"`;
               },
             );
-            await FileManager.mkdir(novelDir + '/' + insertId);
+            await FileManager.mkdir(`${novelDir}/${insertId}`);
             await FileManager.writeFile(
-              novelDir + '/' + insertId + '/index.html',
+              `${novelDir}/${insertId}/index.html`,
               chapterText,
             );
             resolve(staticPaths);
@@ -166,7 +166,7 @@ export const importEpub = async (
   }
   const novelId = await insertLocalNovel(
     novel.name,
-    epubDirPath + novel.name, // temporary
+    `${epubDirPath}/${novel.name}`, // temporary
     novel.cover,
     novel.author,
     novel.artist,
@@ -212,7 +212,7 @@ export const importEpub = async (
     if (await FileManager.exists(filePath)) {
       await FileManager.moveFile(
         filePath,
-        novelDir + '/' + filePath.split(/[\\\/]/).pop(),
+        `${novelDir}/${filePath.split(/[\\\/]/).pop()}`,
       );
     }
   }
@@ -223,3 +223,4 @@ export const importEpub = async (
     isRunning: false,
   }));
 };
+
