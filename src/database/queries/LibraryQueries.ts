@@ -1,9 +1,7 @@
 import { LibraryFilter } from '@screens/library/constants/constants';
-import * as SQLite from 'expo-sqlite';
 import { LibraryNovelInfo, NovelInfo } from '../types';
 import { txnErrorCallback } from '../utils/helpers';
-
-const db = SQLite.openDatabase('lnreader.db');
+import { db } from '@database/db';
 
 export const getNovelsWithCategory = (
   categoryId: number,
@@ -96,6 +94,8 @@ export const getLibraryWithCategory = ({
   downloadedOnlyMode?: boolean;
 }): Promise<LibraryNovelInfo[]> => {
   let query = getLibraryWithCategoryQuery;
+  let preparedArgument: (string | number | null)[] = [];
+
   if (filter) {
     query += ` AND ${filter} `;
   }
@@ -104,17 +104,19 @@ export const getLibraryWithCategory = ({
   }
 
   if (searchText) {
-    query += ` AND name LIKE '%${searchText}%' `;
+    query += ' AND name LIKE ? ';
+    preparedArgument.push(`%${searchText}%`);
   }
 
   if (sortOrder) {
     query += ` ORDER BY ${sortOrder} `;
   }
+
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         query,
-        [],
+        preparedArgument,
         (txObj, { rows }) => resolve((rows as any)._array),
         txnErrorCallback,
       );

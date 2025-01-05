@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+import 'react-native-url-polyfill/auto';
 import { enableFreeze } from 'react-native-screens';
 
 enableFreeze(true);

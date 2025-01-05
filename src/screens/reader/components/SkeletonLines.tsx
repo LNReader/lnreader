@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { View, Dimensions, StyleSheet } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAppSettings } from '@hooks/persisted/index';
 
 const SkeletonLines = ({
   width,
@@ -20,6 +21,7 @@ const SkeletonLines = ({
   color?: string;
   highlightColor?: string;
 }) => {
+  const { disableLoadingAnimations } = useAppSettings();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   const styles = createStyleSheet(
     containerWidth,
@@ -75,6 +77,7 @@ const SkeletonLines = ({
               : randomNumber * skeletonWidth
           }
           height={skeletonHeight}
+          stopAutoRun={disableLoadingAnimations}
         />
       );
     }
@@ -87,6 +90,7 @@ const SkeletonLines = ({
           shimmerColors={[color, highlightColor, color]}
           width={skeletonWidth}
           height={skeletonHeight}
+          stopAutoRun={disableLoadingAnimations}
         />
       );
     } else {

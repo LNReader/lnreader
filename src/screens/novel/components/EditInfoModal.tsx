@@ -49,13 +49,7 @@ const EditInfoModal = ({
     });
   };
 
-  const status = [
-    NovelStatus.Ongoing,
-    NovelStatus.OnHiatus,
-    NovelStatus.Completed,
-    NovelStatus.Unknown,
-    NovelStatus.Cancelled,
-  ];
+  const status = Object.values(NovelStatus);
 
   return (
     <Portal>
@@ -93,7 +87,9 @@ const EditInfoModal = ({
                 <Pressable
                   style={{
                     backgroundColor:
-                      novel.status === item ? theme.rippleColor : 'transparent',
+                      novelInfo.status === item
+                        ? theme.rippleColor
+                        : 'transparent',
                     paddingVertical: 6,
                     paddingHorizontal: 12,
                   }}
@@ -105,7 +101,7 @@ const EditInfoModal = ({
                   <Text
                     style={{
                       color:
-                        novel.status === item
+                        novelInfo.status === item
                           ? theme.primary
                           : theme.onSurfaceVariant,
                     }}
@@ -175,11 +171,17 @@ const EditInfoModal = ({
           mode="outlined"
           onChangeText={text => setNewGenre(text)}
           onSubmitEditing={() => {
+            const newGenreTrimmed = newGenre.trim();
+
+            if (newGenreTrimmed === '') {
+              return;
+            }
+
             setNovelInfo(prevVal => ({
               ...prevVal,
               genres: novelInfo.genres
-                ? `${novelInfo.genres},`
-                : '' + newGenre.trim(),
+                ? `${novelInfo.genres},` + newGenreTrimmed
+                : newGenreTrimmed,
             }));
             setNewGenre('');
           }}
@@ -190,10 +192,10 @@ const EditInfoModal = ({
 
         {novelInfo.genres !== undefined && novelInfo.genres !== '' ? (
           <FlatList
-            contentContainerStyle={{ marginVertical: 8 }}
+            style={{ marginVertical: 8 }}
             horizontal
             data={novelInfo.genres?.split(',')}
-            keyExtractor={(item, index) => 'novelTag' + index}
+            keyExtractor={(_, index) => 'novelTag' + index}
             renderItem={({ item }) => (
               <GenreChip theme={theme} onPress={() => removeTag(item)}>
                 {item}
@@ -215,7 +217,7 @@ const EditInfoModal = ({
           <Button
             onPress={() => {
               setNovel(novelInfo);
-              updateNovelInfo(novel);
+              updateNovelInfo(novelInfo);
               hideModal();
             }}
           >
@@ -256,7 +258,7 @@ const GenreChip = ({
     <Text
       style={{
         fontSize: 12,
-        color: theme.onSurfaceVariant,
+        color: theme.onSecondaryContainer,
         textTransform: 'capitalize',
       }}
     >
@@ -264,7 +266,7 @@ const GenreChip = ({
     </Text>
     <MaterialCommunityIcons
       name="close"
-      color={theme.primary}
+      color={theme.onSecondaryContainer}
       size={18}
       onPress={onPress}
       style={{ marginLeft: 4 }}

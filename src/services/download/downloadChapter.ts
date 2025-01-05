@@ -1,6 +1,4 @@
-import * as SQLite from 'expo-sqlite';
 import * as cheerio from 'cheerio';
-import BackgroundService from 'react-native-background-actions';
 import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { Plugin } from '@plugins/types';
@@ -10,8 +8,8 @@ import { getString } from '@strings/translations';
 import { getChapter } from '@database/queries/ChapterQueries';
 import { sleep } from '@utils/sleep';
 import { getNovelById } from '@database/queries/NovelQueries';
-
-const db = SQLite.openDatabase('lnreader.db');
+import { db } from '@database/db';
+import { BackgroundTaskMetadata } from '@services/ServiceManager';
 
 const createChapterFolder = async (
   path: string,
@@ -47,9 +45,10 @@ const downloadFiles = async (
     const url = elem.attr('src');
     if (url) {
       const fileurl = `${folder}/${i}.b64.png`;
-      elem.attr('src', `file://${fileurl}`);
+      elem.attr('src', 'file://' + fileurl);
       try {
-        await downloadFile(url, fileurl, plugin.imageRequestInit);
+        const absoluteURL = new URL(url, plugin.site).href;
+        await downloadFile(absoluteURL, fileurl, plugin.imageRequestInit);
       } catch (e) {
         elem.attr('alt', String(e));
       }
@@ -58,7 +57,17 @@ const downloadFiles = async (
   await FileManager.writeFile(folder + '/index.html', loadedCheerio.html());
 };
 
-export const downloadChapter = async ({ chapterId }: { chapterId: number }) => {
+export const downloadChapter = async (
+  { chapterId }: { chapterId: number },
+  setMeta: (
+    transformer: (meta: BackgroundTaskMetadata) => BackgroundTaskMetadata,
+  ) => void,
+) => {
+  setMeta(meta => ({
+    ...meta,
+    isRunning: true,
+  }));
+
   const chapter = await getChapter(chapterId);
   if (!chapter) {
     throw new Error('Chapter not found with id: ' + chapterId);
@@ -74,14 +83,6 @@ export const downloadChapter = async ({ chapterId }: { chapterId: number }) => {
   if (!plugin) {
     throw new Error(getString('downloadScreen.pluginNotFound'));
   }
-  await BackgroundService.updateNotification({
-    taskTitle: getString('downloadScreen.downloadingNovel', {
-      name: novel.name,
-    }),
-    taskDesc: getString('downloadScreen.chapterName', {
-      name: chapter.name,
-    }),
-  });
   const chapterText = await plugin.parseChapter(chapter.path);
   if (chapterText && chapterText.length) {
     await downloadFiles(chapterText, plugin, novel.id, chapter.id);
@@ -94,4 +95,10 @@ export const downloadChapter = async ({ chapterId }: { chapterId: number }) => {
   } else {
     throw new Error(getString('downloadScreen.chapterEmptyOrScrapeError'));
   }
+
+  setMeta(meta => ({
+    ...meta,
+    progress: 1,
+    isRunning: false,
+  }));
 };

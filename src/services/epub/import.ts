@@ -1,6 +1,3 @@
-import * as SQLite from 'expo-sqlite';
-const db = SQLite.openDatabase('lnreader.db');
-import BackgroundService from 'react-native-background-actions';
 import ZipArchive from '@native/ZipArchive';
 import dayjs from 'dayjs';
 import {
@@ -12,6 +9,8 @@ import { getString } from '@strings/translations';
 import FileManager from '@native/FileManager';
 import EpubUtil from '@native/EpubUtil';
 import { NOVEL_STORAGE } from '@utils/Storages';
+import { db } from '@database/db';
+import { BackgroundTaskMetadata } from '@services/ServiceManager';
 
 const insertLocalNovel = (
   name: string,
@@ -135,13 +134,24 @@ const insertLocalChapter = (
   });
 };
 
-export const importEpub = async ({
-  uri,
-  filename,
-}: {
-  uri: string;
-  filename: string;
-}) => {
+export const importEpub = async (
+  {
+    uri,
+    filename,
+  }: {
+    uri: string;
+    filename: string;
+  },
+  setMeta: (
+    transformer: (meta: BackgroundTaskMetadata) => BackgroundTaskMetadata,
+  ) => void,
+) => {
+  setMeta(meta => ({
+    ...meta,
+    isRunning: true,
+    progress: 0,
+  }));
+
   const epubFilePath = FileManager.ExternalCachesDirectoryPath + '/novel.epub';
   await FileManager.copyFile(uri, epubFilePath);
   const epubDirPath = FileManager.ExternalCachesDirectoryPath + '/epub';
@@ -165,26 +175,17 @@ export const importEpub = async ({
   const now = dayjs().toISOString();
   const filePathSet = new Set<string>();
   if (novel.chapters) {
-    BackgroundService.updateNotification({
-      taskTitle: getString('advancedSettingsScreen.importNovel'),
-      taskDesc: '0/' + novel.chapters.length,
-      progressBar: {
-        value: 0,
-        max: novel.chapters.length,
-      },
-    });
     for (let i = 0; i < novel.chapters?.length; i++) {
-      BackgroundService.updateNotification({
-        taskDesc: i + 1 + '/' + novel.chapters.length,
-        progressBar: {
-          value: i + 1,
-          max: novel.chapters.length,
-        },
-      });
       const chapter = novel.chapters[i];
       if (!chapter.name) {
         chapter.name = chapter.path.split(/[\\\/]/).pop() || 'unknown';
       }
+
+      setMeta(meta => ({
+        ...meta,
+        progressText: chapter.name,
+      }));
+
       const filePaths = await insertLocalChapter(
         novelId,
         i,
@@ -193,32 +194,32 @@ export const importEpub = async ({
         now,
       );
       filePaths.forEach(filePath => filePathSet.add(filePath));
+
+      setMeta(meta => ({
+        ...meta,
+        progress: i / novel.chapters.length,
+      }));
     }
   }
   const novelDir = NOVEL_STORAGE + '/local/' + novelId;
-  BackgroundService.updateNotification({
-    taskTitle: getString('advancedSettingsScreen.importStaticFiles'),
-    taskDesc: '0/' + filePathSet.size,
-    progressBar: {
-      value: 0,
-      max: filePathSet.size,
-    },
-  });
-  let cnt = 1;
+
+  setMeta(meta => ({
+    ...meta,
+    progressText: getString('advancedSettingsScreen.importStaticFiles'),
+  }));
+
   for (let filePath of filePathSet) {
-    BackgroundService.updateNotification({
-      taskDesc: cnt + '/' + filePathSet.size,
-      progressBar: {
-        value: cnt,
-        max: filePathSet.size,
-      },
-    });
     if (await FileManager.exists(filePath)) {
       await FileManager.moveFile(
         filePath,
         novelDir + '/' + filePath.split(/[\\\/]/).pop(),
       );
     }
-    cnt += 1;
   }
+
+  setMeta(meta => ({
+    ...meta,
+    progress: 1,
+    isRunning: false,
+  }));
 };

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
 
@@ -19,8 +19,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import { deleteChapter } from '@database/queries/ChapterQueries';
 import { showToast } from '@utils/showToast';
 import ServiceManager from '@services/ServiceManager';
+import { UpdateScreenProps } from '@navigators/types';
 
-const UpdatesScreen = () => {
+const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
   const theme = useTheme();
   const {
     isLoading,
@@ -74,6 +75,20 @@ const UpdatesScreen = () => {
     useCallback(() => {
       getUpdates();
     }, [downloadQueue]),
+  );
+
+  useEffect(
+    () =>
+      navigation.addListener('tabPress', e => {
+        if (navigation.isFocused()) {
+          e.preventDefault();
+
+          navigation.navigate('MoreStack', {
+            screen: 'TaskQueue',
+          });
+        }
+      }),
+    [navigation],
   );
 
   return (

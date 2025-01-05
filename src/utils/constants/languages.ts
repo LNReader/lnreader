@@ -1,6 +1,7 @@
 // references:
 // https://en.wikipedia.org/wiki/IETF_language_tag
 // https://en.wikipedia.org/wiki/List_of_language_names
+import { getString } from '@strings/translations';
 
 export const languagesMapping: Record<string, string> = {
   'id': 'Bahasa Indonesia',
@@ -18,6 +19,7 @@ export const languagesMapping: Record<string, string> = {
   'zh': '中文, 汉语, 漢語',
   'ja': '日本語',
   'ko': '조선말, 한국어',
+  'multi': getString('browseSettingsScreen.multi'),
 };
 
 export const languages = Object.values(languagesMapping);

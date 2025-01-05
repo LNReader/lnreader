@@ -16,6 +16,9 @@ import { getString } from '@strings/translations';
 import KeepScreenAwake from './components/KeepScreenAwake';
 import useChapter from './hooks/useChapter';
 import { ChapterContextProvider, useChapterContext } from './ChapterContext';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { useBackHandler } from '@hooks/index';
+import { get } from 'lodash-es';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
@@ -26,6 +29,12 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
     >
       <DrawerLayoutAndroid
         ref={drawerRef}
+        onDrawerOpen={() => {
+          drawerRef.current?.setState(prev => ({ ...prev, isOpen: true }));
+        }}
+        onDrawerClose={() => {
+          drawerRef.current?.setState(prev => ({ ...prev, isOpen: false }));
+        }}
         drawerWidth={300}
         drawerPosition="left"
         renderNavigationView={() => <ChapterDrawer />}
@@ -50,7 +59,7 @@ export const ChapterContent = ({
 }: ChapterContentProps) => {
   const { novel, chapter } = useChapterContext();
   const webViewRef = useRef<WebView>(null);
-  const readerSheetRef = useRef(null);
+  const readerSheetRef = useRef<BottomSheetModalMethods>(null);
   const theme = useTheme();
   const { pageReader = false, keepScreenOn } = useChapterGeneralSettings();
 
@@ -86,6 +95,14 @@ export const ChapterContent = ({
     hideHeader();
   }, [drawerRef, hideHeader]);
 
+  useBackHandler(() => {
+    if (get(drawerRef.current?.state, 'isOpen')) {
+      drawerRef.current?.closeDrawer();
+      return true;
+    }
+    return false;
+  });
+
   if (error) {
     return (
       <ErrorScreenV2
@@ -113,18 +130,18 @@ export const ChapterContent = ({
   return (
     <>
       {keepScreenOn ? <KeepScreenAwake /> : null}
-
-      <WebViewReader
-        html={chapterText}
-        nextChapter={nextChapter}
-        webViewRef={webViewRef}
-        pageReader={pageReader}
-        loading={loading}
-        saveProgress={saveProgress}
-        onPress={hideHeader}
-        navigateChapter={navigateChapter}
-      />
-
+      {loading ? (
+        <ChapterLoadingScreen />
+      ) : (
+        <WebViewReader
+          html={chapterText}
+          nextChapter={nextChapter}
+          webViewRef={webViewRef}
+          saveProgress={saveProgress}
+          onPress={hideHeader}
+          navigateChapter={navigateChapter}
+        />
+      )}
       <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       {!hidden ? (
         <>

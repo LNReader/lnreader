@@ -28,6 +28,7 @@ export interface AppSettings {
   showUpdatesTab: boolean;
   showLabelsInNav: boolean;
   useFabForContinueReading: boolean;
+  disableLoadingAnimations: boolean;
 
   /**
    * Library settings
@@ -56,6 +57,7 @@ export interface AppSettings {
 export interface BrowseSettings {
   showMyAnimeList: boolean;
   showAniList: boolean;
+  globalSearchConcurrency?: number;
 }
 
 export interface LibrarySettings {
@@ -85,6 +87,8 @@ export interface ChapterGeneralSettings {
   verticalSeekbar: boolean;
   removeExtraParagraphSpacing: boolean;
   bionicReading: boolean;
+  tapToScroll: boolean;
+  TTSEnable: boolean;
 }
 
 export interface ReaderTheme {
@@ -130,6 +134,7 @@ const initialAppSettings: AppSettings = {
   showUpdatesTab: true,
   showLabelsInNav: true,
   useFabForContinueReading: false,
+  disableLoadingAnimations: false,
 
   /**
    * Library settings
@@ -158,6 +163,7 @@ const initialAppSettings: AppSettings = {
 const initialBrowseSettings: BrowseSettings = {
   showMyAnimeList: true,
   showAniList: true,
+  globalSearchConcurrency: 3,
 };
 
 export const initialChapterGeneralSettings: ChapterGeneralSettings = {
@@ -174,6 +180,8 @@ export const initialChapterGeneralSettings: ChapterGeneralSettings = {
   verticalSeekbar: true,
   removeExtraParagraphSpacing: false,
   bionicReading: false,
+  tapToScroll: false,
+  TTSEnable: false,
 };
 
 export const initialChapterReaderSettings: ChapterReaderSettings = {
@@ -181,7 +189,7 @@ export const initialChapterReaderSettings: ChapterReaderSettings = {
   textColor: '#CCCCCC',
   textSize: 16,
   textAlign: 'left',
-  padding: 4,
+  padding: 16,
   fontFamily: '',
   lineHeight: 1.5,
   customCSS: '',

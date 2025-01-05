@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "module": "esnext",
     "baseUrl": ".",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -28,12 +29,8 @@
       "@services/*": ["src/services/*"],
       "@navigators/*": ["src/navigators/*"],
       "@native/*": ["src/native/*"],
-      "@api/*": ["src/api/*"],
+      "@api/*": ["src/api/*"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "babel.config.js",
-    "metro.config.js",
-  ],
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
 }
