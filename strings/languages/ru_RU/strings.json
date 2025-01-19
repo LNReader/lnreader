@@ -130,7 +130,7 @@
   "browseSettings": "Настройки обзора",
   "browseSettingsScreen": {
     "concurrentSearches": "Параллельный поиск источников",
-    "multi": "Многоязыковое",
+    "multi": "Multi",
     "languages": "Языки"
   },
   "categories": {
