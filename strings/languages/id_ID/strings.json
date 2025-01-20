@@ -1,16 +1,16 @@
 {
   "aboutScreen": {
     "website": "",
-    "discord": "Discord",
-    "github": "Github",
+    "discord": "indonesia",
+    "github": "Indonesia",
     "helpTranslate": "INDONESIA",
-    "sources": "Sources",
-    "version": "Version",
-    "whatsNew": "What's new"
+    "sources": "Indonesi",
+    "version": "",
+    "whatsNew": ""
   },
-  "advancedSettings": "Advanced",
+  "advancedSettings": "",
   "advancedSettingsScreen": {
-    "cachedNovelsDeletedToast": "Cached novels deleted",
+    "cachedNovelsDeletedToast": "",
     "chapterInsertFailed": "chapter insert failed",
     "clearCachedNovels": "Clear cached novels",
     "clearCachedNovelsDesc": "Delete cached novels which not in your library",
