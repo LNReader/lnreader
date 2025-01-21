@@ -63,7 +63,7 @@ if (args.no_color):
 
 package = args.package
 if len(package) == 0:
-  package.append('com.rajarsheechatterjee.LNReaderDev')
+  package.append('com.rajarsheechatterjee.LNReader')
 
 # enabling Windows 10 VT100 support
 def enableVT100():

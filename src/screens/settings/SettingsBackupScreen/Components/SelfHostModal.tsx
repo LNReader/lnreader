@@ -175,7 +175,7 @@ function SetHost({
             fetchTimeout(host, {}, 2000)
               .then(res => res.json())
               .then(data => {
-                if (data.name === 'LNReaderDev') {
+                if (data.name === 'LNReader') {
                   setBackupModal(BackupModal.CONNECTED);
                 } else {
                   throw new Error(getString('backupScreen.remote.unknownHost'));

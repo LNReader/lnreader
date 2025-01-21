@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "LNReaderDev",
-    "slug": "LNReaderDev",
+    "name": "LNReader",
+    "slug": "LNReader",
     "scheme": "lnreader",
     "plugins": [
       "expo-localization"

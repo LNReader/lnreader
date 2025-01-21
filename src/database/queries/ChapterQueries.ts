@@ -384,16 +384,16 @@ export const bookmarkChapter = async (chapterId: number) => {
   });
 };
 
-const markPreviousChaptersReadQuery =
+const markPreviuschaptersReadQuery =
   'UPDATE Chapter SET `unread` = 0 WHERE id <= ? AND novelId = ?';
 
-export const markPreviousChaptersRead = async (
+export const markPreviuschaptersRead = async (
   chapterId: number,
   novelId: number,
 ) => {
   db.transaction(tx => {
     tx.executeSql(
-      markPreviousChaptersReadQuery,
+      markPreviuschaptersReadQuery,
       [chapterId, novelId],
       (_txObj, _res) => {},
       (_txObj, _error) => {
@@ -405,7 +405,7 @@ export const markPreviousChaptersRead = async (
 };
 
 const markPreviousChaptersUnreadQuery =
-  'UPDATE Chapter SET `unread` = 1 WHERE id >= ? AND novelId = ?';
+  'UPDATE Chapter SET `unread` = 1 WHERE id <= ? AND novelId = ?';
 
 export const markPreviousChaptersUnread = async (
   chapterId: number,
