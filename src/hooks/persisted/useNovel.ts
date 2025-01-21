@@ -256,7 +256,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
       _markPreviousChaptersUnread(chapterId, novel.id);
       setChapters(
         chapters.map(chapter =>
-          chapter.id >= chapterId ? { ...chapter, unread: true } : chapter,
+          chapter.id <= chapterId ? { ...chapter, unread: true } : chapter,
         ),
       );
     }
