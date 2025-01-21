@@ -39,7 +39,7 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
   const [searchResults, setSearchResults] = useState<GlobalSearchResult[]>([]);
   const [progress, setProgress] = useState(0);
 
-  const { globalSearchConcurrency = 1 } = useBrowseSettings();
+  const { globalSearchConcurrency = 10 } = useBrowseSettings();
 
   const globalSearch = (searchText: string) => {
     if (lastSearch.current === searchText) {
