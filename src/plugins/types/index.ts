@@ -15,6 +15,7 @@ export interface ChapterItem {
   page?: string;
 }
 
+//NOTE: the is duplicated in pluginThread.js
 export enum NovelStatus {
   Unknown = 'Unknown',
   Ongoing = 'Ongoing',
@@ -78,6 +79,6 @@ export interface Plugin extends PluginItem {
   parsePage?: (novelPath: string, page: string) => Promise<SourcePage>;
   parseChapter: (chapterPath: string) => Promise<string>;
   searchNovels: (searchTerm: string, pageNo: number) => Promise<NovelItem[]>;
-  resolveUrl?: (path: string, isNovel?: boolean) => string;
+  resolveUrl?: (path: string, isNovel?: boolean) => Promise<string>;
   webStorageUtilized?: boolean;
 }

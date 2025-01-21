@@ -36,7 +36,7 @@ type WebViewReaderProps = {
   navigateChapter(position: 'NEXT' | 'PREV'): void;
 };
 
-const onLogMessage = (payload: { nativeEvent: { data: string } }) => {
+export const onLogMessage = (payload: { nativeEvent: { data: string } }) => {
   let dataPayload;
   try {
     dataPayload = JSON.parse(payload.nativeEvent.data);
@@ -51,7 +51,7 @@ const onLogMessage = (payload: { nativeEvent: { data: string } }) => {
 const { RNDeviceInfo } = NativeModules;
 const deviceInfoEmitter = new NativeEventEmitter(RNDeviceInfo);
 
-const assetsUriPrefix = __DEV__
+export const assetsUriPrefix = __DEV__
   ? 'http://localhost:8081/assets'
   : 'file:///android_asset';
 

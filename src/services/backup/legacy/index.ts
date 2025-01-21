@@ -2,7 +2,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as Notifications from 'expo-notifications';
 import BackgroundService from 'react-native-background-actions';
 
-import { getPlugin } from '@plugins/pluginManager';
+import { getPluginAsync } from '@plugins/pluginManager';
 import { restoreLibrary } from '@database/queries/NovelQueries';
 import { getLibraryNovelsFromDb } from '@database/queries/LibraryQueries';
 import { showToast } from '@utils/showToast';
@@ -90,7 +90,7 @@ export const restoreBackup = async () => {
       for (let i = 0; BackgroundService.isRunning() && i < novels.length; i++) {
         try {
           if (BackgroundService.isRunning()) {
-            const plugin = getPlugin(novels[i].pluginId);
+            const plugin = await getPluginAsync(novels[i].pluginId);
             if (!plugin) {
               throw new Error(`No plugin found with id ${novels[i].pluginId}`);
             }

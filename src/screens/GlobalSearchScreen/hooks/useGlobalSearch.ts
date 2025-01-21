@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { NovelItem, PluginItem } from '@plugins/types';
-import { getPlugin } from '@plugins/pluginManager';
+import { getPluginAsync } from '@plugins/pluginManager';
 import { useBrowseSettings, usePlugins } from '@hooks/persisted';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -62,7 +62,7 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
 
     async function searchInPlugin(_plugin: PluginItem) {
       try {
-        const plugin = getPlugin(_plugin.id);
+        const plugin = await getPluginAsync(_plugin.id);
         if (!plugin) {
           throw new Error(`Unknown plugin: ${_plugin.id}`);
         }

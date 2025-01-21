@@ -3,57 +3,18 @@ import { newer } from '@utils/compareVersion';
 import { store } from './helpers/storage';
 
 // packages for plugins
-import { load } from 'cheerio';
-import dayjs from 'dayjs';
-import { NovelStatus, Plugin, PluginItem } from './types';
-import { FilterTypes } from './types/filterTypes';
-import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
-import { downloadFile, fetchApi, fetchProto, fetchText } from './helpers/fetch';
-import { defaultCover } from './helpers/constants';
-import { Storage, LocalStorage, SessionStorage } from './helpers/storage';
-import { encode, decode } from 'urlencode';
-import { Parser } from 'htmlparser2';
+import { Plugin, PluginItem } from './types';
+import { downloadFile } from './helpers/fetch';
 import FileManager from '@native/FileManager';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
 import { showToast } from '@utils/showToast';
 import { PLUGIN_STORAGE } from '@utils/Storages';
+import { getPluginThread } from '@plugins/async/pluginThread';
 
-const packages: Record<string, any> = {
-  'htmlparser2': { Parser },
-  'cheerio': { load },
-  'dayjs': dayjs,
-  'urlencode': { encode, decode },
-  '@libs/novelStatus': { NovelStatus },
-  '@libs/fetch': { fetchApi, fetchText, fetchProto },
-  '@libs/isAbsoluteUrl': { isUrlAbsolute },
-  '@libs/filterInputs': { FilterTypes },
-  '@libs/defaultCover': { defaultCover },
-};
+const pluginThread = getPluginThread();
 
-const initPlugin = (pluginId: string, rawCode: string) => {
-  try {
-    const _require = (packageName: string) => {
-      if (packageName === '@libs/storage') {
-        return {
-          storage: new Storage(pluginId),
-          localStorage: new LocalStorage(pluginId),
-          sessionStorage: new SessionStorage(pluginId),
-        };
-      }
-      return packages[packageName];
-    };
-    /* eslint no-new-func: "off", curly: "error" */
-    const plugin: Plugin = Function(
-      'require',
-      'module',
-      `const exports = module.exports = {}; 
-      ${rawCode}; 
-      return exports.default`,
-    )(_require, {});
-    return plugin;
-  } catch (e) {
-    return undefined;
-  }
+const initPlugin = async (pluginId: string, rawCode: string) => {
+  return await pluginThread.initPlugin(pluginId, rawCode);
 };
 
 const plugins: Record<string, Plugin | undefined> = {};
@@ -65,7 +26,7 @@ const installPlugin = async (
     const rawCode = await fetch(_plugin.url, {
       headers: { 'pragma': 'no-cache', 'cache-control': 'no-cache' },
     }).then(res => res.text());
-    const plugin = initPlugin(_plugin.id, rawCode);
+    const plugin = await initPlugin(_plugin.id, rawCode);
     if (!plugin) {
       return undefined;
     }
@@ -94,6 +55,7 @@ const installPlugin = async (
     }
     return currentPlugin;
   } catch (e: any) {
+    console.error(e.stack);
     throw e;
   }
 };
@@ -134,16 +96,37 @@ const fetchPlugins = async (): Promise<PluginItem[]> => {
   return uniqBy(reverse(allPlugins), 'id');
 };
 
-const getPlugin = (pluginId: string) => {
+const loadingPlugins = new Map();
+
+const getPluginAsync = async (
+  pluginId: string,
+): Promise<Plugin | undefined> => {
   if (!plugins[pluginId]) {
+    let loading = loadingPlugins.get(pluginId);
+    if (loading) {
+      return await loading;
+    }
     const filePath = `${PLUGIN_STORAGE}/${pluginId}/index.js`;
     try {
       const code = FileManager.readFile(filePath);
-      const plugin = initPlugin(pluginId, code);
-      plugins[pluginId] = plugin;
+
+      //TODO: make sure this doesent cause issues
+      loadingPlugins.set(pluginId, initPlugin(pluginId, code));
+      plugins[pluginId] = await loadingPlugins.get(pluginId);
+      loadingPlugins.delete(pluginId);
     } catch {
       // file doesnt exist
+      loadingPlugins.delete(pluginId);
     }
+  }
+  return plugins[pluginId];
+};
+
+const getPlugin = (pluginId: string) => {
+  if (!plugins[pluginId]) {
+    console.log('Sync getPlugin before plugin is loaded! ' + new Error().stack);
+    //getPluginAsync will make sure plugin is loaded
+    getPluginAsync(pluginId);
   }
   return plugins[pluginId];
 };
@@ -152,6 +135,7 @@ const LOCAL_PLUGIN_ID = 'local';
 
 export {
   getPlugin,
+  getPluginAsync,
   installPlugin,
   uninstallPlugin,
   updatePlugin,

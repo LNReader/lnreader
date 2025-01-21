@@ -87,6 +87,10 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
 
   const getChapter = async () => {
     try {
+      let [nextChapPromise, prevChapPromise] = [
+        getNextChapter(chapter.novelId, chapter.id),
+        getPrevChapter(chapter.novelId, chapter.id),
+      ];
       const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
       let text = '';
       if (await FileManager.exists(filePath)) {
@@ -102,8 +106,8 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
         sanitizeChapterText(novel.pluginId, novel.name, chapter.name, text),
       );
       const [nextChap, prevChap] = await Promise.all([
-        getNextChapter(chapter.novelId, chapter.id),
-        getPrevChapter(chapter.novelId, chapter.id),
+        nextChapPromise,
+        prevChapPromise,
       ]);
       setAdjacentChapter([nextChap!, prevChap!]);
     } catch (e: any) {
