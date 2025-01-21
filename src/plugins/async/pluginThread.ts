@@ -255,6 +255,11 @@ async function makePluginContext(): Promise<JsContext> {
               pluginContext!.eval(
                 `nativeRes(${event.id}, ${JSON.stringify(res)});`,
               );
+            })
+            .catch((err: any) => {
+              pluginContext!.eval(
+                `nativeResErr(${event.id}, ${JSON.stringify(err?.message)});`,
+              );
             });
           break;
         case 'fetchApi-json':
@@ -265,6 +270,11 @@ async function makePluginContext(): Promise<JsContext> {
             .then(res => {
               pluginContext!.eval(
                 `nativeRes(${event.id}, ${JSON.stringify(res)});`,
+              );
+            })
+            .catch((err: any) => {
+              pluginContext!.eval(
+                `nativeResErr(${event.id}, ${JSON.stringify(err?.message)});`,
               );
             });
           break;
