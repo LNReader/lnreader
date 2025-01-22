@@ -230,7 +230,20 @@ async function makePluginContext(): Promise<JsContext> {
 		</html>
     `,
     (data: string) => {
-      const event = JSON.parse(data);
+      const event = JSON.parse(data, (key, val) => {
+        if (
+          val &&
+          typeof val === 'object' &&
+          val.__lnreader_special_type === 'FormData'
+        ) {
+          let ret = new FormData();
+          for (let [key, value] of val.data) {
+            ret.append(key, value);
+          }
+          return ret;
+        }
+        return val;
+      });
       if (__DEV__) {
         if (event.type === 'webview-code-res') {
           console.log(
@@ -461,10 +474,14 @@ async function makePluginContext(): Promise<JsContext> {
 					type,
 					id,
 					data
-				}, (obj, k, v) => {
+				}, (k, v) => {
 					if (v instanceof FormData) {
-						return v.toString();
+						return {
+							__lnreader_special_type: "FormData",
+							data: [...v.entries()],
+						}
 					}
+					return v;
 				}));
 			});
 		}
