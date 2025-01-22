@@ -170,7 +170,10 @@ export default class ServiceManager {
     let i = null;
     let count = 0;
     for (let task of startingTasks) {
-      if (task.task.name === 'DOWNLOAD_CHAPTER') {
+      if (
+        task.task.name === 'DOWNLOAD_CHAPTER' &&
+        task.meta.name === currentTask.meta.name
+      ) {
         if (
           task.meta.name === currentTask.meta.name &&
           task.meta.progressText === currentTask.meta.progressText
