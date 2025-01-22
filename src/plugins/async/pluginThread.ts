@@ -461,6 +461,10 @@ async function makePluginContext(): Promise<JsContext> {
 					type,
 					id,
 					data
+				}, (obj, k, v) => {
+					if (v instanceof FormData) {
+						return v.toString();
+					}
 				}));
 			});
 		}
