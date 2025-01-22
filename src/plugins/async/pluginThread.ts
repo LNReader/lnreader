@@ -17,10 +17,13 @@ export function getPluginThread(): PluginThread {
   return {
     async initPlugin(pluginId: string, pluginCode: string): Promise<Plugin> {
       await getPluginContext(); //make sure the plugin thread is ready
+      if (__DEV__) {
+        console.log('Init plugin', pluginId);
+      }
 
       await loadPlugin(pluginId, pluginCode);
 
-      return {
+      let plg: Plugin = {
         id: await webviewCode(pluginId, 'return plugin.id;'),
         name: await webviewCode(pluginId, 'return plugin.name;'),
         lang: await webviewCode(pluginId, 'return plugin.lang;'),
@@ -28,6 +31,9 @@ export function getPluginThread(): PluginThread {
         site: await webviewCode(pluginId, 'return plugin.site;'),
         version: await webviewCode(pluginId, 'return plugin.version;'),
         filters: await webviewCode(pluginId, 'return plugin.filters;'),
+        updateFilters: async () => {
+          plg.filters = await webviewCode(pluginId, 'return plugin.filters;');
+        },
         imgRequestInit: await webviewCode(
           pluginId,
           'return plugin.imgRequestInit;',
@@ -41,6 +47,9 @@ export function getPluginThread(): PluginThread {
           pageNo: number,
           options?: PopularNovelsOptions<Filters>,
         ) => {
+          if (__DEV__) {
+            console.log('Popular novels', pageNo, options);
+          }
           return await webviewCodeAsync(
             pluginId,
             `return await plugin.popularNovels(${JSON.stringify(
@@ -50,6 +59,9 @@ export function getPluginThread(): PluginThread {
         },
         // @ts-ignore
         parseNovel: async (novelPath: string) => {
+          if (__DEV__) {
+            console.log('Parse novel', novelPath);
+          }
           return await webviewCodeAsync(
             pluginId,
             `return await plugin.parseNovel(${JSON.stringify(novelPath)});`,
@@ -58,6 +70,9 @@ export function getPluginThread(): PluginThread {
         // @ts-ignore
         parsePage: (await webviewCode(pluginId, 'return !!plugin.parsePage;'))
           ? async (novelPath: string, page: string) => {
+              if (__DEV__) {
+                console.log('Parse page', novelPath, page);
+              }
               return await webviewCodeAsync(
                 pluginId,
                 `return await plugin.parsePage(${JSON.stringify(
@@ -68,6 +83,9 @@ export function getPluginThread(): PluginThread {
           : undefined,
         // @ts-ignore
         parseChapter: async (chapterPath: string) => {
+          if (__DEV__) {
+            console.log('Parse chapter', chapterPath);
+          }
           return await webviewCodeAsync(
             pluginId,
             `return await plugin.parseChapter(${JSON.stringify(chapterPath)});`,
@@ -75,6 +93,9 @@ export function getPluginThread(): PluginThread {
         },
         // @ts-ignore
         searchNovels: async (searchTerm: string, pageNo: number) => {
+          if (__DEV__) {
+            console.log('Search novels', searchTerm, pageNo);
+          }
           return await webviewCodeAsync(
             pluginId,
             `return await plugin.searchNovels(${JSON.stringify(
@@ -85,6 +106,9 @@ export function getPluginThread(): PluginThread {
         // @ts-ignore
         resolveUrl: (await webviewCode(pluginId, 'return !!plugin.resolveUrl;'))
           ? async (path: string, isNovel?: boolean) => {
+              if (__DEV__) {
+                console.log('Resolve url', path, isNovel);
+              }
               return await webviewCodeAsync(
                 pluginId,
                 `return await plugin.resolveUrl(${JSON.stringify(
@@ -98,6 +122,7 @@ export function getPluginThread(): PluginThread {
           'return plugin.webStorageUtilized;',
         ),
       };
+      return plg;
     },
   };
 }
@@ -118,8 +143,13 @@ async function webviewCode(pluginId: string, code: string) {
   );
 }
 
+let idI = 0;
+
 async function webviewCodeAsync(pluginId: string, code: string) {
-  let id = Math.floor(Math.random() * 100000);
+  let id = idI++;
+  if (idI >= Number.MAX_SAFE_INTEGER) {
+    idI = 0;
+  }
 
   return new Promise(async (resolve, reject) => {
     webviewCallbacks.set(id, (ret: any, err: string | null) => {
@@ -184,6 +214,9 @@ async function getPluginContext(): Promise<JsContext> {
 }
 
 async function makePluginContext(): Promise<JsContext> {
+  if (__DEV__) {
+    console.log('Making plugin context');
+  }
   let resData = new Map();
 
   let con = await PluginManager.createJsContext(
@@ -224,11 +257,14 @@ async function makePluginContext(): Promise<JsContext> {
           // @ts-ignore
           fetchApi(...event.data)
             .then(res => {
-              let resId = Math.floor(Math.random() * 100000);
+              let resId = idI++;
+              if (idI >= Number.MAX_SAFE_INTEGER) {
+                idI = 0;
+              }
               resData.set(resId, res);
               setTimeout(() => {
                 resData.delete(resId);
-              }, 10000);
+              }, 30000);
 
               let data = {
                 ok: res.ok,
@@ -247,9 +283,15 @@ async function makePluginContext(): Promise<JsContext> {
             });
           break;
         case 'fetchApi-text':
-          resData
-            .get(event.data)
-            .text()
+          let d1 = resData.get(event.data);
+          if (!d1) {
+            pluginContext!.eval(
+              `nativeResErr(${event.id}, ${JSON.stringify('Timed out')});`,
+            );
+            break;
+          }
+          resData.delete(event.data);
+          d1.text()
             // @ts-ignore
             .then(res => {
               pluginContext!.eval(
@@ -263,9 +305,15 @@ async function makePluginContext(): Promise<JsContext> {
             });
           break;
         case 'fetchApi-json':
-          resData
-            .get(event.data)
-            .json()
+          let d2 = resData.get(event.data);
+          if (!d2) {
+            pluginContext!.eval(
+              `nativeResErr(${event.id}, ${JSON.stringify('Timed out')});`,
+            );
+            break;
+          }
+          resData.delete(event.data);
+          d2.json()
             // @ts-ignore
             .then(res => {
               pluginContext!.eval(
@@ -390,10 +438,18 @@ async function makePluginContext(): Promise<JsContext> {
 			}
 		};
 
+		//some plugins use built in fetch :skull: that wont work in webview cus of CORS
+		window.fetch = packages['@libs/fetch'].fetchApi;
+
 		let nativeCallbacks = new Map();
 
+		let idI = 0;
+
 		async function native(type, data) {
-			let id = Math.floor(Math.random() * 100000);
+			let id = idI++;
+			if (idI >= Number.MAX_SAFE_INTEGER) {
+				idI = 0;
+			}
 
 			return new Promise((resolve, reject) => {
 				nativeCallbacks.set(id, (ret, err) => {
@@ -549,5 +605,8 @@ async function makePluginContext(): Promise<JsContext> {
 		}
     `);
   pluginContext = con;
+  if (__DEV__) {
+    console.log('Plugin context made!');
+  }
   return pluginContext;
 }

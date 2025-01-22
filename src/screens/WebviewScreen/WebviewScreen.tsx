@@ -38,6 +38,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const [progress, setProgress] = useState(0);
   const [title, setTitle] = useState(name || '');
   const [currentUrl, setCurrentUrl] = useState('');
+  const [startUrl, setStartUrl] = useState('');
   useEffect(() => {
     let canceled = false;
     resolveUrl(pluginId, url, isNovel).then(url => {
@@ -45,6 +46,7 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         return;
       }
       setCurrentUrl(url);
+      setStartUrl(url);
     });
     return () => {
       canceled = true;
@@ -112,11 +114,11 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         progress={progress}
         visible={progress !== 1}
       />
-      {currentUrl ? (
+      {startUrl ? (
         <WebView
           userAgent={getUserAgent()}
           ref={webViewRef}
-          source={{ uri: currentUrl }}
+          source={{ uri: startUrl }}
           setDisplayZoomControls={true}
           setBuiltInZoomControls={false}
           setSupportMultipleWindows={false}

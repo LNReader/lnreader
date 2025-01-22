@@ -4,6 +4,8 @@ import { NovelItem } from '@plugins/types';
 import { getPluginAsync } from '@plugins/pluginManager';
 import { FilterToValues, Filters } from '@plugins/types/filterTypes';
 
+const filtersUnloaded = Symbol('filtersUnloaded');
+
 export const useBrowseSource = (
   pluginId: string,
   showLatestNovels?: boolean,
@@ -13,11 +15,11 @@ export const useBrowseSource = (
   const [error, setError] = useState<string>();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [filterValues, setFilterValues] = useState<Filters | undefined | null>(
-    null,
-  );
+  const [filterValues, setFilterValues] = useState<
+    Filters | typeof filtersUnloaded | undefined
+  >(filtersUnloaded);
   const [selectedFilters, setSelectedFilters] = useState<
-    FilterToValues<Filters> | undefined | null
+    FilterToValues<Filters> | typeof filtersUnloaded | undefined
   >(filterValues);
   useEffect(() => {
     let canceled = false;
@@ -27,7 +29,7 @@ export const useBrowseSource = (
       }
       setFilterValues(plugin?.filters);
       setSelectedFilters(plugin?.filters);
-      refetchNovels(plugin?.filters);
+      refetchNovels(true, plugin?.filters);
     });
 
     return () => {
@@ -40,7 +42,7 @@ export const useBrowseSource = (
 
   const fetchNovels = useCallback(
     async (page: number, filters?: FilterToValues<Filters>) => {
-      if (isScreenMounted.current === true) {
+      if (isScreenMounted.current) {
         try {
           const plugin = await getPluginAsync(pluginId);
           if (!plugin) {
@@ -63,6 +65,7 @@ export const useBrowseSource = (
               setError(error.message);
               setHasNextPage(false);
             });
+          await plugin.updateFilters();
           setFilterValues(plugin.filters);
         } catch (err: unknown) {
           setError(`${err}`);
@@ -88,18 +91,22 @@ export const useBrowseSource = (
   }, []);
 
   useEffect(() => {
-    if (selectedFilters != null) {
+    if (selectedFilters !== filtersUnloaded) {
       fetchNovels(currentPage, selectedFilters);
     }
   }, [fetchNovels, currentPage]);
 
-  const refetchNovels = (selectedFilters2?: FilterToValues<Filters>) => {
+  const refetchNovels = (
+    manualLoadFilters = false,
+    selectedFilters2?: FilterToValues<Filters>,
+  ) => {
     setError('');
     setIsLoading(true);
     setNovels([]);
     setCurrentPage(1);
-    if (selectedFilters2 || selectedFilters != null) {
-      fetchNovels(1, (selectedFilters2 || selectedFilters)!);
+    let filters = manualLoadFilters ? selectedFilters2 : selectedFilters;
+    if (filters !== filtersUnloaded) {
+      fetchNovels(1, filters);
     }
   };
 
