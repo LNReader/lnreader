@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { DrawerLayoutAndroid } from 'react-native';
 
 import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
@@ -63,6 +63,11 @@ export const ChapterContent = ({
   const readerSheetRef = useRef<BottomSheetModalMethods>(null);
   const theme = useTheme();
   const { pageReader = false, keepScreenOn } = useChapterGeneralSettings();
+  const [bookmarked, setBookmarked] = useState(chapter.bookmark);
+
+  useEffect(() => {
+    setBookmarked(chapter.bookmark);
+  }, [chapter]);
 
   const {
     hidden,
@@ -146,7 +151,12 @@ export const ChapterContent = ({
       <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       {!hidden ? (
         <>
-          <ReaderAppbar goBack={navigation.goBack} theme={theme} />
+          <ReaderAppbar
+            goBack={navigation.goBack}
+            theme={theme}
+            bookmarked={bookmarked}
+            setBookmarked={setBookmarked}
+          />
           <ReaderFooter
             theme={theme}
             nextChapter={nextChapter}
