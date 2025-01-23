@@ -9,7 +9,11 @@ import FilterBottomSheet from './components/FilterBottomSheet';
 
 import { useSearch } from '@hooks';
 import { useTheme } from '@hooks/persisted';
-import { useBrowseSource, useSearchSource } from './useBrowseSource';
+import {
+  filtersUnloaded,
+  useBrowseSource,
+  useSearchSource,
+} from './useBrowseSource';
 
 import { NovelItem } from '@plugins/types';
 import { getString } from '@strings/translations';
@@ -171,7 +175,10 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
           onEndReachedThreshold={1.5}
         />
       )}
-      {!showLatestNovels && filterValues && !searchText ? (
+      {!showLatestNovels &&
+      filterValues &&
+      filterValues !== filtersUnloaded &&
+      !searchText ? (
         <>
           <FAB
             icon={'filter-variant'}

@@ -4,7 +4,7 @@ import { NovelItem } from '@plugins/types';
 import { getPluginAsync } from '@plugins/pluginManager';
 import { FilterToValues, Filters } from '@plugins/types/filterTypes';
 
-const filtersUnloaded = Symbol('filtersUnloaded');
+export const filtersUnloaded = Symbol('filtersUnloaded');
 
 export const useBrowseSource = (
   pluginId: string,
