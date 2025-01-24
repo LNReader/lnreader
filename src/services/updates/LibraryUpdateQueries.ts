@@ -1,6 +1,6 @@
 import { fetchNovel, fetchPage } from '../plugin/fetch';
 import { ChapterItem, SourceNovel } from '@plugins/types';
-import { getPlugin, LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
+import { getPluginAsync, LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { downloadFile } from '@plugins/helpers/fetch';
@@ -25,7 +25,7 @@ const updateNovelMetadata = (
       downloadFile(
         cover,
         novelCoverPath,
-        getPlugin(pluginId)?.imageRequestInit,
+        (await getPluginAsync(pluginId))?.imageRequestInit,
       );
       cover = novelCoverUri + '?' + Date.now();
     }

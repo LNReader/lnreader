@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { NovelItem } from '@plugins/types';
 
-import { getPlugin } from '@plugins/pluginManager';
+import { getPluginAsync } from '@plugins/pluginManager';
 import { FilterToValues, Filters } from '@plugins/types/filterTypes';
+
+export const filtersUnloaded = Symbol('filtersUnloaded');
 
 export const useBrowseSource = (
   pluginId: string,
@@ -13,21 +15,36 @@ export const useBrowseSource = (
   const [error, setError] = useState<string>();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [filterValues, setFilterValues] = useState<Filters | undefined>(
-    getPlugin(pluginId)?.filters,
-  );
+  const [filterValues, setFilterValues] = useState<
+    Filters | typeof filtersUnloaded | undefined
+  >(filtersUnloaded);
   const [selectedFilters, setSelectedFilters] = useState<
-    FilterToValues<Filters> | undefined
+    FilterToValues<Filters> | typeof filtersUnloaded | undefined
   >(filterValues);
+  useEffect(() => {
+    let canceled = false;
+    getPluginAsync(pluginId).then(plugin => {
+      if (canceled) {
+        return;
+      }
+      setFilterValues(plugin?.filters);
+      setSelectedFilters(plugin?.filters);
+      refetchNovels(true, plugin?.filters);
+    });
+
+    return () => {
+      canceled = true;
+    };
+  }, [pluginId]);
   const [hasNextPage, setHasNextPage] = useState(true);
 
   const isScreenMounted = useRef(true);
 
   const fetchNovels = useCallback(
     async (page: number, filters?: FilterToValues<Filters>) => {
-      if (isScreenMounted.current === true) {
+      if (isScreenMounted.current) {
         try {
-          const plugin = getPlugin(pluginId);
+          const plugin = await getPluginAsync(pluginId);
           if (!plugin) {
             throw new Error(`Unknown plugin: ${pluginId}`);
           }
@@ -48,6 +65,7 @@ export const useBrowseSource = (
               setError(error.message);
               setHasNextPage(false);
             });
+          await plugin.updateFilters();
           setFilterValues(plugin.filters);
         } catch (err: unknown) {
           setError(`${err}`);
@@ -73,15 +91,23 @@ export const useBrowseSource = (
   }, []);
 
   useEffect(() => {
-    fetchNovels(currentPage, selectedFilters);
+    if (selectedFilters !== filtersUnloaded) {
+      fetchNovels(currentPage, selectedFilters);
+    }
   }, [fetchNovels, currentPage]);
 
-  const refetchNovels = () => {
+  const refetchNovels = (
+    manualLoadFilters = false,
+    selectedFilters2?: FilterToValues<Filters>,
+  ) => {
     setError('');
     setIsLoading(true);
     setNovels([]);
     setCurrentPage(1);
-    fetchNovels(1, selectedFilters);
+    let filters = manualLoadFilters ? selectedFilters2 : selectedFilters;
+    if (filters !== filtersUnloaded) {
+      fetchNovels(1, filters);
+    }
   };
 
   const clearFilters = useCallback(
@@ -131,7 +157,7 @@ export const useSearchSource = (pluginId: string) => {
     async (searchText: string, page: number) => {
       if (isScreenMounted.current === true) {
         try {
-          const plugin = getPlugin(pluginId);
+          const plugin = await getPluginAsync(pluginId);
           if (!plugin) {
             throw new Error(`Unknown plugin: ${pluginId}`);
           }

@@ -9,7 +9,11 @@ import FilterBottomSheet from './components/FilterBottomSheet';
 
 import { useSearch } from '@hooks';
 import { useTheme } from '@hooks/persisted';
-import { useBrowseSource, useSearchSource } from './useBrowseSource';
+import {
+  filtersUnloaded,
+  useBrowseSource,
+  useSearchSource,
+} from './useBrowseSource';
 
 import { NovelItem } from '@plugins/types';
 import { getString } from '@strings/translations';
@@ -20,6 +24,7 @@ import { LibraryNovelInfo, NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BrowseSourceScreenProps } from '@navigators/types';
+import { Filters } from '@plugins/types/filterTypes';
 
 const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
   const theme = useTheme();
@@ -171,7 +176,10 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
           onEndReachedThreshold={1.5}
         />
       )}
-      {!showLatestNovels && filterValues && !searchText ? (
+      {!showLatestNovels &&
+      filterValues &&
+      filterValues !== filtersUnloaded &&
+      !searchText ? (
         <>
           <FAB
             icon={'filter-variant'}
@@ -186,7 +194,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
           />
           <FilterBottomSheet
             filterSheetRef={filterSheetRef}
-            filters={filterValues}
+            filters={filterValues as Filters}
             setFilters={setFilters}
             clearFilters={clearFilters}
           />

@@ -131,6 +131,8 @@ const getPrevChapterQuery = `
     novelId = ?
   AND
     id < ?
+  ORDER BY id DESC
+  LIMIT 1
   `;
 
 export const getPrevChapter = (
@@ -142,8 +144,7 @@ export const getPrevChapter = (
       tx.executeSql(
         getPrevChapterQuery,
         [novelId, chapterId],
-        (_txObj, results) =>
-          resolve(results.rows.item(results.rows.length - 1)),
+        (_txObj, results) => resolve(results.rows.item(0)),
         () => {
           showToast(getString('readerScreen.noPreviousChapter'));
           return false;
@@ -162,6 +163,7 @@ const getNextChapterQuery = `
     novelId = ?
   AND
     id > ?
+  LIMIT 1
   `;
 
 export const getNextChapter = (

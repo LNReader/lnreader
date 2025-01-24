@@ -11,6 +11,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
 import com.rajarsheechatterjee.EpubUtil.EpubUtilPackage
 import com.rajarsheechatterjee.FileManager.FileManagerPackage
+import com.rajarsheechatterjee.PluginManager.PluginManagerPackage
 import com.rajarsheechatterjee.VolumeButtonListener.VolumeButtonListenerPackage
 import com.rajarsheechatterjee.ZipArchive.ZipArchivePackage
 import expo.modules.ApplicationLifecycleDispatcher.onApplicationCreate
@@ -30,6 +31,7 @@ class MainApplication : Application(), ReactApplication {
                 packages.add(ZipArchivePackage())
                 packages.add(FileManagerPackage())
                 packages.add(EpubUtilPackage())
+                packages.add(PluginManagerPackage())
                 return packages
             }
 

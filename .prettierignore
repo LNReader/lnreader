@@ -1,3 +1,4 @@
 **/node_modules
 android/**/js/van.js
 android/**/js/text-vibe.js
+android/**/plugin_deps/bundle.js

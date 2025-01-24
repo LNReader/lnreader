@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import WebView, { WebViewNavigation } from 'react-native-webview';
 import { ProgressBar } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { getPlugin } from '@plugins/pluginManager';
+import { getPluginAsync } from '@plugins/pluginManager';
 import { useBackHandler } from '@hooks';
 import { useTheme } from '@hooks/persisted';
 import { WebviewScreenProps } from '@navigators/types';
@@ -24,16 +24,34 @@ type StorageData = {
 
 const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
   const { name, url, pluginId, isNovel } = route.params;
-  const isSave = getPlugin(pluginId)?.webStorageUtilized;
-  const uri = resolveUrl(pluginId, url, isNovel);
+  const [isSave, setSave] = useState(true);
   const { bottom } = useSafeAreaInsets();
+  useEffect(() => {
+    getPluginAsync(pluginId).then(plugin => {
+      setSave(plugin?.webStorageUtilized ?? true);
+    });
+  }, [pluginId]);
 
   const theme = useTheme();
   const webViewRef = useRef<WebView | null>(null);
 
   const [progress, setProgress] = useState(0);
   const [title, setTitle] = useState(name || '');
-  const [currentUrl, setCurrentUrl] = useState(uri);
+  const [currentUrl, setCurrentUrl] = useState('');
+  const [startUrl, setStartUrl] = useState('');
+  useEffect(() => {
+    let canceled = false;
+    resolveUrl(pluginId, url, isNovel).then(url => {
+      if (canceled) {
+        return;
+      }
+      setCurrentUrl(url);
+      setStartUrl(url);
+    });
+    return () => {
+      canceled = true;
+    };
+  }, []);
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
   const [tempData, setTempData] = useState<StorageData>();
@@ -96,21 +114,25 @@ const WebviewScreen = ({ route, navigation }: WebviewScreenProps) => {
         progress={progress}
         visible={progress !== 1}
       />
-      <WebView
-        userAgent={getUserAgent()}
-        ref={webViewRef}
-        source={{ uri }}
-        setDisplayZoomControls={true}
-        setBuiltInZoomControls={false}
-        setSupportMultipleWindows={false}
-        injectedJavaScript={injectJavaScriptCode}
-        onNavigationStateChange={handleNavigation}
-        onLoadProgress={({ nativeEvent }) => setProgress(nativeEvent.progress)}
-        onMessage={({ nativeEvent }) =>
-          setTempData(JSON.parse(nativeEvent.data))
-        }
-        containerStyle={{ paddingBottom: bottom }}
-      />
+      {startUrl ? (
+        <WebView
+          userAgent={getUserAgent()}
+          ref={webViewRef}
+          source={{ uri: startUrl }}
+          setDisplayZoomControls={true}
+          setBuiltInZoomControls={false}
+          setSupportMultipleWindows={false}
+          injectedJavaScript={injectJavaScriptCode}
+          onNavigationStateChange={handleNavigation}
+          onLoadProgress={({ nativeEvent }) =>
+            setProgress(nativeEvent.progress)
+          }
+          onMessage={({ nativeEvent }) =>
+            setTempData(JSON.parse(nativeEvent.data))
+          }
+          containerStyle={{ paddingBottom: bottom }}
+        />
+      ) : null}
       {menuVisible ? (
         <Menu
           theme={theme}
