@@ -5,6 +5,7 @@ import { Button } from '@components/index';
 import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { Storage } from '@plugins/helpers/storage';
+import { getPluginAsync } from '@plugins/pluginManager';
 
 interface PluginSetting {
   value: string;
@@ -75,6 +76,7 @@ const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
     Object.entries(formValues).forEach(([key, value]) => {
       storage.set(key, value);
     });
+    getPluginAsync(pluginId, true);
     onDismiss();
   };
 

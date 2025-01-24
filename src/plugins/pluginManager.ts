@@ -100,10 +100,11 @@ const loadingPlugins = new Map();
 
 const getPluginAsync = async (
   pluginId: string,
+  reload = false,
 ): Promise<Plugin | undefined> => {
-  if (!plugins[pluginId]) {
+  if (!plugins[pluginId] || reload) {
     let loading = loadingPlugins.get(pluginId);
-    if (loading) {
+    if (loading && !reload) {
       return await loading;
     }
     const filePath = `${PLUGIN_STORAGE}/${pluginId}/index.js`;

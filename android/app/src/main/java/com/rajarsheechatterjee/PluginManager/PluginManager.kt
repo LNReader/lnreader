@@ -52,8 +52,8 @@ class PluginManager(context: ReactApplicationContext) :
                         && request.url.scheme == "http"
                         && request.url.host == "localhost"
                         && request.url.port == 8081
-                        && request.url.path!!.startsWith("/android_asset/")) {
-                        val assetPath = request.url.path!!.replace("/android_asset/", "")
+                        && request.url.path!!.startsWith("/assets/")) {
+                        val assetPath = request.url.path!!.replace("/assets/", "")
                         try {
                             return WebResourceResponse(
                                 "application/javascript",

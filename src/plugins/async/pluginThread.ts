@@ -186,7 +186,7 @@ async function loadPlugin(pluginId: string, pluginCode: string) {
   let sessionStorage = new SessionStorage(pluginId).get();
   let storageBlob: any[] = [];
   storage.getAllKeys().forEach(key => {
-    storageBlob.push([key, storage.get(key)]);
+    storageBlob.push([key, JSON.stringify(storage.get(key, true))]);
   });
 
   let context = await getPluginContext();
@@ -224,9 +224,7 @@ async function makePluginContext(): Promise<JsContext> {
     `
 		<!DOCTYPE html>
 		<html>
-		<script src="http://localhost:8081/${
-      __DEV__ ? 'assets' : 'android_asset'
-    }/plugin_deps/bundle.js"></script>
+		<script src="http://localhost:8081/assets/plugin_deps/bundle.js"></script>
 		</html>
     `,
     (data: string) => {

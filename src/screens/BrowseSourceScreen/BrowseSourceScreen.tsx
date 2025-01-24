@@ -24,6 +24,7 @@ import { LibraryNovelInfo, NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BrowseSourceScreenProps } from '@navigators/types';
+import { Filters } from '@plugins/types/filterTypes';
 
 const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
   const theme = useTheme();
@@ -193,7 +194,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
           />
           <FilterBottomSheet
             filterSheetRef={filterSheetRef}
-            filters={filterValues}
+            filters={filterValues as Filters}
             setFilters={setFilters}
             clearFilters={clearFilters}
           />
