@@ -44,6 +44,7 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
         .filter(novel => novel.category === category.name)
         .sort(
           sortNovelsBy(
+            category.id,
             category.sortContents || LibrarySortOrder.DateAdded_DESC,
           ),
         ),
@@ -80,7 +81,15 @@ export const useLibraryNovels = () => {
   return { library, setLibrary };
 };
 
-function sortNovelsBy(order: LibrarySortOrder) {
+export const sortTable = new Map();
+
+function sortNovelsBy(categoryId: number, order: LibrarySortOrder) {
+  let sortData = sortTable.get(categoryId);
+  if (!sortData) {
+    sortData = new Map();
+    sortTable.set(categoryId, sortData);
+  }
+
   const [field, direction] = order.split(' ');
   const isAsc = direction === 'ASC';
 
@@ -91,8 +100,16 @@ function sortNovelsBy(order: LibrarySortOrder) {
     let d2 = n2[field];
 
     if (order == LibrarySortOrder.RANDOM) {
-      d1 = Math.random();
-      d2 = Math.random();
+      d1 = sortData.get(n1.id);
+      d2 = sortData.get(n2.id);
+      if (!d1) {
+        d1 = Math.random();
+        sortData.set(n1.id, d1);
+      }
+      if (!d2) {
+        d2 = Math.random();
+        sortData.set(n2.id, d2);
+      }
     }
 
     if (!isAsc) {

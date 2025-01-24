@@ -21,6 +21,7 @@ import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { updateCategorySortContents } from '@database/queries/CategoryQueries';
 import { Category } from '@database/types';
+import { sortTable } from '@screens/library/hooks/useLibrary';
 
 interface LibraryBottomSheetProps {
   bottomSheetRef: Ref<BottomSheetModal> | null;
@@ -96,6 +97,7 @@ const SecondRoute = ({ category }: { category: Category }) => {
               const newSortOrder =
                 sortOrder === item.ASC ? item.DESC : item.ASC;
               setSortOrder(newSortOrder);
+              sortTable.delete(category.id); //delete random sort data for category
 
               updateCategorySortContents(category.id, newSortOrder);
 
