@@ -1,6 +1,6 @@
 {
   "aboutScreen": {
-    "website": "Website",
+    "website": "Сайт",
     "discord": "Discord",
     "github": "Github",
     "helpTranslate": "Help translate",
@@ -13,15 +13,15 @@
     "cachedNovelsDeletedToast": "Cached novels deleted",
     "chapterInsertFailed": "chapter insert failed",
     "clearCachedNovels": "Clear cached novels",
-    "clearCachedNovelsDesc": "Delete cached novels which not in your library",
+    "clearCachedNovelsDesc": "Видалити кешовані новели, яких немає у вашій бібліотеці",
     "clearDatabaseWarning": "Are you sure? Read and Downloaded chapters and progress of non-library novels will be lost.",
     "clearUpdatesMessage": "Updates cleared.",
     "clearUpdatesTab": "Clear updates tab",
     "clearUpdatesWarning": "Are you sure? Updates tab will be cleared.",
     "clearupdatesTabDesc": "Clears chapter entries in updates tab",
     "dataManagement": "Data Management",
-    "deleteReadChapters": "Вилучити прочитані глави",
-    "deleteReadChaptersDialogTitle": "Ви впевнені? Всі глави, позначені як прочитані, будуть видалені.",
+    "deleteReadChapters": "Вилучити прочитані розділи",
+    "deleteReadChaptersDialogTitle": "Ви впевнені? Всі розділи, позначені як прочитані, будуть видалені.",
     "importEpub": "Import Epub",
     "importNovel": "Import Novel",
     "importStaticFiles": "Import Static Files",
@@ -151,7 +151,7 @@
     "setModalEmptyMsg": "У вас немає категорій. Натисніть кнопку Редагувати, щоб створити нову для організації вашої бібліотеки"
   },
   "repositories": {
-    "emptyMsg": "You have no repositories. Add your first plugin repository to get started."
+    "emptyMsg": "У вас немає репозиторіїв. Додайте ваш перший репозиторій з плагіном, щоб почати."
   },
   "common": {
     "about": "About",
@@ -162,7 +162,7 @@
     "categories": "Категорії",
     "chapters": "Глави",
     "clear": "Очистити",
-    "copiedToClipboard": "Copied to clipboard: %{name}",
+    "copiedToClipboard": "Скопійовано в буфер обміну: %{name}",
     "delete": "Delete",
     "deleted": "Deleted %{name}",
     "deprecated": "Deprecated",
@@ -200,8 +200,8 @@
     "refresh": "Refresh",
     "share": "Share",
     "openInBrowser": "Open in browser",
-    "clearCookies": "Clear cookies",
-    "cookiesCleared": "Cookies cleared",
+    "clearCookies": "Очистити кукі",
+    "cookiesCleared": "Куки очищено",
     "clearData": "Clear WebView data",
     "dataDeleted": "WebView data cleared"
   },
@@ -227,7 +227,7 @@
     "pluginNotFound": "Plugin not found!",
     "removeDownloadsWarning": "Are you sure? All downloaded chapters will be deleted."
   },
-  "generalSettings": "Загальне",
+  "generalSettings": "Загальні",
   "generalSettingsScreen": {
     "asc": "(Ascending)",
     "autoDownload": "Auto-download",
@@ -238,7 +238,7 @@
     "disableLoadingAnimationsDesc": "May improve performance on slower devices",
     "disableHapticFeedback": "Disable haptic feedback",
     "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
-    "displayMode": "Display Mode",
+    "displayMode": "Вигляд",
     "downloadNewChapters": "Download new chapters",
     "epub": "EPUB",
     "epubLocation": "EPUB Location",
@@ -317,11 +317,11 @@
   },
   "more": "Більше",
   "moreScreen": {
-    "downloadOnly": "Тільки завантажені",
+    "downloadOnly": "Показувати тільки завантажені",
     "downloadOnlyDesc": "Filters all novels in your library",
     "downloadQueue": "Download queue",
     "incognitoMode": "Режим інкогніто",
-    "incognitoModeDesc": "Pauses reading history"
+    "incognitoModeDesc": "Не записувати історію перегляду"
   },
   "novelScreen": {
     "addToLibaray": "Додати до бібліотеки",
@@ -356,7 +356,7 @@
     "deleteMessage": "Delete downloaded chapters?",
     "deletedAllDownloads": "Deleted all Downloads",
     "download": {
-      "custom": "Custom",
+      "custom": "Вказати",
       "customAmount": "Download custom amount",
       "delete": "Delete downloads",
       "next": "Next chapter",
@@ -387,12 +387,12 @@
     "migrate": "Перенести",
     "noSummary": "Немає зведених відомостей",
     "progress": "Progress %{progress} %",
-    "readChaptersDeleted": "Read chapters deleted",
-    "startReadingChapters": "Start reading %{name}",
+    "readChaptersDeleted": "Видалено прочитані розділи",
+    "startReadingChapters": "Почати читати %{name}",
     "status": {
       "cancelled": "Cancelled",
       "completed": "Completed",
-      "licensed": "Licensed",
+      "licensed": "Ліцензовано",
       "onHiatus": "On Hiatus",
       "ongoing": "Ongoing",
       "publishingFinished": "Publishing Finished",
@@ -446,7 +446,7 @@
     "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
     "clearCustomJS": "Are you sure? Your custom JS would be reset.",
     "cssHint": "Hint: You can create source specific CSS configuration with the source ID. (#sourceId-[SOURCEID])",
-    "customCSS": "Довільний CSS",
+    "customCSS": "Користувацький CSS",
     "customJS": "Custom JS",
     "deleteCustomTheme": "Видалити тему",
     "jsHint": "Hint: You have access to following variables: html, novelName, chapterName, sourceId, chapterId, novelId",
@@ -458,7 +458,7 @@
     "saveCustomTheme": "Зберегти тему",
     "textColor": "Колір тексту",
     "textColorModal": "Колір тексту при читанні",
-    "title": "Тайтл",
+    "title": "Читання",
     "verticalSeekbarDesc": "Перемикання між вертикальною та горизонтальною панелями навігації"
   },
   "sourceScreen": {
@@ -498,7 +498,7 @@
     "welcome": "Welcome",
     "pickATheme": "Pick a theme",
     "light": "Light",
-    "dark": "Dark",
+    "dark": "Темна",
     "complete": "Complete"
   }
 }
