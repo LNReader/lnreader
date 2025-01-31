@@ -7,6 +7,7 @@ import { downloadFile } from '@plugins/helpers/fetch';
 import ServiceManager from '@services/ServiceManager';
 import { db } from '@database/db';
 import { getPageChapters } from '@database/queries/ChapterQueries';
+import { ChapterInfo } from '@database/types';
 
 const updateNovelMetadata = (
   pluginId: string,
@@ -81,15 +82,18 @@ const updateNovelChapters = async (
   downloadNewChapters?: boolean,
   page?: string,
 ) => {
-  const existingChapters = await getPageChapters(
-    novelId,
-    '',
-    '',
-    chapters[0].page || '1',
-  );
-  const chaptersToHide = existingChapters.filter(
-    c => !chapters.some(ch => ch.path === c.path),
-  );
+  let chaptersToHide: ChapterInfo[] = [];
+  if (chapters.length > 0) {
+    const existingChapters = await getPageChapters(
+      novelId,
+      '',
+      '',
+      chapters[0].page || '1',
+    );
+    chaptersToHide = existingChapters.filter(
+      c => !chapters.some(ch => ch.path === c.path),
+    );
+  }
 
   return new Promise((resolve, reject) => {
     db.transaction(async tx => {
