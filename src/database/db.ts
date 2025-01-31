@@ -33,9 +33,8 @@ export const createTables = () => {
 
   db.transaction(tx => {
     tx.executeSql(createRepositoryTableQuery);
+    addSortContentsToTable(tx);
   });
-
-  addSortContentsToTable(db);
 };
 
 /**
