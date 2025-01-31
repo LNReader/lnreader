@@ -250,11 +250,21 @@ export default class ServiceManager {
       'DOWNLOAD_CHAPTER': 0,
     };
     let startingTasks = manager.getTaskList();
+    let tasksSet = new Set(startingTasks.map(t => JSON.stringify(t.task)));
     while (BackgroundService.isRunning()) {
-      const currentTask = manager.getTaskList()[0];
+      const currentTasks = manager.getTaskList();
+      const currentTask = currentTasks[0];
       if (!currentTask) {
         break;
       }
+
+      //Add any newly queued tasks to the starting tasks list
+      let newtasks = currentTasks.filter(
+        t => !tasksSet.has(JSON.stringify(t.task)),
+      );
+      startingTasks.push(...newtasks);
+      newtasks.map(t => tasksSet.add(JSON.stringify(t.task)));
+
       try {
         await manager.executeTask(currentTask, startingTasks);
         doneTasks[currentTask.task.name] += 1;
