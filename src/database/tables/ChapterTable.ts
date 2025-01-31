@@ -1,3 +1,6 @@
+import { SQLTransaction } from 'expo-sqlite';
+import { txnErrorCallback } from '@database/utils/helpers';
+
 export const createChapterTableQuery = `
     CREATE TABLE IF NOT EXISTS Chapter (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,9 +23,23 @@ export const createChapterTableQuery = `
     )
 `;
 
-export const addHiddenColumnQuery = `
-    ALTER TABLE Chapter ADD COLUMN hidden INTEGER DEFAULT 0
-`;
+export const addHiddenColumnToTable = (tx: SQLTransaction) => {
+  tx.executeSql(
+    'PRAGMA table_info("Chapter");',
+    [],
+    (tx2, resultSet) => {
+      const hasSortContents = !!resultSet.rows._array.find(
+        v => v.name === 'hidden',
+      );
+      if (!hasSortContents) {
+        tx.executeSql(
+          'ALTER TABLE Chapter ADD COLUMN hidden INTEGER DEFAULT 0;',
+        );
+      }
+    },
+    txnErrorCallback,
+  );
+};
 
 export const createChapterNovelIdIndexQuery = `
     CREATE INDEX
