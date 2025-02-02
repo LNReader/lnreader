@@ -14,8 +14,9 @@ let data =
   os.EOL +
   `GIT_HASH=${commitHash}` +
   os.EOL +
-  `RELEASE_DATE=${formattedDate}`;
-
+  `RELEASE_DATE=${formattedDate}` +
+  os.EOL +
+  `NODE_ENV=${buildType === 'Release' ? 'production' : 'development'}`;
 let existingEnvData = '';
 
 fs.readFile(path.join(__dirname, '..', '.env'), 'utf8', (err, existingData) => {

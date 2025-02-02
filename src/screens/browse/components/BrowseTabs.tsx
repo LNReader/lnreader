@@ -57,7 +57,9 @@ export const InstalledTab = memo(
     const settingsModal = useBoolean();
     const [selectedPluginId, setSelectedPluginId] = useState<string>('');
 
-    const pluginSettings = getPlugin(selectedPluginId)?.pluginSettings;
+    const pluginSettings = selectedPluginId
+      ? getPlugin(selectedPluginId)?.pluginSettings
+      : undefined;
 
     const navigateToSource = useCallback(
       (plugin: PluginItem, showLatestNovels?: boolean) => {

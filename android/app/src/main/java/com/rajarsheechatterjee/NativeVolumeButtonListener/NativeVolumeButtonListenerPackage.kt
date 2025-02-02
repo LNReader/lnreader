@@ -19,8 +19,8 @@ class NativeVolumeButtonListenerPackage : BaseReactPackage() {
             NativeVolumeButtonListener.NAME to ReactModuleInfo(
                 NativeVolumeButtonListener.NAME,
                 NativeVolumeButtonListener.NAME,
-                _canOverrideExistingModule = false,
-                _needsEagerInit = false,
+                canOverrideExistingModule = false,
+                needsEagerInit = false,
                 isCxxModule = false,
                 isTurboModule = true
             )
