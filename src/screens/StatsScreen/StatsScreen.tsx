@@ -173,13 +173,13 @@ export const StatsCard: React.FC<{ label: string; value?: number }> = ({
 
 const styles = StyleSheet.create({
   statsCardCtn: {
-    elevation: 1,
     margin: 4,
     paddingHorizontal: 8,
     paddingVertical: 12,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
   },
   statsVal: {
     fontWeight: 'bold',

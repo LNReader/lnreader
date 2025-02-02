@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 8,
     borderRadius: 12,
-    elevation: 1,
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
   },
   name: {
     fontSize: 16,

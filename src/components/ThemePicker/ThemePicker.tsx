@@ -35,7 +35,7 @@ export const ThemePicker = ({
         height: 140,
         borderRadius: 16,
         overflow: 'hidden',
-        elevation: 1,
+        boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
       }}
     >
       <Pressable style={{ flex: 1 }} onPress={onPress}>
@@ -49,7 +49,6 @@ export const ThemePicker = ({
               position: 'absolute',
               top: 5,
               right: 5,
-              elevation: 2,
               borderRadius: 50,
               padding: 1.6,
               zIndex: 1,
@@ -60,7 +59,7 @@ export const ThemePicker = ({
           style={{
             height: 20,
             backgroundColor: overlay(2, theme.surface),
-            elevation: 1,
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
             justifyContent: 'center',
           }}
         >

@@ -101,7 +101,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   const [jumpToChapterModal, showJumpToChapterModal] = useState(false);
   const downloadCustomChapterModal = useBoolean();
-  
 
   const actions = useMemo(() => {
     const list: { icon: MaterialDesignIconName; onPress: () => void }[] = [];
@@ -132,7 +131,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
     list.push({
       icon: 'bookmark-outline',
-      onPress: () => {        
+      onPress: () => {
         bookmarkChapters(selected);
         setSelected([]);
       },
@@ -244,7 +243,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                 style={{
                   position: 'absolute',
                   width: '100%',
-                  elevation: 2,
+                  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
                   backgroundColor: theme.surface2,
                   paddingTop: StatusBar.currentHeight || 0,
                   flexDirection: 'row',
@@ -289,7 +288,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           </View>
 
           <Portal>
-          <Actionbar active={selected.length > 0} actions={actions} />
+            <Actionbar active={selected.length > 0} actions={actions} />
             <Snackbar
               visible={deleteDownloadsSnackbar.value}
               onDismiss={deleteDownloadsSnackbar.setFalse}
