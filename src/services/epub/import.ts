@@ -5,12 +5,12 @@ import {
 } from '@database/queries/NovelQueries';
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import { getString } from '@strings/translations';
-import EpubUtil from '@native/EpubUtil';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { db } from '@database/db';
 import { BackgroundTaskMetadata } from '@services/ServiceManager';
 import NativeFile from '@specs/NativeFile';
 import NativeZipArchive from '@specs/NativeZipArchive';
+import NativeEpubUtil from '@specs/NativeEpubUtil';
 
 const insertLocalNovel = async (
   name: string,
@@ -131,17 +131,19 @@ export const importEpub = async (
   }
   NativeFile.mkdir(epubDirPath);
   await NativeZipArchive.unzip(epubFilePath, epubDirPath);
-  const novel = await EpubUtil.parseNovelAndChapters(epubDirPath);
-  if (!novel.name) {
+  const novel = NativeEpubUtil.parseNovelAndChapters(epubDirPath);
+  if (novel === null)
+    throw new Error(getString('advancedSettingsScreen.novelInsertFailed'));
+  if (!novel || !novel.name) {
     novel.name = filename.replace('.epub', '') || 'Untitled';
   }
   const novelId = await insertLocalNovel(
     novel.name,
     epubDirPath + novel.name, // temporary
-    novel.cover,
-    novel.author,
-    novel.artist,
-    novel.summary,
+    novel.cover || '',
+    novel.author || '',
+    novel.artist || '',
+    novel.summary || '',
   );
   const now = dayjs().toISOString();
   const filePathSet = new Set<string>();
