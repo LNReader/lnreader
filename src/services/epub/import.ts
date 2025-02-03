@@ -6,11 +6,11 @@ import {
 } from '@database/queries/NovelQueries';
 import { LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import { getString } from '@strings/translations';
-import FileManager from '@native/FileManager';
 import EpubUtil from '@native/EpubUtil';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { db } from '@database/db';
 import { BackgroundTaskMetadata } from '@services/ServiceManager';
+import NativeFile from '@specs/NativeFile';
 
 const insertLocalNovel = async (
   name: string,
@@ -31,11 +31,11 @@ const insertLocalNovel = async (
   if (insertedNovel.lastInsertRowId && insertedNovel.lastInsertRowId >= 0) {
     await updateNovelCategoryById(insertedNovel.lastInsertRowId, [2]);
     const novelDir = NOVEL_STORAGE + '/local/' + insertedNovel.lastInsertRowId;
-    await FileManager.mkdir(novelDir);
+    NativeFile.mkdir(novelDir);
     const newCoverPath =
       'file://' + novelDir + '/' + cover?.split(/[\/\\]/).pop();
-    if (cover && (await FileManager.exists(cover))) {
-      await FileManager.moveFile(cover, newCoverPath);
+    if (cover && NativeFile.exists(cover)) {
+      NativeFile.moveFile(cover, newCoverPath);
     }
     await updateNovelInfo({
       id: insertedNovel.lastInsertRowId,
@@ -77,7 +77,7 @@ const insertLocalChapter = async (
     } catch {
       // nothing to do
     }
-    chapterText = FileManager.readFile(path);
+    chapterText = NativeFile.readFile(path);
     if (!chapterText) {
       return [];
     }
@@ -93,8 +93,8 @@ const insertLocalChapter = async (
         return `${$1}="file://${novelDir}/${$3.split(/[\\\/]/)?.pop()}"`;
       },
     );
-    await FileManager.mkdir(novelDir + '/' + insertedChapter.lastInsertRowId);
-    await FileManager.writeFile(
+    NativeFile.mkdir(novelDir + '/' + insertedChapter.lastInsertRowId);
+    NativeFile.writeFile(
       novelDir + '/' + insertedChapter.lastInsertRowId + '/index.html',
       chapterText,
     );
@@ -121,13 +121,15 @@ export const importEpub = async (
     progress: 0,
   }));
 
-  const epubFilePath = FileManager.ExternalCachesDirectoryPath + '/novel.epub';
-  await FileManager.copyFile(uri, epubFilePath);
-  const epubDirPath = FileManager.ExternalCachesDirectoryPath + '/epub';
-  if (await FileManager.exists(epubDirPath)) {
-    await FileManager.unlink(epubDirPath);
+  const epubFilePath =
+    NativeFile.getConstants().ExternalCachesDirectoryPath + '/novel.epub';
+  NativeFile.copyFile(uri, epubFilePath);
+  const epubDirPath =
+    NativeFile.getConstants().ExternalCachesDirectoryPath + '/epub';
+  if (NativeFile.exists(epubDirPath)) {
+    NativeFile.unlink(epubDirPath);
   }
-  await FileManager.mkdir(epubDirPath);
+  NativeFile.mkdir(epubDirPath);
   await ZipArchive.unzip(epubFilePath, epubDirPath);
   const novel = await EpubUtil.parseNovelAndChapters(epubDirPath);
   if (!novel.name) {
@@ -178,8 +180,8 @@ export const importEpub = async (
   }));
 
   for (let filePath of filePathSet) {
-    if (await FileManager.exists(filePath)) {
-      await FileManager.moveFile(
+    if (NativeFile.exists(filePath)) {
+      NativeFile.moveFile(
         filePath,
         novelDir + '/' + filePath.split(/[\\\/]/).pop(),
       );

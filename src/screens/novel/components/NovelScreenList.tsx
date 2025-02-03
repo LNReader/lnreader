@@ -38,7 +38,7 @@ const ListEmptyComponent = () => (
       <LoadingChapterItem key={i} />
     ))}
   </>
-)
+);
 
 export default function NovelScreenList({
   name,
@@ -99,7 +99,7 @@ export default function NovelScreenList({
     followNovel,
     deleteChapter,
   } = useNovel(path, pluginId);
-  
+
   const theme = useTheme();
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
 
@@ -248,14 +248,14 @@ export default function NovelScreenList({
         extraData={[chapters.length, novel.id, loading]}
         removeClippedSubviews={true}
         ListEmptyComponent={ListEmptyComponent}
-        renderItem={({ item }) => {          
+        renderItem={({ item }) => {
           if (novel.id === 'NO_ID') {
             return null;
           }
           return (
             <ChapterItem
               isDownloading={downloadQueue.some(
-                c => c.data.chapterId === item.id,
+                c => c.task.data.chapterId === item.id,
               )}
               isBookmarked={!!item.bookmark}
               isLocal={novel.isLocal}

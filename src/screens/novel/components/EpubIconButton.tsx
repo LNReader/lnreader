@@ -11,7 +11,7 @@ import { useChapterReaderSettings } from '@hooks/persisted';
 import { useBoolean } from '@hooks/index';
 import { showToast } from '@utils/showToast';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import FileManager from '@native/FileManager';
+import NativeFile from '@specs/NativeFile';
 
 interface EpubIconButtonProps {
   theme: ThemeColors;
@@ -135,8 +135,8 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
       for (let i = 0; i < chapters.length; i++) {
         const chapter = chapters[i];
         const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${novel.id}/${chapter.id}/index.html`;
-        if (await FileManager.exists(filePath)) {
-          const downloaded = FileManager.readFile(filePath);
+        if (NativeFile.exists(filePath)) {
+          const downloaded = NativeFile.readFile(filePath);
           console.log({
             title:
               chapter.name?.trim() ?? 'Chapter ' + (chapter.chapterNumber || i),

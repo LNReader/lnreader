@@ -4,9 +4,9 @@ import { ChapterItem } from '@plugins/types';
 
 import { Update } from '../types';
 import { getString } from '@strings/translations';
-import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { db } from '@database/db';
+import NativeFile from '@specs/NativeFile';
 
 export const insertChapters = async (
   novelId: number,
@@ -129,7 +129,7 @@ const deleteDownloadedFiles = async (
 ) => {
   try {
     const chapterFolder = `${NOVEL_STORAGE}/${pluginId}/${novelId}/${chapterId}`;
-    await FileManager.unlink(chapterFolder);
+    NativeFile.unlink(chapterFolder);
   } catch (error) {
     throw new Error(getString('novelScreen.deleteChapterError'));
   }

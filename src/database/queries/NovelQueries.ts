@@ -14,10 +14,10 @@ import { getString } from '@strings/translations';
 import { BackupNovel, NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import FileManager from '@native/FileManager';
 import { downloadFile } from '@plugins/helpers/fetch';
 import { getPlugin } from '@plugins/pluginManager';
 import { db } from '@database/db';
+import NativeFile from '@specs/NativeFile';
 
 export const insertNovelAndChapters = async (
   pluginId: string,
@@ -41,7 +41,7 @@ export const insertNovelAndChapters = async (
   if (novelId) {
     if (sourceNovel.cover) {
       const novelDir = NOVEL_STORAGE + '/' + pluginId + '/' + novelId;
-      await FileManager.mkdir(novelDir);
+      NativeFile.mkdir(novelDir);
       const novelCoverPath = novelDir + '/cover.png';
       const novelCoverUri = 'file://' + novelCoverPath;
       downloadFile(
@@ -238,10 +238,10 @@ export const pickCustomNovelCover = async (novel: NovelInfo) => {
   if (image.assets && image.assets[0]) {
     const novelDir = NOVEL_STORAGE + '/' + novel.pluginId + '/' + novel.id;
     let novelCoverUri = 'file://' + novelDir + '/cover.png';
-    if (!(await FileManager.exists(novelDir))) {
-      await FileManager.mkdir(novelDir);
+    if (!NativeFile.exists(novelDir)) {
+      NativeFile.mkdir(novelDir);
     }
-    FileManager.copyFile(image.assets[0].uri, novelCoverUri);
+    NativeFile.copyFile(image.assets[0].uri, novelCoverUri);
     novelCoverUri += '?' + Date.now();
     runTransaction(db, [
       ['UPDATE Novel SET cover = ? WHERE id = ?', [novelCoverUri, novel.id]],

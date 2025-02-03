@@ -15,14 +15,14 @@ import {
 } from '@database/queries/CategoryQueries';
 import { BackupCategory } from '@database/types';
 import { BackupEntryName } from './types';
-import FileManager from '@native/FileManager';
 import { ROOT_STORAGE } from '@utils/Storages';
 import ServiceManager from '@services/ServiceManager';
+import NativeFile from '@specs/NativeFile';
 
 const APP_STORAGE_URI = 'file://' + ROOT_STORAGE;
 
 export const CACHE_DIR_PATH =
-  FileManager.ExternalCachesDirectoryPath + '/BackupData';
+  NativeFile.getConstants().ExternalCachesDirectoryPath + '/BackupData';
 
 const backupMMKVData = () => {
   const excludeKeys = [
@@ -56,14 +56,14 @@ const restoreMMKVData = (data: any) => {
 
 export const prepareBackupData = async (cacheDirPath: string) => {
   const novelDirPath = cacheDirPath + '/' + BackupEntryName.NOVEL_AND_CHAPTERS;
-  if (await FileManager.exists(novelDirPath)) {
-    await FileManager.unlink(novelDirPath);
+  if (NativeFile.exists(novelDirPath)) {
+    NativeFile.unlink(novelDirPath);
   }
 
-  await FileManager.mkdir(novelDirPath); // this also creates cacheDirPath
+  NativeFile.mkdir(novelDirPath); // this also creates cacheDirPath
 
   // version
-  await FileManager.writeFile(
+  NativeFile.writeFile(
     cacheDirPath + '/' + BackupEntryName.VERSION,
     JSON.stringify({ version: version }),
   );
@@ -72,7 +72,7 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   await getAllNovels().then(async novels => {
     for (const novel of novels) {
       const chapters = await getNovelChapters(novel.id);
-      await FileManager.writeFile(
+      NativeFile.writeFile(
         novelDirPath + '/' + novel.id + '.json',
         JSON.stringify({
           chapters: chapters,
@@ -84,26 +84,24 @@ export const prepareBackupData = async (cacheDirPath: string) => {
   });
 
   // categories
-  await getCategoriesFromDb().then(categories => {
-    return getAllNovelCategories().then(async novelCategories => {
-      await FileManager.writeFile(
-        cacheDirPath + '/' + BackupEntryName.CATEGORY,
-        JSON.stringify(
-          categories.map(category => {
-            return {
-              ...category,
-              novelIds: novelCategories
-                .filter(nc => nc.categoryId === category.id)
-                .map(nc => nc.novelId),
-            };
-          }),
-        ),
-      );
-    });
-  });
+  const categories = getCategoriesFromDb();
+  const novelCategories = getAllNovelCategories();
+  NativeFile.writeFile(
+    cacheDirPath + '/' + BackupEntryName.CATEGORY,
+    JSON.stringify(
+      categories.map(category => {
+        return {
+          ...category,
+          novelIds: novelCategories
+            .filter(nc => nc.categoryId === category.id)
+            .map(nc => nc.novelId),
+        };
+      }),
+    ),
+  );
 
   // settings
-  await FileManager.writeFile(
+  NativeFile.writeFile(
     cacheDirPath + '/' + BackupEntryName.SETTING,
     JSON.stringify(backupMMKVData()),
   );
@@ -116,21 +114,20 @@ export const restoreData = async (cacheDirPath: string) => {
   // nothing to do
 
   // novels
-  await FileManager.readDir(novelDirPath).then(async items => {
-    for (const item of items) {
-      if (!item.isDirectory) {
-        const backupNovel = JSON.parse(FileManager.readFile(item.path));
-        if (!backupNovel.cover?.startsWith('http')) {
-          backupNovel.cover = APP_STORAGE_URI + backupNovel.cover;
-        }
-        await _restoreNovelAndChapters(backupNovel);
+  const items = NativeFile.readDir(novelDirPath);
+  for (const item of items) {
+    if (!item.isDirectory) {
+      const backupNovel = JSON.parse(NativeFile.readFile(item.path));
+      if (!backupNovel.cover?.startsWith('http')) {
+        backupNovel.cover = APP_STORAGE_URI + backupNovel.cover;
       }
+      await _restoreNovelAndChapters(backupNovel);
     }
-  });
+  }
 
   // categories
   const categories: BackupCategory[] = JSON.parse(
-    FileManager.readFile(cacheDirPath + '/' + BackupEntryName.CATEGORY),
+    NativeFile.readFile(cacheDirPath + '/' + BackupEntryName.CATEGORY),
   );
   for (const category of categories) {
     await _restoreCategory(category);
@@ -139,7 +136,7 @@ export const restoreData = async (cacheDirPath: string) => {
   // settings
   restoreMMKVData(
     JSON.parse(
-      FileManager.readFile(cacheDirPath + '/' + BackupEntryName.SETTING),
+      NativeFile.readFile(cacheDirPath + '/' + BackupEntryName.SETTING),
     ),
   );
 };

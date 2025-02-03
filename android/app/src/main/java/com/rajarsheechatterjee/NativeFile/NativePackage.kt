@@ -1,25 +1,25 @@
-package com.rajarsheechatterjee.NativeVolumeButtonListener
+package com.rajarsheechatterjee.NativeFile
 
 import com.facebook.react.BaseReactPackage
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
-import com.lnreader.spec.NativeVolumeButtonListenerSpec
+import com.lnreader.spec.NativeFileSpec
 
-class NativeVolumeButtonListenerPackage : BaseReactPackage() {
+class NativePackage : BaseReactPackage() {
     override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? =
-        if (name == NativeVolumeButtonListenerSpec.NAME) {
-            NativeVolumeButtonListener(reactContext)
+        if (name == NativeFileSpec.NAME) {
+            NativeFile(reactContext)
         } else {
             null
         }
 
     override fun getReactModuleInfoProvider() = ReactModuleInfoProvider {
         mapOf(
-            NativeVolumeButtonListenerSpec.NAME to ReactModuleInfo(
-                NativeVolumeButtonListenerSpec.NAME,
-                NativeVolumeButtonListenerSpec.NAME,
+            NativeFileSpec.NAME to ReactModuleInfo(
+                NativeFileSpec.NAME,
+                NativeFileSpec.NAME,
                 canOverrideExistingModule = false,
                 needsEagerInit = false,
                 isCxxModule = false,

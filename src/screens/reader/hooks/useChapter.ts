@@ -14,7 +14,6 @@ import {
   useTrackedNovel,
   useTracker,
 } from '@hooks/persisted';
-import FileManager from '@native/FileManager';
 import { fetchChapter } from '@services/plugin/fetch';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { RefObject, useCallback, useEffect, useState } from 'react';
@@ -29,6 +28,7 @@ import { useChapterContext } from '../ChapterContext';
 import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
 import NativeVolumeButtonListener from '@specs/NativeVolumeButtonListener';
+import NativeFile from '@specs/NativeFile';
 
 const emmiter = new NativeEventEmitter(NativeVolumeButtonListener);
 
@@ -86,8 +86,8 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
     try {
       const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
       let text = '';
-      if (await FileManager.exists(filePath)) {
-        text = FileManager.readFile(filePath);
+      if (NativeFile.exists(filePath)) {
+        text = NativeFile.readFile(filePath);
       } else {
         await fetchChapter(novel.pluginId, chapter.path)
           .then(res => {
@@ -189,12 +189,12 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
 
     if (!incognitoMode) {
       insertHistory(chapter.id);
-      getDbChapter(chapter.id).then(result => setLastRead(result));
+      getDbChapter(chapter.id).then(result => result && setLastRead(result));
     }
 
     return () => {
       if (!incognitoMode) {
-        getDbChapter(chapter.id).then(result => setLastRead(result));
+        getDbChapter(chapter.id).then(result => result && setLastRead(result));
       }
     };
   }, [chapter]);

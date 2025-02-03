@@ -28,6 +28,5 @@ class NativeVolumeButtonListener(appContext: ReactApplicationContext) :
                     .emit(if (up) "VolumeUp" else "VolumeDown", null)
             }
         }
-        const val NAME = "NativeVolumeButtonListener"
     }
 }

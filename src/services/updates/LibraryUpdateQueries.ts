@@ -1,11 +1,11 @@
 import { fetchNovel, fetchPage } from '../plugin/fetch';
 import { ChapterItem, SourceNovel } from '@plugins/types';
 import { getPlugin, LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
-import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { downloadFile } from '@plugins/helpers/fetch';
 import ServiceManager from '@services/ServiceManager';
 import { db } from '@database/db';
+import NativeFile from '@specs/NativeFile';
 
 const updateNovelMetadata = async (
   pluginId: string,
@@ -15,8 +15,8 @@ const updateNovelMetadata = async (
   let { name, cover, summary, author, artist, genres, status, totalPages } =
     novel;
   const novelDir = NOVEL_STORAGE + '/' + pluginId + '/' + novelId;
-  if (!(await FileManager.exists(novelDir))) {
-    await FileManager.mkdir(novelDir);
+  if (NativeFile.exists(novelDir)) {
+    NativeFile.mkdir(novelDir);
   }
   if (cover) {
     const novelCoverPath = novelDir + '/cover.png';

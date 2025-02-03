@@ -13,10 +13,10 @@ import { defaultCover } from './helpers/constants';
 import { Storage, LocalStorage, SessionStorage } from './helpers/storage';
 import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
-import FileManager from '@native/FileManager';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
 import { showToast } from '@utils/showToast';
 import { PLUGIN_STORAGE } from '@utils/Storages';
+import NativeFile from '@specs/NativeFile';
 
 const packages: Record<string, any> = {
   'htmlparser2': { Parser },
@@ -76,21 +76,21 @@ const installPlugin = async (
 
       // save plugin code;
       const pluginDir = `${PLUGIN_STORAGE}/${plugin.id}`;
-      await FileManager.mkdir(pluginDir);
+      NativeFile.mkdir(pluginDir);
       const pluginPath = pluginDir + '/index.js';
       const customJSPath = pluginDir + '/custom.js';
       const customCSSPath = pluginDir + '/custom.css';
       if (_plugin.customJS) {
         await downloadFile(_plugin.customJS, customJSPath);
-      } else if (await FileManager.exists(customJSPath)) {
-        FileManager.unlink(customJSPath);
+      } else if (NativeFile.exists(customJSPath)) {
+        NativeFile.unlink(customJSPath);
       }
       if (_plugin.customCSS) {
         await downloadFile(_plugin.customCSS, customCSSPath);
-      } else if (await FileManager.exists(customCSSPath)) {
-        FileManager.unlink(customCSSPath);
+      } else if (NativeFile.exists(customCSSPath)) {
+        NativeFile.unlink(customCSSPath);
       }
-      await FileManager.writeFile(pluginPath, rawCode);
+      NativeFile.writeFile(pluginPath, rawCode);
     }
     return currentPlugin;
   } catch (e: any) {
@@ -106,8 +106,8 @@ const uninstallPlugin = async (_plugin: PluginItem) => {
     }
   });
   const pluginFilePath = `${PLUGIN_STORAGE}/${_plugin.id}/index.js`;
-  if (await FileManager.exists(pluginFilePath)) {
-    await FileManager.unlink(pluginFilePath);
+  if (NativeFile.exists(pluginFilePath)) {
+    NativeFile.unlink(pluginFilePath);
   }
 };
 
@@ -117,7 +117,7 @@ const updatePlugin = async (plugin: PluginItem) => {
 
 const fetchPlugins = async (): Promise<PluginItem[]> => {
   const allPlugins: PluginItem[] = [];
-  const allRepositories = await getRepositoriesFromDb();
+  const allRepositories = getRepositoriesFromDb();
 
   const repoPluginsRes = await Promise.allSettled(
     allRepositories.map(({ url }) => fetch(url).then(res => res.json())),
@@ -142,7 +142,7 @@ const getPlugin = (pluginId: string) => {
   if (!plugins[pluginId]) {
     const filePath = `${PLUGIN_STORAGE}/${pluginId}/index.js`;
     try {
-      const code = FileManager.readFile(filePath);
+      const code = NativeFile.readFile(filePath);
       const plugin = initPlugin(pluginId, code);
       plugins[pluginId] = plugin;
     } catch {

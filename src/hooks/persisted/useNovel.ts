@@ -30,8 +30,8 @@ import { getString } from '@strings/translations';
 import dayjs from 'dayjs';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import FileManager from '@native/FileManager';
 import { useAppSettings } from './useSettings';
+import NativeFile from '@specs/NativeFile';
 
 // store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
 // store key: '<PREFIX>_<novel.id>',
@@ -125,10 +125,11 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const [chapters, _setChapters] = useState<ChapterInfo[]>([]);
   const [pages, setPages] = useState<string[]>([]);
 
-  const mutateChapters = (mutation: (chs:ChapterInfo[]) => ChapterInfo[]) => {
+  const mutateChapters = (mutation: (chs: ChapterInfo[]) => ChapterInfo[]) => {
     if (novel) {
-      _setChapters(mutation)
-    }}
+      _setChapters(mutation);
+    }
+  };
   const setChapters = useCallback(
     (chs: ChapterInfo[]) => {
       if (novel) {
@@ -209,7 +210,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     _chapters.map(_chapter => {
       _bookmarkChapter(_chapter.id);
     });
-    mutateChapters( chs=>
+    mutateChapters(chs =>
       chs.map(chapter => {
         if (_chapters.some(_c => _c.id === chapter.id)) {
           return {
@@ -225,7 +226,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const markPreviouschaptersRead = (chapterId: number) => {
     if (novel) {
       _markPreviuschaptersRead(chapterId, novel.id);
-      mutateChapters( chs=>
+      mutateChapters(chs =>
         chs.map(chapter =>
           chapter.id <= chapterId ? { ...chapter, unread: false } : chapter,
         ),
@@ -235,7 +236,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
 
   const markChapterRead = (chapterId: number) => {
     _markChapterRead(chapterId);
-    mutateChapters( chs=>
+    mutateChapters(chs =>
       chs.map(c => {
         if (c.id !== chapterId) {
           return c;
@@ -252,7 +253,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     const chapterIds = _chapters.map(chapter => chapter.id);
     _markChaptersRead(chapterIds);
 
-    mutateChapters( chs=>
+    mutateChapters(chs =>
       chs.map(chapter => {
         if (chapterIds.includes(chapter.id)) {
           return {
@@ -268,7 +269,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const markPreviousChaptersUnread = (chapterId: number) => {
     if (novel) {
       _markPreviousChaptersUnread(chapterId, novel.id);
-      mutateChapters( chs=>
+      mutateChapters(chs =>
         chs.map(chapter =>
           chapter.id <= chapterId ? { ...chapter, unread: true } : chapter,
         ),
@@ -280,7 +281,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     const chapterIds = _chapters.map(chapter => chapter.id);
     _markChaptersUnread(chapterIds);
 
-    mutateChapters( chs=>
+    mutateChapters(chs =>
       chs.map(chapter => {
         if (chapterIds.includes(chapter.id)) {
           return {
@@ -296,7 +297,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const deleteChapter = (_chapter: ChapterInfo) => {
     if (novel) {
       _deleteChapter(novel.pluginId, novel.id, _chapter.id).then(() => {
-        mutateChapters( chs=>
+        mutateChapters(chs =>
           chs.map(chapter => {
             if (chapter.id !== _chapter.id) {
               return chapter;
@@ -321,7 +322,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
               num: _chaters.length,
             }),
           );
-          mutateChapters( chs=>
+          mutateChapters(chs =>
             chs.map(chapter => {
               if (_chaters.some(_c => _c.id === chapter.id)) {
                 return {
@@ -450,8 +451,8 @@ export const deleteCachedNovels = async () => {
     );
     MMKVStorage.delete(`${LAST_READ_PREFIX}_${novel.pluginId}_${novel.path}`);
     const novelDir = NOVEL_STORAGE + '/' + novel.pluginId + '/' + novel.id;
-    if (await FileManager.exists(novelDir)) {
-      await FileManager.unlink(novelDir);
+    if (NativeFile.exists(novelDir)) {
+      NativeFile.unlink(novelDir);
     }
   }
   _deleteCachedNovels();
