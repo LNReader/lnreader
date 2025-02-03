@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   extends: ['@react-native', 'prettier'],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint','eslint-plugin-react-compiler'],
   overrides: [
     {
       files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
@@ -13,6 +13,7 @@ module.exports = {
         'react-native/no-inline-styles': 'warn',
         'no-console': 'warn',
         'react-hooks/exhaustive-deps': 'warn',
+        'react-compiler/react-compiler': 'error',
       },
     },
   ],
