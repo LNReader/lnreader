@@ -1,4 +1,3 @@
-import ZipArchive from '@native/ZipArchive';
 import dayjs from 'dayjs';
 import {
   updateNovelCategoryById,
@@ -11,6 +10,7 @@ import { NOVEL_STORAGE } from '@utils/Storages';
 import { db } from '@database/db';
 import { BackgroundTaskMetadata } from '@services/ServiceManager';
 import NativeFile from '@specs/NativeFile';
+import NativeZipArchive from '@specs/NativeZipArchive';
 
 const insertLocalNovel = async (
   name: string,
@@ -130,7 +130,7 @@ export const importEpub = async (
     NativeFile.unlink(epubDirPath);
   }
   NativeFile.mkdir(epubDirPath);
-  await ZipArchive.unzip(epubFilePath, epubDirPath);
+  await NativeZipArchive.unzip(epubFilePath, epubDirPath);
   const novel = await EpubUtil.parseNovelAndChapters(epubDirPath);
   if (!novel.name) {
     novel.name = filename.replace('.epub', '') || 'Untitled';

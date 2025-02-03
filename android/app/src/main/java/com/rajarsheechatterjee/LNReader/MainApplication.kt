@@ -15,7 +15,7 @@ import com.facebook.soloader.SoLoader
 import com.rajarsheechatterjee.EpubUtil.EpubUtilPackage
 import com.rajarsheechatterjee.NativeFile.NativePackage
 import com.rajarsheechatterjee.NativeVolumeButtonListener.NativeVolumeButtonListenerPackage
-import com.rajarsheechatterjee.ZipArchive.ZipArchivePackage
+import com.rajarsheechatterjee.NativeZipArchive.NativeZipArchivePackage
 import expo.modules.ApplicationLifecycleDispatcher
 
 class MainApplication : Application(), ReactApplication {
@@ -26,7 +26,7 @@ class MainApplication : Application(), ReactApplication {
                     add(EpubUtilPackage())
                     add(NativePackage())
                     add(NativeVolumeButtonListenerPackage())
-                    add(ZipArchivePackage())
+                    add(NativeZipArchivePackage())
                 }
 
             override fun getJSMainModuleName(): String = "index"

@@ -1,10 +1,10 @@
-package com.rajarsheechatterjee.ZipArchive
+package com.rajarsheechatterjee.NativeZipArchive
 
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
+import com.lnreader.spec.NativeZipArchiveSpec
 import java.io.File
 import java.io.FileOutputStream
 import java.net.HttpURLConnection
@@ -14,13 +14,9 @@ import java.util.zip.ZipFile
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
 
-class ZipArchive(context: ReactApplicationContext) : ReactContextBaseJavaModule(context) {
-    override fun getName(): String {
-        return "ZipArchive"
-    }
-
+class NativeZipArchive(context: ReactApplicationContext) : NativeZipArchiveSpec(context) {
     @ReactMethod
-    fun unzip(sourceFilePath: String, distDirPath: String, promise: Promise) {
+    override fun unzip(sourceFilePath: String, distDirPath: String, promise: Promise) {
         Thread {
             try {
                 ZipFile(sourceFilePath).use { zis ->
@@ -30,6 +26,7 @@ class ZipArchive(context: ReactApplicationContext) : ReactContextBaseJavaModule(
                         zis.getInputStream(zipEntry).use { inputStream ->
                             FileOutputStream(newFile).use { fos -> inputStream.copyTo(fos, 4096) }
                         }
+                        Thread.yield()
                     }
                 }
                 promise.resolve(null)
@@ -40,7 +37,7 @@ class ZipArchive(context: ReactApplicationContext) : ReactContextBaseJavaModule(
     }
 
     @ReactMethod
-    fun remoteUnzip(
+    override fun remoteUnzip(
         distDirPath: String,
         urlString: String,
         headers: ReadableMap,
@@ -62,6 +59,7 @@ class ZipArchive(context: ReactApplicationContext) : ReactContextBaseJavaModule(
                             val newFile = File(distDirPath, zipEntry.name)
                             newFile.parentFile?.mkdirs()
                             FileOutputStream(newFile).use { fos -> zis.copyTo(fos, 4096) }
+                            Thread.yield()
                         }
                 }
                 if (connection.responseCode == 200) {
@@ -84,12 +82,16 @@ class ZipArchive(context: ReactApplicationContext) : ReactContextBaseJavaModule(
                 file.absolutePath.removePrefix(sourceDir.absolutePath).removePrefix("/")
             val entry = ZipEntry("$zipFileName${(if (file.isDirectory) "/" else "")}")
             zos.putNextEntry(entry)
-            file.inputStream().use { fis -> fis.copyTo(zos, 4096) }
+            file.inputStream().use { fis ->
+                fis.copyTo(zos, 4096)
+                fis.close()
+            }
+            Thread.yield()
         }
     }
 
     @ReactMethod
-    fun remoteZip(
+    override fun remoteZip(
         sourceDirPath: String,
         urlString: String,
         headers: ReadableMap,
