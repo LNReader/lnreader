@@ -104,6 +104,11 @@ android {
             signingConfig signingConfigs.debug
             applicationIdSuffix 'debug'
             versionNameSuffix '-debug'
+            ndk {
+                if(project.hasProperty("reactNativeArchitectures")) {
+                    abiFilter(project.getProperty("reactNativeArchitectures"))
+                }
+            }
         }
         release {
             // Caution! In production, you need to generate your own keystore file.

@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "android": "npm run prestart && react-native run-android --active-arch-only",
+    "android": "npm run prestart && react-native run-android --appIdSuffix \"debug\" --active-arch-only",
     "ios": "react-native run-ios",
     "prestart": "node scripts/setEnvFile.cjs Debug",
     "start": "react-native start",
