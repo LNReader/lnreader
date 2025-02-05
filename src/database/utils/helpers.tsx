@@ -8,89 +8,71 @@ function logError(error: any) {
 }
 
 type query = string;
-type SQLiteResultFunction = (data: SQLiteRunResult) => void;
+type SQLiteResultFunction<T> = (data: T) => void;
 type SQLiteErrorFunction = (data: any) => void;
 
-export type QueryObject =
-  | [query, SQLiteBindParams, SQLiteResultFunction, SQLiteErrorFunction]
-  | [query, SQLiteBindParams, SQLiteResultFunction]
+export type QueryObject<T = unknown> =
+  | [query, SQLiteBindParams, SQLiteResultFunction<T>, SQLiteErrorFunction]
+  | [query, SQLiteBindParams, SQLiteResultFunction<T>]
   | [query, SQLiteBindParams]
   | [query];
 
-export async function runTransaction(queryObject: QueryObject[]) {
-  db.withTransactionAsync(async () => {
-    for (const [
-      query,
-      params,
-      callback = noop,
-      catchCallback = logError,
-    ] of queryObject) {
-      db.runAsync(query, params ?? [])
-        .then(callback)
-        .catch(catchCallback);
-    }
-  });
-}
+function defaultQuerySync<T = unknown, Array extends boolean = false>(
+  fn: 'getAllSync' | 'getFirstSync' | 'runSync',
+  queryObject: QueryObject<Array extends true ? T[] : T>,
+  errorReturn: Array extends true ? [] : null,
+) {
+  const [query, params = [], callback = noop, catchCallback = logError] =
+    queryObject;
 
-export function runSyncTransaction(queryObject: QueryObject[]) {
-  db.withTransactionSync(() => {
-    for (const [
-      query,
-      params,
-      callback = noop,
-      catchCallback = logError,
-    ] of queryObject) {
-      try {
-        let r = db.runSync(query, params ?? []);
-        callback(r);
-      } catch (error) {
-        catchCallback(error);
-      }
-    }
-  });
-}
-
-export function getAllTransaction(queryObject: QueryObject[]) {
-  return new Promise((resolve, reject) => {
-    for (const [query, params = []] of queryObject) {
-      db.getAllAsync(query, params)
-        .then(res => {
-          resolve(res as any);
-        })
-        .catch(e => {
-          logError(e);
-          reject(e);
-        });
-    }
-  });
-}
-export function getAllSync<T>(queryObject: QueryObject[]) {
-  // let res = [];
-  for (const [query, params = []] of queryObject) {
-    try {
-      return db.getAllSync<T>(query, params);
-    } catch (e) {
-      logError(e);
-    }
+  try {
+    // @ts-ignore
+    const result = db[fn](query, params);
+    callback(result);
+    return result;
+  } catch (e) {
+    catchCallback(e);
+    return errorReturn;
   }
-  // return res;
+}
+async function defaultQueryAsync<T = unknown, Array extends boolean = false>(
+  fn: 'getAllAsync' | 'getFirstAsync' | 'runAsync',
+  queryObject: QueryObject<Array extends true ? T[] : T>,
+  errorReturn: Array extends true ? [] : null,
+) {
+  const [query, params = [], callback = noop, catchCallback = logError] =
+    queryObject;
+
+  try {
+    // @ts-ignore
+    const result = await db[fn](query, params);
+    callback(result);
+    return result;
+  } catch (e) {
+    catchCallback(e);
+    return errorReturn;
+  }
 }
 
-export function getFirstTransaction(queryObject: QueryObject[]) {
-  return new Promise(resolve =>
-    db.withTransactionAsync(async () => {
-      for (const [query, params] of queryObject) {
-        db.getFirstAsync(query, params ?? [])
-          .then(res => {
-            resolve(res as any);
-          })
-          .catch(logError);
-      }
-    }),
-  );
+export async function runAsync(queryObjects: QueryObject<SQLiteRunResult>[]) {
+  for (const queryObject of queryObjects) {
+    defaultQueryAsync<SQLiteRunResult, false>('runAsync', queryObject, null);
+  }
 }
 
-export async function getFirstAsync(queryObject: QueryObject) {
-  const [query, params] = queryObject;
-  return db.getFirstAsync(query, params ?? []);
+export function runSync(queryObjects: QueryObject<SQLiteRunResult>[]) {
+  for (const queryObject of queryObjects) {
+    defaultQuerySync<SQLiteRunResult, false>('runSync', queryObject, null);
+  }
+}
+
+export async function getAllAsync<T = unknown>(queryObject: QueryObject<T[]>) {
+  return defaultQueryAsync<T, true>('getAllAsync', queryObject, []);
+}
+export function getAllSync<T = unknown>(queryObject: QueryObject<T[]>) {
+  return defaultQuerySync<T, true>('getAllSync', queryObject, []);
+}
+
+export function getFirstAsync<T = unknown>(queryObject: QueryObject<T>) {
+  return defaultQueryAsync<T, false>('getFirstAsync', queryObject, null);
 }

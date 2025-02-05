@@ -10,7 +10,7 @@ export const getLibraryNovelsFromDb = (
   if (onlyOngoingNovels) {
     getLibraryNovelsQuery += " AND status = 'Ongoing'";
   }
-  return getAllSync<NovelInfo>( [[getLibraryNovelsQuery]]) ?? [];
+  return getAllSync<NovelInfo>([getLibraryNovelsQuery]);
 };
 
 const getLibraryWithCategoryQuery = `
@@ -70,5 +70,5 @@ export const getLibraryWithCategory = ({
   if (sortOrder) {
     query += ` ORDER BY ${sortOrder} `;
   }
-  return getAllSync<LibraryNovelInfo>( [[query, preparedArgument]]) ?? [];
+  return getAllSync<LibraryNovelInfo>([query, preparedArgument]);
 };

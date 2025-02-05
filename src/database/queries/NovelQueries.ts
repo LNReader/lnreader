@@ -5,10 +5,10 @@ import { insertChapters } from './ChapterQueries';
 
 import { showToast } from '@utils/showToast';
 import {
-  getAllTransaction,
-  getFirstTransaction,
+  getAllAsync,
+  getFirstAsync,
   QueryObject,
-  runTransaction,
+  runAsync,
 } from '../utils/helpers';
 import { getString } from '@strings/translations';
 import { BackupNovel, NovelInfo } from '../types';
@@ -49,7 +49,7 @@ export const insertNovelAndChapters = async (
         novelCoverPath,
         getPlugin(pluginId)?.imageRequestInit,
       ).then(() => {
-        runTransaction( [
+        runAsync([
           [
             'UPDATE Novel SET cover = ? WHERE id = ?',
             [novelCoverUri, novelId!],
@@ -62,16 +62,15 @@ export const insertNovelAndChapters = async (
   return novelId;
 };
 
-export const getAllNovels = async (): Promise<NovelInfo[]> => {
-  return getAllTransaction( [['SELECT * FROM Novel']]) as any;
+export const getAllNovels = async () => {
+  return getAllAsync<NovelInfo>(['SELECT * FROM Novel']);
 };
 
-export const getNovelById = async (
-  novelId: number,
-): Promise<NovelInfo | null> => {
-  return getFirstTransaction( [
-    ['SELECT * FROM Novel WHERE id = ?', [novelId]],
-  ]) as any;
+export const getNovelById = async (novelId: number) => {
+  return getFirstAsync<NovelInfo>([
+    'SELECT * FROM Novel WHERE id = ?',
+    [novelId],
+  ]);
 };
 
 export const getNovelByPath = async (
@@ -116,12 +115,12 @@ export const switchNovelToLibrary = async (
         [novel.id],
       ]);
     }
-    runTransaction( queries);
+    runAsync(queries);
   } else {
     const sourceNovel = await fetchNovel(pluginId, novelPath);
     const novelId = await insertNovelAndChapters(pluginId, sourceNovel);
     if (novelId) {
-      runTransaction( [
+      runAsync([
         [
           'UPDATE Novel SET inLibrary = 1 WHERE id = ?',
           [novelId],
@@ -138,20 +137,18 @@ export const switchNovelToLibrary = async (
 
 // allow to delete local novels
 export const removeNovelsFromLibrary = (novelIds: Array<number>) => {
-  runTransaction( [
+  runAsync([
     [`UPDATE Novel SET inLibrary = 0 WHERE id IN (${novelIds.join(', ')});`],
     [`DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(', ')});`],
   ]);
   showToast(getString('browseScreen.removeFromLibrary'));
 };
 
-export const getCachedNovels = (): Promise<NovelInfo[]> => {
-  return getAllTransaction( [
-    ['SELECT * FROM Novel WHERE inLibrary = 0'],
-  ]) as any;
+export const getCachedNovels = () => {
+  return getAllAsync<NovelInfo>(['SELECT * FROM Novel WHERE inLibrary = 0']);
 };
 export const deleteCachedNovels = async () => {
-  runTransaction( [
+  runAsync([
     [
       'DELETE FROM Novel WHERE inLibrary = 0',
       [],
@@ -188,7 +185,7 @@ export const restoreLibrary = async (novel: NovelInfo) => {
 
   if (novelId && novelId > 0) {
     await new Promise((resolve, reject) => {
-      runTransaction( [
+      runAsync([
         [
           'INSERT OR REPLACE INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
           [novelId!],
@@ -214,7 +211,7 @@ export const restoreLibrary = async (novel: NovelInfo) => {
 };
 
 export const updateNovelInfo = async (info: NovelInfo) => {
-  runTransaction( [
+  runAsync([
     [
       'UPDATE Novel SET name = ?, cover = ?, path = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ?, isLocal = ? WHERE id = ?',
       [
@@ -243,7 +240,7 @@ export const pickCustomNovelCover = async (novel: NovelInfo) => {
     }
     NativeFile.copyFile(image.assets[0].uri, novelCoverUri);
     novelCoverUri += '?' + Date.now();
-    runTransaction( [
+    runAsync([
       ['UPDATE Novel SET cover = ? WHERE id = ?', [novelCoverUri, novel.id]],
     ]);
     return novelCoverUri;
@@ -254,7 +251,7 @@ export const updateNovelCategoryById = async (
   novelId: number,
   categoryIds: number[],
 ) => {
-  runTransaction(
+  runAsync(
     categoryIds.map(categoryId => {
       return [
         'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, ?)',
@@ -295,7 +292,7 @@ export const updateNovelCategories = async (
       ]);
     });
   }
-  runTransaction(queries);
+  runAsync(queries);
 };
 
 const restoreObjectQuery = (table: string, obj: any) => {
@@ -310,14 +307,14 @@ const restoreObjectQuery = (table: string, obj: any) => {
 
 export const _restoreNovelAndChapters = async (backupNovel: BackupNovel) => {
   const { chapters, ...novel } = backupNovel;
-  await runTransaction( [
+  await runAsync([
     ['DELETE FROM Novel WHERE id = ?', [novel.id]],
     [
       restoreObjectQuery('Novel', novel),
       Object.values(novel) as string[] | number[],
     ],
   ]);
-  runTransaction(
+  runAsync(
     chapters.map(chapter => [
       restoreObjectQuery('Chapter', chapter),
       Object.values(chapter) as string[] | number[],

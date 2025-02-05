@@ -1,6 +1,6 @@
 import { countBy } from 'lodash-es';
 import { LibraryStats } from '../types';
-import { getAllTransaction, getFirstAsync } from '../utils/helpers';
+import { getAllAsync, getFirstAsync } from '../utils/helpers';
 
 const getLibraryStatsQuery = `
   SELECT COUNT(*) as novelsCount, COUNT(DISTINCT pluginId) as sourcesCount
@@ -75,7 +75,7 @@ export const getChaptersDownloadedCountFromDb =
 
 export const getNovelGenresFromDb = async (): Promise<LibraryStats> => {
   let genres: string[] = [];
-  await getAllTransaction( [[getNovelGenresQuery]]).then(res => {
+  await getAllAsync([getNovelGenresQuery]).then(res => {
     (res as any).forEach((item: { genres: string }) => {
       const novelGenres = item.genres?.split(/\s*,\s*/);
 
@@ -89,7 +89,7 @@ export const getNovelGenresFromDb = async (): Promise<LibraryStats> => {
 
 export const getNovelStatusFromDb = async (): Promise<LibraryStats> => {
   let status: string[] = [];
-  await getAllTransaction( [[getNovelStatusQuery]]).then(res => {
+  await getAllAsync([getNovelStatusQuery]).then(res => {
     (res as any).forEach((item: { status: string }) => {
       const novelStatus = item.status?.split(/\s*,\s*/);
 
