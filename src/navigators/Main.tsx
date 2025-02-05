@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {
   changeNavigationBarColor,
@@ -37,7 +37,7 @@ import Color from 'color';
 import { useMMKVBoolean } from 'react-native-mmkv';
 import OnboardingScreen from '@screens/onboarding/OnboardingScreen';
 import ServiceManager from '@services/ServiceManager';
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
   const theme = useTheme();
