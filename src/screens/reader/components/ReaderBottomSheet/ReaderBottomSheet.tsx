@@ -43,12 +43,13 @@ const ReaderTab: React.FC = () => (
 
 const GeneralTab: React.FC = () => {
   const theme = useTheme();
-  const { setChapterGeneralSettings, ...settings } = useChapterGeneralSettings();
+  const { setChapterGeneralSettings, ...settings } =
+    useChapterGeneralSettings();
 
   const toggleSetting = useCallback(
     (key: keyof typeof settings) =>
       setChapterGeneralSettings({ [key]: !settings[key] }),
-    [setChapterGeneralSettings, settings]
+    [setChapterGeneralSettings, settings],
   );
 
   const preferences = useMemo(
@@ -66,7 +67,7 @@ const GeneralTab: React.FC = () => {
       { key: 'tapToScroll', label: 'tapToScroll' },
       { key: 'keepScreenOn', label: 'keepScreenOn' },
     ],
-    []
+    [],
   );
 
   return (
@@ -74,7 +75,9 @@ const GeneralTab: React.FC = () => {
       {preferences.map(({ key, label }) => (
         <ReaderSheetPreferenceItem
           key={key}
-          label={getString(`readerScreen.bottomSheet.${label}` as keyof StringMap)}
+          label={getString(
+            `readerScreen.bottomSheet.${label}` as keyof StringMap,
+          )}
           onPress={() => toggleSetting(key as keyof typeof settings)} // @ts-ignore
           value={settings[key as keyof typeof settings]}
           theme={theme}
@@ -99,17 +102,16 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   const theme = useTheme();
   const { bottom } = useSafeAreaInsets();
   const layout = useWindowDimensions();
-  
+
   const tabHeaderColor = overlay(2, theme.surface);
   const backgroundColor = tabHeaderColor;
-  
+
   const renderScene = useMemo(
     () => SceneMap({ readerTab: ReaderTab, generalTab: GeneralTab }),
-    []
+    [],
   );
-  
+
   const [index, setIndex] = useState(0);
-  console.log("t",index);
 
   const renderTabBar = useCallback(
     (props: any) => (
@@ -122,7 +124,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
         pressColor={color(theme.primary).alpha(0.12).string()}
       />
     ),
-    [theme, tabHeaderColor]
+    [theme, tabHeaderColor],
   );
 
   return (
@@ -133,18 +135,21 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       bottomInset={bottom}
       containerStyle={styles.container}
     >
-      <BottomSheetView style={{flex:1}}>
-      <TabView
-        commonOptions={{
-          label: ({ route, color }) => <Text style={{ color }}>{route.title}</Text>,
-        }}
-        navigationState={{ index, routes }}
-        renderTabBar={renderTabBar}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-        style={styles.tabView}
-      /></BottomSheetView>
+      <BottomSheetView style={{ flex: 1 }}>
+        <TabView
+          commonOptions={{
+            label: ({ route, color }) => (
+              <Text style={{ color }}>{route.title}</Text>
+            ),
+          }}
+          navigationState={{ index, routes }}
+          renderTabBar={renderTabBar}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={{ width: layout.width }}
+          style={styles.tabView}
+        />
+      </BottomSheetView>
     </BottomSheet>
   );
 };
