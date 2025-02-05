@@ -40,7 +40,7 @@ const ListEmptyComponent = () => (
   </>
 );
 
-export default function NovelScreenList({
+const NovelScreenList =({
   name,
   path,
   pluginId,
@@ -62,7 +62,7 @@ export default function NovelScreenList({
   selected: ChapterInfo[];
   setSelected: React.Dispatch<React.SetStateAction<ChapterInfo[]>>;
   chapters: ChapterInfo[];
-}) {
+}) =>{
   const routeNovel: Omit<NovelInfo, 'id'> & { id: 'NO_ID' } = {
     id: 'NO_ID',
     cover: cover,
@@ -354,3 +354,5 @@ const styles = StyleSheet.create({
     bottom: 16,
   },
 });
+
+export default React.memo(NovelScreenList);

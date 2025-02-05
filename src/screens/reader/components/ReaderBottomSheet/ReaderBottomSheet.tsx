@@ -1,8 +1,8 @@
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import React, { RefObject, useMemo, useState } from 'react';
+import React, { RefObject, useMemo, useState, useCallback } from 'react';
 import color from 'color';
 
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
@@ -17,145 +17,69 @@ import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { StringMap } from '@strings/types';
 
-const ReaderTab: React.FC = () => {
-  return (
-    <View style={styles.readerTab}>
-      <TextSizeSlider />
-      <ReaderThemeSelector />
-      <ReaderTextAlignSelector />
-      <ReaderValueChange
-        label={getString('readerScreen.bottomSheet.lineHeight')}
-        valueKey="lineHeight"
-      />
-      <ReaderValueChange
-        label={getString('readerScreen.bottomSheet.padding')}
-        valueKey="padding"
-        valueChange={2}
-        min={0}
-        max={50}
-        decimals={0}
-        unit="px"
-      />
-      <ReaderFontPicker />
-    </View>
-  );
-};
+const ReaderTab: React.FC = () => (
+  <View style={styles.readerTab}>
+    <TextSizeSlider />
+    <ReaderThemeSelector />
+    <ReaderTextAlignSelector />
+    <ReaderValueChange
+      label={getString('readerScreen.bottomSheet.lineHeight')}
+      valueKey="lineHeight"
+    />
+    <ReaderValueChange
+      label={getString('readerScreen.bottomSheet.padding')}
+      valueKey="padding"
+      valueChange={2}
+      min={0}
+      max={50}
+      decimals={0}
+      unit="px"
+    />
+    <ReaderFontPicker />
+  </View>
+);
 
 const GeneralTab: React.FC = () => {
   const theme = useTheme();
-  const {
-    keepScreenOn,
-    fullScreenMode,
-    autoScroll,
-    verticalSeekbar,
-    showBatteryAndTime,
-    showScrollPercentage,
-    useVolumeButtons,
-    swipeGestures,
-    pageReader = false,
-    removeExtraParagraphSpacing,
-    bionicReading,
-    tapToScroll = false,
-    setChapterGeneralSettings,
-  } = useChapterGeneralSettings();
+  const { setChapterGeneralSettings, ...settings } = useChapterGeneralSettings();
+
+  const toggleSetting = useCallback(
+    (key: keyof typeof settings) =>
+      setChapterGeneralSettings({ [key]: !settings[key] }),
+    [setChapterGeneralSettings, settings]
+  );
+
+  const preferences = useMemo(
+    () => [
+      { key: 'fullScreenMode', label: 'fullscreen' },
+      { key: 'autoScroll', label: 'autoscroll' },
+      { key: 'verticalSeekbar', label: 'verticalSeekbar' },
+      { key: 'showBatteryAndTime', label: 'showBatteryAndTime' },
+      { key: 'showScrollPercentage', label: 'showProgressPercentage' },
+      { key: 'swipeGestures', label: 'swipeGestures' },
+      { key: 'pageReader', label: 'pageReader' },
+      { key: 'removeExtraParagraphSpacing', label: 'removeExtraSpacing' },
+      { key: 'useVolumeButtons', label: 'volumeButtonsScroll' },
+      { key: 'bionicReading', label: 'bionicReading' },
+      { key: 'tapToScroll', label: 'tapToScroll' },
+      { key: 'keepScreenOn', label: 'keepScreenOn' },
+    ],
+    []
+  );
 
   return (
     <BottomSheetScrollView showsVerticalScrollIndicator={false}>
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.fullscreen')}
-        onPress={() =>
-          setChapterGeneralSettings({ fullScreenMode: !fullScreenMode })
-        }
-        value={fullScreenMode}
-        theme={theme}
-      />
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.autoscroll')}
-        onPress={() => setChapterGeneralSettings({ autoScroll: !autoScroll })}
-        value={autoScroll}
-        theme={theme}
-      />
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.verticalSeekbar')}
-        onPress={() =>
-          setChapterGeneralSettings({ verticalSeekbar: !verticalSeekbar })
-        }
-        value={verticalSeekbar}
-        theme={theme}
-      />
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.showBatteryAndTime')}
-        onPress={() =>
-          setChapterGeneralSettings({ showBatteryAndTime: !showBatteryAndTime })
-        }
-        value={showBatteryAndTime}
-        theme={theme}
-      />
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.showProgressPercentage')}
-        onPress={() =>
-          setChapterGeneralSettings({
-            showScrollPercentage: !showScrollPercentage,
-          })
-        }
-        value={showScrollPercentage}
-        theme={theme}
-      />
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.swipeGestures')}
-        onPress={() =>
-          setChapterGeneralSettings({ swipeGestures: !swipeGestures })
-        }
-        value={swipeGestures}
-        theme={theme}
-      />
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.pageReader')}
-        onPress={() => setChapterGeneralSettings({ pageReader: !pageReader })}
-        value={pageReader}
-        theme={theme}
-      />
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.removeExtraSpacing')}
-        onPress={() =>
-          setChapterGeneralSettings({
-            removeExtraParagraphSpacing: !removeExtraParagraphSpacing,
-          })
-        }
-        value={removeExtraParagraphSpacing}
-        theme={theme}
-      />
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.volumeButtonsScroll')}
-        onPress={() =>
-          setChapterGeneralSettings({ useVolumeButtons: !useVolumeButtons })
-        }
-        value={useVolumeButtons}
-        theme={theme}
-      />
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.bionicReading')}
-        onPress={() =>
-          setChapterGeneralSettings({ bionicReading: !bionicReading })
-        }
-        value={bionicReading}
-        theme={theme}
-      />
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.tapToScroll')}
-        onPress={() => setChapterGeneralSettings({ tapToScroll: !tapToScroll })}
-        value={tapToScroll}
-        theme={theme}
-      />
-      <ReaderSheetPreferenceItem
-        label={getString('readerScreen.bottomSheet.keepScreenOn')}
-        onPress={() =>
-          setChapterGeneralSettings({ keepScreenOn: !keepScreenOn })
-        }
-        value={keepScreenOn}
-        theme={theme}
-      />
+      {preferences.map(({ key, label }) => (
+        <ReaderSheetPreferenceItem
+          key={key}
+          label={getString(`readerScreen.bottomSheet.${label}` as keyof StringMap)}
+          onPress={() => toggleSetting(key as keyof typeof settings)} // @ts-ignore
+          value={settings[key as keyof typeof settings]}
+          theme={theme}
+        />
+      ))}
     </BottomSheetScrollView>
   );
 };
@@ -164,69 +88,55 @@ interface ReaderBottomSheetV2Props {
   bottomSheetRef: RefObject<BottomSheetModalMethods> | null;
 }
 
+const routes = [
+  { key: 'readerTab', title: getString('readerSettings.title') },
+  { key: 'generalTab', title: getString('generalSettings') },
+];
+
 const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   bottomSheetRef,
 }) => {
   const theme = useTheme();
-
+  const { bottom } = useSafeAreaInsets();
+  const layout = useWindowDimensions();
+  
   const tabHeaderColor = overlay(2, theme.surface);
   const backgroundColor = tabHeaderColor;
-
-  const renderScene = SceneMap({
-    'readerTab': ReaderTab,
-    'generalTab': GeneralTab,
-  });
-
-  const layout = useWindowDimensions();
-
-  const [index, setIndex] = useState(0);
-  const routes = useMemo(
-    () => [
-      {
-        key: 'readerTab',
-        title: getString('readerSettings.title'),
-      },
-      {
-        key: 'generalTab',
-        title: getString('generalSettings'),
-      },
-    ],
-    [],
+  
+  const renderScene = useMemo(
+    () => SceneMap({ readerTab: ReaderTab, generalTab: GeneralTab }),
+    []
   );
+  
+  const [index, setIndex] = useState(0);
+  console.log("t",index);
 
-  const renderTabBar = (props: any) => {
-    return (
+  const renderTabBar = useCallback(
+    (props: any) => (
       <TabBar
         {...props}
         indicatorStyle={{ backgroundColor: theme.primary }}
-        style={[
-          {
-            backgroundColor: tabHeaderColor,
-            borderBottomColor: theme.outline,
-            borderBottomWidth: 0.5,
-          },
-          styles.tabBar,
-        ]}
+        style={[styles.tabBar, { backgroundColor: tabHeaderColor }]}
         inactiveColor={theme.onSurfaceVariant}
         activeColor={theme.primary}
         pressColor={color(theme.primary).alpha(0.12).string()}
       />
-    );
-  };
-  const { bottom } = useSafeAreaInsets();
+    ),
+    [theme, tabHeaderColor]
+  );
+
   return (
     <BottomSheet
       bottomSheetRef={bottomSheetRef}
       snapPoints={[360, 600]}
       backgroundStyle={{ backgroundColor }}
       bottomInset={bottom}
-      containerStyle={{ borderRadius: 8 }}
+      containerStyle={styles.container}
     >
+      <BottomSheetView style={{flex:1}}>
       <TabView
         commonOptions={{
-          label: ({ route, color }) => (
-            <Text style={{ color }}>{route.title}</Text>
-          ),
+          label: ({ route, color }) => <Text style={{ color }}>{route.title}</Text>,
         }}
         navigationState={{ index, routes }}
         renderTabBar={renderTabBar}
@@ -234,12 +144,12 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
         style={styles.tabView}
-      />
+      /></BottomSheetView>
     </BottomSheet>
   );
 };
 
-export default ReaderBottomSheetV2;
+export default React.memo(ReaderBottomSheetV2);
 
 const styles = StyleSheet.create({
   tabView: {
@@ -248,6 +158,10 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     elevation: 0,
+    borderBottomWidth: 0.5,
+  },
+  container: {
+    borderRadius: 8,
   },
   readerTab: {
     paddingVertical: 8,
