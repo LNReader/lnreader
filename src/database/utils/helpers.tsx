@@ -1,8 +1,9 @@
 import { db } from '@database/db';
-import { SQLiteBindParams, SQLiteDatabase, SQLiteRunResult } from 'expo-sqlite';
+import { SQLiteBindParams, SQLiteRunResult } from 'expo-sqlite';
 import { noop } from 'lodash-es';
 
 function logError(error: any) {
+  // eslint-disable-next-line no-console
   console.error(error);
 }
 
@@ -22,7 +23,6 @@ export type QueryObject = Array<
     ]
 >;
 export async function runTransaction(
-  db: SQLiteDatabase,
   queryObject: QueryObject,
 ) {
   db.withTransactionAsync(async () => {
@@ -40,7 +40,6 @@ export async function runTransaction(
 }
 
 export function runSyncTransaction(
-  db: SQLiteDatabase,
   queryObject: QueryObject,
 ) {
   db.withTransactionSync(() => {
@@ -61,7 +60,6 @@ export function runSyncTransaction(
 }
 
 export function getAllTransaction(
-  db: SQLiteDatabase,
   queryObject: Array<[string] | [string, SQLiteBindParams | undefined]>,
 ) {
   return new Promise((resolve, reject) => {
@@ -71,29 +69,27 @@ export function getAllTransaction(
           resolve(res as any);
         })
         .catch(e => {
-          console.error(e);
+          logError(e);
           reject(e);
         });
     }
   });
 }
 export function getAllSync<T>(
-  db: SQLiteDatabase,
   queryObject: Array<[string] | [string, SQLiteBindParams | undefined]>,
 ) {
   // let res = [];
   for (const [query, params = []] of queryObject) {
     try {
       return db.getAllSync<T>(query, params);
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      logError(e);
     }
   }
   // return res;
 }
 
 export function getFirstTransaction(
-  db: SQLiteDatabase,
   queryObject: Array<[string] | [string, SQLiteBindParams | undefined]>,
 ) {
   return new Promise(resolve =>

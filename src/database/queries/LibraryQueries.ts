@@ -1,7 +1,6 @@
 import { LibraryFilter } from '@screens/library/constants/constants';
 import { LibraryNovelInfo, NovelInfo } from '../types';
 import { getAllSync } from '../utils/helpers';
-import { db } from '@database/db';
 
 export const getLibraryNovelsFromDb = (
   onlyOngoingNovels?: boolean,
@@ -11,7 +10,7 @@ export const getLibraryNovelsFromDb = (
   if (onlyOngoingNovels) {
     getLibraryNovelsQuery += " AND status = 'Ongoing'";
   }
-  return getAllSync<NovelInfo>(db, [[getLibraryNovelsQuery]]) ?? [];
+  return getAllSync<NovelInfo>( [[getLibraryNovelsQuery]]) ?? [];
 };
 
 const getLibraryWithCategoryQuery = `
@@ -71,5 +70,5 @@ export const getLibraryWithCategory = ({
   if (sortOrder) {
     query += ` ORDER BY ${sortOrder} `;
   }
-  return getAllSync<LibraryNovelInfo>(db, [[query, preparedArgument]]) ?? [];
+  return getAllSync<LibraryNovelInfo>( [[query, preparedArgument]]) ?? [];
 };

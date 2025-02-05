@@ -10,7 +10,7 @@ const getCategoriesQuery = `
 	`;
 
 export const getCategoriesFromDb = (): Category[] => {
-  return getAllSync(db, [[getCategoriesQuery]]) as any;
+  return getAllSync( [[getCategoriesQuery]]) as any;
 };
 
 export const getCategoriesWithCount = (novelIds: number[]): CCategory[] => {
@@ -26,13 +26,13 @@ export const getCategoriesWithCount = (novelIds: number[]): CCategory[] => {
   WHERE Category.id != 2
   ORDER BY sort
 	`;
-  return getAllSync(db, [[getCategoriesWithCountQuery]]) as any;
+  return getAllSync( [[getCategoriesWithCountQuery]]) as any;
 };
 
 const createCategoryQuery = 'INSERT INTO Category (name) VALUES (?)';
 
 export const createCategory = (categoryName: string): void =>
-  runSyncTransaction(db, [[createCategoryQuery, [categoryName]]]);
+  runSyncTransaction( [[createCategoryQuery, [categoryName]]]);
 
 const beforeDeleteCategoryQuery = `
     UPDATE NovelCategory SET categoryId = (SELECT id FROM Category WHERE sort = 1)
@@ -49,7 +49,7 @@ export const deleteCategoryById = (category: Category): void => {
   if (category.sort === 1 || category.id === 2) {
     return showToast(getString('categories.cantDeleteDefault'));
   }
-  runSyncTransaction(db, [
+  runSyncTransaction( [
     [beforeDeleteCategoryQuery, [category.id]],
     [deleteCategoryQuery, [category.id]],
   ]);
@@ -61,7 +61,7 @@ export const updateCategory = (
   categoryId: number,
   categoryName: string,
 ): void =>
-  runSyncTransaction(db, [[updateCategoryQuery, [categoryName, categoryId]]]);
+  runSyncTransaction( [[updateCategoryQuery, [categoryName, categoryId]]]);
 
 const isCategoryNameDuplicateQuery = `
   SELECT COUNT(*) as isDuplicate FROM Category WHERE name = ?
@@ -85,7 +85,6 @@ export const updateCategoryOrderInDb = (categories: Category[]): void => {
     return;
   }
   runSyncTransaction(
-    db,
     categories.map(c => {
       return [updateCategoryOrderQuery, [c.sort, c.id]];
     }),
@@ -93,7 +92,7 @@ export const updateCategoryOrderInDb = (categories: Category[]): void => {
 };
 
 export const getAllNovelCategories = (): NovelCategory[] =>
-  getAllSync(db, [[`SELECT * FROM NovelCategory`]]) as any;
+  getAllSync( [[`SELECT * FROM NovelCategory`]]) as any;
 
 export const _restoreCategory = (category: BackupCategory) => {
   const d = category.novelIds.map(novelId => [
@@ -101,7 +100,7 @@ export const _restoreCategory = (category: BackupCategory) => {
     [category.id, novelId],
   ]) as Array<[string, SQLite.SQLiteBindParams]>;
 
-  runSyncTransaction(db, [
+  runSyncTransaction( [
     [
       'DELETE FROM Category WHERE id = ? OR sort = ?',
       [category.id, category.sort],
