@@ -7,24 +7,17 @@ function logError(error: any) {
   console.error(error);
 }
 
-export type QueryObject = Array<
-  | [string]
-  | [string, SQLiteBindParams | undefined]
-  | [
-      string,
-      SQLiteBindParams | undefined,
-      ((data: SQLiteRunResult) => void) | undefined,
-    ]
-  | [
-      string,
-      SQLiteBindParams | undefined,
-      ((data: SQLiteRunResult) => void) | undefined,
-      ((data: any) => void) | undefined,
-    ]
->;
-export async function runTransaction(
-  queryObject: QueryObject,
-) {
+type query = string;
+type SQLiteResultFunction = (data: SQLiteRunResult) => void;
+type SQLiteErrorFunction = (data: any) => void;
+
+export type QueryObject =
+  | [query, SQLiteBindParams, SQLiteResultFunction, SQLiteErrorFunction]
+  | [query, SQLiteBindParams, SQLiteResultFunction]
+  | [query, SQLiteBindParams]
+  | [query];
+
+export async function runTransaction(queryObject: QueryObject[]) {
   db.withTransactionAsync(async () => {
     for (const [
       query,
@@ -39,9 +32,7 @@ export async function runTransaction(
   });
 }
 
-export function runSyncTransaction(
-  queryObject: QueryObject,
-) {
+export function runSyncTransaction(queryObject: QueryObject[]) {
   db.withTransactionSync(() => {
     for (const [
       query,
@@ -59,9 +50,7 @@ export function runSyncTransaction(
   });
 }
 
-export function getAllTransaction(
-  queryObject: Array<[string] | [string, SQLiteBindParams | undefined]>,
-) {
+export function getAllTransaction(queryObject: QueryObject[]) {
   return new Promise((resolve, reject) => {
     for (const [query, params = []] of queryObject) {
       db.getAllAsync(query, params)
@@ -75,9 +64,7 @@ export function getAllTransaction(
     }
   });
 }
-export function getAllSync<T>(
-  queryObject: Array<[string] | [string, SQLiteBindParams | undefined]>,
-) {
+export function getAllSync<T>(queryObject: QueryObject[]) {
   // let res = [];
   for (const [query, params = []] of queryObject) {
     try {
@@ -89,9 +76,7 @@ export function getAllSync<T>(
   // return res;
 }
 
-export function getFirstTransaction(
-  queryObject: Array<[string] | [string, SQLiteBindParams | undefined]>,
-) {
+export function getFirstTransaction(queryObject: QueryObject[]) {
   return new Promise(resolve =>
     db.withTransactionAsync(async () => {
       for (const [query, params] of queryObject) {
@@ -105,9 +90,7 @@ export function getFirstTransaction(
   );
 }
 
-export async function getFirstAsync(
-  queryObject: [string] | [string, SQLiteBindParams | undefined],
-) {
+export async function getFirstAsync(queryObject: QueryObject) {
   const [query, params] = queryObject;
   return db.getFirstAsync(query, params ?? []);
 }

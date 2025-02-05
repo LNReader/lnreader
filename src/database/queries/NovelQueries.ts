@@ -93,7 +93,7 @@ export const switchNovelToLibrary = async (
 ) => {
   const novel = await getNovelByPath(novelPath, pluginId);
   if (novel) {
-    let queries: QueryObject = [
+    let queries: QueryObject[] = [
       [
         'UPDATE Novel SET inLibrary = ? WHERE id = ?',
         [Number(!novel.inLibrary), novel.id],
@@ -268,7 +268,7 @@ export const updateNovelCategories = async (
   novelIds: number[],
   categoryIds: number[],
 ): Promise<void> => {
-  let queries: QueryObject = [];
+  let queries: QueryObject[] = [];
   queries.push([
     `DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(
       ',',
@@ -295,7 +295,7 @@ export const updateNovelCategories = async (
       ]);
     });
   }
-  runTransaction( queries);
+  runTransaction(queries);
 };
 
 const restoreObjectQuery = (table: string, obj: any) => {
