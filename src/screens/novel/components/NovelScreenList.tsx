@@ -40,11 +40,8 @@ const ListEmptyComponent = () => (
   </>
 );
 
-const NovelScreenList =({
-  name,
-  path,
-  pluginId,
-  cover,
+const NovelScreenList = ({
+  routeBaseNovel,
   navigation,
   openDrawer,
   headerOpacity,
@@ -52,26 +49,26 @@ const NovelScreenList =({
   setSelected,
   chapters,
 }: {
-  name: string;
-  path: string;
-  pluginId: string;
-  cover?: string;
+  routeBaseNovel: {
+    name: string;
+    path: string;
+    pluginId: string;
+    cover?: string;
+  };
   navigation: any;
   openDrawer: () => void;
   headerOpacity: SharedValue<number>;
   selected: ChapterInfo[];
   setSelected: React.Dispatch<React.SetStateAction<ChapterInfo[]>>;
   chapters: ChapterInfo[];
-}) =>{
+}) => {
+  const { path, pluginId } = routeBaseNovel;
   const routeNovel: Omit<NovelInfo, 'id'> & { id: 'NO_ID' } = {
-    id: 'NO_ID',
-    cover: cover,
-    name: name,
-    path: path,
-    pluginId: pluginId,
     inLibrary: false,
     isLocal: false,
     totalPages: 0,
+    ...routeBaseNovel,
+    id: 'NO_ID',
   };
   const [updating, setUpdating] = useState(false);
   const {
@@ -248,7 +245,7 @@ const NovelScreenList =({
         extraData={[chapters.length, novel.id, loading]}
         removeClippedSubviews={true}
         ListEmptyComponent={ListEmptyComponent}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           if (novel.id === 'NO_ID') {
             return null;
           }
@@ -268,7 +265,8 @@ const NovelScreenList =({
               onSelectPress={onSelectPress}
               onSelectLongPress={onSelectLongPress}
               navigateToChapter={navigateToChapter}
-              novelName={name}
+              novelName={novel.name}
+              index={index}
             />
           );
         }}
@@ -338,7 +336,7 @@ const NovelScreenList =({
       )}
     </>
   );
-}
+};
 const styles = StyleSheet.create({
   container: { flex: 1 },
   rowBack: {

@@ -11,6 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import EpubIconButton from './EpubIconButton';
 import { ChapterInfo, NovelInfo } from '@database/types';
+import { View } from 'react-native';
 
 const Menu = ({
   visible,
@@ -95,12 +96,15 @@ const NovelAppbar = ({
   const [extraMenu, showExtraMenu] = useState(false);
 
   return (
-    <Animated.View exiting={SlideOutUp.duration(150)} entering={SlideInUp.duration(150)} style={[headerOpacityStyle]}>
+    <Animated.View
+      entering={SlideInUp.duration(150)}
+      exiting={SlideOutUp.duration(150)}
+      style={[headerOpacityStyle]}
+    >
       <Appbar.Header theme={{ colors: { ...theme, surface: 'transparent' } }}>
         <Appbar.BackAction onPress={goBack} />
         {!isLoading && (
-          <Animated.View
-            entering={SlideInUp.duration(150)}
+          <View
             style={{ flexDirection: 'row', position: 'absolute', right: 0 }}
           >
             <Appbar.Content title="" />
@@ -191,7 +195,7 @@ const NovelAppbar = ({
                 },
               ]}
             />
-          </Animated.View>
+          </View>
         )}
       </Appbar.Header>
     </Animated.View>

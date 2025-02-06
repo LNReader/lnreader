@@ -63,7 +63,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   return (
     <Animated.View
       entering={
-        index >= 0 && index < 11
+        index >= 0 && index < 21
           ? FlipInXDown.delay(10 * index).duration(150)
           : undefined
       }

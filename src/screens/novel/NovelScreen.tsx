@@ -276,10 +276,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           </Portal>
           <Suspense fallback={<NovelScreenLoading theme={theme} />}>
             <NovelScreenList
-              name={name}
-              path={path}
-              cover={cover}
-              pluginId={pluginId}
+              routeBaseNovel={novel ?? route.params}
               navigation={navigation}
               openDrawer={openDrawer}
               headerOpacity={headerOpacity}
