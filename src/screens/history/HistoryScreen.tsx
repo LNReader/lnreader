@@ -81,6 +81,7 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
           navigation.navigate('Novel', {
             name: lastNovel.novelName,
             path: lastNovel.novelPath,
+            cover: lastNovel.novelCover,
             pluginId: lastNovel.pluginId,
           });
         }

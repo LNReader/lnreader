@@ -120,11 +120,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     const novels = library[index].novels;
     const randomNovel = novels[Math.floor(Math.random() * novels.length)];
     if (randomNovel) {
-      navigation.navigate('Novel', {
-        name: randomNovel.name,
-        path: randomNovel.path,
-        pluginId: randomNovel.pluginId,
-      });
+      navigation.navigate('Novel', randomNovel);
     }
   }
 

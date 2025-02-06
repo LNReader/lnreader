@@ -48,6 +48,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             navigate('Novel', {
               name: history.name,
               path: history.novelPath,
+              cover: history.novelCover,
               pluginId: history.pluginId,
             })
           }

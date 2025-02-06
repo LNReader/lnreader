@@ -43,11 +43,7 @@ export const LibraryView: React.FC<Props> = ({
         if (selectedNovelIds.length) {
           setSelectedNovelIds(xor(selectedNovelIds, [item.id]));
         } else {
-          navigation.navigate('Novel', {
-            name: item.name,
-            path: item.path,
-            pluginId: item.pluginId,
-          });
+          navigation.navigate('Novel', item);
         }
       }}
       libraryStatus={false} // yes but actually no :D

@@ -110,6 +110,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       navigate('Novel', {
         pluginId: chapterList[0].pluginId,
         path: chapterList[0].novelPath,
+        cover: chapterList[0].novelCover,
         name: chapterList[0].novelName,
       });
     }
