@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, View, Image } from 'react-native';
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   ChapterInfo,
@@ -44,12 +44,13 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   >(chapterListRaw ?? []);
 
   const chapterListInfo = chapterListInfoRaw ?? {
-    novelId: chapterList![0].novelId,
-    novelName: chapterList![0].novelName,
-    updateDate: chapterList![0].updatedTime ?? '',
-    updatesPerDay: chapterList!.length,
-    novelCover: chapterList![0].novelCover ?? '',
+    novelId: chapterList![0]?.novelId,
+    novelName: chapterList![0]?.novelName,
+    updateDate: chapterList![0]?.updatedTime ?? '',
+    updatesPerDay: chapterList?.length,
+    novelCover: chapterList![0]?.novelCover ?? '',
   };
+
   const theme = useTheme();
 
   const updateList = async () => {
@@ -61,6 +62,9 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       },
     );
   };
+  useEffect(() => {
+    updateList();
+  }, []);
 
   const handleDownloadChapter = (chapter: Update | DownloadedChapter) => {
     if (chapterListInfo.updatesPerDay) {
@@ -141,9 +145,9 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
               return (
                 <ChapterItem
                   isLocal={false}
-                  isDownloading={downloadQueue.some(
-                    c => c.data.chapterId === item.id,
-                  )}
+                  isDownloading={downloadQueue.some(c => {
+                    return c.task.data.chapterId === item.id;
+                  })}
                   isUpdateCard
                   novelName={chapterListInfo.novelName}
                   chapter={item}
@@ -167,15 +171,15 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         )}
       </List.Accordion>
     );
-  } else if (chapterListInfo.updatesPerDay > 0) {
+  } else if (chapterListInfo.updatesPerDay > 0 && chapterList[0]) {
     return (
       <ChapterItem
         isLocal={false}
         isDownloading={downloadQueue.some(
-          c => c.task.data.chapterId === chapterList[0].id,
+          c => c.task.data.chapterId === chapterList[0]?.id,
         )}
         isUpdateCard
-        novelName={chapterList[0].novelName}
+        novelName={chapterListInfo.novelName}
         chapter={chapterList[0]}
         theme={theme}
         showChapterTitles={false}

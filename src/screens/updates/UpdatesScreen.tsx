@@ -16,6 +16,7 @@ import { deleteChapter } from '@database/queries/ChapterQueries';
 import { showToast } from '@utils/showToast';
 import ServiceManager from '@services/ServiceManager';
 import { UpdateScreenProps } from '@navigators/types';
+import { UpdateOverview } from '@database/types';
 
 const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
   const theme = useTheme();
@@ -98,9 +99,20 @@ const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
                   ? v.novelName.toLowerCase().includes(searchText.toLowerCase())
                   : true,
               )
-              .map(v => {
-                return { data: [v], date: v.updateDate };
-              })}
+              .reduce(
+                (
+                  acc: { data: UpdateOverview[]; date: string }[],
+                  cur: UpdateOverview,
+                ) => {
+                  if (acc.length === 0 || acc.at(-1)?.date !== cur.updateDate) {
+                    acc.push({ data: [cur], date: cur.updateDate });
+                    return acc;
+                  }
+                  acc.at(-1)?.data.push(cur);
+                  return acc;
+                },
+                [],
+              )}
             keyExtractor={item => 'updatedGroup' + item.novelId}
             renderItem={({ item }) => (
               <Suspense fallback={<UpdatesSkeletonLoading theme={theme} />}>
