@@ -1,4 +1,4 @@
-import React, { memo, Suspense, useCallback, useEffect } from 'react';
+import React, { memo, Suspense, useCallback, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
 
@@ -20,7 +20,7 @@ import { UpdateScreenProps } from '@navigators/types';
 const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
   const theme = useTheme();
   const {
-    isLoading,
+    isLoading: isLoadingUpdates,
     updatesOverview,
     getUpdates,
     lastUpdateTime,
@@ -28,15 +28,16 @@ const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
     error,
   } = useUpdates();
   const { searchText, setSearchText, clearSearchbar } = useSearch();
+  const [isLoading, setIsLoading] = useState(true);
   const onChangeText = (text: string) => {
     setSearchText(text);
   };
-
   useFocusEffect(
     useCallback(() => {
       //? Push updates to the end of the stack to avoid lag
       setTimeout(() => {
         getUpdates();
+        setIsLoading(isLoadingUpdates);
       }, 0);
     }, []),
   );
