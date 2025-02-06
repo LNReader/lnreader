@@ -94,7 +94,7 @@ const NovelInfoHeader = ({
       (getMMKVObject<PluginItem[]>(AVAILABLE_PLUGINS) || []).find(
         plugin => plugin.id === novel.pluginId,
       )?.name || novel.pluginId,
-    [],
+    [novel.pluginId],
   );
 
   const showNotAvailable = async () => {
@@ -144,7 +144,7 @@ const NovelInfoHeader = ({
                   name="fountain-pen-tip"
                   size={14}
                   color={theme.onSurfaceVariant}
-                  style={{ marginRight: 4 }}
+                  style={styles.marginRight}
                 />
                 <NovelInfo theme={theme}>{novel.author}</NovelInfo>
               </Row>
@@ -155,7 +155,7 @@ const NovelInfoHeader = ({
                   name="palette-outline"
                   size={14}
                   color={theme.onSurfaceVariant}
-                  style={{ marginRight: 4 }}
+                  style={styles.marginRight}
                 />
                 <NovelInfo theme={theme}>{novel.artist}</NovelInfo>
               </Row>
@@ -167,7 +167,7 @@ const NovelInfoHeader = ({
                 )}
                 size={14}
                 color={theme.onSurfaceVariant}
-                style={{ marginRight: 4 }}
+                style={styles.marginRight}
               />
               <NovelInfo theme={theme}>
                 {(novel.id !== 'NO_ID'
@@ -223,12 +223,7 @@ const NovelInfoHeader = ({
         />
         {isLoading ? (
           <LoadingShimmer
-            style={{
-              marginHorizontal: 16,
-              marginVertical: 16,
-              alignSelf: 'center',
-              borderRadius: 4,
-            }}
+            style={styles.shimmer}
             height={24}
             width={WINDOW_WIDTH - 32}
           />
@@ -242,7 +237,7 @@ const NovelInfoHeader = ({
               color: color(theme.primary).alpha(0.12).string(),
             }}
           >
-            <View style={{ flex: 1 }}>
+            <View style={styles.flex}>
               {page ? (
                 <Text
                   numberOfLines={2}
@@ -305,4 +300,12 @@ const styles = StyleSheet.create({
   infoItem: {
     marginVertical: 2,
   },
+  shimmer: {
+    marginHorizontal: 16,
+    marginVertical: 16,
+    alignSelf: 'center',
+    borderRadius: 4,
+  },
+  flex: { flex: 1 },
+  marginRight: { marginRight: 4 },
 });

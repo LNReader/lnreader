@@ -16,7 +16,7 @@ interface JumpToChapterModalProps {
   chapters: ChapterInfo[];
   navigation: NovelScreenProps['navigation'];
   novel: NovelInfo;
-  chapterListRef: FlashList<ChapterInfo> | null;
+  chapterListRef: React.RefObject<FlashList<ChapterInfo>>;
 }
 
 const JumpToChapterModal = ({
@@ -53,7 +53,7 @@ const JumpToChapterModal = ({
 
   const scrollToChapter = (chap: ChapterInfo) => {
     onDismiss();
-    chapterListRef?.scrollToItem({
+    chapterListRef.current?.scrollToItem({
       animated: true,
       item: chap,
       viewPosition: 91,
@@ -62,7 +62,7 @@ const JumpToChapterModal = ({
 
   const scrollToIndex = (index: number) => {
     onDismiss();
-    chapterListRef?.scrollToIndex({
+    chapterListRef.current?.scrollToIndex({
       animated: true,
       index: index,
       viewOffset: 91,

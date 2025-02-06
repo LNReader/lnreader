@@ -28,6 +28,7 @@ import { resolveUrl } from '@services/plugin/fetch';
 import { updateChapterProgressByIds } from '@database/queries/ChapterQueries';
 import { MaterialDesignIconName } from '@type/icon';
 import NovelScreenList from './components/NovelScreenList';
+import { ThemeColors } from '@theme/types';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { name, path, pluginId, cover } = route.params;
@@ -182,7 +183,18 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     }
 
     return list;
-  }, [selected]);
+  }, [
+    bookmarkChapters,
+    deleteChapters,
+    downloadChapters,
+    markChaptersRead,
+    markChaptersUnread,
+    markPreviousChaptersUnread,
+    markPreviouschaptersRead,
+    novel,
+    refreshChapters,
+    selected,
+  ]);
 
   const setCustomNovelCover = async () => {
     if (!novel) {
@@ -196,6 +208,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       });
     }
   };
+  const styles = useMemo(() => createStyles(theme), [theme]);
 
   return (
     <Drawer
@@ -205,7 +218,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       swipeEnabled={pages.length > 1}
       hideStatusBarOnOpen={true}
       swipeMinVelocity={1000}
-      drawerStyle={{ backgroundColor: 'transparent' }}
+      drawerStyle={styles.drawer}
       renderDrawerContent={() => (
         <NovelDrawer
           theme={theme}
@@ -240,16 +253,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
               <Animated.View
                 entering={SlideInUp.duration(150)}
                 exiting={SlideOutUp.duration(150)}
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-                  backgroundColor: theme.surface2,
-                  paddingTop: StatusBar.currentHeight || 0,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  paddingBottom: 8,
-                }}
+                style={styles.appbar}
               >
                 <Appbar.Action
                   icon="close"
@@ -270,22 +274,20 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
               </Animated.View>
             )}
           </Portal>
-          <View style={{ minHeight: 3, flex: 1 }}>
-            <Suspense fallback={<NovelScreenLoading theme={theme} />}>
-              <NovelScreenList
-                name={name}
-                path={path}
-                cover={cover}
-                pluginId={pluginId}
-                navigation={navigation}
-                openDrawer={openDrawer}
-                headerOpacity={headerOpacity}
-                selected={selected}
-                setSelected={setSelected}
-                chapters={chapters}
-              />
-            </Suspense>
-          </View>
+          <Suspense fallback={<NovelScreenLoading theme={theme} />}>
+            <NovelScreenList
+              name={name}
+              path={path}
+              cover={cover}
+              pluginId={pluginId}
+              navigation={navigation}
+              openDrawer={openDrawer}
+              headerOpacity={headerOpacity}
+              selected={selected}
+              setSelected={setSelected}
+              chapters={chapters}
+            />
+          </Suspense>
 
           <Portal>
             <Actionbar active={selected.length > 0} actions={actions} />
@@ -299,7 +301,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                 },
               }}
               theme={{ colors: { primary: theme.primary } }}
-              style={{ backgroundColor: theme.surface, marginBottom: 32 }}
+              style={styles.snackbar}
             >
               <Text style={{ color: theme.onSurface }}>
                 {getString('novelScreen.deleteMessage')}
@@ -314,7 +316,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   hideModal={() => showJumpToChapterModal(false)}
                   chapters={chapters}
                   novel={novel}
-                  chapterListRef={flatlistRef.current}
+                  chapterListRef={flatlistRef}
                   navigation={navigation}
                 />
                 <EditInfoModal
@@ -343,12 +345,26 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
 export default Novel;
 
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  rowBack: {
-    alignItems: 'center',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-});
+function createStyles(theme: ThemeColors) {
+  return StyleSheet.create({
+    container: { flex: 1 },
+    rowBack: {
+      alignItems: 'center',
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    appbar: {
+      position: 'absolute',
+      width: '100%',
+      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+      backgroundColor: theme.surface2,
+      paddingTop: StatusBar.currentHeight || 0,
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingBottom: 8,
+    },
+    drawer: { backgroundColor: 'transparent' },
+    snackbar: { backgroundColor: theme.surface, marginBottom: 32 },
+  });
+}
