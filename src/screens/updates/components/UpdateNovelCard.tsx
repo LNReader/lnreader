@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, View, Image } from 'react-native';
-import React, { memo, useCallback, useRef, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import {
   ChapterInfo,
@@ -15,20 +15,7 @@ import { useDownload, useTheme, useUpdates } from '@hooks/persisted';
 import { RootStackParamList } from '@navigators/types';
 import { FlatList } from 'react-native-gesture-handler';
 import { defaultCover } from '@plugins/helpers/constants';
-
-const NovelCover = ({
-  uri,
-  navigateToNovel,
-}: {
-  uri: string;
-  navigateToNovel: () => void;
-}) => {
-  return (
-    <Pressable onPress={navigateToNovel} style={{ alignSelf: 'center' }}>
-      <Image source={{ uri }} style={styles.cover} />
-    </Pressable>
-  );
-};
+import { ThemeColors } from '@theme/types';
 
 type UpdateCardProps = {
   onlyDownloadedChapters?: boolean;
@@ -56,30 +43,27 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     Update[] | DownloadedChapter[]
   >(chapterListRaw ?? []);
 
-  const chapterListInfo = useRef<UpdateOverview>(
-    chapterListInfoRaw ?? {
-      novelId: chapterList![0].novelId,
-      novelName: chapterList![0].novelName,
-      updateDate: chapterList![0].updatedTime ?? '',
-      updatesPerDay: chapterList!.length,
-      novelCover: chapterList![0].novelCover ?? '',
-    },
-  );
+  const chapterListInfo = chapterListInfoRaw ?? {
+    novelId: chapterList![0].novelId,
+    novelName: chapterList![0].novelName,
+    updateDate: chapterList![0].updatedTime ?? '',
+    updatesPerDay: chapterList!.length,
+    novelCover: chapterList![0].novelCover ?? '',
+  };
   const theme = useTheme();
 
   const updateList = async () => {
-    getDetailedUpdates(
-      chapterListInfo.current.novelId,
-      onlyDownloadedChapters,
-    ).then(res => {
-      if (res.length) {
-        setChapterList(res);
-      }
-    });
+    getDetailedUpdates(chapterListInfo.novelId, onlyDownloadedChapters).then(
+      res => {
+        if (res.length) {
+          setChapterList(res);
+        }
+      },
+    );
   };
 
   const handleDownloadChapter = (chapter: Update | DownloadedChapter) => {
-    if (chapterListInfo.current.updatesPerDay) {
+    if (chapterListInfo.updatesPerDay) {
       downloadChapter(
         {
           id: chapter?.novelId,
@@ -91,22 +75,25 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     }
   };
 
-  const navigateToChapter = useCallback((chapter: ChapterInfo) => {
-    const { novelPath, pluginId, novelName } = chapter as
-      | Update
-      | DownloadedChapter;
-    navigate('Chapter', {
-      novel: {
-        path: novelPath,
-        pluginId: pluginId,
-        name: novelName,
-      } as NovelInfo,
-      chapter: chapter,
-    });
-  }, []);
+  const navigateToChapter = useCallback(
+    (chapter: ChapterInfo) => {
+      const { novelPath, pluginId, novelName } = chapter as
+        | Update
+        | DownloadedChapter;
+      navigate('Chapter', {
+        novel: {
+          path: novelPath,
+          pluginId: pluginId,
+          name: novelName,
+        } as NovelInfo,
+        chapter: chapter,
+      });
+    },
+    [navigate],
+  );
 
-  const navigateToNovel = () => {
-    if (chapterListInfo.current.updatesPerDay) {
+  const navigateToNovel = useCallback(() => {
+    if (chapterListInfo.updatesPerDay) {
       navigate('Novel', {
         pluginId: chapterList[0].pluginId,
         path: chapterList[0].novelPath,
@@ -114,23 +101,34 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         name: chapterList[0].novelName,
       });
     }
-  };
+  }, [chapterList, chapterListInfo.updatesPerDay, navigate]);
 
-  if (chapterListInfo.current.updatesPerDay > 1) {
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
+  const Cover = useCallback(() => {
+    const uri = chapterListInfo.novelCover || defaultCover;
+    return (
+      <Pressable onPress={navigateToNovel} style={styles.alignSelf}>
+        <Image source={{ uri }} style={styles.cover} />
+      </Pressable>
+    );
+  }, [
+    chapterListInfo.novelCover,
+    navigateToNovel,
+    styles.alignSelf,
+    styles.cover,
+  ]);
+
+  if (chapterListInfo.updatesPerDay > 1) {
     return (
       <List.Accordion
-        title={chapterListInfo.current.novelName}
-        titleStyle={{ fontSize: 14, color: theme.onSurface }}
-        left={() => (
-          <NovelCover
-            navigateToNovel={navigateToNovel}
-            uri={chapterListInfo.current.novelCover || defaultCover}
-          />
-        )}
-        descriptionStyle={{ fontSize: 12 }}
+        title={chapterListInfo.novelName}
+        titleStyle={styles.title}
+        left={Cover}
+        descriptionStyle={styles.description}
         theme={{ colors: theme }}
         style={[styles.container, styles.padding]}
-        description={`${chapterListInfo.current.updatesPerDay} ${descriptionText}`}
+        description={`${chapterListInfo.updatesPerDay} ${descriptionText}`}
         onPress={updateList}
       >
         {chapterList.length > 0 ? (
@@ -147,7 +145,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                     c => c.data.chapterId === item.id,
                   )}
                   isUpdateCard
-                  novelName={chapterListInfo.current.novelName}
+                  novelName={chapterListInfo.novelName}
                   chapter={item}
                   theme={theme}
                   showChapterTitles={false}
@@ -156,10 +154,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                   navigateToChapter={navigateToChapter}
                   left={
                     <View style={styles.novelCover}>
-                      <NovelCover
-                        navigateToNovel={navigateToNovel}
-                        uri={chapterListInfo.current.novelCover || defaultCover}
-                      />
+                      <Cover />
                     </View>
                   }
                 />
@@ -172,7 +167,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         )}
       </List.Accordion>
     );
-  } else if (chapterListInfo.current.updatesPerDay > 0) {
+  } else if (chapterListInfo.updatesPerDay > 0) {
     return (
       <ChapterItem
         isLocal={false}
@@ -189,10 +184,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         navigateToChapter={navigateToChapter}
         left={
           <View style={styles.novelCover}>
-            <NovelCover
-              navigateToNovel={navigateToNovel}
-              uri={chapterList[0].novelCover || defaultCover}
-            />
+            <Cover />
           </View>
         }
       />
@@ -203,24 +195,29 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
 
 export default memo(UpdateNovelCard);
 
-const styles = StyleSheet.create({
-  padding: {
-    paddingHorizontal: 16,
-    paddingVertical: 2,
-  },
-  container: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  cover: {
-    height: 40,
-    width: 40,
-    borderRadius: 4,
-  },
-  novelCover: {
-    marginRight: 8,
-  },
-  chapterList: {
-    marginLeft: -40,
-  },
-});
+function createStyles(theme: ThemeColors) {
+  return StyleSheet.create({
+    padding: {
+      paddingHorizontal: 16,
+      paddingVertical: 2,
+    },
+    container: {
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    cover: {
+      height: 40,
+      width: 40,
+      borderRadius: 4,
+    },
+    novelCover: {
+      marginRight: 8,
+    },
+    chapterList: {
+      marginLeft: -40,
+    },
+    title: { fontSize: 14, color: theme.onSurface },
+    description: { fontSize: 12 },
+    alignSelf: { alignSelf: 'center' },
+  });
+}
