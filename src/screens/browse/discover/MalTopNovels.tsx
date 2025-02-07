@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -32,18 +32,21 @@ const BrowseMalScreen = ({ navigation }: BrowseMalScreenProps) => {
 
   const malUrl = 'https://myanimelist.net/topmanga.php?type=lightnovels';
 
-  const getNovels = async (lim?: number) => {
-    try {
-      const data = await scrapeTopNovels(lim ?? limit);
-      setNovels(before => before.concat(data));
-      setLoading(false);
-    } catch (err: any) {
-      setError(err.message);
-      setNovels([]);
-      setLoading(false);
-      showToast(err.message);
-    }
-  };
+  const getNovels = useCallback(
+    async (lim?: number) => {
+      try {
+        const data = await scrapeTopNovels(lim ?? limit);
+        setNovels(before => before.concat(data));
+        setLoading(false);
+      } catch (err: any) {
+        setError(err.message);
+        setNovels([]);
+        setLoading(false);
+        showToast(err.message);
+      }
+    },
+    [limit],
+  );
 
   const clearSearchbar = () => {
     getNovels();
@@ -68,8 +71,7 @@ const BrowseMalScreen = ({ navigation }: BrowseMalScreenProps) => {
 
   useEffect(() => {
     getNovels();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getNovels]);
 
   const renderItem: FlatListProps<any>['renderItem'] = ({ item }) => (
     <MalNovelCard
@@ -95,22 +97,25 @@ const BrowseMalScreen = ({ navigation }: BrowseMalScreenProps) => {
     );
   };
 
-  const ListEmptyComponent = () => (
-    <ErrorView
-      errorName={error || 'No results found'}
-      actions={[
-        {
-          name: 'Retry',
-          onPress: () => {
-            getNovels();
-            setLoading(true);
-            setError('');
+  const ListEmptyComponent = useCallback(
+    () => (
+      <ErrorView
+        errorName={error || 'No results found'}
+        actions={[
+          {
+            name: 'Retry',
+            onPress: () => {
+              getNovels();
+              setLoading(true);
+              setError('');
+            },
+            icon: 'reload',
           },
-          icon: 'reload',
-        },
-      ]}
-      theme={theme}
-    />
+        ]}
+        theme={theme}
+      />
+    ),
+    [error, theme, getNovels],
   );
 
   return (

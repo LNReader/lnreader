@@ -31,7 +31,7 @@ import NovelScreenList from './components/NovelScreenList';
 import { ThemeColors } from '@theme/types';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
-  const { name, path, pluginId, cover } = route.params;
+  const { path, pluginId } = route.params;
 
   const {
     loading,

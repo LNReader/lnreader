@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, FlatListProps } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import { usePlugins, useTheme } from '@hooks/persisted';
@@ -36,7 +36,7 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
 
   const { filteredInstalledPlugins } = usePlugins();
 
-  const getSearchResults = async () => {
+  const getSearchResults = useCallback(async () => {
     setSearchResults(
       filteredInstalledPlugins.map(item => ({
         id: item.id,
@@ -80,12 +80,11 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
         setProgress(before => before + 1 / filteredInstalledPlugins.length);
       }
     });
-  };
+  }, [filteredInstalledPlugins, novel.name]);
 
   useEffect(() => {
     getSearchResults();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getSearchResults]);
 
   useEffect(() => {
     return () => {

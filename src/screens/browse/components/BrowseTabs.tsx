@@ -396,16 +396,11 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
           plg.id.includes(lowerCaseSearchText),
       );
     }
-    let previousLang: string | null = null;
+
     return res
       .sort((a, b) => a.lang.localeCompare(b.lang))
-      .map(plg => {
-        if (plg.lang !== previousLang) {
-          previousLang = plg.lang;
-          return { ...plg, header: true };
-        } else {
-          return { ...plg, header: false };
-        }
+      .map((plg, i) => {
+        return { ...plg, header: !!i && plg.lang !== res[i - 1].lang };
       });
   }, [searchText, filteredAvailablePlugins]);
 

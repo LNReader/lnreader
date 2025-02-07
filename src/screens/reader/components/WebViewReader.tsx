@@ -77,7 +77,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
       initialChapterGeneralSettings,
     [],
   );
-  const batteryLevel = useMemo(getBatteryLevelSync, []);
+  const batteryLevel = useMemo(() => getBatteryLevelSync(), []);
   const plugin = getPlugin(novel?.pluginId);
   const pluginCustomJS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.js`;
   const pluginCustomCSS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.css`;

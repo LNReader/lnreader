@@ -113,7 +113,7 @@ const NovelScreenList = ({
 
   const onPageScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = event.nativeEvent.contentOffset.y;
-    headerOpacity.value = y < 50 ? 0 : (y - 50) / 150;
+    headerOpacity.set(y < 50 ? 0 : (y - 50) / 150);
     const currentScrollPosition = Math.floor(y) ?? 0;
     if (useFabForContinueReading && lastRead) {
       setIsFabExtended(currentScrollPosition <= 0);
