@@ -10,7 +10,6 @@ import { ThemeColors } from '@theme/types';
 import { ChapterInfo } from '@database/types';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 import { getString } from '@strings/translations';
-import { useBoolean } from '@hooks';
 import Animated, { FlipInXDown } from 'react-native-reanimated';
 
 interface ChapterItemProps {
@@ -52,16 +51,12 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
 }) => {
   const { id, name, unread, releaseTime, bookmark, chapterNumber, progress } =
     chapter;
-  const {
-    value: isMenuVisible,
-    setTrue: showMenu,
-    setFalse: hideMenu,
-  } = useBoolean();
 
   isBookmarked ??= bookmark;
 
   return (
     <Animated.View
+      key={'chapterItem' + id}
       entering={
         index >= 0 && index < 21
           ? FlipInXDown.delay(10 * index).duration(150)
@@ -69,7 +64,6 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       }
     >
       <Pressable
-        key={'chapterItem' + id}
         style={[
           styles.chapterCardContainer,
           isSelected?.(id) && {
@@ -184,9 +178,6 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             theme={theme}
             deleteChapter={deleteChapter}
             downloadChapter={downloadChapter}
-            hideDeleteChapterMenu={hideMenu}
-            showDeleteChapterMenu={showMenu}
-            deleteChapterMenuVisible={isMenuVisible}
           />
         ) : null}
       </Pressable>

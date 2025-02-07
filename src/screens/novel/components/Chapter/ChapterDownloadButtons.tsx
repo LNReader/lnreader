@@ -5,17 +5,15 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 import { IconButton, Menu, overlay } from 'react-native-paper';
 import { getString } from '@strings/translations';
 import { isChapterDownloaded } from '@database/queries/ChapterQueries';
+import { useBoolean } from '@hooks/index';
 
 interface DownloadButtonProps {
   chapterId: number;
   isDownloaded: boolean;
   isDownloading?: boolean;
   theme: MD3ThemeType;
-  deleteChapterMenuVisible: boolean;
   deleteChapter: () => void;
   downloadChapter: () => void;
-  hideDeleteChapterMenu: () => void;
-  showDeleteChapterMenu: () => void;
 }
 
 export const DownloadButton: React.FC<DownloadButtonProps> = ({
@@ -25,17 +23,23 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
   theme,
   deleteChapter,
   downloadChapter,
-  hideDeleteChapterMenu,
-  showDeleteChapterMenu,
-  deleteChapterMenuVisible,
 }) => {
-  const [downloaded, setDownloaded] = React.useState(isDownloaded);
+  const [downloaded, setDownloaded] = React.useState<boolean | undefined>(
+    isDownloaded,
+  );
+
+  const {
+    value: deleteChapterMenuVisible,
+    setTrue: showDeleteChapterMenu,
+    setFalse: hideDeleteChapterMenu,
+  } = useBoolean();
+
   useEffect(() => {
     if (!isDownloading) {
       setDownloaded(isChapterDownloaded(chapterId));
     }
   }, [chapterId, isDownloading]);
-  if (isDownloading) {
+  if (isDownloading || downloaded === undefined) {
     return <ChapterDownloadingButton theme={theme} />;
   }
   return downloaded ? (
@@ -50,6 +54,7 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
       <Menu.Item
         onPress={() => {
           deleteChapter();
+          hideDeleteChapterMenu();
           setDownloaded(false);
         }}
         title={getString('common.delete')}
@@ -61,7 +66,7 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
       theme={theme}
       onPress={() => {
         downloadChapter();
-        setDownloaded(true);
+        setDownloaded(undefined);
       }}
     />
   );
