@@ -28,7 +28,7 @@ const ReadButton = ({
   };
 
   if (!useFabForContinueReading) {
-    return chapters.length > 0 ? (
+    return chapters.length > 0 || lastRead ? (
       <Animated.View entering={ZoomIn.duration(150)}>
         <Button
           title={

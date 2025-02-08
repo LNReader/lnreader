@@ -84,47 +84,48 @@ const NovelThumbnail = ({
 }: NovelThumbnailProps) => {
   const [expanded, setExpanded] = useState(false);
 
-  if (!expanded) {
-    return (
-      <TouchableWithoutFeedback onPress={() => setExpanded(!expanded)}>
+  return (
+    <TouchableWithoutFeedback
+      onPress={() => setExpanded(!expanded)}
+      style={styles.novelThumbnailContainer}
+    >
+      {!expanded ? (
         <Image source={source} style={styles.novelThumbnail} />
-      </TouchableWithoutFeedback>
-    );
-  } else {
-    return (
-      <Portal>
-        <IconButton
-          icon="pencil-outline"
-          style={{
-            position: 'absolute',
-            top: StatusBar.currentHeight ?? 0 + 10,
-            right: 10,
-            zIndex: 10,
-          }}
-          iconColor={theme.onBackground}
-          onPress={setCustomNovelCover}
-        />
-        <Pressable
-          style={{
-            position: 'absolute',
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height + 60,
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-          }}
-          onPress={() => setExpanded(false)}
-        >
-          <Image
-            source={source}
+      ) : (
+        <Portal>
+          <IconButton
+            icon="pencil-outline"
             style={{
-              width: Dimensions.get('window').width,
-              height: (Dimensions.get('window').width * 3) / 2,
+              position: 'absolute',
+              top: StatusBar.currentHeight ?? 0 + 10,
+              right: 10,
+              zIndex: 10,
             }}
+            iconColor={theme.onBackground}
+            onPress={setCustomNovelCover}
           />
-        </Pressable>
-      </Portal>
-    );
-  }
+          <Pressable
+            style={{
+              position: 'absolute',
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height + 60,
+              justifyContent: 'center',
+              backgroundColor: 'rgba(0,0,0,0.7)',
+            }}
+            onPress={() => setExpanded(false)}
+          >
+            <Image
+              source={source}
+              style={{
+                width: Dimensions.get('window').width,
+                height: (Dimensions.get('window').width * 3) / 2,
+              }}
+            />
+          </Pressable>
+        </Portal>
+      )}
+    </TouchableWithoutFeedback>
+  );
 };
 
 const NovelTitle = ({
@@ -286,10 +287,14 @@ const styles = StyleSheet.create({
   linearGradient: {
     flex: 1,
   },
-  novelThumbnail: {
+  novelThumbnailContainer: {
     height: 150,
     width: 100,
     marginHorizontal: 4,
+  },
+  novelThumbnail: {
+    height: 150,
+    width: 100,
     borderRadius: 6,
     backgroundColor: coverPlaceholderColor,
   },
