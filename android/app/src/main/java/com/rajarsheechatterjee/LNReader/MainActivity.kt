@@ -27,7 +27,7 @@ class MainActivity : ReactActivity() {
         @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        super.onCreate(savedInstanceState)
+        super.onCreate(null)
         SplashScreen.show(this, R.style.SplashScreenTheme, R.id.lottie)
         SplashScreen.setAnimationFinished(true)
     }
