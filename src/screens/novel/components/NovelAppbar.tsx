@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { getString } from '@strings/translations';
 import { Appbar, Menu as DefaultMenu } from 'react-native-paper';
 import { ThemeColors } from '@theme/types';
@@ -97,8 +97,8 @@ const NovelAppbar = ({
 
   return (
     <Animated.View
-      entering={SlideInUp.duration(150)}
-      exiting={SlideOutUp.duration(150)}
+      entering={SlideInUp.duration(250)}
+      exiting={SlideOutUp.duration(250)}
       style={[headerOpacityStyle]}
     >
       <Appbar.Header theme={{ colors: { ...theme, surface: 'transparent' } }}>
@@ -107,7 +107,6 @@ const NovelAppbar = ({
           <View
             style={{ flexDirection: 'row', position: 'absolute', right: 0 }}
           >
-            <Appbar.Content title="" />
             {novel && (
               <EpubIconButton theme={theme} novel={novel} chapters={chapters} />
             )}
@@ -202,4 +201,4 @@ const NovelAppbar = ({
   );
 };
 
-export default NovelAppbar;
+export default memo(NovelAppbar);

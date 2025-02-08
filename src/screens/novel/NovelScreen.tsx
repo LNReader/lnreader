@@ -251,8 +251,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
               />
             ) : (
               <Animated.View
-                entering={SlideInUp.duration(150)}
-                exiting={SlideOutUp.duration(150)}
+                entering={SlideInUp.duration(250)}
+                exiting={SlideOutUp.duration(250)}
                 style={styles.appbar}
               >
                 <Appbar.Action
