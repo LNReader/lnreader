@@ -242,7 +242,7 @@ const NovelScreenList = ({
         ref={flatlistRef}
         estimatedItemSize={64}
         data={chapters}
-        extraData={[chapters.length, novel.id, loading]}
+        extraData={[chapters.length, selected.length, novel.id, loading]}
         removeClippedSubviews={true}
         ListEmptyComponent={ListEmptyComponent}
         renderItem={({ item, index }) => {
@@ -261,7 +261,7 @@ const NovelScreenList = ({
               showChapterTitles={showChapterTitles}
               deleteChapter={() => deleteChapter(item)}
               downloadChapter={() => downloadChapter(novel, item)}
-              isSelected={isSelected}
+              isSelected={isSelected(item.id)}
               onSelectPress={onSelectPress}
               onSelectLongPress={onSelectLongPress}
               navigateToChapter={navigateToChapter}

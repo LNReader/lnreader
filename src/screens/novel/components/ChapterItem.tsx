@@ -18,7 +18,7 @@ interface ChapterItemProps {
   chapter: ChapterInfo;
   theme: ThemeColors;
   showChapterTitles: boolean;
-  isSelected?: (id: number) => boolean;
+  isSelected?: boolean;
   downloadChapter: () => void;
   deleteChapter: () => void;
   onSelectPress?: (chapter: ChapterInfo) => void;
@@ -66,7 +66,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       <Pressable
         style={[
           styles.chapterCardContainer,
-          isSelected?.(id) && {
+          isSelected && {
             backgroundColor: color(theme.primary).alpha(0.12).string(),
           },
         ]}
