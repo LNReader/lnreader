@@ -8,7 +8,7 @@ import {
   useTheme,
 } from '@hooks/persisted/index';
 import { getString } from '@strings/translations';
-import { languages } from '@utils/constants/languages';
+import { getLocaleLanguageName, languages } from '@utils/constants/languages';
 import { BrowseSettingsScreenProp } from '@navigators/types/index';
 import { useBoolean } from '@hooks';
 import ConcurrentSearchesModal from '@screens/browse/settings/modals/ConcurrentSearchesModal';
@@ -83,7 +83,7 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
         data={languages}
         renderItem={({ item }) => (
           <SwitchItem
-            label={item}
+            label={getLocaleLanguageName(item)}
             value={languagesFilter.includes(item)}
             onPress={() => toggleLanguageFilter(item)}
             theme={theme}

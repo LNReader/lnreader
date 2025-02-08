@@ -32,6 +32,7 @@ import { Portal } from 'react-native-paper';
 import SourceSettingsModal from './Modals/SourceSettings';
 import { useBoolean } from '@hooks';
 import { getPlugin } from '@plugins/pluginManager';
+import { getLocaleLanguageName } from '@utils/constants/languages';
 
 interface AvailableTabProps {
   searchText: string;
@@ -309,7 +310,7 @@ const AvailablePluginCard = ({
     <View>
       {plugin.header ? (
         <Text style={[styles.listHeader, { color: theme.onSurfaceVariant }]}>
-          {plugin.lang}
+          {getLocaleLanguageName(plugin.lang)}
         </Text>
       ) : null}
       <Animated.View
@@ -349,7 +350,7 @@ const AvailablePluginCard = ({
                 textStyles,
               ]}
             >
-              {`${plugin.lang} - ${plugin.version}`}
+              {`${getLocaleLanguageName(plugin.lang)} - ${plugin.version}`}
             </Animated.Text>
           </Animated.View>
         </Animated.View>
@@ -400,7 +401,10 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
     return res
       .sort((a, b) => a.lang.localeCompare(b.lang))
       .map((plg, i) => {
-        return { ...plg, header: !!i && plg.lang !== res[i - 1].lang };
+        return {
+          ...plg,
+          header: i === 0 ? true : plg.lang !== res[i - 1].lang,
+        };
       });
   }, [searchText, filteredAvailablePlugins]);
 
