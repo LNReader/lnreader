@@ -11,7 +11,7 @@ import {
 import * as WebBrowser from 'expo-web-browser';
 
 import { ErrorView } from '@components/ErrorView/ErrorView';
-import { SearchbarV2 } from '@components';
+import { SafeAreaView, SearchbarV2 } from '@components';
 
 import { showToast } from '@utils/showToast';
 import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
@@ -119,7 +119,7 @@ const BrowseMalScreen = ({ navigation }: BrowseMalScreenProps) => {
   );
 
   return (
-    <View style={[styles.container]}>
+    <SafeAreaView>
       <SearchbarV2
         theme={theme}
         placeholder="Search MyAnimeList"
@@ -160,16 +160,13 @@ const BrowseMalScreen = ({ navigation }: BrowseMalScreenProps) => {
           }
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default BrowseMalScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   contentContainer: {
     flex: 1,
   },

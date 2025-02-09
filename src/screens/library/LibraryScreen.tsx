@@ -9,7 +9,7 @@ import {
 } from 'react-native-tab-view';
 import color from 'color';
 
-import { SearchbarV2, Button } from '@components/index';
+import { SearchbarV2, Button, SafeAreaView } from '@components/index';
 import { LibraryView } from './components/LibraryListView';
 import LibraryBottomSheet from './components/LibraryBottomSheet/LibraryBottomSheet';
 import { Banner } from './components/Banner';
@@ -48,6 +48,7 @@ type State = NavigationState<{
 
 const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
   const theme = useTheme();
+  const { left: leftInset, right: rightInset } = useSafeAreaInsets();
   const { searchText, setSearchText, clearSearchbar } = useSearch();
   const {
     showNumberOfNovels = false,
@@ -58,8 +59,6 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
   const { useLibraryFAB = false } = useAppSettings();
 
   const { isLoading: isHistoryLoading, history, error } = useHistory();
-
-  const { right: rightInset } = useSafeAreaInsets();
 
   const { importQueue, importNovel } = useImport();
 
@@ -161,7 +160,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     ) : null;
 
   return (
-    <>
+    <SafeAreaView>
       <SearchbarV2
         searchText={searchText}
         clearSearchbar={handleClearSearchbar}
@@ -239,6 +238,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           textColor={theme.onTertiary}
         />
       ) : null}
+
       <TabView
         commonOptions={{
           label: ({ route, color }) => (
@@ -307,6 +307,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
       />
+
       {useLibraryFAB &&
       !isHistoryLoading &&
       history &&
@@ -343,9 +344,13 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           refetchLibrary();
         }}
       />
-      <LibraryBottomSheet bottomSheetRef={bottomSheetRef} />
+      <LibraryBottomSheet
+        bottomSheetRef={bottomSheetRef}
+        style={{ marginLeft: leftInset, marginRight: rightInset }}
+      />
       <Portal>
         <Actionbar
+          viewStyle={{ paddingLeft: leftInset, paddingRight: rightInset }}
           active={selectedNovelIds.length > 0}
           actions={[
             {
@@ -379,7 +384,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           ]}
         />
       </Portal>
-    </>
+    </SafeAreaView>
   );
 };
 

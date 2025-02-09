@@ -17,7 +17,7 @@ import {
   LibrarySortOrder,
 } from '@screens/library/constants/constants';
 import { useBoolean } from '@hooks';
-import { Appbar, List } from '@components';
+import { Appbar, List, SafeAreaView } from '@components';
 import NovelSortModal from './modals/NovelSortModal';
 import NovelBadgesModal from './modals/NovelBadgesModal';
 import { NavigationState } from '@react-navigation/native';
@@ -101,7 +101,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
    */
   const defaultChapterSortModal = useBoolean();
   return (
-    <>
+    <SafeAreaView excludeTop>
       <Appbar
         title={getString('generalSettings')}
         // @ts-ignore
@@ -280,7 +280,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
         hideNovelSortModal={novelSortModalRef.setFalse}
         theme={theme}
       />
-    </>
+    </SafeAreaView>
   );
 };
 

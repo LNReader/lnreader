@@ -6,10 +6,9 @@ import { usePlugins, useTheme } from '@hooks/persisted';
 import EmptyView from '@components/EmptyView';
 import MigrationNovelList from './MigrationNovelList';
 
-import { ScreenContainer } from '@components/Common';
 import { getPlugin } from '@plugins/pluginManager';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
-import { Appbar } from '@components';
+import { Appbar, SafeAreaView } from '@components';
 import GlobalSearchSkeletonLoading from '../loadingAnimation/GlobalSearchSkeletonLoading';
 import { MigrateNovelScreenProps } from '@navigators/types';
 import { NovelItem } from '@plugins/types';
@@ -123,7 +122,7 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
   );
 
   return (
-    <ScreenContainer theme={theme}>
+    <SafeAreaView excludeTop>
       <Appbar
         title={novel.name}
         handleGoBack={navigation.goBack}
@@ -150,7 +149,7 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
           />
         }
       />
-    </ScreenContainer>
+    </SafeAreaView>
   );
 };
 

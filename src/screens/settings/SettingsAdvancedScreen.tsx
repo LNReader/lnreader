@@ -21,7 +21,7 @@ import {
   clearUpdates,
 } from '@database/queries/ChapterQueries';
 
-import { Appbar, Button, List } from '@components';
+import { Appbar, Button, List, SafeAreaView } from '@components';
 import { AdvancedSettingsScreenProps } from '@navigators/types';
 import { StyleSheet, View } from 'react-native';
 import { getUserAgentSync } from 'react-native-device-info';
@@ -62,7 +62,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   } = useBoolean();
 
   return (
-    <>
+    <SafeAreaView excludeTop>
       <Appbar
         title={getString('advancedSettings')}
         handleGoBack={() => navigation.goBack()}
@@ -223,7 +223,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
           </View>
         </Modal>
       </Portal>
-    </>
+    </SafeAreaView>
   );
 };
 

@@ -20,6 +20,8 @@ import { ChapterContextProvider, useChapterContext } from './ChapterContext';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { useBackHandler } from '@hooks/index';
 import { get } from 'lodash-es';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
@@ -58,6 +60,7 @@ export const ChapterContent = ({
   navigation,
   drawerRef,
 }: ChapterContentProps) => {
+  const { left, right } = useSafeAreaInsets();
   const { novel, chapter } = useChapterContext();
   const webViewRef = useRef<WebView>(null);
   const readerSheetRef = useRef<BottomSheetModalMethods>(null);
@@ -134,7 +137,7 @@ export const ChapterContent = ({
     );
   }
   return (
-    <>
+    <View style={{ flex: 1, paddingLeft: left, paddingRight: right }}>
       {keepScreenOn ? <KeepScreenAwake /> : null}
       {loading ? (
         <ChapterLoadingScreen />
@@ -169,7 +172,7 @@ export const ChapterContent = ({
           />
         </>
       ) : null}
-    </>
+    </View>
   );
 };
 

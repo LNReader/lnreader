@@ -9,7 +9,7 @@ import React from 'react';
 
 import { defaultTo } from 'lodash-es';
 
-import { Button, List } from '@components/index';
+import { Button, List, SafeAreaView } from '@components/index';
 
 import { useTheme, useChapterGeneralSettings } from '@hooks/persisted';
 import { getString } from '@strings/translations';
@@ -39,7 +39,7 @@ const GeneralSettings: React.FC = () => {
 
   const labelStyle = [styles.fontSizeL, { color: theme.onSurface }];
   return (
-    <>
+    <SafeAreaView excludeTop>
       <List.SubHeader theme={theme}>
         {getString('generalSettings')}
       </List.SubHeader>
@@ -157,7 +157,7 @@ const GeneralSettings: React.FC = () => {
           ) : null}
         </>
       ) : null}
-    </>
+    </SafeAreaView>
   );
 };
 export default GeneralSettings;

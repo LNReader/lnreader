@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-import { Appbar, EmptyView } from '@components/index';
+import { Appbar, EmptyView, SafeAreaView } from '@components/index';
 import AddCategoryModal from './components/AddCategoryModal';
 
 import {
@@ -26,7 +26,7 @@ const CategoriesScreen = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>();
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, right } = useSafeAreaInsets();
 
   const {
     value: categoryModalVisible,
@@ -77,7 +77,7 @@ const CategoriesScreen = () => {
   };
 
   return (
-    <>
+    <SafeAreaView excludeTop>
       <Appbar
         title={getString('categories.header')}
         handleGoBack={goBack}
@@ -108,7 +108,7 @@ const CategoriesScreen = () => {
         />
       )}
       <FAB
-        style={[styles.fab, { backgroundColor: theme.primary, bottom: bottom }]}
+        style={[styles.fab, { backgroundColor: theme.primary, right, bottom }]}
         color={theme.onPrimary}
         label={getString('common.add')}
         uppercase={false}
@@ -121,7 +121,7 @@ const CategoriesScreen = () => {
         closeModal={closeCategoryModal}
         onSuccess={getCategories}
       />
-    </>
+    </SafeAreaView>
   );
 };
 

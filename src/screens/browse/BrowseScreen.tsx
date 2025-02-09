@@ -6,7 +6,7 @@ import { useSearch } from '@hooks';
 import { usePlugins, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
-import { EmptyView, SearchbarV2 } from '@components';
+import { EmptyView, SafeAreaView, SearchbarV2 } from '@components';
 import { BrowseScreenProps } from '@navigators/types';
 import { AvailableTab, InstalledTab } from './components/BrowseTabs';
 
@@ -21,20 +21,21 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
   const { languagesFilter } = usePlugins();
 
   const searchbarActions = useMemo(
-    () => [
-      {
-        iconName: 'book-search',
-        onPress: () => navigation.navigate('GlobalSearchScreen', {}),
-      },
-      {
-        iconName: 'swap-vertical-variant',
-        onPress: () => navigation.navigate('Migration'),
-      },
-      {
-        iconName: 'cog-outline',
-        onPress: () => navigation.navigate('BrowseSettings'),
-      },
-    ] as const,
+    () =>
+      [
+        {
+          iconName: 'book-search',
+          onPress: () => navigation.navigate('GlobalSearchScreen', {}),
+        },
+        {
+          iconName: 'swap-vertical-variant',
+          onPress: () => navigation.navigate('Migration'),
+        },
+        {
+          iconName: 'cog-outline',
+          onPress: () => navigation.navigate('BrowseSettings'),
+        },
+      ] as const,
     [navigation],
   );
 
@@ -52,7 +53,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
 
   const [index, setIndex] = React.useState(0);
   return (
-    <>
+    <SafeAreaView>
       <SearchbarV2
         searchText={searchText}
         placeholder={getString('browseScreen.searchbar')}
@@ -102,7 +103,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
         )}
         swipeEnabled={false}
       />
-    </>
+    </SafeAreaView>
   );
 };
 

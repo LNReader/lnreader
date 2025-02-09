@@ -1,7 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 
 import { FAB } from 'react-native-paper';
-import { Container, ErrorScreenV2, SearchbarV2 } from '@components/index';
+import { ErrorScreenV2, SafeAreaView, SearchbarV2 } from '@components/index';
 import NovelList from '@components/NovelList';
 import NovelCover from '@components/NovelCover';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -83,10 +83,10 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     [pluginId],
   );
 
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, right } = useSafeAreaInsets();
   const filterSheetRef = useRef<BottomSheetModal | null>(null);
   return (
-    <Container>
+    <SafeAreaView>
       <SearchbarV2
         searchText={searchText}
         leftIcon="magnify"
@@ -177,7 +177,11 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
             icon={'filter-variant'}
             style={[
               styles.filterFab,
-              { backgroundColor: theme.primary, marginBottom: bottom },
+              {
+                backgroundColor: theme.primary,
+                marginBottom: bottom + 16,
+                marginRight: right + 16,
+              },
             ]}
             label={getString('common.filter')}
             uppercase={false}
@@ -192,7 +196,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
           />
         </>
       ) : null}
-    </Container>
+    </SafeAreaView>
   );
 };
 
@@ -203,6 +207,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     margin: 16,
     right: 0,
-    bottom: 16,
+    bottom: 0,
   },
 });

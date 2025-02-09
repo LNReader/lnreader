@@ -100,7 +100,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
   bottomSheetRef,
 }) => {
   const theme = useTheme();
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, left, right } = useSafeAreaInsets();
   const layout = useWindowDimensions();
 
   const tabHeaderColor = overlay(2, theme.surface);
@@ -133,7 +133,10 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       snapPoints={[360, 600]}
       backgroundStyle={{ backgroundColor }}
       bottomInset={bottom}
-      containerStyle={styles.container}
+      containerStyle={[
+        styles.container,
+        { marginLeft: left, marginRight: right },
+      ]}
     >
       <BottomSheetView style={{ flex: 1 }}>
         <TabView

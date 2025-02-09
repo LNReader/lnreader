@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
 import { dummyHTML } from './utils';
 
-import { Appbar, List } from '@components/index';
+import { Appbar, List, SafeAreaView } from '@components/index';
 
 import {
   useChapterGeneralSettings,
@@ -130,7 +130,7 @@ const SettingsReaderScreen = () => {
     };
   }, []);
   return (
-    <>
+    <SafeAreaView excludeTop>
       <Appbar
         mode="small"
         title={getString('readerSettings.title')}
@@ -247,7 +247,7 @@ const SettingsReaderScreen = () => {
           <TextToSpeechSettings />
         </View>
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 

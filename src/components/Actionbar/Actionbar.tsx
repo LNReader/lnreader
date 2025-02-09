@@ -5,7 +5,7 @@ import {
   Pressable,
   StyleProp,
   StyleSheet,
-  ViewProps,
+  ViewStyle,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
@@ -20,7 +20,7 @@ type Action = {
 interface ActionbarProps {
   active: boolean;
   actions: Action[];
-  viewStyle?: StyleProp<ViewProps>;
+  viewStyle?: StyleProp<ViewStyle>;
 }
 
 export const Actionbar: React.FC<ActionbarProps> = ({

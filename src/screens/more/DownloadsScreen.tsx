@@ -3,9 +3,8 @@ import { FlatList, StyleSheet } from 'react-native';
 
 import { Appbar as MaterialAppbar } from 'react-native-paper';
 
-import { ScreenContainer } from '@components/Common';
 import EmptyView from '@components/EmptyView';
-import { Appbar, List } from '@components';
+import { Appbar, List, SafeAreaView } from '@components';
 import {
   deleteChapter,
   deleteDownloads,
@@ -84,7 +83,7 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
   }, []);
 
   return (
-    <ScreenContainer theme={theme}>
+    <SafeAreaView excludeTop>
       <Appbar
         title={getString('common.downloads')}
         handleGoBack={navigation.goBack}
@@ -98,6 +97,7 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
           />
         ) : null}
       </Appbar>
+
       <List.InfoItem title={getString('downloadScreen.dbInfo')} theme={theme} />
       {loading ? (
         <UpdatesSkeletonLoading theme={theme} />
@@ -138,7 +138,7 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
         }}
         theme={theme}
       />
-    </ScreenContainer>
+    </SafeAreaView>
   );
 };
 

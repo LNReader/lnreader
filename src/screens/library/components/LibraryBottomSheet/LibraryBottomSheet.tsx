@@ -1,5 +1,12 @@
 import React, { RefObject, useMemo, useState } from 'react';
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import color from 'color';
 
@@ -23,6 +30,7 @@ import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/typ
 
 interface LibraryBottomSheetProps {
   bottomSheetRef: RefObject<BottomSheetModalMethods>;
+  style?: StyleProp<ViewStyle>;
 }
 
 const FirstRoute = () => {
@@ -160,6 +168,7 @@ const ThirdRoute = () => {
 
 const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
   bottomSheetRef,
+  style,
 }) => {
   const theme = useTheme();
 
@@ -177,6 +186,7 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
             .string(),
         },
         styles.tabBar,
+        style,
       ]}
       inactiveColor={theme.onSurfaceVariant}
       activeColor={theme.primary}

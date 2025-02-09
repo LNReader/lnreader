@@ -5,7 +5,12 @@ import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
-import { Appbar, ErrorScreenV2, LoadingScreenV2 } from '@components';
+import {
+  Appbar,
+  ErrorScreenV2,
+  LoadingScreenV2,
+  SafeAreaView,
+} from '@components';
 
 import { LibraryStats } from '@database/types';
 import {
@@ -78,7 +83,7 @@ const StatsScreen = () => {
   }
 
   return (
-    <>
+    <SafeAreaView excludeTop>
       {Header}
       <ScrollView
         style={styles.screenCtn}
@@ -138,7 +143,7 @@ const StatsScreen = () => {
           ))}
         </Row>
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 

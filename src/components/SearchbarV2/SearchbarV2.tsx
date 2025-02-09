@@ -1,6 +1,5 @@
 import React, { memo, useRef, useState } from 'react';
 import { Pressable, StyleSheet, View, TextInput } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import IconButtonV2 from '../IconButtonV2/IconButtonV2';
 import { ThemeColors } from '../../theme/types';
@@ -49,10 +48,9 @@ const Searchbar: React.FC<SearcbarProps> = ({
   const focusSearchbar = () => searchbarRef.current.focus();
   const [extraMenu, showExtraMenu] = useState(false);
 
-  const { top, right, left } = useSafeAreaInsets();
-  const marginTop = top + 8;
-  const marginRight = right + 16;
-  const marginLeft = left + 16;
+  const marginTop = 8;
+  const marginRight = 16;
+  const marginLeft = 16;
 
   return (
     <View

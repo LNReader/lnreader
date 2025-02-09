@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 
-import { Appbar, EmptyView } from '@components';
+import { Appbar, EmptyView, SafeAreaView } from '@components';
 
 import {
   createRepository,
@@ -29,7 +29,7 @@ const SettingsBrowseScreen = ({
   navigation,
 }: RespositorySettingsScreenProps) => {
   const theme = useTheme();
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, right } = useSafeAreaInsets();
   const { refreshPlugins } = usePlugins();
 
   const [repositories, setRepositories] = useState<Repository[]>(
@@ -79,7 +79,7 @@ const SettingsBrowseScreen = ({
   });
 
   return (
-    <>
+    <SafeAreaView excludeTop>
       <Appbar
         title={'Repositories'}
         handleGoBack={() => {
@@ -110,7 +110,7 @@ const SettingsBrowseScreen = ({
         }
       />
       <FAB
-        style={[styles.fab, { backgroundColor: theme.primary, bottom: bottom }]}
+        style={[styles.fab, { backgroundColor: theme.primary, right, bottom }]}
         color={theme.onPrimary}
         label={getString('common.add')}
         uppercase={false}
@@ -124,7 +124,7 @@ const SettingsBrowseScreen = ({
           upsertRepository={upsertRepository}
         />
       </Portal>
-    </>
+    </SafeAreaView>
   );
 };
 

@@ -55,7 +55,6 @@ const NovelAppbar = ({
   chapters,
   theme,
   isLocal,
-  isLoading,
   downloadChapters,
   deleteChapters,
   showEditInfoModal,
@@ -70,7 +69,6 @@ const NovelAppbar = ({
   chapters: ChapterInfo[];
   theme: ThemeColors;
   isLocal: boolean | undefined;
-  isLoading: boolean;
   downloadChapters: (amount: number | 'all' | 'unread') => void;
   deleteChapters: () => void;
   showEditInfoModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -103,99 +101,96 @@ const NovelAppbar = ({
     >
       <Appbar.Header theme={{ colors: { ...theme, surface: 'transparent' } }}>
         <Appbar.BackAction onPress={goBack} />
-        {!isLoading && (
-          <View
-            style={{ flexDirection: 'row', position: 'absolute', right: 0 }}
-          >
-            {novel && (
-              <EpubIconButton theme={theme} novel={novel} chapters={chapters} />
-            )}
-            <Appbar.Action
-              icon="share-variant"
-              theme={{ colors: theme }}
-              onPress={shareNovel}
-            />
-            <Appbar.Action
-              theme={{ colors: theme }}
-              icon="text-box-search-outline"
-              onPress={() => {
-                showJumpToChapterModal(true);
-              }}
-            />
-            {!isLocal && (
-              <Menu
-                theme={theme}
-                visible={downloadMenu}
-                onDismiss={() => showDownloadMenu(false)}
-                anchor={
-                  <Appbar.Action
-                    icon="download-outline"
-                    onPress={() => showDownloadMenu(true)}
-                    theme={{ colors: theme }}
-                    style={{ paddingTop: 2 }}
-                    size={27}
-                  />
-                }
-                items={[
-                  {
-                    label: getString('novelScreen.download.next'),
-                    onPress: () => downloadChapters(1),
-                  },
-                  {
-                    label: getString('novelScreen.download.next5'),
-                    onPress: () => downloadChapters(5),
-                  },
-                  {
-                    label: getString('novelScreen.download.next10'),
-                    onPress: () => downloadChapters(10),
-                  },
-                  {
-                    label: getString('novelScreen.download.custom'),
-                    onPress: () => downloadCustomChapterModal(),
-                  },
-                  {
-                    label: getString('novelScreen.download.unread'),
-                    onPress: () => downloadChapters('unread'),
-                  },
-                  {
-                    label: getString('common.all'),
-                    onPress: () => downloadChapters('all'),
-                  },
-                  {
-                    label: getString('novelScreen.download.delete'),
-                    onPress: () => deleteChapters(),
-                  },
-                ]}
-              />
-            )}
+
+        <View style={{ flexDirection: 'row', position: 'absolute', right: 0 }}>
+          {novel && (
+            <EpubIconButton theme={theme} novel={novel} chapters={chapters} />
+          )}
+          <Appbar.Action
+            icon="share-variant"
+            theme={{ colors: theme }}
+            onPress={shareNovel}
+          />
+          <Appbar.Action
+            theme={{ colors: theme }}
+            icon="text-box-search-outline"
+            onPress={() => {
+              showJumpToChapterModal(true);
+            }}
+          />
+          {!isLocal && (
             <Menu
-              visible={extraMenu}
-              onDismiss={() => showExtraMenu(false)}
+              theme={theme}
+              visible={downloadMenu}
+              onDismiss={() => showDownloadMenu(false)}
               anchor={
                 <Appbar.Action
-                  icon="dots-vertical"
-                  onPress={() => showExtraMenu(true)}
+                  icon="download-outline"
+                  onPress={() => showDownloadMenu(true)}
                   theme={{ colors: theme }}
+                  style={{ paddingTop: 2 }}
+                  size={27}
                 />
               }
-              theme={theme}
               items={[
                 {
-                  label: getString('novelScreen.edit.info'),
-                  onPress: () => {
-                    showEditInfoModal(true);
-                  },
+                  label: getString('novelScreen.download.next'),
+                  onPress: () => downloadChapters(1),
                 },
                 {
-                  label: getString('novelScreen.edit.cover'),
-                  onPress: () => {
-                    setCustomNovelCover();
-                  },
+                  label: getString('novelScreen.download.next5'),
+                  onPress: () => downloadChapters(5),
+                },
+                {
+                  label: getString('novelScreen.download.next10'),
+                  onPress: () => downloadChapters(10),
+                },
+                {
+                  label: getString('novelScreen.download.custom'),
+                  onPress: () => downloadCustomChapterModal(),
+                },
+                {
+                  label: getString('novelScreen.download.unread'),
+                  onPress: () => downloadChapters('unread'),
+                },
+                {
+                  label: getString('common.all'),
+                  onPress: () => downloadChapters('all'),
+                },
+                {
+                  label: getString('novelScreen.download.delete'),
+                  onPress: () => deleteChapters(),
                 },
               ]}
             />
-          </View>
-        )}
+          )}
+          <Menu
+            visible={extraMenu}
+            onDismiss={() => showExtraMenu(false)}
+            anchor={
+              <Appbar.Action
+                icon="dots-vertical"
+                onPress={() => showExtraMenu(true)}
+                theme={{ colors: theme }}
+              />
+            }
+            theme={theme}
+            items={[
+              {
+                label: getString('novelScreen.edit.info'),
+                onPress: () => {
+                  showEditInfoModal(true);
+                },
+              },
+              {
+                label: getString('novelScreen.edit.cover'),
+                onPress: () => {
+                  setCustomNovelCover();
+                },
+              },
+            ]}
+          />
+        </View>
       </Appbar.Header>
     </Animated.View>
   );

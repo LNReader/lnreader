@@ -17,6 +17,7 @@ import { showToast } from '@utils/showToast';
 import ServiceManager from '@services/ServiceManager';
 import { UpdateScreenProps } from '@navigators/types';
 import { UpdateOverview } from '@database/types';
+import { SafeAreaView } from '@components';
 
 const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
   const theme = useTheme();
@@ -58,7 +59,7 @@ const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
   );
 
   return (
-    <>
+    <SafeAreaView>
       <SearchbarV2
         searchText={searchText}
         clearSearchbar={clearSearchbar}
@@ -156,7 +157,7 @@ const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
           />
         </Suspense>
       )}
-    </>
+    </SafeAreaView>
   );
 };
 

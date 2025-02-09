@@ -3,7 +3,12 @@ import { StyleSheet, SectionList, Text } from 'react-native';
 import dayjs from 'dayjs';
 import { Portal } from 'react-native-paper';
 
-import { EmptyView, ErrorScreenV2, SearchbarV2 } from '@components';
+import {
+  EmptyView,
+  ErrorScreenV2,
+  SafeAreaView,
+  SearchbarV2,
+} from '@components';
 import HistoryCard from './components/HistoryCard/HistoryCard';
 
 import { useSearch, useBoolean } from '@hooks';
@@ -90,7 +95,7 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
   );
 
   return (
-    <>
+    <SafeAreaView>
       <SearchbarV2
         searchText={searchText}
         placeholder={getString('historyScreen.searchbar')}
@@ -144,7 +149,7 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
           </Portal>
         </>
       )}
-    </>
+    </SafeAreaView>
   );
 };
 

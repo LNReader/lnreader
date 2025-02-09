@@ -29,12 +29,12 @@ import { updateChapterProgressByIds } from '@database/queries/ChapterQueries';
 import { MaterialDesignIconName } from '@type/icon';
 import NovelScreenList from './components/NovelScreenList';
 import { ThemeColors } from '@theme/types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { path, pluginId } = route.params;
 
   const {
-    loading,
     pageIndex,
     pages,
     novel,
@@ -244,7 +244,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                 showJumpToChapterModal={showJumpToChapterModal}
                 shareNovel={shareNovel}
                 theme={theme}
-                isLoading={loading}
                 isLocal={novel?.isLocal}
                 goBack={navigation.goBack}
                 headerOpacity={headerOpacity}
@@ -274,17 +273,19 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
               </Animated.View>
             )}
           </Portal>
-          <Suspense fallback={<NovelScreenLoading theme={theme} />}>
-            <NovelScreenList
-              routeBaseNovel={novel ?? route.params}
-              navigation={navigation}
-              openDrawer={openDrawer}
-              headerOpacity={headerOpacity}
-              selected={selected}
-              setSelected={setSelected}
-              chapters={chapters}
-            />
-          </Suspense>
+          <SafeAreaView style={{ flex: 1 }}>
+            <Suspense fallback={<NovelScreenLoading theme={theme} />}>
+              <NovelScreenList
+                routeBaseNovel={novel ?? route.params}
+                navigation={navigation}
+                openDrawer={openDrawer}
+                headerOpacity={headerOpacity}
+                selected={selected}
+                setSelected={setSelected}
+                chapters={chapters}
+              />
+            </Suspense>
+          </SafeAreaView>
 
           <Portal>
             <Actionbar active={selected.length > 0} actions={actions} />
