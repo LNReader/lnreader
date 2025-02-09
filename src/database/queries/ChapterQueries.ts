@@ -88,7 +88,7 @@ export const getPageChapters = (
 
 export const getPrevChapter = (novelId: number, chapterId: number) =>
   db.getFirstAsync<ChapterInfo>(
-    'SELECT * FROM Chapter WHERE novelId = ? AND id < ?',
+    'SELECT * FROM Chapter WHERE novelId = ? AND id < ? ORDER BY id DESC',
     novelId,
     chapterId,
   );
