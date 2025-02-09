@@ -1,6 +1,6 @@
 import React, { RefObject, useCallback, useRef } from 'react';
 import {
-  BottomSheetBackdrop,
+  // BottomSheetBackdrop,
   BottomSheetBackdropProps,
   BottomSheetModal,
   BottomSheetModalProps,
@@ -8,9 +8,12 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBackHandler } from '@hooks/index';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import BottomSheetBackdrop from './BottomSheetBackdrop';
 
-interface BottomSheetProps extends Omit<BottomSheetModalProps, 'ref'> {
+interface BottomSheetProps
+  extends Omit<BottomSheetModalProps, 'ref' | 'onChange'> {
   bottomSheetRef: RefObject<BottomSheetModalMethods> | null;
+  onChange?: (index: number) => void;
 }
 
 const BottomSheet: React.FC<BottomSheetProps> = ({
@@ -23,11 +26,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   const { bottom } = useSafeAreaInsets();
   const renderBackdrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...backdropProps}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-      />
+      <BottomSheetBackdrop {...backdropProps} />
     ),
     [],
   );
@@ -48,6 +47,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
         onChange?.(index);
         indexRef.current = index;
       }}
+      enableDynamicSizing={false}
       {...otherProps}
     >
       {children}
@@ -55,4 +55,4 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   );
 };
 
-export default BottomSheet;
+export default React.memo(BottomSheet);

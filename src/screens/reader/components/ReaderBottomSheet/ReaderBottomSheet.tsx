@@ -1,8 +1,21 @@
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import React, { RefObject, useMemo, useState, useCallback } from 'react';
-import color from 'color';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import React, {
+  RefObject,
+  useMemo,
+  useState,
+  useCallback,
+  Suspense,
+} from 'react';
+import Color from 'color';
 
-import { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetFlashList, BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
@@ -19,29 +32,43 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { StringMap } from '@strings/types';
 
-const ReaderTab: React.FC = () => (
-  <View style={styles.readerTab}>
-    <TextSizeSlider />
-    <ReaderThemeSelector />
-    <ReaderTextAlignSelector />
-    <ReaderValueChange
-      label={getString('readerScreen.bottomSheet.lineHeight')}
-      valueKey="lineHeight"
-    />
-    <ReaderValueChange
-      label={getString('readerScreen.bottomSheet.padding')}
-      valueKey="padding"
-      valueChange={2}
-      min={0}
-      max={50}
-      decimals={0}
-      unit="px"
-    />
-    <ReaderFontPicker />
-  </View>
-);
+type TabViewLabelProps = {
+  route: {
+    key: string;
+    title: string;
+  };
+  labelText?: string;
+  focused: boolean;
+  color: string;
+  allowFontScaling?: boolean;
+  style?: StyleProp<TextStyle>;
+};
 
-const GeneralTab: React.FC = () => {
+const ReaderTab: React.FC = React.memo(() => (
+  <Suspense fallback={<></>}>
+    <View style={styles.readerTab}>
+      <TextSizeSlider />
+      <ReaderThemeSelector />
+      <ReaderTextAlignSelector />
+      <ReaderValueChange
+        label={getString('readerScreen.bottomSheet.lineHeight')}
+        valueKey="lineHeight"
+      />
+      <ReaderValueChange
+        label={getString('readerScreen.bottomSheet.padding')}
+        valueKey="padding"
+        valueChange={2}
+        min={0}
+        max={50}
+        decimals={0}
+        unit="px"
+      />
+      <ReaderFontPicker />
+    </View>
+  </Suspense>
+));
+
+const GeneralTab: React.FC = React.memo(() => {
   const theme = useTheme();
   const { setChapterGeneralSettings, ...settings } =
     useChapterGeneralSettings();
@@ -70,22 +97,38 @@ const GeneralTab: React.FC = () => {
     [],
   );
 
-  return (
-    <BottomSheetScrollView showsVerticalScrollIndicator={false}>
-      {preferences.map(({ key, label }) => (
-        <ReaderSheetPreferenceItem
-          key={key}
-          label={getString(
-            `readerScreen.bottomSheet.${label}` as keyof StringMap,
-          )}
-          onPress={() => toggleSetting(key as keyof typeof settings)} // @ts-ignore
-          value={settings[key as keyof typeof settings]}
-          theme={theme}
-        />
-      ))}
-    </BottomSheetScrollView>
+  const renderItem = useCallback(
+    ({
+      item,
+    }: {
+      item: {
+        key: string;
+        label: string;
+      };
+    }) => (
+      <ReaderSheetPreferenceItem
+        key={item.key}
+        label={getString(
+          `readerScreen.bottomSheet.${item.label}` as keyof StringMap,
+        )}
+        onPress={() => toggleSetting(item.key as keyof typeof settings)} // @ts-ignore
+        value={settings[item.key]}
+        theme={theme}
+      />
+    ),
+    [settings, toggleSetting],
   );
-};
+  console.log(3);
+
+  return (
+    <BottomSheetFlashList
+      data={preferences}
+      keyExtractor={item => item.key}
+      renderItem={renderItem}
+      estimatedItemSize={60}
+    />
+  );
+});
 
 interface ReaderBottomSheetV2Props {
   bottomSheetRef: RefObject<BottomSheetModalMethods> | null;
@@ -121,14 +164,19 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
         style={[styles.tabBar, { backgroundColor: tabHeaderColor }]}
         inactiveColor={theme.onSurfaceVariant}
         activeColor={theme.primary}
-        pressColor={color(theme.primary).alpha(0.12).string()}
+        pressColor={Color(theme.primary).alpha(0.12).string()}
       />
     ),
     [theme, tabHeaderColor],
   );
 
+  const renderLabel = useCallback(({ route, color }: TabViewLabelProps) => {
+    return <Text style={{ color }}>{route.title}</Text>;
+  }, []);
+
   return (
     <BottomSheet
+      enableOverDrag={false} // messes with the scrollview
       bottomSheetRef={bottomSheetRef}
       snapPoints={[360, 600]}
       backgroundStyle={{ backgroundColor }}
@@ -140,10 +188,9 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
     >
       <BottomSheetView style={{ flex: 1 }}>
         <TabView
+          lazy
           commonOptions={{
-            label: ({ route, color }) => (
-              <Text style={{ color }}>{route.title}</Text>
-            ),
+            label: renderLabel,
           }}
           navigationState={{ index, routes }}
           renderTabBar={renderTabBar}
