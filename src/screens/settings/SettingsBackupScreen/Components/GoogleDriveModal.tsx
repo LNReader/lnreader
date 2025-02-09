@@ -1,10 +1,10 @@
 import React from 'react';
 import { ThemeColors } from '@theme/types';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { Modal, TextInput, overlay } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { GoogleSignin, User } from '@react-native-google-signin/google-signin';
 import { useEffect, useState } from 'react';
-import { Button, EmptyView } from '@components';
+import { Button, EmptyView, Modal } from '@components';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
@@ -277,14 +277,7 @@ export default function GoogleDriveModal({
   };
 
   return (
-    <Modal
-      visible={visible}
-      onDismiss={closeModal}
-      contentContainerStyle={[
-        styles.modalContainer,
-        { backgroundColor: overlay(2, theme.surface) },
-      ]}
-    >
+    <Modal visible={visible} onDismiss={closeModal}>
       <>
         <View style={styles.titleContainer}>
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
@@ -320,13 +313,6 @@ export default function GoogleDriveModal({
 }
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-    borderRadius: 32,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

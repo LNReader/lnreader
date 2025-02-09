@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
-import { Button, IconButton, Modal, Portal } from 'react-native-paper';
+import { Button, IconButton, Portal } from 'react-native-paper';
 import { ThemeColors } from '@theme/types';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { getString } from '@strings/translations';
+import { Modal } from '@components';
 
 interface DownloadCustomChapterModalProps {
   theme: ThemeColors;
@@ -48,14 +49,7 @@ const DownloadCustomChapterModal = ({
 
   return (
     <Portal>
-      <Modal
-        visible={modalVisible}
-        onDismiss={onDismiss}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: theme.overlay3 },
-        ]}
-      >
+      <Modal visible={modalVisible} onDismiss={onDismiss}>
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString('novelScreen.download.customAmount')}
         </Text>
@@ -111,12 +105,6 @@ const DownloadCustomChapterModal = ({
 export default DownloadCustomChapterModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    padding: 20,
-    borderRadius: 8,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   modalTitle: {
     fontSize: 16,
     marginBottom: 16,

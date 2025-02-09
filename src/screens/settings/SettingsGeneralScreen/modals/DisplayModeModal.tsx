@@ -5,12 +5,13 @@ import {
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-import { Portal, Modal, overlay } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 
 import { RadioButton } from '@components/RadioButton/RadioButton';
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
 import { getString } from '@strings/translations';
+import { Modal } from '@components';
 
 interface DisplayModeModalProps {
   displayMode: DisplayModes;
@@ -29,14 +30,7 @@ const DisplayModeModal: React.FC<DisplayModeModalProps> = ({
 
   return (
     <Portal>
-      <Modal
-        visible={displayModalVisible}
-        onDismiss={hideDisplayModal}
-        contentContainerStyle={[
-          styles.containerStyle,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
-      >
+      <Modal visible={displayModalVisible} onDismiss={hideDisplayModal}>
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
           {getString('generalSettingsScreen.displayMode')}
         </Text>
@@ -57,14 +51,7 @@ const DisplayModeModal: React.FC<DisplayModeModalProps> = ({
 export default DisplayModeModal;
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    paddingVertical: 20,
-    margin: 20,
-    borderRadius: 28,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   modalHeader: {
-    paddingHorizontal: 24,
     fontSize: 24,
     marginBottom: 10,
   },

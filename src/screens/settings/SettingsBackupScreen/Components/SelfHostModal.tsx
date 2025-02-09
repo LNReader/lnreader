@@ -1,5 +1,5 @@
 import { list } from '@api/remote';
-import { Button, EmptyView } from '@components';
+import { Button, EmptyView, Modal } from '@components';
 import { useSelfHost } from '@hooks/persisted/useSelfHost';
 import ServiceManager from '@services/ServiceManager';
 import { getString } from '@strings/translations';
@@ -8,7 +8,7 @@ import { fetchTimeout } from '@utils/fetch/fetch';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Modal, TextInput, overlay } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 
 enum BackupModal {
   SET_HOST,
@@ -265,14 +265,7 @@ export default function SelfHostModal({
   };
 
   return (
-    <Modal
-      visible={visible}
-      onDismiss={closeModal}
-      contentContainerStyle={[
-        styles.modalContainer,
-        { backgroundColor: overlay(2, theme.surface) },
-      ]}
-    >
+    <Modal visible={visible} onDismiss={closeModal}>
       <>
         <View style={styles.titleContainer}>
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
@@ -286,13 +279,6 @@ export default function SelfHostModal({
 }
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-    borderRadius: 32,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',

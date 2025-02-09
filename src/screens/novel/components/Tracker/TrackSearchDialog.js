@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
-import { Modal, overlay, TextInput, TouchableRipple } from 'react-native-paper';
+import {  TextInput, TouchableRipple } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 import color from 'color';
-import { Button } from '@components';
+import { Button, Modal } from '@components';
 import { getTracker } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
@@ -72,11 +72,6 @@ const TrackSearchDialog = ({
     <Modal
       visible={trackSearchDialog}
       onDismiss={() => setTrackSearchDialog(false)}
-      contentContainerStyle={[
-        styles.containerStyle,
-        { backgroundColor: overlay(2, theme.surface) },
-      ]}
-      theme={{ colors: { backdrop: 'rgba(0,0,0,0.25)' } }}
     >
       <TextInput
         value={searchText}
@@ -133,12 +128,6 @@ const TrackSearchDialog = ({
 export default TrackSearchDialog;
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    padding: 20,
-    margin: 20,
-    borderRadius: 6,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   textInput: {
     backgroundColor: 'transparent',
   },

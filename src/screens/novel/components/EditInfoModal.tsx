@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
-import { Modal, Portal, TextInput } from 'react-native-paper';
+import { Portal, TextInput } from 'react-native-paper';
 import { updateNovelInfo } from '@database/queries/NovelQueries';
 
 import { getString } from '@strings/translations';
-import { Button } from '@components';
+import { Button, Modal } from '@components';
 import { ThemeColors } from '@theme/types';
 import { NovelInfo } from '@database/types';
 import { NovelStatus } from '@plugins/types';
@@ -53,14 +53,7 @@ const EditInfoModal = ({
 
   return (
     <Portal>
-      <Modal
-        visible={modalVisible}
-        onDismiss={hideModal}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: theme.overlay3 },
-        ]}
-      >
+      <Modal visible={modalVisible} onDismiss={hideModal}>
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString('novelScreen.edit.info')}
         </Text>
@@ -275,12 +268,6 @@ const GenreChip = ({
 );
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    padding: 24,
-    borderRadius: 28,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,

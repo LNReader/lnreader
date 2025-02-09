@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 
-import { Portal, Modal, overlay } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 import { SortItem } from '@components/Checkbox/Checkbox';
 
 import { ThemeColors } from '@theme/types';
 import { AppSettings } from '@hooks/persisted/useSettings';
 import { getString } from '@strings/translations';
+import { Modal } from '@components';
 
 interface DefaultChapterSortModalProps {
   theme: ThemeColors;
@@ -25,14 +25,7 @@ const DefaultChapterSortModal = ({
 }: DefaultChapterSortModalProps) => {
   return (
     <Portal>
-      <Modal
-        visible={displayModalVisible}
-        onDismiss={hideDisplayModal}
-        contentContainerStyle={[
-          styles.containerStyle,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
-      >
+      <Modal visible={displayModalVisible} onDismiss={hideDisplayModal}>
         <SortItem
           label={getString('generalSettingsScreen.bySource')}
           theme={theme}
@@ -53,12 +46,3 @@ const DefaultChapterSortModal = ({
 };
 
 export default DefaultChapterSortModal;
-
-const styles = StyleSheet.create({
-  containerStyle: {
-    paddingVertical: 20,
-    margin: 20,
-    borderRadius: 6,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
-});

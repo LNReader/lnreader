@@ -3,9 +3,9 @@ import { FlashList, FlashListProps } from '@shopify/flash-list';
 import React, { useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { getString } from '@strings/translations';
-import { Button, SwitchItem } from '@components';
+import { Button, Modal, SwitchItem } from '@components';
 
-import { Modal, Portal, TextInput, Text } from 'react-native-paper';
+import { Portal, TextInput, Text } from 'react-native-paper';
 import { useTheme } from '@hooks/persisted';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { NovelScreenProps } from '@navigators/types';
@@ -149,15 +149,8 @@ const JumpToChapterModal = ({
 
   return (
     <Portal>
-      <Modal
-        visible={modalVisible}
-        onDismiss={onDismiss}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: theme.overlay3 },
-        ]}
-      >
-        <View style={styles.modalHeaderCtn}>
+      <Modal visible={modalVisible} onDismiss={onDismiss}>
+        <View>
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
             {getString('novelScreen.jumpToChapterModal.jumpToChapter')}
           </Text>
@@ -178,7 +171,11 @@ const JumpToChapterModal = ({
             keyboardType={mode ? 'default' : 'numeric'}
             error={error.length > 0}
           />
-          <Text style={[styles.errorText, { color: errorColor }]}>{error}</Text>
+          {!!error && (
+            <Text style={[styles.errorText, { color: errorColor }]}>
+              {error}
+            </Text>
+          )}
           <SwitchItem
             label={getString('novelScreen.jumpToChapterModal.openChapter')}
             value={openChapter}
@@ -217,21 +214,9 @@ const JumpToChapterModal = ({
 export default JumpToChapterModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    borderRadius: 32,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
-  modalHeaderCtn: {
-    padding: 20,
-    paddingTop: 32,
-    paddingBottom: 0,
-  },
   modalFooterCtn: {
     flexDirection: 'row-reverse',
-    paddingHorizontal: 20,
     paddingTop: 8,
-    paddingBottom: 32,
   },
   modalTitle: {
     fontSize: 24,
@@ -254,7 +239,6 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   listElementContainer: {
-    paddingHorizontal: 20,
     paddingVertical: 12,
   },
 });

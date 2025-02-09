@@ -14,3 +14,4 @@ export { Checkbox } from './Checkbox/Checkbox';
 export { RadioButton } from './RadioButton/RadioButton';
 export { default as ConfirmationDialog } from './ConfirmationDialog/ConfirmationDialog';
 export { default as SafeAreaView } from './SafeAreaView/SafeAreaView';
+export { default as Modal } from './Modal/Modal';

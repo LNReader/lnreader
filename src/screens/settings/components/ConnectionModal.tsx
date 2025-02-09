@@ -1,9 +1,9 @@
-import { Button } from '@components';
+import { Button, Modal } from '@components';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Modal, TextInput, overlay } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 
 interface ConnectionModalProps {
   title: string;
@@ -29,14 +29,7 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({
   setPort,
 }) => {
   return (
-    <Modal
-      visible={visible}
-      onDismiss={closeModal}
-      contentContainerStyle={[
-        styles.modalContainer,
-        { backgroundColor: overlay(2, theme.surface) },
-      ]}
-    >
+    <Modal visible={visible} onDismiss={closeModal}>
       <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
         {title}
       </Text>
@@ -74,13 +67,6 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({
 export default ConnectionModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-    borderRadius: 32,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,

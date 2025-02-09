@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { Modal, Portal, Text, Button, Provider } from 'react-native-paper';
+import { Portal, Text, Button, Provider } from 'react-native-paper';
 
 import { getTracker, useTheme, useTracker } from '@hooks/persisted';
-import { Appbar, List, SafeAreaView } from '@components';
+import { Appbar, List, Modal, SafeAreaView } from '@components';
 import { TrackerSettingsScreenProps } from '@navigators/types';
 import { getString } from '@strings/translations';
 
@@ -90,17 +90,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
           </List.Section>
 
           <Portal>
-            <Modal
-              visible={visible}
-              onDismiss={hideModal}
-              contentContainerStyle={{
-                padding: 20,
-                margin: 20,
-                borderRadius: 6,
-                backgroundColor: theme.overlay3,
-                shadowColor: 'transparent', // Modal weird shadow fix
-              }}
-            >
+            <Modal visible={visible} onDismiss={hideModal}>
               <Text
                 style={{
                   color: theme.onSurface,

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Modal, overlay, TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { StorageAccessFramework } from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
 
-import { Button } from '@components/index';
+import { Button, Modal } from '@components/index';
 
 import { showToast } from '@utils/showToast';
 import { useTheme } from '@hooks/persisted';
@@ -57,14 +57,7 @@ const CustomFileModal: React.FC<CustomFileModal> = ({
   };
 
   return (
-    <Modal
-      visible={visible}
-      onDismiss={onDismiss}
-      contentContainerStyle={[
-        styles.modalContainer,
-        { backgroundColor: overlay(2, theme.surface) },
-      ]}
-    >
+    <Modal visible={visible} onDismiss={onDismiss}>
       <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
         {title}
       </Text>
@@ -103,12 +96,6 @@ const CustomFileModal: React.FC<CustomFileModal> = ({
 export default CustomFileModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    padding: 24,
-    borderRadius: 28,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   textInput: {
     height: 220,
     borderRadius: 14,

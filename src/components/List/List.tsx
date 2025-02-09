@@ -1,5 +1,12 @@
 import React, { ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 import MaterialIcon from '@react-native-vector-icons/material-design-icons';
 
 import { List as PaperList, Divider as PaperDivider } from 'react-native-paper';
@@ -87,12 +94,14 @@ const InfoItem = ({
   title,
   icon = 'information-outline',
   theme,
+  style,
 }: {
   title: string;
   icon?: string;
   theme: ThemeColors;
+  style?: StyleProp<ViewStyle>;
 }) => (
-  <View style={styles.infoCtn}>
+  <View style={[styles.infoCtn, style]}>
     <MaterialIcon size={20} color={theme.onSurfaceVariant} name={icon} />
     <Text style={[styles.infoMsg, { color: theme.onSurfaceVariant }]}>
       {title}

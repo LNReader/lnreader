@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Modal, overlay, Portal, TextInput } from 'react-native-paper';
+import { Portal, TextInput } from 'react-native-paper';
 
-import { Button } from '@components/index';
+import { Button, Modal } from '@components/index';
 
 import { Category } from '../../../database/types';
 import {
@@ -40,14 +40,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
 
   return (
     <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={close}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
-      >
+      <Modal visible={visible} onDismiss={close}>
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString(
             isEditMode
@@ -91,13 +84,6 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
 export default AddCategoryModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-    borderRadius: 32,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Modal, overlay, Portal, TextInput } from 'react-native-paper';
+import { Portal, TextInput } from 'react-native-paper';
+import { Modal } from '@components';
 import { ThemeColors } from '../../theme/types';
 
 interface ColorPickerModalProps {
@@ -72,15 +73,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
 
   return (
     <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={onDismiss}
-        style={styles.modalContainerContainer}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
-      >
+      <Modal visible={visible} onDismiss={onDismiss}>
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {title}
         </Text>
@@ -137,18 +130,6 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
 export default ColorPickerModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    padding: 24,
-    borderRadius: 28,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
-  modalContainerContainer: {
-    borderRadius: 28,
-    shadowOffset: { width: 10, height: 10 },
-    shadowRadius: 0,
-    shadowColor: 'red',
-  },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,

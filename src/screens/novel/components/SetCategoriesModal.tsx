@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
-import { Divider, Modal, overlay, Portal } from 'react-native-paper';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { Divider, Portal } from 'react-native-paper';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 
-import { Button } from '@components/index';
+import { Button, Modal } from '@components/index';
 
 import { useTheme } from '@hooks/persisted';
 
@@ -55,10 +55,6 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
           closeModal();
           setSelectedCategories([]);
         }}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
       >
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString('categories.setCategories')}
@@ -80,9 +76,7 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
             />
           )}
           ListEmptyComponent={
-            <Text
-              style={[styles.emptyState, { color: theme.onSurfaceVariant }]}
-            >
+            <Text style={[{ color: theme.onSurfaceVariant }]}>
               {getString('categories.setModalEmptyMsg')}
             </Text>
           }
@@ -133,20 +127,11 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
 export default SetCategoryModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    paddingVertical: 32,
-    borderRadius: 32,
-    maxHeight: (Dimensions.get('window').height * 3) / 4,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   modalTitle: {
-    paddingHorizontal: 24,
     fontSize: 24,
     marginBottom: 20,
   },
   modelOption: {
-    paddingHorizontal: 24,
     fontSize: 15,
     marginVertical: 10,
   },
@@ -154,15 +139,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   btnContainer: {
-    paddingHorizontal: 24,
     marginTop: 20,
     flexDirection: 'row',
   },
   checkboxView: {
-    paddingHorizontal: 20,
     marginBottom: 5,
-  },
-  emptyState: {
-    paddingHorizontal: 24,
   },
 });

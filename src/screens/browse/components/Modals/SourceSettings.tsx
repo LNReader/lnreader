@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Modal, overlay, TextInput } from 'react-native-paper';
-import { Button } from '@components/index';
+import { TextInput } from 'react-native-paper';
+import { Button, Modal } from '@components/index';
 import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { Storage } from '@plugins/helpers/storage';
@@ -80,14 +80,7 @@ const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
 
   if (!pluginSettings || Object.keys(pluginSettings).length === 0) {
     return (
-      <Modal
-        visible={visible}
-        onDismiss={onDismiss}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
-      >
+      <Modal visible={visible} onDismiss={onDismiss}>
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {title}
         </Text>
@@ -99,14 +92,7 @@ const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
   }
 
   return (
-    <Modal
-      visible={visible}
-      onDismiss={onDismiss}
-      contentContainerStyle={[
-        styles.modalContainer,
-        { backgroundColor: overlay(2, theme.surface) },
-      ]}
-    >
+    <Modal visible={visible} onDismiss={onDismiss}>
       <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
         {title}
       </Text>
@@ -142,12 +128,6 @@ const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
 export default SourceSettingsModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    shadowColor: 'transparent', // Modal weird shadow fix
-    margin: 30,
-    padding: 24,
-    borderRadius: 28,
-  },
   textInput: {
     height: 50,
     borderRadius: 14,

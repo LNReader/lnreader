@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Dialog,
-  Modal,
-  Portal,
-  Text,
-  TextInput,
-  overlay,
-} from 'react-native-paper';
+import { Dialog, Portal, Text, TextInput } from 'react-native-paper';
 
 import { useTheme, useUserAgent } from '@hooks/persisted';
 import { showToast } from '@utils/showToast';
@@ -21,7 +14,7 @@ import {
   clearUpdates,
 } from '@database/queries/ChapterQueries';
 
-import { Appbar, Button, List, SafeAreaView } from '@components';
+import { Appbar, Button, List, Modal, SafeAreaView } from '@components';
 import { AdvancedSettingsScreenProps } from '@navigators/types';
 import { StyleSheet, View } from 'react-native';
 import { getUserAgentSync } from 'react-native-device-info';
@@ -180,14 +173,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
             </Button>
           </Dialog.Actions>
         </Dialog>
-        <Modal
-          visible={userAgentModalVisible}
-          onDismiss={hideUserAgentModal}
-          contentContainerStyle={[
-            styles.modalContainer,
-            { backgroundColor: overlay(2, theme.surface) },
-          ]}
-        >
+        <Modal visible={userAgentModalVisible} onDismiss={hideUserAgentModal}>
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
             {getString('advancedSettingsScreen.userAgent')}
           </Text>
@@ -230,12 +216,6 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
 export default AdvancedSettings;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    padding: 24,
-    borderRadius: 28,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   textInput: {
     height: 120,
     borderRadius: 14,

@@ -1,17 +1,17 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-import { Portal, Modal, overlay } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 
 import {
   LibrarySortOrder,
   librarySortOrderList,
 } from '@screens/library/constants/constants';
 import { ThemeColors } from '@theme/types';
-import { FlashList } from '@shopify/flash-list';
 import { SortItem } from '@components/Checkbox/Checkbox';
 import { useLibrarySettings } from '@hooks/persisted';
 import { getString } from '@strings/translations';
+import { Modal } from '@components';
 
 interface NovelSortModalProps {
   novelSortModalVisible: boolean;
@@ -28,40 +28,29 @@ const NovelSortModal: React.FC<NovelSortModalProps> = ({
     useLibrarySettings();
   return (
     <Portal>
-      <Modal
-        visible={novelSortModalVisible}
-        onDismiss={hideNovelSortModal}
-        contentContainerStyle={[
-          styles.container,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
-      >
+      <Modal visible={novelSortModalVisible} onDismiss={hideNovelSortModal}>
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
           {getString('generalSettingsScreen.sortOrder')}
         </Text>
-        <FlashList
-          data={librarySortOrderList}
-          extraData={[sortOrder]}
-          estimatedItemSize={6}
-          renderItem={({ item }) => (
-            <SortItem
-              label={item.label}
-              theme={theme}
-              status={
-                sortOrder === item.ASC
-                  ? 'asc'
-                  : sortOrder === item.DESC
-                  ? 'desc'
-                  : undefined
-              }
-              onPress={() =>
-                setLibrarySettings({
-                  sortOrder: sortOrder === item.ASC ? item.DESC : item.ASC,
-                })
-              }
-            />
-          )}
-        />
+        {librarySortOrderList.map(item => (
+          <SortItem
+            key={item.ASC}
+            label={item.label}
+            theme={theme}
+            status={
+              sortOrder === item.ASC
+                ? 'asc'
+                : sortOrder === item.DESC
+                ? 'desc'
+                : undefined
+            }
+            onPress={() =>
+              setLibrarySettings({
+                sortOrder: sortOrder === item.ASC ? item.DESC : item.ASC,
+              })
+            }
+          />
+        ))}
       </Modal>
     </Portal>
   );
@@ -70,13 +59,6 @@ const NovelSortModal: React.FC<NovelSortModalProps> = ({
 export default NovelSortModal;
 
 const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 24,
-    margin: 20,
-    borderRadius: 28,
-    height: 397.8,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   modalHeader: {
     paddingHorizontal: 24,
     fontSize: 24,

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-import { Portal, Modal, overlay } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 
 import { RadioButton } from '@components/RadioButton/RadioButton';
 import { ThemeColors } from '@theme/types';
 import { getString } from '@strings/translations';
 import { useBrowseSettings } from '@hooks/persisted/index';
+import { Modal } from '@components';
 
 interface DisplayModeModalProps {
   globalSearchConcurrency: number;
@@ -25,14 +26,7 @@ const ConcurrentSearchesModal: React.FC<DisplayModeModalProps> = ({
 
   return (
     <Portal>
-      <Modal
-        visible={modalVisible}
-        onDismiss={hideModal}
-        contentContainerStyle={[
-          styles.containerStyle,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
-      >
+      <Modal visible={modalVisible} onDismiss={hideModal}>
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
           {getString('browseSettingsScreen.concurrentSearches')}
         </Text>
@@ -55,12 +49,6 @@ const ConcurrentSearchesModal: React.FC<DisplayModeModalProps> = ({
 export default ConcurrentSearchesModal;
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    paddingVertical: 20,
-    margin: 20,
-    borderRadius: 28,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   modalHeader: {
     paddingHorizontal: 24,
     fontSize: 24,

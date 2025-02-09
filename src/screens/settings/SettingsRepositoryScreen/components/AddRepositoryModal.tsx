@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Modal, overlay, Portal, TextInput } from 'react-native-paper';
+import { Portal, TextInput } from 'react-native-paper';
 
-import { Button } from '@components/index';
+import { Button, Modal } from '@components/index';
 
 import { Repository } from '@database/types';
 import { useTheme } from '@hooks/persisted';
@@ -27,14 +27,7 @@ const AddRepositoryModal: React.FC<AddRepositoryModalProps> = ({
 
   return (
     <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={closeModal}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
-      >
+      <Modal visible={visible} onDismiss={closeModal}>
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {repository ? 'Edit repository' : 'Add repository'}
         </Text>
@@ -65,13 +58,6 @@ const AddRepositoryModal: React.FC<AddRepositoryModalProps> = ({
 export default AddRepositoryModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-    borderRadius: 32,
-    shadowColor: 'transparent', // Modal weird shadow fix
-  },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
