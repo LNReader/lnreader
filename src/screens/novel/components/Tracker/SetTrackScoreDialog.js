@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     margin: 30,
     padding: 24,
     borderRadius: 28,
+    shadowColor: 'transparent', // Modal weird shadow fix
   },
   dialogTitle: {
     fontSize: 24,

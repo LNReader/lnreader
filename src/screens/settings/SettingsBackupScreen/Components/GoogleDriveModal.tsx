@@ -325,6 +325,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 32,
     borderRadius: 32,
+    shadowColor: 'transparent', // Modal weird shadow fix
   },
   titleContainer: {
     flexDirection: 'row',

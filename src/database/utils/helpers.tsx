@@ -27,7 +27,7 @@ function defaultQuerySync<T = unknown, Array extends boolean = false>(
 
   try {
     // @ts-ignore
-    const result = db[fn](query, params);
+    const result = db[fn](query, params) as Array extends true ? T[] : T;
     callback(result);
     return result;
   } catch (e) {
@@ -45,7 +45,9 @@ async function defaultQueryAsync<T = unknown, Array extends boolean = false>(
 
   try {
     // @ts-ignore
-    const result = await db[fn](query, params);
+    const result = (await db[fn](query, params)) as Array extends true
+      ? T[]
+      : T;
     callback(result);
     return result;
   } catch (e) {

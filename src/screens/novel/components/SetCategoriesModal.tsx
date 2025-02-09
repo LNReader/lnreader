@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
     borderRadius: 32,
     maxHeight: (Dimensions.get('window').height * 3) / 4,
+    shadowColor: 'transparent', // Modal weird shadow fix
   },
   modalTitle: {
     paddingHorizontal: 24,

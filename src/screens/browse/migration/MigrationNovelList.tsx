@@ -94,6 +94,7 @@ const MigrationNovelList = ({
             margin: 20,
             borderRadius: 28,
             backgroundColor: theme.overlay3,
+            shadowColor: 'transparent', // Modal weird shadow fix
           }}
         >
           <Text

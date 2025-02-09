@@ -143,6 +143,7 @@ export default SourceSettingsModal;
 
 const styles = StyleSheet.create({
   modalContainer: {
+    shadowColor: 'transparent', // Modal weird shadow fix
     margin: 30,
     padding: 24,
     borderRadius: 28,

@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     margin: 30,
     padding: 20,
     borderRadius: 8,
+    shadowColor: 'transparent', // Modal weird shadow fix
   },
   modalTitle: {
     fontSize: 16,

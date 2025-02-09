@@ -99,5 +99,6 @@ const styles = StyleSheet.create({
     margin: 20,
     borderRadius: 28,
     flex: 1,
+    shadowColor: 'transparent', // Modal weird shadow fix
   },
 });

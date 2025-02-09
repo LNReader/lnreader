@@ -98,6 +98,7 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
                 margin: 20,
                 borderRadius: 6,
                 backgroundColor: theme.overlay3,
+                shadowColor: 'transparent', // Modal weird shadow fix
               }}
             >
               <Text

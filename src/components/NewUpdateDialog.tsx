@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     padding: 20,
     margin: 20,
     borderRadius: 6,
+    shadowColor: 'transparent', // Modal weird shadow fix
   },
   modalHeader: {
     fontWeight: 'bold',

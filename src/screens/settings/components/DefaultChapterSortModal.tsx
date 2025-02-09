@@ -59,5 +59,6 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     margin: 20,
     borderRadius: 6,
+    shadowColor: 'transparent', // Modal weird shadow fix
   },
 });

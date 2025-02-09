@@ -75,6 +75,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
       <Modal
         visible={visible}
         onDismiss={onDismiss}
+        style={styles.modalContainerContainer}
         contentContainerStyle={[
           styles.modalContainer,
           { backgroundColor: overlay(2, theme.surface) },
@@ -140,6 +141,13 @@ const styles = StyleSheet.create({
     margin: 30,
     padding: 24,
     borderRadius: 28,
+    shadowColor: 'transparent', // Modal weird shadow fix
+  },
+  modalContainerContainer: {
+    borderRadius: 28,
+    shadowOffset: { width: 10, height: 10 },
+    shadowRadius: 0,
+    shadowColor: 'red',
   },
   modalTitle: {
     fontSize: 24,
