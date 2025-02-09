@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import React, { useRef, useCallback, useState, useEffect, memo } from 'react';
 import { DrawerLayoutAndroid } from 'react-native';
 
 import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
@@ -25,6 +25,15 @@ import { View } from 'react-native';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
+
+  useBackHandler(() => {
+    if (get(drawerRef.current?.state, 'isOpen')) {
+      drawerRef.current?.closeDrawer();
+      return true;
+    }
+    return false;
+  });
+
   return (
     <ChapterContextProvider
       novel={route.params.novel}
@@ -32,12 +41,6 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
     >
       <DrawerLayoutAndroid
         ref={drawerRef}
-        onDrawerOpen={() => {
-          drawerRef.current?.setState(prev => ({ ...prev, isOpen: true }));
-        }}
-        onDrawerClose={() => {
-          drawerRef.current?.setState(prev => ({ ...prev, isOpen: false }));
-        }}
         drawerWidth={300}
         drawerPosition="left"
         renderNavigationView={() => <ChapterDrawer />}
@@ -56,124 +59,115 @@ type ChapterContentProps = ChapterScreenProps & {
   drawerRef: React.RefObject<DrawerLayoutAndroid>;
 };
 
-export const ChapterContent = ({
-  navigation,
-  drawerRef,
-}: ChapterContentProps) => {
-  const { left, right } = useSafeAreaInsets();
-  const { novel, chapter } = useChapterContext();
-  const webViewRef = useRef<WebView>(null);
-  const readerSheetRef = useRef<BottomSheetModalMethods>(null);
-  const theme = useTheme();
-  const { pageReader = false, keepScreenOn } = useChapterGeneralSettings();
-  const [bookmarked, setBookmarked] = useState(chapter.bookmark);
+export const ChapterContent = memo(
+  ({ navigation, drawerRef }: ChapterContentProps) => {
+    const { left, right } = useSafeAreaInsets();
+    const { novel, chapter } = useChapterContext();
+    const webViewRef = useRef<WebView>(null);
+    const readerSheetRef = useRef<BottomSheetModalMethods>(null);
+    const theme = useTheme();
+    const { pageReader = false, keepScreenOn } = useChapterGeneralSettings();
+    const [bookmarked, setBookmarked] = useState(chapter.bookmark);
 
-  useEffect(() => {
-    setBookmarked(chapter.bookmark);
-  }, [chapter]);
+    useEffect(() => {
+      setBookmarked(chapter.bookmark);
+    }, [chapter]);
 
-  const {
-    hidden,
-    loading,
-    error,
-    prevChapter,
-    nextChapter,
-    chapterText,
-    saveProgress,
-    hideHeader,
-    navigateChapter,
-    refetch,
-  } = useChapter(webViewRef);
+    const {
+      hidden,
+      loading,
+      error,
+      prevChapter,
+      nextChapter,
+      chapterText,
+      saveProgress,
+      hideHeader,
+      navigateChapter,
+      refetch,
+    } = useChapter(webViewRef);
 
-  const scrollToStart = () =>
-    requestAnimationFrame(() => {
-      webViewRef?.current?.injectJavaScript(
-        !pageReader
-          ? `(()=>{
+    const scrollToStart = () =>
+      requestAnimationFrame(() => {
+        webViewRef?.current?.injectJavaScript(
+          !pageReader
+            ? `(()=>{
                 window.scrollTo({top:0,behavior:'smooth'})
               })()`
-          : `(()=>{
+            : `(()=>{
               document.querySelector('chapter').setAttribute('data-page',0);
               document.querySelector("chapter").style.transform = 'translate(0%)';
             })()`,
-      );
-    });
+        );
+      });
 
-  const openDrawer = useCallback(() => {
-    drawerRef.current?.openDrawer();
-    hideHeader();
-  }, [drawerRef, hideHeader]);
+    const openDrawer = useCallback(() => {
+      drawerRef.current?.openDrawer();
+      hideHeader();
+    }, [drawerRef, hideHeader]);
 
-  useBackHandler(() => {
-    if (get(drawerRef.current?.state, 'isOpen')) {
-      drawerRef.current?.closeDrawer();
-      return true;
-    }
-    return false;
-  });
-
-  if (error) {
-    return (
-      <ErrorScreenV2
-        error={error}
-        actions={[
-          {
-            iconName: 'refresh',
-            title: getString('common.retry'),
-            onPress: refetch,
-          },
-          {
-            iconName: 'earth',
-            title: 'WebView',
-            onPress: () =>
-              navigation.navigate('WebviewScreen', {
-                name: novel.name,
-                url: chapter.path,
-                pluginId: novel.pluginId,
-              }),
-          },
-        ]}
-      />
-    );
-  }
-  return (
-    <View style={{ flex: 1, paddingLeft: left, paddingRight: right }}>
-      {keepScreenOn ? <KeepScreenAwake /> : null}
-      {loading ? (
-        <ChapterLoadingScreen />
-      ) : (
-        <WebViewReader
-          html={chapterText}
-          nextChapter={nextChapter}
-          webViewRef={webViewRef}
-          saveProgress={saveProgress}
-          onPress={hideHeader}
-          navigateChapter={navigateChapter}
+    if (error) {
+      return (
+        <ErrorScreenV2
+          error={error}
+          actions={[
+            {
+              iconName: 'refresh',
+              title: getString('common.retry'),
+              onPress: refetch,
+            },
+            {
+              iconName: 'earth',
+              title: 'WebView',
+              onPress: () =>
+                navigation.navigate('WebviewScreen', {
+                  name: novel.name,
+                  url: chapter.path,
+                  pluginId: novel.pluginId,
+                }),
+            },
+          ]}
         />
-      )}
-      <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
-      {!hidden ? (
-        <>
-          <ReaderAppbar
-            goBack={navigation.goBack}
-            theme={theme}
-            bookmarked={bookmarked}
-            setBookmarked={setBookmarked}
-          />
-          <ReaderFooter
-            theme={theme}
+      );
+    }
+    return (
+      <View style={{ flex: 1, paddingLeft: left, paddingRight: right }}>
+        {keepScreenOn ? <KeepScreenAwake /> : null}
+        {loading ? (
+          <ChapterLoadingScreen />
+        ) : (
+          <WebViewReader
+            html={chapterText}
             nextChapter={nextChapter}
-            prevChapter={prevChapter}
-            readerSheetRef={readerSheetRef}
-            scrollToStart={scrollToStart}
+            webViewRef={webViewRef}
+            saveProgress={saveProgress}
+            onPress={hideHeader}
             navigateChapter={navigateChapter}
-            navigation={navigation}
-            openDrawer={openDrawer}
           />
-        </>
-      ) : null}
-    </View>
-  );
-};
+        )}
+        <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
+        {!hidden ? (
+          <>
+            <ReaderAppbar
+              goBack={navigation.goBack}
+              theme={theme}
+              bookmarked={bookmarked}
+              setBookmarked={setBookmarked}
+            />
+            <ReaderFooter
+              theme={theme}
+              nextChapter={nextChapter}
+              prevChapter={prevChapter}
+              readerSheetRef={readerSheetRef}
+              scrollToStart={scrollToStart}
+              navigateChapter={navigateChapter}
+              navigation={navigation}
+              openDrawer={openDrawer}
+            />
+          </>
+        ) : null}
+      </View>
+    );
+  },
+);
 
 export default Chapter;
