@@ -46,7 +46,7 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
   );
 
   return (
-    <SafeAreaView excludeTop>
+    <SafeAreaView excludeTop excludeBottom>
       <ScrollView>
         <MoreHeader
           // status bar is translucent, text could be mess with it

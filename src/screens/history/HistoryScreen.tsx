@@ -95,7 +95,7 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
   );
 
   return (
-    <SafeAreaView>
+    <SafeAreaView excludeBottom>
       <SearchbarV2
         searchText={searchText}
         placeholder={getString('historyScreen.searchbar')}

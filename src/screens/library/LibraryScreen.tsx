@@ -160,7 +160,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     ) : null;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView excludeBottom>
       <SearchbarV2
         searchText={searchText}
         clearSearchbar={handleClearSearchbar}

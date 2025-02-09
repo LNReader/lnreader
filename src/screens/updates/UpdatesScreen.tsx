@@ -59,7 +59,7 @@ const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
   );
 
   return (
-    <SafeAreaView>
+    <SafeAreaView excludeBottom>
       <SearchbarV2
         searchText={searchText}
         clearSearchbar={clearSearchbar}

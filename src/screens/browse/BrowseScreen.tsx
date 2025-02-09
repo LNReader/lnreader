@@ -53,7 +53,7 @@ const BrowseScreen = ({ navigation }: BrowseScreenProps) => {
 
   const [index, setIndex] = React.useState(0);
   return (
-    <SafeAreaView>
+    <SafeAreaView excludeBottom>
       <SearchbarV2
         searchText={searchText}
         placeholder={getString('browseScreen.searchbar')}
