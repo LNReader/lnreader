@@ -1,5 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   NavigationState,
@@ -7,7 +14,7 @@ import {
   TabBar,
   TabView,
 } from 'react-native-tab-view';
-import color from 'color';
+import Color from 'color';
 
 import { SearchbarV2, Button, SafeAreaView } from '@components/index';
 import { LibraryView } from './components/LibraryListView';
@@ -36,18 +43,36 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { Row } from '@components/Common';
 import { LibraryScreenProps } from '@navigators/types';
-import { NovelInfo } from '@database/types';
+import { LibraryNovelInfo, NovelInfo } from '@database/types';
 import * as DocumentPicker from 'expo-document-picker';
 import ServiceManager from '@services/ServiceManager';
 import useImport from '@hooks/persisted/useImport';
+import { ThemeColors } from '@theme/types';
 
 type State = NavigationState<{
   key: string;
   title: string;
 }>;
 
+type TabViewLabelProps = {
+  route: {
+    id: number;
+    name: string;
+    sort: number;
+    novels: LibraryNovelInfo[];
+    key: string;
+    title: string;
+  };
+  labelText?: string;
+  focused: boolean;
+  color: string;
+  allowFontScaling?: boolean;
+  style?: StyleProp<TextStyle>;
+};
+
 const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
   const theme = useTheme();
+  const styles = createStyles(theme);
   const { left: leftInset, right: rightInset } = useSafeAreaInsets();
   const { searchText, setSearchText, clearSearchbar } = useSearch();
   const {
@@ -82,7 +107,9 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     clearSearchbar();
   };
 
-  const { library, refetchLibrary, isLoading } = useLibrary({ searchText });
+  const { library, refetchLibrary, isLoading } = useLibrary({
+    searchText,
+  });
   const [selectedNovelIds, setSelectedNovelIds] = useState<number[]>([]);
 
   useBackHandler(() => {
@@ -108,7 +135,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
 
   useEffect(() => {
     refetchLibrary();
-  }, [importQueue]);
+  }, [refetchLibrary, importQueue]);
 
   const searchbarPlaceholder =
     selectedNovelIds.length === 0
@@ -138,26 +165,55 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
       <TabBar
         {...props}
         scrollEnabled
-        indicatorStyle={{
-          backgroundColor: theme.primary,
-          height: 3,
-        }}
+        indicatorStyle={styles.tabBarIndicator}
         style={[
           {
             backgroundColor: theme.surface,
-            borderBottomColor: color(theme.isDark ? '#FFFFFF' : '#000000')
+            borderBottomColor: Color(theme.isDark ? '#FFFFFF' : '#000000')
               .alpha(0.12)
               .string(),
           },
           styles.tabBar,
         ]}
-        tabStyle={{ width: 'auto', minWidth: 100 }}
+        tabStyle={styles.tabStyle}
         gap={8}
         inactiveColor={theme.secondary}
         activeColor={theme.primary}
         android_ripple={{ color: theme.rippleColor }}
       />
     ) : null;
+
+  const renderLabel = useCallback(
+    ({ route, color }: TabViewLabelProps) => {
+      return (
+        <Row>
+          <Text style={[{ color }, styles.fontWeight600]}>{route.title}</Text>
+          {showNumberOfNovels ? (
+            <View
+              style={[
+                styles.badgeCtn,
+                { backgroundColor: theme.surfaceVariant },
+              ]}
+            >
+              <Text
+                style={[styles.badgetText, { color: theme.onSurfaceVariant }]}
+              >
+                {route?.novels.length}
+              </Text>
+            </View>
+          ) : null}
+        </Row>
+      );
+    },
+    [
+      showNumberOfNovels,
+      styles.badgeCtn,
+      styles.badgetText,
+      styles.fontWeight600,
+      theme.onSurfaceVariant,
+      theme.surfaceVariant,
+    ],
+  );
 
   return (
     <SafeAreaView excludeBottom>
@@ -241,28 +297,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
 
       <TabView
         commonOptions={{
-          label: ({ route, color }) => (
-            <Row>
-              <Text style={{ color, fontWeight: '600' }}>{route.title}</Text>
-              {showNumberOfNovels ? (
-                <View
-                  style={[
-                    styles.badgeCtn,
-                    { backgroundColor: theme.surfaceVariant },
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.badgetText,
-                      { color: theme.onSurfaceVariant },
-                    ]}
-                  >
-                    {route?.novels.length}
-                  </Text>
-                </View>
-              ) : null}
-            </Row>
-          ),
+          label: renderLabel,
         }}
         lazy
         navigationState={{
@@ -359,16 +394,24 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
             },
             {
               icon: 'check',
-              onPress: () => {
-                selectedNovelIds.map(id => markAllChaptersRead(id));
+              onPress: async () => {
+                let promises: Promise<any>[] = [];
+                selectedNovelIds.map(id =>
+                  promises.push(markAllChaptersRead(id)),
+                );
+                await Promise.all(promises);
                 setSelectedNovelIds([]);
                 refetchLibrary();
               },
             },
             {
               icon: 'check-outline',
-              onPress: () => {
-                selectedNovelIds.map(id => markAllChaptersUnread(id));
+              onPress: async () => {
+                let promises: Promise<any>[] = [];
+                selectedNovelIds.map(id =>
+                  promises.push(markAllChaptersUnread(id)),
+                );
+                await Promise.all(promises);
                 setSelectedNovelIds([]);
                 refetchLibrary();
               },
@@ -388,30 +431,43 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
   );
 };
 
-export default LibraryScreen;
+export default React.memo(LibraryScreen);
 
-const styles = StyleSheet.create({
-  tabBar: {
-    elevation: 0,
-    borderBottomWidth: 1,
-  },
-  globalSearchBtn: {
-    margin: 16,
-  },
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 0,
-  },
-  badgeCtn: {
-    position: 'relative',
-    borderRadius: 50,
-    marginLeft: 2,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-  },
-  badgetText: {
-    fontSize: 12,
-  },
-});
+function createStyles(theme: ThemeColors) {
+  return StyleSheet.create({
+    tabBarIndicator: {
+      backgroundColor: theme.primary,
+      height: 3,
+    },
+    tabStyle: {
+      width: 'auto',
+      minWidth: 100,
+    },
+    tabBar: {
+      elevation: 0,
+      borderBottomWidth: 1,
+    },
+    globalSearchBtn: {
+      margin: 16,
+    },
+    fab: {
+      position: 'absolute',
+      margin: 16,
+      right: 0,
+      bottom: 0,
+    },
+    badgeCtn: {
+      position: 'relative',
+      borderRadius: 50,
+      marginLeft: 2,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+    },
+    badgetText: {
+      fontSize: 12,
+    },
+    fontWeight600: {
+      fontWeight: '600',
+    },
+  });
+}

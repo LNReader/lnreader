@@ -73,6 +73,7 @@ export const LibraryView: React.FC<Props> = ({
     <View style={{ flex: 1 }}>
       <NovelList
         data={novels}
+        extraData={[selectedNovelIds]}
         renderItem={renderItem as NovelListRenderItem}
         ListEmptyComponent={
           <EmptyView
