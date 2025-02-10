@@ -45,13 +45,13 @@
         "theme": {
             "default": "За замовчуванням",
             "lavender": "Лаванда",
-            "midnightDusk": "Опівнічний сутінок",
+            "midnightDusk": "Опівнічні сутінки",
             "daybreakBloom": "Світанок",
             "strawberry": "Полуничний дайкірі",
             "tako": "Тако",
-            "teal": "Бірюзовий",
+            "teal": "Бірюзова",
             "turquoise": "Турмалін",
-            "yotsuba": "Йоцука"
+            "yotsuba": "Йоцуба"
         }
     },
     "backupScreen": {
