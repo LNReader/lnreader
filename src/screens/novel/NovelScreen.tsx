@@ -29,7 +29,7 @@ import { updateChapterProgressByIds } from '@database/queries/ChapterQueries';
 import { MaterialDesignIconName } from '@type/icon';
 import NovelScreenList from './components/NovelScreenList';
 import { ThemeColors } from '@theme/types';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from '@components';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { path, pluginId } = route.params;
@@ -273,7 +273,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
               </Animated.View>
             )}
           </Portal>
-          <SafeAreaView style={{ flex: 1 }}>
+          <SafeAreaView excludeTop>
             <Suspense fallback={<NovelScreenLoading theme={theme} />}>
               <NovelScreenList
                 routeBaseNovel={novel ?? route.params}
