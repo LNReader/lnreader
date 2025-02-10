@@ -138,7 +138,7 @@ export const switchNovelToLibrary = async (
 
 // allow to delete local novels
 export const removeNovelsFromLibrary = (novelIds: Array<number>) => {
-  runAsync([
+  runSync([
     [`UPDATE Novel SET inLibrary = 0 WHERE id IN (${novelIds.join(', ')});`],
     [`DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(', ')});`],
   ]);
@@ -293,7 +293,7 @@ export const updateNovelCategories = async (
       ]);
     });
   }
-  runAsync(queries);
+  return runSync(queries);
 };
 
 const restoreObjectQuery = (table: string, obj: any) => {
