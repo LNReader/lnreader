@@ -1,4 +1,4 @@
-import React, { RefObject, useCallback, useRef } from 'react';
+import React, { RefObject, useCallback, useMemo, useRef } from 'react';
 import {
   // BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -9,21 +9,26 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBackHandler } from '@hooks/index';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import BottomSheetBackdrop from './BottomSheetBackdrop';
+import { useWindowDimensions } from 'react-native';
 
 interface BottomSheetProps
-  extends Omit<BottomSheetModalProps, 'ref' | 'onChange'> {
+  extends Omit<BottomSheetModalProps, 'ref' | 'onChange' | 'snapPoints'> {
   bottomSheetRef: RefObject<BottomSheetModalMethods> | null;
   onChange?: (index: number) => void;
+  snapPoints?: number[];
 }
 
 const BottomSheet: React.FC<BottomSheetProps> = ({
   bottomSheetRef,
   children,
   onChange,
+  containerStyle,
+  snapPoints,
   ...otherProps
 }) => {
   const indexRef = useRef<number>();
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, top } = useSafeAreaInsets();
+  const { height } = useWindowDimensions();
   const renderBackdrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => (
       <BottomSheetBackdrop {...backdropProps} />
@@ -37,17 +42,33 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     }
     return false;
   });
+
+  const safeSnapPoints = useMemo(() => {
+    if (!snapPoints) {
+      return undefined;
+    }
+    const maxHeight = height - top;
+    return snapPoints
+      .sort((a, b) => a - b)
+      .map(point => {
+        if (point < maxHeight - 100) return point;
+        return maxHeight;
+      });
+  }, [height, snapPoints, top]);
+
   return (
     <BottomSheetModal
       ref={bottomSheetRef}
       backdropComponent={renderBackdrop}
       handleComponent={null}
-      containerStyle={{ paddingBottom: bottom }}
+      containerStyle={[{ paddingBottom: bottom }, containerStyle]}
       onChange={index => {
         onChange?.(index);
         indexRef.current = index;
       }}
       enableDynamicSizing={false}
+      enableOverDrag={false}
+      snapPoints={safeSnapPoints}
       {...otherProps}
     >
       {children}

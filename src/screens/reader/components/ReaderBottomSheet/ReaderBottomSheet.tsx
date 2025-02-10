@@ -118,7 +118,6 @@ const GeneralTab: React.FC = React.memo(() => {
     ),
     [settings, toggleSetting],
   );
-  console.log(3);
 
   return (
     <BottomSheetFlashList
