@@ -1,4 +1,11 @@
-import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { StyleSheet, View, StatusBar, Text, Share } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
 import { FlashList } from '@shopify/flash-list';
@@ -81,24 +88,27 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   useFocusEffect(refreshChapters);
 
-  const downloadChs = (amount: number | 'all' | 'unread') => {
-    if (!novel) {
-      return;
-    }
-    let filtered = chapters.filter(chapter => !chapter.isDownloaded);
-    if (amount === 'unread') {
-      filtered = filtered.filter(chapter => chapter.unread);
-    }
-    if (isNumber(amount)) {
-      filtered = filtered.slice(0, amount);
-    }
-    if (filtered) {
-      downloadChapters(novel, filtered);
-    }
-  };
-  const deleteChs = () => {
+  const downloadChs = useCallback(
+    (amount: number | 'all' | 'unread') => {
+      if (!novel) {
+        return;
+      }
+      let filtered = chapters.filter(chapter => !chapter.isDownloaded);
+      if (amount === 'unread') {
+        filtered = filtered.filter(chapter => chapter.unread);
+      }
+      if (isNumber(amount)) {
+        filtered = filtered.slice(0, amount);
+      }
+      if (filtered) {
+        downloadChapters(novel, filtered);
+      }
+    },
+    [chapters, downloadChapters, novel],
+  );
+  const deleteChs = useCallback(() => {
     deleteChapters(chapters.filter(c => c.isDownloaded));
-  };
+  }, [chapters, deleteChapters]);
   const shareNovel = () => {
     if (!novel) {
       return;
@@ -109,7 +119,11 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   };
 
   const [jumpToChapterModal, showJumpToChapterModal] = useState(false);
-  const downloadCustomChapterModal = useBoolean();
+  const {
+    value: dlChapterModalVisible,
+    setTrue: openDlChapterModal,
+    setFalse: closeDlChapterModal,
+  } = useBoolean();
 
   const actions = useMemo(() => {
     const list: { icon: MaterialDesignIconName; onPress: () => void }[] = [];
@@ -248,11 +262,11 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                 downloadChapters={downloadChs}
                 showEditInfoModal={showEditInfoModal}
                 setCustomNovelCover={setCustomNovelCover}
-                downloadCustomChapterModal={downloadCustomChapterModal.setTrue}
+                downloadCustomChapterModal={openDlChapterModal}
                 showJumpToChapterModal={showJumpToChapterModal}
                 shareNovel={shareNovel}
                 theme={theme}
-                isLocal={novel?.isLocal}
+                isLocal={novel?.isLocal ?? route.params?.isLocal}
                 goBack={navigation.goBack}
                 headerOpacity={headerOpacity}
               />
@@ -345,8 +359,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   theme={theme}
                 />
                 <DownloadCustomChapterModal
-                  modalVisible={downloadCustomChapterModal.value}
-                  hideModal={downloadCustomChapterModal.setFalse}
+                  modalVisible={dlChapterModalVisible}
+                  hideModal={closeDlChapterModal}
                   novel={novel}
                   chapters={chapters}
                   theme={theme}
