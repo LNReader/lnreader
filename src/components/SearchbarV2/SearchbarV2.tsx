@@ -112,6 +112,7 @@ const Searchbar: React.FC<SearcbarProps> = ({
           <Menu
             visible={extraMenu}
             onDismiss={() => showExtraMenu(false)}
+            anchorPosition="bottom"
             anchor={
               <IconButtonV2
                 name="dots-vertical"
