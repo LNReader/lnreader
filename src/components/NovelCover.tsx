@@ -103,6 +103,7 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
       />
     );
   }
+
   return displayMode !== DisplayModes.List ? (
     <View
       style={[

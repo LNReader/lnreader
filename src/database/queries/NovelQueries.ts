@@ -9,6 +9,7 @@ import {
   getFirstAsync,
   QueryObject,
   runAsync,
+  runSync,
 } from '../utils/helpers';
 import { getString } from '@strings/translations';
 import { BackupNovel, NovelInfo } from '../types';
@@ -44,12 +45,12 @@ export const insertNovelAndChapters = async (
       NativeFile.mkdir(novelDir);
       const novelCoverPath = novelDir + '/cover.png';
       const novelCoverUri = 'file://' + novelCoverPath;
-      downloadFile(
+      await downloadFile(
         sourceNovel.cover,
         novelCoverPath,
         getPlugin(pluginId)?.imageRequestInit,
       ).then(() => {
-        runAsync([
+        runSync([
           [
             'UPDATE Novel SET cover = ? WHERE id = ?',
             [novelCoverUri, novelId!],
