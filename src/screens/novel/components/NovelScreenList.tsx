@@ -6,12 +6,7 @@ import { useRef, useState } from 'react';
 import { pickCustomNovelCover } from '@database/queries/NovelQueries';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { useBoolean } from '@hooks/index';
-import {
-  useAppSettings,
-  useNovel,
-  useDownload,
-  useTheme,
-} from '@hooks/persisted';
+import { useAppSettings, useDownload, useTheme } from '@hooks/persisted';
 import {
   updateNovel,
   updateNovelPage,
@@ -31,6 +26,34 @@ import TrackSheet from './Tracker/TrackSheet';
 import NovelBottomSheet from './NovelBottomSheet';
 import * as Haptics from 'expo-haptics';
 import { AnimatedFAB } from 'react-native-paper';
+import { NovelSettings } from '@hooks/persisted/useNovel';
+
+type NovelScreenListProps = {
+  routeBaseNovel: {
+    name: string;
+    path: string;
+    pluginId: string;
+    cover?: string;
+  };
+  navigation: any;
+  openDrawer: () => void;
+  headerOpacity: SharedValue<number>;
+  selected: ChapterInfo[];
+  setSelected: React.Dispatch<React.SetStateAction<ChapterInfo[]>>;
+  chapters: ChapterInfo[];
+  fetchedNovel?: NovelInfo;
+  novelSettings: NovelSettings;
+  loading: boolean;
+  pageIndex: number;
+  pages: string[];
+  lastRead?: ChapterInfo;
+  setNovel: React.Dispatch<React.SetStateAction<NovelInfo | undefined>>;
+  getNovel: () => void;
+  sortAndFilterChapters: (sort?: string, filter?: string) => Promise<void>;
+  setShowChapterTitles: (v: boolean) => void;
+  followNovel: () => void;
+  deleteChapter: (chapter: ChapterInfo) => void;
+};
 
 const ListEmptyComponent = () => (
   <>
@@ -48,21 +71,20 @@ const NovelScreenList = ({
   selected,
   setSelected,
   chapters,
-}: {
-  routeBaseNovel: {
-    name: string;
-    path: string;
-    pluginId: string;
-    cover?: string;
-  };
-  navigation: any;
-  openDrawer: () => void;
-  headerOpacity: SharedValue<number>;
-  selected: ChapterInfo[];
-  setSelected: React.Dispatch<React.SetStateAction<ChapterInfo[]>>;
-  chapters: ChapterInfo[];
-}) => {
-  const { path, pluginId } = routeBaseNovel;
+  fetchedNovel,
+  novelSettings,
+  loading,
+  pageIndex,
+  pages,
+  lastRead,
+  setNovel,
+  getNovel,
+  sortAndFilterChapters,
+  setShowChapterTitles,
+  followNovel,
+  deleteChapter,
+}: NovelScreenListProps) => {
+  const { pluginId } = routeBaseNovel;
   const routeNovel: Omit<NovelInfo, 'id'> & { id: 'NO_ID' } = {
     inLibrary: false,
     isLocal: false,
@@ -70,6 +92,7 @@ const NovelScreenList = ({
     ...routeBaseNovel,
     id: 'NO_ID',
   };
+  const novel = fetchedNovel ?? routeNovel;
   const [updating, setUpdating] = useState(false);
   const {
     useFabForContinueReading,
@@ -78,31 +101,18 @@ const NovelScreenList = ({
     downloadNewChapters,
     refreshNovelMetadata,
   } = useAppSettings();
+
   const {
-    loading,
-    pageIndex,
-    pages,
-    novel = routeNovel,
-    lastRead,
-    novelSettings: {
-      sort = defaultChapterSort,
-      filter = '',
-      showChapterTitles = false,
-    },
-    setNovel,
-    getNovel,
-    sortAndFilterChapters,
-    setShowChapterTitles,
-    followNovel,
-    deleteChapter,
-  } = useNovel(path, pluginId);
+    sort = defaultChapterSort,
+    filter = '',
+    showChapterTitles = false,
+  } = novelSettings;
 
   const theme = useTheme();
   const { top: topInset, bottom: bottomInset } = useSafeAreaInsets();
 
   const { downloadQueue, downloadChapter } = useDownload();
 
-  // const [selected, setSelected] = useState<ChapterInfo[]>([]);
   const [isFabExtended, setIsFabExtended] = useState(true);
 
   let flatlistRef = useRef<FlashList<ChapterInfo>>(null);
@@ -271,7 +281,7 @@ const NovelScreenList = ({
           );
         }}
         keyExtractor={item => 'chapter_' + item.id}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={styles.contentContainer}
         ListHeaderComponent={
           <NovelInfoHeader
             novel={novel}
@@ -311,7 +321,7 @@ const NovelScreenList = ({
             novel={novel}
             theme={theme}
           />
-          {useFabForContinueReading && lastRead ? (
+          {useFabForContinueReading && (lastRead || chapters[0]) ? (
             <AnimatedFAB
               style={[
                 styles.fab,
@@ -320,15 +330,19 @@ const NovelScreenList = ({
               extended={isFabExtended}
               color={theme.onPrimary}
               uppercase={false}
-              label={getString('common.resume')}
+              label={
+                lastRead
+                  ? getString('common.resume')
+                  : getString('novelScreen.startReadingChapters', {
+                      name: '',
+                    }).trim()
+              }
               icon="play"
               onPress={() => {
-                if (lastRead) {
-                  navigation.navigate('Chapter', {
-                    novel: novel,
-                    chapter: lastRead,
-                  });
-                }
+                navigation.navigate('Chapter', {
+                  novel: novel,
+                  chapter: lastRead ?? chapters[0],
+                });
               }}
             />
           ) : null}
@@ -339,6 +353,7 @@ const NovelScreenList = ({
 };
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  contentContainer: { paddingBottom: 100 },
   rowBack: {
     alignItems: 'center',
     flex: 1,

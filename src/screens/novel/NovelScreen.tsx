@@ -39,6 +39,14 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     pages,
     novel,
     chapters,
+    loading,
+    lastRead,
+    novelSettings,
+    getNovel,
+    sortAndFilterChapters,
+    setShowChapterTitles,
+    followNovel,
+    deleteChapter,
     openPage,
     setNovel,
     bookmarkChapters,
@@ -276,13 +284,25 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           <SafeAreaView excludeTop>
             <Suspense fallback={<NovelScreenLoading theme={theme} />}>
               <NovelScreenList
-                routeBaseNovel={novel ?? route.params}
+                routeBaseNovel={route.params}
                 navigation={navigation}
                 openDrawer={openDrawer}
                 headerOpacity={headerOpacity}
                 selected={selected}
                 setSelected={setSelected}
                 chapters={chapters}
+                fetchedNovel={novel}
+                novelSettings={novelSettings}
+                loading={loading}
+                pageIndex={pageIndex}
+                pages={pages}
+                lastRead={lastRead}
+                setNovel={setNovel}
+                getNovel={getNovel}
+                sortAndFilterChapters={sortAndFilterChapters}
+                setShowChapterTitles={setShowChapterTitles}
+                followNovel={followNovel}
+                deleteChapter={deleteChapter}
               />
             </Suspense>
           </SafeAreaView>
