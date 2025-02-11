@@ -116,12 +116,13 @@ const GeneralTab: React.FC = React.memo(() => {
         theme={theme}
       />
     ),
-    [settings, toggleSetting],
+    [settings, theme, toggleSetting],
   );
 
   return (
     <BottomSheetFlashList
       data={preferences}
+      extraData={[settings]}
       keyExtractor={item => item.key}
       renderItem={renderItem}
       estimatedItemSize={60}
@@ -175,7 +176,6 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
 
   return (
     <BottomSheet
-      enableOverDrag={false} // messes with the scrollview
       bottomSheetRef={bottomSheetRef}
       snapPoints={[360, 600]}
       backgroundStyle={{ backgroundColor }}
@@ -187,7 +187,6 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
     >
       <BottomSheetView style={{ flex: 1 }}>
         <TabView
-          lazy
           commonOptions={{
             label: renderLabel,
           }}
