@@ -1,11 +1,12 @@
 import { FlashList, FlashListProps } from '@shopify/flash-list';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
+import { TextInput as RNTextInput } from 'react-native';
 import { getString } from '@strings/translations';
 import { Button, Modal, SwitchItem } from '@components';
 
-import { Portal, TextInput, Text } from 'react-native-paper';
+import { Portal, Text } from 'react-native-paper';
 import { useTheme } from '@hooks/persisted';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { NovelScreenProps } from '@navigators/types';
@@ -37,9 +38,15 @@ const JumpToChapterModal = ({
   const [error, setError] = useState('');
   const [result, setResult] = useState<ChapterInfo[]>([]);
 
+  const inputRef = useRef<RNTextInput>(null);
+  const [inputFocused, setInputFocused] = useState(false);
+
   const onDismiss = () => {
     hideModal();
     setText('');
+    inputRef.current?.clear();
+    inputRef.current?.blur();
+    setInputFocused(false);
     setError('');
     setResult([]);
   };
@@ -146,7 +153,13 @@ const JumpToChapterModal = ({
   };
 
   const errorColor = !theme.isDark ? '#B3261E' : '#F2B8B5';
+  const placeholder = mode
+    ? getString('novelScreen.jumpToChapterModal.chapterName')
+    : getString('novelScreen.jumpToChapterModal.chapterNumber') +
+      ` (≥ ${minNumber},  ≤ ${maxNumber})`;
 
+  const borderWidth = inputFocused || error ? 2 : 1;
+  const margin = inputFocused || error ? 0 : 1;
   return (
     <Portal>
       <Modal visible={modalVisible} onDismiss={onDismiss}>
@@ -154,22 +167,29 @@ const JumpToChapterModal = ({
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
             {getString('novelScreen.jumpToChapterModal.jumpToChapter')}
           </Text>
-          <TextInput
-            value={text}
-            placeholder={
-              mode
-                ? getString('novelScreen.jumpToChapterModal.chapterName')
-                : getString('novelScreen.jumpToChapterModal.chapterNumber') +
-                  ` (≥ ${minNumber},  ≤ ${maxNumber})`
-            }
+          <RNTextInput
+            ref={inputRef}
+            placeholder={placeholder}
+            placeholderTextColor={'grey'}
             onChangeText={onChangeText}
             onSubmitEditing={onSubmit}
-            mode="outlined"
-            theme={{ colors: { ...theme } }}
-            underlineColor={theme.outline}
-            dense
             keyboardType={mode ? 'default' : 'numeric'}
-            error={error.length > 0}
+            onFocus={() => setInputFocused(true)}
+            onBlur={() => setInputFocused(false)}
+            style={[
+              {
+                color: theme.onBackground,
+                backgroundColor: theme.background,
+                borderColor: error
+                  ? theme.error
+                  : inputFocused
+                  ? theme.primary
+                  : theme.outline,
+                borderWidth: borderWidth,
+                margin: margin,
+              },
+              styles.textInput,
+            ]}
           />
           {!!error && (
             <Text style={[styles.errorText, { color: errorColor }]}>
@@ -214,6 +234,13 @@ const JumpToChapterModal = ({
 export default JumpToChapterModal;
 
 const styles = StyleSheet.create({
+  textInput: {
+    borderStyle: 'solid',
+    borderRadius: 4,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    fontSize: 16,
+  },
   modalFooterCtn: {
     flexDirection: 'row-reverse',
     paddingTop: 8,

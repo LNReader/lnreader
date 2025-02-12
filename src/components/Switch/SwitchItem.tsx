@@ -45,7 +45,6 @@ const SwitchItem: React.FC<SwitchItemProps> = ({
     <Switch
       value={value}
       onValueChange={onPress}
-      theme={theme}
       style={styles.switch}
       size={size}
     />

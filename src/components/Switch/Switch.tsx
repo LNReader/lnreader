@@ -1,5 +1,5 @@
 import { Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import React, { useCallback } from 'react';
+import React, { useEffect } from 'react';
 import Animated, {
   interpolateColor,
   useSharedValue,
@@ -42,22 +42,26 @@ const Switch = ({ value, size = 22, onValueChange, style }: SwitchProps) => {
   }));
 
   // Precompute background color animation
-  const backgroundColor = useDerivedValue(() =>
-    interpolateColor(progress.value, [0, size], [theme.outline, theme.primary]),
+  const backgroundColor = useDerivedValue(
+    () =>
+      interpolateColor(
+        progress.value,
+        [0, size],
+        [theme.outline, theme.primary],
+      ),
+    [value],
   );
 
   const backgroundColorStyle = useAnimatedStyle(() => ({
     backgroundColor: backgroundColor.value,
   }));
 
-  // Optimize function reference
-  const handlePress = useCallback(() => {
-    onValueChange?.();
-    progress.value = withTiming(value ? 0 : size);
-  }, [onValueChange, progress, value, size]);
+  useEffect(() => {
+    progress.value = withTiming(value ? size : 0);
+  }, [progress, size, value]);
 
   return (
-    <Pressable onPress={handlePress}>
+    <Pressable onPress={onValueChange}>
       <Animated.View
         style={[
           styles.container,
