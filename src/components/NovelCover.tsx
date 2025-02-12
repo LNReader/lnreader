@@ -22,6 +22,7 @@ import { getUserAgent } from '@hooks/persisted/useUserAgent';
 import { getString } from '@strings/translations';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { defaultCover } from '@plugins/helpers/constants';
+import { ActivityIndicator } from 'react-native-paper';
 
 interface UnreadBadgeProps {
   chaptersDownloaded: number;
@@ -54,6 +55,7 @@ interface INovelCover<TNovel> {
   theme: ThemeColors;
   isSelected: boolean;
   addSkeletonLoading?: boolean;
+  inActivity?: boolean;
   onLongPress: (item: TNovel) => void;
   selectedNovelIds: number[];
 }
@@ -65,6 +67,7 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
   theme,
   isSelected,
   addSkeletonLoading,
+  inActivity,
   onLongPress,
   selectedNovelIds,
 }: INovelCover<TNovel>) {
@@ -149,6 +152,7 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
               ) : null}
             </>
           ) : null}
+          {inActivity ? <InActivityBadge theme={theme} /> : null}
         </View>
         <Image
           source={{ uri, headers: { 'User-Agent': getUserAgent() } }}
@@ -254,6 +258,20 @@ const InLibraryBadge = ({ theme }: { theme: ThemeColors }) => (
   >
     {getString('novelScreen.inLibaray')}
   </Text>
+);
+
+const InActivityBadge = ({ theme }: { theme: ThemeColors }) => (
+  <View
+    style={[
+      styles.activityBadge,
+      {
+        backgroundColor: theme.primary,
+      },
+      styles.standardBorderRadius,
+    ]}
+  >
+    <ActivityIndicator animating={true} size={10} color={theme.onPrimary} />
+  </View>
 );
 
 interface BadgeProps {
@@ -373,6 +391,10 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     paddingHorizontal: 4,
     fontSize: 12,
+  },
+  activityBadge: {
+    padding: 5,
+    marginHorizontal: 4,
   },
   compactTitleContainer: {
     position: 'absolute',
