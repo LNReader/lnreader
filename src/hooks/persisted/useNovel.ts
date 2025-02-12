@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { SearchResult, UserListEntry } from '@services/Trackers';
 import { useMMKVNumber, useMMKVObject } from 'react-native-mmkv';
 import { TrackerMetadata, getTracker } from './useTracker';
@@ -22,6 +23,8 @@ import {
   getPageChapters as _getPageChapters,
   insertChapters,
   getCustomPages,
+  getChapterCount,
+  getPageChaptersTeaser,
 } from '@database/queries/ChapterQueries';
 import { fetchNovel, fetchPage } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
@@ -137,6 +140,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const [loading, setLoading] = useState(true);
   const [novel, setNovel] = useState<NovelInfo>();
   const [chapters, _setChapters] = useState<ChapterInfo[]>([]);
+  const [chaptersTeasers, _setChaptersTeasers] = useState<ChapterInfo[]>([]);
   const [pages, setPages] = useState<string[]>([]);
   const { defaultChapterSort } = useAppSettings();
 
@@ -194,6 +198,28 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     [novel, _setChapters],
   );
 
+  const setChaptersTeasers = useCallback(
+    (chs: ChapterInfo[]) => {
+      if (novel) {
+        _setChaptersTeasers(
+          chs.map(chapter => {
+            const parsedTime = dayjs(chapter.releaseTime);
+            return {
+              ...chapter,
+              releaseTime: parsedTime.isValid()
+                ? parsedTime.format('LL')
+                : chapter.releaseTime,
+              chapterNumber: chapter.chapterNumber
+                ? chapter.chapterNumber
+                : parseChapterNumber(novel.name, chapter.name),
+            };
+          }),
+        );
+      }
+    },
+    [novel, _setChaptersTeasers],
+  );
+
   const sortAndFilterChapters = async (sort?: string, filter?: string) => {
     if (novel) {
       setNovelSettings({
@@ -223,13 +249,15 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   // #region getters
 
   const getNovel = useCallback(async () => {
-    let tmpNovel = await getNovelByPath(novelPath, pluginId);
+    let tmpNovel = getNovelByPath(novelPath, pluginId);
     if (!tmpNovel) {
       const sourceNovel = await fetchNovel(pluginId, novelPath).catch(() => {
         throw new Error(getString('updatesScreen.unableToGetNovel'));
       });
+
       await insertNovelAndChapters(pluginId, sourceNovel);
-      tmpNovel = await getNovelByPath(novelPath, pluginId);
+      tmpNovel = getNovelByPath(novelPath, pluginId);
+
       if (!tmpNovel) {
         return;
       }
@@ -240,7 +268,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         .fill(0)
         .map((_, idx) => String(idx + 1));
     } else {
-      tmpPages = (await getCustomPages(tmpNovel.id)).map(c => c.page);
+      // for some reason getCustomPages async takes between 10-20s
+      tmpPages = getCustomPages(tmpNovel.id).map(c => c.page);
     }
     if (tmpPages.length) {
       setPages(tmpPages);
@@ -253,17 +282,34 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   const getChapters = useCallback(async () => {
     const page = pages[pageIndex];
     if (novel && page) {
-      let newChapters =
-        (await _getPageChapters(
-          novel.id,
-          settingsSort,
-          novelSettings.filter,
-          page,
-        ).catch(e => console.error('_getPageChapters failed:', e))) || [];
+      let newChapters: ChapterInfo[] = [];
+      let teaser: ChapterInfo[] = [];
+      let teaser2: ChapterInfo[] = [];
 
-      if (!newChapters.length && Number(page)) {
+      const config = [
+        novel.id,
+        settingsSort,
+        novelSettings.filter,
+        page,
+      ] as const;
+
+      const chapterCount = getChapterCount(novel.id, page);
+
+      if (chapterCount) {
+        teaser = getPageChaptersTeaser(...config) || [];
+        setChaptersTeasers(teaser);
+
+        teaser2 = (await _getPageChapters(...config, 10, 90)) || [];
+        setChaptersTeasers(teaser2);
+
+        newChapters =
+          (await _getPageChapters(...config, 100, chapterCount).catch(e =>
+            console.error('_getPageChapters failed:', e),
+          )) || [];
+      }
+      // Fetch next page if no chapters
+      else if (Number(page)) {
         const sourcePage = await fetchPage(pluginId, novelPath, page);
-
         const sourceChapters = sourcePage.chapters.map(ch => {
           return {
             ...ch,
@@ -271,14 +317,11 @@ export const useNovel = (novelPath: string, pluginId: string) => {
           };
         });
         await insertChapters(novel.id, sourceChapters);
-        newChapters = await _getPageChapters(
-          novel.id,
-          settingsSort,
-          novelSettings.filter,
-          page,
-        );
+        newChapters = await _getPageChapters(...config);
       }
-      setChapters(newChapters);
+
+      setChapters([...teaser, ...teaser2, ...newChapters]);
+      setChaptersTeasers([]);
     }
   }, [
     novel,
@@ -288,6 +331,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     pages,
     pluginId,
     setChapters,
+    setChaptersTeasers,
     settingsSort,
   ]);
 
@@ -431,7 +475,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   );
 
   const refreshChapters = useCallback(() => {
-    if (novel) {
+    if (novel && chapters.length === 0) {
       _getPageChapters(
         novel.id,
         settingsSort,
@@ -441,6 +485,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     }
   }, [
     novel,
+    chapters.length,
     settingsSort,
     novelSettings.filter,
     pages,
@@ -455,13 +500,15 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     getNovel().finally(() => {
       //? Sometimes loading state changes doesn't trigger rerender causing NovelScreen to be in endless loading state
       setLoading(false);
-      getNovel();
+      // getNovel();
     });
   }, [getNovel]);
 
   useEffect(() => {
+    if (novel === undefined) return;
+
     getChapters().catch(e => showToast(e.message));
-  }, [getChapters]);
+  }, [getChapters, novel]);
 
   // #endregion
 
@@ -473,6 +520,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     lastRead,
     chapters,
     novelSettings,
+    chaptersTeasers,
     getNovel,
     setPageIndex,
     openPage,

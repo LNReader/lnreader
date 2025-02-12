@@ -168,6 +168,7 @@ export interface StringMap {
   'common.signOut': 'string';
   'common.sort': 'string';
   'common.submit': 'string';
+  'common.loading': 'string';
   'webview.refresh': 'string';
   'webview.share': 'string';
   'webview.openInBrowser': 'string';

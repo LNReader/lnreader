@@ -46,6 +46,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     pages,
     novel,
     chapters,
+    chaptersTeasers,
     loading,
     lastRead,
     novelSettings,
@@ -65,7 +66,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     deleteChapters,
   } = useNovel(path, pluginId);
   const theme = useTheme();
-
   const { downloadQueue, downloadChapters } = useDownload();
 
   const [selected, setSelected] = useState<ChapterInfo[]>([]);
@@ -83,8 +83,10 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   } = useBoolean();
 
   useEffect(() => {
-    refreshChapters();
-  }, [downloadQueue, refreshChapters]);
+    if (chapters.length !== 0 && downloadQueue.length !== 0) {
+      refreshChapters();
+    }
+  }, [chapters.length, downloadQueue, refreshChapters]);
 
   useFocusEffect(refreshChapters);
 
@@ -306,6 +308,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                 selected={selected}
                 setSelected={setSelected}
                 chapters={chapters}
+                chaptersTeasers={chaptersTeasers}
                 fetchedNovel={novel}
                 novelSettings={novelSettings}
                 loading={loading}

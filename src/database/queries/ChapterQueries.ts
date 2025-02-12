@@ -22,7 +22,7 @@ export const insertChapters = async (
       // 1261.847900 ms AllNovelFull Martial God Asura | 6192chs | synchronous = OFF
       // 1008.902832 ms AllNovelFull Martial God Asura | 6192chs | synchronous = OFF & UPSERT syntax
 
-      const statement = `
+      const statement = await db.prepareAsync(` 
         INSERT INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
         VALUES (?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(path, novelId) DO UPDATE SET
@@ -31,11 +31,10 @@ export const insertChapters = async (
           name = excluded.name,
           releaseTime = excluded.releaseTime,
           chapterNumber = excluded.chapterNumber;
-      `;
+      `);
 
-      chapters.forEach((chapter, index) => {
-        db.runAsync(
-          statement,
+      const promises = chapters.map((chapter, index) =>
+        statement.executeAsync(
           chapter.path,
           chapter.name,
           chapter.releaseTime || '',
@@ -43,8 +42,10 @@ export const insertChapters = async (
           chapter.chapterNumber || null,
           chapter.page || '1',
           index,
-        );
-      });
+        ),
+      );
+      await Promise.all(promises);
+      await statement.finalizeAsync();
     })
     .catch(e => {
       console.error(e);
@@ -53,7 +54,7 @@ export const insertChapters = async (
 };
 
 export const getCustomPages = (novelId: number) =>
-  db.getAllAsync<{ page: string }>(
+  db.getAllSync<{ page: string }>(
     'SELECT DISTINCT page from Chapter WHERE novelId = ?',
     novelId,
   );
@@ -70,20 +71,53 @@ export const getChapter = (chapterId: number) =>
     chapterId,
   );
 
-const getPageChaptersQuery = (sort = 'ORDER BY position ASC', filter = '') =>
-  `SELECT * FROM Chapter WHERE novelId = ? AND page = ? ${filter} ${sort}`;
+const getPageChaptersQuery = (
+  sort = 'ORDER BY position ASC',
+  filter = '',
+  limit?: number,
+  offset?: number,
+) =>
+  `
+    SELECT * FROM Chapter 
+    WHERE novelId = ? AND page = ? 
+    ${filter} ${sort} 
+    ${limit ? `LIMIT ${limit}` : ''} 
+    ${offset ? `OFFSET ${offset}` : ''}`;
 
 export const getPageChapters = (
   novelId: number,
   sort?: string,
   filter?: string,
   page?: string,
-) =>
-  db.getAllAsync<ChapterInfo>(
-    getPageChaptersQuery(sort, filter),
+  offset?: number,
+  limit?: number,
+) => {
+  return db.getAllAsync<ChapterInfo>(
+    getPageChaptersQuery(sort, filter, limit, offset),
     novelId,
     page || '1',
   );
+};
+
+export const getChapterCount = (novelId: number, page: string = '1') =>
+  db.getFirstSync<{ 'COUNT(*)': number }>(
+    'SELECT COUNT(*) FROM Chapter WHERE novelId = ? AND page = ?',
+    novelId,
+    page,
+  )?.['COUNT(*)'] ?? 0;
+
+export const getPageChaptersTeaser = (
+  novelId: number,
+  sort?: string,
+  filter?: string,
+  page?: string,
+) => {
+  return db.getAllSync<ChapterInfo>(
+    getPageChaptersQuery(sort, filter, 10),
+    novelId,
+    page || '1',
+  );
+};
 
 export const getPrevChapter = (novelId: number, chapterId: number) =>
   db.getFirstAsync<ChapterInfo>(

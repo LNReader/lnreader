@@ -41,6 +41,7 @@ type NovelScreenListProps = {
   selected: ChapterInfo[];
   setSelected: React.Dispatch<React.SetStateAction<ChapterInfo[]>>;
   chapters: ChapterInfo[];
+  chaptersTeasers: ChapterInfo[];
   fetchedNovel?: NovelInfo;
   novelSettings: NovelSettings;
   loading: boolean;
@@ -72,6 +73,7 @@ const NovelScreenList = ({
   selected,
   setSelected,
   chapters,
+  chaptersTeasers,
   fetchedNovel,
   novelSettings,
   loading,
@@ -252,10 +254,11 @@ const NovelScreenList = ({
       <FlashList
         ref={listRef}
         estimatedItemSize={64}
-        data={chapters}
+        data={chapters.length ? chapters : chaptersTeasers}
         extraData={[chapters.length, selected.length, novel.id, loading]}
         removeClippedSubviews={true}
         ListEmptyComponent={ListEmptyComponent}
+        ListFooterComponent={chapters.length ? undefined : ListEmptyComponent}
         renderItem={({ item, index }) => {
           if (novel.id === 'NO_ID') {
             return null;

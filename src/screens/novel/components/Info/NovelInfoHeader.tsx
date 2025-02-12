@@ -248,7 +248,9 @@ const NovelInfoHeader = ({
               ) : null}
 
               <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-                {`${chapters?.length} ${getString('novelScreen.chapters')}`}
+                {!chapters?.length
+                  ? getString('common.loading')
+                  : `${chapters?.length} ${getString('novelScreen.chapters')}`}
               </Text>
             </View>
             {page && Number(page) ? (

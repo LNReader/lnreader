@@ -194,7 +194,8 @@
     "signIn": "Sign in",
     "signOut": "Sign out",
     "sort": "Sort",
-    "submit": "Submit"
+    "submit": "Submit",
+    "loading": "Loading ..."
   },
   "webview": {
     "refresh": "Refresh",
