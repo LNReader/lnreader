@@ -63,7 +63,7 @@ const JumpToChapterModal = ({
     chapterListRef.current?.scrollToItem({
       animated: true,
       item: chap,
-      viewPosition: 91,
+      viewPosition: 0.5,
     });
   };
 
@@ -72,7 +72,7 @@ const JumpToChapterModal = ({
     chapterListRef.current?.scrollToIndex({
       animated: true,
       index: index,
-      viewOffset: 91,
+      viewPosition: 0.5,
     });
   };
 

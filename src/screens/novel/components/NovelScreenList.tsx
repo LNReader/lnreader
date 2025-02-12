@@ -53,6 +53,7 @@ type NovelScreenListProps = {
   setShowChapterTitles: (v: boolean) => void;
   followNovel: () => void;
   deleteChapter: (chapter: ChapterInfo) => void;
+  listRef: React.RefObject<FlashList<ChapterInfo>>;
 };
 
 const ListEmptyComponent = () => (
@@ -83,6 +84,7 @@ const NovelScreenList = ({
   setShowChapterTitles,
   followNovel,
   deleteChapter,
+  listRef,
 }: NovelScreenListProps) => {
   const { pluginId } = routeBaseNovel;
   const routeNovel: Omit<NovelInfo, 'id'> & { id: 'NO_ID' } = {
@@ -115,7 +117,6 @@ const NovelScreenList = ({
 
   const [isFabExtended, setIsFabExtended] = useState(true);
 
-  let flatlistRef = useRef<FlashList<ChapterInfo>>(null);
   let novelBottomSheetRef = useRef(null);
   let trackerSheetRef = useRef(null);
 
@@ -249,7 +250,7 @@ const NovelScreenList = ({
   return (
     <>
       <FlashList
-        ref={flatlistRef}
+        ref={listRef}
         estimatedItemSize={64}
         data={chapters}
         extraData={[chapters.length, selected.length, novel.id, loading]}

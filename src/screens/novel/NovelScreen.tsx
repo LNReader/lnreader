@@ -71,7 +71,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const [selected, setSelected] = useState<ChapterInfo[]>([]);
   const [editInfoModal, showEditInfoModal] = useState(false);
 
-  let flatlistRef = useRef<FlashList<ChapterInfo>>(null);
+  const chapterListRef = useRef<FlashList<ChapterInfo>>(null);
 
   const deleteDownloadsSnackbar = useBoolean();
 
@@ -298,6 +298,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           <SafeAreaView excludeTop>
             <Suspense fallback={<NovelScreenLoading theme={theme} />}>
               <NovelScreenList
+                listRef={chapterListRef}
                 routeBaseNovel={route.params}
                 navigation={navigation}
                 openDrawer={openDrawer}
@@ -348,7 +349,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   hideModal={() => showJumpToChapterModal(false)}
                   chapters={chapters}
                   novel={novel}
-                  chapterListRef={flatlistRef}
+                  chapterListRef={chapterListRef}
                   navigation={navigation}
                 />
                 <EditInfoModal
