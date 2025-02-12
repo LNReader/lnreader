@@ -59,14 +59,14 @@ export const migrateNovel = async (
   }));
 
   let fromChapters = await getNovelChapters(fromNovel.id);
-  let toNovel = await getNovelByPath(toNovelPath, pluginId);
+  let toNovel = getNovelByPath(toNovelPath, pluginId);
   let toChapters: ChapterInfo[];
   if (toNovel) {
     toChapters = await getNovelChapters(toNovel.id);
   } else {
     const fetchedNovel = await fetchNovel(pluginId, toNovelPath);
     await insertNovelAndChapters(pluginId, fetchedNovel);
-    toNovel = await getNovelByPath(toNovelPath, pluginId);
+    toNovel = getNovelByPath(toNovelPath, pluginId);
     if (!toNovel) {
       return;
     }

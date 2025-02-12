@@ -15,31 +15,27 @@ export const insertChapters = async (
   if (!chapters?.length) {
     return;
   }
-  return db.withTransactionAsync(async () => {
-    const existedPaths = db
-      .getAllSync<{ path: string }>(
-        'SELECT path FROM Chapter WHERE novelId = ?',
-        novelId,
-      )
-      .map(res => res.path);
-    chapters.forEach((chapter, index) => {
-      if (existedPaths.includes(chapter.path)) {
-        db.runSync(
-          `
-            UPDATE Chapter SET
-              page = ?, position = ?
-            WHERE path = ? AND novelId = ? AND (page != ? OR position != ?)
-          `,
-          chapter.page || '1',
-          index,
-          chapter.path,
-          novelId,
-          chapter.page || '1',
-          index,
-        );
-      } else {
-        db.runSync(
-          'INSERT INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position) VALUES (?, ?, ?, ?, ?, ?, ?)',
+
+  await db
+    .withTransactionAsync(async () => {
+      // 2604.029053 ms AllNovelFull Martial God Asura | 6192chs | synchronous = NORMAL
+      // 1261.847900 ms AllNovelFull Martial God Asura | 6192chs | synchronous = OFF
+      // 1008.902832 ms AllNovelFull Martial God Asura | 6192chs | synchronous = OFF & UPSERT syntax
+
+      const statement = `
+        INSERT INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(path, novelId) DO UPDATE SET
+          page = excluded.page,
+          position = excluded.position,
+          name = excluded.name,
+          releaseTime = excluded.releaseTime,
+          chapterNumber = excluded.chapterNumber;
+      `;
+
+      chapters.forEach((chapter, index) => {
+        db.runAsync(
+          statement,
           chapter.path,
           chapter.name,
           chapter.releaseTime || '',
@@ -48,9 +44,12 @@ export const insertChapters = async (
           chapter.page || '1',
           index,
         );
-      }
+      });
+    })
+    .catch(e => {
+      console.error(e);
     });
-  });
+  return;
 };
 
 export const getCustomPages = (novelId: number) =>

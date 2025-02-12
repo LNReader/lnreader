@@ -22,6 +22,8 @@ export const createTables = () => {
   const isOnBoard = MMKVStorage.getBoolean('IS_ONBOARDED');
   if (!isOnBoard) {
     db.execSync('PRAGMA foreign_keys = ON');
+    db.execSync('PRAGMA journal_mode = WAL');
+
     db.withTransactionSync(() => {
       db.execSync(createNovelTableQuery);
       db.execSync(createCategoriesTableQuery);

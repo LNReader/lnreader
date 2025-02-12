@@ -7,6 +7,7 @@ import { showToast } from '@utils/showToast';
 import {
   getAllAsync,
   getFirstAsync,
+  getFirstSync,
   QueryObject,
   runAsync,
   runSync,
@@ -74,14 +75,15 @@ export const getNovelById = async (novelId: number) => {
   ]);
 };
 
-export const getNovelByPath = async (
+export const getNovelByPath = (
   novelPath: string,
   pluginId: string,
-): Promise<NovelInfo | null> => {
-  return db.getFirstAsync<NovelInfo>(
+): NovelInfo | null => {
+  const res = getFirstSync<NovelInfo>([
     'SELECT * FROM Novel WHERE path = ? AND pluginId = ?',
     [novelPath, pluginId],
-  );
+  ]);
+  return res;
 };
 
 // if query is insert novel || add to library => add default category name for it

@@ -78,3 +78,6 @@ export function getAllSync<T = unknown>(queryObject: QueryObject<T[]>) {
 export function getFirstAsync<T = unknown>(queryObject: QueryObject<T>) {
   return defaultQueryAsync<T, false>('getFirstAsync', queryObject, null);
 }
+export function getFirstSync<T = unknown>(queryObject: QueryObject<T>) {
+  return defaultQuerySync<T, false>('getFirstSync', queryObject, null);
+}
