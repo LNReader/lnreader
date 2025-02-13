@@ -32,6 +32,7 @@ export const insertChapters = async (
           releaseTime = excluded.releaseTime,
           chapterNumber = excluded.chapterNumber;
       `);
+      console.log(chapters);
 
       const promises = chapters.map((chapter, index) =>
         statement.executeAsync(
@@ -120,18 +121,42 @@ export const getPageChaptersTeaser = (
 };
 
 // TODO update from chapterId to position
-export const getPrevChapter = (novelId: number, chapterId: number) =>
+export const getPrevChapter = (
+  novelId: number,
+  chapterPosition: string,
+  page: string,
+) =>
   db.getFirstAsync<ChapterInfo>(
-    'SELECT * FROM Chapter WHERE novelId = ? AND id < ? ORDER BY id DESC',
+    `SELECT * FROM Chapter 
+      WHERE novelId = ? 
+      AND (
+        (position < ? AND page = ?) 
+        OR page < ?
+      )
+      ORDER BY position DESC, page DESC`,
     novelId,
-    chapterId,
+    chapterPosition,
+    page,
+    page,
   );
 
-export const getNextChapter = (novelId: number, chapterId: number) =>
+export const getNextChapter = (
+  novelId: number,
+  chapterPosition: string,
+  page: string,
+) =>
   db.getFirstAsync<ChapterInfo>(
-    'SELECT * FROM Chapter WHERE novelId = ? AND id > ?',
+    `SELECT * FROM Chapter 
+      WHERE novelId = ? 
+      AND (
+        (page = ? AND position > ?)  
+        OR (position = 0 AND page > ?) 
+      )
+      ORDER BY position ASC, page ASC`,
     novelId,
-    chapterId,
+    page,
+    chapterPosition,
+    page,
   );
 
 export const markChapterRead = (chapterId: number) =>
