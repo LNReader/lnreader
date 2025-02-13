@@ -65,9 +65,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     refreshChapters,
     deleteChapters,
   } = useNovel(path, pluginId);
-  if (novel?.summary) {
-    console.log('novel', new Date().getTime());
-  }
+
   const theme = useTheme();
   const { downloadQueue, downloadChapters } = useDownload();
 

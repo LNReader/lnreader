@@ -249,9 +249,6 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   // #region getters
 
   const getNovel = useCallback(async () => {
-    const start = new Date().getTime();
-    console.log('getNovel', start);
-
     let tmpNovel = getNovelByPath(novelPath, pluginId);
     if (!tmpNovel) {
       const sourceNovel = await fetchNovel(pluginId, novelPath).catch(() => {
@@ -279,8 +276,6 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     } else {
       setPages(['1']);
     }
-    const end = new Date().getTime();
-    console.log('getNovel done', end, end - start);
 
     setNovel(tmpNovel);
   }, [novelPath, pluginId]);
@@ -305,13 +300,17 @@ export const useNovel = (novelPath: string, pluginId: string) => {
         teaser = getPageChaptersTeaser(...config) || [];
         setChaptersTeasers(teaser);
 
-        teaser2 = (await _getPageChapters(...config, 10, 90)) || [];
-        setChaptersTeasers(teaser2);
+        if (chapterCount > 10) {
+          teaser2 = (await _getPageChapters(...config, 10, 90)) || [];
+          setChaptersTeasers(teaser2);
 
-        newChapters =
-          (await _getPageChapters(...config, 100, chapterCount).catch(e =>
-            console.error('_getPageChapters failed:', e),
-          )) || [];
+          if (chapterCount > 100) {
+            newChapters =
+              (await _getPageChapters(...config, 100, chapterCount).catch(e =>
+                console.error('_getPageChapters failed:', e),
+              )) || [];
+          }
+        }
       }
       // Fetch next page if no chapters
       else if (Number(page)) {

@@ -120,6 +120,7 @@ const NovelScreenList = ({
 
   const onPageScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = event.nativeEvent.contentOffset.y;
+
     headerOpacity.set(y < 50 ? 0 : (y - 50) / 150);
     const currentScrollPosition = Math.floor(y) ?? 0;
     if (useFabForContinueReading && lastRead) {
@@ -325,7 +326,7 @@ const NovelScreenList = ({
                 styles.fab,
                 { backgroundColor: theme.primary, marginBottom: bottomInset },
               ]}
-              extended={isFabExtended}
+              extended={isFabExtended && !loading}
               color={theme.onPrimary}
               uppercase={false}
               label={
