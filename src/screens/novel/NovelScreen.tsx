@@ -48,6 +48,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     chapters,
     chaptersTeasers,
     loading,
+    fetching,
     lastRead,
     novelSettings,
     getNovel,
@@ -317,6 +318,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                 fetchedNovel={novel}
                 novelSettings={novelSettings}
                 loading={loading}
+                fetching={fetching}
                 pageIndex={pageIndex}
                 pages={pages}
                 lastRead={lastRead}

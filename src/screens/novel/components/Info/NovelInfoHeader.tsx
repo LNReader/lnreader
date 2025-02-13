@@ -47,6 +47,7 @@ interface NovelInfoHeaderProps {
   lastRead?: ChapterInfo;
   navigation: NovelScreenProps['navigation'];
   isLoading: boolean;
+  fetching: boolean;
   trackerSheetRef: React.RefObject<BottomSheetModalMethods>;
   navigateToChapter: (chapter: ChapterInfo) => void;
   setCustomNovelCover: () => Promise<void>;
@@ -77,6 +78,7 @@ const NovelInfoHeader = ({
   navigation,
   trackerSheetRef,
   isLoading = false,
+  fetching,
   navigateToChapter,
   setCustomNovelCover,
   followNovel,
@@ -240,7 +242,7 @@ const NovelInfoHeader = ({
               ) : null}
 
               <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-                {!chapters?.length || isLoading
+                {fetching
                   ? getString('common.loading')
                   : `${chapters?.length} ${getString('novelScreen.chapters')}`}
               </Text>

@@ -45,6 +45,7 @@ type NovelScreenListProps = {
   fetchedNovel?: NovelInfo;
   novelSettings: NovelSettings;
   loading: boolean;
+  fetching: boolean;
   pageIndex: number;
   pages: string[];
   lastRead?: ChapterInfo;
@@ -71,6 +72,7 @@ const NovelScreenList = ({
   fetchedNovel,
   novelSettings,
   loading,
+  fetching,
   pageIndex,
   pages,
   lastRead,
@@ -253,7 +255,7 @@ const NovelScreenList = ({
         extraData={[chapters.length, selected.length, novel.id, loading]}
         removeClippedSubviews={true}
         // ListEmptyComponent={ListEmptyComponent}
-        ListFooterComponent={chapters.length ? undefined : ListEmptyComponent}
+        ListFooterComponent={!fetching ? undefined : ListEmptyComponent}
         renderItem={({ item, index }) => {
           if (novel.id === 'NO_ID') {
             return null;
@@ -288,6 +290,7 @@ const NovelScreenList = ({
             filter={filter}
             lastRead={lastRead}
             isLoading={loading}
+            fetching={fetching}
             setCustomNovelCover={setCustomNovelCover}
             chapters={chapters}
             navigation={navigation}

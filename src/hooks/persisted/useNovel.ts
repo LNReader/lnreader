@@ -138,6 +138,7 @@ export const useTrackedNovel = (novelId: number | 'NO_ID') => {
 
 export const useNovel = (novelPath: string, pluginId: string) => {
   const [loading, setLoading] = useState(true);
+  const [fetching, setFetching] = useState(true);
   const [novel, setNovel] = useState<NovelInfo>();
   const [chapters, _setChapters] = useState<ChapterInfo[]>([]);
   const [chaptersTeasers, _setChaptersTeasers] = useState<ChapterInfo[]>([]);
@@ -511,14 +512,20 @@ export const useNovel = (novelPath: string, pluginId: string) => {
 
   useEffect(() => {
     if (novel === undefined) return;
-
-    getChapters().catch(e => showToast(e.message));
+    setFetching(true);
+    getChapters()
+      .catch(e => {
+        showToast(e.message);
+        setFetching(false);
+      })
+      .finally(() => setFetching(false));
   }, [getChapters, novel]);
 
   // #endregion
 
   return {
     loading,
+    fetching,
     pageIndex,
     pages,
     novel,
