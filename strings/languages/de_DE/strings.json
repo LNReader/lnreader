@@ -6,16 +6,16 @@
     "helpTranslate": "Hilf beim Übersetzen",
     "sources": "Quellen",
     "version": "Version",
-    "whatsNew": "What's new"
+    "whatsNew": "Was neu ist"
   },
-  "advancedSettings": "Advanced",
+  "advancedSettings": "Erweitert",
   "advancedSettingsScreen": {
     "cachedNovelsDeletedToast": "Cached novels deleted",
     "chapterInsertFailed": "chapter insert failed",
     "clearCachedNovels": "Clear cached novels",
     "clearCachedNovelsDesc": "Delete cached novels which not in your library",
-    "clearDatabaseWarning": "Are you sure? Read and Downloaded chapters and progress of non-library novels will be lost.",
-    "clearUpdatesMessage": "Updates cleared.",
+    "clearDatabaseWarning": "Sind Sie sicher? Gelesene und heruntergeladene Kapiteln, sowie Fortschritt von Nicht-Bibliotheksromanen werden verloren gehen.",
+    "clearUpdatesMessage": "Aktualisierungen geleert.",
     "clearUpdatesTab": "Clear updates tab",
     "clearUpdatesWarning": "Are you sure? Updates tab will be cleared.",
     "clearupdatesTabDesc": "Clears chapter entries in updates tab",
