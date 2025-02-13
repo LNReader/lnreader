@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Dialog, Portal, Text, TextInput } from 'react-native-paper';
+import { Portal, Text, TextInput } from 'react-native-paper';
 
 import { useTheme, useUserAgent } from '@hooks/persisted';
 import { showToast } from '@utils/showToast';
@@ -20,6 +20,7 @@ import { StyleSheet, View } from 'react-native';
 import { getUserAgentSync } from 'react-native-device-info';
 import CookieManager from '@react-native-cookies/cookies';
 import { store } from '@plugins/helpers/storage';
+import { recreateDBIndex } from '@database/db';
 
 const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   const theme = useTheme();
@@ -54,6 +55,12 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
     setFalse: hideUserAgentModal,
   } = useBoolean();
 
+  const {
+    value: recreateDBIndexDialog,
+    setTrue: showRecreateDBIndexDialog,
+    setFalse: hideRecreateDBIndexDialog,
+  } = useBoolean();
+
   return (
     <SafeAreaView excludeTop>
       <Appbar
@@ -71,6 +78,14 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
             'advancedSettingsScreen.clearCachedNovelsDesc',
           )}
           onPress={showClearDatabaseDialog}
+          theme={theme}
+        />
+        <List.Item
+          title={getString('advancedSettingsScreen.recreateDBIndexes')}
+          description={getString(
+            'advancedSettingsScreen.recreateDBIndexesDesc',
+          )}
+          onPress={showRecreateDBIndexDialog}
           theme={theme}
         />
         <List.Item
@@ -98,7 +113,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
       </List.Section>
       <Portal>
         <ConfirmationDialog
-          title={getString(
+          message={getString(
             'advancedSettingsScreen.deleteReadChaptersDialogTitle',
           )}
           visible={deleteReadChaptersDialog}
@@ -106,73 +121,39 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
           onDismiss={hideDeleteReadChaptersDialog}
           theme={theme}
         />
-        <Dialog
+        <ConfirmationDialog
+          message={getString(
+            'advancedSettingsScreen.recreateDBIndexesDialogTitle',
+          )}
+          visible={recreateDBIndexDialog}
+          onSubmit={() => {
+            recreateDBIndex();
+            showToast(
+              getString('advancedSettingsScreen.recreateDBIndexesToast'),
+            );
+          }}
+          onDismiss={hideRecreateDBIndexDialog}
+          theme={theme}
+        />
+        <ConfirmationDialog
+          message={getString('advancedSettingsScreen.clearDatabaseWarning')}
           visible={clearDatabaseDialog}
+          onSubmit={deleteCachedNovels}
           onDismiss={hideClearDatabaseDialog}
-          style={{
-            borderRadius: 28,
-            backgroundColor: theme.overlay3,
-          }}
-        >
-          <Dialog.Title
-            style={{
-              letterSpacing: 0,
-              fontSize: 16,
-              lineHeight: 16 * 1.5,
-              color: theme.onSurface,
-            }}
-          >
-            {getString('advancedSettingsScreen.clearDatabaseWarning')}
-          </Dialog.Title>
-          <Dialog.Actions>
-            <Button onPress={hideClearDatabaseDialog}>
-              {getString('common.cancel')}
-            </Button>
-            <Button
-              onPress={() => {
-                deleteCachedNovels();
-                hideClearDatabaseDialog();
-              }}
-            >
-              {getString('common.ok')}
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-        <Dialog
+          theme={theme}
+        />
+        <ConfirmationDialog
+          message={getString('advancedSettingsScreen.clearUpdatesWarning')}
           visible={clearUpdatesDialog}
-          onDismiss={hideClearUpdatesDialog}
-          style={{
-            borderRadius: 28,
-            backgroundColor: theme.overlay3,
+          onSubmit={() => {
+            clearUpdates();
+            showToast(getString('advancedSettingsScreen.clearUpdatesMessage'));
+            hideClearUpdatesDialog();
           }}
-        >
-          <Dialog.Title
-            style={{
-              letterSpacing: 0,
-              fontSize: 16,
-              lineHeight: 16 * 1.5,
-              color: theme.onSurface,
-            }}
-          >
-            {getString('advancedSettingsScreen.clearUpdatesWarning')}
-          </Dialog.Title>
-          <Dialog.Actions>
-            <Button onPress={hideClearUpdatesDialog}>
-              {getString('common.cancel')}
-            </Button>
-            <Button
-              onPress={() => {
-                clearUpdates();
-                showToast(
-                  getString('advancedSettingsScreen.clearUpdatesMessage'),
-                );
-                hideClearUpdatesDialog();
-              }}
-            >
-              {getString('common.ok')}
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
+          onDismiss={hideClearUpdatesDialog}
+          theme={theme}
+        />
+
         <Modal visible={userAgentModalVisible} onDismiss={hideUserAgentModal}>
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
             {getString('advancedSettingsScreen.userAgent')}

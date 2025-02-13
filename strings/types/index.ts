@@ -29,6 +29,10 @@ export interface StringMap {
   'advancedSettingsScreen.novelInsertFailed': 'string';
   'advancedSettingsScreen.useFAB': 'string';
   'advancedSettingsScreen.userAgent': 'string';
+  'advancedSettingsScreen.recreateDBIndexes': 'string';
+  'advancedSettingsScreen.recreateDBIndexesToast': 'string';
+  'advancedSettingsScreen.recreateDBIndexesDialogTitle': 'string';
+  'advancedSettingsScreen.recreateDBIndexesDesc': 'string';
   'appearance': 'string';
   'appearanceScreen.accentColor': 'string';
   'appearanceScreen.alwaysShowNavLabels': 'string';
@@ -169,6 +173,7 @@ export interface StringMap {
   'common.sort': 'string';
   'common.submit': 'string';
   'common.loading': 'string';
+  'common.warning': 'string';
   'webview.refresh': 'string';
   'webview.share': 'string';
   'webview.openInBrowser': 'string';

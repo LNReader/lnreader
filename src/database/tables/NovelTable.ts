@@ -16,3 +16,13 @@ export const createNovelTableQuery = `
     UNIQUE(path, pluginId)
   );
 `;
+
+export const createNovelIndexQuery = `
+    CREATE INDEX
+    IF NOT EXISTS
+    NovelIndex ON Novel(pluginId, path, id, inLibrary);
+`;
+
+export const dropNovelIndexQuery = `
+    DROP INDEX IF EXISTS NovelIndex;
+`;

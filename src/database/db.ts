@@ -4,15 +4,21 @@ import {
   createCategoryDefaultQuery,
   createCategoryTriggerQuery,
 } from './tables/CategoryTable';
-import { createNovelTableQuery } from './tables/NovelTable';
+import {
+  createNovelIndexQuery,
+  createNovelTableQuery,
+  dropNovelIndexQuery,
+} from './tables/NovelTable';
 import { createNovelCategoryTableQuery } from './tables/NovelCategoryTable';
 import {
   createChapterTableQuery,
-  createChapterNovelIdIndexQuery,
+  createChapterIndexQuery,
+  dropChapterIndexQuery,
 } from './tables/ChapterTable';
 
 import { createRepositoryTableQuery } from './tables/RepositoryTable';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { runSync } from './utils/helpers';
 
 const dbName = 'lnreader.db';
 
@@ -26,13 +32,26 @@ export const createTables = () => {
 
     db.withTransactionSync(() => {
       db.execSync(createNovelTableQuery);
+      db.execSync(createNovelIndexQuery);
       db.execSync(createCategoriesTableQuery);
       db.execSync(createCategoryDefaultQuery);
       db.execSync(createNovelCategoryTableQuery);
       db.execSync(createChapterTableQuery);
       db.execSync(createCategoryTriggerQuery);
-      db.execSync(createChapterNovelIdIndexQuery);
+      db.execSync(createChapterIndexQuery);
       db.execSync(createRepositoryTableQuery);
     });
+  }
+};
+
+export const recreateDBIndex = () => {
+  const isOnBoard = MMKVStorage.getBoolean('IS_ONBOARDED');
+  if (!isOnBoard) {
+    runSync([
+      [dropNovelIndexQuery],
+      [dropChapterIndexQuery],
+      [createNovelIndexQuery],
+      [createChapterIndexQuery],
+    ]);
   }
 };

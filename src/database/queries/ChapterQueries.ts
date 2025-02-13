@@ -119,6 +119,7 @@ export const getPageChaptersTeaser = (
   );
 };
 
+// TODO update from chapterId to position
 export const getPrevChapter = (novelId: number, chapterId: number) =>
   db.getFirstAsync<ChapterInfo>(
     'SELECT * FROM Chapter WHERE novelId = ? AND id < ? ORDER BY id DESC',
