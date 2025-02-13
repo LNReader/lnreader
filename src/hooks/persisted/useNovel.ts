@@ -249,6 +249,9 @@ export const useNovel = (novelPath: string, pluginId: string) => {
   // #region getters
 
   const getNovel = useCallback(async () => {
+    const start = new Date().getTime();
+    console.log('getNovel', start);
+
     let tmpNovel = getNovelByPath(novelPath, pluginId);
     if (!tmpNovel) {
       const sourceNovel = await fetchNovel(pluginId, novelPath).catch(() => {
@@ -276,6 +279,9 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     } else {
       setPages(['1']);
     }
+    const end = new Date().getTime();
+    console.log('getNovel done', end, end - start);
+
     setNovel(tmpNovel);
   }, [novelPath, pluginId]);
 

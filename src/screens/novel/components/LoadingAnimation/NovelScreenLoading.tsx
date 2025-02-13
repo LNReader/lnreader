@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
     margin: 16,
     marginTop: 8,
     height: 62,
+    backgroundColor: 'red',
   },
   novelInformationChips: {
     flexDirection: 'row',

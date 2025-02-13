@@ -21,12 +21,12 @@ import {
 } from 'react-native';
 import { SharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LoadingChapterItem } from './LoadingAnimation/NovelScreenLoading';
 import TrackSheet from './Tracker/TrackSheet';
 import NovelBottomSheet from './NovelBottomSheet';
 import * as Haptics from 'expo-haptics';
 import { AnimatedFAB } from 'react-native-paper';
 import { NovelSettings } from '@hooks/persisted/useNovel';
+import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
 
 type NovelScreenListProps = {
   routeBaseNovel: {
@@ -57,13 +57,7 @@ type NovelScreenListProps = {
   listRef: React.RefObject<FlashList<ChapterInfo>>;
 };
 
-const ListEmptyComponent = () => (
-  <>
-    {[...Array(7)].map((_, i) => (
-      <LoadingChapterItem key={i} />
-    ))}
-  </>
-);
+const ListEmptyComponent = () => <ChapterListSkeleton />;
 
 const NovelScreenList = ({
   routeBaseNovel,
@@ -257,7 +251,7 @@ const NovelScreenList = ({
         data={chapters.length ? chapters : chaptersTeasers}
         extraData={[chapters.length, selected.length, novel.id, loading]}
         removeClippedSubviews={true}
-        ListEmptyComponent={ListEmptyComponent}
+        // ListEmptyComponent={ListEmptyComponent}
         ListFooterComponent={chapters.length ? undefined : ListEmptyComponent}
         renderItem={({ item, index }) => {
           if (novel.id === 'NO_ID') {

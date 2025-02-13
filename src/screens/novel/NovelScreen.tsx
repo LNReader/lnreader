@@ -65,6 +65,9 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     refreshChapters,
     deleteChapters,
   } = useNovel(path, pluginId);
+  if (novel?.summary) {
+    console.log('novel', new Date().getTime());
+  }
   const theme = useTheme();
   const { downloadQueue, downloadChapters } = useDownload();
 
@@ -243,15 +246,19 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       hideStatusBarOnOpen={true}
       swipeMinVelocity={1000}
       drawerStyle={styles.drawer}
-      renderDrawerContent={() => (
-        <NovelDrawer
-          theme={theme}
-          pages={pages}
-          pageIndex={pageIndex}
-          openPage={openPage}
-          closeDrawer={closeDrawer}
-        />
-      )}
+      renderDrawerContent={() =>
+        (novel?.totalPages ?? 0) > 1 ? (
+          <NovelDrawer
+            theme={theme}
+            pages={pages}
+            pageIndex={pageIndex}
+            openPage={openPage}
+            closeDrawer={closeDrawer}
+          />
+        ) : (
+          <></>
+        )
+      }
     >
       <Portal.Host>
         <View style={[styles.container, { backgroundColor: theme.background }]}>

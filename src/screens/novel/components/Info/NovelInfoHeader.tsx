@@ -33,12 +33,11 @@ import { NovelStatus, PluginItem } from '@plugins/types';
 import { translateNovelStatus } from '@utils/translateEnum';
 import { getMMKVObject } from '@utils/mmkv/mmkv';
 import { AVAILABLE_PLUGINS } from '@hooks/persisted/usePlugins';
+
 import {
-  LoadingChips,
-  LoadingDescription,
-  LoadingShimmer,
-} from '../LoadingAnimation/NovelScreenLoading';
-import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
+  NovelMetaSkeleton,
+  VerticalBarSkeleton,
+} from '@components/Skeleton/Skeleton';
 
 interface NovelInfoHeaderProps {
   novel: NovelData | (Omit<NovelData, 'id'> & { id: 'NO_ID' });
@@ -199,11 +198,8 @@ const NovelInfoHeader = ({
           handleTrackerSheet={() => trackerSheetRef.current?.present()}
           theme={theme}
         />
-        {isLoading ? (
-          <>
-            <LoadingDescription />
-            <LoadingChips />
-          </>
+        {!novel.genres || !novel.summary ? (
+          <NovelMetaSkeleton />
         ) : (
           <>
             <NovelSummary
@@ -221,12 +217,8 @@ const NovelInfoHeader = ({
           chapters={chapters}
           lastRead={lastRead}
         />
-        {isLoading ? (
-          <LoadingShimmer
-            style={styles.shimmer}
-            height={24}
-            width={WINDOW_WIDTH - 32}
-          />
+        {!novel.genres || !novel.summary ? (
+          <VerticalBarSkeleton />
         ) : (
           <Pressable
             style={styles.bottomsheet}
@@ -238,17 +230,17 @@ const NovelInfoHeader = ({
             }}
           >
             <View style={styles.flex}>
-              {page ? (
+              {page || novel.totalPages ? (
                 <Text
                   numberOfLines={2}
                   style={[{ color: theme.onSurface }, styles.pageTitle]}
                 >
-                  Page: {page}
+                  Page: {page ?? ''}
                 </Text>
               ) : null}
 
               <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-                {!chapters?.length
+                {!chapters?.length || isLoading
                   ? getString('common.loading')
                   : `${chapters?.length} ${getString('novelScreen.chapters')}`}
               </Text>
@@ -301,12 +293,6 @@ const styles = StyleSheet.create({
   },
   infoItem: {
     marginVertical: 2,
-  },
-  shimmer: {
-    marginHorizontal: 16,
-    marginVertical: 16,
-    alignSelf: 'center',
-    borderRadius: 4,
   },
   flex: { flex: 1 },
   marginRight: { marginRight: 4 },
