@@ -120,10 +120,9 @@ export const getPageChaptersTeaser = (
   );
 };
 
-// TODO update from chapterId to position
 export const getPrevChapter = (
   novelId: number,
-  chapterPosition: string,
+  chapterPosition: number,
   page: string,
 ) =>
   db.getFirstAsync<ChapterInfo>(
@@ -142,7 +141,7 @@ export const getPrevChapter = (
 
 export const getNextChapter = (
   novelId: number,
-  chapterPosition: string,
+  chapterPosition: number,
   page: string,
 ) =>
   db.getFirstAsync<ChapterInfo>(

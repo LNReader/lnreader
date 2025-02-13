@@ -98,11 +98,10 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
       setChapterText(
         sanitizeChapterText(novel.pluginId, novel.name, chapter.name, text),
       );
-      console.log(chapter);
 
       const [nextChap, prevChap] = await Promise.all([
-        getNextChapter(chapter.novelId, chapter.position, chapter.page),
-        getPrevChapter(chapter.novelId, chapter.position, chapter.page),
+        getNextChapter(chapter.novelId, chapter.position!, chapter.page),
+        getPrevChapter(chapter.novelId, chapter.position!, chapter.page),
       ]);
       setAdjacentChapter([nextChap!, prevChap!]);
     } catch (e: any) {
@@ -114,7 +113,9 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
     chapter.id,
     chapter.name,
     chapter.novelId,
+    chapter.page,
     chapter.path,
+    chapter.position,
     novel.name,
     novel.pluginId,
     setLoading,
