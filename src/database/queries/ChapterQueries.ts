@@ -32,8 +32,6 @@ export const insertChapters = async (
           releaseTime = excluded.releaseTime,
           chapterNumber = excluded.chapterNumber;
       `);
-      console.log(chapters);
-
       const promises = chapters.map((chapter, index) =>
         statement.executeAsync(
           chapter.path,

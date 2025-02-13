@@ -5,19 +5,17 @@ import {
   Text,
   View,
   Pressable,
-  Dimensions,
-  StatusBar,
   ImageBackground,
 } from 'react-native';
 import color from 'color';
 import { IconButton, Portal } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Image, ImageURISource } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Chip } from '../../../../components';
 import { coverPlaceholderColor } from '../../../../theme/colors';
 import { ThemeColors } from '@theme/types';
 import { getString } from '@strings/translations';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface CoverImageProps {
   children: React.ReactNode;
@@ -83,9 +81,10 @@ const NovelThumbnail = ({
   setCustomNovelCover,
 }: NovelThumbnailProps) => {
   const [expanded, setExpanded] = useState(false);
+  const { top, right } = useSafeAreaInsets();
 
   return (
-    <TouchableWithoutFeedback
+    <Pressable
       onPress={() => setExpanded(!expanded)}
       style={styles.novelThumbnailContainer}
     >
@@ -97,8 +96,8 @@ const NovelThumbnail = ({
             icon="pencil-outline"
             style={{
               position: 'absolute',
-              top: StatusBar.currentHeight ?? 0 + 10,
-              right: 10,
+              top: top + 6,
+              right: right + 6,
               zIndex: 10,
             }}
             iconColor={theme.onBackground}
@@ -107,8 +106,9 @@ const NovelThumbnail = ({
           <Pressable
             style={{
               position: 'absolute',
-              width: Dimensions.get('window').width,
-              height: Dimensions.get('window').height + 60,
+              width: '100%',
+              height: '100%',
+              flex: 1,
               justifyContent: 'center',
               backgroundColor: 'rgba(0,0,0,0.7)',
             }}
@@ -116,15 +116,15 @@ const NovelThumbnail = ({
           >
             <Image
               source={source}
+              resizeMode="contain"
               style={{
-                width: Dimensions.get('window').width,
-                height: (Dimensions.get('window').width * 3) / 2,
+                flex: 1,
               }}
             />
           </Pressable>
         </Portal>
       )}
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 
