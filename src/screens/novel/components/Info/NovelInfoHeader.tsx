@@ -202,7 +202,7 @@ const NovelInfoHeader = ({
           handleTrackerSheet={() => trackerSheetRef.current?.present()}
           theme={theme}
         />
-        {!novel.genres || !novel.summary ? (
+        {isLoading && (!novel.genres || !novel.summary) ? (
           <NovelMetaSkeleton />
         ) : (
           <>
@@ -221,7 +221,7 @@ const NovelInfoHeader = ({
           chapters={chapters}
           lastRead={lastRead}
         />
-        {!novel.genres || !novel.summary ? (
+        {isLoading && (!novel.genres || !novel.summary) ? (
           <VerticalBarSkeleton />
         ) : (
           <Pressable

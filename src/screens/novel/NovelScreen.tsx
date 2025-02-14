@@ -1,11 +1,4 @@
-import React, {
-  Suspense,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { Suspense, useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View, StatusBar, Text, Share } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
 import { FlashList } from '@shopify/flash-list';
@@ -28,7 +21,6 @@ import { NovelScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import { getString } from '@strings/translations';
 import NovelDrawer from './components/NovelDrawer';
-import { useFocusEffect } from '@react-navigation/native';
 import { isNumber, noop } from 'lodash-es';
 import NovelAppbar from './components/NovelAppbar';
 import { resolveUrl } from '@services/plugin/fetch';
@@ -71,7 +63,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   } = useNovel('id' in route.params ? route.params : path, pluginId);
 
   const theme = useTheme();
-  const { downloadQueue, downloadChapters } = useDownload();
+  const { downloadChapters } = useDownload();
 
   const [selected, setSelected] = useState<ChapterInfo[]>([]);
   const [editInfoModal, showEditInfoModal] = useState(false);

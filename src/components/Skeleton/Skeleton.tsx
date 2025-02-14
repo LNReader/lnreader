@@ -122,6 +122,7 @@ function VerticalBarSkeleton() {
       style={[
         { backgroundColor: backgroundColor },
         styles.verticalBar,
+        styles.default,
         styles.h24,
       ]}
     >
