@@ -103,7 +103,6 @@ const NovelInfoHeader = ({
   const showNotAvailable = async () => {
     showToast('Not available while loading');
   };
-  console.log(!fetching || totalChapters === undefined, totalChapters);
 
   return (
     <>

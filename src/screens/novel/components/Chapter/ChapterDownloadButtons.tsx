@@ -15,6 +15,7 @@ interface DownloadButtonProps {
   theme: MD3ThemeType;
   deleteChapter: () => void;
   downloadChapter: () => void;
+  setChapterDownloaded?: (value: boolean) => void;
 }
 
 export const DownloadButton: React.FC<DownloadButtonProps> = ({
@@ -24,6 +25,7 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
   theme,
   deleteChapter,
   downloadChapter,
+  setChapterDownloaded,
 }) => {
   const [downloaded, setDownloaded] = React.useState<boolean | undefined>(
     isDownloaded,
@@ -37,9 +39,11 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 
   useEffect(() => {
     if (!isDownloading) {
-      setDownloaded(isChapterDownloaded(chapterId));
+      const isDownloadedValue = isChapterDownloaded(chapterId);
+      setDownloaded(isDownloadedValue);
+      setChapterDownloaded?.(isDownloadedValue);
     }
-  }, [chapterId, isDownloading]);
+  }, [chapterId, isDownloading, setChapterDownloaded]);
   if (isDownloading || downloaded === undefined) {
     return <ChapterDownloadingButton theme={theme} />;
   }

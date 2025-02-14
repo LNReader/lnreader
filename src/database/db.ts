@@ -26,7 +26,6 @@ export const db = SQLite.openDatabaseSync(dbName);
 
 export const createTables = () => {
   const isOnBoard = MMKVStorage.getBoolean('IS_ONBOARDED');
-  console.log('isOnBoard', isOnBoard);
 
   if (!isOnBoard) {
     db.runSync('PRAGMA journal_mode = WAL');

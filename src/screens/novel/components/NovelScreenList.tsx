@@ -51,6 +51,7 @@ type NovelScreenListProps = {
   setSelected: React.Dispatch<React.SetStateAction<ChapterInfo[]>>;
   setShowChapterTitles: (v: boolean) => void;
   sortAndFilterChapters: (sort?: string, filter?: string) => Promise<void>;
+  updateChapter?: (index: number, update: Partial<ChapterInfo>) => void;
   totalChapters?: number;
   routeBaseNovel: {
     name: string;
@@ -86,6 +87,7 @@ const NovelScreenList = ({
   setSelected,
   setShowChapterTitles,
   sortAndFilterChapters,
+  updateChapter,
   totalChapters,
 }: NovelScreenListProps) => {
   const { pluginId } = routeBaseNovel;
@@ -256,7 +258,13 @@ const NovelScreenList = ({
         ref={listRef}
         estimatedItemSize={64}
         data={chapters.length ? chapters : chaptersTeasers}
-        extraData={[chapters.length, selected.length, novel.id, loading]}
+        extraData={[
+          chapters.length,
+          selected.length,
+          novel.id,
+          loading,
+          downloadQueue.length,
+        ]}
         removeClippedSubviews={true}
         // ListEmptyComponent={ListEmptyComponent}
         ListFooterComponent={!fetching ? undefined : ListEmptyComponent}
@@ -281,6 +289,9 @@ const NovelScreenList = ({
               onSelectLongPress={onSelectLongPress}
               navigateToChapter={navigateToChapter}
               novelName={novel.name}
+              setChapterDownloaded={(value: boolean) =>
+                updateChapter?.(index, { isDownloaded: value })
+              }
               index={index}
             />
           );

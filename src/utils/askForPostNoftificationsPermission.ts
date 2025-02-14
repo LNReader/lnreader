@@ -15,12 +15,12 @@ export async function askForPostNotificationsPermission(): Promise<boolean> {
       },
     );
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('Permission Granted. You can now receive notifications.');
+      console.info('Permission Granted. You can now receive notifications.');
       return true;
     } else if (granted === PermissionsAndroid.RESULTS.DENIED) {
-      console.log('Permission Denied. Notification permission is required.');
+      console.warn('Permission Denied. Notification permission is required.');
     } else if (granted === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-      console.log(
+      console.warn(
         'Permission Blocked. Notification permission has been blocked.',
       );
     }

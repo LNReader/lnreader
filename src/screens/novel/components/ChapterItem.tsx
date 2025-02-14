@@ -24,6 +24,7 @@ interface ChapterItemProps {
   onSelectPress?: (chapter: ChapterInfo) => void;
   onSelectLongPress?: (chapter: ChapterInfo) => void;
   navigateToChapter: (chapter: ChapterInfo) => void;
+  setChapterDownloaded?: (value: boolean) => void;
   left?: ReactNode;
   isLocal: boolean;
   isUpdateCard?: boolean;
@@ -43,6 +44,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   onSelectPress,
   onSelectLongPress,
   navigateToChapter,
+  setChapterDownloaded,
   isLocal,
   left,
   isUpdateCard,
@@ -176,6 +178,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             isDownloaded={chapter.isDownloaded}
             chapterId={chapter.id}
             theme={theme}
+            setChapterDownloaded={setChapterDownloaded}
             deleteChapter={deleteChapter}
             downloadChapter={downloadChapter}
           />

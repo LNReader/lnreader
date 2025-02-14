@@ -65,10 +65,10 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     markChaptersUnread,
     markPreviouschaptersRead,
     markPreviousChaptersUnread,
+    updateChapter,
     refreshChapters,
     deleteChapters,
   } = useNovel('id' in route.params ? route.params : path, pluginId);
-  console.log(route.params);
 
   const theme = useTheme();
   const { downloadQueue, downloadChapters } = useDownload();
@@ -89,10 +89,10 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   // TODO: fix this
   // useEffect(() => {
-  //   if (chapters.length !== 0 && downloadQueue.length !== 0) {
+  //   if (chapters.length !== 0 && !fetching) {
   //     refreshChapters();
   //   }
-  // }, [chapters.length, downloadQueue, refreshChapters]);
+  // }, [chapters.length, downloadQueue.length, fetching, refreshChapters]);
 
   // useFocusEffect(refreshChapters);
 
@@ -239,7 +239,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     }
   };
   const styles = useMemo(() => createStyles(theme), [theme]);
-  console.log('chapters', chapters, batchInformation);
 
   return (
     <Drawer
@@ -334,6 +333,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                 setShowChapterTitles={setShowChapterTitles}
                 sortAndFilterChapters={sortAndFilterChapters}
                 totalChapters={batchInformation.totalChapters}
+                updateChapter={updateChapter}
                 getNextChapterBatch={
                   batchInformation.batch < batchInformation.total && !fetching
                     ? getNextChapterBatch
