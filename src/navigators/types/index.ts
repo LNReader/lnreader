@@ -8,13 +8,15 @@ import { MaterialBottomTabScreenProps } from 'react-native-paper';
 
 export type RootStackParamList = {
   BottomNavigator: NavigatorScreenParams<BottomNavigatorParamList> | undefined;
-  Novel: {
-    name: string;
-    path: string;
-    pluginId: string;
-    cover?: string;
-    isLocal?: boolean;
-  };
+  Novel:
+    | {
+        name: string;
+        path: string;
+        pluginId: string;
+        cover?: string;
+        isLocal?: boolean;
+      }
+    | NovelInfo;
   Chapter: {
     novel: NovelInfo;
     chapter: ChapterInfo;

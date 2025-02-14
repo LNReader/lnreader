@@ -29,7 +29,7 @@ import { ChapterInfo } from '@database/types';
 import { getString } from '@strings/translations';
 import NovelDrawer from './components/NovelDrawer';
 import { useFocusEffect } from '@react-navigation/native';
-import { isNumber } from 'lodash-es';
+import { isNumber, noop } from 'lodash-es';
 import NovelAppbar from './components/NovelAppbar';
 import { resolveUrl } from '@services/plugin/fetch';
 import { updateChapterProgressByIds } from '@database/queries/ChapterQueries';
@@ -51,6 +51,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     fetching,
     lastRead,
     novelSettings,
+    batchInformation,
+    getNextChapterBatch,
     getNovel,
     sortAndFilterChapters,
     setShowChapterTitles,
@@ -65,7 +67,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     markPreviousChaptersUnread,
     refreshChapters,
     deleteChapters,
-  } = useNovel(path, pluginId);
+  } = useNovel('id' in route.params ? route.params : path, pluginId);
+  console.log(route.params);
 
   const theme = useTheme();
   const { downloadQueue, downloadChapters } = useDownload();
@@ -84,13 +87,14 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     setFalse: closeDrawer,
   } = useBoolean();
 
-  useEffect(() => {
-    if (chapters.length !== 0 && downloadQueue.length !== 0) {
-      refreshChapters();
-    }
-  }, [chapters.length, downloadQueue, refreshChapters]);
+  // TODO: fix this
+  // useEffect(() => {
+  //   if (chapters.length !== 0 && downloadQueue.length !== 0) {
+  //     refreshChapters();
+  //   }
+  // }, [chapters.length, downloadQueue, refreshChapters]);
 
-  useFocusEffect(refreshChapters);
+  // useFocusEffect(refreshChapters);
 
   const downloadChs = useCallback(
     (amount: number | 'all' | 'unread') => {
@@ -235,6 +239,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     }
   };
   const styles = useMemo(() => createStyles(theme), [theme]);
+  console.log('chapters', chapters, batchInformation);
 
   return (
     <Drawer
@@ -306,28 +311,34 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           <SafeAreaView excludeTop>
             <Suspense fallback={<NovelScreenLoading theme={theme} />}>
               <NovelScreenList
-                listRef={chapterListRef}
-                routeBaseNovel={route.params}
-                navigation={navigation}
-                openDrawer={openDrawer}
-                headerOpacity={headerOpacity}
-                selected={selected}
-                setSelected={setSelected}
                 chapters={chapters}
                 chaptersTeasers={chaptersTeasers}
+                deleteChapter={deleteChapter}
                 fetchedNovel={novel}
-                novelSettings={novelSettings}
-                loading={loading}
                 fetching={fetching}
+                followNovel={followNovel}
+                getNovel={getNovel}
+                headerOpacity={headerOpacity}
+                lastRead={lastRead}
+                listRef={chapterListRef}
+                loading={loading}
+                navigation={navigation}
+                novelSettings={novelSettings}
+                openDrawer={openDrawer}
                 pageIndex={pageIndex}
                 pages={pages}
-                lastRead={lastRead}
+                routeBaseNovel={route.params}
+                selected={selected}
                 setNovel={setNovel}
-                getNovel={getNovel}
-                sortAndFilterChapters={sortAndFilterChapters}
+                setSelected={setSelected}
                 setShowChapterTitles={setShowChapterTitles}
-                followNovel={followNovel}
-                deleteChapter={deleteChapter}
+                sortAndFilterChapters={sortAndFilterChapters}
+                totalChapters={batchInformation.totalChapters}
+                getNextChapterBatch={
+                  batchInformation.batch < batchInformation.total && !fetching
+                    ? getNextChapterBatch
+                    : noop
+                }
               />
             </Suspense>
           </SafeAreaView>

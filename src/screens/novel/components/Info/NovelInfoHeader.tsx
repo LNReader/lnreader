@@ -40,23 +40,24 @@ import {
 } from '@components/Skeleton/Skeleton';
 
 interface NovelInfoHeaderProps {
-  novel: NovelData | (Omit<NovelData, 'id'> & { id: 'NO_ID' });
-  theme: ThemeColors;
-  filter: string;
   chapters: ChapterInfo[];
-  lastRead?: ChapterInfo;
-  navigation: NovelScreenProps['navigation'];
-  isLoading: boolean;
-  fetching: boolean;
-  trackerSheetRef: React.RefObject<BottomSheetModalMethods>;
-  navigateToChapter: (chapter: ChapterInfo) => void;
-  setCustomNovelCover: () => Promise<void>;
-  followNovel: () => void;
-  novelBottomSheetRef: React.RefObject<BottomSheetModalMethods>;
   deleteDownloadsSnackbar: UseBooleanReturnType;
-  page?: string;
-  openDrawer: () => void;
+  fetching: boolean;
+  filter: string;
+  followNovel: () => void;
+  isLoading: boolean;
+  lastRead?: ChapterInfo;
+  navigateToChapter: (chapter: ChapterInfo) => void;
+  navigation: NovelScreenProps['navigation'];
+  novel: NovelData | (Omit<NovelData, 'id'> & { id: 'NO_ID' });
+  novelBottomSheetRef: React.RefObject<BottomSheetModalMethods>;
   onRefreshPage: (page: string) => void;
+  openDrawer: () => void;
+  page?: string;
+  setCustomNovelCover: () => Promise<void>;
+  theme: ThemeColors;
+  totalChapters?: number;
+  trackerSheetRef: React.RefObject<BottomSheetModalMethods>;
 }
 
 const getStatusIcon = (status?: string) => {
@@ -70,23 +71,24 @@ const getStatusIcon = (status?: string) => {
 };
 
 const NovelInfoHeader = ({
-  novel,
-  theme,
-  filter,
   chapters,
-  lastRead,
-  navigation,
-  trackerSheetRef,
-  isLoading = false,
-  fetching,
-  navigateToChapter,
-  setCustomNovelCover,
-  followNovel,
-  novelBottomSheetRef,
   deleteDownloadsSnackbar,
-  page,
-  openDrawer,
+  fetching,
+  filter,
+  followNovel,
+  isLoading = false,
+  lastRead,
+  navigateToChapter,
+  navigation,
+  novel,
+  novelBottomSheetRef,
   onRefreshPage,
+  openDrawer,
+  page,
+  setCustomNovelCover,
+  theme,
+  totalChapters,
+  trackerSheetRef,
 }: NovelInfoHeaderProps) => {
   const { hideBackdrop = false } = useAppSettings();
 
@@ -101,6 +103,7 @@ const NovelInfoHeader = ({
   const showNotAvailable = async () => {
     showToast('Not available while loading');
   };
+  console.log(!fetching || totalChapters === undefined, totalChapters);
 
   return (
     <>
@@ -242,9 +245,9 @@ const NovelInfoHeader = ({
               ) : null}
 
               <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-                {fetching
-                  ? getString('common.loading')
-                  : `${chapters?.length} ${getString('novelScreen.chapters')}`}
+                {!fetching || totalChapters !== undefined
+                  ? `${totalChapters} ${getString('novelScreen.chapters')}`
+                  : getString('common.loading')}
               </Text>
             </View>
             {page && Number(page) ? (

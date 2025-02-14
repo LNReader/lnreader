@@ -18,7 +18,7 @@ import {
 
 import { createRepositoryTableQuery } from './tables/RepositoryTable';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
-import { runSync } from './utils/helpers';
+import { showToast } from '@utils/showToast';
 
 const dbName = 'lnreader.db';
 
@@ -26,32 +26,47 @@ export const db = SQLite.openDatabaseSync(dbName);
 
 export const createTables = () => {
   const isOnBoard = MMKVStorage.getBoolean('IS_ONBOARDED');
+  console.log('isOnBoard', isOnBoard);
+
   if (!isOnBoard) {
-    db.execSync('PRAGMA foreign_keys = ON');
-    db.execSync('PRAGMA journal_mode = WAL');
+    db.runSync('PRAGMA journal_mode = WAL');
+    db.runSync('PRAGMA foreign_keys = ON');
+    db.runSync('PRAGMA synchronous = NORMAL');
+    db.runSync('PRAGMA cache_size = -8000');
+    db.runSync('PRAGMA temp_store = MEMORY');
+    db.runSync('PRAGMA auto_vacuum = INCREMENTAL');
 
     db.withTransactionSync(() => {
-      db.execSync(createNovelTableQuery);
-      db.execSync(createNovelIndexQuery);
-      db.execSync(createCategoriesTableQuery);
-      db.execSync(createCategoryDefaultQuery);
-      db.execSync(createNovelCategoryTableQuery);
-      db.execSync(createChapterTableQuery);
-      db.execSync(createCategoryTriggerQuery);
-      db.execSync(createChapterIndexQuery);
-      db.execSync(createRepositoryTableQuery);
+      db.runSync(createNovelTableQuery);
+      db.runSync(createNovelIndexQuery);
+      db.runSync(createCategoriesTableQuery);
+      db.runSync(createCategoryDefaultQuery);
+      db.runSync(createNovelCategoryTableQuery);
+      db.runSync(createChapterTableQuery);
+      db.runSync(createCategoryTriggerQuery);
+      db.runSync(createChapterIndexQuery);
+      db.runSync(createRepositoryTableQuery);
     });
   }
 };
 
 export const recreateDBIndex = () => {
-  const isOnBoard = MMKVStorage.getBoolean('IS_ONBOARDED');
-  if (!isOnBoard) {
-    runSync([
-      [dropNovelIndexQuery],
-      [dropChapterIndexQuery],
-      [createNovelIndexQuery],
-      [createChapterIndexQuery],
-    ]);
+  try {
+    db.runSync('PRAGMA journal_mode = WAL');
+    db.runSync('PRAGMA foreign_keys = ON');
+    db.runSync('PRAGMA synchronous = NORMAL');
+    db.runSync('PRAGMA cache_size = -8000');
+    db.runSync('PRAGMA temp_store = MEMORY');
+    db.runSync('PRAGMA auto_vacuum = INCREMENTAL');
+    db.withTransactionSync(() => {
+      db.runSync(dropNovelIndexQuery);
+      db.runSync(dropChapterIndexQuery);
+      db.runSync(createNovelIndexQuery);
+      db.runSync(createChapterIndexQuery);
+    });
+  } catch (error: unknown) {
+    if (__DEV__) console.error(error);
+    const message = error instanceof Error ? error.message : String(error);
+    showToast(message);
   }
 };

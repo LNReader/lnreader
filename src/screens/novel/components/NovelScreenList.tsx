@@ -29,60 +29,64 @@ import { NovelSettings } from '@hooks/persisted/useNovel';
 import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
 
 type NovelScreenListProps = {
+  chapters: ChapterInfo[];
+  chaptersTeasers: ChapterInfo[];
+  deleteChapter: (chapter: ChapterInfo) => void;
+  fetchedNovel?: NovelInfo;
+  fetching: boolean;
+  followNovel: () => void;
+  getNextChapterBatch: () => void;
+  getNovel: () => void;
+  headerOpacity: SharedValue<number>;
+  lastRead?: ChapterInfo;
+  listRef: React.RefObject<FlashList<ChapterInfo>>;
+  loading: boolean;
+  navigation: any;
+  novelSettings: NovelSettings;
+  openDrawer: () => void;
+  pageIndex: number;
+  pages: string[];
+  selected: ChapterInfo[];
+  setNovel: React.Dispatch<React.SetStateAction<NovelInfo | undefined>>;
+  setSelected: React.Dispatch<React.SetStateAction<ChapterInfo[]>>;
+  setShowChapterTitles: (v: boolean) => void;
+  sortAndFilterChapters: (sort?: string, filter?: string) => Promise<void>;
+  totalChapters?: number;
   routeBaseNovel: {
     name: string;
     path: string;
     pluginId: string;
     cover?: string;
   };
-  navigation: any;
-  openDrawer: () => void;
-  headerOpacity: SharedValue<number>;
-  selected: ChapterInfo[];
-  setSelected: React.Dispatch<React.SetStateAction<ChapterInfo[]>>;
-  chapters: ChapterInfo[];
-  chaptersTeasers: ChapterInfo[];
-  fetchedNovel?: NovelInfo;
-  novelSettings: NovelSettings;
-  loading: boolean;
-  fetching: boolean;
-  pageIndex: number;
-  pages: string[];
-  lastRead?: ChapterInfo;
-  setNovel: React.Dispatch<React.SetStateAction<NovelInfo | undefined>>;
-  getNovel: () => void;
-  sortAndFilterChapters: (sort?: string, filter?: string) => Promise<void>;
-  setShowChapterTitles: (v: boolean) => void;
-  followNovel: () => void;
-  deleteChapter: (chapter: ChapterInfo) => void;
-  listRef: React.RefObject<FlashList<ChapterInfo>>;
 };
 
 const ListEmptyComponent = () => <ChapterListSkeleton />;
 
 const NovelScreenList = ({
-  routeBaseNovel,
-  navigation,
-  openDrawer,
-  headerOpacity,
-  selected,
-  setSelected,
   chapters,
   chaptersTeasers,
+  deleteChapter,
   fetchedNovel,
-  novelSettings,
-  loading,
   fetching,
+  followNovel,
+  getNextChapterBatch,
+  getNovel,
+  headerOpacity,
+  lastRead,
+  listRef,
+  loading,
+  navigation,
+  novelSettings,
+  openDrawer,
   pageIndex,
   pages,
-  lastRead,
+  routeBaseNovel,
+  selected,
   setNovel,
-  getNovel,
-  sortAndFilterChapters,
+  setSelected,
   setShowChapterTitles,
-  followNovel,
-  deleteChapter,
-  listRef,
+  sortAndFilterChapters,
+  totalChapters,
 }: NovelScreenListProps) => {
   const { pluginId } = routeBaseNovel;
   const routeNovel: Omit<NovelInfo, 'id'> & { id: 'NO_ID' } = {
@@ -283,29 +287,32 @@ const NovelScreenList = ({
         }}
         keyExtractor={item => 'chapter_' + item.id}
         contentContainerStyle={styles.contentContainer}
+        refreshControl={refreshControl()}
+        onEndReached={getNextChapterBatch}
+        onEndReachedThreshold={2}
+        onScroll={onPageScroll}
         ListHeaderComponent={
           <NovelInfoHeader
-            novel={novel}
-            theme={theme}
-            filter={filter}
-            lastRead={lastRead}
-            isLoading={loading}
-            fetching={fetching}
-            setCustomNovelCover={setCustomNovelCover}
             chapters={chapters}
-            navigation={navigation}
-            navigateToChapter={navigateToChapter}
-            followNovel={followNovel}
-            trackerSheetRef={trackerSheetRef}
-            novelBottomSheetRef={novelBottomSheetRef}
             deleteDownloadsSnackbar={deleteDownloadsSnackbar}
-            page={pages.length > 1 ? pages[pageIndex] : undefined}
+            fetching={fetching}
+            filter={filter}
+            followNovel={followNovel}
+            isLoading={loading}
+            lastRead={lastRead}
+            navigateToChapter={navigateToChapter}
+            navigation={navigation}
+            novel={novel}
+            novelBottomSheetRef={novelBottomSheetRef}
             onRefreshPage={onRefreshPage}
             openDrawer={openDrawer}
+            page={pages.length > 1 ? pages[pageIndex] : undefined}
+            setCustomNovelCover={setCustomNovelCover}
+            theme={theme}
+            totalChapters={totalChapters}
+            trackerSheetRef={trackerSheetRef}
           />
         }
-        refreshControl={refreshControl()}
-        onScroll={onPageScroll}
       />
       {novel.id !== 'NO_ID' && (
         <>
