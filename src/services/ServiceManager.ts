@@ -62,7 +62,15 @@ export type BackgroundTaskMetadata = {
 export type QueuedBackgroundTask = {
   task: BackgroundTask;
   meta: BackgroundTaskMetadata;
+  id: string;
 };
+
+function makeId() {
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
+}
 
 export default class ServiceManager {
   STORE_KEY = 'APP_SERVICE';
@@ -250,7 +258,7 @@ export default class ServiceManager {
       'DOWNLOAD_CHAPTER': 0,
     };
     let startingTasks = manager.getTaskList();
-    let tasksSet = new Set(startingTasks.map(t => JSON.stringify(t.task)));
+    let tasksSet = new Set(startingTasks.map(t => t.id));
     while (BackgroundService.isRunning()) {
       const currentTasks = manager.getTaskList();
       const currentTask = currentTasks[0];
@@ -259,11 +267,9 @@ export default class ServiceManager {
       }
 
       //Add any newly queued tasks to the starting tasks list
-      let newtasks = currentTasks.filter(
-        t => !tasksSet.has(JSON.stringify(t.task)),
-      );
+      let newtasks = currentTasks.filter(t => !tasksSet.has(t.id));
       startingTasks.push(...newtasks);
-      newtasks.map(t => tasksSet.add(JSON.stringify(t.task)));
+      newtasks.forEach(t => tasksSet.add(t.id));
 
       try {
         await manager.executeTask(currentTask, startingTasks);
@@ -352,6 +358,7 @@ export default class ServiceManager {
               ? task.data.chapterName
               : undefined,
         },
+        id: makeId(),
       }));
 
       setMMKVObject(this.STORE_KEY, currentTasks.concat(newTasks));
