@@ -1,5 +1,5 @@
 const ReactCompilerConfig = {
-  target: '18'
+  target: '19',
 };
 
 module.exports = function (api) {
@@ -22,7 +22,6 @@ module.exports = function (api) {
             '@utils': './src/utils',
             '@theme': './src/theme',
             '@navigators': './src/navigators',
-            '@native': './src/native',
             '@api': './src/api',
             '@type': './src/type',
             '@specs': './specs',
