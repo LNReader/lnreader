@@ -150,8 +150,10 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
 
         // Track progress if the plugin supports it
         const plugin = getPlugin(novel.pluginId);
-        if (plugin?.trackProgress && chapter.unread) {
-          plugin.trackProgress(novel.path, chapter.path);
+        if (plugin?.pluginSettings) {
+          if (plugin?.trackProgress && chapter.unread) {
+            plugin.trackProgress(novel.path, chapter.path);
+          }
         }
 
         markChapterRead(chapter.id);
