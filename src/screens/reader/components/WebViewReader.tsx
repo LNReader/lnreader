@@ -117,6 +117,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
     };
   }, []);
 
+  const baseUrlSource =
+    plugin?.id === 'novelupdates' ? chapter?.path : plugin?.site;
+
   return (
     <WebView
       ref={webViewRef}
@@ -164,7 +167,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
         }
       }}
       source={{
-        baseUrl: !chapter.isDownloaded ? plugin?.site : undefined,
+        baseUrl: !chapter.isDownloaded ? baseUrlSource : undefined,
         headers: plugin?.imageRequestInit?.headers,
         method: plugin?.imageRequestInit?.method,
         body: plugin?.imageRequestInit?.body,
