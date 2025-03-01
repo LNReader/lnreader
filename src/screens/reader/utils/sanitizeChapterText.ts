@@ -11,9 +11,9 @@ export const sanitizeChapterText = (
   let sanitizedHtml = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'title']),
     allowedAttributes: {
-      a: ['href', 'name', 'target', 'class', 'id'],
+      a: ['href', 'class', 'id'],
       div: ['class', 'id'],
-      img: ['src', 'srcset', 'class', 'id'],
+      img: ['src', 'class', 'id'],
       ol: ['reversed', 'start', 'type'],
       p: ['class', 'id'],
       span: ['class', 'id'],
