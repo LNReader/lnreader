@@ -14,7 +14,7 @@ import {
   bookmarkChapter as _bookmarkChapter,
   markChapterRead as _markChapterRead,
   markChaptersRead as _markChaptersRead,
-  markPreviuschaptersRead as _markPreviuschaptersRead,
+  markPreviousChaptersRead as _markPreviousChaptersRead,
   markPreviousChaptersUnread as _markPreviousChaptersUnread,
   markChaptersUnread as _markChaptersUnread,
   deleteChapter as _deleteChapter,
@@ -208,9 +208,9 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     );
   };
 
-  const markPreviouschaptersRead = (chapterId: number) => {
+  const markPreviousChaptersRead = (chapterId: number) => {
     if (novel) {
-      _markPreviuschaptersRead(chapterId, novel.id);
+      _markPreviousChaptersRead(chapterId, novel.id);
       setChapters(
         chapters.map(chapter =>
           chapter.id <= chapterId ? { ...chapter, unread: false } : chapter,
@@ -256,7 +256,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
       _markPreviousChaptersUnread(chapterId, novel.id);
       setChapters(
         chapters.map(chapter =>
-          chapter.id <= chapterId ? { ...chapter, unread: true } : chapter,
+          chapter.id >= chapterId ? { ...chapter, unread: true } : chapter,
         ),
       );
     }
@@ -406,7 +406,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     sortAndFilterChapters,
     followNovel,
     bookmarkChapters,
-    markPreviouschaptersRead,
+    markPreviousChaptersRead,
     markChaptersRead,
     markPreviousChaptersUnread,
     markChaptersUnread,
