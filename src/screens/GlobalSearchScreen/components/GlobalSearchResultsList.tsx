@@ -157,7 +157,7 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
         </View>
       </>
     ),
-    [item.isLoading],
+    [item.isLoading, library],
   );
 };
 
