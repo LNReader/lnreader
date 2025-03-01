@@ -1,4 +1,5 @@
 import {
+  getChapter as getDbChapter,
   getNextChapter,
   getPrevChapter,
   markChapterRead,
@@ -188,10 +189,17 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
   useEffect(() => {
     setLoading(true);
     getChapter().finally(() => setLoading(false));
+
     if (!incognitoMode) {
       insertHistory(chapter.id);
-      setLastRead(chapter);
+      getDbChapter(chapter.id).then(result => setLastRead(result));
     }
+
+    return () => {
+      if (!incognitoMode) {
+        getDbChapter(chapter.id).then(result => setLastRead(result));
+      }
+    };
   }, [chapter]);
 
   const refetch = () => {
