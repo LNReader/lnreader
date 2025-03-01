@@ -156,7 +156,9 @@ const GeneralSettings: React.FC = () => {
             </View>
           ) : null}
         </>
-      ) : null}
+      ) : (
+        <></>
+      )}
     </>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 
-import { Appbar, List } from '@components';
+import { Appbar, List, SafeAreaView } from '@components';
 import { useTheme } from '@hooks/persisted';
 
 import { getString } from '@strings/translations';
@@ -11,13 +11,13 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
   const theme = useTheme();
 
   return (
-    <>
+    <SafeAreaView excludeTop>
       <Appbar
         title={getString('common.settings')}
         handleGoBack={navigation.goBack}
         theme={theme}
       />
-      <View style={{ flex: 1, backgroundColor: theme.background }}>
+      <ScrollView style={{ flex: 1, backgroundColor: theme.background }}>
         <List.Item
           title={getString('generalSettings')}
           icon="tune"
@@ -88,8 +88,8 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           }
           theme={theme}
         />
-      </View>
-    </>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

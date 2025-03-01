@@ -1,11 +1,12 @@
 import { FlashList, FlashListProps } from '@shopify/flash-list';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
+import { TextInput as RNTextInput } from 'react-native';
 import { getString } from '@strings/translations';
-import { Button, SwitchItem } from '@components';
+import { Button, Modal, SwitchItem } from '@components';
 
-import { Modal, Portal, TextInput, Text } from 'react-native-paper';
+import { Portal, Text } from 'react-native-paper';
 import { useTheme } from '@hooks/persisted';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { NovelScreenProps } from '@navigators/types';
@@ -16,7 +17,7 @@ interface JumpToChapterModalProps {
   chapters: ChapterInfo[];
   navigation: NovelScreenProps['navigation'];
   novel: NovelInfo;
-  chapterListRef: FlashList<ChapterInfo> | null;
+  chapterListRef: React.RefObject<FlashList<ChapterInfo>>;
 }
 
 const JumpToChapterModal = ({
@@ -37,9 +38,15 @@ const JumpToChapterModal = ({
   const [error, setError] = useState('');
   const [result, setResult] = useState<ChapterInfo[]>([]);
 
+  const inputRef = useRef<RNTextInput>(null);
+  const [inputFocused, setInputFocused] = useState(false);
+
   const onDismiss = () => {
     hideModal();
     setText('');
+    inputRef.current?.clear();
+    inputRef.current?.blur();
+    setInputFocused(false);
     setError('');
     setResult([]);
   };
@@ -53,19 +60,19 @@ const JumpToChapterModal = ({
 
   const scrollToChapter = (chap: ChapterInfo) => {
     onDismiss();
-    chapterListRef?.scrollToItem({
+    chapterListRef.current?.scrollToItem({
       animated: true,
       item: chap,
-      viewPosition: 91,
+      viewPosition: 0.5,
     });
   };
 
   const scrollToIndex = (index: number) => {
     onDismiss();
-    chapterListRef?.scrollToIndex({
+    chapterListRef.current?.scrollToIndex({
       animated: true,
       index: index,
-      viewOffset: 91,
+      viewPosition: 0.5,
     });
   };
 
@@ -146,39 +153,49 @@ const JumpToChapterModal = ({
   };
 
   const errorColor = !theme.isDark ? '#B3261E' : '#F2B8B5';
+  const placeholder = mode
+    ? getString('novelScreen.jumpToChapterModal.chapterName')
+    : getString('novelScreen.jumpToChapterModal.chapterNumber') +
+      ` (≥ ${minNumber},  ≤ ${maxNumber})`;
 
+  const borderWidth = inputFocused || error ? 2 : 1;
+  const margin = inputFocused || error ? 0 : 1;
   return (
     <Portal>
-      <Modal
-        visible={modalVisible}
-        onDismiss={onDismiss}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: theme.overlay3 },
-        ]}
-      >
-        <View style={styles.modalHeaderCtn}>
+      <Modal visible={modalVisible} onDismiss={onDismiss}>
+        <View>
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
             {getString('novelScreen.jumpToChapterModal.jumpToChapter')}
           </Text>
-          <TextInput
-            value={text}
-            placeholder={
-              mode
-                ? getString('novelScreen.jumpToChapterModal.chapterName')
-                : getString('novelScreen.jumpToChapterModal.chapterNumber') +
-                  ` (≥ ${minNumber},  ≤ ${maxNumber})`
-            }
+          <RNTextInput
+            ref={inputRef}
+            placeholder={placeholder}
+            placeholderTextColor={'grey'}
             onChangeText={onChangeText}
             onSubmitEditing={onSubmit}
-            mode="outlined"
-            theme={{ colors: { ...theme } }}
-            underlineColor={theme.outline}
-            dense
             keyboardType={mode ? 'default' : 'numeric'}
-            error={error.length > 0}
+            onFocus={() => setInputFocused(true)}
+            onBlur={() => setInputFocused(false)}
+            style={[
+              {
+                color: theme.onBackground,
+                backgroundColor: theme.background,
+                borderColor: error
+                  ? theme.error
+                  : inputFocused
+                  ? theme.primary
+                  : theme.outline,
+                borderWidth: borderWidth,
+                margin: margin,
+              },
+              styles.textInput,
+            ]}
           />
-          <Text style={[styles.errorText, { color: errorColor }]}>{error}</Text>
+          {!!error && (
+            <Text style={[styles.errorText, { color: errorColor }]}>
+              {error}
+            </Text>
+          )}
           <SwitchItem
             label={getString('novelScreen.jumpToChapterModal.openChapter')}
             value={openChapter}
@@ -217,20 +234,16 @@ const JumpToChapterModal = ({
 export default JumpToChapterModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    borderRadius: 32,
-  },
-  modalHeaderCtn: {
-    padding: 20,
-    paddingTop: 32,
-    paddingBottom: 0,
+  textInput: {
+    borderStyle: 'solid',
+    borderRadius: 4,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    fontSize: 16,
   },
   modalFooterCtn: {
     flexDirection: 'row-reverse',
-    paddingHorizontal: 20,
     paddingTop: 8,
-    paddingBottom: 32,
   },
   modalTitle: {
     fontSize: 24,
@@ -253,7 +266,6 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   listElementContainer: {
-    paddingHorizontal: 20,
     paddingVertical: 12,
   },
 });

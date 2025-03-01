@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { memo, useEffect, useMemo } from 'react';
 import { NativeEventEmitter, NativeModules, StatusBar } from 'react-native';
 import WebView from 'react-native-webview';
 import color from 'color';
@@ -77,7 +77,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
       initialChapterGeneralSettings,
     [],
   );
-  const batteryLevel = useMemo(getBatteryLevelSync, []);
+  const batteryLevel = useMemo(() => getBatteryLevelSync(), []);
   const plugin = getPlugin(novel?.pluginId);
   const pluginCustomJS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.js`;
   const pluginCustomCSS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.css`;
@@ -257,4 +257,4 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
   );
 };
 
-export default WebViewReader;
+export default memo(WebViewReader);

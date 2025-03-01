@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     borderRadius: 8,
-    elevation: 1,
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
     margin: 8,
   },
   pressable: {

@@ -14,7 +14,7 @@ import * as FileSystem from 'expo-file-system';
 
 export const createBackup = async () => {
   try {
-    const novels = await getLibraryNovelsFromDb();
+    const novels = getLibraryNovelsFromDb();
 
     const datetime = dayjs().format('YYYY-MM-DD_HH_mm');
     const fileName = 'lnreader_backup_' + datetime + '.json';

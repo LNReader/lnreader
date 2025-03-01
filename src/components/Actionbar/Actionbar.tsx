@@ -5,21 +5,22 @@ import {
   Pressable,
   StyleProp,
   StyleSheet,
-  View,
-  ViewProps,
+  ViewStyle,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
+import { MaterialDesignIconName } from '@type/icon';
+import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 
 type Action = {
-  icon: string;
+  icon: MaterialDesignIconName;
   onPress: () => void;
 };
 
 interface ActionbarProps {
   active: boolean;
   actions: Action[];
-  viewStyle?: StyleProp<ViewProps>;
+  viewStyle?: StyleProp<ViewStyle>;
 }
 
 export const Actionbar: React.FC<ActionbarProps> = ({
@@ -31,41 +32,42 @@ export const Actionbar: React.FC<ActionbarProps> = ({
 
   const { bottom } = useSafeAreaInsets();
 
-  if (active) {
-    return (
-      <View
-        style={[
-          styles.actionbarContainer,
-          {
-            backgroundColor: theme.surface2,
-            minHeight: 80 + bottom,
-            paddingBottom: bottom,
-          },
-          viewStyle,
-        ]}
-      >
-        {actions.map(({ icon, onPress }, id) => (
-          <Pressable
-            key={id}
-            android_ripple={{
-              radius: 50,
-              color: theme.rippleColor,
-              borderless: true,
-            }}
-            onPress={onPress}
-          >
-            <MaterialCommunityIcons
-              name={icon}
-              color={theme.onSurface}
-              size={24}
-            />
-          </Pressable>
-        ))}
-      </View>
-    );
-  } else {
+  if (!active) {
     return null;
   }
+  return (
+    <Animated.View
+      entering={SlideInDown.duration(150)}
+      exiting={SlideOutDown.duration(150)}
+      style={[
+        styles.actionbarContainer,
+        {
+          backgroundColor: theme.surface2,
+          minHeight: 80 + bottom,
+          paddingBottom: bottom,
+        },
+        viewStyle,
+      ]}
+    >
+      {actions.map(({ icon, onPress }, id) => (
+        <Pressable
+          key={id}
+          android_ripple={{
+            radius: 50,
+            color: theme.rippleColor,
+            borderless: true,
+          }}
+          onPress={onPress}
+        >
+          <MaterialCommunityIcons
+            name={icon}
+            color={theme.onSurface}
+            size={24}
+          />
+        </Pressable>
+      ))}
+    </Animated.View>
+  );
 };
 
 const styles = StyleSheet.create({

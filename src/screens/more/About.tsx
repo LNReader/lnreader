@@ -4,10 +4,9 @@ import { ScrollView } from 'react-native';
 import * as Linking from 'expo-linking';
 
 import { getString } from '@strings/translations';
-import { ScreenContainer } from '@components/Common';
 import { MoreHeader } from './components/MoreHeader';
 import { useTheme } from '@hooks/persisted';
-import { List } from '@components';
+import { List, SafeAreaView } from '@components';
 import { AboutScreenProps } from '@navigators/types';
 import { GIT_HASH, RELEASE_DATE, BUILD_TYPE } from '@env';
 import * as Clipboard from 'expo-clipboard';
@@ -31,7 +30,7 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
   }
 
   return (
-    <ScreenContainer theme={theme}>
+    <SafeAreaView excludeTop>
       <MoreHeader
         title={getString('common.about')}
         navigation={navigation}
@@ -96,7 +95,7 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
           />
         </List.Section>
       </ScrollView>
-    </ScreenContainer>
+    </SafeAreaView>
   );
 };
 

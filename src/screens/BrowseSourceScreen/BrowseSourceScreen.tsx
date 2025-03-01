@@ -1,7 +1,7 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import { FAB } from 'react-native-paper';
-import { Container, ErrorScreenV2, SearchbarV2 } from '@components/index';
+import { ErrorScreenV2, SafeAreaView, SearchbarV2 } from '@components/index';
 import NovelList from '@components/NovelList';
 import NovelCover from '@components/NovelCover';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -68,6 +68,29 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
   };
 
   const { library, setLibrary } = useLibraryNovels();
+  const [inActivity, setInActivity] = useState<Record<string, boolean>>({});
+
+  const switchLibraryState = (
+    prevValues: NovelInfo[],
+    item: NovelItem | NovelInfo,
+  ) => {
+    const inLibrary = prevValues.some(
+      novel => novel.path === item.path && novel.pluginId === pluginId,
+    );
+    if (inLibrary) {
+      return [...prevValues.filter(novel => novel.path !== item.path)];
+    } else {
+      return [
+        ...prevValues,
+        {
+          ...item,
+          pluginId: pluginId,
+          inLibrary: true,
+          isLocal: false,
+        } as NovelInfo,
+      ];
+    }
+  };
 
   const novelInLibrary = (novelPath: string) =>
     library?.some(
@@ -80,13 +103,13 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
         ...item,
         pluginId: pluginId,
       }),
-    [pluginId],
+    [navigation, pluginId],
   );
 
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, right } = useSafeAreaInsets();
   const filterSheetRef = useRef<BottomSheetModal | null>(null);
   return (
-    <Container>
+    <SafeAreaView>
       <SearchbarV2
         searchText={searchText}
         leftIcon="magnify"
@@ -129,6 +152,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
                 item={item}
                 theme={theme}
                 libraryStatus={inLibrary}
+                inActivity={inActivity[item.path]}
                 onPress={() => navigateToNovel(item)}
                 isSelected={false}
                 addSkeletonLoading={
@@ -136,24 +160,14 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
                   (hasNextSearchPage && Boolean(searchText))
                 }
                 onLongPress={async () => {
+                  setInActivity(prev => ({ ...prev, [item.path]: true }));
+
                   await switchNovelToLibrary(item.path, pluginId);
-                  setLibrary(prevValues => {
-                    if (inLibrary) {
-                      return [
-                        ...prevValues.filter(novel => novel.path !== item.path),
-                      ];
-                    } else {
-                      return [
-                        ...prevValues,
-                        {
-                          ...item,
-                          pluginId: pluginId,
-                          inLibrary: true,
-                          isLocal: false,
-                        } as NovelInfo,
-                      ];
-                    }
-                  });
+
+                  setLibrary(prevValues =>
+                    switchLibraryState(prevValues, item),
+                  );
+                  setInActivity(prev => ({ ...prev, [item.path]: false }));
                 }}
                 selectedNovelIds={[]}
               />
@@ -177,7 +191,11 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
             icon={'filter-variant'}
             style={[
               styles.filterFab,
-              { backgroundColor: theme.primary, marginBottom: bottom },
+              {
+                backgroundColor: theme.primary,
+                marginBottom: bottom + 16,
+                marginRight: right + 16,
+              },
             ]}
             label={getString('common.filter')}
             uppercase={false}
@@ -192,7 +210,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
           />
         </>
       ) : null}
-    </Container>
+    </SafeAreaView>
   );
 };
 
@@ -203,6 +221,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     margin: 16,
     right: 0,
-    bottom: 16,
+    bottom: 0,
   },
 });

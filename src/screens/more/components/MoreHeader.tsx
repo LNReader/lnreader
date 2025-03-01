@@ -41,7 +41,7 @@ export const MoreHeader = ({
 
 const styles = StyleSheet.create({
   logoContainer: {
-    paddingTop: 16,
+    paddingTop: 4,
     paddingBottom: 24,
     alignItems: 'center',
   },

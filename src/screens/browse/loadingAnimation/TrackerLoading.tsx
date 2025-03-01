@@ -77,7 +77,7 @@ const createStyleSheet = (theme: ThemeColors) => {
       width: Dimensions.get('window').width - 20,
       overflow: 'hidden',
       flexDirection: 'row',
-      elevation: 1,
+      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
     },
     text: {
       borderRadius: 8,

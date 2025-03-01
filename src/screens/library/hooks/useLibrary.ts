@@ -24,7 +24,7 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
   const [library, setLibrary] = useState<Library[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getLibrary = async () => {
+  const getLibrary = useCallback(async () => {
     if (searchText) {
       setIsLoading(true);
     }
@@ -46,12 +46,12 @@ export const useLibrary = ({ searchText }: { searchText?: string }) => {
 
     setLibrary(res);
     setIsLoading(false);
-  };
+  }, [downloadedOnlyMode, filter, searchText, sortOrder]);
 
   useFocusEffect(
     useCallback(() => {
       getLibrary();
-    }, [searchText, filter, sortOrder, downloadedOnlyMode]),
+    }, [getLibrary]),
   );
 
   return { library, isLoading, refetchLibrary: getLibrary };
@@ -61,7 +61,7 @@ export const useLibraryNovels = () => {
   const [library, setLibrary] = useState<NovelInfo[]>([]);
 
   const getLibrary = async () => {
-    const novels = await getLibraryNovelsFromDb();
+    const novels = getLibraryNovelsFromDb();
 
     setLibrary(novels);
   };

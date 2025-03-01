@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ProgressBar } from 'react-native-paper';
 
-import { EmptyView, SearchbarV2 } from '@components/index';
+import { EmptyView, SafeAreaView, SearchbarV2 } from '@components/index';
 import GlobalSearchResultsList from './components/GlobalSearchResultsList';
 
 import { useSearch } from '@hooks';
@@ -33,7 +33,7 @@ const GlobalSearchScreen = (props: Props) => {
   });
 
   return (
-    <>
+    <SafeAreaView>
       <SearchbarV2
         searchText={searchText}
         placeholder={getString('browseScreen.globalSearch')}
@@ -44,7 +44,10 @@ const GlobalSearchScreen = (props: Props) => {
         theme={theme}
       />
       {progress ? (
-        <ProgressBar color={theme.primary} progress={progress} />
+        <ProgressBar
+          color={theme.primary}
+          progress={Math.round(1000 * progress) / 1000}
+        />
       ) : null}
       <GlobalSearchResultsList
         searchResults={searchResults}
@@ -58,7 +61,7 @@ const GlobalSearchScreen = (props: Props) => {
           />
         }
       />
-    </>
+    </SafeAreaView>
   );
 };
 

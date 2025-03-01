@@ -1,5 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   NavigationState,
@@ -7,9 +14,9 @@ import {
   TabBar,
   TabView,
 } from 'react-native-tab-view';
-import color from 'color';
+import Color from 'color';
 
-import { SearchbarV2, Button } from '@components/index';
+import { SearchbarV2, Button, SafeAreaView } from '@components/index';
 import { LibraryView } from './components/LibraryListView';
 import LibraryBottomSheet from './components/LibraryBottomSheet/LibraryBottomSheet';
 import { Banner } from './components/Banner';
@@ -36,17 +43,37 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { Row } from '@components/Common';
 import { LibraryScreenProps } from '@navigators/types';
-import { NovelInfo } from '@database/types';
+import { LibraryNovelInfo, NovelInfo } from '@database/types';
 import * as DocumentPicker from 'expo-document-picker';
 import ServiceManager from '@services/ServiceManager';
+import useImport from '@hooks/persisted/useImport';
+import { ThemeColors } from '@theme/types';
 
 type State = NavigationState<{
   key: string;
   title: string;
 }>;
 
+type TabViewLabelProps = {
+  route: {
+    id: number;
+    name: string;
+    sort: number;
+    novels: LibraryNovelInfo[];
+    key: string;
+    title: string;
+  };
+  labelText?: string;
+  focused: boolean;
+  color: string;
+  allowFontScaling?: boolean;
+  style?: StyleProp<TextStyle>;
+};
+
 const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
   const theme = useTheme();
+  const styles = createStyles(theme);
+  const { left: leftInset, right: rightInset } = useSafeAreaInsets();
   const { searchText, setSearchText, clearSearchbar } = useSearch();
   const {
     showNumberOfNovels = false,
@@ -58,18 +85,33 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
 
   const { isLoading: isHistoryLoading, history, error } = useHistory();
 
-  const { right: rightInset } = useSafeAreaInsets();
+  const { importQueue, importNovel } = useImport();
+
+  const layout = useWindowDimensions();
 
   const onChangeText = debounce((text: string) => {
     setSearchText(text);
   }, 100);
 
+  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
+
+  const [index, setIndex] = useState(0);
+
+  const {
+    value: setCategoryModalVisible,
+    setTrue: showSetCategoryModal,
+    setFalse: closeSetCategoryModal,
+  } = useBoolean();
+
   const handleClearSearchbar = () => {
     clearSearchbar();
   };
 
-  const { library, refetchLibrary, isLoading } = useLibrary({ searchText });
+  const { library, refetchLibrary, isLoading } = useLibrary({
+    searchText,
+  });
   const [selectedNovelIds, setSelectedNovelIds] = useState<number[]>([]);
+
   useBackHandler(() => {
     if (selectedNovelIds.length) {
       setSelectedNovelIds([]);
@@ -78,12 +120,6 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
 
     return false;
   });
-
-  const layout = useWindowDimensions();
-
-  const [index, setIndex] = useState(0);
-
-  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
 
   useEffect(
     () =>
@@ -97,6 +133,31 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     [navigation],
   );
 
+  useEffect(() => {
+    refetchLibrary();
+  }, [refetchLibrary, importQueue]);
+
+  const searchbarPlaceholder =
+    selectedNovelIds.length === 0
+      ? getString('libraryScreen.searchbar')
+      : `${selectedNovelIds.length} selected`;
+
+  function openRandom() {
+    const novels = library[index].novels;
+    const randomNovel = novels[Math.floor(Math.random() * novels.length)];
+    if (randomNovel) {
+      navigation.navigate('Novel', randomNovel);
+    }
+  }
+
+  const pickAndImport = () => {
+    DocumentPicker.getDocumentAsync({
+      type: 'application/epub+zip',
+      copyToCacheDirectory: true,
+      multiple: true,
+    }).then(importNovel);
+  };
+
   const renderTabBar = (
     props: SceneRendererProps & { navigationState: State },
   ) =>
@@ -104,68 +165,58 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
       <TabBar
         {...props}
         scrollEnabled
-        indicatorStyle={{ backgroundColor: theme.primary, height: 3 }}
+        indicatorStyle={styles.tabBarIndicator}
         style={[
           {
             backgroundColor: theme.surface,
-            borderBottomColor: color(theme.isDark ? '#FFFFFF' : '#000000')
+            borderBottomColor: Color(theme.isDark ? '#FFFFFF' : '#000000')
               .alpha(0.12)
               .string(),
           },
           styles.tabBar,
         ]}
-        tabStyle={{ width: 'auto', minWidth: 100 }}
+        tabStyle={styles.tabStyle}
         gap={8}
-        renderLabel={({ route, color }) => (
-          <Row>
-            <Text style={{ color, fontWeight: '600' }}>{route.title}</Text>
-            {showNumberOfNovels ? (
-              <View
-                style={[
-                  styles.badgeCtn,
-                  { backgroundColor: theme.surfaceVariant },
-                ]}
-              >
-                <Text
-                  style={[styles.badgetText, { color: theme.onSurfaceVariant }]}
-                >
-                  {(route as any)?.novels.length}
-                </Text>
-              </View>
-            ) : null}
-          </Row>
-        )}
         inactiveColor={theme.secondary}
         activeColor={theme.primary}
         android_ripple={{ color: theme.rippleColor }}
       />
     ) : null;
 
-  const searchbarPlaceholder =
-    selectedNovelIds.length === 0
-      ? getString('libraryScreen.searchbar')
-      : `${selectedNovelIds.length} selected`;
-
-  const {
-    value: setCategoryModalVisible,
-    setTrue: showSetCategoryModal,
-    setFalse: closeSetCategoryModal,
-  } = useBoolean();
-
-  function openRandom() {
-    const novels = library[index].novels;
-    const randomNovel = novels[Math.floor(Math.random() * novels.length)];
-    if (randomNovel) {
-      navigation.navigate('Novel', {
-        name: randomNovel.name,
-        path: randomNovel.path,
-        pluginId: randomNovel.pluginId,
-      });
-    }
-  }
+  const renderLabel = useCallback(
+    ({ route, color }: TabViewLabelProps) => {
+      return (
+        <Row>
+          <Text style={[{ color }, styles.fontWeight600]}>{route.title}</Text>
+          {showNumberOfNovels ? (
+            <View
+              style={[
+                styles.badgeCtn,
+                { backgroundColor: theme.surfaceVariant },
+              ]}
+            >
+              <Text
+                style={[styles.badgetText, { color: theme.onSurfaceVariant }]}
+              >
+                {route?.novels.length}
+              </Text>
+            </View>
+          ) : null}
+        </Row>
+      );
+    },
+    [
+      showNumberOfNovels,
+      styles.badgeCtn,
+      styles.badgetText,
+      styles.fontWeight600,
+      theme.onSurfaceVariant,
+      theme.surfaceVariant,
+    ],
+  );
 
   return (
-    <>
+    <SafeAreaView excludeBottom>
       <SearchbarV2
         searchText={searchText}
         clearSearchbar={handleClearSearchbar}
@@ -218,25 +269,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           },
           {
             title: getString('libraryScreen.extraMenu.importEpub'),
-            onPress: () => {
-              DocumentPicker.getDocumentAsync({
-                type: 'application/epub+zip',
-                copyToCacheDirectory: true,
-                multiple: true,
-              }).then(res => {
-                if (!res.canceled) {
-                  ServiceManager.manager.addTask(
-                    res.assets.map(asset => ({
-                      name: 'IMPORT_EPUB',
-                      data: {
-                        filename: asset.name,
-                        uri: asset.uri,
-                      },
-                    })),
-                  );
-                }
-              });
-            },
+            onPress: pickAndImport,
           },
           {
             title: getString('libraryScreen.extraMenu.openRandom'),
@@ -261,7 +294,11 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           textColor={theme.onTertiary}
         />
       ) : null}
+
       <TabView
+        commonOptions={{
+          label: renderLabel,
+        }}
         lazy
         navigationState={{
           index,
@@ -296,6 +333,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
                 novels={route.novels}
                 selectedNovelIds={selectedNovelIds}
                 setSelectedNovelIds={setSelectedNovelIds}
+                pickAndImport={pickAndImport}
                 navigation={navigation}
               />
             </>
@@ -304,6 +342,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
       />
+
       {useLibraryFAB &&
       !isHistoryLoading &&
       history &&
@@ -340,9 +379,13 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           refetchLibrary();
         }}
       />
-      <LibraryBottomSheet bottomSheetRef={bottomSheetRef} />
+      <LibraryBottomSheet
+        bottomSheetRef={bottomSheetRef}
+        style={{ marginLeft: leftInset, marginRight: rightInset }}
+      />
       <Portal>
         <Actionbar
+          viewStyle={{ paddingLeft: leftInset, paddingRight: rightInset }}
           active={selectedNovelIds.length > 0}
           actions={[
             {
@@ -351,16 +394,24 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
             },
             {
               icon: 'check',
-              onPress: () => {
-                selectedNovelIds.map(id => markAllChaptersRead(id));
+              onPress: async () => {
+                let promises: Promise<any>[] = [];
+                selectedNovelIds.map(id =>
+                  promises.push(markAllChaptersRead(id)),
+                );
+                await Promise.all(promises);
                 setSelectedNovelIds([]);
                 refetchLibrary();
               },
             },
             {
               icon: 'check-outline',
-              onPress: () => {
-                selectedNovelIds.map(id => markAllChaptersUnread(id));
+              onPress: async () => {
+                let promises: Promise<any>[] = [];
+                selectedNovelIds.map(id =>
+                  promises.push(markAllChaptersUnread(id)),
+                );
+                await Promise.all(promises);
                 setSelectedNovelIds([]);
                 refetchLibrary();
               },
@@ -376,34 +427,47 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           ]}
         />
       </Portal>
-    </>
+    </SafeAreaView>
   );
 };
 
-export default LibraryScreen;
+export default React.memo(LibraryScreen);
 
-const styles = StyleSheet.create({
-  tabBar: {
-    elevation: 0,
-    borderBottomWidth: 1,
-  },
-  globalSearchBtn: {
-    margin: 16,
-  },
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 0,
-  },
-  badgeCtn: {
-    position: 'relative',
-    borderRadius: 50,
-    marginLeft: 2,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-  },
-  badgetText: {
-    fontSize: 12,
-  },
-});
+function createStyles(theme: ThemeColors) {
+  return StyleSheet.create({
+    tabBarIndicator: {
+      backgroundColor: theme.primary,
+      height: 3,
+    },
+    tabStyle: {
+      width: 'auto',
+      minWidth: 100,
+    },
+    tabBar: {
+      elevation: 0,
+      borderBottomWidth: 1,
+    },
+    globalSearchBtn: {
+      margin: 16,
+    },
+    fab: {
+      position: 'absolute',
+      margin: 16,
+      right: 0,
+      bottom: 0,
+    },
+    badgeCtn: {
+      position: 'relative',
+      borderRadius: 50,
+      marginLeft: 2,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+    },
+    badgetText: {
+      fontSize: 12,
+    },
+    fontWeight600: {
+      fontWeight: '600',
+    },
+  });
+}

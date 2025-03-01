@@ -12,7 +12,7 @@ import { useTheme } from '@hooks/persisted';
 
 import { showToast } from '../../utils/showToast';
 import { getString } from '@strings/translations';
-import { Appbar, EmptyView } from '@components';
+import { Appbar, EmptyView, SafeAreaView } from '@components';
 import { TaskQueueScreenProps } from '@navigators/types';
 import ServiceManager, { QueuedBackgroundTask } from '@services/ServiceManager';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,7 +20,7 @@ import { useMMKVObject } from 'react-native-mmkv';
 
 const DownloadQueue = ({ navigation }: TaskQueueScreenProps) => {
   const theme = useTheme();
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, right } = useSafeAreaInsets();
   const [taskQueue] = useMMKVObject<QueuedBackgroundTask[]>(
     ServiceManager.manager.STORE_KEY,
   );
@@ -37,7 +37,7 @@ const DownloadQueue = ({ navigation }: TaskQueueScreenProps) => {
   //TODO: there should probably be a way to cancel a specific task from this screen
 
   return (
-    <>
+    <SafeAreaView excludeTop>
       <Appbar
         title={'Task Queue'}
         handleGoBack={navigation.goBack}
@@ -69,6 +69,7 @@ const DownloadQueue = ({ navigation }: TaskQueueScreenProps) => {
           />
         </Menu>
       </Appbar>
+
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
         keyExtractor={(item, index) => 'task_' + index}
@@ -101,7 +102,10 @@ const DownloadQueue = ({ navigation }: TaskQueueScreenProps) => {
       />
       {taskQueue && taskQueue.length > 0 ? (
         <FAB
-          style={[styles.fab, { backgroundColor: theme.primary, bottom }]}
+          style={[
+            styles.fab,
+            { backgroundColor: theme.primary, bottom, right },
+          ]}
           color={theme.onPrimary}
           label={
             isRunning ? getString('common.pause') : getString('common.resume')
@@ -119,7 +123,7 @@ const DownloadQueue = ({ navigation }: TaskQueueScreenProps) => {
           }}
         />
       ) : null}
-    </>
+    </SafeAreaView>
   );
 };
 

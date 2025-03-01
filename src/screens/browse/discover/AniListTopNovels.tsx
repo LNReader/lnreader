@@ -10,7 +10,7 @@ import {
 import * as WebBrowser from 'expo-web-browser';
 
 import { ErrorView } from '@components/ErrorView/ErrorView';
-import { SearchbarV2 } from '@components';
+import { SafeAreaView, SearchbarV2 } from '@components';
 
 import { showToast } from '@utils/showToast';
 import TrackerNovelCard from './TrackerNovelCard';
@@ -178,7 +178,7 @@ const BrowseALScreen = ({ navigation }: BrowseALScreenProps) => {
   );
 
   return (
-    <View style={[styles.container]}>
+    <SafeAreaView>
       <SearchbarV2
         theme={theme}
         placeholder="Search AniList"
@@ -220,16 +220,13 @@ const BrowseALScreen = ({ navigation }: BrowseALScreenProps) => {
           }
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default BrowseALScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   contentContainer: {
     flex: 1,
   },

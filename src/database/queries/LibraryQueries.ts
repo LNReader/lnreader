@@ -1,57 +1,16 @@
 import { LibraryFilter } from '@screens/library/constants/constants';
 import { LibraryNovelInfo, NovelInfo } from '../types';
-import { txnErrorCallback } from '../utils/helpers';
-import { db } from '@database/db';
-
-export const getNovelsWithCategory = (
-  categoryId: number,
-  onlyOngoingNovels?: boolean,
-): Promise<NovelInfo[]> => {
-  let query = `
-    SELECT
-    * 
-    FROM Novel
-    JOIN (
-        SELECT novelId 
-            FROM NovelCategory WHERE categoryId = ?
-      ) as NC
-    ON Novel.id = NC.novelId
-  `;
-  if (onlyOngoingNovels) {
-    query += " AND status NOT LIKE 'Completed'";
-  }
-
-  return new Promise(resolve =>
-    db.transaction(tx => {
-      tx.executeSql(
-        query,
-        [categoryId],
-        (txObj, { rows }) => resolve((rows as any)._array),
-        txnErrorCallback,
-      );
-    }),
-  );
-};
+import { getAllSync } from '../utils/helpers';
 
 export const getLibraryNovelsFromDb = (
   onlyOngoingNovels?: boolean,
-): Promise<NovelInfo[]> => {
+): NovelInfo[] => {
   let getLibraryNovelsQuery = 'SELECT * FROM Novel WHERE inLibrary = 1';
 
   if (onlyOngoingNovels) {
     getLibraryNovelsQuery += " AND status = 'Ongoing'";
   }
-
-  return new Promise(resolve =>
-    db.transaction(tx => {
-      tx.executeSql(
-        getLibraryNovelsQuery,
-        undefined,
-        (txObj, { rows }) => resolve((rows as any)._array),
-        txnErrorCallback,
-      );
-    }),
-  );
+  return getAllSync<NovelInfo>([getLibraryNovelsQuery]);
 };
 
 const getLibraryWithCategoryQuery = `
@@ -92,7 +51,7 @@ export const getLibraryWithCategory = ({
   filter?: string;
   searchText?: string;
   downloadedOnlyMode?: boolean;
-}): Promise<LibraryNovelInfo[]> => {
+}): LibraryNovelInfo[] => {
   let query = getLibraryWithCategoryQuery;
   let preparedArgument: (string | number | null)[] = [];
 
@@ -111,15 +70,5 @@ export const getLibraryWithCategory = ({
   if (sortOrder) {
     query += ` ORDER BY ${sortOrder} `;
   }
-
-  return new Promise(resolve =>
-    db.transaction(tx => {
-      tx.executeSql(
-        query,
-        preparedArgument,
-        (txObj, { rows }) => resolve((rows as any)._array),
-        txnErrorCallback,
-      );
-    }),
-  );
+  return getAllSync<LibraryNovelInfo>([query, preparedArgument]);
 };

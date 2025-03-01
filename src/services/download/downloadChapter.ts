@@ -1,5 +1,4 @@
 import * as cheerio from 'cheerio';
-import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { Plugin } from '@plugins/types';
 import { downloadFile } from '@plugins/helpers/fetch';
@@ -10,6 +9,7 @@ import { sleep } from '@utils/sleep';
 import { getNovelById } from '@database/queries/NovelQueries';
 import { db } from '@database/db';
 import { BackgroundTaskMetadata } from '@services/ServiceManager';
+import NativeFile from '@specs/NativeFile';
 
 const createChapterFolder = async (
   path: string,
@@ -21,9 +21,9 @@ const createChapterFolder = async (
 ): Promise<string> => {
   const { pluginId, novelId, chapterId } = data;
   const chapterFolder = `${path}/${pluginId}/${novelId}/${chapterId}`;
-  await FileManager.mkdir(chapterFolder);
+  NativeFile.mkdir(chapterFolder);
   const nomediaPath = chapterFolder + '/.nomedia';
-  await FileManager.writeFile(nomediaPath, ',');
+  NativeFile.writeFile(nomediaPath, ',');
   return chapterFolder;
 };
 
@@ -54,7 +54,7 @@ const downloadFiles = async (
       }
     }
   }
-  await FileManager.writeFile(folder + '/index.html', loadedCheerio.html());
+  NativeFile.writeFile(folder + '/index.html', loadedCheerio.html());
 };
 
 export const downloadChapter = async (
@@ -86,11 +86,10 @@ export const downloadChapter = async (
   const chapterText = await plugin.parseChapter(chapter.path);
   if (chapterText && chapterText.length) {
     await downloadFiles(chapterText, plugin, novel.id, chapter.id);
-    db.transaction(tx => {
-      tx.executeSql('UPDATE Chapter SET isDownloaded = 1 WHERE id = ?', [
-        chapter.id,
-      ]);
-    });
+    db.runSync('UPDATE Chapter SET isDownloaded = 1 WHERE id = ?', [
+      chapter.id,
+    ]);
+
     await sleep(1000);
   } else {
     throw new Error(getString('downloadScreen.chapterEmptyOrScrapeError'));

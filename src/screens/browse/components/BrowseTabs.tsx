@@ -32,6 +32,7 @@ import { Portal } from 'react-native-paper';
 import SourceSettingsModal from './Modals/SourceSettings';
 import { useBoolean } from '@hooks';
 import { getPlugin } from '@plugins/pluginManager';
+import { getLocaleLanguageName } from '@utils/constants/languages';
 
 interface AvailableTabProps {
   searchText: string;
@@ -57,7 +58,9 @@ export const InstalledTab = memo(
     const settingsModal = useBoolean();
     const [selectedPluginId, setSelectedPluginId] = useState<string>('');
 
-    const pluginSettings = getPlugin(selectedPluginId)?.pluginSettings;
+    const pluginSettings = selectedPluginId
+      ? getPlugin(selectedPluginId)?.pluginSettings
+      : undefined;
 
     const navigateToSource = useCallback(
       (plugin: PluginItem, showLatestNovels?: boolean) => {
@@ -307,7 +310,7 @@ const AvailablePluginCard = ({
     <View>
       {plugin.header ? (
         <Text style={[styles.listHeader, { color: theme.onSurfaceVariant }]}>
-          {plugin.lang}
+          {getLocaleLanguageName(plugin.lang)}
         </Text>
       ) : null}
       <Animated.View
@@ -347,7 +350,7 @@ const AvailablePluginCard = ({
                 textStyles,
               ]}
             >
-              {`${plugin.lang} - ${plugin.version}`}
+              {`${getLocaleLanguageName(plugin.lang)} - ${plugin.version}`}
             </Animated.Text>
           </Animated.View>
         </Animated.View>
@@ -394,16 +397,14 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
           plg.id.includes(lowerCaseSearchText),
       );
     }
-    let previousLang: string | null = null;
+
     return res
       .sort((a, b) => a.lang.localeCompare(b.lang))
-      .map(plg => {
-        if (plg.lang !== previousLang) {
-          previousLang = plg.lang;
-          return { ...plg, header: true };
-        } else {
-          return { ...plg, header: false };
-        }
+      .map((plg, i) => {
+        return {
+          ...plg,
+          header: i === 0 ? true : plg.lang !== res[i - 1].lang,
+        };
       });
   }, [searchText, filteredAvailablePlugins]);
 

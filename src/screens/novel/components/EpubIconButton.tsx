@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import { IconButton, Portal } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 import ChooseEpubLocationModal from './ChooseEpubLocationModal';
-import { StatusBar } from 'react-native';
+import { StatusBar, StyleProp, ViewStyle } from 'react-native';
 import { ThemeColors } from '@theme/types';
 
 import EpubBuilder from '@cd-z/react-native-epub-creator';
@@ -11,18 +11,26 @@ import { useChapterReaderSettings } from '@hooks/persisted';
 import { useBoolean } from '@hooks/index';
 import { showToast } from '@utils/showToast';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import FileManager from '@native/FileManager';
+import NativeFile from '@specs/NativeFile';
+import { MaterialDesignIconName } from '@type/icon';
 
 interface EpubIconButtonProps {
   theme: ThemeColors;
-  novel: NovelInfo;
+  novel?: NovelInfo;
   chapters: ChapterInfo[];
+  anchor: (props: {
+    icon: MaterialDesignIconName;
+    onPress: () => void;
+    style?: StyleProp<ViewStyle>;
+    size?: number;
+  }) => React.JSX.Element;
 }
 
 const EpubIconButton: React.FC<EpubIconButtonProps> = ({
   theme,
   novel,
   chapters,
+  anchor: Anchor,
 }) => {
   const {
     value: isVisible,
@@ -38,9 +46,11 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
 
   const epubStyle = useMemo(
     () =>
-      `${
-        epubUseAppTheme
-          ? `
+      !novel
+        ? ''
+        : `${
+            epubUseAppTheme
+              ? `
               html {
                 scroll-behavior: smooth;
                 overflow-x: hidden;
@@ -71,27 +81,39 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
                 height: auto;
                 max-width: 100%;
             }`
-          : ''
-      }
+              : ''
+          }
       ${
         epubUseCustomCSS
           ? readerSettings.customCSS
               .replace(
-                RegExp(`\#sourceId-${novel.pluginId}\\s*\\{`, 'g'),
+                RegExp(`#sourceId-${novel.pluginId}\\s*\\{`, 'g'),
                 'body {',
               )
-              .replace(
-                RegExp(`\#sourceId-${novel.pluginId}[^\.\#A-Z]*`, 'gi'),
-                '',
-              )
+              .replace(RegExp(`#sourceId-${novel.pluginId}[^.#A-Z]*`, 'gi'), '')
           : ''
       }`,
-    [novel, epubUseAppTheme, readerSettings, epubUseCustomCSS],
+    [
+      novel,
+      epubUseAppTheme,
+      readerSettings.padding,
+      readerSettings.textSize,
+      readerSettings.textColor,
+      readerSettings.textAlign,
+      readerSettings.lineHeight,
+      readerSettings.fontFamily,
+      readerSettings.theme,
+      readerSettings.customCSS,
+      theme.primary,
+      epubUseCustomCSS,
+    ],
   );
 
   const epubJS = useMemo(
     () =>
-      `
+      !novel
+        ? ''
+        : `
         let novelName = "${novel.name}";
         let chapterName = "";
         let sourceId =${novel.pluginId};
@@ -105,6 +127,9 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
   );
 
   const createEpub = async (uri: string) => {
+    if (!novel) {
+      return;
+    }
     var epub = new EpubBuilder(
       {
         title: novel.name,
@@ -135,8 +160,8 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
       for (let i = 0; i < chapters.length; i++) {
         const chapter = chapters[i];
         const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${novel.id}/${chapter.id}/index.html`;
-        if (await FileManager.exists(filePath)) {
-          const downloaded = FileManager.readFile(filePath);
+        if (NativeFile.exists(filePath)) {
+          const downloaded = NativeFile.readFile(filePath);
           console.log({
             title:
               chapter.name?.trim() ?? 'Chapter ' + (chapter.chapterNumber || i),
@@ -162,12 +187,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
   };
   return (
     <>
-      <IconButton
-        icon="book-arrow-down-outline"
-        iconColor={theme.onBackground}
-        size={21}
-        onPress={showModal}
-      />
+      <Anchor icon="book-arrow-down-outline" onPress={showModal} />
       <Portal>
         <ChooseEpubLocationModal
           isVisible={isVisible}

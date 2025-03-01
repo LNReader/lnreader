@@ -14,23 +14,23 @@ import {
   useTrackedNovel,
   useTracker,
 } from '@hooks/persisted';
-import FileManager from '@native/FileManager';
 import { fetchChapter } from '@services/plugin/fetch';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import { RefObject, useCallback, useEffect, useState } from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { sanitizeChapterText } from '../utils/sanitizeChapterText';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 import WebView from 'react-native-webview';
 import { useFullscreenMode } from '@hooks';
 import { Dimensions, NativeEventEmitter } from 'react-native';
-import VolumeButtonListener from '@native/volumeButtonListener';
 import * as Speech from 'expo-speech';
 import { defaultTo } from 'lodash-es';
 import { useChapterContext } from '../ChapterContext';
 import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
+import NativeVolumeButtonListener from '@specs/NativeVolumeButtonListener';
+import NativeFile from '@specs/NativeFile';
 
-const emmiter = new NativeEventEmitter(VolumeButtonListener);
+const emmiter = new NativeEventEmitter(NativeVolumeButtonListener);
 
 export default function useChapter(webViewRef: RefObject<WebView>) {
   const { novel, chapter, setChapter, loading, setLoading } =
@@ -49,9 +49,7 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
   const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 
-  const connectVolumeButton = () => {
-    VolumeButtonListener.connect();
-    VolumeButtonListener.preventDefault();
+  const connectVolumeButton = useCallback(() => {
     emmiter.addListener('VolumeUp', () => {
       webViewRef.current?.injectJavaScript(`(()=>{
           window.scrollBy({top: -${
@@ -66,31 +64,30 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
           }, behavior: 'smooth'})
         })()`);
     });
-  };
+  }, [webViewRef]);
 
   useEffect(() => {
     if (useVolumeButtons) {
       connectVolumeButton();
     } else {
-      VolumeButtonListener.disconnect();
       emmiter.removeAllListeners('VolumeUp');
       emmiter.removeAllListeners('VolumeDown');
       // this is just for sure, without it app still works properly
     }
+
     return () => {
-      VolumeButtonListener.disconnect();
       emmiter.removeAllListeners('VolumeUp');
       emmiter.removeAllListeners('VolumeDown');
       Speech.stop();
     };
-  }, [useVolumeButtons, chapter]);
+  }, [useVolumeButtons, chapter, connectVolumeButton]);
 
-  const getChapter = async () => {
+  const getChapter = useCallback(async () => {
     try {
       const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
       let text = '';
-      if (await FileManager.exists(filePath)) {
-        text = FileManager.readFile(filePath);
+      if (NativeFile.exists(filePath)) {
+        text = NativeFile.readFile(filePath);
       } else {
         await fetchChapter(novel.pluginId, chapter.path)
           .then(res => {
@@ -101,9 +98,10 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
       setChapterText(
         sanitizeChapterText(novel.pluginId, novel.name, chapter.name, text),
       );
+
       const [nextChap, prevChap] = await Promise.all([
-        getNextChapter(chapter.novelId, chapter.id),
-        getPrevChapter(chapter.novelId, chapter.id),
+        getNextChapter(chapter.novelId, chapter.position!, chapter.page),
+        getPrevChapter(chapter.novelId, chapter.position!, chapter.page),
       ]);
       setAdjacentChapter([nextChap!, prevChap!]);
     } catch (e: any) {
@@ -111,12 +109,22 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [
+    chapter.id,
+    chapter.name,
+    chapter.novelId,
+    chapter.page,
+    chapter.path,
+    chapter.position,
+    novel.name,
+    novel.pluginId,
+    setLoading,
+  ]);
 
-  let scrollInterval: NodeJS.Timeout;
+  const scrollInterval = useRef<NodeJS.Timeout>();
   useEffect(() => {
     if (autoScroll) {
-      scrollInterval = setInterval(() => {
+      scrollInterval.current = setInterval(() => {
         webViewRef.current?.injectJavaScript(`(()=>{
           window.scrollBy({top:${defaultTo(
             autoScrollOffset,
@@ -125,18 +133,18 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
         })()`);
       }, autoScrollInterval * 1000);
     } else {
-      clearInterval(scrollInterval);
+      clearInterval(scrollInterval.current);
     }
 
-    return () => clearInterval(scrollInterval);
-  }, [autoScroll, webViewRef]);
+    return () => clearInterval(scrollInterval.current);
+  }, [autoScroll, autoScrollInterval, autoScrollOffset, webViewRef]);
 
-  const updateTracker = () => {
+  const updateTracker = useCallback(() => {
     const chapterNumber = parseChapterNumber(novel.name, chapter.name);
     if (tracker && trackedNovel && chapterNumber > trackedNovel.progress) {
       updateNovelProgess(tracker, chapterNumber);
     }
-  };
+  }, [chapter.name, novel.name, trackedNovel, tracker, updateNovelProgess]);
 
   const saveProgress = useCallback(
     (percentage: number) => {
@@ -150,7 +158,7 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
         updateTracker();
       }
     },
-    [chapter],
+    [chapter.id, incognitoMode, updateTracker],
   );
 
   const hideHeader = () => {
@@ -164,27 +172,30 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
     setHidden(!hidden);
   };
 
-  const navigateChapter = (position: 'NEXT' | 'PREV') => {
-    let navChapter;
-    if (position === 'NEXT') {
-      navChapter = nextChapter;
-    } else if (position === 'PREV') {
-      navChapter = prevChapter;
-    } else {
-      return;
-    }
+  const navigateChapter = useCallback(
+    (position: 'NEXT' | 'PREV') => {
+      let navChapter;
+      if (position === 'NEXT') {
+        navChapter = nextChapter;
+      } else if (position === 'PREV') {
+        navChapter = prevChapter;
+      } else {
+        return;
+      }
 
-    if (navChapter) {
-      setLoading(true);
-      setChapter(navChapter);
-    } else {
-      showToast(
-        position === 'NEXT'
-          ? getString('readerScreen.noNextChapter')
-          : getString('readerScreen.noPreviousChapter'),
-      );
-    }
-  };
+      if (navChapter) {
+        setLoading(true);
+        setChapter(navChapter);
+      } else {
+        showToast(
+          position === 'NEXT'
+            ? getString('readerScreen.noNextChapter')
+            : getString('readerScreen.noPreviousChapter'),
+        );
+      }
+    },
+    [nextChapter, prevChapter, setChapter, setLoading],
+  );
 
   useEffect(() => {
     setLoading(true);
@@ -192,15 +203,15 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
 
     if (!incognitoMode) {
       insertHistory(chapter.id);
-      getDbChapter(chapter.id).then(result => setLastRead(result));
+      getDbChapter(chapter.id).then(result => result && setLastRead(result));
     }
 
     return () => {
       if (!incognitoMode) {
-        getDbChapter(chapter.id).then(result => setLastRead(result));
+        getDbChapter(chapter.id).then(result => result && setLastRead(result));
       }
     };
-  }, [chapter]);
+  }, [chapter, getChapter, incognitoMode, setLastRead, setLoading]);
 
   const refetch = () => {
     setLoading(true);

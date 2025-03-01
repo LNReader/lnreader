@@ -4,7 +4,14 @@
     "slug": "LNReader",
     "scheme": "lnreader",
     "plugins": [
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-sqlite",
+        {
+          "enableFTS": false,
+          "useSQLCipher": false
+        }
+      ]
     ]
   }
 }

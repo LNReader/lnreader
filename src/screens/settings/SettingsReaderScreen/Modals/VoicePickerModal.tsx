@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
 
-import {
-  Portal,
-  Modal,
-  overlay,
-  TextInput,
-  ActivityIndicator,
-} from 'react-native-paper';
+import { Portal, TextInput, ActivityIndicator } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
 import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 import { Voice } from 'expo-speech';
 import { FlashList } from '@shopify/flash-list';
+import { Modal } from '@components';
+import { StyleSheet } from 'react-native';
 
 interface VoicePickerModalProps {
   visible: boolean;
@@ -35,10 +30,7 @@ const VoicePickerModal: React.FC<VoicePickerModalProps> = ({
       <Modal
         visible={visible}
         onDismiss={onDismiss}
-        contentContainerStyle={[
-          styles.containerStyle,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
+        contentContainerStyle={[styles.containerStyle]}
       >
         <FlashList
           ListHeaderComponent={
@@ -95,9 +87,6 @@ export default VoicePickerModal;
 
 const styles = StyleSheet.create({
   containerStyle: {
-    paddingVertical: 24,
-    margin: 20,
-    borderRadius: 28,
     flex: 1,
   },
 });

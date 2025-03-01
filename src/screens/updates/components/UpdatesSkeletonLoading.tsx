@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeColors } from '@theme/types';
 import useLoadingColors from '@utils/useLoadingColors';
 import { useAppSettings } from '@hooks/persisted/index';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 interface Props {
   theme: ThemeColors;
@@ -61,7 +62,9 @@ const UpdatesSkeletonLoading: React.FC<Props> = ({ theme }) => {
   }
 
   return (
-    <View style={styles.contentCtn}>{items.map(renderLoadingChapter)}</View>
+    <Animated.View entering={FadeIn.duration(500)} style={styles.contentCtn}>
+      {items.map(renderLoadingChapter)}
+    </Animated.View>
   );
 };
 

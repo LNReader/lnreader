@@ -1,25 +1,18 @@
-package com.rajarsheechatterjee.EpubUtil
+package com.rajarsheechatterjee.NativeEpubUtil
 
 import android.util.Xml
-import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableArray
-import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableArray
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
+import com.lnreader.spec.NativeEpubUtilSpec
 import org.xmlpull.v1.XmlPullParser
 import java.io.File
 import java.io.FileInputStream
 
-class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(context) {
-    override fun getName(): String {
-        return "EpubUtil"
-    }
-
+class NativeEpubUtil(context: ReactApplicationContext) : NativeEpubUtilSpec(context) {
     private fun initParse(file: File): XmlPullParser {
         val parser = Xml.newPullParser()
         parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true)
@@ -39,19 +32,6 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
 
     private fun cleanUrl(url: String): String {
         return url.replaceFirst("#[^.]+?$".toRegex(), "")
-    }
-
-    @ReactMethod
-    fun parseNovelAndChapters(epubDirPath: String, promise: Promise) {
-        try {
-            val containerFile = File(epubDirPath, "META-INF/container.xml")
-            val contentMetaFile = File(epubDirPath, getContentMetaFilePath(containerFile))
-            val contentDir = contentMetaFile.parent
-            val novel = contentDir?.let { getNovelMetadata(contentMetaFile, it) }
-            promise.resolve(novel)
-        } catch (e: Exception) {
-            promise.reject(e)
-        }
     }
 
     private fun getContentMetaFilePath(file: File): String {
@@ -114,7 +94,7 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
         return chapters
     }
 
-    private fun getNovelMetadata(file: File, contentDir: String): ReadableMap {
+    private fun getNovelMetadata(file: File, contentDir: String): WritableMap {
         val novel: WritableMap = WritableNativeMap()
         val parser = initParse(file)
         val refMap = HashMap<String, String>()
@@ -199,6 +179,14 @@ class EpubUtil(context: ReactApplicationContext) : ReactContextBaseJavaModule(co
                 novel.putString("cover", cover)
             }
         }
+        return novel
+    }
+
+    override fun parseNovelAndChapters(epubDirPath: String?): WritableMap? {
+        val containerFile = File(epubDirPath, "META-INF/container.xml")
+        val contentMetaFile = File(epubDirPath, getContentMetaFilePath(containerFile))
+        val contentDir = contentMetaFile.parent
+        val novel = contentDir?.let { getNovelMetadata(contentMetaFile, it) }
         return novel
     }
 }

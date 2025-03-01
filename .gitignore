@@ -48,6 +48,10 @@ build/
 local.properties
 *.iml
 *.hprof
+.cxx/
+*.keystore
+!debug.keystore
+.kotlin/
 
 # node.js
 #

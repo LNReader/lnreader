@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Screens
 import About from '../screens/more/About';
@@ -19,7 +19,7 @@ import RespositorySettings from '@screens/settings/SettingsRepositoryScreen/Sett
 import StatsScreen from '@screens/StatsScreen/StatsScreen';
 import { MoreStackParamList, SettingsStackParamList } from './types';
 
-const Stack = createStackNavigator<
+const Stack = createNativeStackNavigator<
   MoreStackParamList & SettingsStackParamList
 >();
 
