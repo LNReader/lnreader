@@ -120,6 +120,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
   const baseUrlSource =
     plugin?.id === 'novelupdates' ? chapter?.path : plugin?.site;
 
+  console.log('baseUrlSource', baseUrlSource);
+
   return (
     <WebView
       ref={webViewRef}
