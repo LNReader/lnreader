@@ -2,6 +2,7 @@ export interface FilterOption {
   readonly label: string;
   readonly value: string;
 }
+//NOTE: this is duplicated in pluginThread.ts inside the webview
 export enum FilterTypes {
   TextInput = 'Text',
   Picker = 'Picker',

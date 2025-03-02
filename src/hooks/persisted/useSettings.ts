@@ -163,7 +163,7 @@ const initialAppSettings: AppSettings = {
 const initialBrowseSettings: BrowseSettings = {
   showMyAnimeList: true,
   showAniList: true,
-  globalSearchConcurrency: 3,
+  globalSearchConcurrency: 10,
 };
 
 export const initialChapterGeneralSettings: ChapterGeneralSettings = {

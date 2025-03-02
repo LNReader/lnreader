@@ -185,12 +185,12 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const deleteChs = () => {
     deleteChapters(chapters.filter(c => c.isDownloaded));
   };
-  const shareNovel = () => {
+  const shareNovel = async () => {
     if (!novel) {
       return;
     }
     Share.share({
-      message: resolveUrl(novel.pluginId, novel.path, true),
+      message: await resolveUrl(novel.pluginId, novel.path, true),
     });
   };
 

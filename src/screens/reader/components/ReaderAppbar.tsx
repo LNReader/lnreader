@@ -12,6 +12,8 @@ import { useChapterContext } from '../ChapterContext';
 interface ReaderAppbarProps {
   theme: ThemeColors;
   goBack: () => void;
+  bookmarked: boolean;
+  setBookmarked: (bookmarked: boolean) => void;
 }
 
 const ReaderAppbar = ({

@@ -3,7 +3,7 @@ import FileManager from '@native/FileManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { Plugin } from '@plugins/types';
 import { downloadFile } from '@plugins/helpers/fetch';
-import { getPlugin } from '@plugins/pluginManager';
+import { getPluginAsync } from '@plugins/pluginManager';
 import { getString } from '@strings/translations';
 import { getChapter } from '@database/queries/ChapterQueries';
 import { sleep } from '@utils/sleep';
@@ -79,7 +79,7 @@ export const downloadChapter = async (
   if (!novel) {
     throw new Error('Novel not found for chapter: ' + chapter.name);
   }
-  const plugin = getPlugin(novel.pluginId);
+  const plugin = await getPluginAsync(novel.pluginId);
   if (!plugin) {
     throw new Error(getString('downloadScreen.pluginNotFound'));
   }
