@@ -1,19 +1,19 @@
 {
   "aboutScreen": {
-    "website": "Website",
-    "discord": "Discord",
-    "github": "Github",
-    "helpTranslate": "Help translate",
-    "sources": "Sources",
-    "version": "Version",
-    "whatsNew": "What's new"
+    "website": "",
+    "discord": "indonesia",
+    "github": "Indonesia",
+    "helpTranslate": "INDONESIA",
+    "sources": "Indonesi",
+    "version": "",
+    "whatsNew": ""
   },
-  "advancedSettings": "Advanced",
+  "advancedSettings": "",
   "advancedSettingsScreen": {
-    "cachedNovelsDeletedToast": "Cached novels deleted",
-    "chapterInsertFailed": "chapter insert failed",
-    "clearCachedNovels": "Clear cached novels",
-    "clearCachedNovelsDesc": "Delete cached novels which not in your library",
+    "cachedNovelsDeletedToast": "",
+    "chapterInsertFailed": "indonesian\n",
+    "clearCachedNovels": "",
+    "clearCachedNovelsDesc": "bahasa Indonesia",
     "clearDatabaseWarning": "Are you sure? Read and Downloaded chapters and progress of non-library novels will be lost.",
     "clearUpdatesMessage": "Updates cleared.",
     "clearUpdatesTab": "Clear updates tab",
@@ -309,7 +309,7 @@
     "empty": "Pustaka kamu kosong. Tambahkan serial ke pustaka kamu dari Jelajah.\n",
     "extraMenu": {
       "importEpub": "Import Epub",
-      "openRandom": "Open Random Entry",
+      "openRandom": "",
       "updateCategory": "Update Category",
       "updateLibrary": "Update Library"
     },
