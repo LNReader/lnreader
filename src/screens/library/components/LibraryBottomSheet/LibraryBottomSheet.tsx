@@ -1,6 +1,6 @@
 import React, { Ref, useMemo, useState } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
+import { TabBar, TabView } from 'react-native-tab-view';
 import color from 'color';
 
 import { useLibrarySettings, useTheme } from '@hooks/persisted';
@@ -17,11 +17,15 @@ import {
 import { FlashList } from '@shopify/flash-list';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 import { overlay } from 'react-native-paper';
-import { BottomSheetView, BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
+import { updateCategorySortContents } from '@database/queries/CategoryQueries';
+import { Category } from '@database/types';
+import { sortTable } from '@screens/library/hooks/useLibrary';
 
 interface LibraryBottomSheetProps {
   bottomSheetRef: Ref<BottomSheetModal> | null;
+  category: Category;
 }
 
 const FirstRoute = () => {
@@ -58,10 +62,17 @@ const FirstRoute = () => {
   );
 };
 
-const SecondRoute = () => {
+const SecondRoute = ({ category }: { category: Category }) => {
   const theme = useTheme();
-  const { sortOrder = LibrarySortOrder.DateAdded_DESC, setLibrarySettings } =
-    useLibrarySettings();
+  const { sortOrderId = 0, setLibrarySettings } = useLibrarySettings();
+
+  const [sortOrder, setSortOrder] = useState(
+    category?.sortContents || LibrarySortOrder.DateAdded_DESC,
+  );
+
+  if (!category) {
+    return <></>;
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -75,16 +86,25 @@ const SecondRoute = () => {
             theme={theme}
             status={
               sortOrder === item.ASC
-                ? 'asc'
+                ? item.isRandom
+                  ? 'random'
+                  : 'asc'
                 : sortOrder === item.DESC
                 ? 'desc'
                 : undefined
             }
-            onPress={() =>
+            onPress={() => {
+              const newSortOrder =
+                sortOrder === item.ASC ? item.DESC : item.ASC;
+              setSortOrder(newSortOrder);
+              sortTable.delete(category.id); //delete random sort data for category
+
+              updateCategorySortContents(category.id, newSortOrder);
+
               setLibrarySettings({
-                sortOrder: sortOrder === item.ASC ? item.DESC : item.ASC,
-              })
-            }
+                sortOrderId: sortOrderId + 1,
+              });
+            }}
           />
         )}
       />
@@ -159,6 +179,7 @@ const ThirdRoute = () => {
 
 const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
   bottomSheetRef,
+  category,
 }) => {
   const theme = useTheme();
 
@@ -196,11 +217,18 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
     [],
   );
 
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-    third: ThirdRoute,
-  });
+  const renderScene = ({ route }: { route: { key: string } }) => {
+    switch (route.key) {
+      case 'first':
+        return <FirstRoute />;
+      case 'second':
+        return <SecondRoute category={category} />;
+      case 'third':
+        return <ThirdRoute />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[520]}>
