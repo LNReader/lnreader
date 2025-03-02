@@ -52,6 +52,7 @@ export interface NovelSettings {
 
 const defaultNovelSettings: NovelSettings = {
   showChapterTitles: true,
+  filter: 'AND hidden=0',
 };
 const defaultPageIndex = 0;
 
