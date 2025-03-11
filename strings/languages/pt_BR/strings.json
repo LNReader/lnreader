@@ -63,12 +63,12 @@
     "downloadingDownloadedFiles": "Baixando arquivos salvos",
     "drive": {
       "backup": "Salvar no Drive",
-      "backupInterruped": "Drive Backup Interruped",
-      "googleDriveBackup": "Google Drive Backup",
-      "restore": "Drive Restore",
-      "restoreInterruped": "Drive Restore Interruped"
+      "backupInterruped": "",
+      "googleDriveBackup": "",
+      "restore": "",
+      "restoreInterruped": ""
     },
-    "googeDrive": "Googe Drive",
+    "googeDrive": "",
     "googeDriveDesc": "Backup to your Google Drive",
     "invalidBackupFolder": "Invalid backup folder",
     "legacy": {
