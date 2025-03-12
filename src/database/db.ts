@@ -4,7 +4,10 @@ import {
   createCategoryDefaultQuery,
   createCategoryTriggerQuery,
 } from './tables/CategoryTable';
-import { createNovelTableQuery } from './tables/NovelTable';
+import {
+  createNovelTableQuery,
+  addRatingColumnToTable,
+} from './tables/NovelTable';
 import { createNovelCategoryTableQuery } from './tables/NovelCategoryTable';
 import {
   createChapterTableQuery,
@@ -32,6 +35,7 @@ export const createTables = () => {
 
   db.transaction(tx => {
     tx.executeSql(createRepositoryTableQuery);
+    addRatingColumnToTable(tx);
   });
 };
 

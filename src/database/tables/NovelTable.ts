@@ -1,3 +1,6 @@
+import { SQLTransaction } from 'expo-sqlite';
+import { txnErrorCallback } from '@database/utils/helpers';
+
 export const createNovelTableQuery = `
   CREATE TABLE IF NOT EXISTS Novel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,3 +20,17 @@ export const createNovelTableQuery = `
     UNIQUE(path, pluginId)
   );
 `;
+
+export const addRatingColumnToTable = (tx: SQLTransaction) => {
+  tx.executeSql(
+    'PRAGMA table_info("Novel");',
+    [],
+    (tx2, resultSet) => {
+      const hasRating = !!resultSet.rows._array.find(v => v.name === 'rating');
+      if (!hasRating) {
+        tx.executeSql('ALTER TABLE Novel ADD COLUMN rating REAL;');
+      }
+    },
+    txnErrorCallback,
+  );
+};
