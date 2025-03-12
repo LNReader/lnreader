@@ -366,7 +366,8 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   star: {
-    margin: -8,
-    marginRight: -7,
+    marginVertical: -8,
+    marginLeft: -10,
+    marginRight: -5,
   },
 });
