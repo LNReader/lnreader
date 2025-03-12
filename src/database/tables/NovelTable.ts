@@ -13,7 +13,7 @@ export const createNovelTableQuery = `
     artist TEXT, 
     status TEXT Default 'Unknown', 
     genres TEXT,
-    rating REAL,
+    rating REAL DEFAULT 0,
     inLibrary INTEGER DEFAULT 0,
     isLocal INTEGER DEFAULT 0,
     totalPages INTEGER DEFAULT 0,
