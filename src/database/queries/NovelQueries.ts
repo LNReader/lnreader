@@ -35,7 +35,7 @@ export const insertNovelAndChapters = async (
           sourceNovel.artist || null,
           sourceNovel.status || null,
           sourceNovel.genres || null,
-          sourceNovel.rating || null,
+          sourceNovel.rating || 0,
           sourceNovel.totalPages || 0,
         ],
         async (txObj, resultSet) => resolve(resultSet.insertId),
