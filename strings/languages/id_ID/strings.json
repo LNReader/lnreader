@@ -29,9 +29,9 @@
     "useFAB": "",
     "userAgent": ""
   },
-  "appearance": "Appearance",
+  "appearance": "",
   "appearanceScreen": {
-    "accentColor": "Accent Color",
+    "accentColor": "Save anyway",
     "alwaysShowNavLabels": "Always show nav labels",
     "appTheme": "App theme",
     "darkTheme": "Dark Theme",
