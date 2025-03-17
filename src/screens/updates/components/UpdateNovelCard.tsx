@@ -112,7 +112,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
               <ChapterItem
                 isLocal={false}
                 isDownloading={downloadQueue.some(
-                  c => c.data.chapterId === item.id,
+                  c => c.task.data.chapterId === item.id,
                 )}
                 isUpdateCard
                 novelName={chapterList[0].novelName}
@@ -142,7 +142,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       <ChapterItem
         isLocal={false}
         isDownloading={downloadQueue.some(
-          c => c.data.chapterId === chapterList[0].id,
+          c => c.task.data.chapterId === chapterList[0].id,
         )}
         isUpdateCard
         novelName={chapterList[0].novelName}

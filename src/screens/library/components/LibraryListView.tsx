@@ -16,6 +16,7 @@ import ServiceManager from '@services/ServiceManager';
 
 interface Props {
   categoryId: number;
+  categoryName: string;
   novels: LibraryNovelInfo[];
   selectedNovelIds: number[];
   setSelectedNovelIds: React.Dispatch<React.SetStateAction<number[]>>;
@@ -24,6 +25,7 @@ interface Props {
 
 export const LibraryView: React.FC<Props> = ({
   categoryId,
+  categoryName,
   novels,
   selectedNovelIds,
   setSelectedNovelIds,
@@ -62,7 +64,10 @@ export const LibraryView: React.FC<Props> = ({
     setRefreshing(true);
     ServiceManager.manager.addTask({
       name: 'UPDATE_LIBRARY',
-      data: categoryId,
+      data: {
+        categoryId,
+        categoryName,
+      },
     });
     setRefreshing(false);
   };
