@@ -400,6 +400,8 @@
     },
     "tracked": "Tracked",
     "tracking": "Tracking",
+    "syncTrue": "Synced '%{name}' status",
+    "syncFalse": "Failed to sync '%{name}' status",
     "unknownStatus": "Unknown status",
     "updatedToast": "Updated %{name}"
   },

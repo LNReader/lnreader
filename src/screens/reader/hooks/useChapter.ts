@@ -139,28 +139,30 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
     }
   };
 
+  const { syncChapterStatus } = useNovel(novel.path, novel.pluginId);
+
   const saveProgress = useCallback(
     (percentage: number) => {
       if (!incognitoMode) {
         updateChapterProgress(chapter.id, percentage > 100 ? 100 : percentage);
       }
 
+      // A relative number
       if (!incognitoMode && percentage >= 97) {
-        // a relative number
-
-        // Track progress if the plugin supports it
+        // Sync chapter status if the plugin supports it
         const plugin = getPlugin(novel.pluginId);
-        if (plugin?.pluginSettings) {
-          if (plugin?.trackProgress && chapter.unread) {
-            plugin.trackProgress(novel.path, chapter.path);
-          }
+        if (
+          plugin?.syncChapter &&
+          plugin?.syncChapterStatus &&
+          chapter.unread
+        ) {
+          syncChapterStatus(plugin, chapter);
         }
-
         markChapterRead(chapter.id);
         updateTracker();
       }
     },
-    [chapter],
+    [incognitoMode, chapter, novel.pluginId, updateTracker, syncChapterStatus],
   );
 
   const hideHeader = () => {
