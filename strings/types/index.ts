@@ -111,6 +111,7 @@ export interface StringMap {
   'browseScreen.settings.description': 'string';
   'browseSettings': 'string';
   'browseSettingsScreen.concurrentSearches': 'string';
+  'browseSettingsScreen.multi': 'string';
   'browseSettingsScreen.languages': 'string';
   'categories.addCategories': 'string';
   'categories.cantDeleteDefault': 'string';
@@ -252,6 +253,7 @@ export interface StringMap {
   'libraryScreen.bottomSheet.sortOrders.download': 'string';
   'libraryScreen.bottomSheet.sortOrders.lastRead': 'string';
   'libraryScreen.bottomSheet.sortOrders.lastUpdated': 'string';
+  'libraryScreen.bottomSheet.sortOrders.rating': 'string';
   'libraryScreen.bottomSheet.sortOrders.totalChapters': 'string';
   'libraryScreen.bottomSheet.sortOrders.unread': 'string';
   'libraryScreen.empty': 'string';
