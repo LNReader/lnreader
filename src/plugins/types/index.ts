@@ -80,4 +80,5 @@ export interface Plugin extends PluginItem {
   searchNovels: (searchTerm: string, pageNo: number) => Promise<NovelItem[]>;
   resolveUrl?: (path: string, isNovel?: boolean) => string;
   webStorageUtilized?: boolean;
+  syncChapter?: boolean;
 }
