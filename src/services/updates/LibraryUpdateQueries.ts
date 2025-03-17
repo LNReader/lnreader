@@ -13,8 +13,17 @@ const updateNovelMetadata = (
   novel: SourceNovel,
 ) => {
   return new Promise(async (resolve, reject) => {
-    let { name, cover, summary, author, artist, genres, status, totalPages } =
-      novel;
+    let {
+      name,
+      cover,
+      summary,
+      author,
+      artist,
+      genres,
+      status,
+      rating,
+      totalPages,
+    } = novel;
     const novelDir = NOVEL_STORAGE + '/' + pluginId + '/' + novelId;
     if (!(await FileManager.exists(novelDir))) {
       await FileManager.mkdir(novelDir);
@@ -33,7 +42,7 @@ const updateNovelMetadata = (
       tx.executeSql(
         `UPDATE Novel SET 
           name = ?, cover = ?, summary = ?, author = ?, artist = ?, 
-          genres = ?, status = ?, totalPages = ?
+          genres = ?, status = ?, rating = ?, totalPages = ?
           WHERE id = ?
         `,
         [
@@ -44,6 +53,7 @@ const updateNovelMetadata = (
           artist || null,
           genres || null,
           status || null,
+          rating || 0,
           totalPages || 0,
           novelId,
         ],
@@ -63,6 +73,22 @@ const updateNovelTotalPages = (novelId: number, totalPages: number) => {
       tx.executeSql(
         'UPDATE Novel SET totalPages = ? WHERE id = ?',
         [totalPages, novelId],
+        () => resolve(null),
+        (txObj, error) => {
+          reject(error);
+          return false;
+        },
+      );
+    });
+  });
+};
+
+const updateNovelRating = (novelId: number, rating: number) => {
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        'UPDATE Novel SET rating = ? WHERE id = ?',
+        [rating, novelId],
         () => resolve(null),
         (txObj, error) => {
           reject(error);
@@ -176,8 +202,11 @@ const updateNovel = async (
   const novel = await fetchNovel(pluginId, novelPath);
   if (refreshNovelMetadata) {
     await updateNovelMetadata(pluginId, novelId, novel);
+  } else if (novel.rating) {
+    // At least update rating
+    await updateNovelRating(novelId, novel.rating);
   } else if (novel.totalPages) {
-    // at least update totalPages,
+    // At least update totalPages
     await updateNovelTotalPages(novelId, novel.totalPages);
   }
   await updateNovelChapters(
