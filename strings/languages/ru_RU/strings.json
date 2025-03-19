@@ -11,7 +11,7 @@
   "advancedSettings": "Дополнительно",
   "advancedSettingsScreen": {
     "cachedNovelsDeletedToast": "Кэшированные новеллы удалены",
-    "chapterInsertFailed": "ошибка вставки главы",
+    "chapterInsertFailed": "не удалось вставить главу",
     "clearCachedNovels": "Очистить кэш новелл",
     "clearCachedNovelsDesc": "Удалить кэшированные новеллы, которые не находятся в вашей библиотеке",
     "clearDatabaseWarning": "Вы уверены? Прочитанные и загруженные главы и прогресс не библиотечных новелл будут потеряны.",
@@ -26,7 +26,7 @@
     "importNovel": "Импорт новеллы",
     "importStaticFiles": "Импорт файлов статики",
     "novelInsertFailed": "ошибка вставки главы",
-    "useFAB": "Использовать FAB вместо кнопки",
+    "useFAB": "Использовать плавающую кнопку действия вместо основной кнопки",
     "userAgent": "User Agent"
   },
   "appearance": "Внешний вид",
@@ -60,16 +60,16 @@
     "createBackupDesc": "Может быть использовано для восстановления текущей библиотеки",
     "createBackupWarning": "Создание резервной копии может не работать на устройствах с Android 9 или ниже.",
     "downloadingData": "Загрузка данных",
-    "downloadingDownloadedFiles": "Загрузка загруженных файлов",
+    "downloadingDownloadedFiles": "Загрузка скачанных файлов",
     "drive": {
-      "backup": "Drive Backup",
+      "backup": "Резервная копия диска",
       "backupInterruped": "Резервное копирование прервано",
-      "googleDriveBackup": "Бэкап Google Drive",
-      "restore": "Drive Restore",
+      "googleDriveBackup": "Резервное копирование на Google Диск",
+      "restore": "Восстановление диска",
       "restoreInterruped": "Восстановление прервано"
     },
-    "googeDrive": "Google Drive",
-    "googeDriveDesc": "Резервное копирование на Google Drive",
+    "googeDrive": "Google Диск",
+    "googeDriveDesc": "Резервное копирование на Google Диск",
     "invalidBackupFolder": "Неверная папка резервной копии",
     "legacy": {
       "backupCreated": "Резервная копия создана %{fileName}",
@@ -81,7 +81,7 @@
     "noBackupFound": "Резервные копии не найдены",
     "preparingData": "Подготовка данных",
     "remote": {
-      "backup": "Резервное копирование",
+      "backup": "Резервное копирование на свой сервер",
       "host": "Сервер",
       "unknownHost": "Неизвестный хост"
     },
@@ -130,7 +130,7 @@
   "browseSettings": "Настройки обзора",
   "browseSettingsScreen": {
     "concurrentSearches": "Параллельный поиск источников",
-    "multi": "Multi",
+    "multi": "Многоязычные",
     "languages": "Языки"
   },
   "categories": {
@@ -157,7 +157,7 @@
     "about": "О программе",
     "add": "Добавить",
     "all": "Все",
-    "backup": "Бэкап",
+    "backup": "Резервная копия",
     "cancel": "Отменить",
     "categories": "Категории",
     "chapters": "Главы",
@@ -337,7 +337,7 @@
       },
       "order": {
         "byChapterName": "По названию главы",
-        "bySource": "Источник"
+        "bySource": "По источнику"
       }
     },
     "chapterChapnum": "Глава: %{num}",
@@ -352,14 +352,14 @@
       "useCustomJSWarning": "Может поддерживаться не всеми читателями EPUB",
       "useReaderTheme": "Использовать тему для чтения"
     },
-    "deleteChapterError": "Не могу удалить папку с главами",
+    "deleteChapterError": "Не получается удалить папку с главами",
     "deleteMessage": "Удалить загруженные главы?",
     "deletedAllDownloads": "Удалить все загрузки",
     "download": {
       "custom": "Пользовательский",
-      "customAmount": "Загрузить произвольную сумму",
+      "customAmount": "Загрузить конкретное количество",
       "delete": "Удалить загруженные",
-      "next": "Следующая глава",
+      "next": "Следующую главу",
       "next10": "Следующие 10 глав",
       "next5": "Следующие 5 глав",
       "unread": "Непрочитанные"
