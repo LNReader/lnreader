@@ -8,19 +8,7 @@ import { MaterialBottomTabScreenProps } from 'react-native-paper';
 
 export type RootStackParamList = {
   BottomNavigator: NavigatorScreenParams<BottomNavigatorParamList> | undefined;
-  Novel:
-    | {
-        name: string;
-        path: string;
-        pluginId: string;
-        cover?: string;
-        isLocal?: boolean;
-      }
-    | NovelInfo;
-  Chapter: {
-    novel: NovelInfo;
-    chapter: ChapterInfo;
-  };
+  ReaderStack: NavigatorScreenParams<ReaderStackParamList>;
   MoreStack: NavigatorScreenParams<MoreStackParamList>;
   SourceScreen: {
     pluginId: string;
@@ -96,11 +84,26 @@ export type SettingsStackParamList = {
   RespositorySettings: { url?: string } | undefined;
 };
 
-export type NovelScreenProps = StackScreenProps<RootStackParamList, 'Novel'>;
+export type NovelScreenProps = StackScreenProps<ReaderStackParamList, 'Novel'>;
 export type ChapterScreenProps = StackScreenProps<
-  RootStackParamList,
+  ReaderStackParamList,
   'Chapter'
 >;
+export type ReaderStackParamList = {
+  Novel:
+    | {
+        name: string;
+        path: string;
+        pluginId: string;
+        cover?: string;
+        isLocal?: boolean;
+      }
+    | NovelInfo;
+  Chapter: {
+    novel: NovelInfo;
+    chapter: ChapterInfo;
+  };
+};
 
 export type AboutScreenProps = StackScreenProps<MoreStackParamList, 'About'>;
 export type DownloadsScreenProps = StackScreenProps<

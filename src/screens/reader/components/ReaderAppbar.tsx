@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import color from 'color';
 
 import { Text } from 'react-native-paper';
@@ -8,12 +8,13 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { ThemeColors } from '@theme/types';
 import { bookmarkChapter } from '@database/queries/ChapterQueries';
 import { useChapterContext } from '../ChapterContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface ReaderAppbarProps {
   theme: ThemeColors;
   goBack: () => void;
   bookmarked: boolean;
-  setBookmarked:React.Dispatch<React.SetStateAction<boolean>>
+  setBookmarked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ReaderAppbar = ({
@@ -23,6 +24,7 @@ const ReaderAppbar = ({
   setBookmarked,
 }: ReaderAppbarProps) => {
   const { chapter, novel } = useChapterContext();
+  const { top: topInset } = useSafeAreaInsets();
 
   return (
     <Animated.View
@@ -31,7 +33,7 @@ const ReaderAppbar = ({
       style={[
         styles.container,
         {
-          paddingTop: (StatusBar.currentHeight || 0) + 8,
+          paddingTop: (topInset || 0) + 8,
           backgroundColor: color(theme.surface).alpha(0.9).string(),
         },
       ]}

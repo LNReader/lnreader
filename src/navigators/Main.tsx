@@ -19,8 +19,7 @@ import MoreStack from './MoreStack';
 /**
  * Screens
  */
-import Novel from '../screens/novel/NovelScreen';
-import Reader from '../screens/reader/ReaderScreen';
+
 import BrowseSourceScreen from '../screens/BrowseSourceScreen/BrowseSourceScreen';
 import GlobalSearchScreen from '../screens/GlobalSearchScreen/GlobalSearchScreen';
 import Migration from '../screens/browse/migration/Migration';
@@ -37,6 +36,7 @@ import Color from 'color';
 import { useMMKVBoolean } from 'react-native-mmkv';
 import OnboardingScreen from '@screens/onboarding/OnboardingScreen';
 import ServiceManager from '@services/ServiceManager';
+import ReaderStack from './ReaderStack';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
@@ -106,8 +106,7 @@ const MainNavigator = () => {
       {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-        <Stack.Screen name="Novel" component={Novel} />
-        <Stack.Screen name="Chapter" component={Reader} />
+        <Stack.Screen name="ReaderStack" component={ReaderStack} />
         <Stack.Screen name="MoreStack" component={MoreStack} />
         <Stack.Screen name="SourceScreen" component={BrowseSourceScreen} />
         <Stack.Screen name="BrowseMal" component={MalTopNovels} />

@@ -146,7 +146,10 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     const novels = library[index].novels;
     const randomNovel = novels[Math.floor(Math.random() * novels.length)];
     if (randomNovel) {
-      navigation.navigate('Novel', randomNovel);
+      navigation.navigate('ReaderStack', {
+        screen: 'Novel',
+        params: randomNovel,
+      });
     }
   }
 
@@ -358,13 +361,16 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           label={getString('common.resume')}
           icon="play"
           onPress={() => {
-            navigation.navigate('Chapter', {
-              novel: {
-                path: history[0].novelPath,
-                pluginId: history[0].pluginId,
-                name: history[0].novelName,
-              } as NovelInfo,
-              chapter: history[0],
+            navigation.navigate('ReaderStack', {
+              screen: 'Chapter',
+              params: {
+                novel: {
+                  path: history[0].novelPath,
+                  pluginId: history[0].pluginId,
+                  name: history[0].novelName,
+                } as NovelInfo,
+                chapter: history[0],
+              },
             });
           }}
         />

@@ -84,13 +84,16 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       const { novelPath, pluginId, novelName } = chapter as
         | Update
         | DownloadedChapter;
-      navigate('Chapter', {
-        novel: {
-          path: novelPath,
-          pluginId: pluginId,
-          name: novelName,
-        } as NovelInfo,
-        chapter: chapter,
+      navigate('ReaderStack', {
+        screen: 'Chapter',
+        params: {
+          novel: {
+            path: novelPath,
+            pluginId: pluginId,
+            name: novelName,
+          } as NovelInfo,
+          chapter: chapter,
+        },
       });
     },
     [navigate],
@@ -98,11 +101,14 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
 
   const navigateToNovel = useCallback(() => {
     if (chapterListInfo.updatesPerDay) {
-      navigate('Novel', {
-        pluginId: chapterList[0].pluginId,
-        path: chapterList[0].novelPath,
-        cover: chapterList[0].novelCover,
-        name: chapterList[0].novelName,
+      navigate('ReaderStack', {
+        screen: 'Novel',
+        params: {
+          pluginId: chapterList[0].pluginId,
+          path: chapterList[0].novelPath,
+          cover: chapterList[0].novelCover,
+          name: chapterList[0].novelName,
+        },
       });
     }
   }, [chapterList, chapterListInfo.updatesPerDay, navigate]);

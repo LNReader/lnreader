@@ -29,7 +29,7 @@ import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 interface LibraryBottomSheetProps {
-  bottomSheetRef: RefObject<BottomSheetModalMethods>;
+  bottomSheetRef: RefObject<BottomSheetModalMethods | null>;
   style?: StyleProp<ViewStyle>;
 }
 

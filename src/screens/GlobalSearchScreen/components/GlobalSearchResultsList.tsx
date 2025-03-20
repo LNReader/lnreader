@@ -19,7 +19,7 @@ import { interpolateColor } from 'react-native-reanimated';
 
 interface GlobalSearchResultsListProps {
   searchResults: GlobalSearchResult[];
-  ListEmptyComponent?: JSX.Element;
+  ListEmptyComponent?: React.JSX.Element;
 }
 
 const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
@@ -63,7 +63,10 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
 
   const navigateToNovel = useCallback(
     (item: { name: string; path: string; pluginId: string }) =>
-      navigation.push('Novel', item),
+      navigation.push('ReaderStack', {
+        screen: 'Novel',
+        params: item,
+      }),
     [],
   );
 

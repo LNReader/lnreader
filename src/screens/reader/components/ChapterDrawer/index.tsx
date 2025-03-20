@@ -12,10 +12,10 @@ import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
-import { useNovel } from '@hooks/persisted/useNovel';
 import renderListChapter from './RenderListChapter';
 import { useChapterContext } from '@screens/reader/ChapterContext';
 import { LegendList, LegendListRef, ViewToken } from '@legendapp/list';
+import { useNovelContext } from '@screens/novel/NovelContext';
 
 type ButtonProperties = {
   text: string;
@@ -28,16 +28,8 @@ type ButtonsProperties = {
 };
 
 const ChapterDrawer = () => {
-  const {
-    novel: novelItem,
-    chapter,
-    setChapter,
-    setLoading,
-  } = useChapterContext();
-  const { chapters, novelSettings, pages, setPageIndex } = useNovel(
-    novelItem.path,
-    novelItem.pluginId,
-  );
+  const { chapter, setChapter, setLoading } = useChapterContext();
+  const { chapters, novelSettings, pages, setPageIndex } = useNovelContext();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { defaultChapterSort } = useAppSettings();

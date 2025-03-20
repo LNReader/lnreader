@@ -426,6 +426,7 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
 
   const markChapterRead = (chapterId: number) => {
     _markChapterRead(chapterId);
+
     mutateChapters(chs =>
       chs.map(c => {
         if (c.id !== chapterId) {

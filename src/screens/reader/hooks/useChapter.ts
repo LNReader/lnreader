@@ -2,7 +2,6 @@ import {
   getChapter as getDbChapter,
   getNextChapter,
   getPrevChapter,
-  markChapterRead,
   updateChapterProgress,
 } from '@database/queries/ChapterQueries';
 import { insertHistory } from '@database/queries/HistoryQueries';
@@ -10,7 +9,6 @@ import { ChapterInfo } from '@database/types';
 import {
   useChapterGeneralSettings,
   useLibrarySettings,
-  useNovel,
   useTrackedNovel,
   useTracker,
 } from '@hooks/persisted';
@@ -29,13 +27,14 @@ import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
 import NativeVolumeButtonListener from '@specs/NativeVolumeButtonListener';
 import NativeFile from '@specs/NativeFile';
+import { useNovelContext } from '@screens/novel/NovelContext';
 
 const emmiter = new NativeEventEmitter(NativeVolumeButtonListener);
 
 export default function useChapter(webViewRef: RefObject<WebView | null>) {
   const { novel, chapter, setChapter, loading, setLoading } =
     useChapterContext();
-  const { setLastRead } = useNovel(novel.path, novel.pluginId);
+  const { setLastRead, markChapterRead } = useNovelContext();
   const [hidden, setHidden] = useState(true);
   const [chapterText, setChapterText] = useState('');
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<

@@ -24,36 +24,19 @@ import TrackSheet from './Tracker/TrackSheet';
 import NovelBottomSheet from './NovelBottomSheet';
 import * as Haptics from 'expo-haptics';
 import { AnimatedFAB } from 'react-native-paper';
-import { NovelSettings } from '@hooks/persisted/useNovel';
 import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
 import { LegendList, LegendListRef } from '@legendapp/list';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { useNovelContext } from '../NovelContext';
 
 type NovelScreenListProps = {
-  chapters: ChapterInfo[];
-  chaptersTeasers: ChapterInfo[];
-  deleteChapter: (chapter: ChapterInfo) => void;
-  fetchedNovel?: NovelInfo;
-  fetching: boolean;
-  followNovel: () => void;
-  getNextChapterBatch: () => void;
-  getNovel: () => void;
   headerOpacity: SharedValue<number>;
-  lastRead?: ChapterInfo;
   listRef: React.RefObject<LegendListRef | null>;
-  loading: boolean;
   navigation: any;
-  novelSettings: NovelSettings;
   openDrawer: () => void;
-  pageIndex: number;
-  pages: string[];
   selected: ChapterInfo[];
-  setNovel: React.Dispatch<React.SetStateAction<NovelInfo | undefined>>;
   setSelected: React.Dispatch<React.SetStateAction<ChapterInfo[]>>;
-  setShowChapterTitles: (v: boolean) => void;
-  sortAndFilterChapters: (sort?: string, filter?: string) => Promise<void>;
-  updateChapter?: (index: number, update: Partial<ChapterInfo>) => void;
-  totalChapters?: number;
+  getNextChapterBatch: () => void;
   routeBaseNovel: {
     name: string;
     path: string;
@@ -65,32 +48,35 @@ type NovelScreenListProps = {
 const ListEmptyComponent = () => <ChapterListSkeleton />;
 
 const NovelScreenList = ({
-  chapters,
-  chaptersTeasers,
-  deleteChapter,
-  fetchedNovel,
-  fetching,
-  followNovel,
-  getNextChapterBatch,
-  getNovel,
   headerOpacity,
-  lastRead,
   listRef,
-  loading,
   navigation,
-  novelSettings,
   openDrawer,
-  pageIndex,
-  pages,
   routeBaseNovel,
   selected,
-  setNovel,
   setSelected,
-  setShowChapterTitles,
-  sortAndFilterChapters,
-  updateChapter,
-  totalChapters,
+  getNextChapterBatch,
 }: NovelScreenListProps) => {
+  const {
+    chapters,
+    chaptersTeasers,
+    deleteChapter,
+    fetching,
+    followNovel,
+    getNovel,
+    lastRead,
+    loading,
+    novelSettings,
+    pages,
+    setNovel,
+    sortAndFilterChapters,
+    setShowChapterTitles,
+    updateChapter,
+    novel: fetchedNovel,
+    batchInformation,
+    pageIndex,
+  } = useNovelContext();
+
   const { pluginId } = routeBaseNovel;
   const routeNovel: Omit<NovelInfo, 'id'> & { id: 'NO_ID' } = {
     inLibrary: false,
@@ -237,7 +223,10 @@ const NovelScreenList = ({
   };
 
   const navigateToChapter = (chapter: ChapterInfo) => {
-    navigation.navigate('Chapter', { novel, chapter });
+    navigation.navigate('ReaderStack', {
+      screen: 'Chapter',
+      params: { novel, chapter },
+    });
   };
 
   const setCustomNovelCover = async () => {
@@ -320,7 +309,7 @@ const NovelScreenList = ({
             page={pages.length > 1 ? pages[pageIndex] : undefined}
             setCustomNovelCover={setCustomNovelCover}
             theme={theme}
-            totalChapters={totalChapters}
+            totalChapters={batchInformation.totalChapters}
             trackerSheetRef={trackerSheetRef}
           />
         }
@@ -359,9 +348,12 @@ const NovelScreenList = ({
               }
               icon="play"
               onPress={() => {
-                navigation.navigate('Chapter', {
-                  novel: novel,
-                  chapter: lastRead ?? chapters[0],
+                navigation.navigate('ReaderStack', {
+                  screen: 'Chapter',
+                  params: {
+                    novel: novel,
+                    chapter: lastRead ?? chapters[0],
+                  },
                 });
               }}
             />

@@ -99,9 +99,12 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
 
   const navigateToNovel = useCallback(
     (item: NovelItem | LibraryNovelInfo) =>
-      navigation.navigate('Novel', {
-        ...item,
-        pluginId: pluginId,
+      navigation.navigate('ReaderStack', {
+        screen: 'Novel',
+        params: {
+          ...item,
+          pluginId: pluginId,
+        },
       }),
     [navigation, pluginId],
   );

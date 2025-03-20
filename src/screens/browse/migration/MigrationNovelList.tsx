@@ -50,7 +50,10 @@ const MigrationNovelList = ({
       theme={theme}
       onPress={() => showModal(item.path, item.name)}
       onLongPress={() =>
-        navigation.push('Novel', { pluginId: pluginId, ...item })
+        navigation.push('ReaderStack', {
+          screen: 'Novel',
+          params: { pluginId: pluginId, ...item },
+        })
       }
       inLibrary={inLibrary(item.path)}
     />

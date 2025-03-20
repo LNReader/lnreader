@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Portal, Appbar, Snackbar } from 'react-native-paper';
-import { useDownload, useNovel, useTheme } from '@hooks/persisted';
+import { useDownload, useTheme } from '@hooks/persisted';
 import JumpToChapterModal from './components/JumpToChapterModal';
 import { Actionbar } from '../../components/Actionbar/Actionbar';
 import EditInfoModal from './components/EditInfoModal';
@@ -29,27 +29,17 @@ import NovelScreenList from './components/NovelScreenList';
 import { ThemeColors } from '@theme/types';
 import { SafeAreaView } from '@components';
 import { LegendListRef } from '@legendapp/list';
+import { NovelContextProvider, useNovelContext } from './NovelContext';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
-  const { path, pluginId } = route.params;
-
   const {
     pageIndex,
     pages,
     novel,
     chapters,
-    chaptersTeasers,
-    loading,
     fetching,
-    lastRead,
-    novelSettings,
     batchInformation,
     getNextChapterBatch,
-    getNovel,
-    sortAndFilterChapters,
-    setShowChapterTitles,
-    followNovel,
-    deleteChapter,
     openPage,
     setNovel,
     bookmarkChapters,
@@ -57,10 +47,9 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     markChaptersUnread,
     markPreviouschaptersRead,
     markPreviousChaptersUnread,
-    updateChapter,
     refreshChapters,
     deleteChapters,
-  } = useNovel('id' in route.params ? route.params : path, pluginId);
+  } = useNovelContext();
 
   const theme = useTheme();
   const { downloadChapters } = useDownload();
@@ -302,30 +291,13 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           <SafeAreaView excludeTop>
             <Suspense fallback={<NovelScreenLoading theme={theme} />}>
               <NovelScreenList
-                chapters={chapters}
-                chaptersTeasers={chaptersTeasers}
-                deleteChapter={deleteChapter}
-                fetchedNovel={novel}
-                fetching={fetching}
-                followNovel={followNovel}
-                getNovel={getNovel}
                 headerOpacity={headerOpacity}
-                lastRead={lastRead}
                 listRef={chapterListRef}
-                loading={loading}
                 navigation={navigation}
-                novelSettings={novelSettings}
                 openDrawer={openDrawer}
-                pageIndex={pageIndex}
-                pages={pages}
                 routeBaseNovel={route.params}
                 selected={selected}
-                setNovel={setNovel}
                 setSelected={setSelected}
-                setShowChapterTitles={setShowChapterTitles}
-                sortAndFilterChapters={sortAndFilterChapters}
-                totalChapters={batchInformation.totalChapters}
-                updateChapter={updateChapter}
                 getNextChapterBatch={
                   batchInformation.batch < batchInformation.total && !fetching
                     ? getNextChapterBatch

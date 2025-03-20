@@ -32,24 +32,30 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
       style={styles.container}
       android_ripple={{ color: theme.rippleColor }}
       onPress={() =>
-        navigate('Chapter', {
-          novel: {
-            path: history.novelPath,
-            name: history.novelName,
-            pluginId: history.pluginId,
-          } as NovelInfo,
-          chapter: history,
+        navigate('ReaderStack', {
+          screen: 'Chapter',
+          params: {
+            novel: {
+              path: history.novelPath,
+              name: history.novelName,
+              pluginId: history.pluginId,
+            } as NovelInfo,
+            chapter: history,
+          },
         })
       }
     >
       <View style={styles.imageAndNameContainer}>
         <Pressable
           onPress={() =>
-            navigate('Novel', {
-              name: history.name,
-              path: history.novelPath,
-              cover: history.novelCover,
-              pluginId: history.pluginId,
+            navigate('ReaderStack', {
+              screen: 'Novel',
+              params: {
+                name: history.name,
+                path: history.novelPath,
+                cover: history.novelCover,
+                pluginId: history.pluginId,
+              },
             })
           }
         >

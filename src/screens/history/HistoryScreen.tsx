@@ -83,11 +83,14 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
         if (navigation.isFocused() && lastNovel) {
           e.preventDefault();
 
-          navigation.navigate('Novel', {
-            name: lastNovel.novelName,
-            path: lastNovel.novelPath,
-            cover: lastNovel.novelCover,
-            pluginId: lastNovel.pluginId,
+          navigation.navigate('ReaderStack', {
+            screen: 'Novel',
+            params: {
+              name: lastNovel.novelName,
+              path: lastNovel.novelPath,
+              cover: lastNovel.novelCover,
+              pluginId: lastNovel.pluginId,
+            },
           });
         }
       }),
