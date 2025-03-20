@@ -32,7 +32,7 @@ import NativeFile from '@specs/NativeFile';
 
 const emmiter = new NativeEventEmitter(NativeVolumeButtonListener);
 
-export default function useChapter(webViewRef: RefObject<WebView>) {
+export default function useChapter(webViewRef: RefObject<WebView | null>) {
   const { novel, chapter, setChapter, loading, setLoading } =
     useChapterContext();
   const { setLastRead } = useNovel(novel.path, novel.pluginId);
@@ -121,7 +121,7 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
     setLoading,
   ]);
 
-  const scrollInterval = useRef<NodeJS.Timeout>();
+  const scrollInterval = useRef<NodeJS.Timeout>(null);
   useEffect(() => {
     if (autoScroll) {
       scrollInterval.current = setInterval(() => {
@@ -133,10 +133,16 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
         })()`);
       }, autoScrollInterval * 1000);
     } else {
-      clearInterval(scrollInterval.current);
+      if (scrollInterval.current) {
+        clearInterval(scrollInterval.current);
+      }
     }
 
-    return () => clearInterval(scrollInterval.current);
+    return () => {
+      if (scrollInterval.current) {
+        clearInterval(scrollInterval.current);
+      }
+    };
   }, [autoScroll, autoScrollInterval, autoScrollOffset, webViewRef]);
 
   const updateTracker = useCallback(() => {

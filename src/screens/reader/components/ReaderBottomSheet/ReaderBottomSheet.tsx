@@ -41,7 +41,7 @@ type TabViewLabelProps = {
   focused: boolean;
   color: string;
   allowFontScaling?: boolean;
-  style?: StyleProp<TextStyle>;
+  style?: StyleProp<TextStyle | null>;
 };
 
 const ReaderTab: React.FC = React.memo(() => (
@@ -131,7 +131,7 @@ const GeneralTab: React.FC = React.memo(() => {
 });
 
 interface ReaderBottomSheetV2Props {
-  bottomSheetRef: RefObject<BottomSheetModalMethods> | null;
+  bottomSheetRef: RefObject<BottomSheetModalMethods | null>;
 }
 
 const routes = [

@@ -15,7 +15,7 @@ import { UserListStatus } from '@services/Trackers';
 import { NovelInfo } from '@database/types';
 
 interface Props {
-  bottomSheetRef: React.RefObject<BottomSheetModalMethods>;
+  bottomSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   novel: NovelInfo;
   theme: ThemeColors;
 }

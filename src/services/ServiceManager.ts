@@ -246,7 +246,9 @@ export default class ServiceManager {
     return getMMKVObject<Array<QueuedBackgroundTask>>(this.STORE_KEY) || [];
   }
   addTask(tasks: BackgroundTask | BackgroundTask[]) {
-    const currentTasks = this.getTaskList();
+    let currentTasks = this.getTaskList();
+    // @ts-expect-error Older version can still have tasks with old format
+    currentTasks = currentTasks.filter(task => !task?.name);
 
     const addableTasks = (Array.isArray(tasks) ? tasks : [tasks]).filter(
       task =>

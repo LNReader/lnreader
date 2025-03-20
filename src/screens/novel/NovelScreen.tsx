@@ -1,7 +1,6 @@
 import React, { Suspense, useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View, StatusBar, Text, Share } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
-import { FlashList } from '@shopify/flash-list';
 import Animated, {
   SlideInUp,
   SlideOutUp,
@@ -29,6 +28,7 @@ import { MaterialDesignIconName } from '@type/icon';
 import NovelScreenList from './components/NovelScreenList';
 import { ThemeColors } from '@theme/types';
 import { SafeAreaView } from '@components';
+import { LegendListRef } from '@legendapp/list';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { path, pluginId } = route.params;
@@ -68,7 +68,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const [selected, setSelected] = useState<ChapterInfo[]>([]);
   const [editInfoModal, showEditInfoModal] = useState(false);
 
-  const chapterListRef = useRef<FlashList<ChapterInfo>>(null);
+  const chapterListRef = useRef<LegendListRef>(null);
 
   const deleteDownloadsSnackbar = useBoolean();
 

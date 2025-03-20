@@ -50,14 +50,14 @@ interface NovelInfoHeaderProps {
   navigateToChapter: (chapter: ChapterInfo) => void;
   navigation: NovelScreenProps['navigation'];
   novel: NovelData | (Omit<NovelData, 'id'> & { id: 'NO_ID' });
-  novelBottomSheetRef: React.RefObject<BottomSheetModalMethods>;
+  novelBottomSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   onRefreshPage: (page: string) => void;
   openDrawer: () => void;
   page?: string;
   setCustomNovelCover: () => Promise<void>;
   theme: ThemeColors;
   totalChapters?: number;
-  trackerSheetRef: React.RefObject<BottomSheetModalMethods>;
+  trackerSheetRef: React.RefObject<BottomSheetModalMethods | null>;
 }
 
 const getStatusIcon = (status?: string) => {

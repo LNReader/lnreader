@@ -15,7 +15,7 @@ import { ThemeColors } from '@theme/types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface ChaptersSettingsSheetProps {
-  bottomSheetRef: React.RefObject<BottomSheetModalMethods>;
+  bottomSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   sortAndFilterChapters: (sort?: string, filter?: string) => Promise<void>;
   sort: string;
   filter: string;

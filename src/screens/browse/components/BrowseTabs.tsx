@@ -10,14 +10,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useBrowseSettings, usePlugins } from '@hooks/persisted';
 import { PluginItem } from '@plugins/types';
-import {
-  FlashList,
-  ListRenderItem as FlashListRenderItem,
-  ListRenderItemInfo,
-} from '@shopify/flash-list';
 import { coverPlaceholderColor } from '@theme/colors';
 import { ThemeColors } from '@theme/types';
-import { Swipeable } from 'react-native-gesture-handler';
 import { getString } from '@strings/translations';
 import { BrowseScreenProps, MoreStackScreenProps } from '@navigators/types';
 import { Button, EmptyView, IconButtonV2 } from '@components';
@@ -33,7 +27,8 @@ import SourceSettingsModal from './Modals/SourceSettings';
 import { useBoolean } from '@hooks';
 import { getPlugin } from '@plugins/pluginManager';
 import { getLocaleLanguageName } from '@utils/constants/languages';
-
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
 interface AvailableTabProps {
   searchText: string;
   theme: ThemeColors;
@@ -91,8 +86,8 @@ export const InstalledTab = memo(
       }
     }, [searchText, filteredInstalledPlugins]);
 
-    const renderItem: FlashListRenderItem<PluginItem> = useCallback(
-      ({ item }) => {
+    const renderItem = useCallback(
+      ({ item }: LegendListRenderItemProps<PluginItem>) => {
         return (
           <Swipeable
             dragOffsetFromLeftEdge={30}
@@ -213,7 +208,7 @@ export const InstalledTab = memo(
     );
 
     return (
-      <FlashList
+      <LegendList
         estimatedItemSize={64}
         data={searchedPlugins}
         extraData={theme}
@@ -221,6 +216,7 @@ export const InstalledTab = memo(
         removeClippedSubviews={true}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id + '_installed'}
+        recycleItems
         ListHeaderComponent={
           <>
             {showMyAnimeList || showAniList ? (
@@ -258,7 +254,7 @@ export const InstalledTab = memo(
                 {renderItem({
                   item: lastUsedPlugin,
                   index: 0,
-                } as ListRenderItemInfo<PluginItem>)}
+                } as LegendListRenderItemProps<PluginItem>)}
               </>
             ) : null}
             <Text
@@ -408,22 +404,22 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
       });
   }, [searchText, filteredAvailablePlugins]);
 
-  const renderItem: FlashListRenderItem<PluginItem & { header: boolean }> =
-    useCallback(
-      ({ item }) => {
-        return (
-          <AvailablePluginCard
-            plugin={item}
-            theme={theme}
-            installPlugin={installPlugin}
-          />
-        );
-      },
-      [theme, searchedPlugins],
-    );
+  const renderItem = useCallback(
+    ({ item }: LegendListRenderItemProps<PluginItem & { header: boolean }>) => {
+      return (
+        <AvailablePluginCard
+          plugin={item}
+          theme={theme}
+          installPlugin={installPlugin}
+        />
+      );
+    },
+    [theme, searchedPlugins],
+  );
 
   return (
-    <FlashList
+    <LegendList
+      recycleItems
       estimatedItemSize={64}
       data={searchedPlugins}
       extraData={theme}

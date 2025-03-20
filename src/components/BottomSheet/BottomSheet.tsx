@@ -13,7 +13,7 @@ import { useWindowDimensions } from 'react-native';
 
 interface BottomSheetProps
   extends Omit<BottomSheetModalProps, 'ref' | 'onChange' | 'snapPoints'> {
-  bottomSheetRef: RefObject<BottomSheetModalMethods> | null;
+  bottomSheetRef: RefObject<BottomSheetModalMethods | null>;
   onChange?: (index: number) => void;
   snapPoints?: number[];
 }
@@ -26,7 +26,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   snapPoints,
   ...otherProps
 }) => {
-  const indexRef = useRef<number>();
+  const indexRef = useRef<number>(null);
   const { bottom, top } = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const renderBackdrop = useCallback(

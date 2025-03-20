@@ -21,7 +21,7 @@ import {
   LibrarySortOrder,
   librarySortOrderList,
 } from '@screens/library/constants/constants';
-import { FlashList } from '@shopify/flash-list';
+import { LegendList } from '@legendapp/list';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 import { overlay } from 'react-native-paper';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
@@ -43,7 +43,7 @@ const FirstRoute = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <FlashList
+      <LegendList
         estimatedItemSize={4}
         extraData={[filter]}
         data={libraryFilterList}
@@ -74,7 +74,7 @@ const SecondRoute = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <FlashList
+      <LegendList
         data={librarySortOrderList}
         extraData={[sortOrder]}
         estimatedItemSize={5}
@@ -149,7 +149,7 @@ const ThirdRoute = () => {
       <Text style={[styles.sectionHeader, { color: theme.onSurfaceVariant }]}>
         {getString('libraryScreen.bottomSheet.display.displayMode')}
       </Text>
-      <FlashList
+      <LegendList
         estimatedItemSize={4}
         data={displayModesList}
         extraData={[displayMode]}

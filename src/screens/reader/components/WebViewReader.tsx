@@ -30,7 +30,7 @@ type WebViewPostEvent = {
 type WebViewReaderProps = {
   html: string;
   nextChapter?: ChapterInfo;
-  webViewRef: React.RefObject<WebView>;
+  webViewRef: React.RefObject<WebView | null>;
   saveProgress(percentage: number): void;
   onPress(): void;
   navigateChapter(position: 'NEXT' | 'PREV'): void;

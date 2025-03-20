@@ -14,8 +14,9 @@ export default function useDownload() {
   const [queue] = useMMKVObject<QueuedBackgroundTask[]>(
     ServiceManager.manager.STORE_KEY,
   );
+
   const downloadQueue = useMemo(
-    () => queue?.filter(t => t.task.name === 'DOWNLOAD_CHAPTER') || [],
+    () => queue?.filter(t => t.task?.name === 'DOWNLOAD_CHAPTER') || [],
     [queue],
   ) as { task: DownloadChapterTask; meta: BackgroundTaskMetadata }[];
 

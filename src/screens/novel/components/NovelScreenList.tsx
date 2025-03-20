@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FlashList } from '@shopify/flash-list';
 import ChapterItem from './ChapterItem';
 import NovelInfoHeader from './Info/NovelInfoHeader';
 import { useRef, useState } from 'react';
@@ -27,6 +26,8 @@ import * as Haptics from 'expo-haptics';
 import { AnimatedFAB } from 'react-native-paper';
 import { NovelSettings } from '@hooks/persisted/useNovel';
 import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
+import { LegendList, LegendListRef } from '@legendapp/list';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 
 type NovelScreenListProps = {
   chapters: ChapterInfo[];
@@ -39,7 +40,7 @@ type NovelScreenListProps = {
   getNovel: () => void;
   headerOpacity: SharedValue<number>;
   lastRead?: ChapterInfo;
-  listRef: React.RefObject<FlashList<ChapterInfo>>;
+  listRef: React.RefObject<LegendListRef | null>;
   loading: boolean;
   navigation: any;
   novelSettings: NovelSettings;
@@ -121,8 +122,8 @@ const NovelScreenList = ({
 
   const [isFabExtended, setIsFabExtended] = useState(true);
 
-  let novelBottomSheetRef = useRef(null);
-  let trackerSheetRef = useRef(null);
+  let novelBottomSheetRef = useRef<BottomSheetModalMethods>(null);
+  let trackerSheetRef = useRef<BottomSheetModalMethods>(null);
 
   const deleteDownloadsSnackbar = useBoolean();
 
@@ -254,7 +255,7 @@ const NovelScreenList = ({
 
   return (
     <>
-      <FlashList
+      <LegendList
         ref={listRef}
         estimatedItemSize={64}
         data={chapters.length ? chapters : chaptersTeasers}
@@ -292,7 +293,6 @@ const NovelScreenList = ({
               setChapterDownloaded={(value: boolean) =>
                 updateChapter?.(index, { isDownloaded: value })
               }
-              index={index}
             />
           );
         }}

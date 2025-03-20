@@ -8,15 +8,14 @@ import React, {
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useAppSettings, useTheme } from '@hooks/persisted';
-import { FlashList, ViewToken } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
-import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
 import { useNovel } from '@hooks/persisted/useNovel';
 import renderListChapter from './RenderListChapter';
 import { useChapterContext } from '@screens/reader/ChapterContext';
+import { LegendList, LegendListRef, ViewToken } from '@legendapp/list';
 
 type ButtonProperties = {
   text: string;
@@ -42,7 +41,7 @@ const ChapterDrawer = () => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { defaultChapterSort } = useAppSettings();
-  const listRef = useRef<FlashList<ChapterInfo>>(null);
+  const listRef = useRef<LegendListRef>(null);
 
   const styles = createStylesheet(theme, insets);
 
@@ -68,7 +67,9 @@ const ChapterDrawer = () => {
     setPageIndex(pageIndex);
   }, [chapter, pages, setPageIndex]);
 
-  const scrollToIndex = useMemo(() => {
+  const calculateScrollToIndex = useCallback(() => {
+    console.log(chapters.length);
+
     if (chapters.length < 1) {
       return;
     }
@@ -77,45 +78,58 @@ const ChapterDrawer = () => {
       chapters.findIndex(el => {
         return el.id === chapter.id;
       }) || 0;
+
     return indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
   }, [chapters, chapter.id]);
+
+  const scrollToIndex = useRef<number | undefined>(calculateScrollToIndex());
+  useEffect(() => {
+    const next = calculateScrollToIndex();
+    if (next !== undefined) {
+      scrollToIndex.current = next;
+    }
+  }, [chapters, chapter.id]);
+
+  console.log(chapter.id, scrollToIndex);
 
   const [footerBtnProps, setButtonProperties] =
     useState<ButtonsProperties>(defaultButtonLayout);
 
-  const checkViewableItems = ({
-    viewableItems,
-  }: {
-    viewableItems: ViewToken[];
-  }) => {
-    const curChapter = getString('readerScreen.drawer.scrollToCurrentChapter');
-    let newBtnLayout = Object.create(defaultButtonLayout);
+  const checkViewableItems = useCallback(
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      const curChapter = getString(
+        'readerScreen.drawer.scrollToCurrentChapter',
+      );
+      let newBtnLayout = Object.create(defaultButtonLayout);
 
-    if (viewableItems.length !== 0) {
-      let visible = viewableItems.find(({ item }) => {
-        return item.id === chapter.id;
-      });
-      if (!visible && scrollToIndex) {
-        if (
-          listAscending
-            ? (viewableItems[0].index ?? 0) < scrollToIndex + 2
-            : (viewableItems[0].index ?? 0) > scrollToIndex + 2
-        ) {
-          newBtnLayout.down = {
-            text: curChapter,
-            index: scrollToIndex,
-          };
-        } else {
-          newBtnLayout.up = {
-            text: curChapter,
-            index: scrollToIndex,
-          };
+      if (viewableItems.length !== 0) {
+        const cKey = chapter.position ?? chapter.id;
+        const vKey = parseInt(viewableItems[0].key);
+        let visible = vKey <= cKey && cKey <= vKey + viewableItems.length;
+
+        if (!visible && scrollToIndex.current !== undefined) {
+          if (
+            listAscending
+              ? (viewableItems[0].index ?? 0) < scrollToIndex.current + 2
+              : (viewableItems[0].index ?? 0) > scrollToIndex.current + 2
+          ) {
+            newBtnLayout.down = {
+              text: curChapter,
+              index: scrollToIndex.current,
+            };
+          } else {
+            newBtnLayout.up = {
+              text: curChapter,
+              index: scrollToIndex.current,
+            };
+          }
         }
-      }
 
-      setButtonProperties(newBtnLayout);
-    }
-  };
+        setButtonProperties(newBtnLayout);
+      }
+    },
+    [chapter.id, chapters, scrollToIndex.current],
+  );
   const scroll = useCallback((index?: number) => {
     if (index !== undefined) {
       listRef.current?.scrollToIndex({
@@ -135,11 +149,12 @@ const ChapterDrawer = () => {
       {scrollToIndex === undefined ? (
         <LoadingScreenV2 theme={theme} />
       ) : (
-        <FlashList
+        <LegendList
           ref={listRef}
           onViewableItemsChanged={checkViewableItems}
           data={chapters}
-          extraData={chapter}
+          extraData={[chapter, scrollToIndex.current]}
+          keyExtractor={item => (item.position ?? item.id).toString()}
           renderItem={val =>
             renderListChapter({
               item: val.item,
@@ -153,7 +168,7 @@ const ChapterDrawer = () => {
             })
           }
           estimatedItemSize={60}
-          initialScrollIndex={scrollToIndex}
+          initialScrollIndex={scrollToIndex.current}
         />
       )}
       <View style={styles.footer}>

@@ -14,7 +14,7 @@ interface ChapterFooterProps {
   theme: ThemeColors;
   nextChapter: ChapterInfo;
   prevChapter: ChapterInfo;
-  readerSheetRef: React.RefObject<BottomSheetModalMethods>;
+  readerSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   scrollToStart: () => void;
   navigateChapter(position: 'NEXT' | 'PREV'): void;
   navigation: ChapterScreenProps['navigation'];
