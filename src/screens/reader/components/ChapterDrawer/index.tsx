@@ -68,8 +68,6 @@ const ChapterDrawer = () => {
   }, [chapter, pages, setPageIndex]);
 
   const calculateScrollToIndex = useCallback(() => {
-    console.log(chapters.length);
-
     if (chapters.length < 1) {
       return;
     }
@@ -86,11 +84,12 @@ const ChapterDrawer = () => {
   useEffect(() => {
     const next = calculateScrollToIndex();
     if (next !== undefined) {
+      if (scrollToIndex.current === undefined) {
+        scroll(next);
+      }
       scrollToIndex.current = next;
     }
   }, [chapters, chapter.id]);
-
-  console.log(chapter.id, scrollToIndex);
 
   const [footerBtnProps, setButtonProperties] =
     useState<ButtonsProperties>(defaultButtonLayout);
@@ -103,9 +102,9 @@ const ChapterDrawer = () => {
       let newBtnLayout = Object.create(defaultButtonLayout);
 
       if (viewableItems.length !== 0) {
-        const cKey = chapter.position ?? chapter.id;
+        const cKey = (scrollToIndex.current ?? 0) + 2;
         const vKey = parseInt(viewableItems[0].key);
-        let visible = vKey <= cKey && cKey <= vKey + viewableItems.length;
+        let visible = vKey <= cKey && cKey <= vKey + viewableItems.length - 1;
 
         if (!visible && scrollToIndex.current !== undefined) {
           if (
@@ -124,11 +123,17 @@ const ChapterDrawer = () => {
             };
           }
         }
+        if (cKey <= 2 && vKey <= 4) {
+          newBtnLayout.up = {
+            text: curChapter,
+            index: scrollToIndex.current,
+          };
+        }
 
         setButtonProperties(newBtnLayout);
       }
     },
-    [chapter.id, chapters, scrollToIndex.current],
+    [chapter, chapters, scrollToIndex.current],
   );
   const scroll = useCallback((index?: number) => {
     if (index !== undefined) {
