@@ -29,7 +29,7 @@ import NovelScreenList from './components/NovelScreenList';
 import { ThemeColors } from '@theme/types';
 import { SafeAreaView } from '@components';
 import { LegendListRef } from '@legendapp/list';
-import { NovelContextProvider, useNovelContext } from './NovelContext';
+import { useNovelContext } from './NovelContext';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const {

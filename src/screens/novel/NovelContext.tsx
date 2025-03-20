@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
-import { ChapterInfo, NovelInfo } from '@database/types';
+import React, { createContext, useContext } from 'react';
 import { useNovel } from '@hooks/persisted';
 import { RouteProp } from '@react-navigation/native';
 import { ReaderStackParamList } from '@navigators/types';
@@ -28,8 +27,6 @@ export function NovelContextProvider({
     'id' in route.params ? route.params : path,
     pluginId,
   );
-  const [chapter, setChapter] = useState();
-  const [loading, setLoading] = useState(true);
 
   return (
     <NovelContext.Provider value={novelHookContent}>
