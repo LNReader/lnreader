@@ -23,7 +23,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TrackSheet from './Tracker/TrackSheet';
 import NovelBottomSheet from './NovelBottomSheet';
 import * as Haptics from 'expo-haptics';
-import { AnimatedFAB } from 'react-native-paper';
+import { AnimatedFAB, Text } from 'react-native-paper';
 import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
 import { LegendList, LegendListRef } from '@legendapp/list';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
@@ -245,6 +245,7 @@ const NovelScreenList = ({
   return (
     <>
       <LegendList
+        recycleItems
         ref={listRef}
         estimatedItemSize={64}
         data={chapters.length ? chapters : chaptersTeasers}
@@ -285,12 +286,13 @@ const NovelScreenList = ({
             />
           );
         }}
-        keyExtractor={item => 'chapter_' + item.id}
+        keyExtractor={item => 'c' + item.id}
         contentContainerStyle={styles.contentContainer}
         refreshControl={refreshControl()}
         onEndReached={getNextChapterBatch}
-        onEndReachedThreshold={2}
+        onEndReachedThreshold={6}
         onScroll={onPageScroll}
+        drawDistance={1000}
         ListHeaderComponent={
           <NovelInfoHeader
             chapters={chapters}

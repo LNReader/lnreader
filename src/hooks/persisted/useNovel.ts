@@ -346,7 +346,7 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
 
       setBatchInformation({
         batch: 0,
-        total: Math.floor(chapterCount / 100),
+        total: Math.floor(chapterCount / 300),
         totalChapters: chapterCount,
       });
       setChapters(newChapters);
@@ -365,18 +365,18 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
   const getNextChapterBatch = useCallback(() => {
     const page = pages[pageIndex];
     const nextBatch = batchInformation.batch + 1;
-    if (novel && page) {
+    if (novel && page && nextBatch <= batchInformation.total) {
       let newChapters: ChapterInfo[] = [];
 
-      const config = [
-        novel.id,
-        settingsSort,
-        novelSettings.filter,
-        page,
-      ] as const;
-
       try {
-        newChapters = getPageChaptersBatched(...config, nextBatch) || [];
+        newChapters =
+          getPageChaptersBatched(
+            novel.id,
+            settingsSort,
+            novelSettings.filter,
+            page,
+            nextBatch,
+          ) || [];
       } catch (error) {
         console.error('teaser', error);
       }

@@ -47,7 +47,7 @@ const IconButton: React.FC<Props> = ({
   </View>
 );
 
-export default IconButton;
+export default React.memo(IconButton);
 
 const styles = StyleSheet.create({
   container: {

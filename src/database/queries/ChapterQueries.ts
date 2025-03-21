@@ -251,7 +251,7 @@ export const getPageChaptersBatched = (
   batch: number = 0,
 ) => {
   return db.getAllSync<ChapterInfo>(
-    getPageChaptersQuery(sort, filter, 100, 100 * batch),
+    getPageChaptersQuery(sort, filter, 300, 300 * batch),
     novelId,
     page || '1',
   );

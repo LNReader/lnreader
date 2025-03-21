@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { MD3ThemeType } from '@theme/types';
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 
 import { Menu, overlay } from 'react-native-paper';
 import { getString } from '@strings/translations';
 import { isChapterDownloaded } from '@database/queries/ChapterQueries';
 import { useBoolean } from '@hooks/index';
 import { IconButtonV2 } from '@components';
+import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
+import Color from 'color';
 
 interface DownloadButtonProps {
   chapterId: number;
@@ -37,13 +39,19 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
     setFalse: hideDeleteChapterMenu,
   } = useBoolean();
 
+  const isFirstRender = useRef(true);
+
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return; // Skip the first render as it leads to 'Maximum update depth exceeded.' error
+    }
     if (!isDownloading) {
       const isDownloadedValue = isChapterDownloaded(chapterId);
       setDownloaded(isDownloadedValue);
       setChapterDownloaded?.(isDownloadedValue);
     }
-  }, [chapterId, isDownloading, setChapterDownloaded]);
+  }, [chapterId, isDownloading]);
   if (isDownloading || downloaded === undefined) {
     return <ChapterDownloadingButton theme={theme} />;
   }
@@ -91,17 +99,32 @@ export const ChapterDownloadingButton: React.FC<theme> = ({ theme }) => (
   />
 );
 
+const DownloadIcon: React.FC<theme> = ({ theme }) => (
+  <MaterialCommunityIcons
+    name="arrow-down-circle-outline"
+    size={25}
+    color={theme.outline}
+  />
+);
+
 export const DownloadChapterButton: React.FC<buttonPropType> = ({
   theme,
   onPress,
 }) => (
-  <IconButtonV2
-    name="arrow-down-circle-outline"
-    theme={theme}
-    color={theme.outline}
-    size={25}
+  <Pressable
+    style={[styles.container]}
     onPress={onPress}
-    style={styles.iconButton}
+    android_ripple={{ color: Color(theme.primary).alpha(0.12).string() }}
+  >
+    <DownloadIcon theme={theme} />
+  </Pressable>
+);
+
+const DeleteIcon: React.FC<theme> = ({ theme }) => (
+  <MaterialCommunityIcons
+    name="check-circle"
+    size={25}
+    color={theme.onSurface}
   />
 );
 
@@ -109,14 +132,13 @@ export const DeleteChapterButton: React.FC<buttonPropType> = ({
   theme,
   onPress,
 }) => (
-  <IconButtonV2
-    name="check-circle"
-    theme={theme}
-    color={theme.onSurface}
-    size={25}
+  <Pressable
+    style={[styles.container]}
     onPress={onPress}
-    style={styles.iconButton}
-  />
+    android_ripple={{ color: Color(theme.primary).alpha(0.12).string() }}
+  >
+    <DeleteIcon theme={theme} />
+  </Pressable>
 );
 
 export const ChapterBookmarkButton: React.FC<theme> = ({ theme }) => (
@@ -133,4 +155,9 @@ const styles = StyleSheet.create({
   activityIndicator: { margin: 3.5, padding: 5 },
   iconButton: { margin: 2 },
   iconButtonLeft: { marginLeft: 2 },
+  container: {
+    borderRadius: 50,
+    overflow: 'hidden',
+    padding: 8,
+  },
 });

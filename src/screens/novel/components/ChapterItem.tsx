@@ -10,7 +10,6 @@ import { ThemeColors } from '@theme/types';
 import { ChapterInfo } from '@database/types';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 import { getString } from '@strings/translations';
-import Animated, { FlipInXDown } from 'react-native-reanimated';
 
 interface ChapterItemProps {
   isDownloading?: boolean;
@@ -29,7 +28,6 @@ interface ChapterItemProps {
   isLocal: boolean;
   isUpdateCard?: boolean;
   novelName: string;
-  index?: number;
 }
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
@@ -49,7 +47,6 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   left,
   isUpdateCard,
   novelName,
-  index = -1,
 }) => {
   const { id, name, unread, releaseTime, bookmark, chapterNumber, progress } =
     chapter;
@@ -57,14 +54,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   isBookmarked ??= bookmark;
 
   return (
-    <Animated.View
-      key={'chapterItem' + id}
-      entering={
-        index >= 0 && index < 21
-          ? FlipInXDown.delay(10 * index).duration(150)
-          : undefined
-      }
-    >
+    <View key={'chapterItem' + id}>
       <Pressable
         style={[
           styles.chapterCardContainer,
@@ -184,7 +174,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
           />
         ) : null}
       </Pressable>
-    </Animated.View>
+    </View>
   );
 };
 
