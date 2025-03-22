@@ -87,37 +87,35 @@ const ChapterDrawer = () => {
       );
       let newBtnLayout = Object.create(defaultButtonLayout);
 
-      if (viewableItems.length !== 0) {
-        const cKey = (scrollToIndex.current ?? 0) + 2;
-        const vKey = parseInt(viewableItems[0].key);
-        let visible = vKey <= cKey && cKey <= vKey + viewableItems.length - 1;
+      if (viewableItems.length === 0) return;
+      const cKey = (scrollToIndex.current ?? 0) + 2;
+      const vKey = parseInt(viewableItems[0].key);
+      let visible = vKey <= cKey && cKey <= vKey + viewableItems.length - 1;
 
-        if (!visible && scrollToIndex.current !== undefined) {
-          if (
-            listAscending
-              ? (viewableItems[0].index ?? 0) < scrollToIndex.current + 2
-              : (viewableItems[0].index ?? 0) > scrollToIndex.current + 2
-          ) {
-            newBtnLayout.down = {
-              text: curChapter,
-              index: scrollToIndex.current,
-            };
-          } else {
-            newBtnLayout.up = {
-              text: curChapter,
-              index: scrollToIndex.current,
-            };
-          }
-        }
-        if (cKey <= 2 && vKey <= 4) {
+      if (!visible && scrollToIndex.current !== undefined) {
+        if (
+          listAscending
+            ? (viewableItems[0].index ?? 0) < scrollToIndex.current + 2
+            : (viewableItems[0].index ?? 0) > scrollToIndex.current + 2
+        ) {
+          newBtnLayout.down = {
+            text: curChapter,
+            index: scrollToIndex.current,
+          };
+        } else {
           newBtnLayout.up = {
             text: curChapter,
             index: scrollToIndex.current,
           };
         }
-
-        setButtonProperties(newBtnLayout);
       }
+      if (cKey <= 2 && vKey <= 4) {
+        newBtnLayout.up = {
+          text: curChapter,
+          index: scrollToIndex.current,
+        };
+      }
+      setButtonProperties(newBtnLayout);
     },
     [chapter, chapters, scrollToIndex.current],
   );
@@ -142,6 +140,10 @@ const ChapterDrawer = () => {
       ) : (
         <LegendList
           ref={listRef}
+          viewabilityConfig={{
+            minimumViewTime: 100,
+            viewAreaCoveragePercentThreshold: 95,
+          }}
           onViewableItemsChanged={checkViewableItems}
           data={chapters}
           extraData={[chapter, scrollToIndex.current]}
