@@ -20,7 +20,9 @@ export const ThemePicker = ({
     style={{
       justifyContent: 'center',
       alignItems: 'center',
-      marginRight: 16,
+      paddingBottom: 8,
+      width: '33%',
+      marginHorizontal: 'auto',
     }}
   >
     <View
