@@ -18,6 +18,9 @@ import ServiceManager from '@services/ServiceManager';
 import { UpdateScreenProps } from '@navigators/types';
 import { UpdateOverview } from '@database/types';
 import { SafeAreaView } from '@components';
+import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
+
+const Skeleton = () => <ChapterListSkeleton img />;
 
 const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
   const theme = useTheme();
@@ -76,86 +79,84 @@ const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
         ]}
       />
       {isLoading && updatesOverview.length === 0 ? (
-        <UpdatesSkeletonLoading theme={theme} />
+        <Skeleton />
       ) : error ? (
         <ErrorScreenV2 error={error} />
       ) : (
-        <Suspense fallback={<UpdatesSkeletonLoading theme={theme} />}>
-          <SectionList
-            extraData={[updatesOverview.length]}
-            ListHeaderComponent={
-              showLastUpdateTime && lastUpdateTime ? (
-                <LastUpdateTime lastUpdateTime={lastUpdateTime} theme={theme} />
-              ) : null
-            }
-            contentContainerStyle={styles.listContainer}
-            renderSectionHeader={({ section: { date } }) => (
-              <Text style={[styles.dateHeader, { color: theme.onSurface }]}>
-                {dayjs(date).calendar()}
-              </Text>
-            )}
-            sections={updatesOverview
-              .filter(v =>
-                searchText
-                  ? v.novelName.toLowerCase().includes(searchText.toLowerCase())
-                  : true,
-              )
-              .reduce(
-                (
-                  acc: { data: UpdateOverview[]; date: string }[],
-                  cur: UpdateOverview,
-                ) => {
-                  if (acc.length === 0 || acc.at(-1)?.date !== cur.updateDate) {
-                    acc.push({ data: [cur], date: cur.updateDate });
-                    return acc;
-                  }
-                  acc.at(-1)?.data.push(cur);
+        <SectionList
+          extraData={[updatesOverview.length]}
+          ListHeaderComponent={
+            showLastUpdateTime && lastUpdateTime ? (
+              <LastUpdateTime lastUpdateTime={lastUpdateTime} theme={theme} />
+            ) : null
+          }
+          contentContainerStyle={styles.listContainer}
+          renderSectionHeader={({ section: { date } }) => (
+            <Text style={[styles.dateHeader, { color: theme.onSurface }]}>
+              {dayjs(date).calendar()}
+            </Text>
+          )}
+          sections={updatesOverview
+            .filter(v =>
+              searchText
+                ? v.novelName.toLowerCase().includes(searchText.toLowerCase())
+                : true,
+            )
+            .reduce(
+              (
+                acc: { data: UpdateOverview[]; date: string }[],
+                cur: UpdateOverview,
+              ) => {
+                if (acc.length === 0 || acc.at(-1)?.date !== cur.updateDate) {
+                  acc.push({ data: [cur], date: cur.updateDate });
                   return acc;
-                },
-                [],
-              )}
-            keyExtractor={item => 'updatedGroup' + item.novelId}
-            renderItem={({ item }) => (
-              <Suspense fallback={<UpdatesSkeletonLoading theme={theme} />}>
-                <UpdateNovelCard
-                  deleteChapter={chapter => {
-                    deleteChapter(
-                      chapter.pluginId,
-                      chapter.novelId,
-                      chapter.id,
-                    ).then(() => {
-                      showToast(
-                        getString('common.deleted', {
-                          name: chapter.name,
-                        }),
-                      );
-                      getUpdates();
-                    });
-                  }}
-                  chapterListInfo={item}
-                  descriptionText={getString('updatesScreen.updatesLower')}
-                />
-              </Suspense>
-            )}
-            ListEmptyComponent={
-              <EmptyView
-                icon="(˘･_･˘)"
-                description={getString('updatesScreen.emptyView')}
-                theme={theme}
-              />
-            }
-            refreshControl={
-              <RefreshControl
-                refreshing={false}
-                onRefresh={() =>
-                  ServiceManager.manager.addTask({ name: 'UPDATE_LIBRARY' })
                 }
-                colors={[theme.onPrimary]}
-                progressBackgroundColor={theme.primary}
+                acc.at(-1)?.data.push(cur);
+                return acc;
+              },
+              [],
+            )}
+          keyExtractor={item => 'updatedGroup' + item.novelId}
+          renderItem={({ item }) => (
+            <Suspense fallback={<UpdatesSkeletonLoading theme={theme} />}>
+              <UpdateNovelCard
+                deleteChapter={chapter => {
+                  deleteChapter(
+                    chapter.pluginId,
+                    chapter.novelId,
+                    chapter.id,
+                  ).then(() => {
+                    showToast(
+                      getString('common.deleted', {
+                        name: chapter.name,
+                      }),
+                    );
+                    getUpdates();
+                  });
+                }}
+                chapterListInfo={item}
+                descriptionText={getString('updatesScreen.updatesLower')}
               />
-            }
-          />
-        </Suspense>
+            </Suspense>
+          )}
+          ListEmptyComponent={
+            <EmptyView
+              icon="(˘･_･˘)"
+              description={getString('updatesScreen.emptyView')}
+              theme={theme}
+            />
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={false}
+              onRefresh={() =>
+                ServiceManager.manager.addTask({ name: 'UPDATE_LIBRARY' })
+              }
+              colors={[theme.onPrimary]}
+              progressBackgroundColor={theme.primary}
+            />
+          }
+        />
       )}
     </SafeAreaView>
   );

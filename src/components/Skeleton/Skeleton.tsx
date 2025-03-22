@@ -62,12 +62,19 @@ function createLGC(
 const ChapterSkeleton = React.memo(function ChapterSkeleton({
   lgc,
   backgroundStyle,
+  img,
 }: {
   lgc: React.JSX.Element;
   backgroundStyle: StyleProp<ViewStyle>;
+  img?: boolean;
 }) {
   return (
     <View style={[styles.chapter, styles.h40]}>
+      {img ? (
+        <View style={[styles.default, styles.img, backgroundStyle]}>{lgc}</View>
+      ) : (
+        <></>
+      )}
       <View style={[styles.flex, styles.chapterText]}>
         <View style={[styles.default, styles.h20, backgroundStyle]}>{lgc}</View>
         <View style={[styles.default, styles.h15, backgroundStyle]}>{lgc}</View>
@@ -151,7 +158,7 @@ function NovelMetaSkeleton() {
   );
 }
 
-const ChapterListSkeleton = () => {
+const ChapterListSkeleton = ({ img }: { img?: boolean }) => {
   const sv = useSharedValue(0);
   const { disableLoadingAnimations } = useAppSettings();
 
@@ -182,7 +189,12 @@ const ChapterListSkeleton = () => {
   return (
     <>
       {skeletonItems.map((_, i) => (
-        <ChapterSkeleton key={i} lgc={LGC} backgroundStyle={backgroundStyle} />
+        <ChapterSkeleton
+          key={i}
+          lgc={LGC}
+          backgroundStyle={backgroundStyle}
+          img={img}
+        />
       ))}
     </>
   );
@@ -224,6 +236,12 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
   },
+  img: {
+    alignSelf: 'center',
+    marginRight: 20,
+    height: 40,
+    width: 40,
+  },
   h15: {
     height: 15,
   },
@@ -248,7 +266,7 @@ const styles = StyleSheet.create({
   },
   LG: {
     width: '60%',
-    height: 30,
+    height: 40,
     position: 'absolute',
     transform: [{ translateX: '-100%' }],
   },
