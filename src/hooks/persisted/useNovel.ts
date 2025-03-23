@@ -210,163 +210,162 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     );
   };
 
+  // Helper function to handle common plugin sync logic
+  const syncChapterWithPlugin = async (
+    findSyncedChapterFn: () => ChapterItem | undefined,
+  ) => {
+    if (!novel) {
+      return;
+    }
+
+    const plugin = getPlugin(novel.pluginId);
+    if (!plugin?.syncChapter) {
+      return;
+    }
+
+    const syncedChapter = findSyncedChapterFn();
+    if (syncedChapter) {
+      await syncChapterStatus(plugin, syncedChapter);
+    }
+  };
+
+  // Refactored syncChapterStatus with proper async/await
   const syncChapterStatus = async (plugin: Plugin, chapter: ChapterItem) => {
-    if (plugin.syncChapterStatus) {
-      (await plugin.syncChapterStatus(novelPath, chapter.path))
-        ? showToast(getString('novelScreen.syncTrue', { name: chapter.name }))
-        : showToast(getString('novelScreen.syncFalse', { name: chapter.name }));
+    if (!plugin.syncChapterStatus) {
+      return;
+    }
+
+    try {
+      const success = await plugin.syncChapterStatus(novelPath, chapter.path);
+      showToast(
+        getString(success ? 'novelScreen.syncTrue' : 'novelScreen.syncFalse', {
+          name: chapter.name,
+        }),
+      );
+    } catch (error) {
+      console.error('Error syncing chapter status:', error);
     }
   };
 
   const markPreviousChaptersRead = (chapterId: number) => {
-    if (novel) {
-      // Sync chapter status if the plugin supports it
-      const plugin = getPlugin(novel.pluginId);
-      if (plugin?.syncChapter) {
-        const chapterPosition = chapters.find(
-          chapter => chapter.id === chapterId,
-        )?.position;
-        const syncedChapter = chapters.find(
-          chapter => chapter.position === chapterPosition,
-        );
-        if (syncedChapter) {
-          syncChapterStatus(plugin, syncedChapter);
-        }
-      }
-      _markPreviousChaptersRead(chapterId, novel.id);
-      setChapters(
-        chapters.map(chapter => {
-          if (chapter.id <= chapterId) {
-            return { ...chapter, unread: false };
-          }
-          return chapter;
-        }),
-      );
+    if (!novel) {
+      return;
     }
+
+    syncChapterWithPlugin(() => {
+      const chapterPosition = chapters.find(
+        chapter => chapter.id === chapterId,
+      )?.position;
+      return chapters.find(chapter => chapter.position === chapterPosition);
+    });
+
+    _markPreviousChaptersRead(chapterId, novel.id);
+    setChapters(
+      chapters.map(chapter => ({
+        ...chapter,
+        unread: chapter.id <= chapterId ? false : chapter.unread,
+      })),
+    );
   };
 
   const markChapterRead = (chapterId: number) => {
-    if (novel) {
-      // Sync chapter status if the plugin supports it
-      const plugin = getPlugin(novel.pluginId);
-      if (plugin?.syncChapter) {
-        const syncedChapter = chapters.find(
-          chapter => chapter.id === chapterId,
-        );
-        if (syncedChapter) {
-          syncChapterStatus(plugin, syncedChapter);
-        }
-      }
+    if (!novel) {
+      return;
     }
+
+    syncChapterWithPlugin(() =>
+      chapters.find(chapter => chapter.id === chapterId),
+    );
+
     _markChapterRead(chapterId);
     setChapters(
-      chapters.map(c => {
-        if (c.id !== chapterId) {
-          return c;
-        }
-        return {
-          ...c,
-          unread: false,
-        };
-      }),
+      chapters.map(chapter => ({
+        ...chapter,
+        unread: chapter.id === chapterId ? false : chapter.unread,
+      })),
     );
   };
 
   const markChaptersRead = (_chapters: ChapterInfo[]) => {
-    if (novel) {
-      // Sync chapter status if the plugin supports it
-      const plugin = getPlugin(novel.pluginId);
-      if (plugin?.syncChapter) {
-        // Sort the selected chapters based on the position
-        const sortedChapters = [..._chapters].sort((a, b) => {
-          return b.position! - a.position!;
-        });
-        const syncedChapter = sortedChapters[0];
-
-        syncChapterStatus(plugin, syncedChapter);
-      }
+    if (!novel) {
+      return;
     }
-    const chapterIds = _chapters.map(chapter => chapter.id);
-    _markChaptersRead(chapterIds);
 
+    syncChapterWithPlugin(() => {
+      // Sort the selected chapters based on the position (highest position first)
+      const sortedChapters = [..._chapters].sort(
+        (a, b) => (b.position ?? 0) - (a.position ?? 0),
+      );
+      return sortedChapters[0]; // Return the chapter with highest position
+    });
+
+    const chapterIds = _chapters.map(chapter => chapter.id);
+
+    _markChaptersRead(chapterIds);
     setChapters(
-      chapters.map(chapter => {
-        if (chapterIds.includes(chapter.id)) {
-          return {
-            ...chapter,
-            unread: false,
-          };
-        }
-        return chapter;
-      }),
+      chapters.map(chapter => ({
+        ...chapter,
+        unread: chapterIds.includes(chapter.id) ? false : chapter.unread,
+      })),
     );
   };
 
   const markPreviousChaptersUnread = (chapterId: number) => {
-    if (novel) {
-      // Track progress if the plugin supports it
-      const plugin = getPlugin(novel.pluginId);
-      if (plugin?.syncChapter) {
-        const chapterPosition = chapters.find(
-          chapter => chapter.id === chapterId,
-        )?.position;
-        const syncedChapter =
-          chapters.find(chapter => chapter.position === chapterPosition! - 1) ||
-          chapters.find(chapter => chapter.position === chapterPosition);
-
-        if (syncedChapter) {
-          syncChapterStatus(plugin, syncedChapter);
-        }
-      }
-      _markPreviousChaptersUnread(chapterId, novel.id);
-
-      setChapters(
-        chapters.map(chapter => {
-          if (chapter.id >= chapterId) {
-            return { ...chapter, unread: true };
-          }
-          return chapter;
-        }),
-      );
+    if (!novel) {
+      return;
     }
+
+    syncChapterWithPlugin(() => {
+      const chapterPosition =
+        chapters.find(chapter => chapter.id === chapterId)?.position ?? 0;
+      // Find the previous chapter or use the current one if previous isn't found
+      return (
+        chapters.find(chapter => chapter.position === chapterPosition - 1) ||
+        chapters.find(chapter => chapter.position === chapterPosition)
+      );
+    });
+
+    _markPreviousChaptersUnread(chapterId, novel.id);
+    setChapters(
+      chapters.map(chapter => ({
+        ...chapter,
+        unread: chapter.id >= chapterId ? true : chapter.unread,
+        progress: chapter.id >= chapterId ? null : chapter.progress,
+      })),
+    );
   };
 
   const markChaptersUnread = (_chapters: ChapterInfo[]) => {
-    if (novel) {
-      // Track progress if the plugin supports it
-      const plugin = getPlugin(novel.pluginId);
-      if (plugin?.syncChapter) {
-        // Sort the selected chapters based on the position
-        const sortedChapters = [..._chapters].sort((a, b) => {
-          return a.position! - b.position!;
-        });
-        const firstChapterPosition = chapters.find(
-          chapter => chapter.id === sortedChapters[0].id,
-        )?.position;
-        const syncedChapter =
-          chapters.find(
-            chapter => chapter.position === firstChapterPosition! - 1,
-          ) ||
-          chapters.find(chapter => chapter.position === firstChapterPosition);
-
-        if (syncedChapter) {
-          syncChapterStatus(plugin, syncedChapter);
-        }
-      }
+    if (!novel) {
+      return;
     }
-    const chapterIds = _chapters.map(chapter => chapter.id);
-    _markChaptersUnread(chapterIds);
 
+    syncChapterWithPlugin(() => {
+      // Sort the selected chapters based on the position (lowest position first)
+      const sortedChapters = [..._chapters].sort(
+        (a, b) => (a.position ?? 0) - (b.position ?? 0),
+      );
+
+      const firstChapterPosition =
+        chapters.find(chapter => chapter.id === sortedChapters[0].id)
+          ?.position ?? 0;
+
+      // Find the chapter before the first selected chapter or use the first one if previous isn't found
+      return chapters.find(
+        chapter => chapter.position === firstChapterPosition - 1,
+        chapters.find(chapter => chapter.position === firstChapterPosition),
+      );
+    });
+
+    const chapterIds = _chapters.map(chapter => chapter.id);
+
+    _markChaptersUnread(chapterIds);
     setChapters(
-      chapters.map(chapter => {
-        if (chapterIds.includes(chapter.id)) {
-          return {
-            ...chapter,
-            unread: true,
-          };
-        }
-        return chapter;
-      }),
+      chapters.map(chapter => ({
+        ...chapter,
+        unread: chapterIds.includes(chapter.id) ? true : chapter.unread,
+        progress: chapterIds.includes(chapter.id) ? null : chapter.progress,
+      })),
     );
   };
 
