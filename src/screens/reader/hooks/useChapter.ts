@@ -148,14 +148,10 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
       }
 
       // A relative number
-      if (!incognitoMode && percentage >= 97) {
+      if (!incognitoMode && percentage >= 97 && chapter.unread) {
         // Sync chapter status if the plugin supports it
         const plugin = getPlugin(novel.pluginId);
-        if (
-          plugin?.syncChapter &&
-          plugin?.syncChapterStatus &&
-          chapter.unread
-        ) {
+        if (plugin?.syncChapter && plugin?.syncChapterStatus) {
           syncChapterStatus(plugin, chapter);
         }
         markChapterRead(chapter.id);
