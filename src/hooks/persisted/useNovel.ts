@@ -260,6 +260,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     });
 
     _markPreviousChaptersRead(chapterId, novel.id);
+
     setChapters(
       chapters.map(chapter => ({
         ...chapter,
@@ -278,6 +279,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     );
 
     _markChapterRead(chapterId);
+
     setChapters(
       chapters.map(chapter => ({
         ...chapter,
@@ -300,8 +302,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     });
 
     const chapterIds = _chapters.map(chapter => chapter.id);
-
     _markChaptersRead(chapterIds);
+
     setChapters(
       chapters.map(chapter => ({
         ...chapter,
@@ -326,6 +328,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     });
 
     _markPreviousChaptersUnread(chapterId, novel.id);
+
     setChapters(
       chapters.map(chapter => ({
         ...chapter,
@@ -358,8 +361,8 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     });
 
     const chapterIds = _chapters.map(chapter => chapter.id);
-
     _markChaptersUnread(chapterIds);
+
     setChapters(
       chapters.map(chapter => ({
         ...chapter,
