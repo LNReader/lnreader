@@ -154,6 +154,7 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
         if (plugin?.syncChapter && plugin?.syncChapterStatus) {
           syncChapterStatus(plugin, chapter);
         }
+        chapter.unread = false;
         markChapterRead(chapter.id);
         updateTracker();
       }
