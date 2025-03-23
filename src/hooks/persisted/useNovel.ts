@@ -212,7 +212,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
 
   // Helper function to handle common plugin sync logic
   const syncChapterWithPlugin = async (
-    findSyncedChapterFn: () => ChapterItem | undefined,
+    findSyncedChapterCallback: () => ChapterItem | undefined,
   ) => {
     if (!novel) {
       return;
@@ -223,7 +223,7 @@ export const useNovel = (novelPath: string, pluginId: string) => {
       return;
     }
 
-    const syncedChapter = findSyncedChapterFn();
+    const syncedChapter = findSyncedChapterCallback();
     if (syncedChapter) {
       await syncChapterStatus(plugin, syncedChapter);
     }
