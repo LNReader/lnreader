@@ -6,7 +6,7 @@ import { EmptyView } from '@components/index';
 import NovelCover from '@components/NovelCover';
 import NovelList, { NovelListRenderItem } from '@components/NovelList';
 
-import { LibraryNovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
 
 import { getString } from '@strings/translations';
 import { useTheme } from '@hooks/persisted';
@@ -16,7 +16,7 @@ import ServiceManager from '@services/ServiceManager';
 interface Props {
   categoryId: number;
   categoryName: string;
-  novels: LibraryNovelInfo[];
+  novels: NovelInfo[];
   selectedNovelIds: number[];
   setSelectedNovelIds: React.Dispatch<React.SetStateAction<number[]>>;
   navigation: LibraryScreenProps['navigation'];
@@ -33,7 +33,7 @@ export const LibraryView: React.FC<Props> = ({
   navigation,
 }) => {
   const theme = useTheme();
-  const renderItem = ({ item }: { item: LibraryNovelInfo }) => (
+  const renderItem = ({ item }: { item: NovelInfo }) => (
     <NovelCover
       item={item}
       theme={theme}

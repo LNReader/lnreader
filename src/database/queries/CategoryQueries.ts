@@ -6,11 +6,20 @@ import { db } from '@database/db';
 import { getAllSync, runSync } from '@database/utils/helpers';
 
 const getCategoriesQuery = `
-  SELECT * FROM Category ORDER BY sort
+    SELECT 
+        Category.id, 
+        Category.name, 
+        Category.sort, 
+        GROUP_CONCAT(NovelCategory.novelId ORDER BY NovelCategory.novelId) AS novelIds
+    FROM Category 
+    LEFT JOIN NovelCategory ON NovelCategory.categoryId = Category.id 
+    GROUP BY Category.id, Category.name, Category.sort
+    ORDER BY Category.sort;
 	`;
 
+type NumberList = `${number}` | `${number},${number}` | undefined;
 export const getCategoriesFromDb = () => {
-  return getAllSync<Category>([getCategoriesQuery]);
+  return getAllSync<Category & { novelIds: NumberList }>([getCategoriesQuery]);
 };
 
 export const getCategoriesWithCount = (novelIds: number[]) => {

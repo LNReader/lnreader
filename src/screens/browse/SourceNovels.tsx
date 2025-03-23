@@ -8,11 +8,12 @@ import { Appbar } from '@components';
 import { SourceNovelsScreenProps } from '@navigators/types';
 import { NovelInfo } from '@database/types';
 import { getString } from '@strings/translations';
+import { useLibraryContext } from '@components/Context/LibraryContext';
 
 const SourceNovels = ({ navigation, route }: SourceNovelsScreenProps) => {
   const pluginId = route.params.pluginId;
   const theme = useTheme();
-  const { library } = useLibraryNovels();
+  const { library } = useLibraryContext();
 
   const sourceNovels = library.filter(novel => novel.pluginId === pluginId);
 

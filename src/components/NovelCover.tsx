@@ -14,7 +14,7 @@ import ListView from './ListView';
 import { useDeviceOrientation } from '@hooks';
 import { coverPlaceholderColor } from '../theme/colors';
 import { DisplayModes } from '@screens/library/constants/constants';
-import { LibraryNovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
 import { NovelItem } from '@plugins/types';
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
@@ -39,7 +39,7 @@ interface DownloadBadgeProps {
 }
 
 type CoverItemLibrary =
-  | LibraryNovelInfo & {
+  | NovelInfo & {
       completeRow?: number;
     };
 
@@ -92,6 +92,10 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
     [window.width, numColumns],
   );
 
+  const unreadChapters = item.id
+    ? item.totalChapters - item.chaptersRead
+    : undefined;
+
   const selectNovel = () => onLongPress(item);
 
   const uri = item.cover || defaultCover;
@@ -138,15 +142,15 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
                 <DownloadBadge
                   showUnreadBadges={showUnreadBadges}
                   chaptersDownloaded={item.chaptersDownloaded}
-                  chaptersUnread={item.chaptersUnread}
+                  chaptersUnread={unreadChapters!}
                   theme={theme}
                 />
               ) : null}
-              {showUnreadBadges && item.chaptersUnread > 0 ? (
+              {showUnreadBadges && unreadChapters! > 0 ? (
                 <UnreadBadge
                   theme={theme}
                   chaptersDownloaded={item.chaptersDownloaded}
-                  chaptersUnread={item.chaptersUnread}
+                  chaptersUnread={unreadChapters!}
                   showDownloadBadges={showDownloadBadges}
                 />
               ) : null}
@@ -184,16 +188,16 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
             theme={theme}
             showUnreadBadges={showUnreadBadges}
             chaptersDownloaded={item.chaptersDownloaded}
-            chaptersUnread={item.chaptersUnread}
+            chaptersUnread={unreadChapters!}
           />
         ) : null
       }
       unreadBadge={
-        showUnreadBadges && item.id && item.chaptersUnread ? (
+        showUnreadBadges && item.id && unreadChapters ? (
           <UnreadBadge
             theme={theme}
             chaptersDownloaded={item.chaptersDownloaded}
-            chaptersUnread={item.chaptersUnread}
+            chaptersUnread={unreadChapters}
             showDownloadBadges={showDownloadBadges}
           />
         ) : null

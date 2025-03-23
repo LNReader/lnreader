@@ -3,14 +3,28 @@ import { LibraryNovelInfo, NovelInfo } from '../types';
 import { getAllSync } from '../utils/helpers';
 
 export const getLibraryNovelsFromDb = (
-  onlyOngoingNovels?: boolean,
+  sortOrder?: string,
+  filter?: string,
+  searchText?: string,
+  downloadedOnlyMode?: boolean,
 ): NovelInfo[] => {
-  let getLibraryNovelsQuery = 'SELECT * FROM Novel WHERE inLibrary = 1';
+  let query = 'SELECT * FROM Novel WHERE inLibrary = 1';
 
-  if (onlyOngoingNovels) {
-    getLibraryNovelsQuery += " AND status = 'Ongoing'";
+  if (filter) {
+    query += ` AND ${filter} `;
   }
-  return getAllSync<NovelInfo>([getLibraryNovelsQuery]);
+  if (downloadedOnlyMode) {
+    query += ' ' + LibraryFilter.DownloadedOnly;
+  }
+
+  if (searchText) {
+    query += ' AND name LIKE ? ';
+  }
+
+  if (sortOrder) {
+    query += ` ORDER BY ${sortOrder} `;
+  }
+  return getAllSync<NovelInfo>([query, [searchText ?? '']]);
 };
 
 const getLibraryWithCategoryQuery = `

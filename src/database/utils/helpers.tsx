@@ -1,5 +1,9 @@
 import { db } from '@database/db';
-import { SQLiteBindParams, SQLiteRunResult } from 'expo-sqlite';
+import {
+  SQLiteBindParams,
+  SQLiteBindValue,
+  SQLiteRunResult,
+} from 'expo-sqlite';
 import { noop } from 'lodash-es';
 
 function logError(error: any) {
@@ -80,4 +84,15 @@ export function getFirstAsync<T = unknown>(queryObject: QueryObject<T>) {
 }
 export function getFirstSync<T = unknown>(queryObject: QueryObject<T>) {
   return defaultQuerySync<T, false>('getFirstSync', queryObject, null);
+}
+
+type TransactionObject = [query, ...params: SQLiteBindValue[]];
+
+export async function transactionAsync(transactionObject: TransactionObject[]) {
+  await db.withTransactionAsync(async () => {
+    const promises = transactionObject.map(async ([query, ...params]) => {
+      db.runAsync(query, ...params);
+    });
+    await Promise.all(promises);
+  });
 }

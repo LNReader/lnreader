@@ -7,6 +7,10 @@ import {
 import {
   createNovelIndexQuery,
   createNovelTableQuery,
+  createNovelTriggerQuery,
+  createNovelTriggerQueryDelete,
+  createNovelTriggerQueryInsert,
+  createNovelTriggerQueryUpdate,
   dropNovelIndexQuery,
 } from './tables/NovelTable';
 import { createNovelCategoryTableQuery } from './tables/NovelCategoryTable';
@@ -27,13 +31,76 @@ export const db = SQLite.openDatabaseSync(dbName);
 export const createTables = () => {
   const isOnBoard = MMKVStorage.getBoolean('IS_ONBOARDED');
 
+  // These values are not persistent and need to be set on every app start
+  db.execSync('PRAGMA busy_timeout = 5000');
+  db.execSync('PRAGMA cache_size = 10000');
+  db.execSync('PRAGMA foreign_keys = ON');
+
+  const userVersion =
+    db.getFirstSync<{ user_version: number }>('PRAGMA user_version')
+      ?.user_version ?? 0;
+
+  if (userVersion < 1) {
+    db.execSync('PRAGMA journal_mode = WAL');
+    db.execSync('PRAGMA synchronous = NORMAL');
+    db.execSync('PRAGMA temp_store = MEMORY');
+
+    db.withTransactionSync(() => {
+      db.runSync(
+        'ALTER TABLE Novel ADD COLUMN chaptersDownloaded INTEGER DEFAULT 0',
+      );
+      db.runSync('ALTER TABLE Novel ADD COLUMN chaptersRead INTEGER DEFAULT 0');
+      db.runSync(
+        'ALTER TABLE Novel ADD COLUMN totalChapters INTEGER DEFAULT 0',
+      );
+      db.runSync('ALTER TABLE Novel ADD COLUMN lastReadAt TEXT');
+      db.runSync('ALTER TABLE Novel ADD COLUMN lastUpdatedAt TEXT');
+      db.runSync(`UPDATE Novel
+      SET chaptersDownloaded = (
+          SELECT COUNT(*)
+          FROM Chapter
+          WHERE Chapter.novelId = Novel.id AND Chapter.isDownloaded = 1
+      );
+      `);
+      db.runSync(`UPDATE Novel
+SET chaptersRead = (
+    SELECT COUNT(*)
+    FROM Chapter
+    WHERE Chapter.novelId = Novel.id AND Chapter.unread = 0
+);
+`);
+      db.runSync(`UPDATE Novel
+SET totalChapters = (
+    SELECT COUNT(*)
+    FROM Chapter
+    WHERE Chapter.novelId = Novel.id
+);
+`);
+      db.runSync(`UPDATE Novel
+      SET lastReadAt = (
+          SELECT MAX(readTime)
+          FROM Chapter
+          WHERE Chapter.novelId = Novel.id
+      );
+      `);
+      db.runSync(`UPDATE Novel
+      SET lastUpdatedAt = (
+          SELECT MAX(updatedTime)
+          FROM Chapter
+          WHERE Chapter.novelId = Novel.id
+      );
+      `);
+      db.runSync(createNovelTriggerQueryInsert);
+      db.runSync(createNovelTriggerQueryUpdate);
+      db.runSync(createNovelTriggerQueryDelete);
+      db.execSync('PRAGMA user_version = 1');
+    });
+  }
+
   if (!isOnBoard) {
-    db.runSync('PRAGMA journal_mode = WAL');
-    db.runSync('PRAGMA foreign_keys = ON');
-    db.runSync('PRAGMA synchronous = NORMAL');
-    db.runSync('PRAGMA cache_size = -8000');
-    db.runSync('PRAGMA temp_store = MEMORY');
-    db.runSync('PRAGMA auto_vacuum = INCREMENTAL');
+    db.execSync('PRAGMA journal_mode = WAL');
+    db.execSync('PRAGMA synchronous = NORMAL');
+    db.execSync('PRAGMA temp_store = MEMORY');
 
     db.withTransactionSync(() => {
       db.runSync(createNovelTableQuery);
@@ -45,18 +112,25 @@ export const createTables = () => {
       db.runSync(createCategoryTriggerQuery);
       db.runSync(createChapterIndexQuery);
       db.runSync(createRepositoryTableQuery);
+      db.runSync(createNovelTriggerQueryInsert);
+      db.runSync(createNovelTriggerQueryUpdate);
+      db.runSync(createNovelTriggerQueryDelete);
+      db.execSync('PRAGMA user_version = 1');
     });
   }
 };
 
 export const recreateDBIndex = () => {
   try {
-    db.runSync('PRAGMA journal_mode = WAL');
-    db.runSync('PRAGMA foreign_keys = ON');
-    db.runSync('PRAGMA synchronous = NORMAL');
-    db.runSync('PRAGMA cache_size = -8000');
-    db.runSync('PRAGMA temp_store = MEMORY');
-    db.runSync('PRAGMA auto_vacuum = INCREMENTAL');
+    db.execSync('PRAGMA analysis_limit=4000');
+    db.execSync('PRAGMA optimize');
+
+    db.execSync('PRAGMA journal_mode = WAL');
+    db.execSync('PRAGMA foreign_keys = ON');
+    db.execSync('PRAGMA synchronous = NORMAL');
+    db.execSync('PRAGMA cache_size = 10000');
+    db.execSync('PRAGMA temp_store = MEMORY');
+    db.execSync('PRAGMA busy_timeout = 5000');
     db.withTransactionSync(() => {
       db.runSync(dropNovelIndexQuery);
       db.runSync(dropChapterIndexQuery);

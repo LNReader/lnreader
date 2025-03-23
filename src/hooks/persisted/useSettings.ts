@@ -70,7 +70,6 @@ export interface LibrarySettings {
   novelsPerRow?: number;
   incognitoMode?: boolean;
   downloadedOnlyMode?: boolean;
-  useLibraryFAB?: boolean;
 }
 
 export interface ChapterGeneralSettings {
@@ -231,6 +230,17 @@ export const useBrowseSettings = () => {
   };
 };
 
+const defaultLibrarySettings: LibrarySettings = {
+  showNumberOfNovels: false,
+  downloadedOnlyMode: false,
+  incognitoMode: false,
+  displayMode: DisplayModes.Comfortable,
+  showDownloadBadges: true,
+  showUnreadBadges: true,
+  novelsPerRow: 3,
+  sortOrder: LibrarySortOrder.DateAdded_DESC,
+};
+
 export const useLibrarySettings = () => {
   const [librarySettings, setSettings] =
     useMMKVObject<LibrarySettings>(LIBRARY_SETTINGS);
@@ -239,7 +249,7 @@ export const useLibrarySettings = () => {
     setSettings({ ...librarySettings, ...value });
 
   return {
-    ...librarySettings,
+    ...{ ...defaultLibrarySettings, ...librarySettings },
     setLibrarySettings,
   };
 };

@@ -8,17 +8,17 @@ import {
   ListRenderItem,
 } from 'react-native';
 import { NovelItem } from '@plugins/types';
-import { LibraryNovelInfo } from '../database/types';
+import { LibraryNovelInfo, NovelInfo } from '../database/types';
 import { useDeviceOrientation } from '@hooks';
 
-export type NovelListRenderItem = ListRenderItem<LibraryNovelInfo | NovelItem>;
+export type NovelListRenderItem = ListRenderItem<NovelInfo | NovelItem>;
 
 type listDataItem =
-  | (LibraryNovelInfo | NovelItem) & {
+  | (NovelInfo | NovelItem) & {
       completeRow?: number;
     };
 
-interface NovelListProps extends FlatListProps<LibraryNovelInfo | NovelItem> {
+interface NovelListProps extends FlatListProps<NovelInfo | NovelItem> {
   inSource?: boolean;
   data: Array<listDataItem>;
 }
