@@ -17,7 +17,7 @@ import {
 import FileManager from '@native/FileManager';
 import { fetchChapter } from '@services/plugin/fetch';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import { RefObject, useCallback, useEffect, useState } from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { sanitizeChapterText } from '../utils/sanitizeChapterText';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 import WebView from 'react-native-webview';
@@ -29,7 +29,6 @@ import { defaultTo } from 'lodash-es';
 import { useChapterContext } from '../ChapterContext';
 import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
-import { getPlugin } from '@plugins/pluginManager';
 
 const emmiter = new NativeEventEmitter(VolumeButtonListener);
 
@@ -49,6 +48,7 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
   const { tracker } = useTracker();
   const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
+  const hasMarkedReadRef = useRef(false);
 
   const connectVolumeButton = () => {
     VolumeButtonListener.connect();
@@ -139,27 +139,61 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
     }
   };
 
-  const { syncChapterStatus } = useNovel(novel.path, novel.pluginId);
+  // Set the ref based on chapter's read status
+  useEffect(() => {
+    // If chapter is already marked as read, set ref to true
+    hasMarkedReadRef.current = !chapter.unread;
+  }, [chapter.id, chapter.unread]);
+
+  const { syncChapterWithPlugin, chapters } = useNovel(
+    novel.path,
+    novel.pluginId,
+  );
 
   const saveProgress = useCallback(
     (percentage: number) => {
-      if (!incognitoMode) {
-        updateChapterProgress(chapter.id, percentage > 100 ? 100 : percentage);
+      // Normalize percentage to be at most 100
+      const validPercentage = percentage > 100 ? 100 : percentage;
+      const markChapterPercentage = 97;
+
+      // Only update progress if we're not in incognito mode AND
+      // the chapter was already read OR
+      // we haven't just marked it as read in this session OR
+      // we have just marked it as read in this session but the progress is less than the markChapterPercentage
+      if (
+        !incognitoMode &&
+        (!chapter.unread ||
+          !hasMarkedReadRef.current ||
+          (hasMarkedReadRef.current && validPercentage < markChapterPercentage))
+      ) {
+        updateChapterProgress(chapter.id, validPercentage);
       }
 
-      // A relative number
-      if (!incognitoMode && percentage >= 97 && chapter.unread) {
-        // Sync chapter status if the plugin supports it
-        const plugin = getPlugin(novel.pluginId);
-        if (plugin?.syncChapter && plugin?.syncChapterStatus) {
-          syncChapterStatus(plugin, chapter);
-        }
-        chapter.unread = false;
+      // Mark chapter as read when reaching 97% if not already marked in this session
+      if (
+        !incognitoMode &&
+        validPercentage >= markChapterPercentage &&
+        !hasMarkedReadRef.current
+      ) {
+        syncChapterWithPlugin(() => {
+          return chapters.find(
+            currentChapter => currentChapter.id === chapter.id,
+          );
+        }, true); // Pass inChapter as true
+
         markChapterRead(chapter.id);
         updateTracker();
+        hasMarkedReadRef.current = true;
       }
     },
-    [incognitoMode, chapter, novel.pluginId, updateTracker, syncChapterStatus],
+    [
+      incognitoMode,
+      chapter,
+      chapters,
+      syncChapterWithPlugin,
+      updateTracker,
+      hasMarkedReadRef,
+    ],
   );
 
   const hideHeader = () => {

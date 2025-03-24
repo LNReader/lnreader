@@ -424,6 +424,48 @@ export const markPreviousChaptersUnread = async (
   });
 };
 
+const updatePreviousChapterReadProgressQuery =
+  'UPDATE Chapter SET `progress` = ? WHERE `unread` = 0 AND id <= ? AND novelId = ?';
+
+export const updatePreviousChapterReadProgress = async (
+  chapterId: number,
+  novelId: number,
+  progress: number,
+) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      updatePreviousChapterReadProgressQuery,
+      [progress, chapterId, novelId],
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
+        // console.log(error)
+        return false;
+      },
+    );
+  });
+};
+
+const updatePreviousChapterUnreadProgressQuery =
+  'UPDATE Chapter SET `progress` = ? WHERE `unread` = 1, id >= ? AND novelId = ?';
+
+export const updatePreviousChapterUnreadProgress = async (
+  chapterId: number,
+  novelId: number,
+  progress: number,
+) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      updatePreviousChapterUnreadProgressQuery,
+      [progress, chapterId, novelId],
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
+        // console.log(error)
+        return false;
+      },
+    );
+  });
+};
+
 const getDownloadedChaptersQuery = `
     SELECT
       Chapter.*,

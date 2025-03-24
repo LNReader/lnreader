@@ -325,6 +325,7 @@ export interface StringMap {
   'novelScreen.tracking': 'string';
   'novelScreen.syncTrue': 'string';
   'novelScreen.syncFalse': 'string';
+  'novelScreen.syncError': 'string';
   'novelScreen.unknownStatus': 'string';
   'novelScreen.updatedToast': 'string';
   'readerScreen.bottomSheet.allowTextSelection': 'string';
