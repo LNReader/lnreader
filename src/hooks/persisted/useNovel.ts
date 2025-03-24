@@ -239,12 +239,12 @@ export const useNovel = (novelPath: string, pluginId: string) => {
     chapter: ChapterItem,
     inChapter: boolean,
   ) => {
-    if (!plugin.onChapterComplete) {
+    if (!plugin.handleChapterEvent) {
       return;
     }
 
     try {
-      const success = await plugin.onChapterComplete(novelPath, chapter.path);
+      const success = await plugin.handleChapterEvent(novelPath, chapter);
 
       if (!inChapter) {
         // Show a toast with the result

@@ -77,9 +77,9 @@ export interface Plugin extends PluginItem {
   parseNovel: (novelPath: string) => Promise<SourceNovel>;
   parsePage?: (novelPath: string, page: string) => Promise<SourcePage>;
   parseChapter: (chapterPath: string) => Promise<string>;
-  onChapterComplete?: (
+  handleChapterEvent?: (
     novelPath: string,
-    chapterPath: string,
+    chapter: ChapterItem,
   ) => Promise<boolean>;
   searchNovels: (searchTerm: string, pageNo: number) => Promise<NovelItem[]>;
   resolveUrl?: (path: string, isNovel?: boolean) => string;
