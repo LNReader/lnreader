@@ -129,19 +129,22 @@ const getPrevChapterQuery = `
     Chapter
   WHERE
     novelId = ?
-  AND
-    id < ?
+  AND 
+    ((position < ? AND page = ?) OR page < ?)
+  ORDER BY 
+    position DESC, page DESC
   `;
 
 export const getPrevChapter = (
   novelId: number,
-  chapterId: number,
+  chapterPosition: number,
+  page: string,
 ): Promise<ChapterInfo | null> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getPrevChapterQuery,
-        [novelId, chapterId],
+        [novelId, chapterPosition, page, page],
         (_txObj, results) =>
           resolve(results.rows.item(results.rows.length - 1)),
         () => {
@@ -160,19 +163,22 @@ const getNextChapterQuery = `
     Chapter
   WHERE
     novelId = ?
-  AND
-    id > ?
+    AND
+    ((position > ? AND page = ?) OR (position = 0 AND page > ?))
+  ORDER BY
+    position ASC , page ASC 
   `;
 
 export const getNextChapter = (
   novelId: number,
-  chapterId: number,
+  chapterPosition: number,
+  page: string,
 ): Promise<ChapterInfo | null> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getNextChapterQuery,
-        [novelId, chapterId],
+        [novelId, chapterPosition, page, page],
         (_txObj, results) => resolve(results.rows.item(0)),
         () => {
           showToast(getString('readerScreen.noNextChapter'));

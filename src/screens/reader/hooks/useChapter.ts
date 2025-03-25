@@ -103,8 +103,8 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
         sanitizeChapterText(novel.pluginId, novel.name, chapter.name, text),
       );
       const [nextChap, prevChap] = await Promise.all([
-        getNextChapter(chapter.novelId, chapter.id),
-        getPrevChapter(chapter.novelId, chapter.id),
+        getNextChapter(chapter.novelId, chapter.position!, chapter.page),
+        getPrevChapter(chapter.novelId, chapter.position!, chapter.page),
       ]);
       setAdjacentChapter([nextChap!, prevChap!]);
     } catch (e: any) {
