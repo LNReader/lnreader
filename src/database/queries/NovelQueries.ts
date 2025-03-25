@@ -12,7 +12,7 @@ import { SourceNovel } from '@plugins/types';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import FileManager from '@native/FileManager';
 import { downloadFile } from '@plugins/helpers/fetch';
-import { getPlugin } from '@plugins/pluginManager';
+import { getPluginAsync } from '@plugins/pluginManager';
 import { db } from '@database/db';
 
 export const insertNovelAndChapters = async (
@@ -51,7 +51,7 @@ export const insertNovelAndChapters = async (
       downloadFile(
         sourceNovel.cover,
         novelCoverPath,
-        getPlugin(pluginId)?.imageRequestInit,
+        (await getPluginAsync(pluginId))?.imageRequestInit,
       ).then(() => {
         db.transaction(tx => {
           tx.executeSql('UPDATE Novel SET cover = ? WHERE id = ?', [

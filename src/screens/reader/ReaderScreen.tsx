@@ -20,6 +20,7 @@ import { ChapterContextProvider, useChapterContext } from './ChapterContext';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { useBackHandler } from '@hooks/index';
 import { get } from 'lodash-es';
+import { getPluginAsync } from '@plugins/pluginManager';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
@@ -64,10 +65,27 @@ export const ChapterContent = ({
   const theme = useTheme();
   const { pageReader = false, keepScreenOn } = useChapterGeneralSettings();
   const [bookmarked, setBookmarked] = useState(chapter.bookmark);
+  const [isPluginLoaded, setIsPluginLoaded] = useState(false);
 
   useEffect(() => {
     setBookmarked(chapter.bookmark);
   }, [chapter]);
+
+  useEffect(() => {
+    let cancel = false;
+    if (isPluginLoaded) {
+      setIsPluginLoaded(false);
+    }
+    getPluginAsync(novel.pluginId).then(() => {
+      if (cancel) {
+        return;
+      }
+      setIsPluginLoaded(true);
+    });
+    return () => {
+      cancel = true;
+    };
+  }, [novel.pluginId]);
 
   const {
     hidden,
@@ -136,7 +154,7 @@ export const ChapterContent = ({
   return (
     <>
       {keepScreenOn ? <KeepScreenAwake /> : null}
-      {loading ? (
+      {loading || !isPluginLoaded ? (
         <ChapterLoadingScreen />
       ) : (
         <WebViewReader
