@@ -50,7 +50,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import { isNumber } from 'lodash-es';
 import NovelAppbar from './components/NovelAppbar';
 import { resolveUrl } from '@services/plugin/fetch';
-import { updateChapterProgressByIds } from '@database/queries/ChapterQueries';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { name, path, pluginId } = route.params;
@@ -82,7 +81,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     bookmarkChapters,
     markChaptersRead,
     markChaptersUnread,
-    markPreviouschaptersRead,
+    markPreviousChaptersRead,
     markPreviousChaptersUnread,
     followNovel,
     deleteChapter,
@@ -242,14 +241,11 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       });
     }
 
-    if (selected.some(obj => !obj.unread)) {
-      const chapterIds = selected.map(chapter => chapter.id);
-
+    if (selected.some(obj => !obj.unread || obj.progress! > 0)) {
       list.push({
         icon: 'check-outline',
         onPress: () => {
           markChaptersUnread(selected);
-          updateChapterProgressByIds(chapterIds, 0);
           setSelected([]);
           refreshChapters();
         },
@@ -261,7 +257,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
         list.push({
           icon: 'playlist-check',
           onPress: () => {
-            markPreviouschaptersRead(selected[0].id);
+            markPreviousChaptersRead(selected[0].id);
             setSelected([]);
           },
         });

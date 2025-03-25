@@ -111,6 +111,7 @@ export interface StringMap {
   'browseScreen.settings.description': 'string';
   'browseSettings': 'string';
   'browseSettingsScreen.concurrentSearches': 'string';
+  'browseSettingsScreen.multi': 'string';
   'browseSettingsScreen.languages': 'string';
   'categories.addCategories': 'string';
   'categories.cantDeleteDefault': 'string';
@@ -322,6 +323,9 @@ export interface StringMap {
   'novelScreen.status.unknown': 'string';
   'novelScreen.tracked': 'string';
   'novelScreen.tracking': 'string';
+  'novelScreen.syncTrue': 'string';
+  'novelScreen.syncFalse': 'string';
+  'novelScreen.syncError': 'string';
   'novelScreen.unknownStatus': 'string';
   'novelScreen.updatedToast': 'string';
   'readerScreen.bottomSheet.allowTextSelection': 'string';

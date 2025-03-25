@@ -129,19 +129,22 @@ const getPrevChapterQuery = `
     Chapter
   WHERE
     novelId = ?
-  AND
-    id < ?
+  AND 
+    ((position < ? AND page = ?) OR page < ?)
+  ORDER BY 
+    position DESC, page DESC
   `;
 
 export const getPrevChapter = (
   novelId: number,
-  chapterId: number,
+  chapterPosition: number,
+  page: string,
 ): Promise<ChapterInfo | null> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getPrevChapterQuery,
-        [novelId, chapterId],
+        [novelId, chapterPosition, page, page],
         (_txObj, results) =>
           resolve(results.rows.item(results.rows.length - 1)),
         () => {
@@ -160,19 +163,22 @@ const getNextChapterQuery = `
     Chapter
   WHERE
     novelId = ?
-  AND
-    id > ?
+    AND
+    ((position > ? AND page = ?) OR (position = 0 AND page > ?))
+  ORDER BY
+    position ASC , page ASC 
   `;
 
 export const getNextChapter = (
   novelId: number,
-  chapterId: number,
+  chapterPosition: number,
+  page: string,
 ): Promise<ChapterInfo | null> => {
   return new Promise(resolve =>
     db.transaction(tx => {
       tx.executeSql(
         getNextChapterQuery,
-        [novelId, chapterId],
+        [novelId, chapterPosition, page, page],
         (_txObj, results) => resolve(results.rows.item(0)),
         () => {
           showToast(getString('readerScreen.noNextChapter'));
@@ -384,16 +390,16 @@ export const bookmarkChapter = async (chapterId: number) => {
   });
 };
 
-const markPreviuschaptersReadQuery =
+const markPreviousChaptersReadQuery =
   'UPDATE Chapter SET `unread` = 0 WHERE id <= ? AND novelId = ?';
 
-export const markPreviuschaptersRead = async (
+export const markPreviousChaptersRead = async (
   chapterId: number,
   novelId: number,
 ) => {
   db.transaction(tx => {
     tx.executeSql(
-      markPreviuschaptersReadQuery,
+      markPreviousChaptersReadQuery,
       [chapterId, novelId],
       (_txObj, _res) => {},
       (_txObj, _error) => {
@@ -405,7 +411,7 @@ export const markPreviuschaptersRead = async (
 };
 
 const markPreviousChaptersUnreadQuery =
-  'UPDATE Chapter SET `unread` = 1 WHERE id <= ? AND novelId = ?';
+  'UPDATE Chapter SET `unread` = 1 WHERE id >= ? AND novelId = ?';
 
 export const markPreviousChaptersUnread = async (
   chapterId: number,
@@ -415,6 +421,48 @@ export const markPreviousChaptersUnread = async (
     tx.executeSql(
       markPreviousChaptersUnreadQuery,
       [chapterId, novelId],
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
+        // console.log(error)
+        return false;
+      },
+    );
+  });
+};
+
+const updatePreviousChapterReadProgressQuery =
+  'UPDATE Chapter SET `progress` = ? WHERE `unread` = 0 AND id <= ? AND novelId = ?';
+
+export const updatePreviousChapterReadProgress = async (
+  chapterId: number,
+  novelId: number,
+  progress: number,
+) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      updatePreviousChapterReadProgressQuery,
+      [progress, chapterId, novelId],
+      (_txObj, _res) => {},
+      (_txObj, _error) => {
+        // console.log(error)
+        return false;
+      },
+    );
+  });
+};
+
+const updatePreviousChapterUnreadProgressQuery =
+  'UPDATE Chapter SET `progress` = ? WHERE `unread` = 1, id >= ? AND novelId = ?';
+
+export const updatePreviousChapterUnreadProgress = async (
+  chapterId: number,
+  novelId: number,
+  progress: number,
+) => {
+  db.transaction(tx => {
+    tx.executeSql(
+      updatePreviousChapterUnreadProgressQuery,
+      [progress, chapterId, novelId],
       (_txObj, _res) => {},
       (_txObj, _error) => {
         // console.log(error)

@@ -17,7 +17,7 @@ import {
 import FileManager from '@native/FileManager';
 import { fetchChapter } from '@services/plugin/fetch';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import { RefObject, useCallback, useEffect, useState } from 'react';
+import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { sanitizeChapterText } from '../utils/sanitizeChapterText';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 import WebView from 'react-native-webview';
@@ -48,6 +48,7 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
   const { tracker } = useTracker();
   const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
+  const hasMarkedReadRef = useRef(false);
 
   const connectVolumeButton = () => {
     VolumeButtonListener.connect();
@@ -102,8 +103,8 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
         sanitizeChapterText(novel.pluginId, novel.name, chapter.name, text),
       );
       const [nextChap, prevChap] = await Promise.all([
-        getNextChapter(chapter.novelId, chapter.id),
-        getPrevChapter(chapter.novelId, chapter.id),
+        getNextChapter(chapter.novelId, chapter.position!, chapter.page),
+        getPrevChapter(chapter.novelId, chapter.position!, chapter.page),
       ]);
       setAdjacentChapter([nextChap!, prevChap!]);
     } catch (e: any) {
@@ -138,19 +139,61 @@ export default function useChapter(webViewRef: RefObject<WebView>) {
     }
   };
 
+  // Set the ref based on chapter's read status
+  useEffect(() => {
+    // If chapter is already marked as read, set ref to true
+    hasMarkedReadRef.current = !chapter.unread;
+  }, [chapter.id, chapter.unread]);
+
+  const { syncChapterWithPlugin, chapters } = useNovel(
+    novel.path,
+    novel.pluginId,
+  );
+
   const saveProgress = useCallback(
     (percentage: number) => {
-      if (!incognitoMode) {
-        updateChapterProgress(chapter.id, percentage > 100 ? 100 : percentage);
+      // Normalize percentage to be at most 100
+      const validPercentage = percentage > 100 ? 100 : percentage;
+      const markChapterPercentage = 97;
+
+      // Only update progress if we're not in incognito mode AND
+      // the chapter was already read OR
+      // we haven't just marked it as read in this session OR
+      // we have just marked it as read in this session but the progress is less than the markChapterPercentage
+      if (
+        !incognitoMode &&
+        (!chapter.unread ||
+          !hasMarkedReadRef.current ||
+          (hasMarkedReadRef.current && validPercentage < markChapterPercentage))
+      ) {
+        updateChapterProgress(chapter.id, validPercentage);
       }
 
-      if (!incognitoMode && percentage >= 97) {
-        // a relative number
+      // Mark chapter as read when reaching 97% if not already marked in this session
+      if (
+        !incognitoMode &&
+        validPercentage >= markChapterPercentage &&
+        !hasMarkedReadRef.current
+      ) {
+        syncChapterWithPlugin(() => {
+          return chapters.find(
+            currentChapter => currentChapter.id === chapter.id,
+          );
+        }, true); // Pass inChapter as true
+
         markChapterRead(chapter.id);
         updateTracker();
+        hasMarkedReadRef.current = true;
       }
     },
-    [chapter],
+    [
+      incognitoMode,
+      chapter,
+      chapters,
+      syncChapterWithPlugin,
+      updateTracker,
+      hasMarkedReadRef,
+    ],
   );
 
   const hideHeader = () => {
