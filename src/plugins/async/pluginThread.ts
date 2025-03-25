@@ -281,6 +281,9 @@ async function makePluginContext(): Promise<JsContext> {
                 ok: res.ok,
                 status: res.status,
                 url: res.url,
+                headers: {
+                  map: res.headers.map,
+                },
                 resId: resId,
               };
               pluginContext!.eval(
@@ -427,6 +430,12 @@ async function makePluginContext(): Promise<JsContext> {
 						ok: nativeFetchData.ok,
 						status: nativeFetchData.status,
 						url: nativeFetchData.url,
+                        headers: {
+							map: nativeFetchData.headers.map,
+							get(val) {
+								return nativeFetchData.headers.map[val.toLowerCase()]
+							}
+						},
 						text: async function () {
 							return await native('fetchApi-text', nativeFetchData.resId);
 						},
