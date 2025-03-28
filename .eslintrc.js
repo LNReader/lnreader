@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['@react-native'],
+  extends: ['@react-native', 'plugin:@tanstack/query/recommended'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   overrides: [
