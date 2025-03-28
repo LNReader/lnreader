@@ -29,6 +29,7 @@ export const useLibrary = () => {
 
   const getLibrary = useCallback(async () => {
     console.time('g');
+    console.log(sortOrder);
 
     if (searchText) {
       setIsLoading(true);

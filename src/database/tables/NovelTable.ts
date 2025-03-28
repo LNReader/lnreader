@@ -14,7 +14,7 @@ export const createNovelTableQuery = `
     isLocal INTEGER DEFAULT 0,
     totalPages INTEGER DEFAULT 0,
     chaptersDownloaded INTEGER DEFAULT 0,
-    chaptersRead INTEGER DEFAULT 0,
+    chaptersUnread INTEGER DEFAULT 0,
     totalChapters INTEGER DEFAULT 0
     lastReadAt TEXT,
     lastUpdatedAt TEXT
@@ -49,7 +49,7 @@ BEGIN
     UPDATE Novel
     SET 
         chaptersDownloaded = (SELECT COUNT(*) FROM Chapter WHERE Chapter.novelId = Novel.id AND Chapter.isDownloaded = 1),
-        chaptersRead = (SELECT COUNT(*) FROM Chapter WHERE Chapter.novelId = Novel.id AND Chapter.unread = 0),
+        chaptersUnread = (SELECT COUNT(*) FROM Chapter WHERE Chapter.novelId = Novel.id AND Chapter.unread = 1),
         lastReadAt = (SELECT MAX(readTime) FROM Chapter WHERE Chapter.novelId = Novel.id),
         lastUpdatedAt = (SELECT MAX(updatedTime) FROM Chapter WHERE Chapter.novelId = Novel.id)
     WHERE id = NEW.novelId;
@@ -61,7 +61,7 @@ BEGIN
     UPDATE Novel
     SET 
         chaptersDownloaded = (SELECT COUNT(*) FROM Chapter WHERE Chapter.novelId = Novel.id AND Chapter.isDownloaded = 1),
-        chaptersRead = (SELECT COUNT(*) FROM Chapter WHERE Chapter.novelId = Novel.id AND Chapter.unread = 0),
+        chaptersUnread = (SELECT COUNT(*) FROM Chapter WHERE Chapter.novelId = Novel.id AND Chapter.unread = 1),
         totalChapters = (SELECT COUNT(*) FROM Chapter WHERE Chapter.novelId = Novel.id),
         lastReadAt = (SELECT MAX(readTime) FROM Chapter WHERE Chapter.novelId = Novel.id),
         lastUpdatedAt = (SELECT MAX(updatedTime) FROM Chapter WHERE Chapter.novelId = Novel.id)

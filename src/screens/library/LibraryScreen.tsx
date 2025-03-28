@@ -215,7 +215,6 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     }) => {
       const ids = route.novelIds;
       const novels = library.filter(l => ids.includes(l.id));
-      console.log('renderScene', route);
 
       return isLoading ? (
         <SourceScreenSkeletonLoading theme={theme} />
