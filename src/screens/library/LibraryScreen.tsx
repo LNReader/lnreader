@@ -43,7 +43,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { Row } from '@components/Common';
 import { LibraryScreenProps } from '@navigators/types';
-import { LibraryNovelInfo, NovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
 import * as DocumentPicker from 'expo-document-picker';
 import ServiceManager from '@services/ServiceManager';
 import useImport from '@hooks/persisted/useImport';
@@ -88,7 +88,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
 
   const { isLoading: isHistoryLoading, history, error } = useHistory();
 
-  const { importQueue, importNovel } = useImport();
+  const { importNovel } = useImport();
 
   const layout = useWindowDimensions();
 

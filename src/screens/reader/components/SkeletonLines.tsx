@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-unused-styles */
 import React, { memo } from 'react';
-import { View, Dimensions, StyleSheet } from 'react-native';
+import { View, Dimensions, StyleSheet, DimensionValue } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppSettings } from '@hooks/persisted/index';
@@ -17,9 +18,9 @@ const SkeletonLines = ({
   width?: string | number;
   lineHeight: number;
   textSize: number;
-  containerWidth: string | number;
-  containerHeight: string | number;
-  containerMargin?: string | number;
+  containerWidth: DimensionValue;
+  containerHeight: DimensionValue;
+  containerMargin?: DimensionValue;
   color?: string;
   highlightColor?: string;
 }) => {
@@ -67,7 +68,9 @@ const SkeletonLines = ({
     }
     if (lines?.[index + 1] !== undefined && !lines[index + 1]) {
       let randomNumber: number = Math.random();
-      randomNumber < 0.1 ? (randomNumber = 0.1) : null;
+      if (randomNumber < 0.1) {
+        randomNumber = 0.1;
+      }
       return (
         <ShimmerPlaceHolder
           key={index}
@@ -103,7 +106,7 @@ const SkeletonLines = ({
   return <View style={styles.container}>{lines.map(renderLoadingRect)}</View>;
 };
 
-const percentToNumberV = (number: number | string): number => {
+const percentToNumberV = (number: DimensionValue): number => {
   if (isNaN(Number(number))) {
     return (
       Dimensions.get('window').height *
@@ -114,7 +117,7 @@ const percentToNumberV = (number: number | string): number => {
   }
 };
 
-const percentToNumberH = (number: number | string): number => {
+const percentToNumberH = (number: DimensionValue): number => {
   if (isNaN(Number(number))) {
     return (
       Dimensions.get('window').width *
@@ -126,9 +129,9 @@ const percentToNumberH = (number: number | string): number => {
 };
 
 const createStyleSheet = (
-  containerWidth: number | string,
-  containerHeight: number | string,
-  containerMargin: number | string,
+  containerWidth: DimensionValue,
+  containerHeight: DimensionValue,
+  containerMargin: DimensionValue,
   lineHeight: number,
   textSize: number,
 ) => {

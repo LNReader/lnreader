@@ -15,6 +15,8 @@ const SettingsLibraryScreen = () => {
   const defaultCategoryDialog = useBoolean();
 
   const setDefaultCategoryId = (categoryId: number) => {
+    // TODO: update default category
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     categoryId;
   };
 
@@ -31,9 +33,7 @@ const SettingsLibraryScreen = () => {
           description={`${categories.length} ${getString(
             'common.categories',
           ).toLowerCase()}`}
-          onPress={() =>
-            navigate('MoreStack' as never, { screen: 'Categories' } as never)
-          }
+          onPress={() => navigate('MoreStack', { screen: 'Categories' })}
           theme={theme}
         />
         <List.Item

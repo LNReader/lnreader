@@ -8,7 +8,7 @@ import {
   ListRenderItem,
 } from 'react-native';
 import { NovelItem } from '@plugins/types';
-import { LibraryNovelInfo, NovelInfo } from '../database/types';
+import { NovelInfo } from '../database/types';
 import { useDeviceOrientation } from '@hooks';
 
 export type NovelListRenderItem = ListRenderItem<NovelInfo | NovelItem>;

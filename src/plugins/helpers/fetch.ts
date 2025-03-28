@@ -93,7 +93,7 @@ export const fetchText = async (
       fr.onabort = () => reject();
       fr.readAsText(blob, encoding);
     });
-  } catch (e) {
+  } catch {
     return '';
   }
 };

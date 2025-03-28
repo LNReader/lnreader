@@ -145,7 +145,6 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
   const [pages, setPages] = useState<string[]>(
     novel ? calculatePages(novel) : [],
   );
-  const [chaptersTeasers, _setChaptersTeasers] = useState<ChapterInfo[]>([]);
 
   const { defaultChapterSort } = useAppSettings();
 
@@ -594,7 +593,6 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
     lastRead,
     chapters,
     novelSettings,
-    chaptersTeasers,
     batchInformation,
     getNextChapterBatch,
     getNovel,

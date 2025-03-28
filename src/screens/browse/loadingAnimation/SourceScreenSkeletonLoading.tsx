@@ -39,7 +39,9 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
 
   const renderLoadingNovel = (item: number) => {
     let randomNumber = Math.random();
-    randomNumber < 0.1 ? (randomNumber = 0) : null;
+    if (randomNumber < 0.1) {
+      randomNumber = 0.1;
+    }
     return (
       <View key={'sourceLoading' + item} style={{ flex: 1 / numColumns }}>
         <LoadingNovel

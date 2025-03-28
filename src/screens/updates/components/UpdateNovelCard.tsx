@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-unused-styles */
 import { Pressable, StyleSheet, View, Image } from 'react-native';
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -141,7 +142,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         description={`${chapterListInfo.updatesPerDay} ${descriptionText}`}
         onPress={updateList}
       >
-        {chapterList.length > 0 ? (
+        {chapterList.length > 0 ? ( //@ts-expect-error
           <FlatList
             data={chapterList}
             keyExtractor={it => 'update' + it.id}

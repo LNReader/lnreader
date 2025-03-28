@@ -84,7 +84,7 @@ const deleteDownloadedFiles = async (
   try {
     const chapterFolder = `${NOVEL_STORAGE}/${pluginId}/${novelId}/${chapterId}`;
     NativeFile.unlink(chapterFolder);
-  } catch (error) {
+  } catch {
     throw new Error(getString('novelScreen.deleteChapterError'));
   }
 };

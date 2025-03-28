@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { MD3ThemeType } from '@theme/types';
-import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 
 import { Menu, overlay } from 'react-native-paper';
 import { getString } from '@strings/translations';

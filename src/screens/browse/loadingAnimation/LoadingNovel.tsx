@@ -23,7 +23,9 @@ const LoadingNovel: React.FC<Props> = ({
   const { disableLoadingAnimations } = useAppSettings();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   let randomNumber = Math.random();
-  randomNumber < 0.1 ? (randomNumber = 0) : null;
+  if (randomNumber < 0.1) {
+    randomNumber = 0.1;
+  }
   // pictureWidth = pictureWidth === undefined ? 114.5 : pictureWidth;
   const styles = createStyleSheet(
     pictureHeight + (displayMode === 2 || displayMode === 0 ? 9.6 : 54.6),

@@ -57,7 +57,7 @@ export const resolveUrl = (
     if (plugin.resolveUrl) {
       return plugin.resolveUrl(path, isNovel);
     }
-  } catch (e) {
+  } catch {
     return path;
   }
   return plugin.site + path;

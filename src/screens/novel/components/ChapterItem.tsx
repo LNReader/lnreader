@@ -63,7 +63,11 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
           },
         ]}
         onPress={() => {
-          onSelectPress ? onSelectPress(chapter) : navigateToChapter(chapter);
+          if (onSelectPress) {
+            onSelectPress(chapter);
+          } else {
+            navigateToChapter(chapter);
+          }
         }}
         onLongPress={() => onSelectLongPress?.(chapter)}
         android_ripple={{ color: theme.rippleColor }}
@@ -75,9 +79,9 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             {isUpdateCard ? (
               <Text
                 style={{
-                    fontSize: 14,
-                    color: unread ? theme.onSurface : theme.outline,
-                  }}
+                  fontSize: 14,
+                  color: unread ? theme.onSurface : theme.outline,
+                }}
                 numberOfLines={1}
               >
                 {novelName}
@@ -101,13 +105,13 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
 
               <Text
                 style={{
-                    fontSize: isUpdateCard ? 12 : 14,
-                    color: !unread
-                      ? theme.outline
-                      : bookmark
-                      ? theme.primary
-                      : theme.onSurface,
-                  }}
+                  fontSize: isUpdateCard ? 12 : 14,
+                  color: !unread
+                    ? theme.outline
+                    : bookmark
+                    ? theme.primary
+                    : theme.onSurface,
+                }}
                 numberOfLines={1}
               >
                 {showChapterTitles
@@ -188,9 +192,6 @@ const styles = StyleSheet.create({
   row: { alignItems: 'center', flex: 1, flexDirection: 'row' },
   text: {
     fontSize: 12,
-  },
-  textRow: {
-    flexDirection: 'row',
   },
   unreadIcon: {
     marginRight: 4,

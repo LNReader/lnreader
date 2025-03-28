@@ -30,12 +30,17 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/no-shadow': ['warn'],
       '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/ban-ts-comment': 'warn',
+      '@typescript-eslint/no-require-imports': 'warn',
       'no-shadow': 'off',
       'no-undef': 'off',
       'no-console': 'warn',
       'react-native/no-inline-styles': 'warn',
       'react-native/split-platform-components': 'off',
       'react-hooks/exhaustive-deps': 'warn',
+      'react-native/no-unused-styles': 'warn',
+      'react-native/no-raw-text': 'warn',
+      'react-native/no-color-literals': 'off',
     },
   },
 );

@@ -23,7 +23,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TrackSheet from './Tracker/TrackSheet';
 import NovelBottomSheet from './NovelBottomSheet';
 import * as Haptics from 'expo-haptics';
-import { AnimatedFAB, Text } from 'react-native-paper';
+import { AnimatedFAB } from 'react-native-paper';
 import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
 import { LegendList, LegendListRef } from '@legendapp/list';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
@@ -59,7 +59,6 @@ const NovelScreenList = ({
 }: NovelScreenListProps) => {
   const {
     chapters,
-    chaptersTeasers,
     deleteChapter,
     fetching,
     followNovel,
@@ -248,7 +247,7 @@ const NovelScreenList = ({
         recycleItems
         ref={listRef}
         estimatedItemSize={64}
-        data={chapters.length ? chapters : chaptersTeasers}
+        data={chapters.length ? chapters : []}
         extraData={[
           chapters.length,
           selected.length,

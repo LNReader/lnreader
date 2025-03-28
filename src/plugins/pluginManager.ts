@@ -51,7 +51,7 @@ const initPlugin = (pluginId: string, rawCode: string) => {
       return exports.default`,
     )(_require, {});
     return plugin;
-  } catch (e) {
+  } catch {
     return undefined;
   }
 };
@@ -61,41 +61,37 @@ const plugins: Record<string, Plugin | undefined> = {};
 const installPlugin = async (
   _plugin: PluginItem,
 ): Promise<Plugin | undefined> => {
-  try {
-    const rawCode = await fetch(_plugin.url, {
-      headers: { 'pragma': 'no-cache', 'cache-control': 'no-cache' },
-    }).then(res => res.text());
-    const plugin = initPlugin(_plugin.id, rawCode);
-    if (!plugin) {
-      return undefined;
-    }
-    let currentPlugin = plugins[plugin.id];
-    if (!currentPlugin || newer(plugin.version, currentPlugin.version)) {
-      plugins[plugin.id] = plugin;
-      currentPlugin = plugin;
-
-      // save plugin code;
-      const pluginDir = `${PLUGIN_STORAGE}/${plugin.id}`;
-      NativeFile.mkdir(pluginDir);
-      const pluginPath = pluginDir + '/index.js';
-      const customJSPath = pluginDir + '/custom.js';
-      const customCSSPath = pluginDir + '/custom.css';
-      if (_plugin.customJS) {
-        await downloadFile(_plugin.customJS, customJSPath);
-      } else if (NativeFile.exists(customJSPath)) {
-        NativeFile.unlink(customJSPath);
-      }
-      if (_plugin.customCSS) {
-        await downloadFile(_plugin.customCSS, customCSSPath);
-      } else if (NativeFile.exists(customCSSPath)) {
-        NativeFile.unlink(customCSSPath);
-      }
-      NativeFile.writeFile(pluginPath, rawCode);
-    }
-    return currentPlugin;
-  } catch (e: any) {
-    throw e;
+  const rawCode = await fetch(_plugin.url, {
+    headers: { 'pragma': 'no-cache', 'cache-control': 'no-cache' },
+  }).then(res => res.text());
+  const plugin = initPlugin(_plugin.id, rawCode);
+  if (!plugin) {
+    return undefined;
   }
+  let currentPlugin = plugins[plugin.id];
+  if (!currentPlugin || newer(plugin.version, currentPlugin.version)) {
+    plugins[plugin.id] = plugin;
+    currentPlugin = plugin;
+
+    // save plugin code;
+    const pluginDir = `${PLUGIN_STORAGE}/${plugin.id}`;
+    NativeFile.mkdir(pluginDir);
+    const pluginPath = pluginDir + '/index.js';
+    const customJSPath = pluginDir + '/custom.js';
+    const customCSSPath = pluginDir + '/custom.css';
+    if (_plugin.customJS) {
+      await downloadFile(_plugin.customJS, customJSPath);
+    } else if (NativeFile.exists(customJSPath)) {
+      NativeFile.unlink(customJSPath);
+    }
+    if (_plugin.customCSS) {
+      await downloadFile(_plugin.customCSS, customCSSPath);
+    } else if (NativeFile.exists(customCSSPath)) {
+      NativeFile.unlink(customCSSPath);
+    }
+    NativeFile.writeFile(pluginPath, rawCode);
+  }
+  return currentPlugin;
 };
 
 const uninstallPlugin = async (_plugin: PluginItem) => {

@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import { Category, LibraryNovelInfo, NovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
 import {
   ExtendedCategory,
   useLibrary,
@@ -7,7 +7,7 @@ import {
 import { useLibrarySettings } from '@hooks/persisted';
 import { LibrarySettings } from '@hooks/persisted/useSettings';
 
-type Library = Category & { novels: LibraryNovelInfo[] };
+// type Library = Category & { novels: LibraryNovelInfo[] };
 
 type LibraryContextType = {
   library: NovelInfo[];

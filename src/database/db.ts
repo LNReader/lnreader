@@ -7,7 +7,6 @@ import {
 import {
   createNovelIndexQuery,
   createNovelTableQuery,
-  createNovelTriggerQuery,
   createNovelTriggerQueryDelete,
   createNovelTriggerQueryInsert,
   createNovelTriggerQueryUpdate,

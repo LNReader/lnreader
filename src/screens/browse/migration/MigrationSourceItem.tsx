@@ -72,9 +72,4 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
   },
-  sourceStatus: {
-    color: '#C14033',
-    fontSize: 12,
-    marginLeft: 5,
-  },
 });

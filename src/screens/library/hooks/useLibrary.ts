@@ -2,17 +2,14 @@ import { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getCategoriesFromDb } from '@database/queries/CategoryQueries';
-import {
-  getLibraryWithCategory,
-  getLibraryNovelsFromDb,
-} from '@database/queries/LibraryQueries';
+import { getLibraryNovelsFromDb } from '@database/queries/LibraryQueries';
 
-import { Category, LibraryNovelInfo, NovelInfo } from '@database/types';
+import { Category, NovelInfo } from '@database/types';
 
 import { useLibrarySettings } from '@hooks/persisted';
 import { LibrarySortOrder } from '../constants/constants';
 
-type Library = Category & { novels: LibraryNovelInfo[] };
+// type Library = Category & { novels: LibraryNovelInfo[] };
 export type ExtendedCategory = Category & { novelIds: number[] };
 
 export const useLibrary = () => {

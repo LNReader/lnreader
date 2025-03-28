@@ -33,7 +33,7 @@ const insertLocalNovel = async (
     const novelDir = NOVEL_STORAGE + '/local/' + insertedNovel.lastInsertRowId;
     NativeFile.mkdir(novelDir);
     const newCoverPath =
-      'file://' + novelDir + '/' + cover?.split(/[\/\\]/).pop();
+      'file://' + novelDir + '/' + cover?.split(/[/\\]/).pop();
     if (cover && NativeFile.exists(cover)) {
       NativeFile.moveFile(cover, newCoverPath);
     }
@@ -83,14 +83,14 @@ const insertLocalChapter = async (
     }
     const staticPaths: string[] = [];
     const novelDir = NOVEL_STORAGE + '/local/' + novelId;
-    const epubContentDir = path.replace(/[^\\\/]+$/, '');
+    const epubContentDir = path.replace(/[^\\/]+$/, '');
     chapterText = chapterText.replace(
       /(href|src)=(["'])(.*?)\2/g,
       (_, $1, __, $3: string) => {
         if ($3) {
           staticPaths.push(epubContentDir + '/' + $3);
         }
-        return `${$1}="file://${novelDir}/${$3.split(/[\\\/]/)?.pop()}"`;
+        return `${$1}="file://${novelDir}/${$3.split(/[\\/]/)?.pop()}"`;
       },
     );
     NativeFile.mkdir(novelDir + '/' + insertedChapter.lastInsertRowId);
@@ -151,7 +151,7 @@ export const importEpub = async (
     for (let i = 0; i < novel.chapters?.length; i++) {
       const chapter = novel.chapters[i];
       if (!chapter.name) {
-        chapter.name = chapter.path.split(/[\\\/]/).pop() || 'unknown';
+        chapter.name = chapter.path.split(/[\\/]/).pop() || 'unknown';
       }
 
       setMeta(meta => ({
@@ -185,7 +185,7 @@ export const importEpub = async (
     if (NativeFile.exists(filePath)) {
       NativeFile.moveFile(
         filePath,
-        novelDir + '/' + filePath.split(/[\\\/]/).pop(),
+        novelDir + '/' + filePath.split(/[\\/]/).pop(),
       );
     }
   }

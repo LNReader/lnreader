@@ -12,8 +12,8 @@ const updateNovelMetadata = async (
   novelId: number,
   novel: SourceNovel,
 ) => {
-  let { name, cover, summary, author, artist, genres, status, totalPages } =
-    novel;
+  const { name, summary, author, artist, genres, status, totalPages } = novel;
+  let cover = novel.cover;
   const novelDir = NOVEL_STORAGE + '/' + pluginId + '/' + novelId;
   if (NativeFile.exists(novelDir)) {
     NativeFile.mkdir(novelDir);

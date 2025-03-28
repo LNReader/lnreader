@@ -39,6 +39,7 @@ const CategoriesScreen = () => {
       const res = getCategoriesFromDb();
       setCategories(res);
     } catch (err) {
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
