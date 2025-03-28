@@ -131,14 +131,14 @@ const SettingsBrowseScreen = ({
 export default SettingsBrowseScreen;
 
 const styles = StyleSheet.create({
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-  },
   contentCtn: {
     flexGrow: 1,
-    paddingVertical: 16,
     paddingBottom: 100,
+    paddingVertical: 16,
+  },
+  fab: {
+    margin: 16,
+    position: 'absolute',
+    right: 0,
   },
 });

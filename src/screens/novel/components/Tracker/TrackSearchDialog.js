@@ -128,47 +128,47 @@ const TrackSearchDialog = ({
 export default TrackSearchDialog;
 
 const styles = StyleSheet.create({
-  textInput: {
-    backgroundColor: 'transparent',
-  },
-  scrollView: {
-    flexGrow: 1,
-    maxHeight: 500,
-    marginVertical: 8,
-  },
-  loader: {
-    margin: 16,
-  },
-  searchResultCard: {
+  actionButtons: {
     flexDirection: 'row',
-    borderRadius: 4,
-    margin: 8,
-  },
-  checkIcon: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    zIndex: 1,
-  },
-  coverImage: {
-    height: 150,
-    width: 100,
-    borderRadius: 4,
-  },
-  resultText: {
-    flex: 1,
-    marginLeft: 20,
-    fontSize: 16,
-    flexWrap: 'wrap',
-    padding: 8,
-    paddingLeft: 0,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 30,
   },
-  actionButtons: {
+  checkIcon: {
+    position: 'absolute',
+    right: 8,
+    top: 8,
+    zIndex: 1,
+  },
+  coverImage: {
+    borderRadius: 4,
+    height: 150,
+    width: 100,
+  },
+  loader: {
+    margin: 16,
+  },
+  resultText: {
+    flex: 1,
+    flexWrap: 'wrap',
+    fontSize: 16,
+    marginLeft: 20,
+    padding: 8,
+    paddingLeft: 0,
+  },
+  scrollView: {
+    flexGrow: 1,
+    marginVertical: 8,
+    maxHeight: 500,
+  },
+  searchResultCard: {
+    borderRadius: 4,
     flexDirection: 'row',
+    margin: 8,
+  },
+  textInput: {
+    backgroundColor: 'transparent',
   },
 });

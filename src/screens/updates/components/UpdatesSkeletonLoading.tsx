@@ -69,38 +69,38 @@ const UpdatesSkeletonLoading: React.FC<Props> = ({ theme }) => {
 };
 
 const styles = StyleSheet.create({
-  contentCtn: {
-    paddingVertical: 8,
-  },
-  textTop: {
-    marginTop: 5,
-    marginBottom: 2,
-    borderRadius: 6,
-  },
-  textBottom: {
-    marginTop: 2,
-    marginBottom: 5,
-    borderRadius: 6,
-  },
-  chapterCtn: {
-    marginVertical: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  picture: {
-    marginHorizontal: 16,
-    borderRadius: 4,
-    width: 42,
-    height: 42,
-  },
   button: {
     borderRadius: 12.5,
   },
   buttonCtn: {
-    justifyContent: 'center',
     alignItems: 'center',
     height: 45.1,
+    justifyContent: 'center',
     width: 45.1,
+  },
+  chapterCtn: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginVertical: 8,
+  },
+  contentCtn: {
+    paddingVertical: 8,
+  },
+  picture: {
+    borderRadius: 4,
+    height: 42,
+    marginHorizontal: 16,
+    width: 42,
+  },
+  textBottom: {
+    borderRadius: 6,
+    marginBottom: 5,
+    marginTop: 2,
+  },
+  textTop: {
+    borderRadius: 6,
+    marginBottom: 2,
+    marginTop: 5,
   },
 });
 

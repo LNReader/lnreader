@@ -137,7 +137,7 @@ export default MigrationNovelList;
 const styles = StyleSheet.create({
   flatListCont: {
     flexGrow: 1,
-    paddingVertical: 8,
     paddingHorizontal: 4,
+    paddingVertical: 8,
   },
 });

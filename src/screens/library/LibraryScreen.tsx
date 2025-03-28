@@ -60,7 +60,7 @@ type TabViewLabelProps = {
     id: number;
     name: string;
     sort: number;
-    novelIds: Number[];
+    novelIds: number[];
     key: string;
     title: string;
   };
@@ -208,7 +208,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
         id: number;
         name: string;
         sort: number;
-        novelIds: Number[];
+        novelIds: number[];
         key: string;
         title: string;
       };
@@ -441,7 +441,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
             {
               icon: 'check',
               onPress: async () => {
-                let promises: Promise<any>[] = [];
+                const promises: Promise<any>[] = [];
                 selectedNovelIds.map(id =>
                   promises.push(markAllChaptersRead(id)),
                 );
@@ -453,7 +453,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
             {
               icon: 'check-outline',
               onPress: async () => {
-                let promises: Promise<any>[] = [];
+                const promises: Promise<any>[] = [];
                 selectedNovelIds.map(id =>
                   promises.push(markAllChaptersUnread(id)),
                 );
@@ -481,39 +481,39 @@ export default React.memo(LibraryScreen);
 
 function createStyles(theme: ThemeColors) {
   return StyleSheet.create({
+    badgeCtn: {
+      borderRadius: 50,
+      marginLeft: 2,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      position: 'relative',
+    },
+    badgetText: {
+      fontSize: 12,
+    },
+    fab: {
+      bottom: 0,
+      margin: 16,
+      position: 'absolute',
+      right: 0,
+    },
+    fontWeight600: {
+      fontWeight: '600',
+    },
+    globalSearchBtn: {
+      margin: 16,
+    },
+    tabBar: {
+      borderBottomWidth: 1,
+      elevation: 0,
+    },
     tabBarIndicator: {
       backgroundColor: theme.primary,
       height: 3,
     },
     tabStyle: {
-      width: 'auto',
       minWidth: 100,
-    },
-    tabBar: {
-      elevation: 0,
-      borderBottomWidth: 1,
-    },
-    globalSearchBtn: {
-      margin: 16,
-    },
-    fab: {
-      position: 'absolute',
-      margin: 16,
-      right: 0,
-      bottom: 0,
-    },
-    badgeCtn: {
-      position: 'relative',
-      borderRadius: 50,
-      marginLeft: 2,
-      paddingHorizontal: 6,
-      paddingVertical: 2,
-    },
-    badgetText: {
-      fontSize: 12,
-    },
-    fontWeight600: {
-      fontWeight: '600',
+      width: 'auto',
     },
   });
 }

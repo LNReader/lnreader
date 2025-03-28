@@ -61,30 +61,30 @@ export default MalNovelCard;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     borderRadius: 8,
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+    flex: 1,
     margin: 8,
   },
-  pressable: {
-    flex: 1,
-    flexDirection: 'row',
-  },
   cover: {
-    width: 100,
-    borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
+    borderTopLeftRadius: 8,
+    width: 100,
   },
   infoContainer: {
     flex: 1,
     padding: 16,
   },
-  title: {
-    marginBottom: 4,
-    fontSize: 16,
+  pressable: {
+    flex: 1,
+    flexDirection: 'row',
   },
   small: {
-    marginVertical: 4,
     fontSize: 12,
+    marginVertical: 4,
+  },
+  title: {
+    fontSize: 16,
+    marginBottom: 4,
   },
 });

@@ -79,7 +79,7 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
   useEffect(
     () =>
       navigation.addListener('tabPress', e => {
-        let lastNovel = history[0];
+        const lastNovel = history[0];
         if (navigation.isFocused() && lastNovel) {
           e.preventDefault();
 
@@ -159,11 +159,11 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
 export default HistoryScreen;
 
 const styles = StyleSheet.create({
-  listContainer: {
-    flexGrow: 1,
-  },
   dateHeader: {
     paddingHorizontal: 16,
     paddingVertical: 8,
+  },
+  listContainer: {
+    flexGrow: 1,
   },
 });

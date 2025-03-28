@@ -134,16 +134,17 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
 export default CategoryCard;
 
 const styles = StyleSheet.create({
+  buttonsCtn: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   cardCtn: {
-    paddingVertical: 8,
-    paddingHorizontal: 8,
-    marginHorizontal: 16,
-    marginBottom: 8,
     borderRadius: 12,
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-  },
-  name: {
+    marginBottom: 8,
     marginHorizontal: 16,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
   },
   flex: {
     flex: 1,
@@ -151,19 +152,18 @@ const styles = StyleSheet.create({
   manageBtn: {
     marginLeft: 16,
   },
-  orderDownBtn: {
-    marginLeft: 8,
+  name: {
+    marginHorizontal: 16,
   },
   nameCtn: {
+    alignItems: 'center',
     flex: 1,
+    flexDirection: 'row',
     marginLeft: 8,
     paddingRight: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
     paddingVertical: 4,
   },
-  buttonsCtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  orderDownBtn: {
+    marginLeft: 8,
   },
 });

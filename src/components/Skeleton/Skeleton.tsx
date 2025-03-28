@@ -203,45 +203,40 @@ const ChapterListSkeleton = ({ img }: { img?: boolean }) => {
 export { ChapterListSkeleton, NovelMetaSkeleton, VerticalBarSkeleton };
 
 const styles = StyleSheet.create({
-  novelInformationText: {
-    marginHorizontal: 16,
-    marginTop: 8,
-    marginBottom: 2.5,
-    paddingTop: 5,
-    height: 62,
-  },
-  metaGap: {
-    marginTop: 22,
-  },
-  chapterText: {
+  LG: {
     height: 40,
-    position: 'relative',
-    overflow: 'hidden',
+    position: 'absolute',
+    transform: [{ translateX: '-100%' }],
+    width: '60%',
   },
   chapter: {
     flexDirection: 'row',
-    marginVertical: 8,
     marginHorizontal: 16,
+    marginVertical: 8,
   },
-  default: {
+  chapterText: {
+    height: 40,
     overflow: 'hidden',
-    borderRadius: 4,
+    position: 'relative',
   },
-  flex: { flex: 1 },
-  row: { flexDirection: 'row' },
-  circle: {
-    borderRadius: 20,
-    alignSelf: 'center',
-    marginLeft: 20,
+  chip: {
+    borderRadius: 8,
     height: 30,
+    marginRight: 8,
+    width: 80,
+  },
+  circle: {
+    alignSelf: 'center',
+    borderRadius: 20,
+    height: 30,
+    marginLeft: 20,
     width: 30,
   },
-  img: {
-    alignSelf: 'center',
-    marginRight: 20,
-    height: 40,
-    width: 40,
+  default: {
+    borderRadius: 4,
+    overflow: 'hidden',
   },
+  flex: { flex: 1 },
   h15: {
     height: 15,
   },
@@ -258,21 +253,26 @@ const styles = StyleSheet.create({
   h62: {
     height: 110,
   },
-  chip: {
-    width: 80,
-    height: 30,
-    borderRadius: 8,
-    marginRight: 8,
-  },
-  LG: {
-    width: '60%',
+  img: {
+    alignSelf: 'center',
     height: 40,
-    position: 'absolute',
-    transform: [{ translateX: '-100%' }],
+    marginRight: 20,
+    width: 40,
   },
+  metaGap: {
+    marginTop: 22,
+  },
+  novelInformationText: {
+    height: 62,
+    marginBottom: 2.5,
+    marginHorizontal: 16,
+    marginTop: 8,
+    paddingTop: 5,
+  },
+  row: { flexDirection: 'row' },
   verticalBar: {
+    borderRadius: 4,
     marginHorizontal: 16,
     marginVertical: 16,
-    borderRadius: 4,
   },
 });

@@ -130,7 +130,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     if (!novel) {
       return;
     }
-    var epub = new EpubBuilder(
+    const epub = new EpubBuilder(
       {
         title: novel.name,
         fileName: novel.name.replace(/\s/g, ''),
@@ -177,7 +177,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
           });
         }
       }
-      var epubFilePath = await epub.save();
+      const epubFilePath = await epub.save();
       showToast('Epub file saved at: ' + epubFilePath);
     } catch (error) {
       console.error(error);

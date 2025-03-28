@@ -158,7 +158,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
             {getString('advancedSettingsScreen.userAgent')}
           </Text>
-          <Text style={[{ color: theme.onSurfaceVariant }]}>{userAgent}</Text>
+          <Text style={{ color: theme.onSurfaceVariant }}>{userAgent}</Text>
           <TextInput
             multiline
             mode="outlined"
@@ -197,23 +197,23 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
 export default AdvancedSettings;
 
 const styles = StyleSheet.create({
-  textInput: {
-    height: 120,
-    borderRadius: 14,
+  button: {
+    flex: 1,
+    marginHorizontal: 8,
     marginTop: 16,
-    marginBottom: 8,
-    fontSize: 12,
+  },
+  buttonGroup: {
+    flexDirection: 'row-reverse',
   },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
   },
-  buttonGroup: {
-    flexDirection: 'row-reverse',
-  },
-  button: {
+  textInput: {
+    borderRadius: 14,
+    fontSize: 12,
+    height: 120,
+    marginBottom: 8,
     marginTop: 16,
-    flex: 1,
-    marginHorizontal: 8,
   },
 });

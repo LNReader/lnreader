@@ -42,18 +42,18 @@ export default Chip;
 
 const styles = StyleSheet.create({
   chipContainer: {
-    overflow: 'hidden',
     borderRadius: 8,
     height: 32,
     marginRight: 8,
-  },
-  pressable: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 16,
+    overflow: 'hidden',
   },
   label: {
     fontSize: 12,
+  },
+  pressable: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 16,
   },
 });

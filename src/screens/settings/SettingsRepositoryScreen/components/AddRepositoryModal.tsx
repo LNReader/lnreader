@@ -58,12 +58,12 @@ const AddRepositoryModal: React.FC<AddRepositoryModalProps> = ({
 export default AddRepositoryModal;
 
 const styles = StyleSheet.create({
+  btnContainer: {
+    flexDirection: 'row-reverse',
+    marginTop: 24,
+  },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
-  },
-  btnContainer: {
-    marginTop: 24,
-    flexDirection: 'row-reverse',
   },
 });

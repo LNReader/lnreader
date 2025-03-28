@@ -121,23 +121,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingBottom: 16,
   },
-  schemeButtonWrapper: {
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-  },
-  schemeButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 36,
+  darkButton: {
+    borderBottomRightRadius: 24,
+    borderRightWidth: 1,
+    borderTopRightRadius: 24,
   },
   lightButton: {
+    borderBottomLeftRadius: 24,
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderTopLeftRadius: 24,
-    borderBottomLeftRadius: 24,
   },
-  darkButton: {
-    borderRightWidth: 1,
-    borderTopRightRadius: 24,
-    borderBottomRightRadius: 24,
+  schemeButton: {
+    paddingHorizontal: 36,
+    paddingVertical: 8,
+  },
+  schemeButtonWrapper: {
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
   },
 });

@@ -235,13 +235,13 @@ export default ChaptersSettingsSheet;
 
 const styles = StyleSheet.create({
   contentContainer: {
-    flex: 1,
-    borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    flex: 1,
   },
   radius: {
-    borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
   transparent: {
     backgroundColor: 'transparent',

@@ -7,7 +7,7 @@ export const sanitizeChapterText = (
   chapterName: string,
   html: string,
 ): string => {
-  let text = sanitizeHtml(html, {
+  const text = sanitizeHtml(html, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
       'img',
       'i',

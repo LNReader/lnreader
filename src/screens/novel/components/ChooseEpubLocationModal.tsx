@@ -125,21 +125,21 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
 export default ChooseEpubLocationModal;
 
 const styles = StyleSheet.create({
-  settings: {
-    marginTop: 12,
+  infoItem: {
+    paddingHorizontal: 0,
   },
 
   modalFooterCtn: {
     flexDirection: 'row-reverse',
 
-    paddingTop: 8,
     paddingBottom: 20,
+    paddingTop: 8,
   },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
   },
-  infoItem: {
-    paddingHorizontal: 0,
+  settings: {
+    marginTop: 12,
   },
 });

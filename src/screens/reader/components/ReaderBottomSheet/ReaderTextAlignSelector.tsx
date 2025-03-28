@@ -39,14 +39,14 @@ const ReaderTextAlignSelector: React.FC<ReaderTextAlignSelectorProps> = ({
 export default ReaderTextAlignSelector;
 
 const styles = StyleSheet.create({
-  container: {
+  buttonContainer: {
     flexDirection: 'row',
+  },
+  container: {
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 6,
     paddingHorizontal: 16,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
   },
 });

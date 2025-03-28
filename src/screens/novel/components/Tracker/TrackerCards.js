@@ -113,50 +113,50 @@ export const TrackedItemCard = ({
 };
 
 const styles = StyleSheet.create({
-  trackerIcon: {
-    height: 50,
-    width: 50,
-    borderRadius: 8,
-  },
-  rippleContainer: {
-    flex: 1,
-    paddingVertical: 8,
-    alignItems: 'center',
-  },
   addCardContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     margin: 16,
   },
   cardContainer: {
-    margin: 8,
-    boxShadow: '0 0 4px 0 rgba(0, 0, 0, 0.1)',
     borderRadius: 8,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    padding: 4,
-  },
-  listItemContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    borderTopRightRadius: 4,
+    boxShadow: '0 0 4px 0 rgba(0, 0, 0, 0.1)',
+    margin: 8,
   },
   listItem: {
     flex: 1,
     textAlign: 'center',
     textAlignVertical: 'center',
   },
-  listItemLeft: {
+  listItemContainer: {
+    borderTopRightRadius: 4,
     flex: 1,
-    borderRightWidth: 1,
+    flexDirection: 'row',
+  },
+  listItemLeft: {
     borderBottomLeftRadius: 4,
+    borderRightWidth: 1,
+    flex: 1,
   },
   listItemRight: {
-    flex: 1,
-    borderLeftWidth: 1,
     borderBottomRightRadius: 4,
+    borderLeftWidth: 1,
+    flex: 1,
+  },
+  rippleContainer: {
+    alignItems: 'center',
+    flex: 1,
+    paddingVertical: 8,
+  },
+  titleContainer: {
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    flexDirection: 'row',
+    padding: 4,
+  },
+  trackerIcon: {
+    borderRadius: 8,
+    height: 50,
+    width: 50,
   },
 });

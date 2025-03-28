@@ -365,24 +365,24 @@ export default Novel;
 
 function createStyles(theme: ThemeColors) {
   return StyleSheet.create({
+    appbar: {
+      alignItems: 'center',
+      backgroundColor: theme.surface2,
+      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+      flexDirection: 'row',
+      paddingBottom: 8,
+      paddingTop: StatusBar.currentHeight || 0,
+      position: 'absolute',
+      width: '100%',
+    },
     container: { flex: 1 },
+    drawer: { backgroundColor: 'transparent' },
     rowBack: {
       alignItems: 'center',
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
-    appbar: {
-      position: 'absolute',
-      width: '100%',
-      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-      backgroundColor: theme.surface2,
-      paddingTop: StatusBar.currentHeight || 0,
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingBottom: 8,
-    },
-    drawer: { backgroundColor: 'transparent' },
     snackbar: { backgroundColor: theme.surface, marginBottom: 32 },
   });
 }

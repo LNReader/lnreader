@@ -72,14 +72,14 @@ export const Actionbar: React.FC<ActionbarProps> = ({
 
 const styles = StyleSheet.create({
   actionbarContainer: {
-    position: 'absolute',
-    width: Dimensions.get('window').width,
-    bottom: 0,
+    alignItems: 'center',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
+    bottom: 0,
     elevation: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
+    position: 'absolute',
+    width: Dimensions.get('window').width,
   },
 });

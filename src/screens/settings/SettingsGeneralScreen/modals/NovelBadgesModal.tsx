@@ -69,12 +69,12 @@ const NovelBadgesModal: React.FC<NovelBadgesModalProps> = ({
 export default NovelBadgesModal;
 
 const styles = StyleSheet.create({
-  modalHeader: {
-    fontSize: 24,
-    marginBottom: 10,
-  },
   modalDescription: {
     fontSize: 16,
     marginBottom: 16,
+  },
+  modalHeader: {
+    fontSize: 24,
+    marginBottom: 10,
   },
 });

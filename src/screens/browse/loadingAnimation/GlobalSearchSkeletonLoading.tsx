@@ -36,8 +36,8 @@ const GlobalSearchSkeletonLoading: React.FC<Props> = ({ theme }) => {
 const createStyleSheet = () => {
   return StyleSheet.create({
     container: {
-      marginHorizontal: 4,
       marginBottom: 6,
+      marginHorizontal: 4,
       marginTop: 6,
       overflow: 'hidden',
     },

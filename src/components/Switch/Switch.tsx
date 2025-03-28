@@ -89,11 +89,9 @@ const Switch = ({ value, size = 22, onValueChange, style }: SwitchProps) => {
 export default React.memo(Switch);
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-  },
   circle: {
     backgroundColor: 'white',
+    elevation: 4,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
@@ -101,6 +99,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2.5,
-    elevation: 4,
+  },
+  container: {
+    justifyContent: 'center',
   },
 });

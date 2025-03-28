@@ -11,8 +11,8 @@ export default LoadingScreen;
 
 const styles = StyleSheet.create({
   indicator: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
 });

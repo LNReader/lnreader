@@ -85,12 +85,12 @@ const ChapterDrawer = () => {
       const curChapter = getString(
         'readerScreen.drawer.scrollToCurrentChapter',
       );
-      let newBtnLayout = Object.create(defaultButtonLayout);
+      const newBtnLayout = Object.create(defaultButtonLayout);
 
       if (viewableItems.length === 0) return;
       const cKey = (scrollToIndex.current ?? 0) + 2;
       const vKey = parseInt(viewableItems[0].key);
-      let visible = vKey <= cKey && cKey <= vKey + viewableItems.length - 1;
+      const visible = vKey <= cKey && cKey <= vKey + viewableItems.length - 1;
 
       if (!visible && scrollToIndex.current !== undefined) {
         if (
@@ -184,54 +184,54 @@ const ChapterDrawer = () => {
 
 const createStylesheet = (theme: ThemeColors, insets: EdgeInsets) => {
   return StyleSheet.create({
-    drawer: {
-      flex: 1,
-      backgroundColor: theme.surface,
-      paddingTop: 48,
-    },
-    headerCtn: {
-      fontSize: 16,
-      padding: 16,
-      marginBottom: 4,
-      fontWeight: 'bold',
-      borderBottomWidth: 1,
-      borderBottomColor: theme.outline,
-      color: theme.onSurface,
-    },
-    chapterCtn: {
-      flex: 1,
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      justifyContent: 'center',
-    },
-    chapterNameCtn: {
-      fontSize: 12,
-      marginBottom: 2,
-      color: theme.onSurface,
-    },
-    releaseDateCtn: {
-      fontSize: 10,
-      color: theme.onSurfaceVariant,
-    },
-    drawerElementContainer: {
-      margin: 4,
-      marginLeft: 16,
-      marginRight: 16,
-      borderRadius: 50,
-      overflow: 'hidden',
-      minHeight: 48,
-    },
     button: {
       marginBottom: 12,
       marginHorizontal: 16,
       marginTop: 4,
     },
+    chapterCtn: {
+      flex: 1,
+      justifyContent: 'center',
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+    },
+    chapterNameCtn: {
+      color: theme.onSurface,
+      fontSize: 12,
+      marginBottom: 2,
+    },
+    drawer: {
+      backgroundColor: theme.surface,
+      flex: 1,
+      paddingTop: 48,
+    },
+    drawerElementContainer: {
+      borderRadius: 50,
+      margin: 4,
+      marginLeft: 16,
+      marginRight: 16,
+      minHeight: 48,
+      overflow: 'hidden',
+    },
     footer: {
-      marginTop: 4,
-      paddingTop: 8,
-      paddingBottom: insets.bottom,
-      borderTopWidth: 1,
       borderTopColor: theme.outline,
+      borderTopWidth: 1,
+      marginTop: 4,
+      paddingBottom: insets.bottom,
+      paddingTop: 8,
+    },
+    headerCtn: {
+      borderBottomColor: theme.outline,
+      borderBottomWidth: 1,
+      color: theme.onSurface,
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginBottom: 4,
+      padding: 16,
+    },
+    releaseDateCtn: {
+      color: theme.onSurfaceVariant,
+      fontSize: 10,
     },
   });
 };

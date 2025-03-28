@@ -27,7 +27,7 @@ export const insertNovelAndChapters = async (
 ): Promise<number | undefined> => {
   const insertNovelQuery =
     'INSERT INTO Novel (path, pluginId, name, cover, summary, author, artist, status, genres, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-  let novelId: number | undefined = db.runSync(insertNovelQuery, [
+  const novelId: number | undefined = db.runSync(insertNovelQuery, [
     sourceNovel.path,
     pluginId,
     sourceNovel.name,
@@ -95,7 +95,7 @@ export const switchNovelToLibrary = async (
 ) => {
   const novel = await getNovelByPath(novelPath, pluginId);
   if (novel) {
-    let queries: QueryObject[] = [
+    const queries: QueryObject[] = [
       [
         'UPDATE Novel SET inLibrary = ? WHERE id = ?',
         [Number(!novel.inLibrary), novel.id],
@@ -268,7 +268,7 @@ export const updateNovelCategories = async (
   novelIds: number[],
   categoryIds: number[],
 ): Promise<void> => {
-  let queries: QueryObject[] = [];
+  const queries: QueryObject[] = [];
   queries.push([
     `DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(
       ',',

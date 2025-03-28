@@ -32,9 +32,9 @@ const Modal: React.FC<ModalProps> = ({
 
 const styles = StyleSheet.create({
   modalContainer: {
+    borderRadius: 28,
     margin: 30,
     padding: 24,
-    borderRadius: 28,
     shadowColor: 'transparent', // Modal weird shadow fix
   },
 });

@@ -268,10 +268,6 @@ const GenreChip = ({
 );
 
 const styles = StyleSheet.create({
-  modalTitle: {
-    fontSize: 24,
-    marginBottom: 16,
-  },
   errorText: {
     color: '#FF0033',
     paddingTop: 8,
@@ -279,5 +275,9 @@ const styles = StyleSheet.create({
   inputWrapper: {
     fontSize: 14,
     marginBottom: 12,
+  },
+  modalTitle: {
+    fontSize: 24,
+    marginBottom: 16,
   },
 });

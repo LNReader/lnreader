@@ -181,7 +181,7 @@ export const importEpub = async (
     progressText: getString('advancedSettingsScreen.importStaticFiles'),
   }));
 
-  for (let filePath of filePathSet) {
+  for (const filePath of filePathSet) {
     if (NativeFile.exists(filePath)) {
       NativeFile.moveFile(
         filePath,

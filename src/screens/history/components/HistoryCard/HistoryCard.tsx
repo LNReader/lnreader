@@ -97,35 +97,35 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
 export default HistoryCard;
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
   container: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
   cover: {
+    backgroundColor: coverPlaceholderColor,
+    borderRadius: 4,
     height: 80,
     width: 56,
-    borderRadius: 4,
-    backgroundColor: coverPlaceholderColor,
   },
   detailsContainer: {
     flex: 1,
     justifyContent: 'center',
     marginLeft: 16,
   },
-  novelName: {
-    marginBottom: 4,
-  },
   imageAndNameContainer: {
+    alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+  novelName: {
+    marginBottom: 4,
   },
 });

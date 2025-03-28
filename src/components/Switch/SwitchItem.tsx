@@ -55,21 +55,21 @@ export default SwitchItem;
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 12,
-    alignItems: 'center',
-  },
-  labelContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  label: {
-    fontSize: 16,
   },
   description: {
     fontSize: 12,
     lineHeight: 20,
+  },
+  label: {
+    fontSize: 16,
+  },
+  labelContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
   switch: {
     marginLeft: 8,

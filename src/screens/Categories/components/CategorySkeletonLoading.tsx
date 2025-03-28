@@ -42,13 +42,13 @@ const CategorySkeletonLoading: React.FC<Props> = ({ height, width, theme }) => {
 
 const styles = StyleSheet.create({
   categoryCard: {
-    marginHorizontal: 16,
-    marginBottom: 8,
     borderRadius: 12,
+    marginBottom: 8,
+    marginHorizontal: 16,
   },
   contentCtn: {
-    paddingVertical: 16,
     paddingBottom: 100,
+    paddingVertical: 16,
   },
 });
 

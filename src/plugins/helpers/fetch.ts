@@ -102,14 +102,14 @@ function base64ToBytesArr(str: string) {
   const abc = [
     ...'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
   ]; // base64 alphabet
-  let result = [];
+  const result = [];
 
   for (let i = 0; i < str.length / 4; i++) {
-    let chunk = [...str.slice(4 * i, 4 * i + 4)];
-    let bin = chunk
+    const chunk = [...str.slice(4 * i, 4 * i + 4)];
+    const bin = chunk
       .map(x => abc.indexOf(x).toString(2).padStart(6, '0'))
       .join('');
-    let bytes = bin.match(/.{1,8}/g)?.map(x => +('0b' + x)) || [];
+    const bytes = bin.match(/.{1,8}/g)?.map(x => +('0b' + x)) || [];
     result.push(
       ...bytes.slice(
         0,

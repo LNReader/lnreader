@@ -76,7 +76,7 @@ const isCategoryNameDuplicateQuery = `
 	`;
 
 export const isCategoryNameDuplicate = (categoryName: string): boolean => {
-  let res = db.getFirstSync(isCategoryNameDuplicateQuery, [categoryName]);
+  const res = db.getFirstSync(isCategoryNameDuplicateQuery, [categoryName]);
 
   if (res instanceof Object && 'isDuplicate' in res) {
     return Boolean(res.isDuplicate);

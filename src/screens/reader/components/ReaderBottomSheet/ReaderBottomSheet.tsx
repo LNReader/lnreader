@@ -205,18 +205,18 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
 export default React.memo(ReaderBottomSheetV2);
 
 const styles = StyleSheet.create({
-  tabView: {
-    borderTopRightRadius: 8,
-    borderTopLeftRadius: 8,
-  },
-  tabBar: {
-    elevation: 0,
-    borderBottomWidth: 0.5,
-  },
   container: {
     borderRadius: 8,
   },
   readerTab: {
     paddingVertical: 8,
+  },
+  tabBar: {
+    borderBottomWidth: 0.5,
+    elevation: 0,
+  },
+  tabView: {
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
 });

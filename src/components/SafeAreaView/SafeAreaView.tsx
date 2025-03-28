@@ -22,9 +22,9 @@ const SafeAreaView: React.FC<SafeAreaViewProps> = ({
     },
     padding: {
       paddingBottom: excludeBottom ? 0 : bottom,
-      paddingTop: excludeTop ? 0 : top,
-      paddingRight: right,
       paddingLeft: left,
+      paddingRight: right,
+      paddingTop: excludeTop ? 0 : top,
     },
   });
   return (

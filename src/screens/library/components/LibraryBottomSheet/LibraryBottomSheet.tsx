@@ -240,13 +240,9 @@ export default LibraryBottomSheet;
 
 const styles = StyleSheet.create({
   bottomSheetCtn: {
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
     flex: 1,
-    borderTopRightRadius: 8,
-    borderTopLeftRadius: 8,
-  },
-  tabView: {
-    borderTopRightRadius: 8,
-    borderTopLeftRadius: 8,
   },
   sectionHeader: {
     padding: 16,
@@ -255,5 +251,9 @@ const styles = StyleSheet.create({
   tabBar: {
     borderBottomWidth: 1,
     elevation: 0,
+  },
+  tabView: {
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
 });

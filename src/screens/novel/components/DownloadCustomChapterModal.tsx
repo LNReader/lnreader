@@ -105,12 +105,12 @@ const DownloadCustomChapterModal = ({
 export default DownloadCustomChapterModal;
 
 const styles = StyleSheet.create({
-  modalTitle: {
-    fontSize: 16,
-    marginBottom: 16,
-  },
   errorText: {
     color: '#FF0033',
     paddingTop: 8,
+  },
+  modalTitle: {
+    fontSize: 16,
+    marginBottom: 16,
   },
 });

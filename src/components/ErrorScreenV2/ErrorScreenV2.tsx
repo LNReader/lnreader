@@ -50,34 +50,34 @@ const ErrorScreen: React.FC<ErrorScreenProps> = ({ error, actions }) => {
 export default ErrorScreen;
 
 const styles = StyleSheet.create({
-  container: {
+  actionsCtn: {
+    flexDirection: 'row',
+    marginTop: 20,
+  },
+  buttonCtn: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    paddingVertical: 8,
   },
-  icon: {
-    fontSize: 44,
+  buttonWrapper: {
+    borderRadius: 50,
+    flexDirection: 'row',
+    flex: 1 / 3,
+    marginHorizontal: 4,
+    overflow: 'hidden',
+  },
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
   },
   error: {
     marginTop: 16,
     paddingHorizontal: 16,
     textAlign: 'center',
   },
-  buttonWrapper: {
-    overflow: 'hidden',
-    borderRadius: 50,
-    marginHorizontal: 4,
-    flexDirection: 'row',
-    flex: 1 / 3,
-  },
-  buttonCtn: {
-    flex: 1,
-    paddingVertical: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  actionsCtn: {
-    marginTop: 20,
-    flexDirection: 'row',
+  icon: {
+    fontSize: 44,
   },
 });

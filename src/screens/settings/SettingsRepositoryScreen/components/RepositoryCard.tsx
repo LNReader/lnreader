@@ -111,13 +111,21 @@ const RepositoryCard: FC<RepositoryCardProps> = ({
 export default RepositoryCard;
 
 const styles = StyleSheet.create({
+  buttonsCtn: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
   cardCtn: {
-    paddingVertical: 8,
-    paddingHorizontal: 8,
-    marginHorizontal: 16,
-    marginBottom: 8,
     borderRadius: 12,
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+    marginBottom: 8,
+    marginHorizontal: 16,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+  manageBtn: {
+    marginLeft: 8,
   },
   name: {
     fontSize: 16,
@@ -125,19 +133,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   nameCtn: {
+    alignItems: 'center',
     flex: 1,
+    flexDirection: 'row',
     marginLeft: 8,
     paddingRight: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
     paddingVertical: 4,
-  },
-  manageBtn: {
-    marginLeft: 8,
-  },
-  buttonsCtn: {
-    justifyContent: 'flex-end',
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 });

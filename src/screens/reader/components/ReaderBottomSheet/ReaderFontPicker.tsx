@@ -95,32 +95,32 @@ export default React.memo(ReaderFontPicker);
 const styles = StyleSheet.create({
   container: {
     borderRadius: 8,
-    overflow: 'hidden',
     marginHorizontal: 6,
+    overflow: 'hidden',
   },
   content: {
+    alignItems: 'center',
+    flexDirection: 'row',
     flexGrow: 1,
-    flexDirection: 'row',
-    paddingVertical: 1,
     justifyContent: 'center',
-    paddingHorizontal: 10,
     minHeight: 32,
-    alignItems: 'center',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 6,
-    paddingHorizontal: 16,
-  },
-  title: {
-    marginRight: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 1,
   },
   label: {
     fontSize: 16,
   },
   mLeft: {
     marginLeft: 4,
+  },
+  row: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+  },
+  title: {
+    marginRight: 16,
   },
 });

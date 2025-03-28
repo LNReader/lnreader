@@ -54,23 +54,23 @@ export default MigrationSourceCard;
 
 const styles = StyleSheet.create({
   cardContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     marginVertical: 4,
-    paddingVertical: 8,
     paddingHorizontal: 20,
-  },
-  sourceIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 4,
+    paddingVertical: 8,
   },
   sourceDetailsContainer: {
+    alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     marginLeft: 16,
+  },
+  sourceIcon: {
+    borderRadius: 4,
+    height: 40,
+    width: 40,
   },
   sourceStatus: {
     color: '#C14033',

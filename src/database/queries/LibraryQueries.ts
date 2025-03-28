@@ -68,7 +68,7 @@ export const getLibraryWithCategory = ({
   downloadedOnlyMode?: boolean;
 }): LibraryNovelInfo[] => {
   let query = getLibraryWithCategoryQuery;
-  let preparedArgument: (string | number | null)[] = [];
+  const preparedArgument: (string | number | null)[] = [];
 
   if (filter) {
     // query += ` AND ${filter} `;

@@ -52,22 +52,22 @@ export default TrackerCard;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 16,
     paddingVertical: 12,
-  },
-  icon: {
-    height: 40,
-    width: 40,
-    borderRadius: 4,
   },
   details: {
     marginLeft: 16,
   },
   flexRow: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
+  },
+  icon: {
+    borderRadius: 4,
+    height: 40,
+    width: 40,
   },
 });

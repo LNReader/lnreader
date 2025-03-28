@@ -110,7 +110,7 @@ export default class ServiceManager {
   setMeta(
     transformer: (meta: BackgroundTaskMetadata) => BackgroundTaskMetadata,
   ) {
-    let taskList = [...this.getTaskList()];
+    const taskList = [...this.getTaskList()];
     taskList[0] = {
       ...taskList[0],
       meta: transformer(taskList[0].meta),
@@ -256,7 +256,7 @@ export default class ServiceManager {
         !currentTasks.some(_t => _t.task.name === task.name),
     );
     if (addableTasks.length) {
-      let newTasks: QueuedBackgroundTask[] = addableTasks.map(task => ({
+      const newTasks: QueuedBackgroundTask[] = addableTasks.map(task => ({
         task,
         meta: {
           name: this.getTaskName(task),

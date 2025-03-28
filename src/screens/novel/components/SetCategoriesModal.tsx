@@ -76,7 +76,7 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
             />
           )}
           ListEmptyComponent={
-            <Text style={[{ color: theme.onSurfaceVariant }]}>
+            <Text style={{ color: theme.onSurfaceVariant }}>
               {getString('categories.setModalEmptyMsg')}
             </Text>
           }
@@ -127,6 +127,16 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
 export default SetCategoryModal;
 
 const styles = StyleSheet.create({
+  btnContainer: {
+    flexDirection: 'row',
+    marginTop: 20,
+  },
+  checkboxView: {
+    marginBottom: 5,
+  },
+  flex: {
+    flex: 1,
+  },
   modalTitle: {
     fontSize: 24,
     marginBottom: 20,
@@ -134,15 +144,5 @@ const styles = StyleSheet.create({
   modelOption: {
     fontSize: 15,
     marginVertical: 10,
-  },
-  flex: {
-    flex: 1,
-  },
-  btnContainer: {
-    marginTop: 20,
-    flexDirection: 'row',
-  },
-  checkboxView: {
-    marginBottom: 5,
   },
 });

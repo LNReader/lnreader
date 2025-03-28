@@ -158,30 +158,30 @@ export default {
 };
 
 const styles = StyleSheet.create({
-  listSection: {
-    flex: 1,
-    marginVertical: 0,
+  description: {
+    fontSize: 12,
+    lineHeight: 20,
   },
   divider: {
     height: 1,
     opacity: 0.5,
   },
-  infoCtn: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  infoMsg: {
-    marginTop: 12,
-    fontSize: 12,
-  },
   iconCtn: {
     paddingLeft: 16,
+  },
+  infoCtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  infoMsg: {
+    fontSize: 12,
+    marginTop: 12,
   },
   listItemCtn: {
     paddingVertical: 12,
   },
-  description: {
-    fontSize: 12,
-    lineHeight: 20,
+  listSection: {
+    flex: 1,
+    marginVertical: 0,
   },
 });

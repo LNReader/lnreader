@@ -64,7 +64,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
   const { showLastUpdateTime, setShowLastUpdateTime } = useLastUpdate();
 
   const generateNovelBadgesDescription = () => {
-    let res = [];
+    const res = [];
     if (showDownloadBadges) {
       res.push(getString('libraryScreen.bottomSheet.display.download'));
     }

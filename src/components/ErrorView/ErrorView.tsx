@@ -67,9 +67,9 @@ export const ErrorView = ({ errorName, actions, theme }: ErrorViewProps) => (
 
 const styles = StyleSheet.create({
   emptyViewContainer: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   emptyViewIcon: {
     fontSize: 45,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   emptyViewText: {
     fontWeight: 'bold',
     marginTop: 10,
-    textAlign: 'center',
     paddingHorizontal: 30,
+    textAlign: 'center',
   },
 });

@@ -61,7 +61,7 @@ const CustomFileModal: React.FC<CustomFileModal> = ({
       <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
         {title}
       </Text>
-      <Text style={[{ color: theme.onSurfaceVariant }]}>{description}</Text>
+      <Text style={{ color: theme.onSurfaceVariant }}>{description}</Text>
       <TextInput
         multiline
         mode="outlined"
@@ -96,23 +96,23 @@ const CustomFileModal: React.FC<CustomFileModal> = ({
 export default CustomFileModal;
 
 const styles = StyleSheet.create({
-  textInput: {
-    height: 220,
-    borderRadius: 14,
+  button: {
+    flex: 1,
+    marginHorizontal: 8,
     marginTop: 16,
-    marginBottom: 8,
-    fontSize: 16,
+  },
+  customCSSButtons: {
+    flexDirection: 'row-reverse',
   },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
   },
-  customCSSButtons: {
-    flexDirection: 'row-reverse',
-  },
-  button: {
+  textInput: {
+    borderRadius: 14,
+    fontSize: 16,
+    height: 220,
+    marginBottom: 8,
     marginTop: 16,
-    flex: 1,
-    marginHorizontal: 8,
   },
 });

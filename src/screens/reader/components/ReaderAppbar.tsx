@@ -78,14 +78,6 @@ const ReaderAppbar = ({
 export default ReaderAppbar;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: 'absolute',
-    width: '100%',
-    top: 0,
-    zIndex: 1,
-    paddingBottom: 8,
-  },
   appbar: {
     display: 'flex',
     flexDirection: 'row',
@@ -93,13 +85,21 @@ const styles = StyleSheet.create({
   bookmark: {
     marginRight: 4,
   },
+  container: {
+    flex: 1,
+    paddingBottom: 8,
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    zIndex: 1,
+  },
   content: {
     flex: 1,
   },
-  title: {
-    fontSize: 20,
-  },
   subtitle: {
     fontSize: 16,
+  },
+  title: {
+    fontSize: 20,
   },
 });

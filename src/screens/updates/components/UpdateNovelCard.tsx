@@ -207,27 +207,27 @@ export default memo(UpdateNovelCard);
 
 function createStyles(theme: ThemeColors) {
   return StyleSheet.create({
+    alignSelf: { alignSelf: 'center' },
+    chapterList: {
+      marginLeft: -40,
+    },
+    container: {
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    cover: {
+      borderRadius: 4,
+      height: 40,
+      width: 40,
+    },
+    description: { fontSize: 12 },
+    novelCover: {
+      marginRight: 8,
+    },
     padding: {
       paddingHorizontal: 16,
       paddingVertical: 2,
     },
-    container: {
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    },
-    cover: {
-      height: 40,
-      width: 40,
-      borderRadius: 4,
-    },
-    novelCover: {
-      marginRight: 8,
-    },
-    chapterList: {
-      marginLeft: -40,
-    },
-    title: { fontSize: 14, color: theme.onSurface },
-    description: { fontSize: 12 },
-    alignSelf: { alignSelf: 'center' },
+    title: { color: theme.onSurface, fontSize: 14 },
   });
 }

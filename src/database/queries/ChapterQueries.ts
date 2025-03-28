@@ -345,7 +345,7 @@ export const getDetailedUpdatesFromDb = async (
   novelId: number,
   onlyDownloadableChapters?: boolean,
 ) => {
-  let result = db.getAllAsync<Update>(
+  const result = db.getAllAsync<Update>(
     `
 SELECT
   Chapter.*,

@@ -130,12 +130,12 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
 export default ColorPickerModal;
 
 const styles = StyleSheet.create({
-  modalTitle: {
-    fontSize: 24,
-    marginBottom: 16,
-  },
   errorText: {
     color: '#FF0033',
     paddingTop: 8,
+  },
+  modalTitle: {
+    fontSize: 24,
+    marginBottom: 16,
   },
 });

@@ -36,7 +36,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         onDismiss={onDismiss}
         style={[styles.container, { backgroundColor: theme.overlay3 }]}
       >
-        <Dialog.Title style={[{ color: theme.onSurface }]}>
+        <Dialog.Title style={{ color: theme.onSurface }}>
           {title}
         </Dialog.Title>
         <Dialog.Content>
@@ -56,16 +56,16 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
 export default ConfirmationDialog;
 
 const styles = StyleSheet.create({
+  buttonCtn: {
+    flexDirection: 'row-reverse',
+    padding: 16,
+  },
   container: {
     borderRadius: 28,
     shadowColor: 'transparent',
   },
   content: {
-    letterSpacing: 0,
     fontSize: 16,
-  },
-  buttonCtn: {
-    flexDirection: 'row-reverse',
-    padding: 16,
+    letterSpacing: 0,
   },
 });

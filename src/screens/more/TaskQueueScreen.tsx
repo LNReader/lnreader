@@ -131,9 +131,9 @@ export default DownloadQueue;
 
 const styles = StyleSheet.create({
   fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
     bottom: 16,
+    margin: 16,
+    position: 'absolute',
+    right: 0,
   },
 });

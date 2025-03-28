@@ -52,13 +52,13 @@ const DeleteRepositoryModal: React.FC<DeleteRepositoryModalProps> = ({
 export default DeleteRepositoryModal;
 
 const styles = StyleSheet.create({
+  btnContainer: {
+    flexDirection: 'row-reverse',
+    marginTop: 24,
+  },
+  modalDesc: {},
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
   },
-  btnContainer: {
-    marginTop: 24,
-    flexDirection: 'row-reverse',
-  },
-  modalDesc: {},
 });

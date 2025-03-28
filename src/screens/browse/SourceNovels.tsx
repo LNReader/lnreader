@@ -30,7 +30,7 @@ const SourceNovels = ({ navigation, route }: SourceNovelsScreenProps) => {
   );
 
   return (
-    <View style={[styles.container]}>
+    <View style={styles.container}>
       <Appbar
         title={getString('browseScreen.selectNovel')}
         handleGoBack={navigation.goBack}

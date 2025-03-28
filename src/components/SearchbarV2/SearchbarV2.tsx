@@ -67,7 +67,7 @@ const Searchbar: React.FC<SearcbarProps> = ({
       <Pressable
         onPress={focusSearchbar}
         android_ripple={{ color: theme.rippleColor }}
-        style={[styles.searchbar]}
+        style={styles.searchbar}
       >
         <IconButtonV2
           name={handleBackAction ? 'arrow-left' : leftIcon}
@@ -149,30 +149,30 @@ const Searchbar: React.FC<SearcbarProps> = ({
 export default memo(Searchbar);
 
 const styles = StyleSheet.create({
-  searchbarContainer: {
-    marginHorizontal: 16,
-    marginBottom: 12,
-    minHeight: 56,
-    borderRadius: 50,
-    overflow: 'hidden',
-    zIndex: 1,
-  },
-  searchbar: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 8,
-  },
-  textInput: {
-    flex: 1,
-    fontSize: 16,
-    marginHorizontal: 8,
-  },
   icon: {
     marginHorizontal: 8,
   },
   searchIconContainer: {
     borderRadius: 50,
     overflow: 'hidden',
+  },
+  searchbar: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    paddingHorizontal: 8,
+  },
+  searchbarContainer: {
+    borderRadius: 50,
+    marginBottom: 12,
+    marginHorizontal: 16,
+    minHeight: 56,
+    overflow: 'hidden',
+    zIndex: 1,
+  },
+  textInput: {
+    flex: 1,
+    fontSize: 16,
+    marginHorizontal: 8,
   },
 });

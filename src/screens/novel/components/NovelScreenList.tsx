@@ -108,8 +108,8 @@ const NovelScreenList = ({
 
   const [isFabExtended, setIsFabExtended] = useState(true);
 
-  let novelBottomSheetRef = useRef<BottomSheetModalMethods>(null);
-  let trackerSheetRef = useRef<BottomSheetModalMethods>(null);
+  const novelBottomSheetRef = useRef<BottomSheetModalMethods>(null);
+  const trackerSheetRef = useRef<BottomSheetModalMethods>(null);
 
   const deleteDownloadsSnackbar = useBoolean();
 
@@ -368,17 +368,17 @@ const NovelScreenList = ({
 const styles = StyleSheet.create({
   container: { flex: 1 },
   contentContainer: { paddingBottom: 100 },
+  fab: {
+    bottom: 16,
+    margin: 16,
+    position: 'absolute',
+    right: 0,
+  },
   rowBack: {
     alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 16,
   },
 });
 

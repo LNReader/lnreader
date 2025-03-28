@@ -59,18 +59,18 @@ const NovelSortModal: React.FC<NovelSortModalProps> = ({
 export default NovelSortModal;
 
 const styles = StyleSheet.create({
-  modalHeader: {
-    paddingHorizontal: 24,
-    fontSize: 24,
-    marginBottom: 10,
-  },
   modalDescription: {
-    paddingHorizontal: 24,
     fontSize: 16,
     marginBottom: 16,
+    paddingHorizontal: 24,
+  },
+  modalHeader: {
+    fontSize: 24,
+    marginBottom: 10,
+    paddingHorizontal: 24,
   },
   slider: {
-    width: '100%',
     height: 40,
+    width: '100%',
   },
 });

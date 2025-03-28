@@ -159,7 +159,7 @@ const NovelAppbar = ({
     <Animated.View
       entering={SlideInUp.duration(250)}
       exiting={SlideOutUp.duration(250)}
-      style={[headerOpacityStyle]}
+      style={headerOpacityStyle}
     >
       <Appbar.Header theme={{ colors: { ...theme, surface: 'transparent' } }}>
         <Appbar.BackAction onPress={goBack} />

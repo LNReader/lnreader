@@ -35,7 +35,7 @@ const backupMMKVData = () => {
     key => !excludeKeys.includes(key),
   );
   const data = {} as any;
-  for (let key of keys) {
+  for (const key of keys) {
     let value: number | string | boolean | undefined =
       MMKVStorage.getString(key);
     if (!value) {
@@ -49,7 +49,7 @@ const backupMMKVData = () => {
 };
 
 const restoreMMKVData = (data: any) => {
-  for (let key in data) {
+  for (const key in data) {
     MMKVStorage.set(key, data[key]);
   }
 };

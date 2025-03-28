@@ -107,7 +107,7 @@ const NovelInformation = memo(() => (
 ));
 
 export const LoadingChapterItem = memo(() => (
-  <View style={[styles.chapter]}>
+  <View style={styles.chapter}>
     <View>
       <LoadingShimmer style={styles.text} height={20} width={FULL_WIDTH - 50} />
       <LoadingShimmer style={styles.text} height={16} width={FULL_WIDTH - 50} />
@@ -144,63 +144,63 @@ const NovelScreenLoading: React.FC<Props> = () => {
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    paddingTop: 118,
-    height: 268,
-    width: '100%',
+  chapter: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-  headerText: {
-    height: 100,
-    paddingTop: 30,
-    justifyContent: 'center',
-  },
-  metadataContainer: {
-    marginVertical: 4,
-  },
-  statsContainer: {
-    paddingVertical: 4,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  icon: {
-    borderRadius: 30,
-  },
-  novelInformationText: {
-    margin: 16,
-    marginTop: 8,
-    height: 62,
-    backgroundColor: 'red',
-  },
-  novelInformationChips: {
-    flexDirection: 'row',
-    paddingBottom: 6,
-    paddingLeft: 8,
-  },
-  chip: {
-    marginLeft: 8,
-    borderRadius: 8,
+    marginHorizontal: 16,
+    paddingVertical: 8,
   },
   chapterContainer: {
     marginHorizontal: 16,
   },
-  chapter: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-    marginHorizontal: 16,
+  chip: {
+    borderRadius: 8,
+    marginLeft: 8,
   },
   container: {
     flexGrow: 1,
     marginBottom: 8,
     overflow: 'hidden',
   },
-  text: {
-    borderRadius: 8,
-    marginTop: 5,
+  headerContainer: {
+    flexDirection: 'row',
+    height: 268,
+    justifyContent: 'space-evenly',
+    paddingTop: 118,
+    width: '100%',
+  },
+  headerText: {
+    height: 100,
+    justifyContent: 'center',
+    paddingTop: 30,
+  },
+  icon: {
+    borderRadius: 30,
+  },
+  metadataContainer: {
+    marginVertical: 4,
+  },
+  novelInformationChips: {
+    flexDirection: 'row',
+    paddingBottom: 6,
+    paddingLeft: 8,
+  },
+  novelInformationText: {
+    backgroundColor: 'red',
+    height: 62,
+    margin: 16,
+    marginTop: 8,
   },
   picture: {
     borderRadius: 8,
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 4,
+  },
+  text: {
+    borderRadius: 8,
+    marginTop: 5,
   },
 });
 

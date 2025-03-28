@@ -36,7 +36,7 @@ const CategoriesScreen = () => {
 
   const getCategories = async () => {
     try {
-      let res = getCategoriesFromDb();
+      const res = getCategoriesFromDb();
       setCategories(res);
     } catch (err) {
     } finally {
@@ -128,15 +128,15 @@ const CategoriesScreen = () => {
 export default CategoriesScreen;
 
 const styles = StyleSheet.create({
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 16,
-  },
   contentCtn: {
     flexGrow: 1,
-    paddingVertical: 16,
     paddingBottom: 100,
+    paddingVertical: 16,
+  },
+  fab: {
+    bottom: 16,
+    margin: 16,
+    position: 'absolute',
+    right: 0,
   },
 });

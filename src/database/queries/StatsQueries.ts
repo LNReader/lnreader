@@ -74,7 +74,7 @@ export const getChaptersDownloadedCountFromDb =
   };
 
 export const getNovelGenresFromDb = async (): Promise<LibraryStats> => {
-  let genres: string[] = [];
+  const genres: string[] = [];
   await getAllAsync([getNovelGenresQuery]).then(res => {
     (res as any).forEach((item: { genres: string }) => {
       const novelGenres = item.genres?.split(/\s*,\s*/);
@@ -88,7 +88,7 @@ export const getNovelGenresFromDb = async (): Promise<LibraryStats> => {
 };
 
 export const getNovelStatusFromDb = async (): Promise<LibraryStats> => {
-  let status: string[] = [];
+  const status: string[] = [];
   await getAllAsync([getNovelStatusQuery]).then(res => {
     (res as any).forEach((item: { status: string }) => {
       const novelStatus = item.status?.split(/\s*,\s*/);

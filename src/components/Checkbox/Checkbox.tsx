@@ -84,18 +84,18 @@ export const SortItem = ({ label, status, onPress, theme }: SortItemProps) => (
 );
 
 const styles = StyleSheet.create({
-  pressable: {
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  icon: {
-    position: 'absolute',
-    left: 24,
-    alignSelf: 'center',
-  },
   defaultLabel: {
     marginLeft: 12,
+  },
+  icon: {
+    alignSelf: 'center',
+    left: 24,
+    position: 'absolute',
+  },
+  pressable: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 6,
   },
 });

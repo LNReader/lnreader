@@ -84,16 +84,16 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
   root: {
     height: '100%',
+    paddingBottom: 16,
     paddingHorizontal: 16,
     paddingTop: 40,
-    paddingBottom: 16,
   },
   stepContainer: {
-    position: 'relative',
+    borderRadius: 8,
     flexBasis: '20%',
     flexGrow: 1,
-    paddingTop: 16,
-    borderRadius: 8,
     marginBottom: 16,
+    paddingTop: 16,
+    position: 'relative',
   },
 });

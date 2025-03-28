@@ -84,7 +84,7 @@ const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {title}
         </Text>
-        <Text style={[{ color: theme.onSurfaceVariant }]}>
+        <Text style={{ color: theme.onSurfaceVariant }}>
           {description || 'No settings available.'}
         </Text>
       </Modal>
@@ -96,7 +96,7 @@ const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
       <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
         {title}
       </Text>
-      <Text style={[{ color: theme.onSurfaceVariant }]}>{description}</Text>
+      <Text style={{ color: theme.onSurfaceVariant }}>{description}</Text>
 
       {Object.entries(pluginSettings).map(([key, setting]) => (
         <TextInput
@@ -128,23 +128,23 @@ const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
 export default SourceSettingsModal;
 
 const styles = StyleSheet.create({
-  textInput: {
-    height: 50,
-    borderRadius: 14,
+  button: {
+    flex: 1,
+    marginHorizontal: 8,
     marginTop: 16,
-    marginBottom: 8,
-    fontSize: 16,
+  },
+  customCSSButtons: {
+    flexDirection: 'row',
   },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
   },
-  customCSSButtons: {
-    flexDirection: 'row',
-  },
-  button: {
+  textInput: {
+    borderRadius: 14,
+    fontSize: 16,
+    height: 50,
+    marginBottom: 8,
     marginTop: 16,
-    flex: 1,
-    marginHorizontal: 8,
   },
 });

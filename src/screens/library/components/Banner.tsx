@@ -34,17 +34,17 @@ export const Banner: React.FC<Props> = ({
 );
 
 const styles = StyleSheet.create({
+  bannerText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
   container: {
-    paddingVertical: 4,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
+    paddingVertical: 4,
   },
   icon: {
     marginRight: 8,
-  },
-  bannerText: {
-    fontWeight: 'bold',
-    fontSize: 12,
   },
 });

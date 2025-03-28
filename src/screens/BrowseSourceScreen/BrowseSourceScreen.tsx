@@ -221,9 +221,9 @@ export default BrowseSourceScreen;
 
 const styles = StyleSheet.create({
   filterFab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
     bottom: 0,
+    margin: 16,
+    position: 'absolute',
+    right: 0,
   },
 });

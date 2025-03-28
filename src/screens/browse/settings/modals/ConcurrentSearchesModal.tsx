@@ -50,8 +50,8 @@ export default ConcurrentSearchesModal;
 
 const styles = StyleSheet.create({
   modalHeader: {
-    paddingHorizontal: 24,
     fontSize: 24,
     marginBottom: 10,
+    paddingHorizontal: 24,
   },
 });

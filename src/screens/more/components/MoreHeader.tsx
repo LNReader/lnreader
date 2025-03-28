@@ -40,13 +40,13 @@ export const MoreHeader = ({
 );
 
 const styles = StyleSheet.create({
-  logoContainer: {
-    paddingTop: 4,
-    paddingBottom: 24,
-    alignItems: 'center',
-  },
   logo: {
     height: 90,
     width: 90,
+  },
+  logoContainer: {
+    alignItems: 'center',
+    paddingBottom: 24,
+    paddingTop: 4,
   },
 });

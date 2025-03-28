@@ -480,39 +480,39 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
 });
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    justifyContent: 'space-between',
-  },
-  listHeader: {
-    fontSize: 14,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    fontWeight: '600',
-  },
-  icon: {
-    height: 40,
-    width: 40,
-    borderRadius: 4,
-    backgroundColor: coverPlaceholderColor,
-  },
-  details: {
-    marginLeft: 16,
-  },
   addition: {
     fontSize: 12,
     lineHeight: 20,
   },
+  buttonGroup: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 8,
+  },
+  container: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  details: {
+    marginLeft: 16,
+  },
+  icon: {
+    backgroundColor: coverPlaceholderColor,
+    borderRadius: 4,
+    height: 40,
+    width: 40,
+  },
+  listHeader: {
+    fontSize: 14,
+    fontWeight: '600',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
   name: {
     fontWeight: 'bold',
     lineHeight: 20,
-  },
-  buttonGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 8,
   },
 });

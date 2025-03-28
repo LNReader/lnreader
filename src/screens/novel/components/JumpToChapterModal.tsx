@@ -234,12 +234,24 @@ const JumpToChapterModal = ({
 export default JumpToChapterModal;
 
 const styles = StyleSheet.create({
-  textInput: {
-    borderStyle: 'solid',
-    borderRadius: 4,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    fontSize: 16,
+  dateCtn: {
+    fontSize: 12,
+    marginTop: 2,
+  },
+  errorText: {
+    paddingTop: 12,
+  },
+  flashlist: {
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    height: 300,
+    marginTop: 8,
+  },
+  listContentCtn: {
+    paddingVertical: 8,
+  },
+  listElementContainer: {
+    paddingVertical: 12,
   },
   modalFooterCtn: {
     flexDirection: 'row-reverse',
@@ -249,23 +261,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 16,
   },
-  errorText: {
-    paddingTop: 12,
-  },
-  flashlist: {
-    marginTop: 8,
-    height: 300,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-  },
-  listContentCtn: {
-    paddingVertical: 8,
-  },
-  dateCtn: {
-    fontSize: 12,
-    marginTop: 2,
-  },
-  listElementContainer: {
-    paddingVertical: 12,
+  textInput: {
+    borderRadius: 4,
+    borderStyle: 'solid',
+    fontSize: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
 });

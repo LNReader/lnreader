@@ -67,12 +67,12 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({
 export default ConnectionModal;
 
 const styles = StyleSheet.create({
+  btnContainer: {
+    flexDirection: 'row-reverse',
+    marginTop: 24,
+  },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
-  },
-  btnContainer: {
-    marginTop: 24,
-    flexDirection: 'row-reverse',
   },
 });

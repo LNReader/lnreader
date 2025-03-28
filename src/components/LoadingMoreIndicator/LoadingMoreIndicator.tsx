@@ -14,9 +14,9 @@ export default LoadingMoreIndicator;
 
 const styles = StyleSheet.create({
   indicator: {
-    padding: 32,
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    padding: 32,
   },
 });

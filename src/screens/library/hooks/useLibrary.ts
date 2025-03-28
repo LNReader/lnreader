@@ -13,7 +13,7 @@ import { useLibrarySettings } from '@hooks/persisted';
 import { LibrarySortOrder } from '../constants/constants';
 
 type Library = Category & { novels: LibraryNovelInfo[] };
-export type ExtendedCategory = Category & { novelIds: Number[] };
+export type ExtendedCategory = Category & { novelIds: number[] };
 
 export const useLibrary = () => {
   const {

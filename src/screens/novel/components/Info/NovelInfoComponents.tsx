@@ -276,56 +276,56 @@ export {
 };
 
 const styles = StyleSheet.create({
-  novelInfoContainer: {
-    flexDirection: 'row',
-    margin: 16,
-    marginTop: 28,
-    marginBottom: 0,
-    paddingTop: 90,
-  },
   coverImage: {},
+  followButton: {
+    alignItems: 'center',
+    borderWidth: 0,
+    elevation: 0,
+    height: 32,
+    justifyContent: 'center',
+    marginLeft: 16,
+    paddingLeft: 4,
+  },
+  genreChip: {
+    borderRadius: 50,
+    flex: 1,
+    fontSize: 12,
+    justifyContent: 'center',
+    marginHorizontal: 2,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    textTransform: 'capitalize',
+  },
+  genreContainer: {
+    paddingBottom: 4,
+    paddingHorizontal: 16,
+  },
   linearGradient: {
     flex: 1,
-  },
-  novelThumbnailContainer: {
-    height: 150,
-    width: 100,
-    marginHorizontal: 4,
-  },
-  novelThumbnail: {
-    height: 150,
-    width: 100,
-    borderRadius: 6,
-    backgroundColor: coverPlaceholderColor,
-  },
-  novelTitle: {
-    fontSize: 20,
   },
   novelInfo: {
     fontSize: 14,
     marginBottom: 4,
   },
-  followButton: {
-    height: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 16,
-    paddingLeft: 4,
-    borderWidth: 0,
-    elevation: 0,
+  novelInfoContainer: {
+    flexDirection: 'row',
+    margin: 16,
+    marginBottom: 0,
+    marginTop: 28,
+    paddingTop: 90,
   },
-  genreContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 4,
+  novelThumbnail: {
+    backgroundColor: coverPlaceholderColor,
+    borderRadius: 6,
+    height: 150,
+    width: 100,
   },
-  genreChip: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingVertical: 5,
-    paddingHorizontal: 12,
-    marginHorizontal: 2,
-    fontSize: 12,
-    borderRadius: 50,
-    textTransform: 'capitalize',
+  novelThumbnailContainer: {
+    height: 150,
+    marginHorizontal: 4,
+    width: 100,
+  },
+  novelTitle: {
+    fontSize: 20,
   },
 });

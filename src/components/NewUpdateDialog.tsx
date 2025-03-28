@@ -56,18 +56,18 @@ const NewUpdateDialog: React.FC<NewUpdateDialogProps> = ({ newVersion }) => {
 export default NewUpdateDialog;
 
 const styles = StyleSheet.create({
-  modalHeader: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginBottom: 16,
-  },
   body: {
     fontSize: 15,
     fontWeight: '500',
   },
   buttonCtn: {
     flexDirection: 'row',
-    marginTop: 16,
     justifyContent: 'flex-end',
+    marginTop: 16,
+  },
+  modalHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
 });

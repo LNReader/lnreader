@@ -33,7 +33,7 @@ const NButton = ({
       entering={ZoomIn.duration(150)}
       exiting={ZoomOut.duration(150)}
       collapsable={false}
-      style={[styles.buttonContainer]}
+      style={styles.buttonContainer}
     >
       <Pressable
         android_ripple={{ color: theme.rippleColor }}
@@ -154,25 +154,25 @@ const NovelScreenButtonGroup: React.FC<NovelScreenButtonGroupProps> = ({
 export default memo(NovelScreenButtonGroup);
 
 const styles = StyleSheet.create({
-  buttonGroupContainer: {
-    marginHorizontal: 16,
-    paddingTop: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  buttonContainer: {
-    flex: 1,
-    overflow: 'hidden',
-    borderRadius: 50,
-    marginHorizontal: 4,
-  },
   button: {
-    paddingVertical: 8,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 8,
+  },
+  buttonContainer: {
+    borderRadius: 50,
+    flex: 1,
+    marginHorizontal: 4,
+    overflow: 'hidden',
+  },
+  buttonGroupContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginHorizontal: 16,
+    paddingTop: 8,
   },
   buttonLabel: {
-    marginTop: 4,
     fontSize: 12,
+    marginTop: 4,
   },
 });

@@ -47,7 +47,7 @@ const GridSizeModal: React.FC<GridSizeModalProps> = ({
           })}
         </Text>
         {Object.keys(gridSizes).map(item => {
-          let it = Number(item);
+          const it = Number(item);
           return (
             <RadioButton
               key={item}
@@ -67,16 +67,16 @@ const GridSizeModal: React.FC<GridSizeModalProps> = ({
 export default GridSizeModal;
 
 const styles = StyleSheet.create({
-  modalHeader: {
-    fontSize: 24,
-    marginBottom: 10,
-  },
   modalDescription: {
     fontSize: 16,
     marginBottom: 16,
   },
+  modalHeader: {
+    fontSize: 24,
+    marginBottom: 10,
+  },
   slider: {
-    width: '100%',
     height: 40,
+    width: '100%',
   },
 });

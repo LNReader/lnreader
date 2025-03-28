@@ -273,31 +273,31 @@ const NovelInfoHeader = ({
 export default memo(NovelInfoHeader);
 
 const styles = StyleSheet.create({
-  novelDetails: {
-    flex: 1,
-    flexDirection: 'column',
-    paddingBottom: 16,
-    paddingLeft: 12,
-    justifyContent: 'center',
-  },
-  pageTitle: {
-    paddingHorizontal: 16,
-    fontSize: 16,
-  },
-  chapters: {
-    paddingHorizontal: 16,
-    fontSize: 14,
-  },
   bottomsheet: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 4,
     paddingRight: 12,
+    paddingVertical: 4,
   },
+  chapters: {
+    fontSize: 14,
+    paddingHorizontal: 16,
+  },
+  flex: { flex: 1 },
   infoItem: {
     marginVertical: 2,
   },
-  flex: { flex: 1 },
   marginRight: { marginRight: 4 },
+  novelDetails: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    paddingBottom: 16,
+    paddingLeft: 12,
+  },
+  pageTitle: {
+    fontSize: 16,
+    paddingHorizontal: 16,
+  },
 });

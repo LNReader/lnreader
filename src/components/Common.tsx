@@ -13,7 +13,7 @@ export { Row };
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
   },
 });

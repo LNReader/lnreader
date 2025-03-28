@@ -165,42 +165,42 @@ const GeneralSettings: React.FC = () => {
 export default GeneralSettings;
 
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
+  autoScrollInterval: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingBottom: 8,
+    paddingHorizontal: 16,
   },
   bottomInset: {
     paddingBottom: 40,
-  },
-  fontSizeL: {
-    fontSize: 16,
-  },
-  autoScrollInterval: {
-    paddingHorizontal: 16,
-    paddingBottom: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  customThemeButton: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-  },
-  customCSSContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 8,
-  },
-  marginLeftS: {
-    marginLeft: 8,
   },
   customCSSButtons: {
     flex: 1,
     flexDirection: 'row-reverse',
   },
-  paddingRightM: {
+  customCSSContainer: {
+    paddingBottom: 8,
+    paddingHorizontal: 16,
+  },
+  customThemeButton: {
+    marginBottom: 16,
+    marginHorizontal: 16,
+  },
+  flex: {
     flex: 1,
-    paddingRight: 16,
+  },
+  fontSizeL: {
+    fontSize: 16,
   },
   label: {
     fontSize: 16,
+  },
+  marginLeftS: {
+    marginLeft: 8,
+  },
+  paddingRightM: {
+    flex: 1,
+    paddingRight: 16,
   },
 });

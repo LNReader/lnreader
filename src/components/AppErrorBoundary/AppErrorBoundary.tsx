@@ -68,32 +68,32 @@ const AppErrorBoundary: React.FC<AppErrorBoundaryProps> = ({ children }) => {
 export default AppErrorBoundary;
 
 const styles = StyleSheet.create({
-  mainCtn: {
-    flex: 1,
+  buttonCtn: {
+    margin: 16,
+    marginBottom: 32,
+  },
+  errorCtn: {
+    borderRadius: 8,
+    lineHeight: 20,
+    marginVertical: 16,
+    paddingHorizontal: 8,
+    paddingVertical: 16,
+  },
+  errorDesc: {
+    lineHeight: 20,
+    marginVertical: 8,
   },
   errorInfoCtn: {
     flex: 1,
     justifyContent: 'center',
     padding: 16,
   },
-  buttonCtn: {
-    margin: 16,
-    marginBottom: 32,
-  },
   errorTitle: {
+    fontSize: 20,
     marginBottom: 8,
     textAlign: 'center',
-    fontSize: 20,
   },
-  errorDesc: {
-    lineHeight: 20,
-    marginVertical: 8,
-  },
-  errorCtn: {
-    borderRadius: 8,
-    lineHeight: 20,
-    marginVertical: 16,
-    paddingVertical: 16,
-    paddingHorizontal: 8,
+  mainCtn: {
+    flex: 1,
   },
 });

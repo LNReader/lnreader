@@ -29,10 +29,10 @@ export const useGithubUpdateChecker = (): GithubUpdate => {
   };
 
   const isNewVersion = (versionTag: string) => {
-    let currentVersion = `${version}`;
+    const currentVersion = `${version}`;
     const regex = /[^\\d.]/;
 
-    let newVersion = versionTag.replace(regex, '');
+    const newVersion = versionTag.replace(regex, '');
 
     return newer(newVersion, currentVersion);
   };

@@ -622,7 +622,7 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
 
 export const deleteCachedNovels = async () => {
   const cachedNovels = await _getCachedNovels();
-  for (let novel of cachedNovels) {
+  for (const novel of cachedNovels) {
     MMKVStorage.delete(`${TRACKED_NOVEL_PREFIX}_${novel.id}`);
     MMKVStorage.delete(
       `${NOVEL_PAGE_INDEX_PREFIX}_${novel.pluginId}_${novel.path}`,

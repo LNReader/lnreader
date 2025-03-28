@@ -134,21 +134,21 @@ const createStyleSheet = (
 ) => {
   return StyleSheet.create({
     container: {
+      backgroundColor: 'transparent',
+      height: containerHeight,
+      margin: containerMargin,
       position: 'relative',
       width: containerWidth,
-      height: containerHeight,
-      backgroundColor: 'transparent',
-      margin: containerMargin,
-    },
-    lineDefault: {
-      marginLeft: 0,
-      marginRight: 0,
-      borderRadius: 8,
-      marginBottom: textSize * (lineHeight - 1),
     },
     gap: {
       height: textSize * (lineHeight - 1),
       margin: 8,
+    },
+    lineDefault: {
+      borderRadius: 8,
+      marginBottom: textSize * (lineHeight - 1),
+      marginLeft: 0,
+      marginRight: 0,
     },
   });
 };

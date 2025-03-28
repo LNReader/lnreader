@@ -112,7 +112,7 @@ export const DownloadChapterButton: React.FC<buttonPropType> = ({
   onPress,
 }) => (
   <Pressable
-    style={[styles.container]}
+    style={styles.container}
     onPress={onPress}
     android_ripple={{ color: Color(theme.primary).alpha(0.12).string() }}
   >
@@ -133,7 +133,7 @@ export const DeleteChapterButton: React.FC<buttonPropType> = ({
   onPress,
 }) => (
   <Pressable
-    style={[styles.container]}
+    style={styles.container}
     onPress={onPress}
     android_ripple={{ color: Color(theme.primary).alpha(0.12).string() }}
   >
@@ -153,11 +153,11 @@ export const ChapterBookmarkButton: React.FC<theme> = ({ theme }) => (
 
 const styles = StyleSheet.create({
   activityIndicator: { margin: 3.5, padding: 5 },
-  iconButton: { margin: 2 },
-  iconButtonLeft: { marginLeft: 2 },
   container: {
     borderRadius: 50,
     overflow: 'hidden',
     padding: 8,
   },
+  iconButton: { margin: 2 },
+  iconButtonLeft: { marginLeft: 2 },
 });

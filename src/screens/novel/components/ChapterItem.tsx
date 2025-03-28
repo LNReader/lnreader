@@ -74,12 +74,10 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
           <View style={{ flex: 1 }}>
             {isUpdateCard ? (
               <Text
-                style={[
-                  {
+                style={{
                     fontSize: 14,
                     color: unread ? theme.onSurface : theme.outline,
-                  },
-                ]}
+                  }}
                 numberOfLines={1}
               >
                 {novelName}
@@ -102,16 +100,14 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
               ) : null}
 
               <Text
-                style={[
-                  {
+                style={{
                     fontSize: isUpdateCard ? 12 : 14,
                     color: !unread
                       ? theme.outline
                       : bookmark
                       ? theme.primary
                       : theme.onSurface,
-                  },
-                ]}
+                  }}
                 numberOfLines={1}
               >
                 {showChapterTitles
@@ -182,20 +178,20 @@ export default memo(ChapterItem);
 
 const styles = StyleSheet.create({
   chapterCardContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
     height: 64,
+    justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
+  row: { alignItems: 'center', flex: 1, flexDirection: 'row' },
   text: {
     fontSize: 12,
   },
   textRow: {
     flexDirection: 'row',
   },
-  row: { flex: 1, flexDirection: 'row', alignItems: 'center' },
   unreadIcon: {
     marginRight: 4,
   },

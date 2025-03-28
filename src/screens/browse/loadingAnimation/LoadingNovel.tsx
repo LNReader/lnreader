@@ -93,34 +93,34 @@ const LoadingNovel: React.FC<Props> = ({
 
 const createStyleSheet = (pictureHeight: number, pictureWidth: number) => {
   return StyleSheet.create({
-    loadingContainer: {
-      padding: 4.8,
-      marginBottom: 4,
-      width: pictureWidth + 9.6,
-      height: pictureHeight,
-      overflow: 'hidden',
+    listChapter: {
+      borderRadius: 4,
+      paddingHorizontal: 4,
     },
-    text: {
-      borderRadius: 8,
-      marginTop: 5,
+    listLoadingContainer: {
+      alignItems: 'center',
+      flexDirection: 'row',
+      marginHorizontal: 8,
+      marginVertical: 8,
+    },
+    listText: {
+      borderRadius: 4,
+      marginLeft: 16,
+      marginRight: 8,
+    },
+    loadingContainer: {
+      height: pictureHeight,
+      marginBottom: 4,
+      overflow: 'hidden',
+      padding: 4.8,
+      width: pictureWidth + 9.6,
     },
     picture: {
       borderRadius: 4,
     },
-    listLoadingContainer: {
-      marginHorizontal: 8,
-      marginVertical: 8,
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    listText: {
-      marginLeft: 16,
-      marginRight: 8,
-      borderRadius: 4,
-    },
-    listChapter: {
-      borderRadius: 4,
-      paddingHorizontal: 4,
+    text: {
+      borderRadius: 8,
+      marginTop: 5,
     },
   });
 };

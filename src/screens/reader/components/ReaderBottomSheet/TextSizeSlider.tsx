@@ -38,9 +38,9 @@ export default TextSizeSlider;
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
   label: {
     paddingHorizontal: 16,

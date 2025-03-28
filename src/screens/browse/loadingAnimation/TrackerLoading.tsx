@@ -71,22 +71,22 @@ const createStyleSheet = (theme: ThemeColors) => {
       overflow: 'hidden',
     },
     loadingContainer: {
-      margin: 10,
-      borderRadius: 8,
       backgroundColor: theme.overlay3,
-      width: Dimensions.get('window').width - 20,
-      overflow: 'hidden',
-      flexDirection: 'row',
+      borderRadius: 8,
       boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+      flexDirection: 'row',
+      margin: 10,
+      overflow: 'hidden',
+      width: Dimensions.get('window').width - 20,
+    },
+    loadingText: {
+      height: 10,
+      margin: 10,
+      width: Dimensions.get('window').width - 140,
     },
     text: {
       borderRadius: 8,
       marginVertical: 5,
-    },
-    loadingText: {
-      margin: 10,
-      height: 10,
-      width: Dimensions.get('window').width - 140,
     },
   });
 };
