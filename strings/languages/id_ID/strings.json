@@ -85,21 +85,21 @@
       "host": "",
       "unknownHost": ""
     },
-    "remoteBackup": "Remote Backup",
-    "restoreBackup": "Restore backup",
-    "restoreBackupDesc": "Restore library from backup file",
-    "restoreLargeBackupsWarning": "Restoring large backups may freeze the app until restoring is finished",
-    "restorinBackup": "Restoring backup",
-    "restoringData": "Restoring Data",
-    "selfHost": "Self Host",
-    "selfHostDesc": "Backup to your server",
-    "uploadingData": "Uploading Data",
-    "uploadingDownloadedFiles": "Uploading Downloaded files"
+    "remoteBackup": "😹",
+    "restoreBackup": "",
+    "restoreBackupDesc": "",
+    "restoreLargeBackupsWarning": "",
+    "restorinBackup": "",
+    "restoringData": "",
+    "selfHost": "",
+    "selfHostDesc": "",
+    "uploadingData": "",
+    "uploadingDownloadedFiles": ""
   },
   "browse": "Telusur",
   "browseScreen": {
     "addedToLibrary": "Telah ditambahkan ke koleksi",
-    "available": "Available",
+    "available": "",
     "discover": "Jelajahi",
     "globalSearch": "Pencarian global\n",
     "installFailed": "Installation failed: %{name}",
@@ -371,7 +371,7 @@
       "info": "Edit info",
       "status": "Status:",
       "summary": "Description: %{summary}...",
-      "title": "Title: %{title}"
+      "title": ""
     },
     "inLibaray": "Di koleksi\n",
     "jumpToChapterModal": {
