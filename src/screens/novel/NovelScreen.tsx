@@ -19,7 +19,7 @@ import Animated, {
 
 import { Portal, Appbar, Snackbar, AnimatedFAB } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
-import { showToast } from '../../utils/showToast';
+import { showToast } from '@utils/showToast';
 import {
   useAppSettings,
   useDownload,
@@ -37,7 +37,7 @@ import DownloadCustomChapterModal from './components/DownloadCustomChapterModal'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBoolean } from '@hooks';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
-import { NovelScreenProps } from '@navigators/types';
+import { StackScreenProps } from '@react-navigation/stack';
 import { ChapterInfo } from '@database/types';
 import ChapterItem from './components/ChapterItem';
 import { getString } from '@strings/translations';
@@ -51,6 +51,17 @@ import { isNumber } from 'lodash-es';
 import NovelAppbar from './components/NovelAppbar';
 import { resolveUrl } from '@services/plugin/fetch';
 import { updateChapterProgressByIds } from '@database/queries/ChapterQueries';
+import { useTranslationSettings } from '@hooks/persisted/useSettings';
+import { batchTranslateChapters } from '@services/translation/BatchTranslationService';
+
+// Define the type here since the import is missing
+type RootStackParamList = {
+  Novel: { name: string; path: string; pluginId: string };
+  Chapter: { novel: any; chapter: ChapterInfo };
+  // other routes as needed
+};
+
+type NovelScreenProps = StackScreenProps<RootStackParamList, 'Novel'>;
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const { name, path, pluginId } = route.params;
@@ -110,6 +121,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     setTrue: openDrawer,
     setFalse: closeDrawer,
   } = useBoolean();
+
+  const { apiKey, model, defaultInstruction } = useTranslationSettings();
 
   const onPageScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = event.nativeEvent.contentOffset.y;
@@ -276,8 +289,31 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       }
     }
 
+    if (apiKey && selected.some(obj => obj.isDownloaded)) {
+      list.push({
+        icon: 'translate',
+        onPress: async () => {
+          const chaptersToTranslate = selected;
+          if (chaptersToTranslate.length > 0 && novel) {
+            setUpdating(true);
+            await batchTranslateChapters(
+              chaptersToTranslate,
+              novel,
+              apiKey,
+              model,
+              defaultInstruction,
+            );
+
+            setUpdating(false);
+            refreshChapters();
+          }
+          setSelected([]);
+        },
+      });
+    }
+
     return list;
-  }, [selected]);
+  }, [selected, apiKey, model, defaultInstruction]);
 
   const isSelected = (id: number) => {
     return selected.some(obj => obj.id === id);

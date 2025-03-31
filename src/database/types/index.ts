@@ -36,6 +36,7 @@ export interface ChapterInfo {
   page: string;
   progress: number | null;
   position?: number;
+  hasTranslation?: boolean;
 }
 
 export interface DownloadedChapter extends ChapterInfo {
@@ -98,4 +99,24 @@ export interface BackupCategory extends Category {
 export interface Repository {
   id: number;
   url: string;
+}
+
+export interface TranslationInfo {
+  id: number;
+  chapterId: number;
+  novelId: number;
+  chapterTitle: string;
+  novelTitle: string;
+  novelCover?: string;
+  content: string;
+  previewText: string;
+  model: string;
+  createdAt: number;
+}
+
+export interface NovelGroupedTranslations {
+  novelId: number;
+  novelTitle: string;
+  novelCover?: string;
+  chapters: TranslationInfo[];
 }

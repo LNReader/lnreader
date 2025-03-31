@@ -29,6 +29,8 @@ type WebViewPostEvent = {
 
 type WebViewReaderProps = {
   html: string;
+  translatedHtml?: string | null;
+  showTranslation?: boolean;
   nextChapter?: ChapterInfo;
   webViewRef: React.RefObject<WebView>;
   saveProgress(percentage: number): void;
@@ -57,6 +59,8 @@ const assetsUriPrefix = __DEV__
 
 const WebViewReader: React.FC<WebViewReaderProps> = ({
   html,
+  translatedHtml = null,
+  showTranslation = false,
   webViewRef,
   nextChapter,
   saveProgress,
@@ -81,6 +85,10 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
   const plugin = getPlugin(novel?.pluginId);
   const pluginCustomJS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.js`;
   const pluginCustomCSS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.css`;
+
+  // Content to display based on whether to show translation or original
+  const displayContent =
+    showTranslation && translatedHtml ? translatedHtml : html;
 
   useEffect(() => {
     const mmkvListener = MMKVStorage.addOnValueChangedListener(key => {
@@ -207,6 +215,11 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
                     readerSettings.fontFamily
                   }.ttf");
                 }
+                
+                /* Translation styles */
+                .translated-content {
+                  white-space: pre-wrap;
+                }
                 </style>
 
               <link rel="stylesheet" href="${pluginCustomCSS}">
@@ -215,8 +228,10 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
             <body class="${
               chapterGeneralSettings.pageReader ? 'page-reader' : ''
             }">
-              <div id="LNReader-chapter">
-                ${html}  
+              <div id="LNReader-chapter" class="${
+                showTranslation && translatedHtml ? 'translated-content' : ''
+              }">
+                ${displayContent}
               </div>
               <div id="reader-ui"></div>
               </body>
@@ -230,6 +245,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
                   batteryLevel,
                   autoSaveInterval: 2222,
                   DEBUG: __DEV__,
+                  isTranslated:
+                    showTranslation && translatedHtml ? true : false,
                   strings: {
                     finished: `${getString(
                       'readerScreen.finished',

@@ -11,6 +11,7 @@ export const BROWSE_SETTINGS = 'BROWSE_SETTINGS';
 export const LIBRARY_SETTINGS = 'LIBRARY_SETTINGS';
 export const CHAPTER_GENERAL_SETTINGS = 'CHAPTER_GENERAL_SETTINGS';
 export const CHAPTER_READER_SETTINGS = 'CHAPTER_READER_SETTINGS';
+export const TRANSLATION_SETTINGS = 'TRANSLATION_SETTINGS';
 
 export interface AppSettings {
   /**
@@ -118,6 +119,13 @@ export interface ChapterReaderSettings {
   epubUseCustomJS: boolean;
 }
 
+export interface TranslationSettings {
+  apiKey: string;
+  defaultInstruction: string;
+  model: string;
+  autoTranslate: boolean;
+}
+
 const initialAppSettings: AppSettings = {
   /**
    * General settings
@@ -205,6 +213,14 @@ export const initialChapterReaderSettings: ChapterReaderSettings = {
   epubUseCustomJS: false,
 };
 
+export const initialTranslationSettings: TranslationSettings = {
+  apiKey: '',
+  defaultInstruction:
+    'Translate this chapter to English, keep the style of the chapter, and return only the translated chapter without any additional text.',
+  model: 'anthropic/claude-3-haiku-20240307',
+  autoTranslate: false,
+};
+
 export const useAppSettings = () => {
   const [appSettings = initialAppSettings, setSettings] =
     useMMKVObject<AppSettings>(APP_SETTINGS);
@@ -287,5 +303,18 @@ export const useChapterReaderSettings = () => {
     setChapterReaderSettings,
     saveCustomReaderTheme,
     deleteCustomReaderTheme,
+  };
+};
+
+export const useTranslationSettings = () => {
+  const [translationSettings = initialTranslationSettings, setSettings] =
+    useMMKVObject<TranslationSettings>(TRANSLATION_SETTINGS);
+
+  const setTranslationSettings = (values: Partial<TranslationSettings>) =>
+    setSettings({ ...translationSettings, ...values });
+
+  return {
+    ...translationSettings,
+    setTranslationSettings,
   };
 };

@@ -19,6 +19,7 @@ import useChapter from './hooks/useChapter';
 import { ChapterContextProvider, useChapterContext } from './ChapterContext';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { useBackHandler } from '@hooks/index';
+import { useTranslation } from '@hooks/useTranslation';
 import { get } from 'lodash-es';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
@@ -65,9 +66,24 @@ export const ChapterContent = ({
   const { pageReader = false, keepScreenOn } = useChapterGeneralSettings();
   const [bookmarked, setBookmarked] = useState(chapter.bookmark);
 
+  const {
+    translationContent,
+    isTranslating,
+    showTranslation,
+    translateChapter,
+    toggleTranslation,
+    checkTranslation,
+  } = useTranslation(chapter?.id);
+
   useEffect(() => {
-    setBookmarked(chapter.bookmark);
-  }, [chapter]);
+    setBookmarked(chapter?.bookmark);
+    // Check for translation when the chapter loads
+    if (chapter?.id) {
+      checkTranslation().catch(error => {
+        console.error('Error checking translation:', error);
+      });
+    }
+  }, [chapter, checkTranslation]);
 
   const {
     hidden,
@@ -100,6 +116,12 @@ export const ChapterContent = ({
     drawerRef.current?.openDrawer();
     hideHeader();
   }, [drawerRef, hideHeader]);
+
+  const handleTranslateChapter = useCallback(() => {
+    if (chapter && novel) {
+      translateChapter(chapter, novel);
+    }
+  }, [chapter, novel, translateChapter]);
 
   useBackHandler(() => {
     if (get(drawerRef.current?.state, 'isOpen')) {
@@ -136,11 +158,13 @@ export const ChapterContent = ({
   return (
     <>
       {keepScreenOn ? <KeepScreenAwake /> : null}
-      {loading ? (
+      {loading || isTranslating ? (
         <ChapterLoadingScreen />
       ) : (
         <WebViewReader
           html={chapterText}
+          translatedHtml={translationContent}
+          showTranslation={showTranslation}
           nextChapter={nextChapter}
           webViewRef={webViewRef}
           saveProgress={saveProgress}
@@ -166,6 +190,11 @@ export const ChapterContent = ({
             navigateChapter={navigateChapter}
             navigation={navigation}
             openDrawer={openDrawer}
+            hasTranslation={!!translationContent}
+            showTranslation={showTranslation}
+            toggleTranslation={toggleTranslation}
+            translateChapter={handleTranslateChapter}
+            chapter={chapter}
           />
         </>
       ) : null}
