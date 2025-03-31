@@ -23,6 +23,8 @@ import { get } from 'lodash-es';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
+  const { disableDrawerSwipe = true } = useChapterGeneralSettings();
+
   return (
     <ChapterContextProvider
       novel={route.params.novel}
@@ -39,6 +41,8 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
         drawerWidth={300}
         drawerPosition="left"
         renderNavigationView={() => <ChapterDrawer />}
+        gestureEnabled={!disableDrawerSwipe}
+        drawerLockMode={disableDrawerSwipe ? 'locked-closed' : 'unlocked'}
       >
         <ChapterContent
           route={route}

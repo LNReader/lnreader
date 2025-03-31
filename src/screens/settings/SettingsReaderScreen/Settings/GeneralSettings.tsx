@@ -29,6 +29,7 @@ const GeneralSettings: React.FC = () => {
     autoScrollOffset = null,
     bionicReading = false,
     tapToScroll = false,
+    disableDrawerSwipe = true,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
 
@@ -94,6 +95,14 @@ const GeneralSettings: React.FC = () => {
         label={getString('readerScreen.bottomSheet.pageReader')}
         value={pageReader}
         onPress={() => setChapterGeneralSettings({ pageReader: !pageReader })}
+        theme={theme}
+      />
+      <SettingSwitch
+        label={getString('readerScreen.bottomSheet.disableDrawerSwipe')}
+        value={disableDrawerSwipe}
+        onPress={() =>
+          setChapterGeneralSettings({ disableDrawerSwipe: !disableDrawerSwipe })
+        }
         theme={theme}
       />
       <SettingSwitch
