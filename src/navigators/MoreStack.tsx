@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { createStackNavigator } from '@react-navigation/stack';
 
 // Screens
@@ -15,9 +14,11 @@ import Downloads from '../screens/more/DownloadsScreen';
 import AppearanceSettings from '../screens/settings/SettingsAppearanceScreen';
 import CategoriesScreen from '@screens/Categories/CategoriesScreen';
 import RespositorySettings from '@screens/settings/SettingsRepositoryScreen/SettingsRepositoryScreen';
+import TranslationSettings from '@screens/settings/SettingsTranslationScreen';
+import TranslationListScreen from '@screens/settings/TranslationListScreen';
 // import LibrarySettings from '@screens/settings/SettingsLibraryScreen/SettingsLibraryScreen';
 import StatsScreen from '@screens/StatsScreen/StatsScreen';
-import { MoreStackParamList, SettingsStackParamList } from './types';
+import { MoreStackParamList, SettingsStackParamList } from './types/index';
 
 const Stack = createStackNavigator<
   MoreStackParamList & SettingsStackParamList
@@ -35,6 +36,8 @@ const SettingsStack = () => (
     <Stack.Screen name="AppearanceSettings" component={AppearanceSettings} />
     <Stack.Screen name="AdvancedSettings" component={AdvancedSettings} />
     <Stack.Screen name="RespositorySettings" component={RespositorySettings} />
+    <Stack.Screen name="TranslationSettings" component={TranslationSettings} />
+    <Stack.Screen name="TranslationList" component={TranslationListScreen} />
     {/* <Stack.Screen name="LibrarySettings" component={LibrarySettings} /> */}
   </Stack.Navigator>
 );

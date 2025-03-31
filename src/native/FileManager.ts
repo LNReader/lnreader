@@ -32,6 +32,8 @@ interface FileManagerInterface {
   ) => Promise<void>;
   ExternalDirectoryPath: string;
   ExternalCachesDirectoryPath: string;
+  openFileUsingContentUri: (path: string) => Promise<boolean>;
+  openFileUsingPath: (path: string) => Promise<boolean>;
 }
 
 const { FileManager } = NativeModules;

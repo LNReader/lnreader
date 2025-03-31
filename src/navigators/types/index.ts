@@ -86,6 +86,8 @@ export type SettingsStackParamList = {
   AdvancedSettings: undefined;
   LibrarySettings: undefined;
   RespositorySettings: undefined;
+  TranslationSettings: undefined;
+  TranslationList: undefined;
 };
 
 export type NovelScreenProps = StackScreenProps<RootStackParamList, 'Novel'>;
@@ -158,4 +160,8 @@ export type BackupSettingsScreenProps = StackScreenProps<
 export type AdvancedSettingsScreenProps = StackScreenProps<
   SettingsStackParamList,
   'AdvancedSettings'
+>;
+export type TranslationListScreenProps = StackScreenProps<
+  SettingsStackParamList,
+  'TranslationList'
 >;

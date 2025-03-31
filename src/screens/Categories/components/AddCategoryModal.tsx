@@ -4,7 +4,7 @@ import { Modal, overlay, Portal, TextInput } from 'react-native-paper';
 
 import { Button } from '@components/index';
 
-import { Category } from '../../../database/types';
+import { Category } from '@database/types';
 import {
   createCategory,
   isCategoryNameDuplicate,

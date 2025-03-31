@@ -19,6 +19,11 @@ interface ChapterFooterProps {
   navigateChapter(position: 'NEXT' | 'PREV'): void;
   navigation: ChapterScreenProps['navigation'];
   openDrawer: () => void;
+  hasTranslation?: boolean;
+  showTranslation?: boolean;
+  toggleTranslation?: () => void;
+  translateChapter?: () => void;
+  chapter?: ChapterInfo;
 }
 
 const ChapterFooter = ({
@@ -30,8 +35,13 @@ const ChapterFooter = ({
   navigateChapter,
   navigation,
   openDrawer,
+  hasTranslation = false,
+  showTranslation = false,
+  toggleTranslation = () => {},
+  translateChapter = () => {},
+  chapter,
 }: ChapterFooterProps) => {
-  const { novel, chapter } = useChapterContext();
+  const { novel } = useChapterContext();
   const rippleConfig = {
     color: theme.rippleColor,
     borderless: true,
@@ -70,7 +80,7 @@ const ChapterFooter = ({
             onPress={() =>
               navigation.navigate('WebviewScreen', {
                 name: novel.name,
-                url: chapter.path,
+                url: chapter?.path || '',
                 pluginId: novel.pluginId,
               })
             }
@@ -100,6 +110,32 @@ const ChapterFooter = ({
             iconColor={theme.onSurface}
           />
         </Pressable>
+        {/* Translation buttons - only show for downloaded chapters */}
+        {hasTranslation ? (
+          <Pressable
+            android_ripple={rippleConfig}
+            style={styles.buttonStyles}
+            onPress={toggleTranslation}
+          >
+            <IconButton
+              icon={showTranslation ? 'translate-off' : 'translate'}
+              size={26}
+              iconColor={showTranslation ? theme.primary : theme.onSurface}
+            />
+          </Pressable>
+        ) : chapter?.isDownloaded ? (
+          <Pressable
+            android_ripple={rippleConfig}
+            style={styles.buttonStyles}
+            onPress={translateChapter}
+          >
+            <IconButton
+              icon="translate"
+              size={26}
+              iconColor={theme.onSurface}
+            />
+          </Pressable>
+        ) : null}
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}

@@ -12,6 +12,8 @@ import { useChapterContext } from '../ChapterContext';
 interface ReaderAppbarProps {
   theme: ThemeColors;
   goBack: () => void;
+  bookmarked: boolean;
+  setBookmarked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ReaderAppbar = ({
