@@ -422,7 +422,6 @@
       "swipeGestures": "Swipe left or right to navigate between chapters",
       "textAlign": "Text align",
       "textSize": "Text size",
-      "useChapterDrawerSwipeNavigation": "Swipe right to open drawer",
       "disableDrawerSwipe": "Disable drawer swipe navigation",
       "verticalSeekbar": "Vertical Seekbar",
       "keepScreenOn": "Keep screen on",

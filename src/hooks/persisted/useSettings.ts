@@ -183,7 +183,7 @@ export const initialChapterGeneralSettings: ChapterGeneralSettings = {
   bionicReading: false,
   tapToScroll: false,
   TTSEnable: false,
-  disableDrawerSwipe: true,
+  disableDrawerSwipe: false,
 };
 
 export const initialChapterReaderSettings: ChapterReaderSettings = {
