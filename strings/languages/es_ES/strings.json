@@ -58,7 +58,7 @@
     "backupName": "Backup name",
     "createBackup": "Create backup",
     "createBackupDesc": "Can be used to restore current library",
-    "createBackupWarning": "Create backup may not work on devices with Android 9 or lower.",
+    "createBackupWarning": "Crear un respaldo puede no funcionar en dispositivos con Android 9 o inferior.",
     "downloadingData": "Downloading Data",
     "downloadingDownloadedFiles": "Downloading Downloaded files",
     "drive": {
@@ -151,7 +151,7 @@
     "setModalEmptyMsg": "No tienes categorías. Pulsa el botón Editar para crear una para organizar tu biblioteca"
   },
   "repositories": {
-    "emptyMsg": "You have no repositories. Add your first plugin repository to get started."
+    "emptyMsg": "No tienes repositorios. Añade tu primer repositorio de plugins para empezar."
   },
   "common": {
     "about": "About",
