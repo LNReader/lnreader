@@ -23,7 +23,7 @@ import { get } from 'lodash-es';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
   const drawerRef = useRef<DrawerLayoutAndroid>(null);
-  const { disableDrawerSwipe = true } = useChapterGeneralSettings();
+  const { disableDrawerSwipe = false } = useChapterGeneralSettings();
 
   return (
     <ChapterContextProvider

@@ -29,7 +29,7 @@ const GeneralSettings: React.FC = () => {
     autoScrollOffset = null,
     bionicReading = false,
     tapToScroll = false,
-    disableDrawerSwipe = true,
+    disableDrawerSwipe = false,
     setChapterGeneralSettings,
   } = useChapterGeneralSettings();
 
