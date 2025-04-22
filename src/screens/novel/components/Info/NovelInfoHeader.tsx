@@ -55,6 +55,7 @@ interface NovelInfoHeaderProps {
   openDrawer: () => void;
   page?: string;
   setCustomNovelCover: () => Promise<void>;
+  saveNovelCover: () => Promise<void>;
   theme: ThemeColors;
   totalChapters?: number;
   trackerSheetRef: React.RefObject<BottomSheetModalMethods | null>;

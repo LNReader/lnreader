@@ -30,6 +30,8 @@ import { ThemeColors } from '@theme/types';
 import { SafeAreaView } from '@components';
 import { useNovelContext } from './NovelContext';
 import { FlashList } from '@shopify/flash-list';
+import FileManager from '@native/FileManager';
+import { downloadFile } from '../../plugins/helpers/fetch';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const {
@@ -220,6 +222,28 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     }
   };
   const styles = useMemo(() => createStyles(theme), [theme]);
+
+  const saveNovelCover = async () => {
+    if (!novel.cover) {
+      showToast(getString('novelScreen.noCoverFound'));
+      return;
+    }
+    const cover = novel.cover;
+    try {
+      const downloadDir = 'file:///storage/emulated/0/Download/';
+      const imageExtension = cover.split('.').pop();
+      const filepath =
+        downloadDir + novel.name + novel.id + '.' + imageExtension;
+      if (cover.startsWith('http')) {
+        await downloadFile(cover, filepath);
+      } else {
+        await FileManager.copyFile(cover, filepath);
+      }
+      showToast(getString('novelScreen.coverSaved'));
+    } catch (err: any) {
+      showToast(err.message);
+    }
+  };
 
   return (
     <Drawer
