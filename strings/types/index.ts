@@ -292,6 +292,7 @@ export interface StringMap {
   'novelScreen.convertToEpubModal.useCustomJSWarning': 'string';
   'novelScreen.convertToEpubModal.useReaderTheme': 'string';
   'novelScreen.coverSaved': 'string';
+  'novelScreen.coverNotSaved': 'string';
   'novelScreen.deleteChapterError': 'string';
   'novelScreen.deleteMessage': 'string';
   'novelScreen.deletedAllDownloads': 'string';
