@@ -120,7 +120,7 @@
     "searchbar": "البحث في المصادر",
     "selectNovel": "Select Novel",
     "uninstalledPlugin": "Uninstalled %{name}",
-    "updateFailed": "Update failed",
+    "updateFailed": "",
     "updatedTo": "Updated to %{version}",
     "settings": {
       "title": "Plugin Settings",
