@@ -144,17 +144,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
       },
       uri,
     );
-    console.log({
-      title: novel.name,
-      fileName: novel.name.replace(/\s/g, ''),
-      language: 'en',
-      cover: novel.cover,
-      description: novel.summary,
-      author: novel.author,
-      bookId: novel.pluginId.toString(),
-      stylesheet: epubStyle || undefined,
-      js: epubUseCustomJS ? epubJS : undefined,
-    });
+
     try {
       await epub.prepare();
       for (let i = 0; i < chapters.length; i++) {
@@ -162,12 +152,6 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
         const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${novel.id}/${chapter.id}/index.html`;
         if (NativeFile.exists(filePath)) {
           const downloaded = NativeFile.readFile(filePath);
-          console.log({
-            title:
-              chapter.name?.trim() ?? 'Chapter ' + (chapter.chapterNumber || i),
-            fileName: 'Chapter' + i,
-            htmlBody: `<chapter data-novel-id='${novel.pluginId}' data-chapter-id='${chapter.id}'>${downloaded}</chapter>`,
-          });
 
           await epub.addChapter({
             title:
@@ -180,7 +164,6 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
       const epubFilePath = await epub.save();
       showToast('Epub file saved at: ' + epubFilePath);
     } catch (error) {
-      console.error(error);
       showToast('Cannot create because: ' + error);
       await epub.discardChanges();
     }

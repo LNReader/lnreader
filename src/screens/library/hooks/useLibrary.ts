@@ -25,9 +25,6 @@ export const useLibrary = () => {
   const [searchText, setSearchText] = useState('');
 
   const getLibrary = useCallback(async () => {
-    console.time('g');
-    console.log(sortOrder);
-
     if (searchText) {
       setIsLoading(true);
     }
@@ -37,29 +34,18 @@ export const useLibrary = () => {
       getLibraryNovelsFromDb(sortOrder, filter, searchText, downloadedOnlyMode),
       // getLibraryNovelsFromDb(),
     ]);
-    console.log(categories, novels);
-    // console.log(n);
-
-    // const res = categories.map(category => ({
-    //   ...category,
-    //   novels: novels.filter(novel => novel.category === category.name),
-    // }));
 
     const res = categories.map(c => ({
       ...c,
       novelIds: (c.novelIds ?? '').split(',').map(Number),
     }));
-    console.log('res', res);
 
     setCategories(res);
     setLibrary(novels);
     setIsLoading(false);
-    console.timeEnd('g');
   }, [downloadedOnlyMode, filter, searchText, sortOrder]);
 
   useFocusEffect(() => {
-    console.log('h');
-
     getLibrary();
   });
 

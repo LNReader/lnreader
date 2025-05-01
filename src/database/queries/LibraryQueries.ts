@@ -27,7 +27,7 @@ export const getLibraryNovelsFromDb = (
   return getAllSync<NovelInfo>([query, [searchText ?? '']]);
 };
 
-const getLibraryWithCategoryQuery = `SELECT * FROM Novel WHERE inLibrary = 1`;
+const getLibraryWithCategoryQuery = 'SELECT * FROM Novel WHERE inLibrary = 1';
 // `
 //   SELECT *
 //   FROM
@@ -85,10 +85,8 @@ export const getLibraryWithCategory = ({
   if (sortOrder) {
     query += ` ORDER BY ${sortOrder} `;
   }
-  console.log(query, preparedArgument);
 
   const res = getAllSync<LibraryNovelInfo>([query, preparedArgument]);
 
-  console.log(res);
   return res;
 };

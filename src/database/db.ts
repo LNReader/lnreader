@@ -39,10 +39,7 @@ export const createTables = () => {
     db.getFirstSync<{ user_version: number }>('PRAGMA user_version')
       ?.user_version ?? 0;
 
-  console.log('userVersion', userVersion);
   if (userVersion < 1) {
-    console.log('updateToDBVersion1');
-
     updateToDBVersion1();
   }
 
@@ -87,7 +84,6 @@ export const recreateDBIndex = () => {
       db.runSync(createChapterIndexQuery);
     });
   } catch (error: unknown) {
-    if (__DEV__) console.error(error);
     const message = error instanceof Error ? error.message : String(error);
     showToast(message);
   }
@@ -99,60 +95,52 @@ function updateToDBVersion1() {
   db.execSync('PRAGMA temp_store = MEMORY');
 
   db.withTransactionSync(() => {
-    try {
-      db.runSync(
-        'ALTER TABLE Novel ADD COLUMN chaptersDownloaded INTEGER DEFAULT 0',
-      );
+    db.runSync(
+      'ALTER TABLE Novel ADD COLUMN chaptersDownloaded INTEGER DEFAULT 0',
+    );
 
-      db.runSync(
-        'ALTER TABLE Novel ADD COLUMN chaptersUnread INTEGER DEFAULT 0',
-      );
-      db.runSync(
-        'ALTER TABLE Novel ADD COLUMN totalChapters INTEGER DEFAULT 0',
-      );
-      db.runSync('ALTER TABLE Novel ADD COLUMN lastReadAt TEXT');
-      db.runSync('ALTER TABLE Novel ADD COLUMN lastUpdatedAt TEXT');
-      db.runSync(`UPDATE Novel
+    db.runSync('ALTER TABLE Novel ADD COLUMN chaptersUnread INTEGER DEFAULT 0');
+    db.runSync('ALTER TABLE Novel ADD COLUMN totalChapters INTEGER DEFAULT 0');
+    db.runSync('ALTER TABLE Novel ADD COLUMN lastReadAt TEXT');
+    db.runSync('ALTER TABLE Novel ADD COLUMN lastUpdatedAt TEXT');
+    db.runSync(`UPDATE Novel
       SET chaptersDownloaded = (
           SELECT COUNT(*)
           FROM Chapter
           WHERE Chapter.novelId = Novel.id AND Chapter.isDownloaded = 1
       );
       `);
-      db.runSync(`UPDATE Novel
+    db.runSync(`UPDATE Novel
 SET chaptersUnread = (
     SELECT COUNT(*)
     FROM Chapter
     WHERE Chapter.novelId = Novel.id AND Chapter.unread = 1
 );
 `);
-      db.runSync(`UPDATE Novel
+    db.runSync(`UPDATE Novel
 SET totalChapters = (
     SELECT COUNT(*)
     FROM Chapter
     WHERE Chapter.novelId = Novel.id
 );
 `);
-      db.runSync(`UPDATE Novel
+    db.runSync(`UPDATE Novel
       SET lastReadAt = (
           SELECT MAX(readTime)
           FROM Chapter
           WHERE Chapter.novelId = Novel.id
       );
       `);
-      db.runSync(`UPDATE Novel
+    db.runSync(`UPDATE Novel
       SET lastUpdatedAt = (
           SELECT MAX(updatedTime)
           FROM Chapter
           WHERE Chapter.novelId = Novel.id
       );
       `);
-      db.runSync(createNovelTriggerQueryInsert);
-      db.runSync(createNovelTriggerQueryUpdate);
-      db.runSync(createNovelTriggerQueryDelete);
-      db.execSync('PRAGMA user_version = 1');
-    } catch (error) {
-      console.error(error);
-    }
+    db.runSync(createNovelTriggerQueryInsert);
+    db.runSync(createNovelTriggerQueryUpdate);
+    db.runSync(createNovelTriggerQueryDelete);
+    db.execSync('PRAGMA user_version = 1');
   });
 }
