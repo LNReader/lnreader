@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import color from 'color';
 
 import { Text } from 'react-native-paper';
@@ -8,10 +8,13 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { ThemeColors } from '@theme/types';
 import { bookmarkChapter } from '@database/queries/ChapterQueries';
 import { useChapterContext } from '../ChapterContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface ReaderAppbarProps {
   theme: ThemeColors;
   goBack: () => void;
+  bookmarked: boolean;
+  setBookmarked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ReaderAppbar = ({
@@ -21,6 +24,7 @@ const ReaderAppbar = ({
   setBookmarked,
 }: ReaderAppbarProps) => {
   const { chapter, novel } = useChapterContext();
+  const { top: topInset } = useSafeAreaInsets();
 
   return (
     <Animated.View
@@ -29,7 +33,7 @@ const ReaderAppbar = ({
       style={[
         styles.container,
         {
-          paddingTop: (StatusBar.currentHeight || 0) + 8,
+          paddingTop: (topInset || 0) + 8,
           backgroundColor: color(theme.surface).alpha(0.9).string(),
         },
       ]}
@@ -74,14 +78,6 @@ const ReaderAppbar = ({
 export default ReaderAppbar;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: 'absolute',
-    width: '100%',
-    top: 0,
-    zIndex: 1,
-    paddingBottom: 8,
-  },
   appbar: {
     display: 'flex',
     flexDirection: 'row',
@@ -89,13 +85,21 @@ const styles = StyleSheet.create({
   bookmark: {
     marginRight: 4,
   },
+  container: {
+    flex: 1,
+    paddingBottom: 8,
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    zIndex: 1,
+  },
   content: {
     flex: 1,
   },
-  title: {
-    fontSize: 20,
-  },
   subtitle: {
     fontSize: 16,
+  },
+  title: {
+    fontSize: 20,
   },
 });

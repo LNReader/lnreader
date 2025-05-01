@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-unused-styles */
 import React, { memo } from 'react';
 import { View, Dimensions, StyleSheet } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
@@ -20,7 +21,9 @@ const MalLoading: React.FC<Props> = ({ theme }) => {
 
   const renderLoadingRect = (item: number, index: number) => {
     let randomNumber = Math.random();
-    randomNumber < 0.1 ? (randomNumber = 0.1) : null;
+    if (randomNumber < 0.1) {
+      randomNumber = 0.1;
+    }
     return (
       <View key={index} style={styles.loadingContainer}>
         <ShimmerPlaceHolder
@@ -62,31 +65,30 @@ const MalLoading: React.FC<Props> = ({ theme }) => {
 const createStyleSheet = (theme: ThemeColors) => {
   return StyleSheet.create({
     container: {
-      position: 'relative',
-      flexGrow: 1,
-      //   height: 150,
       backgroundColor: 'transparent',
+      flexGrow: 1,
       marginBottom: 8,
       marginTop: -3,
       overflow: 'hidden',
+      position: 'relative',
+      //   height: 150,
     },
     loadingContainer: {
-      margin: 10,
-      borderRadius: 8,
       backgroundColor: theme.overlay3,
-      width: Dimensions.get('window').width - 20,
-      overflow: 'hidden',
+      borderRadius: 8,
+      boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
       flexDirection: 'row',
-      elevation: 1,
+      margin: 10,
+      overflow: 'hidden',
+    },
+    loadingText: {
+      height: 10,
+      margin: 10,
+      width: Dimensions.get('window').width - 140,
     },
     text: {
       borderRadius: 8,
       marginVertical: 5,
-    },
-    loadingText: {
-      margin: 10,
-      height: 10,
-      width: Dimensions.get('window').width - 140,
     },
   });
 };

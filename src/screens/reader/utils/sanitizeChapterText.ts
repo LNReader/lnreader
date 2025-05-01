@@ -7,9 +7,18 @@ export const sanitizeChapterText = (
   chapterName: string,
   html: string,
 ): string => {
-  // Sanitize the HTML to remove unwanted elements
-  let sanitizedHtml = sanitizeHtml(html, {
-    allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'title']),
+  const text = sanitizeHtml(html, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+      'img',
+      'i',
+      'em',
+      'b',
+      'a',
+      'div',
+      'ol',
+      'li',
+      'title',
+    ]),
     allowedAttributes: {
       a: ['href', 'class', 'id'],
       div: ['class', 'id'],
@@ -23,7 +32,7 @@ export const sanitizeChapterText = (
 
   // Return the sanitized and updated HTML or an error message
   return (
-    sanitizedHtml ||
+    text ||
     getString('readerScreen.emptyChapterMessage', {
       pluginId,
       novelName,

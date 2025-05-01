@@ -14,6 +14,17 @@ import {
 } from './backup/selfhost';
 import { migrateNovel, MigrateNovelData } from './migrate/migrateNovel';
 import { downloadChapter } from './download/downloadChapter';
+import { askForPostNotificationsPermission } from '@utils/askForPostNoftificationsPermission';
+
+type taskNames =
+  | 'IMPORT_EPUB'
+  | 'UPDATE_LIBRARY'
+  | 'DRIVE_BACKUP'
+  | 'DRIVE_RESTORE'
+  | 'SELF_HOST_BACKUP'
+  | 'SELF_HOST_RESTORE'
+  | 'MIGRATE_NOVEL'
+  | 'DOWNLOAD_CHAPTER';
 
 export type BackgroundTask =
   | {
@@ -73,9 +84,11 @@ export default class ServiceManager {
       >
     ).includes(task.name);
   }
-  start() {
+  async start() {
     if (!this.isRunning) {
-      BackgroundService.start(ServiceManager.lauch, {
+      const notificationsAllowed = await askForPostNotificationsPermission();
+      if (!notificationsAllowed) return;
+      BackgroundService.start(ServiceManager.launch, {
         taskName: 'app_services',
         taskTitle: 'App Service',
         taskDesc: getString('common.preparing'),
@@ -97,7 +110,7 @@ export default class ServiceManager {
   setMeta(
     transformer: (meta: BackgroundTaskMetadata) => BackgroundTaskMetadata,
   ) {
-    let taskList = [...this.getTaskList()];
+    const taskList = [...this.getTaskList()];
     taskList[0] = {
       ...taskList[0],
       meta: transformer(taskList[0].meta),
@@ -150,7 +163,7 @@ export default class ServiceManager {
     }
   }
 
-  static async lauch() {
+  static async launch() {
     // retrieve class instance because this is running in different context
     const manager = ServiceManager.manager;
     const doneTasks: Record<BackgroundTask['name'], number> = {
@@ -190,7 +203,12 @@ export default class ServiceManager {
           title: 'Background tasks done',
           body: Object.keys(doneTasks)
             .filter(key => doneTasks[key as BackgroundTask['name']] > 0)
-            .map(key => `${key}: ${doneTasks[key as BackgroundTask['name']]}`)
+            .map(
+              key =>
+                `${getString(`notifications.${key as taskNames}`)}: ${
+                  doneTasks[key as BackgroundTask['name']]
+                }`,
+            )
             .join('\n'),
         },
         trigger: null,
@@ -228,14 +246,17 @@ export default class ServiceManager {
     return getMMKVObject<Array<QueuedBackgroundTask>>(this.STORE_KEY) || [];
   }
   addTask(tasks: BackgroundTask | BackgroundTask[]) {
-    const currentTasks = this.getTaskList();
+    let currentTasks = this.getTaskList();
+    // @ts-expect-error Older version can still have tasks with old format
+    currentTasks = currentTasks.filter(task => !task?.name);
+
     const addableTasks = (Array.isArray(tasks) ? tasks : [tasks]).filter(
       task =>
         this.isMultiplicableTask(task) ||
         !currentTasks.some(_t => _t.task.name === task.name),
     );
     if (addableTasks.length) {
-      let newTasks: QueuedBackgroundTask[] = addableTasks.map(task => ({
+      const newTasks: QueuedBackgroundTask[] = addableTasks.map(task => ({
         task,
         meta: {
           name: this.getTaskName(task),

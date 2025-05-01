@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, FlatList, Text, View, FlatListProps } from 'react-native';
-import { Portal, Modal } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 import GlobalSearchNovelCover from '../globalsearch/GlobalSearchNovelCover';
 
 import { showToast } from '@utils/showToast';
-import { Button } from '@components';
+import { Button, Modal } from '@components';
 import { getString } from '@strings/translations';
 import { MigrateNovelScreenProps } from '@navigators/types';
 import { NovelInfo } from '@database/types';
@@ -50,7 +50,10 @@ const MigrationNovelList = ({
       theme={theme}
       onPress={() => showModal(item.path, item.name)}
       onLongPress={() =>
-        navigation.push('Novel', { pluginId: pluginId, ...item })
+        navigation.push('ReaderStack', {
+          screen: 'Novel',
+          params: { pluginId: pluginId, ...item },
+        })
       }
       inLibrary={inLibrary(item.path)}
     />
@@ -86,16 +89,7 @@ const MigrationNovelList = ({
         }
       />
       <Portal>
-        <Modal
-          visible={migrateNovelDialog}
-          onDismiss={hideMigrateNovelDialog}
-          contentContainerStyle={{
-            padding: 24,
-            margin: 20,
-            borderRadius: 28,
-            backgroundColor: theme.overlay3,
-          }}
-        >
+        <Modal visible={migrateNovelDialog} onDismiss={hideMigrateNovelDialog}>
           <Text
             style={{
               color: theme.onSurface,
@@ -143,7 +137,7 @@ export default MigrationNovelList;
 const styles = StyleSheet.create({
   flatListCont: {
     flexGrow: 1,
-    paddingVertical: 8,
     paddingHorizontal: 4,
+    paddingVertical: 8,
   },
 });

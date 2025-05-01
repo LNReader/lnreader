@@ -1,9 +1,4 @@
-import {
-  StyleProp,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  ViewStyle,
-} from 'react-native';
+import { Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import React, { useEffect } from 'react';
 import Animated, {
   interpolateColor,
@@ -13,72 +8,60 @@ import Animated, {
   withTiming,
   useDerivedValue,
 } from 'react-native-reanimated';
-import { ThemeColors } from '@theme/types';
+import { useTheme } from '@hooks/persisted';
 
 interface SwitchProps {
-  theme: ThemeColors;
   value: boolean;
-  onValueChange: () => void;
+  onValueChange?: () => void;
   size?: number;
   style?: StyleProp<ViewStyle>;
 }
 
-const Switch = ({
-  theme,
-  value,
-  size = 22,
-  onValueChange,
-  style,
-}: SwitchProps) => {
-  // value for Switch Animation
-  const switchTranslate = useSharedValue(value ? size : size / 6);
-  // state for activate Switch
-  // Progress Value
-  const progress = useDerivedValue(() => {
-    return withTiming(value ? size : 0);
-  });
+const Switch = ({ value, size = 22, onValueChange, style }: SwitchProps) => {
+  const theme = useTheme();
+  // Value for Switch Animation
+  // const switchTranslate = useSharedValue(value ? size : size / 6);
 
-  // useEffect for change the switchTranslate Value
+  // Background color animation progress
+  const progress = useSharedValue(value ? size : 0);
+
+  // Animate switch movement
+  const customSpringStyles = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateX: withSpring(value ? size : size / 6, {
+          mass: 1,
+          damping: 15,
+          stiffness: 120,
+          overshootClamping: false,
+          restSpeedThreshold: 0.001,
+          restDisplacementThreshold: 0.001,
+        }),
+      },
+    ],
+  }));
+
+  // Precompute background color animation
+  const backgroundColor = useDerivedValue(
+    () =>
+      interpolateColor(
+        progress.value,
+        [0, size],
+        [theme.outline, theme.primary],
+      ),
+    [value],
+  );
+
+  const backgroundColorStyle = useAnimatedStyle(() => ({
+    backgroundColor: backgroundColor.value,
+  }));
+
   useEffect(() => {
-    if (value) {
-      switchTranslate.value = size;
-    } else {
-      switchTranslate.value = size / 6;
-    }
-  }, [value, switchTranslate, size]);
-
-  // Circle Animation
-  const customSpringStyles = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateX: withSpring(switchTranslate.value, {
-            mass: 1,
-            damping: 15,
-            stiffness: 120,
-            overshootClamping: false,
-            restSpeedThreshold: 0.001,
-            restDisplacementThreshold: 0.001,
-          }),
-        },
-      ],
-    };
-  });
-
-  // Background Color Animation
-  const backgroundColorStyle = useAnimatedStyle(() => {
-    const backgroundColor = interpolateColor(
-      progress.value,
-      [0, size],
-      [theme.outline, theme.primary],
-    );
-    return {
-      backgroundColor,
-    };
-  });
+    progress.value = withTiming(value ? size : 0);
+  }, [progress, size, value]);
 
   return (
-    <TouchableWithoutFeedback onPress={onValueChange}>
+    <Pressable onPress={onValueChange}>
       <Animated.View
         style={[
           styles.container,
@@ -99,19 +82,16 @@ const Switch = ({
           ]}
         />
       </Animated.View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 
-export default Switch;
+export default React.memo(Switch);
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    backgroundColor: '#F2F5F7',
-  },
   circle: {
     backgroundColor: 'white',
+    elevation: 4,
     shadowColor: 'black',
     shadowOffset: {
       width: 0,
@@ -119,6 +99,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 2.5,
-    elevation: 4,
+  },
+  container: {
+    justifyContent: 'center',
   },
 });

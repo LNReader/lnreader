@@ -32,14 +32,16 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
   );
 
   const [pictureHeight, pictureWidth] = useMemo(() => {
-    let height = (window.width / numColumns) * (4 / 3);
-    let width = (window.width - 12 - 9.6 * numColumns) / numColumns;
+    const height = (window.width / numColumns) * (4 / 3);
+    const width = (window.width - 12 - 9.6 * numColumns) / numColumns;
     return [height, width];
   }, [numColumns, window.width]);
 
   const renderLoadingNovel = (item: number) => {
     let randomNumber = Math.random();
-    randomNumber < 0.1 ? (randomNumber = 0) : null;
+    if (randomNumber < 0.1) {
+      randomNumber = 0.1;
+    }
     return (
       <View key={'sourceLoading' + item} style={{ flex: 1 / numColumns }}>
         <LoadingNovel
@@ -84,25 +86,25 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
 
 const createStyleSheet = () => {
   return StyleSheet.create({
+    completeRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginBottom: 8,
+      opacity: 0.8,
+      paddingHorizontal: 1,
+      position: 'relative',
+      right: 0,
+    },
     container: {
       flexGrow: 1,
-      marginHorizontal: 2,
       marginBottom: 8,
+      marginHorizontal: 2,
       marginTop: 2,
       overflow: 'visible',
     },
     row: {
       flexDirection: 'row',
       paddingHorizontal: 1,
-    },
-    completeRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      paddingHorizontal: 1,
-      marginBottom: 8,
-      position: 'relative',
-      right: 0,
-      opacity: 0.8,
     },
   });
 };

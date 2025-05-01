@@ -69,30 +69,31 @@ export default function OnboardingScreen() {
       >
         {renderStep()}
       </View>
-      <View style={{ flex: 1 }} />
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Button
-          style={{ flex: 1 }}
-          title={getString('onboardingScreen.complete')}
-          mode="contained"
-          onPress={() => {
-            MMKVStorage.set('IS_ONBOARDED', true);
-          }}
-        />
-      </View>
+
+      <Button
+        title={getString('onboardingScreen.complete')}
+        mode="contained"
+        onPress={() => {
+          MMKVStorage.set('IS_ONBOARDED', true);
+        }}
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1,
+    height: '100%',
+    paddingBottom: 16,
     paddingHorizontal: 16,
     paddingTop: 40,
-    paddingBottom: 16,
   },
   stepContainer: {
-    paddingVertical: 16,
     borderRadius: 8,
+    flexBasis: '20%',
+    flexGrow: 1,
+    marginBottom: 16,
+    paddingTop: 16,
+    position: 'relative',
   },
 });

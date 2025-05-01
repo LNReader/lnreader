@@ -26,7 +26,7 @@ const CustomJSSettings = () => {
         </List.SubHeader>
       </View>
       <View style={styles.customJSContainer}>
-        <Text numberOfLines={3} style={[{ color: theme.onSurface }]}>
+        <Text numberOfLines={3} style={{ color: theme.onSurface }}>
           {customJS || `${getString('common.example')}: ${customJSPlaceholder}`}
         </Text>
         <View style={styles.customJSButtons}>
@@ -71,19 +71,19 @@ const CustomJSSettings = () => {
 export default CustomJSSettings;
 
 const styles = StyleSheet.create({
-  fontSizeL: {
-    fontSize: 16,
-  },
-  customJSContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 8,
-  },
-  marginLeftS: {
-    marginLeft: 8,
-  },
   customJSButtons: {
     flex: 1,
     flexDirection: 'row-reverse',
   },
+  customJSContainer: {
+    paddingBottom: 8,
+    paddingHorizontal: 16,
+  },
+  fontSizeL: {
+    fontSize: 16,
+  },
   header: { flexDirection: 'row', justifyContent: 'space-between' },
+  marginLeftS: {
+    marginLeft: 8,
+  },
 });

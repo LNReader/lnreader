@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Modal, overlay, TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { StorageAccessFramework } from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
 
-import { Button } from '@components/index';
+import { Button, Modal } from '@components/index';
 
 import { showToast } from '@utils/showToast';
 import { useTheme } from '@hooks/persisted';
@@ -57,18 +57,11 @@ const CustomFileModal: React.FC<CustomFileModal> = ({
   };
 
   return (
-    <Modal
-      visible={visible}
-      onDismiss={onDismiss}
-      contentContainerStyle={[
-        styles.modalContainer,
-        { backgroundColor: overlay(2, theme.surface) },
-      ]}
-    >
+    <Modal visible={visible} onDismiss={onDismiss}>
       <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
         {title}
       </Text>
-      <Text style={[{ color: theme.onSurfaceVariant }]}>{description}</Text>
+      <Text style={{ color: theme.onSurfaceVariant }}>{description}</Text>
       <TextInput
         multiline
         mode="outlined"
@@ -103,28 +96,23 @@ const CustomFileModal: React.FC<CustomFileModal> = ({
 export default CustomFileModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    padding: 24,
-    borderRadius: 28,
-  },
-  textInput: {
-    height: 220,
-    borderRadius: 14,
+  button: {
+    flex: 1,
+    marginHorizontal: 8,
     marginTop: 16,
-    marginBottom: 8,
-    fontSize: 16,
+  },
+  customCSSButtons: {
+    flexDirection: 'row-reverse',
   },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
   },
-  customCSSButtons: {
-    flexDirection: 'row-reverse',
-  },
-  button: {
+  textInput: {
+    borderRadius: 14,
+    fontSize: 16,
+    height: 220,
+    marginBottom: 8,
     marginTop: 16,
-    flex: 1,
-    marginHorizontal: 8,
   },
 });

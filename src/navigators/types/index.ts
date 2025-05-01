@@ -7,12 +7,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { MaterialBottomTabScreenProps } from 'react-native-paper';
 
 export type RootStackParamList = {
-  BottomNavigator: NavigatorScreenParams<BottomNavigatorParamList>;
-  Novel: { name: string; path: string; pluginId: string };
-  Chapter: {
-    novel: NovelInfo;
-    chapter: ChapterInfo;
-  };
+  BottomNavigator: NavigatorScreenParams<BottomNavigatorParamList> | undefined;
+  ReaderStack: NavigatorScreenParams<ReaderStackParamList>;
   MoreStack: NavigatorScreenParams<MoreStackParamList>;
   SourceScreen: {
     pluginId: string;
@@ -85,14 +81,29 @@ export type SettingsStackParamList = {
   AppearanceSettings: undefined;
   AdvancedSettings: undefined;
   LibrarySettings: undefined;
-  RespositorySettings: undefined;
+  RespositorySettings: { url?: string } | undefined;
 };
 
-export type NovelScreenProps = StackScreenProps<RootStackParamList, 'Novel'>;
+export type NovelScreenProps = StackScreenProps<ReaderStackParamList, 'Novel'>;
 export type ChapterScreenProps = StackScreenProps<
-  RootStackParamList,
+  ReaderStackParamList,
   'Chapter'
 >;
+export type ReaderStackParamList = {
+  Novel:
+    | {
+        name: string;
+        path: string;
+        pluginId: string;
+        cover?: string;
+        isLocal?: boolean;
+      }
+    | NovelInfo;
+  Chapter: {
+    novel: NovelInfo;
+    chapter: ChapterInfo;
+  };
+};
 
 export type AboutScreenProps = StackScreenProps<MoreStackParamList, 'About'>;
 export type DownloadsScreenProps = StackScreenProps<
@@ -159,3 +170,16 @@ export type AdvancedSettingsScreenProps = StackScreenProps<
   SettingsStackParamList,
   'AdvancedSettings'
 >;
+
+export type RespositorySettingsScreenProps = CompositeScreenProps<
+  StackScreenProps<SettingsStackParamList, 'RespositorySettings'>,
+  StackScreenProps<RootStackParamList, 'BottomNavigator'>
+>;
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace ReactNavigation {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    interface RootParamList extends RootStackParamList {}
+  }
+}

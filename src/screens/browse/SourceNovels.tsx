@@ -3,16 +3,16 @@ import { StyleSheet, View, FlatList, Text, FlatListProps } from 'react-native';
 import { useTheme } from '@hooks/persisted';
 
 import ListView from '../../components/ListView';
-import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 import { SourceNovelsScreenProps } from '@navigators/types';
 import { NovelInfo } from '@database/types';
 import { getString } from '@strings/translations';
+import { useLibraryContext } from '@components/Context/LibraryContext';
 
 const SourceNovels = ({ navigation, route }: SourceNovelsScreenProps) => {
   const pluginId = route.params.pluginId;
   const theme = useTheme();
-  const { library } = useLibraryNovels();
+  const { library } = useLibraryContext();
 
   const sourceNovels = library.filter(novel => novel.pluginId === pluginId);
 
@@ -29,7 +29,7 @@ const SourceNovels = ({ navigation, route }: SourceNovelsScreenProps) => {
   );
 
   return (
-    <View style={[styles.container]}>
+    <View style={styles.container}>
       <Appbar
         title={getString('browseScreen.selectNovel')}
         handleGoBack={navigation.goBack}

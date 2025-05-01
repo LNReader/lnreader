@@ -2,66 +2,67 @@ import { useCallback, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getCategoriesFromDb } from '@database/queries/CategoryQueries';
-import {
-  getLibraryWithCategory,
-  getLibraryNovelsFromDb,
-} from '@database/queries/LibraryQueries';
+import { getLibraryNovelsFromDb } from '@database/queries/LibraryQueries';
 
-import { Category, LibraryNovelInfo, NovelInfo } from '@database/types';
+import { Category, NovelInfo } from '@database/types';
 
 import { useLibrarySettings } from '@hooks/persisted';
 import { LibrarySortOrder } from '../constants/constants';
 
-type Library = Category & { novels: LibraryNovelInfo[] };
+// type Library = Category & { novels: LibraryNovelInfo[] };
+export type ExtendedCategory = Category & { novelIds: number[] };
 
-export const useLibrary = ({ searchText }: { searchText?: string }) => {
+export const useLibrary = () => {
   const {
     filter,
     sortOrder = LibrarySortOrder.DateAdded_DESC,
     downloadedOnlyMode = false,
   } = useLibrarySettings();
 
-  const [library, setLibrary] = useState<Library[]>([]);
+  const [library, setLibrary] = useState<NovelInfo[]>([]);
+  const [categories, setCategories] = useState<ExtendedCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchText, setSearchText] = useState('');
 
-  const getLibrary = async () => {
+  const getLibrary = useCallback(async () => {
     if (searchText) {
       setIsLoading(true);
     }
 
     const [categories, novels] = await Promise.all([
       getCategoriesFromDb(),
-      getLibraryWithCategory({
-        searchText,
-        filter,
-        sortOrder,
-        downloadedOnlyMode,
-      }),
+      getLibraryNovelsFromDb(sortOrder, filter, searchText, downloadedOnlyMode),
+      // getLibraryNovelsFromDb(),
     ]);
 
-    const res = categories.map(category => ({
-      ...category,
-      novels: novels.filter(novel => novel.category === category.name),
+    const res = categories.map(c => ({
+      ...c,
+      novelIds: (c.novelIds ?? '').split(',').map(Number),
     }));
 
-    setLibrary(res);
+    setCategories(res);
+    setLibrary(novels);
     setIsLoading(false);
+  }, [downloadedOnlyMode, filter, searchText, sortOrder]);
+
+  useFocusEffect(() => {
+    getLibrary();
+  });
+
+  return {
+    library,
+    categories,
+    isLoading,
+    refetchLibrary: getLibrary,
+    setLibrarySearchText: setSearchText,
   };
-
-  useFocusEffect(
-    useCallback(() => {
-      getLibrary();
-    }, [searchText, filter, sortOrder, downloadedOnlyMode]),
-  );
-
-  return { library, isLoading, refetchLibrary: getLibrary };
 };
 
 export const useLibraryNovels = () => {
   const [library, setLibrary] = useState<NovelInfo[]>([]);
 
   const getLibrary = async () => {
-    const novels = await getLibraryNovelsFromDb();
+    const novels = getLibraryNovelsFromDb();
 
     setLibrary(novels);
   };

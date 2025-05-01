@@ -49,26 +49,26 @@ const EmptyView: React.FC<EmptyViewProps> = ({
 export default EmptyView;
 
 const styles = StyleSheet.create({
+  actionsCtn: {
+    flexDirection: 'row',
+    marginTop: 20,
+  },
+  buttonWrapper: {
+    flexDirection: 'row',
+    marginHorizontal: 4,
+  },
   container: {
-    flex: 1,
-    padding: 16,
     alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
+    padding: 16,
   },
   icon: {
     fontSize: 40,
     fontWeight: 'bold',
   },
   text: {
-    textAlign: 'center',
     marginTop: 16,
-  },
-  buttonWrapper: {
-    marginHorizontal: 4,
-    flexDirection: 'row',
-  },
-  actionsCtn: {
-    marginTop: 20,
-    flexDirection: 'row',
+    textAlign: 'center',
   },
 });

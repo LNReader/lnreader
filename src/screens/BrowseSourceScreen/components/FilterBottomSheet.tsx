@@ -22,7 +22,7 @@ import {
 } from '@plugins/types/filterTypes';
 import { Button } from '@components/index';
 import { Checkbox } from '@components/Checkbox/Checkbox';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 import { useBoolean } from '@hooks';
 import { Menu, TextInput, overlay } from 'react-native-paper';
 import { getValueFor } from './filterUtils';
@@ -211,7 +211,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
     return (
       <Pressable
         android_ripple={{ color: theme.rippleColor }}
-        style={[styles.container]}
+        style={styles.container}
         onPress={() => {
           setSelectedFilters(prevState => ({
             ...prevState,
@@ -400,62 +400,62 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
 export default FilterBottomSheet;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderTopRightRadius: 8,
-    borderTopLeftRadius: 8,
-  },
-  label: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     borderBottomWidth: 1,
-    paddingHorizontal: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingBottom: 8,
+    paddingHorizontal: 24,
     paddingTop: 8,
+  },
+  checkboxHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+  },
+  container: {
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    flex: 1,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  picker: {
+    paddingHorizontal: 24,
+    width: 200,
+  },
+  pickerContainer: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 8,
+    paddingHorizontal: 24,
+  },
+  switchContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 8,
+    paddingHorizontal: 24,
+  },
+  switchLabel: {
+    fontSize: 16,
   },
   switchLabelContainer: {
     flex: 1,
     justifyContent: 'center',
   },
-  switchLabel: {
-    fontSize: 16,
-  },
-  switchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginVertical: 8,
-    paddingHorizontal: 24,
-  },
   textContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 8,
-    paddingHorizontal: 24,
-  },
-  pickerContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginVertical: 8,
-    paddingHorizontal: 24,
-  },
-  picker: {
-    width: 200,
-    paddingHorizontal: 24,
-  },
-  checkboxHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 16,
     paddingHorizontal: 24,
   },
 });

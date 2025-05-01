@@ -5,7 +5,7 @@ import color from 'color';
 import * as Clipboard from 'expo-clipboard';
 
 import { IconButton } from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 
 import { showToast } from '@utils/showToast';
 
@@ -34,22 +34,30 @@ import { translateNovelStatus } from '@utils/translateEnum';
 import { getMMKVObject } from '@utils/mmkv/mmkv';
 import { AVAILABLE_PLUGINS } from '@hooks/persisted/usePlugins';
 
+import {
+  NovelMetaSkeleton,
+  VerticalBarSkeleton,
+} from '@components/Skeleton/Skeleton';
+
 interface NovelInfoHeaderProps {
-  novel: NovelData;
-  theme: ThemeColors;
-  filter: string;
   chapters: ChapterInfo[];
-  lastRead?: ChapterInfo;
-  navigation: NovelScreenProps['navigation'];
-  trackerSheetRef: React.RefObject<BottomSheetModalMethods>;
-  navigateToChapter: (chapter: ChapterInfo) => void;
-  setCustomNovelCover: () => Promise<void>;
-  followNovel: () => void;
-  novelBottomSheetRef: React.RefObject<BottomSheetModalMethods>;
   deleteDownloadsSnackbar: UseBooleanReturnType;
-  page?: string;
-  openDrawer: () => void;
+  fetching: boolean;
+  filter: string;
+  followNovel: () => void;
+  isLoading: boolean;
+  lastRead?: ChapterInfo;
+  navigateToChapter: (chapter: ChapterInfo) => void;
+  navigation: NovelScreenProps['navigation'];
+  novel: NovelData | (Omit<NovelData, 'id'> & { id: 'NO_ID' });
+  novelBottomSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   onRefreshPage: (page: string) => void;
+  openDrawer: () => void;
+  page?: string;
+  setCustomNovelCover: () => Promise<void>;
+  theme: ThemeColors;
+  totalChapters?: number;
+  trackerSheetRef: React.RefObject<BottomSheetModalMethods | null>;
 }
 
 const getStatusIcon = (status?: string) => {
@@ -63,21 +71,24 @@ const getStatusIcon = (status?: string) => {
 };
 
 const NovelInfoHeader = ({
-  novel,
-  theme,
-  filter,
   chapters,
-  lastRead,
-  navigation,
-  trackerSheetRef,
-  navigateToChapter,
-  setCustomNovelCover,
-  followNovel,
-  novelBottomSheetRef,
   deleteDownloadsSnackbar,
-  page,
-  openDrawer,
+  fetching,
+  filter,
+  followNovel,
+  isLoading = false,
+  lastRead,
+  navigateToChapter,
+  navigation,
+  novel,
+  novelBottomSheetRef,
   onRefreshPage,
+  openDrawer,
+  page,
+  setCustomNovelCover,
+  theme,
+  totalChapters,
+  trackerSheetRef,
 }: NovelInfoHeaderProps) => {
   const { hideBackdrop = false } = useAppSettings();
 
@@ -86,8 +97,12 @@ const NovelInfoHeader = ({
       (getMMKVObject<PluginItem[]>(AVAILABLE_PLUGINS) || []).find(
         plugin => plugin.id === novel.pluginId,
       )?.name || novel.pluginId,
-    [],
+    [novel.pluginId],
   );
+
+  const showNotAvailable = async () => {
+    showToast('Not available while loading');
+  };
 
   return (
     <>
@@ -100,7 +115,9 @@ const NovelInfoHeader = ({
           <NovelThumbnail
             source={{ uri: novel.cover }}
             theme={theme}
-            setCustomNovelCover={setCustomNovelCover}
+            setCustomNovelCover={
+              isLoading ? showNotAvailable : setCustomNovelCover
+            }
           />
           <View style={styles.novelDetails}>
             <Row>
@@ -124,38 +141,41 @@ const NovelInfoHeader = ({
                 {novel.name}
               </NovelTitle>
             </Row>
-            {novel.author ? (
+            {novel.id !== 'NO_ID' && novel.author ? (
               <Row>
                 <MaterialCommunityIcons
                   name="fountain-pen-tip"
                   size={14}
                   color={theme.onSurfaceVariant}
-                  style={{ marginRight: 4 }}
+                  style={styles.marginRight}
                 />
                 <NovelInfo theme={theme}>{novel.author}</NovelInfo>
               </Row>
             ) : null}
-            {novel.artist ? (
+            {novel.id !== 'NO_ID' && novel.artist ? (
               <Row>
                 <MaterialCommunityIcons
                   name="palette-outline"
                   size={14}
                   color={theme.onSurfaceVariant}
-                  style={{ marginRight: 4 }}
+                  style={styles.marginRight}
                 />
                 <NovelInfo theme={theme}>{novel.artist}</NovelInfo>
               </Row>
             ) : null}
             <Row>
               <MaterialCommunityIcons
-                name={getStatusIcon(novel.status)}
+                name={getStatusIcon(
+                  novel.id !== 'NO_ID' ? novel.status : undefined,
+                )}
                 size={14}
                 color={theme.onSurfaceVariant}
-                style={{ marginRight: 4 }}
+                style={styles.marginRight}
               />
               <NovelInfo theme={theme}>
-                {(translateNovelStatus(novel.status) ||
-                  getString('novelScreen.unknownStatus')) +
+                {(novel.id !== 'NO_ID'
+                  ? translateNovelStatus(novel.status)
+                  : getString('novelScreen.unknownStatus')) +
                   ' • ' +
                   pluginName}
               </NovelInfo>
@@ -166,68 +186,85 @@ const NovelInfoHeader = ({
       <>
         <NovelScreenButtonGroup
           novel={novel}
-          handleFollowNovel={() => {
-            followNovel();
-            if (
-              novel.inLibrary &&
-              chapters.some(chapter => chapter.isDownloaded)
-            ) {
-              deleteDownloadsSnackbar.setTrue();
-            }
-          }}
+          handleFollowNovel={
+            isLoading
+              ? showNotAvailable
+              : () => {
+                  followNovel();
+                  if (
+                    novel.inLibrary &&
+                    chapters.some(chapter => chapter.isDownloaded)
+                  ) {
+                    deleteDownloadsSnackbar.setTrue();
+                  }
+                }
+          }
           handleTrackerSheet={() => trackerSheetRef.current?.present()}
           theme={theme}
         />
-        <NovelSummary
-          summary={novel.summary || getString('novelScreen.noSummary')}
-          isExpanded={!novel.inLibrary}
-          theme={theme}
-        />
-        {novel.genres ? (
-          <NovelGenres theme={theme} genres={novel.genres} />
-        ) : null}
+        {isLoading && (!novel.genres || !novel.summary) ? (
+          <NovelMetaSkeleton />
+        ) : (
+          <>
+            <NovelSummary
+              summary={novel.summary || getString('novelScreen.noSummary')}
+              isExpanded={!novel.inLibrary}
+              theme={theme}
+            />
+            {novel.genres ? (
+              <NovelGenres theme={theme} genres={novel.genres} />
+            ) : null}
+          </>
+        )}
         <ReadButton
           navigateToChapter={navigateToChapter}
           chapters={chapters}
           lastRead={lastRead}
         />
-        <Pressable
-          style={styles.bottomsheet}
-          onPress={() =>
-            page ? openDrawer() : novelBottomSheetRef.current?.present()
-          }
-          android_ripple={{
-            color: color(theme.primary).alpha(0.12).string(),
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            {page ? (
-              <Text
-                numberOfLines={2}
-                style={[{ color: theme.onSurface }, styles.pageTitle]}
-              >
-                Page: {page}
+        {isLoading && (!novel.genres || !novel.summary) ? (
+          <VerticalBarSkeleton />
+        ) : (
+          <Pressable
+            style={styles.bottomsheet}
+            onPress={() =>
+              page ? openDrawer() : novelBottomSheetRef.current?.present()
+            }
+            android_ripple={{
+              color: color(theme.primary).alpha(0.12).string(),
+            }}
+          >
+            <View style={styles.flex}>
+              {page || novel.totalPages ? (
+                <Text
+                  numberOfLines={2}
+                  style={[{ color: theme.onSurface }, styles.pageTitle]}
+                >
+                  Page: {page ?? ''}
+                </Text>
+              ) : null}
+
+              <Text style={[{ color: theme.onSurface }, styles.chapters]}>
+                {!fetching || totalChapters !== undefined
+                  ? `${totalChapters} ${getString('novelScreen.chapters')}`
+                  : getString('common.loading')}
               </Text>
+            </View>
+            {page && Number(page) ? (
+              <IconButton
+                icon="reload"
+                iconColor={theme.onSurface}
+                size={24}
+                onPress={() => onRefreshPage(page)}
+              />
             ) : null}
-            <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-              {`${chapters?.length} ${getString('novelScreen.chapters')}`}
-            </Text>
-          </View>
-          {page && Number(page) ? (
             <IconButton
-              icon="reload"
-              iconColor={theme.onSurface}
+              icon="filter-variant"
+              iconColor={filter ? filterColor(theme.isDark) : theme.onSurface}
               size={24}
-              onPress={() => onRefreshPage(page)}
+              onPress={() => novelBottomSheetRef.current?.present()}
             />
-          ) : null}
-          <IconButton
-            icon="filter-variant"
-            iconColor={filter ? filterColor(theme.isDark) : theme.onSurface}
-            size={24}
-            onPress={() => novelBottomSheetRef.current?.present()}
-          />
-        </Pressable>
+          </Pressable>
+        )}
       </>
     </>
   );
@@ -236,29 +273,31 @@ const NovelInfoHeader = ({
 export default memo(NovelInfoHeader);
 
 const styles = StyleSheet.create({
+  bottomsheet: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: 12,
+    paddingVertical: 4,
+  },
+  chapters: {
+    fontSize: 14,
+    paddingHorizontal: 16,
+  },
+  flex: { flex: 1 },
+  infoItem: {
+    marginVertical: 2,
+  },
+  marginRight: { marginRight: 4 },
   novelDetails: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'center',
     paddingBottom: 16,
     paddingLeft: 12,
-    justifyContent: 'center',
   },
   pageTitle: {
-    paddingHorizontal: 16,
     fontSize: 16,
-  },
-  chapters: {
     paddingHorizontal: 16,
-    fontSize: 14,
-  },
-  bottomsheet: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 4,
-    paddingRight: 12,
-  },
-  infoItem: {
-    marginVertical: 2,
   },
 });

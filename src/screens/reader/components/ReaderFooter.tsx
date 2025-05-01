@@ -14,7 +14,7 @@ interface ChapterFooterProps {
   theme: ThemeColors;
   nextChapter: ChapterInfo;
   prevChapter: ChapterInfo;
-  readerSheetRef: React.RefObject<BottomSheetModalMethods>;
+  readerSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   scrollToStart: () => void;
   navigateChapter(position: 'NEXT' | 'PREV'): void;
   navigation: ChapterScreenProps['navigation'];
@@ -50,7 +50,7 @@ const ChapterFooter = ({
         },
       ]}
     >
-      <View style={[styles.buttonsContainer]}>
+      <View style={styles.buttonsContainer}>
         <Pressable
           android_ripple={rippleConfig}
           style={styles.buttonStyles}
@@ -132,20 +132,20 @@ export default React.memo(ChapterFooter);
 
 const styles = StyleSheet.create({
   buttonStyles: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 8,
     paddingBottom: 4,
-  },
-  footer: {
-    flex: 1,
-    position: 'absolute',
-    zIndex: 1,
-    bottom: 0,
-    width: '100%',
+    paddingVertical: 8,
   },
   buttonsContainer: {
     flexDirection: 'row',
+  },
+  footer: {
+    bottom: 0,
+    flex: 1,
+    position: 'absolute',
+    width: '100%',
+    zIndex: 1,
   },
 });

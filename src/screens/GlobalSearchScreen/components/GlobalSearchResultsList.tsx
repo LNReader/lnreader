@@ -4,7 +4,7 @@ import color from 'color';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 
 import { getString } from '@strings/translations';
 import { useTheme } from '@hooks/persisted';
@@ -19,7 +19,7 @@ import { interpolateColor } from 'react-native-reanimated';
 
 interface GlobalSearchResultsListProps {
   searchResults: GlobalSearchResult[];
-  ListEmptyComponent?: JSX.Element;
+  ListEmptyComponent?: React.JSX.Element;
 }
 
 const GlobalSearchResultsList: React.FC<GlobalSearchResultsListProps> = ({
@@ -63,7 +63,10 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
 
   const navigateToNovel = useCallback(
     (item: { name: string; path: string; pluginId: string }) =>
-      navigation.push('Novel', item),
+      navigation.push('ReaderStack', {
+        screen: 'Novel',
+        params: item,
+      }),
     [],
   );
 
@@ -164,36 +167,36 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
 export default GlobalSearchResultsList;
 
 const styles = StyleSheet.create({
-  resultList: {
-    flexGrow: 1,
-    paddingTop: 8,
-    paddingBottom: 60,
-  },
-  sourceHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingRight: 8,
-  },
-  sourceName: {
-    marginTop: 8,
-    marginBottom: 4,
-    paddingHorizontal: 16,
+  error: {
+    marginBottom: 16,
+    padding: 16,
   },
   language: {
     fontSize: 12,
     marginBottom: 8,
     paddingHorizontal: 16,
   },
-  error: {
-    padding: 16,
+  listEmpty: {
     marginBottom: 16,
+    paddingHorizontal: 8,
   },
   novelsContainer: {
     padding: 8,
   },
-  listEmpty: {
-    paddingHorizontal: 8,
-    marginBottom: 16,
+  resultList: {
+    flexGrow: 1,
+    paddingBottom: 60,
+    paddingTop: 8,
+  },
+  sourceHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingRight: 8,
+  },
+  sourceName: {
+    marginBottom: 4,
+    marginTop: 8,
+    paddingHorizontal: 16,
   },
 });

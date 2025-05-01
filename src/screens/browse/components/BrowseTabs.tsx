@@ -10,14 +10,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useBrowseSettings, usePlugins } from '@hooks/persisted';
 import { PluginItem } from '@plugins/types';
-import {
-  FlashList,
-  ListRenderItem as FlashListRenderItem,
-  ListRenderItemInfo,
-} from '@shopify/flash-list';
 import { coverPlaceholderColor } from '@theme/colors';
 import { ThemeColors } from '@theme/types';
-import { Swipeable } from 'react-native-gesture-handler';
 import { getString } from '@strings/translations';
 import { BrowseScreenProps, MoreStackScreenProps } from '@navigators/types';
 import { Button, EmptyView, IconButtonV2 } from '@components';
@@ -32,7 +26,9 @@ import { Portal } from 'react-native-paper';
 import SourceSettingsModal from './Modals/SourceSettings';
 import { useBoolean } from '@hooks';
 import { getPlugin } from '@plugins/pluginManager';
-
+import { getLocaleLanguageName } from '@utils/constants/languages';
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
 interface AvailableTabProps {
   searchText: string;
   theme: ThemeColors;
@@ -57,7 +53,9 @@ export const InstalledTab = memo(
     const settingsModal = useBoolean();
     const [selectedPluginId, setSelectedPluginId] = useState<string>('');
 
-    const pluginSettings = getPlugin(selectedPluginId)?.pluginSettings;
+    const pluginSettings = selectedPluginId
+      ? getPlugin(selectedPluginId)?.pluginSettings
+      : undefined;
 
     const navigateToSource = useCallback(
       (plugin: PluginItem, showLatestNovels?: boolean) => {
@@ -88,8 +86,8 @@ export const InstalledTab = memo(
       }
     }, [searchText, filteredInstalledPlugins]);
 
-    const renderItem: FlashListRenderItem<PluginItem> = useCallback(
-      ({ item }) => {
+    const renderItem = useCallback(
+      ({ item }: LegendListRenderItemProps<PluginItem>) => {
         return (
           <Swipeable
             dragOffsetFromLeftEdge={30}
@@ -210,7 +208,7 @@ export const InstalledTab = memo(
     );
 
     return (
-      <FlashList
+      <LegendList
         estimatedItemSize={64}
         data={searchedPlugins}
         extraData={theme}
@@ -218,6 +216,7 @@ export const InstalledTab = memo(
         removeClippedSubviews={true}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id + '_installed'}
+        recycleItems
         ListHeaderComponent={
           <>
             {showMyAnimeList || showAniList ? (
@@ -255,7 +254,7 @@ export const InstalledTab = memo(
                 {renderItem({
                   item: lastUsedPlugin,
                   index: 0,
-                } as ListRenderItemInfo<PluginItem>)}
+                } as LegendListRenderItemProps<PluginItem>)}
               </>
             ) : null}
             <Text
@@ -307,7 +306,7 @@ const AvailablePluginCard = ({
     <View>
       {plugin.header ? (
         <Text style={[styles.listHeader, { color: theme.onSurfaceVariant }]}>
-          {plugin.lang}
+          {getLocaleLanguageName(plugin.lang)}
         </Text>
       ) : null}
       <Animated.View
@@ -347,7 +346,7 @@ const AvailablePluginCard = ({
                 textStyles,
               ]}
             >
-              {`${plugin.lang} - ${plugin.version}`}
+              {`${getLocaleLanguageName(plugin.lang)} - ${plugin.version}`}
             </Animated.Text>
           </Animated.View>
         </Animated.View>
@@ -394,35 +393,33 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
           plg.id.includes(lowerCaseSearchText),
       );
     }
-    let previousLang: string | null = null;
+
     return res
       .sort((a, b) => a.lang.localeCompare(b.lang))
-      .map(plg => {
-        if (plg.lang !== previousLang) {
-          previousLang = plg.lang;
-          return { ...plg, header: true };
-        } else {
-          return { ...plg, header: false };
-        }
+      .map((plg, i) => {
+        return {
+          ...plg,
+          header: i === 0 ? true : plg.lang !== res[i - 1].lang,
+        };
       });
   }, [searchText, filteredAvailablePlugins]);
 
-  const renderItem: FlashListRenderItem<PluginItem & { header: boolean }> =
-    useCallback(
-      ({ item }) => {
-        return (
-          <AvailablePluginCard
-            plugin={item}
-            theme={theme}
-            installPlugin={installPlugin}
-          />
-        );
-      },
-      [theme, searchedPlugins],
-    );
+  const renderItem = useCallback(
+    ({ item }: LegendListRenderItemProps<PluginItem & { header: boolean }>) => {
+      return (
+        <AvailablePluginCard
+          plugin={item}
+          theme={theme}
+          installPlugin={installPlugin}
+        />
+      );
+    },
+    [theme, searchedPlugins],
+  );
 
   return (
-    <FlashList
+    <LegendList
+      recycleItems
       estimatedItemSize={64}
       data={searchedPlugins}
       extraData={theme}
@@ -483,39 +480,39 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
 });
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    justifyContent: 'space-between',
-  },
-  listHeader: {
-    fontSize: 14,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    fontWeight: '600',
-  },
-  icon: {
-    height: 40,
-    width: 40,
-    borderRadius: 4,
-    backgroundColor: coverPlaceholderColor,
-  },
-  details: {
-    marginLeft: 16,
-  },
   addition: {
     fontSize: 12,
     lineHeight: 20,
   },
+  buttonGroup: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 8,
+  },
+  container: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  details: {
+    marginLeft: 16,
+  },
+  icon: {
+    backgroundColor: coverPlaceholderColor,
+    borderRadius: 4,
+    height: 40,
+    width: 40,
+  },
+  listHeader: {
+    fontSize: 14,
+    fontWeight: '600',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
   name: {
     fontWeight: 'bold',
     lineHeight: 20,
-  },
-  buttonGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 8,
   },
 });

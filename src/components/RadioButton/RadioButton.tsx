@@ -46,18 +46,18 @@ export const RadioButton: React.FC<Props> = ({
 );
 
 const styles = StyleSheet.create({
-  pressable: {
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   icon: {
-    position: 'absolute',
-    left: 24,
     alignSelf: 'center',
+    left: 24,
+    position: 'absolute',
   },
   label: {
     marginLeft: 12,
+  },
+  pressable: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 6,
   },
 });

@@ -6,7 +6,7 @@ import {
   DriveRequestParams,
 } from './types';
 import { PATH_SEPARATOR } from '@api/constants';
-import ZipArchive from '@native/ZipArchive';
+import NativeZipArchive from '@specs/NativeZipArchive';
 
 const BASE_URL = 'https://www.googleapis.com/drive/v3/files';
 const MEDIA_UPLOAD_URL = 'https://www.googleapis.com/upload/drive/v3/files';
@@ -121,7 +121,7 @@ export const uploadMedia = async (
     uploadType: 'media',
   };
   const url = MEDIA_UPLOAD_URL + '?' + buildParams(params);
-  const response = await ZipArchive.remoteZip(sourceDirPath, url, {
+  const response = await NativeZipArchive.remoteZip(sourceDirPath, url, {
     Authorization: `Bearer ${accessToken}`,
     Accept: 'application/json',
   });
@@ -131,7 +131,7 @@ export const uploadMedia = async (
 export const download = async (file: DriveFile, distDirPath: string) => {
   const { accessToken } = await GoogleSignin.getTokens();
   const url = BASE_URL + '/' + file.id + '?alt=media';
-  return ZipArchive.remoteUnzip(distDirPath, url, {
+  return NativeZipArchive.remoteUnzip(distDirPath, url, {
     Authorization: `Bearer ${accessToken}`,
     Accept: 'application/json',
   });

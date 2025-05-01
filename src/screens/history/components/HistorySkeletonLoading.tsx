@@ -72,42 +72,42 @@ const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
 };
 
 const styles = StyleSheet.create({
-  contentCtn: {
-    paddingVertical: 8,
-  },
-  textCtn: {
-    marginTop: 5,
-    marginBottom: 2,
-    borderRadius: 6,
-  },
-  text: {
-    marginBottom: 4,
-    borderRadius: 6,
-  },
-  chapterCtn: {
-    marginVertical: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  picture: {
-    marginHorizontal: 16,
-    borderRadius: 4,
-    height: 80,
-    width: 56,
-  },
   button: {
     borderRadius: 12.5,
   },
   buttonCtn: {
-    justifyContent: 'center',
     alignItems: 'center',
     height: 40,
+    justifyContent: 'center',
     width: 40,
   },
+  chapterCtn: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginVertical: 8,
+  },
+  contentCtn: {
+    paddingVertical: 8,
+  },
   date: {
+    borderRadius: 6,
     marginHorizontal: 16,
     marginVertical: 8,
+  },
+  picture: {
+    borderRadius: 4,
+    height: 80,
+    marginHorizontal: 16,
+    width: 56,
+  },
+  text: {
     borderRadius: 6,
+    marginBottom: 4,
+  },
+  textCtn: {
+    borderRadius: 6,
+    marginBottom: 2,
+    marginTop: 5,
   },
 });
 

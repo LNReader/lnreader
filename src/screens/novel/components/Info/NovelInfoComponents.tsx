@@ -5,19 +5,17 @@ import {
   Text,
   View,
   Pressable,
-  Dimensions,
-  StatusBar,
   ImageBackground,
 } from 'react-native';
 import color from 'color';
 import { IconButton, Portal } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Image, ImageURISource } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Chip } from '../../../../components';
 import { coverPlaceholderColor } from '../../../../theme/colors';
 import { ThemeColors } from '@theme/types';
 import { getString } from '@strings/translations';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface CoverImageProps {
   children: React.ReactNode;
@@ -83,48 +81,51 @@ const NovelThumbnail = ({
   setCustomNovelCover,
 }: NovelThumbnailProps) => {
   const [expanded, setExpanded] = useState(false);
+  const { top, right } = useSafeAreaInsets();
 
-  if (!expanded) {
-    return (
-      <TouchableWithoutFeedback onPress={() => setExpanded(!expanded)}>
+  return (
+    <Pressable
+      onPress={() => setExpanded(!expanded)}
+      style={styles.novelThumbnailContainer}
+    >
+      {!expanded ? (
         <Image source={source} style={styles.novelThumbnail} />
-      </TouchableWithoutFeedback>
-    );
-  } else {
-    return (
-      <Portal>
-        <IconButton
-          icon="pencil-outline"
-          style={{
-            position: 'absolute',
-            top: StatusBar.currentHeight ?? 0 + 10,
-            right: 10,
-            zIndex: 10,
-          }}
-          iconColor={theme.onBackground}
-          onPress={setCustomNovelCover}
-        />
-        <Pressable
-          style={{
-            position: 'absolute',
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height + 60,
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-          }}
-          onPress={() => setExpanded(false)}
-        >
-          <Image
-            source={source}
+      ) : (
+        <Portal>
+          <IconButton
+            icon="pencil-outline"
             style={{
-              width: Dimensions.get('window').width,
-              height: (Dimensions.get('window').width * 3) / 2,
+              position: 'absolute',
+              top: top + 6,
+              right: right + 6,
+              zIndex: 10,
             }}
+            iconColor={theme.onBackground}
+            onPress={setCustomNovelCover}
           />
-        </Pressable>
-      </Portal>
-    );
-  }
+          <Pressable
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              flex: 1,
+              justifyContent: 'center',
+              backgroundColor: 'rgba(0,0,0,0.7)',
+            }}
+            onPress={() => setExpanded(false)}
+          >
+            <Image
+              source={source}
+              resizeMode="contain"
+              style={{
+                flex: 1,
+              }}
+            />
+          </Pressable>
+        </Portal>
+      )}
+    </Pressable>
+  );
 };
 
 const NovelTitle = ({
@@ -275,52 +276,56 @@ export {
 };
 
 const styles = StyleSheet.create({
-  novelInfoContainer: {
-    flexDirection: 'row',
-    margin: 16,
-    marginTop: 28,
-    marginBottom: 0,
-    paddingTop: 90,
-  },
   coverImage: {},
+  followButton: {
+    alignItems: 'center',
+    borderWidth: 0,
+    elevation: 0,
+    height: 32,
+    justifyContent: 'center',
+    marginLeft: 16,
+    paddingLeft: 4,
+  },
+  genreChip: {
+    borderRadius: 50,
+    flex: 1,
+    fontSize: 12,
+    justifyContent: 'center',
+    marginHorizontal: 2,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    textTransform: 'capitalize',
+  },
+  genreContainer: {
+    paddingBottom: 4,
+    paddingHorizontal: 16,
+  },
   linearGradient: {
     flex: 1,
-  },
-  novelThumbnail: {
-    height: 150,
-    width: 100,
-    marginHorizontal: 4,
-    borderRadius: 6,
-    backgroundColor: coverPlaceholderColor,
-  },
-  novelTitle: {
-    fontSize: 20,
   },
   novelInfo: {
     fontSize: 14,
     marginBottom: 4,
   },
-  followButton: {
-    height: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 16,
-    paddingLeft: 4,
-    borderWidth: 0,
-    elevation: 0,
+  novelInfoContainer: {
+    flexDirection: 'row',
+    margin: 16,
+    marginBottom: 0,
+    marginTop: 28,
+    paddingTop: 90,
   },
-  genreContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 4,
+  novelThumbnail: {
+    backgroundColor: coverPlaceholderColor,
+    borderRadius: 6,
+    height: 150,
+    width: 100,
   },
-  genreChip: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingVertical: 5,
-    paddingHorizontal: 12,
-    marginHorizontal: 2,
-    fontSize: 12,
-    borderRadius: 50,
-    textTransform: 'capitalize',
+  novelThumbnailContainer: {
+    height: 150,
+    marginHorizontal: 4,
+    width: 100,
+  },
+  novelTitle: {
+    fontSize: 20,
   },
 });

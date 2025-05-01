@@ -51,27 +51,27 @@ export default GlobalSearchNovelCover;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     borderRadius: 6,
+    flex: 1,
     overflow: 'hidden',
   },
-  pressable: {
-    paddingHorizontal: 5,
-    paddingVertical: 4,
-    borderRadius: 4,
-    flex: 1,
-  },
   novelCover: {
+    backgroundColor: coverPlaceholderColor,
+    borderRadius: 4,
     height: 150,
     width: 115,
+  },
+  pressable: {
     borderRadius: 4,
-    backgroundColor: coverPlaceholderColor,
+    flex: 1,
+    paddingHorizontal: 5,
+    paddingVertical: 4,
   },
   title: {
+    flexWrap: 'wrap',
     fontFamily: 'pt-sans-bold',
     fontSize: 14,
     padding: 4,
-    flexWrap: 'wrap',
     width: 115,
   },
 });

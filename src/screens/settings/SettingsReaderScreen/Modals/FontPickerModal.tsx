@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 
-import { Portal, Modal, overlay } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
 import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 
 import { readerFonts } from '@utils/constants/readerConstants';
+import { Modal } from '@components';
 
 interface FontPickerModalProps {
   visible: boolean;
@@ -24,14 +24,7 @@ const FontPickerModal: React.FC<FontPickerModalProps> = ({
 
   return (
     <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={onDismiss}
-        contentContainerStyle={[
-          styles.containerStyle,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
-      >
+      <Modal visible={visible} onDismiss={onDismiss}>
         {readerFonts.map(item => (
           <RadioButton
             key={item.fontFamily}
@@ -50,11 +43,3 @@ const FontPickerModal: React.FC<FontPickerModalProps> = ({
 };
 
 export default FontPickerModal;
-
-const styles = StyleSheet.create({
-  containerStyle: {
-    paddingVertical: 24,
-    margin: 20,
-    borderRadius: 28,
-  },
-});

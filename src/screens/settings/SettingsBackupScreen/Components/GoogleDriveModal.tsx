@@ -1,10 +1,10 @@
 import React from 'react';
 import { ThemeColors } from '@theme/types';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { Modal, TextInput, overlay } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { GoogleSignin, User } from '@react-native-google-signin/google-signin';
 import { useEffect, useState } from 'react';
-import { Button, EmptyView } from '@components';
+import { Button, EmptyView, Modal } from '@components';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import * as Clipboard from 'expo-clipboard';
 import { showToast } from '@utils/showToast';
@@ -64,7 +64,7 @@ function UnAuthorized({
 }: {
   theme: ThemeColors;
   setBackupModal: (backupModal: BackupModal) => void;
-  setUser: (user?: User) => void;
+  setUser: (user?: User | null) => void;
 }) {
   const signIn = () => {
     GoogleSignin.hasPlayServices()
@@ -73,8 +73,8 @@ function UnAuthorized({
           return GoogleSignin.signIn();
         }
       })
-      .then(user => {
-        setUser(user);
+      .then(response => {
+        setUser(response?.data);
         setBackupModal(BackupModal.AUTHORIZED);
       });
   };
@@ -227,20 +227,16 @@ export default function GoogleDriveModal({
     GoogleSignin.configure({
       scopes: ['https://www.googleapis.com/auth/drive.file'],
     });
-    GoogleSignin.isSignedIn()
-      .then(isSignedIn => {
-        if (isSignedIn) {
-          return GoogleSignin.getCurrentUser();
-        } else {
-          setBackupModal(BackupModal.UNAUTHORIZED);
-        }
-      })
-      .then(user => {
-        if (user) {
-          setUser(user);
-          setBackupModal(BackupModal.AUTHORIZED);
-        }
-      });
+    const isSignedIn = GoogleSignin.hasPreviousSignIn();
+    if (isSignedIn) {
+      const user = GoogleSignin.getCurrentUser();
+      if (user) {
+        setUser(user);
+        setBackupModal(BackupModal.AUTHORIZED);
+      }
+    } else {
+      setBackupModal(BackupModal.UNAUTHORIZED);
+    }
   }, []);
 
   const renderModal = () => {
@@ -281,14 +277,7 @@ export default function GoogleDriveModal({
   };
 
   return (
-    <Modal
-      visible={visible}
-      onDismiss={closeModal}
-      contentContainerStyle={[
-        styles.modalContainer,
-        { backgroundColor: overlay(2, theme.surface) },
-      ]}
-    >
+    <Modal visible={visible} onDismiss={closeModal}>
       <>
         <View style={styles.titleContainer}>
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
@@ -324,46 +313,40 @@ export default function GoogleDriveModal({
 }
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-    borderRadius: 32,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    textAlignVertical: 'center',
-    marginBottom: 16,
-  },
   avatar: {
+    borderRadius: 40,
     height: 40,
     width: 40,
-    borderRadius: 40,
-  },
-  modalTitle: {
-    fontSize: 24,
-  },
-  footerContainer: {
-    marginTop: 24,
-    flexDirection: 'row-reverse',
-  },
-  btnOutline: {
-    marginVertical: 4,
-    borderWidth: 1,
-  },
-  loadingContent: {
-    borderRadius: 16,
-    width: '100%',
-  },
-  error: {
-    fontSize: 16,
-    marginTop: 8,
   },
   backupList: {
     flexGrow: 1,
     paddingBottom: 8,
     paddingHorizontal: 4,
+  },
+  btnOutline: {
+    borderWidth: 1,
+    marginVertical: 4,
+  },
+  error: {
+    fontSize: 16,
+    marginTop: 8,
+  },
+  footerContainer: {
+    flexDirection: 'row-reverse',
+    marginTop: 24,
+  },
+  loadingContent: {
+    borderRadius: 16,
+    width: '100%',
+  },
+  modalTitle: {
+    fontSize: 24,
+  },
+  titleContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+    textAlignVertical: 'center',
   },
 });

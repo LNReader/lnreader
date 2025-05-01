@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
-import { Portal, Modal } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 import * as Linking from 'expo-linking';
 import { ScrollView } from 'react-native-gesture-handler';
 import Button from './Button/Button';
 import { getString } from '@strings/translations';
 
 import { useTheme } from '@hooks/persisted';
+import { Modal } from '@components';
 
 interface NewUpdateDialogProps {
   newVersion: {
@@ -28,10 +29,6 @@ const NewUpdateDialog: React.FC<NewUpdateDialogProps> = ({ newVersion }) => {
       <Modal
         visible={newUpdateDialog}
         onDismiss={() => showNewUpdateDialog(false)}
-        contentContainerStyle={[
-          styles.containerStyle,
-          { backgroundColor: theme.overlay3 },
-        ]}
       >
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
           {`${getString('common.newUpdateAvailable')} ${newVersion.tag_name}`}
@@ -59,23 +56,18 @@ const NewUpdateDialog: React.FC<NewUpdateDialogProps> = ({ newVersion }) => {
 export default NewUpdateDialog;
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    padding: 20,
-    margin: 20,
-    borderRadius: 6,
-  },
-  modalHeader: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginBottom: 16,
-  },
   body: {
     fontSize: 15,
     fontWeight: '500',
   },
   buttonCtn: {
     flexDirection: 'row',
-    marginTop: 16,
     justifyContent: 'flex-end',
+    marginTop: 16,
+  },
+  modalHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
 });

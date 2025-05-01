@@ -1,151 +1,192 @@
+/* eslint-disable react-native/no-unused-styles */
 import { Pressable, StyleSheet, View, Image } from 'react-native';
-import React, { useCallback } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   ChapterInfo,
   DownloadedChapter,
   NovelInfo,
   Update,
+  UpdateOverview,
 } from '@database/types';
 import { List } from 'react-native-paper';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import ChapterItem from '@screens/novel/components/ChapterItem';
-import { useDownload, useTheme } from '@hooks/persisted';
-import { noop } from 'lodash-es';
+import { useDownload, useTheme, useUpdates } from '@hooks/persisted';
 import { RootStackParamList } from '@navigators/types';
 import { FlatList } from 'react-native-gesture-handler';
 import { defaultCover } from '@plugins/helpers/constants';
+import { ThemeColors } from '@theme/types';
 
-const NovelCover = ({
-  uri,
-  navigateToNovel,
-}: {
-  uri: string;
-  navigateToNovel: () => void;
-}) => {
-  return (
-    <Pressable onPress={navigateToNovel} style={{ alignSelf: 'center' }}>
-      <Image source={{ uri }} style={styles.cover} />
-    </Pressable>
-  );
-};
-
-interface UpdateCardProps {
-  chapterList: Update[] | DownloadedChapter[];
+type UpdateCardProps = {
+  onlyDownloadedChapters?: boolean;
   descriptionText: string;
   deleteChapter: (chapter: Update | DownloadedChapter) => void;
-}
+} & (
+  | { chapterList: Update[] | DownloadedChapter[]; chapterListInfo?: undefined }
+  | {
+      chapterListInfo: UpdateOverview;
+      chapterList?: undefined;
+    }
+);
 
 const UpdateNovelCard: React.FC<UpdateCardProps> = ({
-  chapterList,
+  onlyDownloadedChapters = false,
+  chapterList: chapterListRaw,
+  chapterListInfo: chapterListInfoRaw,
   descriptionText,
   deleteChapter,
 }) => {
   const { navigate } = useNavigation<NavigationProp<RootStackParamList>>();
   const { downloadChapter, downloadQueue } = useDownload();
+  const { getDetailedUpdates, isLoading } = useUpdates();
+  const [chapterList, setChapterList] = useState<
+    Update[] | DownloadedChapter[]
+  >(chapterListRaw ?? []);
+
+  const chapterListInfo = chapterListInfoRaw ?? {
+    novelId: chapterList![0]?.novelId,
+    novelName: chapterList![0]?.novelName,
+    updateDate: chapterList![0]?.updatedTime ?? '',
+    updatesPerDay: chapterList?.length,
+    novelCover: chapterList![0]?.novelCover ?? '',
+  };
+
   const theme = useTheme();
 
-  const handleDownloadChapter = useCallback(
-    (chapter: Update | DownloadedChapter) => {
-      if (chapterList.length) {
-        downloadChapter(
-          {
-            id: chapter.novelId,
-            pluginId: chapter.pluginId,
-            name: chapter.novelName,
-          } as NovelInfo,
-          chapter,
-        );
-      }
-    },
-    [chapterList],
-  );
-
-  const navigateToChapter = useCallback((chapter: ChapterInfo) => {
-    const { novelPath, pluginId, novelName } = chapter as
-      | Update
-      | DownloadedChapter;
-    navigate('Chapter', {
-      novel: {
-        path: novelPath,
-        pluginId: pluginId,
-        name: novelName,
-      } as NovelInfo,
-      chapter: chapter,
-    });
+  const updateList = async () => {
+    getDetailedUpdates(chapterListInfo.novelId, onlyDownloadedChapters).then(
+      res => {
+        if (res.length) {
+          setChapterList(res);
+        }
+      },
+    );
+  };
+  useEffect(() => {
+    updateList();
   }, []);
 
-  const navigateToNovel = () => {
-    if (chapterList.length) {
-      navigate('Novel', {
-        pluginId: chapterList[0].pluginId,
-        path: chapterList[0].novelPath,
-        name: chapterList[0].novelName,
-      });
+  const handleDownloadChapter = (chapter: Update | DownloadedChapter) => {
+    if (chapterListInfo.updatesPerDay) {
+      downloadChapter(
+        {
+          id: chapter?.novelId,
+          pluginId: chapter.pluginId,
+          name: chapter.novelName,
+        } as NovelInfo,
+        chapter,
+      );
     }
   };
 
-  if (chapterList.length > 1) {
+  const navigateToChapter = useCallback(
+    (chapter: ChapterInfo) => {
+      const { novelPath, pluginId, novelName } = chapter as
+        | Update
+        | DownloadedChapter;
+      navigate('ReaderStack', {
+        screen: 'Chapter',
+        params: {
+          novel: {
+            path: novelPath,
+            pluginId: pluginId,
+            name: novelName,
+          } as NovelInfo,
+          chapter: chapter,
+        },
+      });
+    },
+    [navigate],
+  );
+
+  const navigateToNovel = useCallback(() => {
+    if (chapterListInfo.updatesPerDay) {
+      navigate('ReaderStack', {
+        screen: 'Novel',
+        params: {
+          pluginId: chapterList[0].pluginId,
+          path: chapterList[0].novelPath,
+          cover: chapterList[0].novelCover,
+          name: chapterList[0].novelName,
+        },
+      });
+    }
+  }, [chapterList, chapterListInfo.updatesPerDay, navigate]);
+
+  const styles = useMemo(() => createStyles(theme), [theme]);
+
+  const Cover = useCallback(() => {
+    const uri = chapterListInfo.novelCover || defaultCover;
+    return (
+      <Pressable onPress={navigateToNovel} style={styles.alignSelf}>
+        <Image source={{ uri }} style={styles.cover} />
+      </Pressable>
+    );
+  }, [
+    chapterListInfo.novelCover,
+    navigateToNovel,
+    styles.alignSelf,
+    styles.cover,
+  ]);
+
+  if (chapterListInfo.updatesPerDay > 1) {
     return (
       <List.Accordion
-        title={chapterList[0].novelName}
-        titleStyle={{ fontSize: 14, color: theme.onSurface }}
-        left={() => (
-          <NovelCover
-            navigateToNovel={navigateToNovel}
-            uri={chapterList[0].novelCover || defaultCover}
-          />
-        )}
-        descriptionStyle={{ fontSize: 12 }}
+        title={chapterListInfo.novelName}
+        titleStyle={styles.title}
+        left={Cover}
+        descriptionStyle={styles.description}
         theme={{ colors: theme }}
         style={[styles.container, styles.padding]}
-        description={`${chapterList.length} ${descriptionText}`}
-        onPress={noop}
+        description={`${chapterListInfo.updatesPerDay} ${descriptionText}`}
+        onPress={updateList}
       >
-        <FlatList
-          data={chapterList}
-          keyExtractor={it => 'update' + it.id}
-          extraData={[chapterList]}
-          style={styles.chapterList}
-          renderItem={({ item }) => {
-            return (
-              <ChapterItem
-                isLocal={false}
-                isDownloading={downloadQueue.some(
-                  c => c.task.data.chapterId === item.id,
-                )}
-                isUpdateCard
-                novelName={chapterList[0].novelName}
-                chapter={item}
-                theme={theme}
-                showChapterTitles={false}
-                downloadChapter={() => handleDownloadChapter(item)}
-                deleteChapter={() => deleteChapter(item)}
-                navigateToChapter={navigateToChapter}
-                left={
-                  <View style={styles.novelCover}>
-                    <NovelCover
-                      navigateToNovel={navigateToNovel}
-                      uri={chapterList[0].novelCover || defaultCover}
-                    />
-                  </View>
-                }
-              />
-            );
-          }}
-          scrollEnabled={false}
-        />
+        {chapterList.length > 0 ? ( //@ts-expect-error
+          <FlatList
+            data={chapterList}
+            keyExtractor={it => 'update' + it.id}
+            extraData={[chapterList, isLoading]}
+            style={styles.chapterList}
+            renderItem={({ item }) => {
+              return (
+                <ChapterItem
+                  isLocal={false}
+                  isDownloading={downloadQueue.some(c => {
+                    return c.task.data.chapterId === item.id;
+                  })}
+                  isUpdateCard
+                  novelName={chapterListInfo.novelName}
+                  chapter={item}
+                  theme={theme}
+                  showChapterTitles={false}
+                  downloadChapter={() => handleDownloadChapter(item)}
+                  deleteChapter={() => deleteChapter(item)}
+                  navigateToChapter={navigateToChapter}
+                  left={
+                    <View style={styles.novelCover}>
+                      <Cover />
+                    </View>
+                  }
+                />
+              );
+            }}
+            scrollEnabled={false}
+          />
+        ) : (
+          <></>
+        )}
       </List.Accordion>
     );
-  } else if (chapterList.length > 0) {
+  } else if (chapterListInfo.updatesPerDay > 0 && chapterList[0]) {
     return (
       <ChapterItem
         isLocal={false}
         isDownloading={downloadQueue.some(
-          c => c.task.data.chapterId === chapterList[0].id,
+          c => c.task.data.chapterId === chapterList[0]?.id,
         )}
         isUpdateCard
-        novelName={chapterList[0].novelName}
+        novelName={chapterListInfo.novelName}
         chapter={chapterList[0]}
         theme={theme}
         showChapterTitles={false}
@@ -154,10 +195,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         navigateToChapter={navigateToChapter}
         left={
           <View style={styles.novelCover}>
-            <NovelCover
-              navigateToNovel={navigateToNovel}
-              uri={chapterList[0].novelCover || defaultCover}
-            />
+            <Cover />
           </View>
         }
       />
@@ -166,26 +204,31 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
   return null;
 };
 
-export default UpdateNovelCard;
+export default memo(UpdateNovelCard);
 
-const styles = StyleSheet.create({
-  padding: {
-    paddingHorizontal: 16,
-    paddingVertical: 2,
-  },
-  container: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  cover: {
-    height: 40,
-    width: 40,
-    borderRadius: 4,
-  },
-  novelCover: {
-    marginRight: 8,
-  },
-  chapterList: {
-    marginLeft: -40,
-  },
-});
+function createStyles(theme: ThemeColors) {
+  return StyleSheet.create({
+    alignSelf: { alignSelf: 'center' },
+    chapterList: {
+      marginLeft: -40,
+    },
+    container: {
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    cover: {
+      borderRadius: 4,
+      height: 40,
+      width: 40,
+    },
+    description: { fontSize: 12 },
+    novelCover: {
+      marginRight: 8,
+    },
+    padding: {
+      paddingHorizontal: 16,
+      paddingVertical: 2,
+    },
+    title: { color: theme.onSurface, fontSize: 14 },
+  });
+}

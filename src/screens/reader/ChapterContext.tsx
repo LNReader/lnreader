@@ -22,7 +22,7 @@ export function ChapterContextProvider({
   novel,
   initialChapter,
 }: {
-  children: JSX.Element;
+  children: React.JSX.Element;
   novel: NovelInfo;
   initialChapter: ChapterInfo;
 }) {

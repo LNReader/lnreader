@@ -46,15 +46,15 @@ const ClearHistoryDialog: React.FC<ClearHistoryDialogProps> = ({
 export default ClearHistoryDialog;
 
 const styles = StyleSheet.create({
-  container: {
-    margin: 20,
-    borderRadius: 28,
-  },
-  title: {
-    letterSpacing: 0,
-    fontSize: 16,
-  },
   button: {
     marginLeft: 4,
+  },
+  container: {
+    borderRadius: 28,
+    margin: 20,
+  },
+  title: {
+    fontSize: 16,
+    letterSpacing: 0,
   },
 });

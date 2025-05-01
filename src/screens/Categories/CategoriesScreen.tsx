@@ -1,9 +1,9 @@
 import { FlatList, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { FAB, Portal } from 'react-native-paper';
+import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
-import { Appbar, EmptyView } from '@components/index';
+import { Appbar, EmptyView, SafeAreaView } from '@components/index';
 import AddCategoryModal from './components/AddCategoryModal';
 
 import {
@@ -26,13 +26,20 @@ const CategoriesScreen = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>();
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, right } = useSafeAreaInsets();
+
+  const {
+    value: categoryModalVisible,
+    setTrue: showCategoryModal,
+    setFalse: closeCategoryModal,
+  } = useBoolean();
 
   const getCategories = async () => {
     try {
-      let res = await getCategoriesFromDb();
+      const res = getCategoriesFromDb();
       setCategories(res);
     } catch (err) {
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
@@ -70,13 +77,8 @@ const CategoriesScreen = () => {
     updateCategoryOrderInDb(updatedOrderCategories || []);
   };
 
-  const {
-    value: categoryModalVisible,
-    setTrue: showCategoryModal,
-    setFalse: closeCategoryModal,
-  } = useBoolean();
   return (
-    <>
+    <SafeAreaView excludeTop>
       <Appbar
         title={getString('categories.header')}
         handleGoBack={goBack}
@@ -107,36 +109,35 @@ const CategoriesScreen = () => {
         />
       )}
       <FAB
-        style={[styles.fab, { backgroundColor: theme.primary, bottom: bottom }]}
+        style={[styles.fab, { backgroundColor: theme.primary, right, bottom }]}
         color={theme.onPrimary}
         label={getString('common.add')}
         uppercase={false}
         onPress={showCategoryModal}
         icon={'plus'}
       />
-      <Portal>
-        <AddCategoryModal
-          visible={categoryModalVisible}
-          closeModal={closeCategoryModal}
-          onSuccess={getCategories}
-        />
-      </Portal>
-    </>
+
+      <AddCategoryModal
+        visible={categoryModalVisible}
+        closeModal={closeCategoryModal}
+        onSuccess={getCategories}
+      />
+    </SafeAreaView>
   );
 };
 
 export default CategoriesScreen;
 
 const styles = StyleSheet.create({
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 16,
-  },
   contentCtn: {
     flexGrow: 1,
-    paddingVertical: 16,
     paddingBottom: 100,
+    paddingVertical: 16,
+  },
+  fab: {
+    bottom: 16,
+    margin: 16,
+    position: 'absolute',
+    right: 0,
   },
 });

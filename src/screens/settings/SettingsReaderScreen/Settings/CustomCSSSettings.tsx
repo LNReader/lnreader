@@ -27,7 +27,7 @@ const CustomCSSSettings = () => {
         </List.SubHeader>
       </View>
       <View style={styles.customCSSContainer}>
-        <Text numberOfLines={3} style={[{ color: theme.onSurface }]}>
+        <Text numberOfLines={3} style={{ color: theme.onSurface }}>
           {customCSS ||
             `${getString('common.example')}: ${customCSSPlaceholder}`}
         </Text>
@@ -75,33 +75,33 @@ const CustomCSSSettings = () => {
 export default CustomCSSSettings;
 
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
   bottomInset: {
     paddingBottom: 40,
-  },
-  fontSizeL: {
-    fontSize: 16,
-  },
-  customCSSContainer: {
-    marginHorizontal: 16,
-    marginBottom: 8,
   },
   buttons: {
     flex: 1,
   },
+  customCSSButtons: {
+    flex: 1,
+    flexDirection: 'row-reverse',
+    marginVertical: 8,
+  },
+  customCSSContainer: {
+    marginBottom: 8,
+    marginHorizontal: 16,
+  },
+  customThemeButton: {
+    marginBottom: 16,
+    marginHorizontal: 16,
+  },
+  flex: {
+    flex: 1,
+  },
+  fontSizeL: {
+    fontSize: 16,
+  },
+  header: { flexDirection: 'row', justifyContent: 'space-between' },
   marginLeftS: {
     marginLeft: 8,
   },
-  customCSSButtons: {
-    marginVertical: 8,
-    flex: 1,
-    flexDirection: 'row-reverse',
-  },
-  customThemeButton: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-  },
-  header: { flexDirection: 'row', justifyContent: 'space-between' },
 });

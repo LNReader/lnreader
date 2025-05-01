@@ -12,7 +12,7 @@ export const older = (a: string, b: string): boolean => {
         return false;
       }
     }
-  } catch (e: any) {
+  } catch {
     return arrA.length < arrB.length;
   }
   return false;

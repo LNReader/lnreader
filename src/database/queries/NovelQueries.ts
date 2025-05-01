@@ -4,16 +4,22 @@ import { fetchNovel } from '@services/plugin/fetch';
 import { insertChapters } from './ChapterQueries';
 
 import { showToast } from '@utils/showToast';
-import { txnErrorCallback } from '../utils/helpers';
-import { noop } from 'lodash-es';
+import {
+  getAllAsync,
+  getFirstAsync,
+  getFirstSync,
+  QueryObject,
+  runAsync,
+  runSync,
+} from '../utils/helpers';
 import { getString } from '@strings/translations';
 import { BackupNovel, NovelInfo } from '../types';
 import { SourceNovel } from '@plugins/types';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import FileManager from '@native/FileManager';
 import { downloadFile } from '@plugins/helpers/fetch';
 import { getPlugin } from '@plugins/pluginManager';
 import { db } from '@database/db';
+import NativeFile from '@specs/NativeFile';
 
 export const insertNovelAndChapters = async (
   pluginId: string,
@@ -21,44 +27,36 @@ export const insertNovelAndChapters = async (
 ): Promise<number | undefined> => {
   const insertNovelQuery =
     'INSERT INTO Novel (path, pluginId, name, cover, summary, author, artist, status, genres, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-  const novelId: number | undefined = await new Promise(resolve => {
-    db.transaction(tx => {
-      tx.executeSql(
-        insertNovelQuery,
-        [
-          sourceNovel.path,
-          pluginId,
-          sourceNovel.name,
-          sourceNovel.cover || null,
-          sourceNovel.summary || null,
-          sourceNovel.author || null,
-          sourceNovel.artist || null,
-          sourceNovel.status || null,
-          sourceNovel.genres || null,
-          sourceNovel.totalPages || 0,
-        ],
-        async (txObj, resultSet) => resolve(resultSet.insertId),
-        txnErrorCallback,
-      );
-    });
-  });
+  const novelId: number | undefined = db.runSync(insertNovelQuery, [
+    sourceNovel.path,
+    pluginId,
+    sourceNovel.name,
+    sourceNovel.cover || null,
+    sourceNovel.summary || null,
+    sourceNovel.author || null,
+    sourceNovel.artist || null,
+    sourceNovel.status || null,
+    sourceNovel.genres || null,
+    sourceNovel.totalPages || 0,
+  ]).lastInsertRowId;
+
   if (novelId) {
     if (sourceNovel.cover) {
       const novelDir = NOVEL_STORAGE + '/' + pluginId + '/' + novelId;
-      await FileManager.mkdir(novelDir);
+      NativeFile.mkdir(novelDir);
       const novelCoverPath = novelDir + '/cover.png';
       const novelCoverUri = 'file://' + novelCoverPath;
-      downloadFile(
+      await downloadFile(
         sourceNovel.cover,
         novelCoverPath,
         getPlugin(pluginId)?.imageRequestInit,
       ).then(() => {
-        db.transaction(tx => {
-          tx.executeSql('UPDATE Novel SET cover = ? WHERE id = ?', [
-            novelCoverUri,
-            novelId,
-          ]);
-        });
+        runSync([
+          [
+            'UPDATE Novel SET cover = ? WHERE id = ?',
+            [novelCoverUri, novelId!],
+          ],
+        ]);
       });
     }
     await insertChapters(novelId, sourceNovel.chapters);
@@ -66,45 +64,26 @@ export const insertNovelAndChapters = async (
   return novelId;
 };
 
-export const getAllNovels = async (): Promise<NovelInfo[]> => {
-  return new Promise(resolve =>
-    db.transaction(tx => {
-      tx.executeSql('SELECT * FROM Novel', [], (txObj, { rows }) =>
-        resolve(rows._array),
-      );
-    }),
-  );
+export const getAllNovels = async () => {
+  return getAllAsync<NovelInfo>(['SELECT * FROM Novel']);
 };
 
-export const getNovelById = async (
-  novelId: number,
-): Promise<NovelInfo | null> => {
-  return new Promise(resolve =>
-    db.transaction(tx => {
-      tx.executeSql(
-        'SELECT * FROM Novel WHERE id = ?',
-        [novelId],
-        (txObj, { rows }) => resolve(rows.item(0)),
-        txnErrorCallback,
-      );
-    }),
-  );
+export const getNovelById = async (novelId: number) => {
+  return getFirstAsync<NovelInfo>([
+    'SELECT * FROM Novel WHERE id = ?',
+    [novelId],
+  ]);
 };
 
-export const getNovelByPath = async (
+export const getNovelByPath = (
   novelPath: string,
   pluginId: string,
-): Promise<NovelInfo | null> => {
-  return new Promise(resolve =>
-    db.transaction(tx => {
-      tx.executeSql(
-        'SELECT * FROM Novel WHERE path = ? AND pluginId = ?',
-        [novelPath, pluginId],
-        (txObj, { rows }) => resolve(rows.item(0)),
-        txnErrorCallback,
-      );
-    }),
-  );
+): NovelInfo | null => {
+  const res = getFirstSync<NovelInfo>([
+    'SELECT * FROM Novel WHERE path = ? AND pluginId = ?',
+    [novelPath, pluginId],
+  ]);
+  return res;
 };
 
 // if query is insert novel || add to library => add default category name for it
@@ -116,92 +95,70 @@ export const switchNovelToLibrary = async (
 ) => {
   const novel = await getNovelByPath(novelPath, pluginId);
   if (novel) {
-    db.transaction(tx => {
-      tx.executeSql(
+    const queries: QueryObject[] = [
+      [
         'UPDATE Novel SET inLibrary = ? WHERE id = ?',
         [Number(!novel.inLibrary), novel.id],
-        noop,
-        txnErrorCallback,
-      );
-      if (novel.inLibrary) {
-        tx.executeSql(
-          'DELETE FROM NovelCategory WHERE novelId = ?',
-          [novel.id],
-          () => showToast(getString('browseScreen.removeFromLibrary')),
-          txnErrorCallback,
-        );
-      } else {
-        tx.executeSql(
-          'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
-          [novel.id],
-          () => showToast(getString('browseScreen.addedToLibrary')),
-          txnErrorCallback,
-        );
-        if (novel.pluginId === 'local') {
-          tx.executeSql(
-            'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, 2)',
+      ],
+      novel.inLibrary
+        ? [
+            'DELETE FROM NovelCategory WHERE novelId = ?',
             [novel.id],
-          );
-        }
-      }
-    });
+            () => showToast(getString('browseScreen.removeFromLibrary')),
+          ]
+        : [
+            'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
+            [novel.id],
+            () => showToast(getString('browseScreen.addedToLibrary')),
+          ],
+    ];
+    if (novel.pluginId === 'local') {
+      queries.push([
+        'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, 2)',
+        [novel.id],
+      ]);
+    }
+    runAsync(queries);
   } else {
     const sourceNovel = await fetchNovel(pluginId, novelPath);
     const novelId = await insertNovelAndChapters(pluginId, sourceNovel);
     if (novelId) {
-      db.transaction(tx => {
-        tx.executeSql(
+      runAsync([
+        [
           'UPDATE Novel SET inLibrary = 1 WHERE id = ?',
           [novelId],
           () => showToast(getString('browseScreen.addedToLibrary')),
-          txnErrorCallback,
-        );
-        tx.executeSql(
+        ],
+        [
           'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
           [novelId],
-          noop,
-          txnErrorCallback,
-        );
-      });
+        ],
+      ]);
     }
   }
 };
 
 // allow to delete local novels
 export const removeNovelsFromLibrary = (novelIds: Array<number>) => {
-  db.transaction(tx => {
-    tx.executeSql(
-      `UPDATE Novel SET inLibrary = 0 WHERE id IN (${novelIds.join(', ')});`,
-    );
-    tx.executeSql(
-      `DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(', ')});`,
-    );
-  });
+  runSync([
+    [`UPDATE Novel SET inLibrary = 0 WHERE id IN (${novelIds.join(', ')});`],
+    [`DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(', ')});`],
+  ]);
   showToast(getString('browseScreen.removeFromLibrary'));
 };
 
-export const getCachedNovels = (): Promise<NovelInfo[]> => {
-  return new Promise(resolve => {
-    db.transaction(tx => {
-      tx.executeSql(
-        'SELECT * FROM Novel WHERE inLibrary = 0',
-        [],
-        (txObj, { rows }) => resolve(rows._array as NovelInfo[]),
-        txnErrorCallback,
-      );
-    });
-  });
+export const getCachedNovels = () => {
+  return getAllAsync<NovelInfo>(['SELECT * FROM Novel WHERE inLibrary = 0']);
 };
 export const deleteCachedNovels = async () => {
-  db.transaction(tx => {
-    tx.executeSql(
+  runAsync([
+    [
       'DELETE FROM Novel WHERE inLibrary = 0',
       [],
       () =>
         showToast(getString('advancedSettingsScreen.cachedNovelsDeletedToast')),
-      txnErrorCallback,
-    );
-  });
+    ],
+  ]);
 };
 
 const restoreFromBackupQuery =
@@ -211,44 +168,42 @@ export const restoreLibrary = async (novel: NovelInfo) => {
   const sourceNovel = await fetchNovel(novel.pluginId, novel.path).catch(e => {
     throw e;
   });
-  const novelId: number | undefined = await new Promise(resolve => {
-    db.transaction(tx =>
-      tx.executeSql(
-        restoreFromBackupQuery,
-        [
-          sourceNovel.path,
-          novel.name,
-          novel.pluginId,
-          novel.cover || '',
-          novel.summary || '',
-          novel.author || '',
-          novel.artist || '',
-          novel.status || '',
-          novel.genres || '',
-          sourceNovel.totalPages || 0,
-        ],
-        async (txObj, { insertId }) => resolve(insertId),
-      ),
-    );
+  let novelId: number | undefined;
+  await db.withTransactionAsync(async () => {
+    db.runAsync(restoreFromBackupQuery, [
+      sourceNovel.path,
+      novel.name,
+      novel.pluginId,
+      novel.cover || '',
+      novel.summary || '',
+      novel.author || '',
+      novel.artist || '',
+      novel.status || '',
+      novel.genres || '',
+      sourceNovel.totalPages || 0,
+    ]).then(data => {
+      novelId = data.lastInsertRowId;
+    });
   });
+
   if (novelId && novelId > 0) {
     await new Promise((resolve, reject) => {
-      db.transaction(async tx => {
-        tx.executeSql(
+      runAsync([
+        [
           'INSERT OR REPLACE INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
-          [novelId],
+          [novelId!],
           () => {
-            tx.executeSql('UPDATE Novel SET inLibrary = 1 WHERE id = ?', [
-              novelId,
+            db.runAsync('UPDATE Novel SET inLibrary = 1 WHERE id = ?', [
+              novelId!,
             ]);
             resolve(null);
           },
-          (txObj, err) => {
-            reject(err);
+          () => {
+            reject(null);
             return false;
           },
-        );
-      });
+        ],
+      ]);
     }).catch(e => {
       throw e;
     });
@@ -259,8 +214,8 @@ export const restoreLibrary = async (novel: NovelInfo) => {
 };
 
 export const updateNovelInfo = async (info: NovelInfo) => {
-  db.transaction(tx => {
-    tx.executeSql(
+  runAsync([
+    [
       'UPDATE Novel SET name = ?, cover = ?, path = ?, summary = ?, author = ?, artist = ?, genres = ?, status = ?, isLocal = ? WHERE id = ?',
       [
         info.name,
@@ -274,10 +229,8 @@ export const updateNovelInfo = async (info: NovelInfo) => {
         Number(info.isLocal),
         info.id,
       ],
-      noop,
-      txnErrorCallback,
-    );
-  });
+    ],
+  ]);
 };
 
 export const pickCustomNovelCover = async (novel: NovelInfo) => {
@@ -285,19 +238,14 @@ export const pickCustomNovelCover = async (novel: NovelInfo) => {
   if (image.assets && image.assets[0]) {
     const novelDir = NOVEL_STORAGE + '/' + novel.pluginId + '/' + novel.id;
     let novelCoverUri = 'file://' + novelDir + '/cover.png';
-    if (!(await FileManager.exists(novelDir))) {
-      await FileManager.mkdir(novelDir);
+    if (!NativeFile.exists(novelDir)) {
+      NativeFile.mkdir(novelDir);
     }
-    FileManager.copyFile(image.assets[0].uri, novelCoverUri);
+    NativeFile.copyFile(image.assets[0].uri, novelCoverUri);
     novelCoverUri += '?' + Date.now();
-    db.transaction(tx => {
-      tx.executeSql(
-        'UPDATE Novel SET cover = ? WHERE id = ?',
-        [novelCoverUri, novel.id],
-        noop,
-        txnErrorCallback,
-      );
-    });
+    runAsync([
+      ['UPDATE Novel SET cover = ? WHERE id = ?', [novelCoverUri, novel.id]],
+    ]);
     return novelCoverUri;
   }
 };
@@ -306,54 +254,48 @@ export const updateNovelCategoryById = async (
   novelId: number,
   categoryIds: number[],
 ) => {
-  db.transaction(tx => {
-    categoryIds.forEach(categoryId => {
-      tx.executeSql(
+  runAsync(
+    categoryIds.map(categoryId => {
+      return [
         'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, ?)',
         [novelId, categoryId],
-        noop,
-        txnErrorCallback,
-      );
-    });
-  });
+      ];
+    }),
+  );
 };
 
 export const updateNovelCategories = async (
   novelIds: number[],
   categoryIds: number[],
 ): Promise<void> => {
-  let queries: string[] = [];
-  queries.push(
+  const queries: QueryObject[] = [];
+  queries.push([
     `DELETE FROM NovelCategory WHERE novelId IN (${novelIds.join(
       ',',
     )}) AND categoryId != 2`,
-  );
+  ]);
   // if no category is selected => set to the default category
   if (categoryIds.length) {
     novelIds.forEach(novelId => {
       categoryIds.forEach(categoryId =>
-        queries.push(
+        queries.push([
           `INSERT INTO NovelCategory (novelId, categoryId) VALUES (${novelId}, ${categoryId})`,
-        ),
+        ]),
       );
     });
   } else {
     novelIds.forEach(novelId => {
       // hacky: insert local novel category -> failed -> ignored
-      queries.push(
+      queries.push([
         `INSERT OR IGNORE INTO NovelCategory (novelId, categoryId) 
          VALUES (
           ${novelId}, 
           IFNULL((SELECT categoryId FROM NovelCategory WHERE novelId = ${novelId}), (SELECT id FROM Category WHERE sort = 1))
         )`,
-      );
+      ]);
     });
   }
-  db.transaction(tx => {
-    queries.forEach(query => {
-      tx.executeSql(query);
-    });
-  });
+  return runSync(queries);
 };
 
 const restoreObjectQuery = (table: string, obj: any) => {
@@ -368,22 +310,17 @@ const restoreObjectQuery = (table: string, obj: any) => {
 
 export const _restoreNovelAndChapters = async (backupNovel: BackupNovel) => {
   const { chapters, ...novel } = backupNovel;
-  await new Promise(resolve => {
-    db.transaction(tx => {
-      tx.executeSql('DELETE FROM Novel WHERE id = ?', [novel.id]);
-      tx.executeSql(
-        restoreObjectQuery('Novel', novel),
-        Object.values(novel) as string[] | number[],
-        () => resolve(null),
-      );
-    });
-  });
-  db.transaction(tx => {
-    for (const chapter of chapters) {
-      tx.executeSql(
-        restoreObjectQuery('Chapter', chapter),
-        Object.values(chapter) as string[] | number[],
-      );
-    }
-  });
+  await runAsync([
+    ['DELETE FROM Novel WHERE id = ?', [novel.id]],
+    [
+      restoreObjectQuery('Novel', novel),
+      Object.values(novel) as string[] | number[],
+    ],
+  ]);
+  runAsync(
+    chapters.map(chapter => [
+      restoreObjectQuery('Chapter', chapter),
+      Object.values(chapter) as string[] | number[],
+    ]),
+  );
 };

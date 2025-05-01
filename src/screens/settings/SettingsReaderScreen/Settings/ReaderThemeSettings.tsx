@@ -150,29 +150,29 @@ const ReaderThemeSettings = () => {
 export default ReaderThemeSettings;
 
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
   bottomInset: {
     paddingBottom: 40,
-  },
-  fontSizeL: {
-    fontSize: 16,
-  },
-  customCSSContainer: {
-    marginHorizontal: 16,
-    marginBottom: 8,
   },
   buttons: {
     flex: 1,
   },
   customCSSButtons: {
-    marginVertical: 8,
     flex: 1,
     flexDirection: 'row-reverse',
+    marginVertical: 8,
+  },
+  customCSSContainer: {
+    marginBottom: 8,
+    marginHorizontal: 16,
   },
   customThemeButton: {
-    marginHorizontal: 16,
     marginBottom: 16,
+    marginHorizontal: 16,
+  },
+  flex: {
+    flex: 1,
+  },
+  fontSizeL: {
+    fontSize: 16,
   },
 });

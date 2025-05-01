@@ -1,13 +1,14 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-import { Portal, Modal, overlay } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
 import { getString } from '@strings/translations';
+import { Modal } from '@components';
 
 interface GridSizeModalProps {
   novelsPerRow: number;
@@ -34,14 +35,7 @@ const GridSizeModal: React.FC<GridSizeModalProps> = ({
 
   return (
     <Portal>
-      <Modal
-        visible={gridSizeModalVisible}
-        onDismiss={hideGridSizeModal}
-        contentContainerStyle={[
-          styles.container,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
-      >
+      <Modal visible={gridSizeModalVisible} onDismiss={hideGridSizeModal}>
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
           {getString('generalSettingsScreen.gridSize')}
         </Text>
@@ -53,7 +47,7 @@ const GridSizeModal: React.FC<GridSizeModalProps> = ({
           })}
         </Text>
         {Object.keys(gridSizes).map(item => {
-          let it = Number(item);
+          const it = Number(item);
           return (
             <RadioButton
               key={item}
@@ -62,7 +56,6 @@ const GridSizeModal: React.FC<GridSizeModalProps> = ({
               label={gridSizes[it]}
               onPress={() => setLibrarySettings({ novelsPerRow: it })}
               theme={theme}
-              style={styles.radiobutton}
             />
           );
         })}
@@ -74,24 +67,16 @@ const GridSizeModal: React.FC<GridSizeModalProps> = ({
 export default GridSizeModal;
 
 const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 24,
-    margin: 20,
-    borderRadius: 28,
-  },
-  modalHeader: {
-    paddingHorizontal: 24,
-    fontSize: 24,
-    marginBottom: 10,
-  },
   modalDescription: {
-    paddingHorizontal: 24,
     fontSize: 16,
     marginBottom: 16,
   },
-  slider: {
-    width: '100%',
-    height: 40,
+  modalHeader: {
+    fontSize: 24,
+    marginBottom: 10,
   },
-  radiobutton: { paddingHorizontal: 20 },
+  slider: {
+    height: 40,
+    width: '100%',
+  },
 });

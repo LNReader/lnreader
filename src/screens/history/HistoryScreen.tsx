@@ -3,7 +3,12 @@ import { StyleSheet, SectionList, Text } from 'react-native';
 import dayjs from 'dayjs';
 import { Portal } from 'react-native-paper';
 
-import { EmptyView, ErrorScreenV2, SearchbarV2 } from '@components';
+import {
+  EmptyView,
+  ErrorScreenV2,
+  SafeAreaView,
+  SearchbarV2,
+} from '@components';
 import HistoryCard from './components/HistoryCard/HistoryCard';
 
 import { useSearch, useBoolean } from '@hooks';
@@ -74,14 +79,18 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
   useEffect(
     () =>
       navigation.addListener('tabPress', e => {
-        let lastNovel = history[0];
+        const lastNovel = history[0];
         if (navigation.isFocused() && lastNovel) {
           e.preventDefault();
 
-          navigation.navigate('Novel', {
-            name: lastNovel.novelName,
-            path: lastNovel.novelPath,
-            pluginId: lastNovel.pluginId,
+          navigation.navigate('ReaderStack', {
+            screen: 'Novel',
+            params: {
+              name: lastNovel.novelName,
+              path: lastNovel.novelPath,
+              cover: lastNovel.novelCover,
+              pluginId: lastNovel.pluginId,
+            },
           });
         }
       }),
@@ -89,7 +98,7 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
   );
 
   return (
-    <>
+    <SafeAreaView excludeBottom>
       <SearchbarV2
         searchText={searchText}
         placeholder={getString('historyScreen.searchbar')}
@@ -143,18 +152,18 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
           </Portal>
         </>
       )}
-    </>
+    </SafeAreaView>
   );
 };
 
 export default HistoryScreen;
 
 const styles = StyleSheet.create({
-  listContainer: {
-    flexGrow: 1,
-  },
   dateHeader: {
     paddingHorizontal: 16,
     paddingVertical: 8,
+  },
+  listContainer: {
+    flexGrow: 1,
   },
 });

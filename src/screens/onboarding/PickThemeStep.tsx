@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, FlatList } from 'react-native';
 import { ThemePicker } from '@components/ThemePicker/ThemePicker';
 import { ThemeColors } from '@theme/types';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useMMKVObject } from 'react-native-mmkv';
 import { useTheme } from '@hooks/persisted';
 import { darkThemes, lightThemes } from '@theme/md3';
@@ -17,16 +16,14 @@ const ThemeList = ({
 }) => {
   const [, setTheme] = useMMKVObject('APP_THEME');
   return (
-    <ScrollView
+    <FlatList
       contentContainerStyle={{
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        flexDirection: 'row',
+        margin: 'auto',
+        paddingHorizontal: 8,
+        paddingBottom: 8,
       }}
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-    >
-      {list.map(item => (
+      data={list}
+      renderItem={({ item }) => (
         <ThemePicker
           key={item.id}
           currentTheme={theme}
@@ -35,8 +32,10 @@ const ThemeList = ({
             setTheme(item);
           }}
         />
-      ))}
-    </ScrollView>
+      )}
+      horizontal={false}
+      numColumns={3}
+    />
   );
 };
 
@@ -93,7 +92,7 @@ export default function PickThemeStep() {
   const theme = useTheme();
   const [, setTheme] = useMMKVObject('APP_THEME');
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.buttonContainer}>
         <SchemeButton
           onPress={() => {
@@ -120,25 +119,25 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingBottom: 24,
+    paddingBottom: 16,
   },
-  schemeButtonWrapper: {
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-  },
-  schemeButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 36,
+  darkButton: {
+    borderBottomRightRadius: 24,
+    borderRightWidth: 1,
+    borderTopRightRadius: 24,
   },
   lightButton: {
+    borderBottomLeftRadius: 24,
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderTopLeftRadius: 24,
-    borderBottomLeftRadius: 24,
   },
-  darkButton: {
-    borderRightWidth: 1,
-    borderTopRightRadius: 24,
-    borderBottomRightRadius: 24,
+  schemeButton: {
+    paddingHorizontal: 36,
+    paddingVertical: 8,
+  },
+  schemeButtonWrapper: {
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
   },
 });

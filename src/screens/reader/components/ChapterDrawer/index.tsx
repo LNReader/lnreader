@@ -1,22 +1,15 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useAppSettings, useTheme } from '@hooks/persisted';
-import { FlashList, ViewToken } from '@shopify/flash-list';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
-import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
-import { useNovel } from '@hooks/persisted/useNovel';
 import renderListChapter from './RenderListChapter';
 import { useChapterContext } from '@screens/reader/ChapterContext';
+import { LegendList, LegendListRef, ViewToken } from '@legendapp/list';
+import { useNovelContext } from '@screens/novel/NovelContext';
 
 type ButtonProperties = {
   text: string;
@@ -29,20 +22,12 @@ type ButtonsProperties = {
 };
 
 const ChapterDrawer = () => {
-  const {
-    novel: novelItem,
-    chapter,
-    setChapter,
-    setLoading,
-  } = useChapterContext();
-  const { chapters, novelSettings, pages, setPageIndex } = useNovel(
-    novelItem.path,
-    novelItem.pluginId,
-  );
+  const { chapter, setChapter, setLoading } = useChapterContext();
+  const { chapters, novelSettings, pages, setPageIndex } = useNovelContext();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { defaultChapterSort } = useAppSettings();
-  const listRef = useRef<FlashList<ChapterInfo>>(null);
+  const listRef = useRef<LegendListRef>(null);
 
   const styles = createStylesheet(theme, insets);
 
@@ -68,7 +53,7 @@ const ChapterDrawer = () => {
     setPageIndex(pageIndex);
   }, [chapter, pages, setPageIndex]);
 
-  const scrollToIndex = useMemo(() => {
+  const calculateScrollToIndex = useCallback(() => {
     if (chapters.length < 1) {
       return;
     }
@@ -77,45 +62,63 @@ const ChapterDrawer = () => {
       chapters.findIndex(el => {
         return el.id === chapter.id;
       }) || 0;
+
     return indexOfCurrentChapter >= 2 ? indexOfCurrentChapter - 2 : 0;
+  }, [chapters, chapter.id]);
+
+  const scrollToIndex = useRef<number | undefined>(calculateScrollToIndex());
+  useEffect(() => {
+    const next = calculateScrollToIndex();
+    if (next !== undefined) {
+      if (scrollToIndex.current === undefined) {
+        scroll(next);
+      }
+      scrollToIndex.current = next;
+    }
   }, [chapters, chapter.id]);
 
   const [footerBtnProps, setButtonProperties] =
     useState<ButtonsProperties>(defaultButtonLayout);
 
-  const checkViewableItems = ({
-    viewableItems,
-  }: {
-    viewableItems: ViewToken[];
-  }) => {
-    const curChapter = getString('readerScreen.drawer.scrollToCurrentChapter');
-    let newBtnLayout = Object.create(defaultButtonLayout);
+  const checkViewableItems = useCallback(
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      const curChapter = getString(
+        'readerScreen.drawer.scrollToCurrentChapter',
+      );
+      const newBtnLayout = Object.create(defaultButtonLayout);
 
-    if (viewableItems.length !== 0) {
-      let visible = viewableItems.find(({ item }) => {
-        return item.id === chapter.id;
-      });
-      if (!visible && scrollToIndex) {
+      if (viewableItems.length === 0) return;
+      const cKey = (scrollToIndex.current ?? 0) + 2;
+      const vKey = parseInt(viewableItems[0].key);
+      const visible = vKey <= cKey && cKey <= vKey + viewableItems.length - 1;
+
+      if (!visible && scrollToIndex.current !== undefined) {
         if (
           listAscending
-            ? (viewableItems[0].index ?? 0) < scrollToIndex + 2
-            : (viewableItems[0].index ?? 0) > scrollToIndex + 2
+            ? (viewableItems[0].index ?? 0) < scrollToIndex.current + 2
+            : (viewableItems[0].index ?? 0) > scrollToIndex.current + 2
         ) {
           newBtnLayout.down = {
             text: curChapter,
-            index: scrollToIndex,
+            index: scrollToIndex.current,
           };
         } else {
           newBtnLayout.up = {
             text: curChapter,
-            index: scrollToIndex,
+            index: scrollToIndex.current,
           };
         }
       }
-
+      if (cKey <= 2 && vKey <= 4) {
+        newBtnLayout.up = {
+          text: curChapter,
+          index: scrollToIndex.current,
+        };
+      }
       setButtonProperties(newBtnLayout);
-    }
-  };
+    },
+    [chapter, chapters, scrollToIndex.current],
+  );
   const scroll = useCallback((index?: number) => {
     if (index !== undefined) {
       listRef.current?.scrollToIndex({
@@ -135,11 +138,16 @@ const ChapterDrawer = () => {
       {scrollToIndex === undefined ? (
         <LoadingScreenV2 theme={theme} />
       ) : (
-        <FlashList
+        <LegendList
           ref={listRef}
+          viewabilityConfig={{
+            minimumViewTime: 100,
+            viewAreaCoveragePercentThreshold: 95,
+          }}
           onViewableItemsChanged={checkViewableItems}
           data={chapters}
-          extraData={chapter}
+          extraData={[chapter, scrollToIndex.current]}
+          keyExtractor={item => (item.position ?? item.id).toString()}
           renderItem={val =>
             renderListChapter({
               item: val.item,
@@ -153,7 +161,7 @@ const ChapterDrawer = () => {
             })
           }
           estimatedItemSize={60}
-          initialScrollIndex={scrollToIndex}
+          initialScrollIndex={scrollToIndex.current}
         />
       )}
       <View style={styles.footer}>
@@ -176,54 +184,54 @@ const ChapterDrawer = () => {
 
 const createStylesheet = (theme: ThemeColors, insets: EdgeInsets) => {
   return StyleSheet.create({
-    drawer: {
-      flex: 1,
-      backgroundColor: theme.surface,
-      paddingTop: 48,
-    },
-    headerCtn: {
-      fontSize: 16,
-      padding: 16,
-      marginBottom: 4,
-      fontWeight: 'bold',
-      borderBottomWidth: 1,
-      borderBottomColor: theme.outline,
-      color: theme.onSurface,
-    },
-    chapterCtn: {
-      flex: 1,
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      justifyContent: 'center',
-    },
-    chapterNameCtn: {
-      fontSize: 12,
-      marginBottom: 2,
-      color: theme.onSurface,
-    },
-    releaseDateCtn: {
-      fontSize: 10,
-      color: theme.onSurfaceVariant,
-    },
-    drawerElementContainer: {
-      margin: 4,
-      marginLeft: 16,
-      marginRight: 16,
-      borderRadius: 50,
-      overflow: 'hidden',
-      minHeight: 48,
-    },
     button: {
       marginBottom: 12,
       marginHorizontal: 16,
       marginTop: 4,
     },
+    chapterCtn: {
+      flex: 1,
+      justifyContent: 'center',
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+    },
+    chapterNameCtn: {
+      color: theme.onSurface,
+      fontSize: 12,
+      marginBottom: 2,
+    },
+    drawer: {
+      backgroundColor: theme.surface,
+      flex: 1,
+      paddingTop: 48,
+    },
+    drawerElementContainer: {
+      borderRadius: 50,
+      margin: 4,
+      marginLeft: 16,
+      marginRight: 16,
+      minHeight: 48,
+      overflow: 'hidden',
+    },
     footer: {
-      marginTop: 4,
-      paddingTop: 8,
-      paddingBottom: insets.bottom,
-      borderTopWidth: 1,
       borderTopColor: theme.outline,
+      borderTopWidth: 1,
+      marginTop: 4,
+      paddingBottom: insets.bottom,
+      paddingTop: 8,
+    },
+    headerCtn: {
+      borderBottomColor: theme.outline,
+      borderBottomWidth: 1,
+      color: theme.onSurface,
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginBottom: 4,
+      padding: 16,
+    },
+    releaseDateCtn: {
+      color: theme.onSurfaceVariant,
+      fontSize: 10,
     },
   });
 };

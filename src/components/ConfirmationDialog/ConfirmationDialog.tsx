@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { getString } from '@strings/translations';
 
@@ -8,7 +8,8 @@ import { ThemeColors } from '../../theme/types';
 import Button from '../Button/Button';
 
 interface ConfirmationDialogProps {
-  title: string;
+  title?: string;
+  message?: string;
   visible: boolean;
   theme: ThemeColors;
   onSubmit: () => void;
@@ -16,7 +17,8 @@ interface ConfirmationDialogProps {
 }
 
 const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
-  title,
+  title = getString('common.warning'),
+  message,
   visible,
   onDismiss,
   theme,
@@ -34,9 +36,14 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         onDismiss={onDismiss}
         style={[styles.container, { backgroundColor: theme.overlay3 }]}
       >
-        <Dialog.Title style={[styles.title, { color: theme.onSurface }]}>
+        <Dialog.Title style={{ color: theme.onSurface }}>
           {title}
         </Dialog.Title>
+        <Dialog.Content>
+          <Text style={[styles.content, { color: theme.onSurface }]}>
+            {message}
+          </Text>
+        </Dialog.Content>
         <View style={styles.buttonCtn}>
           <Button onPress={handleOnSubmit} title={getString('common.ok')} />
           <Button onPress={onDismiss} title={getString('common.cancel')} />
@@ -49,15 +56,16 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
 export default ConfirmationDialog;
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 28,
-  },
-  title: {
-    letterSpacing: 0,
-    fontSize: 16,
-  },
   buttonCtn: {
     flexDirection: 'row-reverse',
     padding: 16,
+  },
+  container: {
+    borderRadius: 28,
+    shadowColor: 'transparent',
+  },
+  content: {
+    fontSize: 16,
+    letterSpacing: 0,
   },
 });

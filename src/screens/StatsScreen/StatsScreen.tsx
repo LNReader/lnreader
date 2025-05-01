@@ -5,7 +5,12 @@ import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
-import { Appbar, ErrorScreenV2, LoadingScreenV2 } from '@components';
+import {
+  Appbar,
+  ErrorScreenV2,
+  LoadingScreenV2,
+  SafeAreaView,
+} from '@components';
 
 import { LibraryStats } from '@database/types';
 import {
@@ -60,6 +65,14 @@ const StatsScreen = () => {
     />
   );
 
+  if (error) {
+    return (
+      <>
+        {Header}
+        <ErrorScreenV2 error={error} />
+      </>
+    );
+  }
   if (isLoading) {
     return (
       <>
@@ -69,17 +82,8 @@ const StatsScreen = () => {
     );
   }
 
-  if (error) {
-    return (
-      <>
-        {Header}
-        <ErrorScreenV2 error={error} />
-      </>
-    );
-  }
-
   return (
-    <>
+    <SafeAreaView excludeTop>
       {Header}
       <ScrollView
         style={styles.screenCtn}
@@ -139,7 +143,7 @@ const StatsScreen = () => {
           ))}
         </Row>
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 };
 
@@ -173,34 +177,34 @@ export const StatsCard: React.FC<{ label: string; value?: number }> = ({
 };
 
 const styles = StyleSheet.create({
-  statsCardCtn: {
-    elevation: 1,
-    margin: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 12,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  statsVal: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  screenCtn: {
-    paddingHorizontal: 16,
-  },
   contentCtn: {
     paddingBottom: 40,
-  },
-  statsRow: {
-    marginBottom: 8,
-    justifyContent: 'center',
   },
   genreRow: {
     flexWrap: 'wrap',
   },
   header: {
+    fontWeight: 'bold',
     paddingVertical: 16,
+  },
+  screenCtn: {
+    paddingHorizontal: 16,
+  },
+  statsCardCtn: {
+    alignItems: 'center',
+    borderRadius: 12,
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
+    justifyContent: 'center',
+    margin: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 12,
+  },
+  statsRow: {
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  statsVal: {
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

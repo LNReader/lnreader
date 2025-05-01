@@ -97,13 +97,13 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
     }
 
     //Sort so we load the plugins results in the same order as they show on the list
-    let filteredSortedInstalledPlugins = [...filteredInstalledPlugins].sort(
+    const filteredSortedInstalledPlugins = [...filteredInstalledPlugins].sort(
       (a, b) => a.name.localeCompare(b.name),
     );
 
     (async () => {
       if (globalSearchConcurrency > 1) {
-        for (let _plugin of filteredSortedInstalledPlugins) {
+        for (const _plugin of filteredSortedInstalledPlugins) {
           while (running >= globalSearchConcurrency || !isFocused.current) {
             await new Promise(resolve => setTimeout(resolve, 100));
           }
@@ -125,7 +125,7 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
             });
         }
       } else {
-        for (let _plugin of filteredSortedInstalledPlugins) {
+        for (const _plugin of filteredSortedInstalledPlugins) {
           if (!isMounted.current || lastSearch.current !== searchText) {
             break;
           }

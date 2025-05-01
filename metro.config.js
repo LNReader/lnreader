@@ -1,4 +1,12 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
+
+/**
+ * Metro configuration
+ * https://reactnative.dev/docs/metro
+ *
+ * @type {import('@react-native/metro-config').MetroConfig}
+ */
+
 const path = require('path');
 const fs = require('fs');
 const { mergeConfig } = require('metro-config');

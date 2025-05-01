@@ -6,21 +6,21 @@ import { EmptyView } from '@components/index';
 import NovelCover from '@components/NovelCover';
 import NovelList, { NovelListRenderItem } from '@components/NovelList';
 
-import { LibraryNovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
 
 import { getString } from '@strings/translations';
 import { useTheme } from '@hooks/persisted';
 import { LibraryScreenProps } from '@navigators/types';
-import * as DocumentPicker from 'expo-document-picker';
 import ServiceManager from '@services/ServiceManager';
 
 interface Props {
   categoryId: number;
   categoryName: string;
-  novels: LibraryNovelInfo[];
+  novels: NovelInfo[];
   selectedNovelIds: number[];
   setSelectedNovelIds: React.Dispatch<React.SetStateAction<number[]>>;
   navigation: LibraryScreenProps['navigation'];
+  pickAndImport: () => void;
 }
 
 export const LibraryView: React.FC<Props> = ({
@@ -29,10 +29,11 @@ export const LibraryView: React.FC<Props> = ({
   novels,
   selectedNovelIds,
   setSelectedNovelIds,
+  pickAndImport,
   navigation,
 }) => {
   const theme = useTheme();
-  const renderItem = ({ item }: { item: LibraryNovelInfo }) => (
+  const renderItem = ({ item }: { item: NovelInfo }) => (
     <NovelCover
       item={item}
       theme={theme}
@@ -42,10 +43,9 @@ export const LibraryView: React.FC<Props> = ({
         if (selectedNovelIds.length) {
           setSelectedNovelIds(xor(selectedNovelIds, [item.id]));
         } else {
-          navigation.navigate('Novel', {
-            name: item.name,
-            path: item.path,
-            pluginId: item.pluginId,
+          navigation.navigate('ReaderStack', {
+            screen: 'Novel',
+            params: item,
           });
         }
       }}
@@ -76,6 +76,7 @@ export const LibraryView: React.FC<Props> = ({
     <View style={{ flex: 1 }}>
       <NovelList
         data={novels}
+        extraData={[selectedNovelIds]}
         renderItem={renderItem as NovelListRenderItem}
         ListEmptyComponent={
           <EmptyView
@@ -92,25 +93,7 @@ export const LibraryView: React.FC<Props> = ({
                 : {
                     iconName: 'book-arrow-up-outline',
                     title: getString('advancedSettingsScreen.importEpub'),
-                    onPress: () => {
-                      DocumentPicker.getDocumentAsync({
-                        type: 'application/epub+zip',
-                        copyToCacheDirectory: true,
-                        multiple: true,
-                      }).then(res => {
-                        if (!res.canceled) {
-                          ServiceManager.manager.addTask(
-                            res.assets.map(asset => ({
-                              name: 'IMPORT_EPUB',
-                              data: {
-                                filename: asset.name,
-                                uri: asset.uri,
-                              },
-                            })),
-                          );
-                        }
-                      });
-                    },
+                    onPress: pickAndImport,
                   },
             ]}
           />

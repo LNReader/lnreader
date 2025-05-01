@@ -29,7 +29,8 @@
 		android:roundIcon="@mipmap/ic_launcher"
 		android:allowBackup="true"
 		android:theme="@style/AppTheme"
-		android:usesCleartextTraffic="true">
+		android:usesCleartextTraffic="true"
+		android:supportsRtl="true">
 
 		<meta-data
 			android:name="expo.modules.notifications.default_notification_icon"
@@ -63,7 +64,7 @@
 
 		<activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
 
-		<service android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask" />
+		<service android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask" android:foregroundServiceType="shortService" />
 
 	</application>
 </manifest>

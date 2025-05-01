@@ -1,5 +1,5 @@
-import React from 'react';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import React, { Suspense } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { ThemeColors } from '../../../../theme/types';
 import Switch from '@components/Switch/Switch';
 
@@ -16,6 +16,7 @@ const ReaderSheetPreferenceItem: React.FC<ReaderSheetPreferenceItemProps> = ({
   onPress,
   theme,
 }) => {
+  const size = 20;
   return (
     <Pressable
       style={styles.container}
@@ -25,7 +26,19 @@ const ReaderSheetPreferenceItem: React.FC<ReaderSheetPreferenceItemProps> = ({
       <Text style={[styles.label, { color: theme.onSurfaceVariant }]}>
         {label}
       </Text>
-      <Switch value={value} onValueChange={onPress} theme={theme} size={20} />
+      <Suspense
+        fallback={
+          <View
+            style={{
+              width: size * 2 + size / 6,
+              height: size + size / 3,
+              borderRadius: size,
+            }}
+          />
+        }
+      >
+        <Switch value={value} onValueChange={onPress} size={size} />
+      </Suspense>
     </Pressable>
   );
 };
@@ -34,8 +47,8 @@ export default ReaderSheetPreferenceItem;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,

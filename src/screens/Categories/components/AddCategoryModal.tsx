@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Modal, overlay, Portal, TextInput } from 'react-native-paper';
+import { Portal, TextInput } from 'react-native-paper';
 
-import { Button } from '@components/index';
+import { Button, Modal } from '@components/index';
 
 import { Category } from '../../../database/types';
 import {
@@ -20,7 +20,7 @@ interface AddCategoryModalProps {
   category?: Category;
   visible: boolean;
   closeModal: () => void;
-  onSuccess: () => Promise<void>;
+  onSuccess: () => void;
 }
 
 const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
@@ -33,16 +33,14 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   const theme = useTheme();
   const [categoryName, setCategoryName] = useState(category?.name || '');
 
+  function close() {
+    setCategoryName('');
+    closeModal();
+  }
+
   return (
     <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={closeModal}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
-      >
+      <Modal visible={visible} onDismiss={close}>
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString(
             isEditMode
@@ -63,7 +61,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
           <Button
             title={getString(isEditMode ? 'common.ok' : 'common.add')}
             onPress={async () => {
-              if (await isCategoryNameDuplicate(categoryName)) {
+              if (isCategoryNameDuplicate(categoryName)) {
                 showToast(getString('categories.duplicateError'));
               } else {
                 if (isEditMode && category) {
@@ -72,12 +70,11 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
                   createCategory(categoryName);
                 }
                 onSuccess();
+                close();
               }
-              setCategoryName('');
-              closeModal();
             }}
           />
-          <Button title={getString('common.cancel')} onPress={closeModal} />
+          <Button title={getString('common.cancel')} onPress={close} />
         </View>
       </Modal>
     </Portal>
@@ -87,18 +84,12 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
 export default AddCategoryModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-    borderRadius: 32,
+  btnContainer: {
+    flexDirection: 'row-reverse',
+    marginTop: 24,
   },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
-  },
-  btnContainer: {
-    marginTop: 24,
-    flexDirection: 'row-reverse',
   },
 });

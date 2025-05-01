@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Modal, TextInput, Text } from 'react-native-paper';
+import { TextInput, Text } from 'react-native-paper';
 import { openDocumentTree } from 'react-native-saf-x';
 
-import { Button, List, SwitchItem } from '@components';
+import { Button, List, Modal, SwitchItem } from '@components';
 
 import { useBoolean } from '@hooks';
 import { getString } from '@strings/translations';
@@ -64,15 +64,8 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
   };
 
   return (
-    <Modal
-      visible={isVisible}
-      onDismiss={onDismiss}
-      contentContainerStyle={[
-        styles.modalContainer,
-        { backgroundColor: theme.overlay3 },
-      ]}
-    >
-      <View style={styles.modalHeaderCtn}>
+    <Modal visible={isVisible} onDismiss={onDismiss}>
+      <View>
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString('novelScreen.convertToEpubModal.chooseLocation')}
         </Text>
@@ -117,6 +110,7 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
         />
       </View>
       <List.InfoItem
+        style={styles.infoItem}
         title={getString('novelScreen.convertToEpubModal.chaptersWarning')}
         theme={theme}
       />
@@ -131,27 +125,21 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
 export default ChooseEpubLocationModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    borderRadius: 32,
+  infoItem: {
+    paddingHorizontal: 0,
   },
-  settings: {
-    marginTop: 12,
-    padding: 24,
-  },
-  modalHeaderCtn: {
-    padding: 20,
-    paddingTop: 32,
-    paddingBottom: 0,
-  },
+
   modalFooterCtn: {
     flexDirection: 'row-reverse',
-    paddingHorizontal: 20,
-    paddingTop: 8,
+
     paddingBottom: 20,
+    paddingTop: 8,
   },
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
+  },
+  settings: {
+    marginTop: 12,
   },
 });

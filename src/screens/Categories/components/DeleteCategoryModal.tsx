@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Modal, Portal } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 
-import { Button } from '@components/index';
+import { Button, Modal } from '@components/index';
 
 import { Category } from '@database/types';
 import { deleteCategoryById } from '@database/queries/CategoryQueries';
@@ -26,14 +26,7 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
   const theme = useTheme();
   return (
     <Portal>
-      <Modal
-        visible={visible}
-        onDismiss={closeModal}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: theme.overlay3 },
-        ]}
-      >
+      <Modal visible={visible} onDismiss={closeModal}>
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString('categories.deleteModal.header')}
         </Text>
@@ -60,19 +53,13 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
 export default DeleteCategoryModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    margin: 30,
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-    borderRadius: 32,
+  btnContainer: {
+    flexDirection: 'row-reverse',
+    marginTop: 24,
   },
+  modalDesc: {},
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
   },
-  btnContainer: {
-    marginTop: 24,
-    flexDirection: 'row-reverse',
-  },
-  modalDesc: {},
 });

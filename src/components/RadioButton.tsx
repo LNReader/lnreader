@@ -48,12 +48,12 @@ export const RadioButton = ({
 
 const styles = StyleSheet.create({
   radioButtonContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     paddingVertical: 8,
   },
   radioButtonLabel: {
-    marginLeft: 16,
     fontSize: 16,
+    marginLeft: 16,
   },
 });

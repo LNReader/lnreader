@@ -1,13 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import { Pressable, StyleSheet, View, TextInput } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import IconButtonV2 from '../IconButtonV2/IconButtonV2';
 import { ThemeColors } from '../../theme/types';
 import { Menu } from 'react-native-paper';
+import { MaterialDesignIconName } from '@type/icon';
 
 interface RightIcon {
-  iconName: string;
+  iconName: MaterialDesignIconName;
   color?: string;
   onPress: () => void;
 }
@@ -22,8 +22,8 @@ interface SearcbarProps {
   placeholder: string;
   onChangeText?: (text: string) => void;
   onSubmitEditing?: () => void;
-  leftIcon: string;
-  rightIcons?: RightIcon[];
+  leftIcon: MaterialDesignIconName;
+  rightIcons?: readonly RightIcon[];
   menuButtons?: MenuButton[];
   handleBackAction?: () => void;
   clearSearchbar: () => void;
@@ -48,10 +48,9 @@ const Searchbar: React.FC<SearcbarProps> = ({
   const focusSearchbar = () => searchbarRef.current.focus();
   const [extraMenu, showExtraMenu] = useState(false);
 
-  const { top, right, left } = useSafeAreaInsets();
-  const marginTop = top + 8;
-  const marginRight = right + 16;
-  const marginLeft = left + 16;
+  const marginTop = 8;
+  const marginRight = 16;
+  const marginLeft = 16;
 
   return (
     <View
@@ -68,7 +67,7 @@ const Searchbar: React.FC<SearcbarProps> = ({
       <Pressable
         onPress={focusSearchbar}
         android_ripple={{ color: theme.rippleColor }}
-        style={[styles.searchbar]}
+        style={styles.searchbar}
       >
         <IconButtonV2
           name={handleBackAction ? 'arrow-left' : leftIcon}
@@ -113,6 +112,7 @@ const Searchbar: React.FC<SearcbarProps> = ({
           <Menu
             visible={extraMenu}
             onDismiss={() => showExtraMenu(false)}
+            anchorPosition="bottom"
             anchor={
               <IconButtonV2
                 name="dots-vertical"
@@ -146,33 +146,33 @@ const Searchbar: React.FC<SearcbarProps> = ({
   );
 };
 
-export default Searchbar;
+export default memo(Searchbar);
 
 const styles = StyleSheet.create({
-  searchbarContainer: {
-    marginHorizontal: 16,
-    marginBottom: 12,
-    minHeight: 56,
-    borderRadius: 50,
-    overflow: 'hidden',
-    zIndex: 1,
-  },
-  searchbar: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 8,
-  },
-  textInput: {
-    flex: 1,
-    fontSize: 16,
-    marginHorizontal: 8,
-  },
   icon: {
     marginHorizontal: 8,
   },
   searchIconContainer: {
     borderRadius: 50,
     overflow: 'hidden',
+  },
+  searchbar: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    paddingHorizontal: 8,
+  },
+  searchbarContainer: {
+    borderRadius: 50,
+    marginBottom: 12,
+    marginHorizontal: 16,
+    minHeight: 56,
+    overflow: 'hidden',
+    zIndex: 1,
+  },
+  textInput: {
+    flex: 1,
+    fontSize: 16,
+    marginHorizontal: 8,
   },
 });

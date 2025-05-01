@@ -1,6 +1,13 @@
 import React, { ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
+import MaterialIcon from '@react-native-vector-icons/material-design-icons';
 
 import { List as PaperList, Divider as PaperDivider } from 'react-native-paper';
 import { ThemeColors } from '../../theme/types';
@@ -87,12 +94,14 @@ const InfoItem = ({
   title,
   icon = 'information-outline',
   theme,
+  style,
 }: {
   title: string;
   icon?: string;
   theme: ThemeColors;
+  style?: StyleProp<ViewStyle>;
 }) => (
-  <View style={styles.infoCtn}>
+  <View style={[styles.infoCtn, style]}>
     <MaterialIcon size={20} color={theme.onSurfaceVariant} name={icon} />
     <Text style={[styles.infoMsg, { color: theme.onSurfaceVariant }]}>
       {title}
@@ -149,30 +158,30 @@ export default {
 };
 
 const styles = StyleSheet.create({
-  listSection: {
-    flex: 1,
-    marginVertical: 0,
+  description: {
+    fontSize: 12,
+    lineHeight: 20,
   },
   divider: {
     height: 1,
     opacity: 0.5,
   },
-  infoCtn: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  infoMsg: {
-    marginTop: 12,
-    fontSize: 12,
-  },
   iconCtn: {
     paddingLeft: 16,
+  },
+  infoCtn: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  infoMsg: {
+    fontSize: 12,
+    marginTop: 12,
   },
   listItemCtn: {
     paddingVertical: 12,
   },
-  description: {
-    fontSize: 12,
-    lineHeight: 20,
+  listSection: {
+    flex: 1,
+    marginVertical: 0,
   },
 });

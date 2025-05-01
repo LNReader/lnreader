@@ -118,14 +118,14 @@ export default function TextToSpeechSettings() {
 }
 
 const styles = StyleSheet.create({
+  label: {
+    fontSize: 16,
+    textAlign: 'center',
+  },
   row: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  label: {
-    textAlign: 'center',
-    fontSize: 16,
   },
   slider: {
     flex: 1,

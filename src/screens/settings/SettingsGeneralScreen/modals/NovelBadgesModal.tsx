@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-import { Portal, Modal, overlay } from 'react-native-paper';
+import { Portal } from 'react-native-paper';
 
-import { Checkbox } from '@components';
+import { Checkbox, Modal } from '@components';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
@@ -27,14 +27,7 @@ const NovelBadgesModal: React.FC<NovelBadgesModalProps> = ({
   } = useLibrarySettings();
   return (
     <Portal>
-      <Modal
-        visible={novelBadgesModalVisible}
-        onDismiss={hideNovelBadgesModal}
-        contentContainerStyle={[
-          styles.container,
-          { backgroundColor: overlay(2, theme.surface) },
-        ]}
-      >
+      <Modal visible={novelBadgesModalVisible} onDismiss={hideNovelBadgesModal}>
         <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
           {getString('libraryScreen.bottomSheet.display.badges')}
         </Text>
@@ -76,27 +69,12 @@ const NovelBadgesModal: React.FC<NovelBadgesModalProps> = ({
 export default NovelBadgesModal;
 
 const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 24,
-    margin: 20,
-    borderRadius: 28,
-  },
-  modalHeader: {
-    paddingHorizontal: 24,
-    fontSize: 24,
-    marginBottom: 10,
-  },
   modalDescription: {
-    paddingHorizontal: 24,
     fontSize: 16,
     marginBottom: 16,
   },
-  slider: {
-    width: '100%',
-    height: 40,
-  },
-  sectionHeader: {
-    padding: 16,
-    paddingBottom: 8,
+  modalHeader: {
+    fontSize: 24,
+    marginBottom: 10,
   },
 });

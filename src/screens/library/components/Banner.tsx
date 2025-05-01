@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 import { ThemeColors } from '../../../theme/types';
+import { MaterialDesignIconName } from '@type/icon';
 
 interface Props {
   label: string;
-  icon?: string;
+  icon?: MaterialDesignIconName;
   backgroundColor?: string;
   textColor?: string;
   theme: ThemeColors;
@@ -33,17 +34,17 @@ export const Banner: React.FC<Props> = ({
 );
 
 const styles = StyleSheet.create({
+  bannerText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
   container: {
-    paddingVertical: 4,
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
+    paddingVertical: 4,
   },
   icon: {
     marginRight: 8,
-  },
-  bannerText: {
-    fontWeight: 'bold',
-    fontSize: 12,
   },
 });

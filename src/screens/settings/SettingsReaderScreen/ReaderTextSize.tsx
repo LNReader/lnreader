@@ -45,18 +45,18 @@ const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({ labelStyle }) => {
 export default ReaderTextSize;
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
+  buttonContainer: {
     alignItems: 'center',
+    flexDirection: 'row',
+  },
+  container: {
+    alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
     marginVertical: 6,
+    paddingHorizontal: 16,
   },
   value: {
     paddingHorizontal: 24,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 });

@@ -1,8 +1,13 @@
+const ReactCompilerConfig = {
+  target: '19',
+};
+
 module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ['babel-preset-expo', 'module:metro-react-native-babel-preset'],
+    presets: ['module:@react-native/babel-preset'],
     plugins: [
+      ['babel-plugin-react-compiler', ReactCompilerConfig],
       [
         'module-resolver',
         {
@@ -12,14 +17,16 @@ module.exports = function (api) {
             '@hooks': './src/hooks',
             '@screens': './src/screens',
             '@strings': './strings',
-            '@redux': './src/redux',
             '@services': './src/services',
             '@plugins': './src/plugins',
             '@utils': './src/utils',
             '@theme': './src/theme',
             '@navigators': './src/navigators',
-            '@native': './src/native',
             '@api': './src/api',
+            '@type': './src/type',
+            '@specs': './specs',
+            'react-native-vector-icons/MaterialCommunityIcons':
+              '@react-native-vector-icons/material-design-icons',
           },
         },
       ],

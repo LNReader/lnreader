@@ -1,5 +1,5 @@
 import { PATH_SEPARATOR } from '@api/constants';
-import ZipArchive from '@native/ZipArchive';
+import NativeZipArchive from '@specs/NativeZipArchive';
 import { fetchTimeout } from '@utils/fetch/fetch';
 
 const commonHeaders = {
@@ -16,7 +16,7 @@ export const upload = (
   sourceDirPath: string,
 ) => {
   const url = `${host}/upload/${backupFolder}${PATH_SEPARATOR}${filename}`;
-  return ZipArchive.remoteZip(sourceDirPath, url, {});
+  return NativeZipArchive.remoteZip(sourceDirPath, url, {});
 };
 
 export const list = (host: string): Promise<string[]> => {
@@ -31,5 +31,5 @@ export const download = async (
   distDirPath: string,
 ) => {
   const url = `${host}/download/${backupFolder}${PATH_SEPARATOR}${filename}`;
-  return ZipArchive.remoteUnzip(distDirPath, url, {});
+  return NativeZipArchive.remoteUnzip(distDirPath, url, {});
 };

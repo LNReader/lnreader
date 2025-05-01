@@ -31,7 +31,7 @@ export const createDriveBackup = async (
 
   await sleep(500);
 
-  let file = await uploadMedia(CACHE_DIR_PATH);
+  const file = await uploadMedia(CACHE_DIR_PATH);
 
   await updateMetadata(
     file.id,
@@ -49,7 +49,7 @@ export const createDriveBackup = async (
     progressText: getString('backupScreen.uploadingDownloadedFiles'),
   }));
 
-  let file2 = await uploadMedia(ROOT_STORAGE);
+  const file2 = await uploadMedia(ROOT_STORAGE);
   await updateMetadata(
     file2.id,
     {

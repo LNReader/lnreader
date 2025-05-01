@@ -1,6 +1,7 @@
+import { Modal } from '@components';
 import React, { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { Modal, overlay, TextInput } from 'react-native-paper';
+import {  TextInput } from 'react-native-paper';
 
 const SetTrackChaptersDialog = ({
   trackItem,
@@ -15,10 +16,6 @@ const SetTrackChaptersDialog = ({
     <Modal
       visible={trackChaptersDialog}
       onDismiss={() => setTrackChaptersDialog(false)}
-      contentContainerStyle={[
-        styles.containerStyle,
-        { backgroundColor: overlay(2, theme.surface) },
-      ]}
     >
       <Text style={[styles.dialogTitle, { color: theme.onSurface }]}>
         Chapters
@@ -46,12 +43,6 @@ const SetTrackChaptersDialog = ({
 export default SetTrackChaptersDialog;
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    margin: 30,
-    padding: 24,
-    borderRadius: 28,
-    paddingBottom: 36,
-  },
   dialogTitle: {
     fontSize: 24,
     marginBottom: 16,

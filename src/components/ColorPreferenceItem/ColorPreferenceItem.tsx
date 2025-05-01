@@ -34,19 +34,19 @@ const ColorPreferenceItem: React.FC<ColorPreferenceItemProps> = ({
 export default ColorPreferenceItem;
 
 const styles = StyleSheet.create({
+  colorPreview: {
+    borderRadius: 50,
+    height: 24,
+    marginRight: 16,
+    width: 24,
+  },
   container: {
-    padding: 16,
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    padding: 16,
   },
   label: {
     fontSize: 16,
-  },
-  colorPreview: {
-    height: 24,
-    width: 24,
-    borderRadius: 50,
-    marginRight: 16,
   },
 });

@@ -63,17 +63,17 @@ export default ReaderThemeSelector;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 8,
     paddingHorizontal: 16,
   },
-  title: {
-    marginRight: 16,
-  },
   scrollView: {
     flexGrow: 1,
     justifyContent: 'flex-end',
+  },
+  title: {
+    marginRight: 16,
   },
 });

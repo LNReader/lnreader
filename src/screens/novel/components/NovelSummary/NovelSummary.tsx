@@ -1,7 +1,7 @@
 import { getString } from '@strings/translations';
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 
 import { ThemeColors } from '@theme/types';
 
@@ -68,23 +68,23 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
 export default NovelSummary;
 
 const styles = StyleSheet.create({
+  icon: {
+    borderRadius: 50,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    left: 0,
+    position: 'absolute',
+    right: 0,
+  },
   summaryContainer: {
+    marginBottom: 8,
     padding: 16,
     paddingTop: 8,
-    marginBottom: 8,
   },
   summaryText: {
     lineHeight: 20,
-  },
-  iconContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-  },
-  icon: {
-    borderRadius: 50,
   },
 });

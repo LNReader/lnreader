@@ -60,7 +60,7 @@ export const useBrowseSource = (
   );
 
   const fetchNextPage = () => {
-    hasNextPage && setCurrentPage(prevState => prevState + 1);
+    if (hasNextPage) setCurrentPage(prevState => prevState + 1);
   };
 
   /**
@@ -154,7 +154,7 @@ export const useSearchSource = (pluginId: string) => {
   );
 
   const searchNextPage = () => {
-    hasNextSearchPage && setCurrentPage(prevState => prevState + 1);
+    if (hasNextSearchPage) setCurrentPage(prevState => prevState + 1);
   };
 
   useEffect(() => {

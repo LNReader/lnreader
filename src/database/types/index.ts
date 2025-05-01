@@ -15,7 +15,15 @@ export interface NovelInfo {
   totalPages: number;
 }
 
-export interface LibraryNovelInfo extends NovelInfo {
+export interface DBNovelInfo extends NovelInfo {
+  totalChapters: number;
+  chaptersDownloaded: number;
+  chaptersRead: number;
+  lastReadAt: string;
+  lastUpdatedAt: string;
+}
+
+export interface LibraryNovelInfo extends DBNovelInfo {
   category: string;
   chaptersUnread: number;
   chaptersDownloaded: number;
@@ -58,6 +66,14 @@ export interface Update extends ChapterInfo {
   pluginId: string;
   novelName: string;
   novelPath: string;
+  novelCover: string;
+}
+
+export interface UpdateOverview {
+  novelId: number;
+  novelName: string;
+  updateDate: string;
+  updatesPerDay: number;
   novelCover: string;
 }
 

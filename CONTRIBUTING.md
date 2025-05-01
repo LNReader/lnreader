@@ -8,8 +8,8 @@ After forking to your own github org or account, do the following steps to get s
 
 ```bash
 # prerequisites
-node --version <= 16.13.1   (for version management, get nvm [recommended])
-java sdk --version <= 11    (for version management, get jenv [optional])
+node --version >= 20   (for version management, get nvm [recommended])
+java sdk --version >= 17    (for version management, get jenv [optional])
 android sdk                 (https://developer.android.com/studio)
 
 # clone your fork to your local machine
@@ -44,9 +44,6 @@ npm start
 npm run android
 ```
 
-To view any changes to the app with new code, save your code and press "r" on the metro terminal to
-reload it. The app on the android device/emulator will reload shortly.
-
 ### Style & Linting
 
 This codebase's linting rules are enforced using [ESLint](http://eslint.org/).
@@ -56,47 +53,4 @@ codebase, however you can always check to see if the source code is compliant by
 
 ```bash
 npm run lint
-```
-# Database
-```mermaid
-erDiagram
-    Category ||--|{ NovelCategory : contains
-    Category{
-      INTEGER id PK
-      TEXT name
-      INTEGER sort
-    }
-    NovelCategory{
-      INTEGER id PK
-      INTEGER novelId FK
-      INTEGER categoryId FK "default: whose sort = 1"
-    }
-    Novel ||--|{ NovelCategory : contains
-    Novel{
-      INTEGER id PK
-      TEXT url
-      TEXT pluginId
-      TEXT name
-      TEXT cover
-      TEXT summary
-      TEXT author
-      TEXT artist
-      TEXT status
-      TEXT genres
-      INTEGER inLibrary "default: 0"
-    }
-    Novel ||--o| Chapter : has
-    Chapter{
-      INTEGER id PK
-      INTEGER novelId FK
-      text url
-      TEXT name
-      TEXT releaseTime
-      INTEGER bookmark  "default: 0"
-      INTEGER unread    "default: 1"
-      TEXT readTime
-      INTEGER isDownloaded  "default: 0"
-      TEXT updatedTime
-      TEXT chapterNumber
-    }
 ```

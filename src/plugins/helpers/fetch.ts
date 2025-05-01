@@ -1,5 +1,5 @@
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
-import FileManager from '@native/FileManager';
+import NativeFile from '@specs/NativeFile';
 import { parse as parseProto } from 'protobufjs';
 
 type FetchInit = {
@@ -56,7 +56,7 @@ export const downloadFile = async (
   init?: FetchInit,
 ): Promise<void> => {
   init = makeInit(init);
-  return FileManager.downloadFile(
+  return NativeFile.downloadFile(
     url,
     destPath,
     init.method || 'get',
@@ -93,7 +93,7 @@ export const fetchText = async (
       fr.onabort = () => reject();
       fr.readAsText(blob, encoding);
     });
-  } catch (e) {
+  } catch {
     return '';
   }
 };
@@ -102,14 +102,14 @@ function base64ToBytesArr(str: string) {
   const abc = [
     ...'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
   ]; // base64 alphabet
-  let result = [];
+  const result = [];
 
   for (let i = 0; i < str.length / 4; i++) {
-    let chunk = [...str.slice(4 * i, 4 * i + 4)];
-    let bin = chunk
+    const chunk = [...str.slice(4 * i, 4 * i + 4)];
+    const bin = chunk
       .map(x => abc.indexOf(x).toString(2).padStart(6, '0'))
       .join('');
-    let bytes = bin.match(/.{1,8}/g)?.map(x => +('0b' + x)) || [];
+    const bytes = bin.match(/.{1,8}/g)?.map(x => +('0b' + x)) || [];
     result.push(
       ...bytes.slice(
         0,
@@ -171,7 +171,7 @@ export const fetchProto = async function (
         fr.onloadend = () => {
           const payload = new Uint8Array(
             base64ToBytesArr(
-              fr.result.slice(FILE_READER_PREFIX_LENGTH) as string,
+              fr.result?.slice(FILE_READER_PREFIX_LENGTH) as string,
             ),
           );
           const length = Number(

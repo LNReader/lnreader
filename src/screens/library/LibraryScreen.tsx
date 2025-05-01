@@ -1,5 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import {
   NavigationState,
@@ -7,21 +20,15 @@ import {
   TabBar,
   TabView,
 } from 'react-native-tab-view';
-import color from 'color';
+import Color from 'color';
 
-import { SearchbarV2, Button } from '@components/index';
+import { SearchbarV2, Button, SafeAreaView } from '@components/index';
 import { LibraryView } from './components/LibraryListView';
 import LibraryBottomSheet from './components/LibraryBottomSheet/LibraryBottomSheet';
 import { Banner } from './components/Banner';
 import { Actionbar } from '@components/Actionbar/Actionbar';
 
-import { useLibrary } from './hooks/useLibrary';
-import {
-  useAppSettings,
-  useHistory,
-  useLibrarySettings,
-  useTheme,
-} from '@hooks/persisted';
+import { useAppSettings, useHistory, useTheme } from '@hooks/persisted';
 import { useSearch, useBackHandler, useBoolean } from '@hooks';
 import { getString } from '@strings/translations';
 import { FAB, Portal } from 'react-native-paper';
@@ -39,37 +46,79 @@ import { LibraryScreenProps } from '@navigators/types';
 import { NovelInfo } from '@database/types';
 import * as DocumentPicker from 'expo-document-picker';
 import ServiceManager from '@services/ServiceManager';
+import useImport from '@hooks/persisted/useImport';
+import { ThemeColors } from '@theme/types';
+import { useLibraryContext } from '@components/Context/LibraryContext';
 
 type State = NavigationState<{
   key: string;
   title: string;
 }>;
 
+type TabViewLabelProps = {
+  route: {
+    id: number;
+    name: string;
+    sort: number;
+    novelIds: number[];
+    key: string;
+    title: string;
+  };
+  labelText?: string;
+  focused: boolean;
+  color: string;
+  allowFontScaling?: boolean;
+  style?: StyleProp<TextStyle>;
+};
+
 const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
   const theme = useTheme();
+  const styles = createStyles(theme);
+  const { left: leftInset, right: rightInset } = useSafeAreaInsets();
   const { searchText, setSearchText, clearSearchbar } = useSearch();
   const {
-    showNumberOfNovels = false,
-    downloadedOnlyMode = false,
-    incognitoMode = false,
-  } = useLibrarySettings();
+    library,
+    categories,
+    refetchLibrary,
+    isLoading,
+    settings: { showNumberOfNovels, downloadedOnlyMode, incognitoMode },
+  } = useLibraryContext();
 
   const { useLibraryFAB = false } = useAppSettings();
 
   const { isLoading: isHistoryLoading, history, error } = useHistory();
 
-  const { right: rightInset } = useSafeAreaInsets();
+  const { importNovel } = useImport();
+
+  const layout = useWindowDimensions();
 
   const onChangeText = debounce((text: string) => {
     setSearchText(text);
   }, 100);
 
+  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
+
+  const [index, setIndex] = useState(0);
+
+  const {
+    value: setCategoryModalVisible,
+    setTrue: showSetCategoryModal,
+    setFalse: closeSetCategoryModal,
+  } = useBoolean();
+
   const handleClearSearchbar = () => {
     clearSearchbar();
   };
 
-  const { library, refetchLibrary, isLoading } = useLibrary({ searchText });
   const [selectedNovelIds, setSelectedNovelIds] = useState<number[]>([]);
+
+  const currentNovels = useMemo(() => {
+    if (!categories.length) return [];
+
+    const ids = categories[index].novelIds;
+    return library.filter(l => ids.includes(l.id));
+  }, [categories, index, library]);
+
   useBackHandler(() => {
     if (selectedNovelIds.length) {
       setSelectedNovelIds([]);
@@ -78,12 +127,6 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
 
     return false;
   });
-
-  const layout = useWindowDimensions();
-
-  const [index, setIndex] = useState(0);
-
-  const bottomSheetRef = useRef<BottomSheetModal | null>(null);
 
   useEffect(
     () =>
@@ -97,75 +140,157 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     [navigation],
   );
 
-  const renderTabBar = (
-    props: SceneRendererProps & { navigationState: State },
-  ) =>
-    library.length ? (
-      <TabBar
-        {...props}
-        scrollEnabled
-        indicatorStyle={{ backgroundColor: theme.primary, height: 3 }}
-        style={[
-          {
-            backgroundColor: theme.surface,
-            borderBottomColor: color(theme.isDark ? '#FFFFFF' : '#000000')
-              .alpha(0.12)
-              .string(),
-          },
-          styles.tabBar,
-        ]}
-        tabStyle={{ width: 'auto', minWidth: 100 }}
-        gap={8}
-        renderLabel={({ route, color }) => (
-          <Row>
-            <Text style={{ color, fontWeight: '600' }}>{route.title}</Text>
-            {showNumberOfNovels ? (
-              <View
-                style={[
-                  styles.badgeCtn,
-                  { backgroundColor: theme.surfaceVariant },
-                ]}
-              >
-                <Text
-                  style={[styles.badgetText, { color: theme.onSurfaceVariant }]}
-                >
-                  {(route as any)?.novels.length}
-                </Text>
-              </View>
-            ) : null}
-          </Row>
-        )}
-        inactiveColor={theme.secondary}
-        activeColor={theme.primary}
-        android_ripple={{ color: theme.rippleColor }}
-      />
-    ) : null;
-
   const searchbarPlaceholder =
     selectedNovelIds.length === 0
       ? getString('libraryScreen.searchbar')
       : `${selectedNovelIds.length} selected`;
 
-  const {
-    value: setCategoryModalVisible,
-    setTrue: showSetCategoryModal,
-    setFalse: closeSetCategoryModal,
-  } = useBoolean();
-
   function openRandom() {
-    const novels = library[index].novels;
+    const novels = currentNovels;
     const randomNovel = novels[Math.floor(Math.random() * novels.length)];
     if (randomNovel) {
-      navigation.navigate('Novel', {
-        name: randomNovel.name,
-        path: randomNovel.path,
-        pluginId: randomNovel.pluginId,
+      navigation.navigate('ReaderStack', {
+        screen: 'Novel',
+        params: randomNovel,
       });
     }
   }
 
+  const pickAndImport = useCallback(() => {
+    DocumentPicker.getDocumentAsync({
+      type: 'application/epub+zip',
+      copyToCacheDirectory: true,
+      multiple: true,
+    }).then(importNovel);
+  }, [importNovel]);
+
+  const renderTabBar = useCallback(
+    (props: SceneRendererProps & { navigationState: State }) => {
+      return categories.length ? (
+        <TabBar
+          {...props}
+          scrollEnabled
+          indicatorStyle={styles.tabBarIndicator}
+          style={[
+            {
+              backgroundColor: theme.surface,
+              borderBottomColor: Color(theme.isDark ? '#FFFFFF' : '#000000')
+                .alpha(0.12)
+                .string(),
+            },
+            styles.tabBar,
+          ]}
+          tabStyle={styles.tabStyle}
+          gap={8}
+          inactiveColor={theme.secondary}
+          activeColor={theme.primary}
+          android_ripple={{ color: theme.rippleColor }}
+        />
+      ) : null;
+    },
+    [
+      categories.length,
+      styles.tabBar,
+      styles.tabBarIndicator,
+      styles.tabStyle,
+      theme.isDark,
+      theme.primary,
+      theme.rippleColor,
+      theme.secondary,
+      theme.surface,
+    ],
+  );
+  const renderScene = useCallback(
+    ({
+      route,
+    }: {
+      route: {
+        id: number;
+        name: string;
+        sort: number;
+        novelIds: number[];
+        key: string;
+        title: string;
+      };
+    }) => {
+      const ids = route.novelIds;
+      const novels = library.filter(l => ids.includes(l.id));
+
+      return isLoading ? (
+        <SourceScreenSkeletonLoading theme={theme} />
+      ) : (
+        <>
+          {searchText ? (
+            <Button
+              title={`${getString(
+                'common.searchFor',
+              )} "${searchText}" ${getString('common.globally')}`}
+              style={styles.globalSearchBtn}
+              onPress={() =>
+                navigation.navigate('GlobalSearchScreen', {
+                  searchText,
+                })
+              }
+            />
+          ) : null}
+          <LibraryView
+            categoryId={route.id}
+            categoryName={route.name}
+            novels={novels}
+            selectedNovelIds={selectedNovelIds}
+            setSelectedNovelIds={setSelectedNovelIds}
+            pickAndImport={pickAndImport}
+            navigation={navigation}
+          />
+        </>
+      );
+    },
+    [
+      isLoading,
+      library,
+      navigation,
+      pickAndImport,
+      searchText,
+      selectedNovelIds,
+      styles.globalSearchBtn,
+      theme,
+    ],
+  );
+
+  const renderLabel = useCallback(
+    ({ route, color }: TabViewLabelProps) => {
+      return (
+        <Row>
+          <Text style={[{ color }, styles.fontWeight600]}>{route.title}</Text>
+          {showNumberOfNovels ? (
+            <View
+              style={[
+                styles.badgeCtn,
+                { backgroundColor: theme.surfaceVariant },
+              ]}
+            >
+              <Text
+                style={[styles.badgetText, { color: theme.onSurfaceVariant }]}
+              >
+                {route?.novelIds.length}
+              </Text>
+            </View>
+          ) : null}
+        </Row>
+      );
+    },
+    [
+      showNumberOfNovels,
+      styles.badgeCtn,
+      styles.badgetText,
+      styles.fontWeight600,
+      theme.onSurfaceVariant,
+      theme.surfaceVariant,
+    ],
+  );
+
   return (
-    <>
+    <SafeAreaView excludeBottom>
       <SearchbarV2
         searchText={searchText}
         clearSearchbar={handleClearSearchbar}
@@ -183,9 +308,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
                 {
                   iconName: 'select-all',
                   onPress: () =>
-                    setSelectedNovelIds(
-                      library[index].novels.map(novel => novel.id),
-                    ),
+                    setSelectedNovelIds(currentNovels.map(novel => novel.id)),
                 },
               ]
             : [
@@ -218,25 +341,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           },
           {
             title: getString('libraryScreen.extraMenu.importEpub'),
-            onPress: () => {
-              DocumentPicker.getDocumentAsync({
-                type: 'application/epub+zip',
-                copyToCacheDirectory: true,
-                multiple: true,
-              }).then(res => {
-                if (!res.canceled) {
-                  ServiceManager.manager.addTask(
-                    res.assets.map(asset => ({
-                      name: 'IMPORT_EPUB',
-                      data: {
-                        filename: asset.name,
-                        uri: asset.uri,
-                      },
-                    })),
-                  );
-                }
-              });
-            },
+            onPress: pickAndImport,
           },
           {
             title: getString('libraryScreen.extraMenu.openRandom'),
@@ -261,49 +366,26 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           textColor={theme.onTertiary}
         />
       ) : null}
+
       <TabView
+        commonOptions={{
+          label: renderLabel,
+        }}
         lazy
         navigationState={{
           index,
-          routes: library.map(category => ({
+          routes: categories.map(category => ({
             key: String(category.id),
             title: category.name,
             ...category,
           })),
         }}
         renderTabBar={renderTabBar}
-        renderScene={({ route }) =>
-          isLoading ? (
-            <SourceScreenSkeletonLoading theme={theme} />
-          ) : (
-            <>
-              {searchText ? (
-                <Button
-                  title={`${getString(
-                    'common.searchFor',
-                  )} "${searchText}" ${getString('common.globally')}`}
-                  style={styles.globalSearchBtn}
-                  onPress={() =>
-                    navigation.navigate('GlobalSearchScreen', {
-                      searchText,
-                    })
-                  }
-                />
-              ) : null}
-              <LibraryView
-                categoryId={route.id}
-                categoryName={route.name}
-                novels={route.novels}
-                selectedNovelIds={selectedNovelIds}
-                setSelectedNovelIds={setSelectedNovelIds}
-                navigation={navigation}
-              />
-            </>
-          )
-        }
+        renderScene={renderScene}
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
       />
+
       {useLibraryFAB &&
       !isHistoryLoading &&
       history &&
@@ -319,13 +401,16 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           label={getString('common.resume')}
           icon="play"
           onPress={() => {
-            navigation.navigate('Chapter', {
-              novel: {
-                path: history[0].novelPath,
-                pluginId: history[0].pluginId,
-                name: history[0].novelName,
-              } as NovelInfo,
-              chapter: history[0],
+            navigation.navigate('ReaderStack', {
+              screen: 'Chapter',
+              params: {
+                novel: {
+                  path: history[0].novelPath,
+                  pluginId: history[0].pluginId,
+                  name: history[0].novelName,
+                } as NovelInfo,
+                chapter: history[0],
+              },
             });
           }}
         />
@@ -340,9 +425,13 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           refetchLibrary();
         }}
       />
-      <LibraryBottomSheet bottomSheetRef={bottomSheetRef} />
+      <LibraryBottomSheet
+        bottomSheetRef={bottomSheetRef}
+        style={{ marginLeft: leftInset, marginRight: rightInset }}
+      />
       <Portal>
         <Actionbar
+          viewStyle={{ paddingLeft: leftInset, paddingRight: rightInset }}
           active={selectedNovelIds.length > 0}
           actions={[
             {
@@ -351,16 +440,24 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
             },
             {
               icon: 'check',
-              onPress: () => {
-                selectedNovelIds.map(id => markAllChaptersRead(id));
+              onPress: async () => {
+                const promises: Promise<any>[] = [];
+                selectedNovelIds.map(id =>
+                  promises.push(markAllChaptersRead(id)),
+                );
+                await Promise.all(promises);
                 setSelectedNovelIds([]);
                 refetchLibrary();
               },
             },
             {
               icon: 'check-outline',
-              onPress: () => {
-                selectedNovelIds.map(id => markAllChaptersUnread(id));
+              onPress: async () => {
+                const promises: Promise<any>[] = [];
+                selectedNovelIds.map(id =>
+                  promises.push(markAllChaptersUnread(id)),
+                );
+                await Promise.all(promises);
                 setSelectedNovelIds([]);
                 refetchLibrary();
               },
@@ -376,34 +473,47 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           ]}
         />
       </Portal>
-    </>
+    </SafeAreaView>
   );
 };
 
-export default LibraryScreen;
+export default React.memo(LibraryScreen);
 
-const styles = StyleSheet.create({
-  tabBar: {
-    elevation: 0,
-    borderBottomWidth: 1,
-  },
-  globalSearchBtn: {
-    margin: 16,
-  },
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 0,
-  },
-  badgeCtn: {
-    position: 'relative',
-    borderRadius: 50,
-    marginLeft: 2,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-  },
-  badgetText: {
-    fontSize: 12,
-  },
-});
+function createStyles(theme: ThemeColors) {
+  return StyleSheet.create({
+    badgeCtn: {
+      borderRadius: 50,
+      marginLeft: 2,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      position: 'relative',
+    },
+    badgetText: {
+      fontSize: 12,
+    },
+    fab: {
+      bottom: 0,
+      margin: 16,
+      position: 'absolute',
+      right: 0,
+    },
+    fontWeight600: {
+      fontWeight: '600',
+    },
+    globalSearchBtn: {
+      margin: 16,
+    },
+    tabBar: {
+      borderBottomWidth: 1,
+      elevation: 0,
+    },
+    tabBarIndicator: {
+      backgroundColor: theme.primary,
+      height: 3,
+    },
+    tabStyle: {
+      minWidth: 100,
+      width: 'auto',
+    },
+  });
+}

@@ -1,6 +1,7 @@
 // references:
 // https://en.wikipedia.org/wiki/IETF_language_tag
 // https://en.wikipedia.org/wiki/List_of_language_names
+
 import { getString } from '@strings/translations';
 
 export const languagesMapping: Record<string, string> = {
@@ -19,7 +20,12 @@ export const languagesMapping: Record<string, string> = {
   'zh': '中文, 汉语, 漢語',
   'ja': '日本語',
   'ko': '조선말, 한국어',
-  'multi': getString('browseSettingsScreen.multi'),
+  'multi': 'Multi',
 };
 
 export const languages = Object.values(languagesMapping);
+
+export const getLocaleLanguageName = (lang: string): string => {
+  if (lang !== 'Multi') return lang;
+  return getString('browseSettingsScreen.multi');
+};

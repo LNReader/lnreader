@@ -80,33 +80,33 @@ const GlobalSearchNovelItem: React.FC<Props> = ({
 export default GlobalSearchNovelItem;
 
 const styles = StyleSheet.create({
+  inLibraryBadge: {
+    borderRadius: 4,
+    fontSize: 12,
+    left: 8,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    position: 'absolute',
+    top: 8,
+  },
+  novelCover: {
+    backgroundColor: coverPlaceholderColor,
+    borderRadius: 4,
+  },
   novelItem: {
-    flex: 1,
     borderRadius: 6,
+    flex: 1,
     overflow: 'hidden',
   },
-  pressable: {
-    padding: 4,
-    flex: 1,
-  },
   novelName: {
-    paddingHorizontal: 4,
-    paddingVertical: 8,
     flexWrap: 'wrap',
     fontSize: 12,
     fontWeight: 'bold',
-  },
-  novelCover: {
-    borderRadius: 4,
-    backgroundColor: coverPlaceholderColor,
-  },
-  inLibraryBadge: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    fontSize: 12,
-    paddingVertical: 2,
     paddingHorizontal: 4,
-    borderRadius: 4,
+    paddingVertical: 8,
+  },
+  pressable: {
+    flex: 1,
+    padding: 4,
   },
 });

@@ -1,4 +1,4 @@
-import { FlashList, ListRenderItem } from '@shopify/flash-list';
+import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
 import { ThemeColors } from '@theme/types';
 import color from 'color';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -20,7 +20,7 @@ export default function NovelDrawer({
   closeDrawer,
 }: NovelDrawerProps) {
   const insets = useSafeAreaInsets();
-  const renderItem: ListRenderItem<string> = ({ item, index }) => (
+  const renderItem = ({ item, index }: LegendListRenderItemProps<string>) => (
     <View
       style={[
         styles.drawerElementContainer,
@@ -38,7 +38,7 @@ export default function NovelDrawer({
         }}
       >
         <View>
-          <Text style={[{ color: theme.onSurfaceVariant }]}>{item}</Text>
+          <Text style={{ color: theme.onSurfaceVariant }}>{item}</Text>
         </View>
       </Pressable>
     </View>
@@ -58,7 +58,8 @@ export default function NovelDrawer({
       >
         Novel pages
       </Text>
-      <FlashList
+      <LegendList
+        recycleItems
         data={pages}
         extraData={pageIndex}
         renderItem={renderItem}
@@ -71,28 +72,28 @@ export default function NovelDrawer({
 const styles = StyleSheet.create({
   drawer: {
     flex: 1,
-    paddingTop: 60,
     height: 100,
-  },
-  headerCtn: {
-    fontSize: 16,
-    padding: 16,
-    marginBottom: 4,
-    fontWeight: 'bold',
-    borderBottomWidth: 1,
+    paddingTop: 60,
   },
   drawerElementContainer: {
+    borderRadius: 50,
     margin: 4,
     marginLeft: 16,
     marginRight: 16,
-    borderRadius: 50,
-    overflow: 'hidden',
     minHeight: 48,
+    overflow: 'hidden',
+  },
+  headerCtn: {
+    borderBottomWidth: 1,
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+    padding: 16,
   },
   pageCtn: {
     flex: 1,
+    justifyContent: 'center',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    justifyContent: 'center',
   },
 });
