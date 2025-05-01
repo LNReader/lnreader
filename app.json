@@ -11,7 +11,8 @@
           "enableFTS": false,
           "useSQLCipher": false
         }
-      ]
+      ],
+      "expo-web-browser"
     ]
   }
 }
