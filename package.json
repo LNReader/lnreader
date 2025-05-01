@@ -93,7 +93,6 @@
     "@types/i18n-js": "^3.8.2",
     "@types/lodash-es": "^4.17.6",
     "@types/react": "~19.0.10",
-    "@types/react-native-vector-icons": "^6.4.10",
     "@types/sanitize-html": "^2.11.0",
     "babel-plugin-module-resolver": "^5.0.2",
     "babel-plugin-react-compiler": "^19.1.0-rc.1",

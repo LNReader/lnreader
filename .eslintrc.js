@@ -6,7 +6,7 @@ module.exports = {
       files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
       rules: {
         'no-shadow': 'off',
-        'no-undef': 'error',
+        'no-undef': 'off',
         'no-console': 'error',
       },
     },

@@ -171,7 +171,7 @@ export const fetchProto = async function (
         fr.onloadend = () => {
           const payload = new Uint8Array(
             base64ToBytesArr(
-              fr.result.slice(FILE_READER_PREFIX_LENGTH) as string,
+              fr.result?.slice(FILE_READER_PREFIX_LENGTH) as string,
             ),
           );
           const length = Number(
