@@ -90,7 +90,7 @@ const insertLocalChapter = async (
         if ($2) {
           staticPaths.push(epubContentDir + '/' + $2);
         }
-        return `="file://${novelDir}/${$2.split(/[\\/]/)?.pop()}"`;
+        return `="file://${novelDir}/${$2.split(/[/\\]/)?.pop()}"`;
       },
     );
     NativeFile.mkdir(novelDir + '/' + insertedChapter.lastInsertRowId);
