@@ -20,14 +20,17 @@ export const sanitizeChapterText = (
       'title',
     ]),
     allowedAttributes: {
-      'img': ['src', 'class', 'id'],
-      'a': ['href', 'class', 'id'],
-      'div': ['class', 'id'],
-      'p': ['class', 'id'],
-      'ol': ['reversed', 'start', 'type'],
+      a: ['href', 'class', 'id'],
+      div: ['class', 'id'],
+      img: ['src', 'class', 'id'],
+      ol: ['reversed', 'start', 'type'],
+      p: ['class', 'id'],
+      span: ['class', 'id'],
     },
     allowedSchemes: ['data', 'http', 'https', 'file'],
   });
+
+  // Return the sanitized and updated HTML or an error message
   return (
     text ||
     getString('readerScreen.emptyChapterMessage', {

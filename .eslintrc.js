@@ -8,6 +8,8 @@ module.exports = {
         'no-shadow': 'off',
         'no-undef': 'off',
         'no-console': 'error',
+        '@typescript-eslint/no-shadow': 'warn',
+        'react-hooks/exhaustive-deps': 'warn',
       },
     },
   ],
