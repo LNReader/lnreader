@@ -86,11 +86,11 @@ const insertLocalChapter = async (
     const epubContentDir = path.replace(/[^/\\]+$/, '');
     chapterText = chapterText.replace(
       /=(?<=(?:href|src)=)(["'])(.*?)\1/g,
-      (_, __, $2: string) => {
+      (_, $1, $2: string) => {
         if ($2) {
           staticPaths.push(epubContentDir + '/' + $2);
         }
-        return `="file://${novelDir}/${$2.split(/[\\/]/)?.pop()}"`;
+        return `="file://${novelDir}/${$2.split(/[/\\]/)?.pop()}"`;
       },
     );
     NativeFile.mkdir(novelDir + '/' + insertedChapter.lastInsertRowId);
