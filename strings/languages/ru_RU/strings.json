@@ -17,7 +17,7 @@
     "clearDatabaseWarning": "Вы уверены? Прочитанные и загруженные главы и прогресс не библиотечных новелл будут потеряны.",
     "clearUpdatesMessage": "Обновления очищены.",
     "clearUpdatesTab": "Очистить вкладку обновления",
-    "clearUpdatesWarning": "Вы уверены? Обновления будут очищены.",
+    "clearUpdatesWarning": "Вкладка обновлений будет очищена.",
     "clearupdatesTabDesc": "Очищает записи глав на вкладке обновлений",
     "dataManagement": "Управление данными",
     "deleteReadChapters": "Удалять прочитанные главы",
@@ -27,7 +27,11 @@
     "importStaticFiles": "Импорт файлов статики",
     "novelInsertFailed": "ошибка вставки главы",
     "useFAB": "Использовать плавающую кнопку действия вместо основной кнопки",
-    "userAgent": "User Agent"
+    "userAgent": "User Agent",
+    "recreateDBIndexes": "Recreate DB indexes",
+    "recreateDBIndexesToast": "Recreated DB indexes",
+    "recreateDBIndexesDialogTitle": "All DB indexes will be recreated.\nThis may take a while.",
+    "recreateDBIndexesDesc": "Recreates DB indexes. This may improve performance on slower devices."
   },
   "appearance": "Внешний вид",
   "appearanceScreen": {
@@ -194,7 +198,9 @@
     "signIn": "Войти",
     "signOut": "Выйти",
     "sort": "Сортировка",
-    "submit": "Продолжить"
+    "submit": "Продолжить",
+    "loading": "Загрузка...",
+    "warning": "Внимание"
   },
   "webview": {
     "refresh": "Обновить",
@@ -500,5 +506,15 @@
     "light": "Светлая",
     "dark": "Тёмная",
     "complete": "Готово"
+  },
+  "notifications": {
+    "IMPORT_EPUB": "Импортирован epub",
+    "UPDATE_LIBRARY": "Обновление библиотеки",
+    "DRIVE_BACKUP": "Резервное копирование",
+    "DRIVE_RESTORE": "Восстановление с диска",
+    "SELF_HOST_BACKUP": "Self host backup",
+    "SELF_HOST_RESTORE": "Self host restore",
+    "MIGRATE_NOVEL": "Migrated novel",
+    "DOWNLOAD_CHAPTER": "Downloaded chapter"
   }
 }
