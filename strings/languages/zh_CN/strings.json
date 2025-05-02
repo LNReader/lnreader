@@ -14,20 +14,24 @@
     "chapterInsertFailed": "章节插入失败",
     "clearCachedNovels": "清除缓存的小说",
     "clearCachedNovelsDesc": "删除不在您的书库中的缓存小说",
-    "clearDatabaseWarning": "您确定吗？非书库小说的阅读，已下载章节和进度将会丢失。",
+    "clearDatabaseWarning": "Read and Downloaded chapters and progress of non-library novels will be lost.",
     "clearUpdatesMessage": "更新页面已清除。",
     "clearUpdatesTab": "清除更新页面",
-    "clearUpdatesWarning": "您确定吗？更新页面将被清除。",
+    "clearUpdatesWarning": "Updates tab will be cleared.",
     "clearupdatesTabDesc": "清除更新页面中的章节",
     "dataManagement": "数据",
     "deleteReadChapters": "删除已读章节",
-    "deleteReadChaptersDialogTitle": "您确定吗？所有标记为已读的章节都将被删除。",
+    "deleteReadChaptersDialogTitle": "All chapters marked as read will be deleted.",
     "importEpub": "导入 EPUB",
     "importNovel": "导入小说",
     "importStaticFiles": "导入静态文件",
     "novelInsertFailed": "小说插入失败",
     "useFAB": "使用浮动操作按钮",
-    "userAgent": "用户代理"
+    "userAgent": "用户代理",
+    "recreateDBIndexes": "Recreate DB indexes",
+    "recreateDBIndexesToast": "Recreated DB indexes",
+    "recreateDBIndexesDialogTitle": "All DB indexes will be recreated.\nThis may take a while.",
+    "recreateDBIndexesDesc": "Recreates DB indexes. This may improve performance on slower devices."
   },
   "appearance": "外观",
   "appearanceScreen": {
@@ -194,7 +198,9 @@
     "signIn": "登录",
     "signOut": "登出",
     "sort": "排序",
-    "submit": "确定"
+    "submit": "确定",
+    "loading": "Loading ...",
+    "warning": "Warning"
   },
   "webview": {
     "refresh": "刷新",
@@ -500,5 +506,15 @@
     "light": "明亮",
     "dark": "黑暗",
     "complete": "完成"
+  },
+  "notifications": {
+    "IMPORT_EPUB": "Imported epub",
+    "UPDATE_LIBRARY": "Updated library",
+    "DRIVE_BACKUP": "Drive backup",
+    "DRIVE_RESTORE": "Drive restore",
+    "SELF_HOST_BACKUP": "Self host backup",
+    "SELF_HOST_RESTORE": "Self host restore",
+    "MIGRATE_NOVEL": "Migrated novel",
+    "DOWNLOAD_CHAPTER": "Downloaded chapter"
   }
 }
