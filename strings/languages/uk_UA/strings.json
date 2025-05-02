@@ -14,20 +14,24 @@
     "chapterInsertFailed": "не вдалося додати розділ",
     "clearCachedNovels": "Очистити кеш новел",
     "clearCachedNovelsDesc": "Видалити кешовані новели, які не збережені у вашій бібліотеці",
-    "clearDatabaseWarning": "Ви впевнені? Ця дія призведе до втрати прочитаних розділів, завантажень та прогресу.",
+    "clearDatabaseWarning": "Read and Downloaded chapters and progress of non-library novels will be lost.",
     "clearUpdatesMessage": "Оновлення очищено.",
     "clearUpdatesTab": "Очистити вкладку оновлень",
-    "clearUpdatesWarning": "Ви впевнені? Вкладка оновлень буде очищена.",
+    "clearUpdatesWarning": "Updates tab will be cleared.",
     "clearupdatesTabDesc": "Видаляє записи розділів у вкладці оновлень",
     "dataManagement": "Керування даними",
     "deleteReadChapters": "Видалити прочитані розділи",
-    "deleteReadChaptersDialogTitle": "Ви впевнені? Всі прочитані розділи будуть видалені.",
+    "deleteReadChaptersDialogTitle": "All chapters marked as read will be deleted.",
     "importEpub": "імпортувати EPUB",
     "importNovel": "Імпортувати новелу",
     "importStaticFiles": "Імпортувати статичні файли",
     "novelInsertFailed": "не вдалося вставити новелу",
     "useFAB": "Використовувати FAB замість кнопки",
-    "userAgent": "User Agent"
+    "userAgent": "User Agent",
+    "recreateDBIndexes": "Recreate DB indexes",
+    "recreateDBIndexesToast": "Recreated DB indexes",
+    "recreateDBIndexesDialogTitle": "All DB indexes will be recreated.\nThis may take a while.",
+    "recreateDBIndexesDesc": "Recreates DB indexes. This may improve performance on slower devices."
   },
   "appearance": "Зовнішній вигляд",
   "appearanceScreen": {
@@ -194,7 +198,9 @@
     "signIn": "Увійти",
     "signOut": "Вийти",
     "sort": "Сортувати",
-    "submit": "Надіслати"
+    "submit": "Надіслати",
+    "loading": "Loading ...",
+    "warning": "Warning"
   },
   "webview": {
     "refresh": "Оновити",
@@ -500,5 +506,15 @@
     "light": "Світла",
     "dark": "Темна",
     "complete": "Завершити"
+  },
+  "notifications": {
+    "IMPORT_EPUB": "Imported epub",
+    "UPDATE_LIBRARY": "Updated library",
+    "DRIVE_BACKUP": "Drive backup",
+    "DRIVE_RESTORE": "Drive restore",
+    "SELF_HOST_BACKUP": "Self host backup",
+    "SELF_HOST_RESTORE": "Self host restore",
+    "MIGRATE_NOVEL": "Migrated novel",
+    "DOWNLOAD_CHAPTER": "Downloaded chapter"
   }
 }
