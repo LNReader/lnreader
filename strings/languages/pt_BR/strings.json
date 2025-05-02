@@ -14,20 +14,24 @@
     "chapterInsertFailed": "falha ao inserir capítulo",
     "clearCachedNovels": "Limpar capitulo em app",
     "clearCachedNovelsDesc": "Deletar novel que não está em sua biblioteca",
-    "clearDatabaseWarning": "Tem certeza? O progresso do livro lido e baixado não salvo será perdido.",
+    "clearDatabaseWarning": "Read and Downloaded chapters and progress of non-library novels will be lost.",
     "clearUpdatesMessage": "Novos capítulos limpos.",
     "clearUpdatesTab": "Aba de limpeza de novidades",
-    "clearUpdatesWarning": "Tem certeza? Aba de novidades será limpa.",
+    "clearUpdatesWarning": "Updates tab will be cleared.",
     "clearupdatesTabDesc": "Limpar capítulos na aba de entrada",
     "dataManagement": "Manejo de informação",
     "deleteReadChapters": "Excluir capítulos lidos",
-    "deleteReadChaptersDialogTitle": "Você tem certeza? Todos os capítulos marcados como lidos serão excluídos.",
+    "deleteReadChaptersDialogTitle": "All chapters marked as read will be deleted.",
     "importEpub": "Importar Epub",
     "importNovel": "Importar livro",
     "importStaticFiles": "Importar arquivo estático",
     "novelInsertFailed": "falha ao inserir livro",
     "useFAB": "Utilize FAV invez do botão",
-    "userAgent": "Agente usuário"
+    "userAgent": "Agente usuário",
+    "recreateDBIndexes": "Recreate DB indexes",
+    "recreateDBIndexesToast": "Recreated DB indexes",
+    "recreateDBIndexesDialogTitle": "All DB indexes will be recreated.\nThis may take a while.",
+    "recreateDBIndexesDesc": "Recreates DB indexes. This may improve performance on slower devices."
   },
   "appearance": "Aparência",
   "appearanceScreen": {
@@ -194,7 +198,9 @@
     "signIn": "Entrar no cadastro",
     "signOut": "Sair do cadastro",
     "sort": "Ordenar por",
-    "submit": "Aplicar"
+    "submit": "Aplicar",
+    "loading": "Loading ...",
+    "warning": "Warning"
   },
   "webview": {
     "refresh": "Rever",
@@ -500,5 +506,15 @@
     "light": "Light",
     "dark": "Dark",
     "complete": "Complete"
+  },
+  "notifications": {
+    "IMPORT_EPUB": "Imported epub",
+    "UPDATE_LIBRARY": "Updated library",
+    "DRIVE_BACKUP": "Drive backup",
+    "DRIVE_RESTORE": "Drive restore",
+    "SELF_HOST_BACKUP": "Self host backup",
+    "SELF_HOST_RESTORE": "Self host restore",
+    "MIGRATE_NOVEL": "Migrated novel",
+    "DOWNLOAD_CHAPTER": "Downloaded chapter"
   }
 }
