@@ -100,7 +100,7 @@ export const updateCategoryOrderInDb = (categories: Category[]): void => {
 };
 
 export const getAllNovelCategories = () =>
-  getAllSync<NovelCategory>([`SELECT * FROM NovelCategory`]);
+  getAllSync<NovelCategory>(['SELECT * FROM NovelCategory']);
 
 export const _restoreCategory = (category: BackupCategory) => {
   const d = category.novelIds.map(novelId => [
