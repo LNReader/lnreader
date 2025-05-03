@@ -15,9 +15,9 @@ export const createNovelTableQuery = `
     totalPages INTEGER DEFAULT 0,
     chaptersDownloaded INTEGER DEFAULT 0,
     chaptersUnread INTEGER DEFAULT 0,
-    totalChapters INTEGER DEFAULT 0
+    totalChapters INTEGER DEFAULT 0,
     lastReadAt TEXT,
-    lastUpdatedAt TEXT
+    lastUpdatedAt TEXT,
     UNIQUE(path, pluginId)
   );
 `;
