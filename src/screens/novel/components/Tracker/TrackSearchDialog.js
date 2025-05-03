@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
-import {  TextInput, TouchableRipple } from 'react-native-paper';
+import { TextInput, TouchableRipple } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 import color from 'color';
@@ -38,7 +38,7 @@ const TrackSearchDialog = ({
   /**
    * @param {import('../../../../services/Trackers').SearchResult} item
    */
-  const renderSearchResultCard = (item) => (
+  const renderSearchResultCard = item => (
     <TouchableRipple
       style={[
         styles.searchResultCard,
@@ -75,7 +75,7 @@ const TrackSearchDialog = ({
     >
       <TextInput
         value={searchText}
-        onChangeText={(text) => setSearchText(text)}
+        onChangeText={text => setSearchText(text)}
         onSubmitEditing={getSearchResults}
         textColor={theme.onSurface}
         theme={{
@@ -96,9 +96,13 @@ const TrackSearchDialog = ({
       />
       <ScrollView style={styles.scrollView}>
         {loading ? (
-          <ActivityIndicator color={theme.primary} size={45} style={styles.loader} />
+          <ActivityIndicator
+            color={theme.primary}
+            size={45}
+            style={styles.loader}
+          />
         ) : (
-          searchResults.map((result) => renderSearchResultCard(result))
+          searchResults.map(result => renderSearchResultCard(result))
         )}
       </ScrollView>
       <View style={styles.buttonContainer}>

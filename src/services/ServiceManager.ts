@@ -98,6 +98,7 @@ export default class ServiceManager {
       >
     ).includes(task.name);
   }
+
   async start() {
     if (!this.isRunning) {
       const notificationsAllowed = await askForPostNotificationsPermission();
@@ -171,7 +172,7 @@ export default class ServiceManager {
   }
 
   //gets the progress bar for download chapters notification
-  getProgressForNotif(
+  getProgressForNotification(
     currentTask: QueuedBackgroundTask,
     startingTasks: QueuedBackgroundTask[],
   ) {
@@ -182,10 +183,7 @@ export default class ServiceManager {
         task.task.name === 'DOWNLOAD_CHAPTER' &&
         task.meta.name === currentTask.meta.name
       ) {
-        if (
-          task.meta.name === currentTask.meta.name &&
-          task.meta.progressText === currentTask.meta.progressText
-        ) {
+        if (task.id === currentTask.id) {
           i = count;
         }
         count++;
@@ -208,7 +206,7 @@ export default class ServiceManager {
   ) {
     let progress =
       task.task.name === 'DOWNLOAD_CHAPTER'
-        ? this.getProgressForNotif(task, startingTasks)
+        ? this.getProgressForNotification(task, startingTasks)
         : null;
     await BackgroundService.updateNotification({
       taskTitle: task.meta.name,
