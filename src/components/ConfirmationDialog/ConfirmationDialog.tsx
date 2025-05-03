@@ -36,9 +36,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         onDismiss={onDismiss}
         style={[styles.container, { backgroundColor: theme.overlay3 }]}
       >
-        <Dialog.Title style={{ color: theme.onSurface }}>
-          {title}
-        </Dialog.Title>
+        <Dialog.Title style={{ color: theme.onSurface }}>{title}</Dialog.Title>
         <Dialog.Content>
           <Text style={[styles.content, { color: theme.onSurface }]}>
             {message}

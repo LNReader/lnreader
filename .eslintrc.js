@@ -10,6 +10,7 @@ module.exports = {
         'no-console': 'error',
         '@typescript-eslint/no-shadow': 'warn',
         'react-hooks/exhaustive-deps': 'warn',
+        'curly': ['error', 'multi-line', 'consistent'],
       },
     },
   ],

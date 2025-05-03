@@ -39,7 +39,6 @@ export const createTables = () => {
     db.getFirstSync<{ user_version: number }>('PRAGMA user_version')
       ?.user_version ?? 0;
 
-
   if (!isOnBoard) {
     db.execSync('PRAGMA journal_mode = WAL');
     db.execSync('PRAGMA synchronous = NORMAL');
@@ -64,7 +63,6 @@ export const createTables = () => {
     if (userVersion < 1) {
       updateToDBVersion1();
     }
-  
   }
 };
 
