@@ -37,14 +37,10 @@ type WebViewReaderProps = {
 };
 
 const onLogMessage = (payload: { nativeEvent: { data: string } }) => {
-  let dataPayload;
-  try {
-    dataPayload = JSON.parse(payload.nativeEvent.data);
-  } catch (e) {
-    console.error(e);
-  }
+  const dataPayload = JSON.parse(payload.nativeEvent.data);
   if (dataPayload) {
     if (dataPayload.type === 'console') {
+      /* eslint-disable no-console */
       console.info(`[Console] ${JSON.stringify(dataPayload.msg, null, 2)}`);
     }
   }
@@ -129,7 +125,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
       showsVerticalScrollIndicator={false}
       javaScriptEnabled={true}
       onMessage={(ev: { nativeEvent: { data: string } }) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         __DEV__ && onLogMessage(ev);
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {

@@ -1,4 +1,4 @@
-/* eslint-disable react-native/no-unused-styles */
+
 import React, { memo } from 'react';
 import { View, Dimensions, StyleSheet } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';

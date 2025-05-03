@@ -16,7 +16,7 @@ const SettingsLibraryScreen = () => {
 
   const setDefaultCategoryId = (categoryId: number) => {
     // TODO: update default category
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+
     categoryId;
   };
 
