@@ -6,6 +6,7 @@ import {
   View,
   Pressable,
   ImageBackground,
+  StatusBar,
 } from 'react-native';
 import color from 'color';
 import { IconButton, Portal } from 'react-native-paper';
@@ -28,6 +29,7 @@ interface NovelThumbnailProps {
   source: ImageURISource;
   theme: ThemeColors;
   setCustomNovelCover: () => Promise<void>;
+  saveNovelCover: () => Promise<void>;
 }
 
 interface NovelTitleProps {
@@ -79,6 +81,7 @@ const NovelThumbnail = ({
   source,
   theme,
   setCustomNovelCover,
+  saveNovelCover,
 }: NovelThumbnailProps) => {
   const [expanded, setExpanded] = useState(false);
   const { top, right } = useSafeAreaInsets();
@@ -93,11 +96,22 @@ const NovelThumbnail = ({
       ) : (
         <Portal>
           <IconButton
-            icon="pencil-outline"
+            icon="content-save"
             style={{
               position: 'absolute',
               top: top + 6,
               right: right + 6,
+              zIndex: 10,
+            }}
+            iconColor={theme.onBackground}
+            onPress={saveNovelCover}
+          />
+          <IconButton
+            icon="pencil-outline"
+            style={{
+              position: 'absolute',
+              top: StatusBar.currentHeight ?? 0 + 10,
+              right: 60,
               zIndex: 10,
             }}
             iconColor={theme.onBackground}

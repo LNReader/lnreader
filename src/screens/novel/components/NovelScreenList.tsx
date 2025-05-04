@@ -28,6 +28,9 @@ import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { useNovelContext } from '../NovelContext';
 import { FlashList } from '@shopify/flash-list';
+import FileManager from '@specs/NativeFile';
+import { downloadFile } from '@plugins/helpers/fetch';
+import { StorageAccessFramework } from 'expo-file-system';
 
 type NovelScreenListProps = {
   headerOpacity: SharedValue<number>;
@@ -241,6 +244,60 @@ const NovelScreenList = ({
     }
   };
 
+  const saveNovelCover = async () => {
+    if (!novel) {
+      showToast(getString('novelScreen.coverNotSaved'));
+      return;
+    }
+    if (!novel.cover) {
+      showToast(getString('novelScreen.noCoverFound'));
+      return;
+    }
+    const permissions =
+      await StorageAccessFramework.requestDirectoryPermissionsAsync();
+    if (!permissions.granted) {
+      showToast(getString('novelScreen.coverNotSaved'));
+      return;
+    }
+    const cover = novel.cover;
+    let tempCoverUri: string | null = null;
+    try {
+      let imageExtension = cover.split('.').pop() || 'png';
+      if (imageExtension.includes('?')) {
+        imageExtension = imageExtension.split('?')[0] || 'png';
+      }
+      imageExtension = ['jpg', 'jpeg', 'png', 'webp'].includes(
+        imageExtension || '',
+      )
+        ? imageExtension
+        : 'png';
+
+      // sanitize novel name as app crashes while copying file with ':' character
+      const novelName = novel.name.replace(/[^a-zA-Z0-9]/g, '_');
+      const fileName = `${novelName}_${novel.id}.${imageExtension}`;
+      const coverDestUri = await StorageAccessFramework.createFileAsync(
+        permissions.directoryUri,
+        fileName,
+        'image/' + imageExtension,
+      );
+      if (cover.startsWith('http')) {
+        const { ExternalCachesDirectoryPath } = FileManager.getConstants();
+        tempCoverUri = ExternalCachesDirectoryPath + '/' + fileName;
+        await downloadFile(cover, tempCoverUri);
+        FileManager.copyFile(tempCoverUri, coverDestUri);
+      } else {
+        FileManager.copyFile(cover, coverDestUri);
+      }
+      showToast(getString('novelScreen.coverSaved'));
+    } catch (err: any) {
+      showToast(err.message);
+    } finally {
+      if (tempCoverUri) {
+        FileManager.unlink(tempCoverUri);
+      }
+    }
+  };
+
   return (
     <>
       <FlashList
@@ -307,6 +364,7 @@ const NovelScreenList = ({
             openDrawer={openDrawer}
             page={pages.length > 1 ? pages[pageIndex] : undefined}
             setCustomNovelCover={setCustomNovelCover}
+            saveNovelCover={saveNovelCover}
             theme={theme}
             totalChapters={batchInformation.totalChapters}
             trackerSheetRef={trackerSheetRef}
