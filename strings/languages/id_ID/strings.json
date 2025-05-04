@@ -358,6 +358,8 @@
       "useCustomJSWarning": "Bisa saja tidak didukung oleh semua pembaca EPUB\n",
       "useReaderTheme": "Gunakan tema pembaca\n"
     },
+    "coverSaved": "Cover saved",
+    "coverNotSaved": "Cover not saved",
     "deleteChapterError": "Cant delete chapter chapter folder",
     "deleteMessage": "Delete downloaded chapters?",
     "deletedAllDownloads": "Deleted all Downloads",
@@ -392,6 +394,7 @@
     },
     "migrate": "Pindah\n",
     "noSummary": "Tidak ada rangkuman\n",
+    "noCoverFound": "No cover found",
     "progress": "Progress %{progress} %",
     "readChaptersDeleted": "Read chapters deleted",
     "startReadingChapters": "Start reading %{name}",
