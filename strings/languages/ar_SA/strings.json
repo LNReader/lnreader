@@ -358,6 +358,8 @@
       "useCustomJSWarning": "قد لا يكون مدعوماً من كل قراء EPUB",
       "useReaderTheme": "استخدام قالب القارئ"
     },
+    "coverSaved": "Cover saved",
+    "coverNotSaved": "Cover not saved",
     "deleteChapterError": "Cant delete chapter chapter folder",
     "deleteMessage": "Delete downloaded chapters?",
     "deletedAllDownloads": "Deleted all Downloads",
@@ -392,6 +394,7 @@
     },
     "migrate": "نقل",
     "noSummary": "لا يوجد ملخص",
+    "noCoverFound": "No cover found",
     "progress": "Progress %{progress} %",
     "readChaptersDeleted": "Read chapters deleted",
     "startReadingChapters": "Start reading %{name}",
