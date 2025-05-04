@@ -30,9 +30,6 @@ import { ThemeColors } from '@theme/types';
 import { SafeAreaView } from '@components';
 import { useNovelContext } from './NovelContext';
 import { FlashList } from '@shopify/flash-list';
-import FileManager from '@native/FileManager';
-import { downloadFile } from '@plugins/helpers/fetch';
-import { StorageAccessFramework } from 'expo-file-system';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const {
@@ -223,55 +220,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     }
   };
   const styles = useMemo(() => createStyles(theme), [theme]);
-
-  const saveNovelCover = async () => {
-    if (!novel.cover) {
-      showToast(getString('novelScreen.noCoverFound'));
-      return;
-    }
-    const permissions =
-      await StorageAccessFramework.requestDirectoryPermissionsAsync();
-    if (!permissions.granted) {
-      showToast(getString('novelScreen.coverNotSaved'));
-      return;
-    }
-    const cover = novel.cover;
-    let tempCoverUri: string | null = null;
-    try {
-      let imageExtension = cover.split('.').pop() || 'png';
-      if (imageExtension.includes('?')) {
-        imageExtension = imageExtension.split('?')[0] || 'png';
-      }
-      imageExtension = ['jpg', 'jpeg', 'png', 'webp'].includes(
-        imageExtension || '',
-      )
-        ? imageExtension
-        : 'png';
-
-      // sanitize novel name as app crashes while copying file with ':' character
-      const novelName = novel.name.replace(/[^a-zA-Z0-9]/g, '_');
-      const fileName = `${novelName}_${novel.id}.${imageExtension}`;
-      const coverDestUri = await StorageAccessFramework.createFileAsync(
-        permissions.directoryUri,
-        fileName,
-        'image/' + imageExtension,
-      );
-      if (cover.startsWith('http')) {
-        tempCoverUri = FileManager.ExternalCachesDirectoryPath + '/' + fileName;
-        await downloadFile(cover, tempCoverUri);
-        await FileManager.copyFile(tempCoverUri, coverDestUri);
-      } else {
-        await FileManager.copyFile(cover, coverDestUri);
-      }
-      showToast(getString('novelScreen.coverSaved'));
-    } catch (err: any) {
-      showToast(err.message);
-    } finally {
-      if (tempCoverUri) {
-        await FileManager.unlink(tempCoverUri);
-      }
-    }
-  };
 
   return (
     <Drawer

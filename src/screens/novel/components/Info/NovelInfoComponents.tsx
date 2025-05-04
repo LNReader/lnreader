@@ -6,6 +6,7 @@ import {
   View,
   Pressable,
   ImageBackground,
+  StatusBar,
 } from 'react-native';
 import color from 'color';
 import { IconButton, Portal } from 'react-native-paper';
@@ -102,17 +103,17 @@ const NovelThumbnail = ({
               right: right + 6,
               zIndex: 10,
             }}
-          iconColor={theme.onBackground}
-          onPress={saveNovelCover}
-        />
-        <IconButton
-          icon="pencil-outline"
-          style={{
-            position: 'absolute',
-            top: StatusBar.currentHeight ?? 0 + 10,
-            right: 60,
-            zIndex: 10,
-          }}
+            iconColor={theme.onBackground}
+            onPress={saveNovelCover}
+          />
+          <IconButton
+            icon="pencil-outline"
+            style={{
+              position: 'absolute',
+              top: StatusBar.currentHeight ?? 0 + 10,
+              right: 60,
+              zIndex: 10,
+            }}
             iconColor={theme.onBackground}
             onPress={setCustomNovelCover}
           />
