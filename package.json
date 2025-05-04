@@ -26,7 +26,7 @@
   "dependencies": {
     "@cd-z/react-native-epub-creator": "^2.0.4",
     "@gorhom/bottom-sheet": "^5.1.2",
-    "@legendapp/list": "^1.0.8",
+    "@legendapp/list": "^1.0.0-beta.24",
     "@react-native-community/slider": "4.5.6",
     "@react-native-cookies/cookies": "^6.2.1",
     "@react-native-google-signin/google-signin": "^13.2.0",
@@ -35,7 +35,7 @@
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
     "@react-navigation/stack": "^7.0.17",
-    "@shopify/flash-list": "1.7.6",
+    "@shopify/flash-list": "1.8.0",
     "cheerio": "1.0.0-rc.12",
     "color": "^4.2.3",
     "dayjs": "^1.11.10",

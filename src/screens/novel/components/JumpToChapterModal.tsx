@@ -8,7 +8,8 @@ import { Portal, Text } from 'react-native-paper';
 import { useTheme } from '@hooks/persisted';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { NovelScreenProps } from '@navigators/types';
-import { LegendList, LegendListProps, LegendListRef } from '@legendapp/list';
+import { LegendList, LegendListProps } from '@legendapp/list';
+import { FlashList } from '@shopify/flash-list';
 
 interface JumpToChapterModalProps {
   hideModal: () => void;
@@ -16,7 +17,7 @@ interface JumpToChapterModalProps {
   chapters: ChapterInfo[];
   navigation: NovelScreenProps['navigation'];
   novel: NovelInfo;
-  chapterListRef: React.RefObject<LegendListRef | null>;
+  chapterListRef: React.RefObject<FlashList<ChapterInfo> | null>;
 }
 
 const JumpToChapterModal = ({

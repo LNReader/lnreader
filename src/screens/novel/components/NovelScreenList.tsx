@@ -25,13 +25,13 @@ import NovelBottomSheet from './NovelBottomSheet';
 import * as Haptics from 'expo-haptics';
 import { AnimatedFAB } from 'react-native-paper';
 import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
-import { LegendList, LegendListRef } from '@legendapp/list';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { useNovelContext } from '../NovelContext';
+import { FlashList } from '@shopify/flash-list';
 
 type NovelScreenListProps = {
   headerOpacity: SharedValue<number>;
-  listRef: React.RefObject<LegendListRef | null>;
+  listRef: React.RefObject<FlashList<ChapterInfo> | null>;
   navigation: any;
   openDrawer: () => void;
   selected: ChapterInfo[];
@@ -243,11 +243,10 @@ const NovelScreenList = ({
 
   return (
     <>
-      <LegendList
-        recycleItems
+      <FlashList
         ref={listRef}
         estimatedItemSize={64}
-        data={chapters.length ? chapters : []}
+        data={chapters}
         extraData={[
           chapters.length,
           selected.length,
@@ -255,7 +254,6 @@ const NovelScreenList = ({
           loading,
           downloadQueue.length,
         ]}
-        removeClippedSubviews={true}
         // ListEmptyComponent={ListEmptyComponent}
         ListFooterComponent={!fetching ? undefined : ListEmptyComponent}
         renderItem={({ item, index }) => {
