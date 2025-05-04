@@ -52,7 +52,8 @@
       "@specs/*": [
         "specs/*"
       ],
-    }
+    },
+    "types": ["react-native"]
   },
   "exclude": [
     "node_modules",
