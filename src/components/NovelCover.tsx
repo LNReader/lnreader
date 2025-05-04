@@ -14,7 +14,7 @@ import ListView from './ListView';
 import { useDeviceOrientation } from '@hooks';
 import { coverPlaceholderColor } from '../theme/colors';
 import { DisplayModes } from '@screens/library/constants/constants';
-import { NovelInfo } from '@database/types';
+import { DBNovelInfo } from '@database/types';
 import { NovelItem } from '@plugins/types';
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
@@ -39,7 +39,7 @@ interface DownloadBadgeProps {
 }
 
 type CoverItemLibrary =
-  | NovelInfo & {
+  | DBNovelInfo & {
       completeRow?: number;
     };
 
@@ -58,6 +58,13 @@ interface INovelCover<TNovel> {
   inActivity?: boolean;
   onLongPress: (item: TNovel) => void;
   selectedNovelIds: number[];
+  globalSearch?: boolean;
+}
+
+function isLibraryNovel(
+  item: CoverItemLibrary | CoverItemPlugin | NovelItem,
+): item is CoverItemLibrary {
+  return item.id !== undefined;
 }
 
 function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
@@ -69,6 +76,7 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
   addSkeletonLoading,
   inActivity,
   onLongPress,
+  globalSearch,
   selectedNovelIds,
 }: INovelCover<TNovel>) {
   const {
@@ -87,12 +95,21 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
     [orientation, novelsPerRow],
   );
 
-  const coverHeight = useMemo(
-    () => (window.width / numColumns) * (4 / 3),
-    [window.width, numColumns],
-  );
+  const coverHeight = useMemo(() => {
+    if (globalSearch) {
+      return ((window.width / 3 - 16) * 4) / 3;
+    }
+    return (window.width / numColumns) * (4 / 3);
+  }, [globalSearch, window.width, numColumns]);
 
-  const unreadChapters = item.id
+  const coverWidth = useMemo(() => {
+    if (globalSearch) {
+      return window.width / 3 - 16;
+    }
+    return undefined;
+  }, [globalSearch, window.width]);
+
+  const unreadChapters = isLibraryNovel(item)
     ? item.totalChapters - item.chaptersRead
     : undefined;
 
@@ -111,11 +128,16 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
     );
   }
 
-  return displayMode !== DisplayModes.List ? (
+  const flex = globalSearch ? 1 : 1 / numColumns;
+  const margin = globalSearch ? 0 : 2;
+
+  return displayMode !== DisplayModes.List || globalSearch ? (
     <View
       style={[
         {
-          flex: 1 / numColumns,
+          flex,
+          width: coverWidth,
+          margin,
         },
         styles.standardNovelCover,
         isSelected && {
@@ -136,7 +158,7 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
       >
         <View style={styles.badgeContainer}>
           {libraryStatus ? <InLibraryBadge theme={theme} /> : null}
-          {item.id ? (
+          {isLibraryNovel(item) ? (
             <>
               {showDownloadBadges && item.chaptersDownloaded > 0 ? (
                 <DownloadBadge
@@ -175,7 +197,11 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
           ) : null}
         </View>
         {displayMode === DisplayModes.Comfortable ? (
-          <ComfortableTitle novelName={item.name} theme={theme} />
+          <ComfortableTitle
+            novelName={item.name}
+            theme={theme}
+            width={coverWidth}
+          />
         ) : null}
       </Pressable>
     </View>
@@ -218,9 +244,11 @@ export default memo(NovelCover);
 const ComfortableTitle = ({
   theme,
   novelName,
+  width,
 }: {
   theme: ThemeColors;
   novelName: string;
+  width?: number;
 }) => (
   <Text
     numberOfLines={2}
@@ -229,6 +257,7 @@ const ComfortableTitle = ({
       styles.padding4,
       {
         color: theme.onSurface,
+        maxWidth: width,
       },
     ]}
   >
@@ -408,7 +437,6 @@ const styles = StyleSheet.create({
   },
   standardNovelCover: {
     borderRadius: 6,
-    margin: 2,
     overflow: 'hidden',
   },
   title: {

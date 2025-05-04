@@ -1,5 +1,5 @@
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import color from 'color';
 
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -10,10 +10,10 @@ import { getString } from '@strings/translations';
 import { useTheme } from '@hooks/persisted';
 
 import { GlobalSearchResult } from '../hooks/useGlobalSearch';
-import GlobalSearchNovelItem from './GlobalSearchNovelItem';
 import GlobalSearchSkeletonLoading from '@screens/browse/loadingAnimation/GlobalSearchSkeletonLoading';
 import { interpolateColor } from 'react-native-reanimated';
 import { useLibraryContext } from '@components/Context/LibraryContext';
+import NovelCover from '@components/NovelCover';
 
 interface GlobalSearchResultsListProps {
   searchResults: GlobalSearchResult[];
@@ -45,6 +45,7 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
 }) => {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<any>>();
+  const [inActivity, setInActivity] = useState<Record<string, boolean>>({});
   const { novelInLibrary, switchNovelToLibrary } = useLibraryContext();
 
   const errorColor = theme.isDark ? '#B3261E' : '#F2B8B5';
@@ -108,6 +109,7 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
               contentContainerStyle={styles.novelsContainer}
               keyExtractor={novelItem => item.plugin.id + '_' + novelItem.path}
               data={item.novels}
+              extraData={inActivity.length}
               ListEmptyComponent={
                 <Text style={[styles.listEmpty, { color: noResultsColor }]}>
                   {getString('sourceScreen.noResultsFound')}
@@ -120,15 +122,36 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
                 );
 
                 return (
-                  <GlobalSearchNovelItem
-                    novel={novelItem}
-                    pluginId={item.plugin.id}
-                    inLibrary={inLibrary}
-                    navigateToNovel={navigateToNovel}
+                  <NovelCover
+                    globalSearch
+                    item={novelItem}
+                    libraryStatus={inLibrary}
+                    inActivity={inActivity[novelItem.path]}
+                    onPress={() =>
+                      navigateToNovel({
+                        ...novelItem,
+                        pluginId: item.plugin.id,
+                      })
+                    }
                     theme={theme}
-                    onLongPress={() => {
-                      switchNovelToLibrary(novelItem.path, item.plugin.id);
+                    onLongPress={async () => {
+                      setInActivity(prev => ({
+                        ...prev,
+                        [novelItem.path]: true,
+                      }));
+
+                      await switchNovelToLibrary(
+                        novelItem.path,
+                        item.plugin.id,
+                      );
+
+                      setInActivity(prev => ({
+                        ...prev,
+                        [novelItem.path]: false,
+                      }));
                     }}
+                    selectedNovelIds={[]}
+                    isSelected={false}
                   />
                 );
               }}
@@ -139,6 +162,7 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
     ),
     [
       errorColor,
+      inActivity,
       item.error,
       item.isLoading,
       item.novels,

@@ -15,11 +15,12 @@ import { NovelItem } from '@plugins/types';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
-import { switchNovelToLibrary } from '@database/queries/NovelQueries';
+import { switchNovelToLibraryQuery } from '@database/queries/NovelQueries';
 import { LibraryNovelInfo, NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BrowseSourceScreenProps } from '@navigators/types';
+import { useLibraryContext } from '@components/Context/LibraryContext';
 
 const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
   const theme = useTheme();
@@ -67,7 +68,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     });
   };
 
-  const { library, setLibrary } = useLibraryNovels();
+  const { novelInLibrary, setLibrary } = useLibraryContext();
   const [inActivity, setInActivity] = useState<Record<string, boolean>>({});
 
   const switchLibraryState = (
@@ -91,11 +92,6 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
       ];
     }
   };
-
-  const novelInLibrary = (novelPath: string) =>
-    library?.some(
-      novel => novel.pluginId === pluginId && novel.path === novelPath,
-    );
 
   const navigateToNovel = useCallback(
     (item: NovelItem | LibraryNovelInfo) =>
@@ -148,7 +144,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
           data={novelList}
           inSource
           renderItem={({ item }) => {
-            const inLibrary = novelInLibrary(item.path);
+            const inLibrary = novelInLibrary(pluginId, item.path);
 
             return (
               <NovelCover
@@ -165,7 +161,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
                 onLongPress={async () => {
                   setInActivity(prev => ({ ...prev, [item.path]: true }));
 
-                  await switchNovelToLibrary(item.path, pluginId);
+                  await switchNovelToLibraryQuery(item.path, pluginId);
 
                   setLibrary(prevValues =>
                     switchLibraryState(prevValues, item),
