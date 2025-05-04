@@ -74,6 +74,7 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
           >
             {lightThemes.map(item => (
               <ThemePicker
+                horizontal
                 key={item.id}
                 currentTheme={theme}
                 theme={item}
@@ -104,6 +105,7 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
           >
             {darkThemes.map(item => (
               <ThemePicker
+                horizontal
                 key={item.id}
                 currentTheme={theme}
                 theme={item}

@@ -9,20 +9,22 @@ interface ThemePickerProps {
   theme: ThemeColors;
   currentTheme: ThemeColors;
   onPress: () => void;
+  horizontal?: boolean;
 }
 
 export const ThemePicker = ({
   theme,
   currentTheme,
   onPress,
+  horizontal = false,
 }: ThemePickerProps) => (
   <View
     style={{
       justifyContent: 'center',
       alignItems: 'center',
       paddingBottom: 8,
-      width: '33%',
-      marginHorizontal: 'auto',
+      width: horizontal ? 'auto' : '33%',
+      marginHorizontal: horizontal ? 4 : 'auto',
     }}
   >
     <View
