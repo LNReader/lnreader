@@ -358,6 +358,8 @@
       "useCustomJSWarning": "Может поддерживаться не всеми читателями EPUB",
       "useReaderTheme": "Использовать тему для чтения"
     },
+    "coverSaved": "Cover saved",
+    "coverNotSaved": "Cover not saved",
     "deleteChapterError": "Не получается удалить папку с главами",
     "deleteMessage": "Удалить загруженные главы?",
     "deletedAllDownloads": "Удалить все загрузки",
@@ -392,6 +394,7 @@
     },
     "migrate": "Перенос",
     "noSummary": "Нет сводки",
+    "noCoverFound": "No cover found",
     "progress": "Прогресс %{progress}%",
     "readChaptersDeleted": "Прочитанные главы удалены",
     "startReadingChapters": "Начать чтение %{name}",
