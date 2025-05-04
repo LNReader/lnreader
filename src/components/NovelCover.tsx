@@ -44,7 +44,7 @@ type CoverItemDB =
     };
 
 type CoverItemLibrary =
-  | NovelInfo & {
+  | DBNovelInfo & {
       completeRow?: number;
     };
 
