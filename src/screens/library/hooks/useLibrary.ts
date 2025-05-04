@@ -8,11 +8,22 @@ import { Category, NovelInfo } from '@database/types';
 
 import { useLibrarySettings } from '@hooks/persisted';
 import { LibrarySortOrder } from '../constants/constants';
+import { switchNovelToLibraryQuery } from '@database/queries/NovelQueries';
 
 // type Library = Category & { novels: LibraryNovelInfo[] };
 export type ExtendedCategory = Category & { novelIds: number[] };
+export type UseLibraryReturnType = {
+  library: NovelInfo[];
+  categories: ExtendedCategory[];
+  isLoading: boolean;
+  setLibrary: React.Dispatch<React.SetStateAction<NovelInfo[]>>;
+  novelInLibrary: (pluginId: string, novelPath: string) => boolean;
+  switchNovelToLibrary: (novelPath: string, pluginId: string) => Promise<void>;
+  refetchLibrary: () => void;
+  setLibrarySearchText: (text: string) => void;
+};
 
-export const useLibrary = () => {
+export const useLibrary = (): UseLibraryReturnType => {
   const {
     filter,
     sortOrder = LibrarySortOrder.DateAdded_DESC,
@@ -45,6 +56,30 @@ export const useLibrary = () => {
     setIsLoading(false);
   }, [downloadedOnlyMode, filter, searchText, sortOrder]);
 
+  const novelInLibrary = useCallback(
+    (pluginId: string, novelPath: string) =>
+      library?.some(
+        novel => novel.pluginId === pluginId && novel.path === novelPath,
+      ),
+    [library],
+  );
+
+  const switchNovelToLibrary = useCallback(
+    async (novelPath: string, pluginId: string) => {
+      await switchNovelToLibraryQuery(novelPath, pluginId);
+
+      const novels = getLibraryNovelsFromDb(
+        sortOrder,
+        filter,
+        searchText,
+        downloadedOnlyMode,
+      );
+
+      setLibrary(novels);
+    },
+    [downloadedOnlyMode, filter, searchText, sortOrder],
+  );
+
   useFocusEffect(() => {
     getLibrary();
   });
@@ -53,6 +88,9 @@ export const useLibrary = () => {
     library,
     categories,
     isLoading,
+    setLibrary,
+    novelInLibrary,
+    switchNovelToLibrary,
     refetchLibrary: getLibrary,
     setLibrarySearchText: setSearchText,
   };

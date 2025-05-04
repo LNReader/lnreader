@@ -1,19 +1,14 @@
 import React, { createContext, useContext } from 'react';
-import { NovelInfo } from '@database/types';
 import {
-  ExtendedCategory,
   useLibrary,
+  UseLibraryReturnType,
 } from '@screens/library/hooks/useLibrary';
 import { useLibrarySettings } from '@hooks/persisted';
 import { LibrarySettings } from '@hooks/persisted/useSettings';
 
 // type Library = Category & { novels: LibraryNovelInfo[] };
 
-type LibraryContextType = {
-  library: NovelInfo[];
-  categories: ExtendedCategory[];
-  refetchLibrary: () => void;
-  isLoading: boolean;
+type LibraryContextType = UseLibraryReturnType & {
   settings: LibrarySettings;
 };
 
@@ -25,18 +20,16 @@ export function LibraryContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { library, categories, refetchLibrary, isLoading } = useLibrary();
+  const useLibraryParams = useLibrary();
   const settings = useLibrarySettings();
 
   return (
-    <LibraryContext.Provider
-      value={{ library, categories, refetchLibrary, isLoading, settings }}
-    >
+    <LibraryContext.Provider value={{ ...useLibraryParams, settings }}>
       {children}
     </LibraryContext.Provider>
   );
 }
 
-export const useLibraryContext = () => {
+export const useLibraryContext = (): LibraryContextType => {
   return useContext(LibraryContext);
 };

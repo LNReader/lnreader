@@ -11,11 +11,9 @@ import { useTheme } from '@hooks/persisted';
 
 import { GlobalSearchResult } from '../hooks/useGlobalSearch';
 import GlobalSearchNovelItem from './GlobalSearchNovelItem';
-import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
-import { LibraryNovelInfo } from '@database/types';
-import { switchNovelToLibrary } from '@database/queries/NovelQueries';
 import GlobalSearchSkeletonLoading from '@screens/browse/loadingAnimation/GlobalSearchSkeletonLoading';
 import { interpolateColor } from 'react-native-reanimated';
+import { useLibraryContext } from '@components/Context/LibraryContext';
 
 interface GlobalSearchResultsListProps {
   searchResults: GlobalSearchResult[];
@@ -47,12 +45,7 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
 }) => {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<any>>();
-  const { library, setLibrary } = useLibraryNovels();
-
-  const novelInLibrary = (pluginId: string, novelPath: string) =>
-    library?.some(
-      novel => novel.pluginId === pluginId && novel.path === novelPath,
-    );
+  const { novelInLibrary, switchNovelToLibrary } = useLibraryContext();
 
   const errorColor = theme.isDark ? '#B3261E' : '#F2B8B5';
   const noResultsColor = interpolateColor(
@@ -62,12 +55,12 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
   );
 
   const navigateToNovel = useCallback(
-    (item: { name: string; path: string; pluginId: string }) =>
+    (novelItem: { name: string; path: string; pluginId: string }) =>
       navigation.push('ReaderStack', {
         screen: 'Novel',
-        params: item,
+        params: novelItem,
       }),
-    [],
+    [navigation],
   );
 
   return useMemo(
@@ -134,22 +127,6 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
                     navigateToNovel={navigateToNovel}
                     theme={theme}
                     onLongPress={() => {
-                      setLibrary(prevValues => {
-                        if (inLibrary) {
-                          return [
-                            ...prevValues.filter(
-                              novel => novel.path !== novelItem.path,
-                            ),
-                          ];
-                        } else {
-                          return [
-                            ...prevValues,
-                            {
-                              path: novelItem.path,
-                            } as LibraryNovelInfo,
-                          ];
-                        }
-                      });
                       switchNovelToLibrary(novelItem.path, item.plugin.id);
                     }}
                   />
@@ -160,7 +137,22 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
         </View>
       </>
     ),
-    [item.isLoading, library],
+    [
+      errorColor,
+      item.error,
+      item.isLoading,
+      item.novels,
+      item.plugin.id,
+      item.plugin.lang,
+      item.plugin.name,
+      item.plugin.site,
+      navigateToNovel,
+      navigation,
+      noResultsColor,
+      novelInLibrary,
+      switchNovelToLibrary,
+      theme,
+    ],
   );
 };
 

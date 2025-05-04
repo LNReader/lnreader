@@ -61,9 +61,13 @@ async function defaultQueryAsync<T = unknown, Array extends boolean = false>(
 }
 
 export async function runAsync(queryObjects: QueryObject<SQLiteRunResult>[]) {
+  const promises = [];
   for (const queryObject of queryObjects) {
-    defaultQueryAsync<SQLiteRunResult, false>('runAsync', queryObject, null);
+    promises.push(
+      defaultQueryAsync<SQLiteRunResult, false>('runAsync', queryObject, null),
+    );
   }
+  await Promise.all(promises);
 }
 
 export function runSync(queryObjects: QueryObject<SQLiteRunResult>[]) {
