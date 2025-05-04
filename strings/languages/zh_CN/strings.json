@@ -358,6 +358,8 @@
       "useCustomJSWarning": "在部分 EPUB 阅读器中可能不被支持",
       "useReaderTheme": "使用阅读器主题"
     },
+    "coverSaved": "Cover saved",
+    "coverNotSaved": "Cover not saved",
     "deleteChapterError": "无法删除章节文件夹",
     "deleteMessage": "删除下载的章节？",
     "deletedAllDownloads": "所有下载已删除",
@@ -392,6 +394,7 @@
     },
     "migrate": "迁移",
     "noSummary": "无简介",
+    "noCoverFound": "No cover found",
     "progress": "进度 %{progress} %",
     "readChaptersDeleted": "阅读章节已删除",
     "startReadingChapters": "开始阅读 %{name}",
