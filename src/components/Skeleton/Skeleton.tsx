@@ -1,7 +1,6 @@
 import { useAppSettings, useTheme } from '@hooks/persisted';
 import * as React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import Animated, {
   useAnimatedProps,
   useSharedValue,

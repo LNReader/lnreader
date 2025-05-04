@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ThemeColors } from '@theme/types';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { GoogleSignin, User } from '@react-native-google-signin/google-signin';
-import { useEffect, useState } from 'react';
 import { Button, EmptyView, Modal } from '@components';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import * as Clipboard from 'expo-clipboard';

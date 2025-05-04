@@ -1,8 +1,13 @@
 import { reverse, uniqBy } from 'lodash-es';
 import { newer } from '@utils/compareVersion';
-import { store } from './helpers/storage';
 
 // packages for plugins
+import {
+  store,
+  Storage,
+  LocalStorage,
+  SessionStorage,
+} from './helpers/storage';
 import { load } from 'cheerio';
 import dayjs from 'dayjs';
 import { NovelStatus, Plugin, PluginItem } from './types';
@@ -10,7 +15,6 @@ import { FilterTypes } from './types/filterTypes';
 import { isUrlAbsolute } from './helpers/isAbsoluteUrl';
 import { downloadFile, fetchApi, fetchProto, fetchText } from './helpers/fetch';
 import { defaultCover } from './helpers/constants';
-import { Storage, LocalStorage, SessionStorage } from './helpers/storage';
 import { encode, decode } from 'urlencode';
 import { Parser } from 'htmlparser2';
 import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';

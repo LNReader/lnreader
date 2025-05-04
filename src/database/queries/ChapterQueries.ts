@@ -1,8 +1,12 @@
 import { showToast } from '@utils/showToast';
-import { ChapterInfo, DownloadedChapter, UpdateOverview } from '../types';
+import {
+  ChapterInfo,
+  DownloadedChapter,
+  UpdateOverview,
+  Update,
+} from '../types';
 import { ChapterItem } from '@plugins/types';
 
-import { Update } from '../types';
 import { getString } from '@strings/translations';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { db } from '@database/db';
@@ -46,7 +50,6 @@ export const insertChapters = async (
       }
     })
     .catch();
-  return;
 };
 
 export const markChapterRead = (chapterId: number) =>

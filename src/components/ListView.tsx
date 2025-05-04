@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
 
-import { Image } from 'react-native';
 import { coverPlaceholderColor } from '../theme/colors';
 
 import color from 'color';

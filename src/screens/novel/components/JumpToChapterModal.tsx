@@ -1,6 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, View, Pressable } from 'react-native';
-import { TextInput as RNTextInput } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Pressable,
+  TextInput as RNTextInput,
+} from 'react-native';
 import { getString } from '@strings/translations';
 import { Button, Modal, SwitchItem } from '@components';
 

@@ -1,6 +1,12 @@
-import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+} from 'react-native';
 import React, { useMemo } from 'react';
-import { Image } from 'react-native';
 
 import { coverPlaceholderColor } from '@theme/colors';
 

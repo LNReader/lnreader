@@ -6,11 +6,12 @@ import {
   View,
   Pressable,
   ImageBackground,
+  Image,
+  ImageURISource,
 } from 'react-native';
 import color from 'color';
 import { IconButton, Portal } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Image, ImageURISource } from 'react-native';
 import { Chip } from '../../../../components';
 import { coverPlaceholderColor } from '../../../../theme/colors';
 import { ThemeColors } from '@theme/types';

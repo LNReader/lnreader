@@ -136,10 +136,10 @@ export default class ServiceManager {
       taskList[0].meta.isRunning &&
       taskList[0].task.name !== 'DOWNLOAD_CHAPTER'
     ) {
-      let now = Date.now();
+      const now = Date.now();
       if (now - this.lastNotifUpdate > 1000) {
-        let delay = 1000 - now - this.lastNotifUpdate;
-        let id = ++this.currentPendingUpdate;
+        const delay = 1000 - now - this.lastNotifUpdate;
+        const id = ++this.currentPendingUpdate;
         setTimeout(() => {
           if (this.currentPendingUpdate !== id) {
             return;
@@ -178,7 +178,7 @@ export default class ServiceManager {
   ) {
     let i = null;
     let count = 0;
-    for (let task of startingTasks) {
+    for (const task of startingTasks) {
       if (
         task.task.name === 'DOWNLOAD_CHAPTER' &&
         task.meta.name === currentTask.meta.name
@@ -204,7 +204,7 @@ export default class ServiceManager {
     task: QueuedBackgroundTask,
     startingTasks: QueuedBackgroundTask[],
   ) {
-    let progress =
+    const progress =
       task.task.name === 'DOWNLOAD_CHAPTER'
         ? this.getProgressForNotification(task, startingTasks)
         : null;
@@ -237,8 +237,6 @@ export default class ServiceManager {
         return migrateNovel(task.task.data, this.setMeta.bind(this));
       case 'DOWNLOAD_CHAPTER':
         return downloadChapter(task.task.data, this.setMeta.bind(this));
-      default:
-        return;
     }
   }
 
@@ -255,8 +253,8 @@ export default class ServiceManager {
       'MIGRATE_NOVEL': 0,
       'DOWNLOAD_CHAPTER': 0,
     };
-    let startingTasks = manager.getTaskList();
-    let tasksSet = new Set(startingTasks.map(t => t.id));
+    const startingTasks = manager.getTaskList();
+    const tasksSet = new Set(startingTasks.map(t => t.id));
     while (BackgroundService.isRunning()) {
       const currentTasks = manager.getTaskList();
       const currentTask = currentTasks[0];
@@ -265,7 +263,7 @@ export default class ServiceManager {
       }
 
       //Add any newly queued tasks to the starting tasks list
-      let newtasks = currentTasks.filter(t => !tasksSet.has(t.id));
+      const newtasks = currentTasks.filter(t => !tasksSet.has(t.id));
       startingTasks.push(...newtasks);
       newtasks.forEach(t => tasksSet.add(t.id));
 

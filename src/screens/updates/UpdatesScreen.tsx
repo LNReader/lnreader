@@ -2,13 +2,17 @@ import React, { memo, Suspense, useCallback, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
 
-import { EmptyView, ErrorScreenV2, SearchbarV2 } from '@components';
+import {
+  EmptyView,
+  ErrorScreenV2,
+  SearchbarV2,
+  SafeAreaView,
+} from '@components';
 
 import { useSearch } from '@hooks';
-import { useUpdates } from '@hooks/persisted';
+import { useUpdates, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
-import { useTheme } from '@hooks/persisted';
 import UpdatesSkeletonLoading from './components/UpdatesSkeletonLoading';
 import UpdateNovelCard from './components/UpdateNovelCard';
 import { useFocusEffect } from '@react-navigation/native';
@@ -17,7 +21,6 @@ import { showToast } from '@utils/showToast';
 import ServiceManager from '@services/ServiceManager';
 import { UpdateScreenProps } from '@navigators/types';
 import { UpdateOverview } from '@database/types';
-import { SafeAreaView } from '@components';
 import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
 
 const Skeleton = () => <ChapterListSkeleton img />;

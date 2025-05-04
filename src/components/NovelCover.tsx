@@ -5,10 +5,10 @@ import {
   Text,
   useWindowDimensions,
   Pressable,
+  Image,
 } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient';
-import { Image } from 'react-native';
 import ListView from './ListView';
 
 import { useDeviceOrientation } from '@hooks';
