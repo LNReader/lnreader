@@ -6,7 +6,6 @@ import {
   View,
   Pressable,
   ImageBackground,
-  StatusBar,
 } from 'react-native';
 import color from 'color';
 import { IconButton, Portal } from 'react-native-paper';
@@ -110,8 +109,8 @@ const NovelThumbnail = ({
             icon="pencil-outline"
             style={{
               position: 'absolute',
-              top: StatusBar.currentHeight ?? 0 + 10,
-              right: 60,
+              top: top + 6,
+              right: right + 60,
               zIndex: 10,
             }}
             iconColor={theme.onBackground}
