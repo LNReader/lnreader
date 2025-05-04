@@ -358,6 +358,8 @@
       "useCustomJSWarning": "Може підтримуватися не всіма застосунками для читання EPUB",
       "useReaderTheme": "Використовуйте тему застосунку для читання"
     },
+    "coverSaved": "Cover saved",
+    "coverNotSaved": "Cover not saved",
     "deleteChapterError": "Не вдалося видалити папку розділу",
     "deleteMessage": "Видалити завантажені розділи?",
     "deletedAllDownloads": "Всі завантаження видалено",
@@ -392,6 +394,7 @@
     },
     "migrate": "Перенести",
     "noSummary": "Немає зведених відомостей",
+    "noCoverFound": "No cover found",
     "progress": "Прогрес %{progress} %",
     "readChaptersDeleted": "Прочитані розділи видалено",
     "startReadingChapters": "Почати читання %{name}",
