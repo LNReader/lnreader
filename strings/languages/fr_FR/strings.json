@@ -358,6 +358,8 @@
       "useCustomJSWarning": "Peut ne pas être supporté par tous les lecteurs d'EPUB",
       "useReaderTheme": "Utiliser le mode lecture"
     },
+    "coverSaved": "Cover saved",
+    "coverNotSaved": "Cover not saved",
     "deleteChapterError": "Cant delete chapter chapter folder",
     "deleteMessage": "Delete downloaded chapters?",
     "deletedAllDownloads": "Deleted all Downloads",
@@ -392,6 +394,7 @@
     },
     "migrate": "Migrer",
     "noSummary": "Aucun résumé",
+    "noCoverFound": "No cover found",
     "progress": "Progress %{progress} %",
     "readChaptersDeleted": "Read chapters deleted",
     "startReadingChapters": "Start reading %{name}",
