@@ -358,6 +358,8 @@
       "useCustomJSWarning": "May not be supported by all EPUB readers",
       "useReaderTheme": "Use reader theme"
     },
+    "coverSaved": "Cover saved",
+    "coverNotSaved": "Cover not saved",
     "deleteChapterError": "Không thể xoá thư mục chương",
     "deleteMessage": "Xoá chương đã tải xuống?",
     "deletedAllDownloads": "Xoá tất cả tải xuống",
@@ -392,6 +394,7 @@
     },
     "migrate": "Đồng bộ",
     "noSummary": "Không có tóm tắt",
+    "noCoverFound": "No cover found",
     "progress": "Tiến trình %{progress} %",
     "readChaptersDeleted": "Đã xoá chương đã đọc",
     "startReadingChapters": "Bắt đầu đọc %{name}",
