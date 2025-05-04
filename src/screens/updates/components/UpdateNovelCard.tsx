@@ -1,4 +1,3 @@
-
 import { Pressable, StyleSheet, View, Image } from 'react-native';
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 

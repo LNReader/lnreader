@@ -45,9 +45,7 @@ export const insertChapters = async (
         statement.finalizeSync();
       }
     })
-    .catch(e => {
-      console.error(e);
-    });
+    .catch();
   return;
 };
 
