@@ -358,6 +358,8 @@
       "useCustomJSWarning": "Nemusí být podporováno všemi čtečkami EPUB",
       "useReaderTheme": "Použít motiv čtečky"
     },
+    "coverSaved": "Cover saved",
+    "coverNotSaved": "Cover not saved",
     "deleteChapterError": "Cant delete chapter chapter folder",
     "deleteMessage": "Delete downloaded chapters?",
     "deletedAllDownloads": "Deleted all Downloads",
@@ -392,6 +394,7 @@
     },
     "migrate": "Migrovat",
     "noSummary": "Žádné shrnutí",
+    "noCoverFound": "No cover found",
     "progress": "Progress %{progress} %",
     "readChaptersDeleted": "Read chapters deleted",
     "startReadingChapters": "Start reading %{name}",
