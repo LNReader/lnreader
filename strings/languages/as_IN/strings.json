@@ -358,6 +358,8 @@
       "useCustomJSWarning": "সমস্ত ইপাব পাঠকৰ দ্বাৰা সমৰ্থিত নাও হ'ব পাৰে",
       "useReaderTheme": "পাঠক থীম ব্যৱহাৰ কৰক"
     },
+    "coverSaved": "Cover saved",
+    "coverNotSaved": "Cover not saved",
     "deleteChapterError": "Cant delete chapter chapter folder",
     "deleteMessage": "Delete downloaded chapters?",
     "deletedAllDownloads": "Deleted all Downloads",
@@ -392,6 +394,7 @@
     },
     "migrate": "স্থানান্তৰিত কৰক",
     "noSummary": "কোনো সংক্ষিপ্তসাৰ নাই",
+    "noCoverFound": "No cover found",
     "progress": "Progress %{progress} %",
     "readChaptersDeleted": "Read chapters deleted",
     "startReadingChapters": "Start reading %{name}",
