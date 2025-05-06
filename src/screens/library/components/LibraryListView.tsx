@@ -34,26 +34,30 @@ export const LibraryView: React.FC<Props> = ({
 }) => {
   const { library } = useLibraryContext();
   const theme = useTheme();
-  const renderItem = ({ item }: { item: NovelInfo }) => (
-    <NovelCover
-      item={item}
-      theme={theme}
-      isSelected={selectedNovelIds.includes(item.id)}
-      onLongPress={() => setSelectedNovelIds(xor(selectedNovelIds, [item.id]))}
-      onPress={() => {
-        if (selectedNovelIds.length) {
-          setSelectedNovelIds(xor(selectedNovelIds, [item.id]));
-        } else {
-          navigation.navigate('ReaderStack', {
-            screen: 'Novel',
-            params: item,
-          });
+  const renderItem = ({ item }: { item: NovelInfo }) => {
+    return (
+      <NovelCover
+        item={item}
+        theme={theme}
+        isSelected={selectedNovelIds.includes(item.id)}
+        onLongPress={() =>
+          setSelectedNovelIds(xor(selectedNovelIds, [item.id]))
         }
-      }}
-      libraryStatus={false} // yes but actually no :D
-      selectedNovelIds={selectedNovelIds}
-    />
-  );
+        onPress={() => {
+          if (selectedNovelIds.length) {
+            setSelectedNovelIds(xor(selectedNovelIds, [item.id]));
+          } else {
+            navigation.navigate('ReaderStack', {
+              screen: 'Novel',
+              params: item,
+            });
+          }
+        }}
+        libraryStatus={false} // yes but actually no :D
+        selectedNovelIds={selectedNovelIds}
+      />
+    );
+  };
 
   const [refreshing, setRefreshing] = useState(false);
 

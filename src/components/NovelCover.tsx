@@ -109,10 +109,6 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
     return undefined;
   }, [globalSearch, window.width]);
 
-  const unreadChapters = isLibraryNovel(item)
-    ? item.totalChapters - item.chaptersRead
-    : undefined;
-
   const selectNovel = () => onLongPress(item);
 
   const uri = item.cover || defaultCover;
@@ -164,15 +160,15 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
                 <DownloadBadge
                   showUnreadBadges={showUnreadBadges}
                   chaptersDownloaded={item.chaptersDownloaded}
-                  chaptersUnread={unreadChapters!}
+                  chaptersUnread={item.chaptersUnread}
                   theme={theme}
                 />
               ) : null}
-              {showUnreadBadges && unreadChapters! > 0 ? (
+              {showUnreadBadges && item.chaptersUnread > 0 ? (
                 <UnreadBadge
                   theme={theme}
                   chaptersDownloaded={item.chaptersDownloaded}
-                  chaptersUnread={unreadChapters!}
+                  chaptersUnread={item.chaptersUnread}
                   showDownloadBadges={showDownloadBadges}
                 />
               ) : null}
@@ -214,16 +210,16 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
             theme={theme}
             showUnreadBadges={showUnreadBadges}
             chaptersDownloaded={item.chaptersDownloaded}
-            chaptersUnread={unreadChapters!}
+            chaptersUnread={item.chaptersUnread}
           />
         ) : null
       }
       unreadBadge={
-        showUnreadBadges && item.id && unreadChapters ? (
+        showUnreadBadges && item.id && item.chaptersUnread ? (
           <UnreadBadge
             theme={theme}
             chaptersDownloaded={item.chaptersDownloaded}
-            chaptersUnread={unreadChapters}
+            chaptersUnread={item.chaptersUnread}
             showDownloadBadges={showDownloadBadges}
           />
         ) : null
