@@ -25,7 +25,7 @@ import { getString } from '@strings/translations';
 import { filterColor } from '@theme/colors';
 import { ChapterInfo, NovelInfo as NovelData } from '@database/types';
 import { ThemeColors } from '@theme/types';
-import { GlobalSearchScreenProps, NovelScreenProps } from '@navigators/types';
+import { GlobalSearchScreenProps } from '@navigators/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { UseBooleanReturnType } from '@hooks';
 import { useAppSettings } from '@hooks/persisted';
