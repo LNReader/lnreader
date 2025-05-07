@@ -14,9 +14,8 @@ import { useBrowseSource, useSearchSource } from './useBrowseSource';
 import { NovelItem } from '@plugins/types';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
-import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { switchNovelToLibraryQuery } from '@database/queries/NovelQueries';
-import { LibraryNovelInfo, NovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BrowseSourceScreenProps } from '@navigators/types';
@@ -94,7 +93,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
   };
 
   const navigateToNovel = useCallback(
-    (item: NovelItem | LibraryNovelInfo) =>
+    (item: NovelItem | NovelInfo) =>
       navigation.navigate('ReaderStack', {
         screen: 'Novel',
         params: {

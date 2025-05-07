@@ -14,7 +14,7 @@ import ListView from './ListView';
 import { useDeviceOrientation } from '@hooks';
 import { coverPlaceholderColor } from '../theme/colors';
 import { DisplayModes } from '@screens/library/constants/constants';
-import { DBNovelInfo } from '@database/types';
+import { DBNovelInfo, NovelInfo } from '@database/types';
 import { NovelItem } from '@plugins/types';
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
@@ -38,8 +38,13 @@ interface DownloadBadgeProps {
   theme: ThemeColors;
 }
 
-type CoverItemLibrary =
+type CoverItemDB =
   | DBNovelInfo & {
+      completeRow?: number;
+    };
+
+type CoverItemLibrary =
+  | NovelInfo & {
       completeRow?: number;
     };
 
@@ -61,13 +66,15 @@ interface INovelCover<TNovel> {
   globalSearch?: boolean;
 }
 
-function isLibraryNovel(
-  item: CoverItemLibrary | CoverItemPlugin | NovelItem,
-): item is CoverItemLibrary {
-  return item.id !== undefined;
+function isFromDB(
+  item: CoverItemLibrary | CoverItemPlugin | CoverItemDB,
+): item is CoverItemDB {
+  return 'chaptersDownloaded' in item;
 }
 
-function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
+function NovelCover<
+  TNovel extends CoverItemLibrary | CoverItemPlugin | CoverItemDB,
+>({
   item,
   onPress,
   libraryStatus,
@@ -154,7 +161,7 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
       >
         <View style={styles.badgeContainer}>
           {libraryStatus ? <InLibraryBadge theme={theme} /> : null}
-          {isLibraryNovel(item) ? (
+          {isFromDB(item) ? (
             <>
               {showDownloadBadges && item.chaptersDownloaded > 0 ? (
                 <DownloadBadge
@@ -205,7 +212,7 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
     <ListView
       item={item}
       downloadBadge={
-        showDownloadBadges && item.id && item.chaptersDownloaded ? (
+        showDownloadBadges && isFromDB(item) && item.chaptersDownloaded ? (
           <DownloadBadge
             theme={theme}
             showUnreadBadges={showUnreadBadges}
@@ -215,7 +222,7 @@ function NovelCover<TNovel extends CoverItemLibrary | CoverItemPlugin>({
         ) : null
       }
       unreadBadge={
-        showUnreadBadges && item.id && item.chaptersUnread ? (
+        showUnreadBadges && isFromDB(item) && item.chaptersUnread ? (
           <UnreadBadge
             theme={theme}
             chaptersDownloaded={item.chaptersDownloaded}

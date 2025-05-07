@@ -65,7 +65,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
     return (
       <View style={styles.textContainer}>
         <TextInput
-          style={{ flex: 1, width: screenWidth - 48 }}
+          style={[styles.flex, { width: screenWidth - 48 }]}
           mode="outlined"
           label={
             <Text
@@ -105,12 +105,12 @@ const FilterItem: React.FC<FilterItemProps> = ({
     return (
       <View style={styles.pickerContainer}>
         <Menu
-          style={{ flex: 1 }}
+          style={styles.flex}
           visible={isVisible}
           contentStyle={{ backgroundColor: theme.surfaceVariant }}
           anchor={
             <Pressable
-              style={{ flex: 1, width: screenWidth - 48 }}
+              style={[styles.flex, { width: screenWidth - 48 }]}
               onPress={toggleCard}
             >
               <TextInput
@@ -233,7 +233,6 @@ const FilterItem: React.FC<FilterItemProps> = ({
                 [filterKey]: { value: !value, type: FilterTypes.Switch },
               }));
             }}
-            theme={theme}
           />
         </View>
       </Pressable>
@@ -335,7 +334,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
 };
 
 interface BottomSheetProps {
-  filterSheetRef: React.RefObject<BottomSheetModal> | null;
+  filterSheetRef: React.RefObject<BottomSheetModal | null>;
   filters: Filters;
   setFilters: (filters?: SelectedFilters) => void;
   clearFilters: (filters: Filters) => void;
@@ -357,7 +356,7 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
       bottomSheetRef={filterSheetRef}
       snapPoints={[400, 600]}
       bottomInset={bottom}
-      backgroundStyle={{ backgroundColor: 'transparent' }}
+      backgroundStyle={styles.transparent}
       style={[styles.container, { backgroundColor: overlay(2, theme.surface) }]}
     >
       <BottomSheetView
@@ -400,6 +399,10 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
 export default FilterBottomSheet;
 
 const styles = StyleSheet.create({
+  flex: { flex: 1 },
+  transparent: {
+    backgroundColor: 'transparent',
+  },
   buttonContainer: {
     alignItems: 'center',
     borderBottomWidth: 1,
