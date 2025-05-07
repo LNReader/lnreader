@@ -9,7 +9,6 @@ import {
   deleteCachedNovels as _deleteCachedNovels,
   getCachedNovels as _getCachedNovels,
   insertNovelAndChapters,
-  switchNovelToLibraryQuery,
 } from '@database/queries/NovelQueries';
 import {
   bookmarkChapter as _bookmarkChapter,
@@ -35,6 +34,7 @@ import { parseChapterNumber } from '@utils/parseChapterNumber';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { useAppSettings } from './useSettings';
 import NativeFile from '@specs/NativeFile';
+import { useLibraryContext } from '@components/Context/LibraryContext';
 
 // #region constants
 
@@ -137,6 +137,7 @@ export const useTrackedNovel = (novelId: number | 'NO_ID') => {
 // #region definition useNovel
 
 export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
+  const { switchNovelToLibrary } = useLibraryContext();
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(true);
   const [novel, setNovel] = useState<NovelInfo | undefined>(
@@ -274,7 +275,7 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
   };
 
   const followNovel = () => {
-    switchNovelToLibraryQuery(novelPath, pluginId).then(() => {
+    switchNovelToLibrary(novelPath, pluginId).then(() => {
       if (novel) {
         setNovel({
           ...novel,

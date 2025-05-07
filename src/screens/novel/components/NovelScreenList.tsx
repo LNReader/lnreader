@@ -64,7 +64,6 @@ const NovelScreenList = ({
     chapters,
     deleteChapter,
     fetching,
-    followNovel,
     getNovel,
     lastRead,
     loading,
@@ -353,7 +352,6 @@ const NovelScreenList = ({
             deleteDownloadsSnackbar={deleteDownloadsSnackbar}
             fetching={fetching}
             filter={filter}
-            followNovel={followNovel}
             isLoading={loading}
             lastRead={lastRead}
             navigateToChapter={navigateToChapter}

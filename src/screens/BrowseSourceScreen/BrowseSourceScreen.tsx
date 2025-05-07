@@ -14,7 +14,6 @@ import { useBrowseSource, useSearchSource } from './useBrowseSource';
 import { NovelItem } from '@plugins/types';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
-import { switchNovelToLibraryQuery } from '@database/queries/NovelQueries';
 import { NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -67,30 +66,8 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     });
   };
 
-  const { novelInLibrary, setLibrary } = useLibraryContext();
+  const { novelInLibrary, switchNovelToLibrary } = useLibraryContext();
   const [inActivity, setInActivity] = useState<Record<string, boolean>>({});
-
-  const switchLibraryState = (
-    prevValues: NovelInfo[],
-    item: NovelItem | NovelInfo,
-  ) => {
-    const inLibrary = prevValues.some(
-      novel => novel.path === item.path && novel.pluginId === pluginId,
-    );
-    if (inLibrary) {
-      return [...prevValues.filter(novel => novel.path !== item.path)];
-    } else {
-      return [
-        ...prevValues,
-        {
-          ...item,
-          pluginId: pluginId,
-          inLibrary: true,
-          isLocal: false,
-        } as NovelInfo,
-      ];
-    }
-  };
 
   const navigateToNovel = useCallback(
     (item: NovelItem | NovelInfo) =>
@@ -160,11 +137,8 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
                 onLongPress={async () => {
                   setInActivity(prev => ({ ...prev, [item.path]: true }));
 
-                  await switchNovelToLibraryQuery(item.path, pluginId);
+                  await switchNovelToLibrary(item.path, pluginId);
 
-                  setLibrary(prevValues =>
-                    switchLibraryState(prevValues, item),
-                  );
                   setInActivity(prev => ({ ...prev, [item.path]: false }));
                 }}
                 selectedNovelIds={[]}

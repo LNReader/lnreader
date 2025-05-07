@@ -68,6 +68,8 @@ export const useLibrary = (): UseLibraryReturnType => {
     async (novelPath: string, pluginId: string) => {
       await switchNovelToLibraryQuery(novelPath, pluginId);
 
+      // Important to get correct chapters count
+      // Count is set by sql trigger
       const novels = getLibraryNovelsFromDb(
         sortOrder,
         filter,

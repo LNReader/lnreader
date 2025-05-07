@@ -25,7 +25,7 @@ import { getString } from '@strings/translations';
 import { filterColor } from '@theme/colors';
 import { ChapterInfo, NovelInfo as NovelData } from '@database/types';
 import { ThemeColors } from '@theme/types';
-import { NovelScreenProps } from '@navigators/types';
+import { GlobalSearchScreenProps, NovelScreenProps } from '@navigators/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { UseBooleanReturnType } from '@hooks';
 import { useAppSettings } from '@hooks/persisted';
@@ -38,17 +38,17 @@ import {
   NovelMetaSkeleton,
   VerticalBarSkeleton,
 } from '@components/Skeleton/Skeleton';
+import { useNovelContext } from '@screens/novel/NovelContext';
 
 interface NovelInfoHeaderProps {
   chapters: ChapterInfo[];
   deleteDownloadsSnackbar: UseBooleanReturnType;
   fetching: boolean;
   filter: string;
-  followNovel: () => void;
   isLoading: boolean;
   lastRead?: ChapterInfo;
   navigateToChapter: (chapter: ChapterInfo) => void;
-  navigation: NovelScreenProps['navigation'];
+  navigation: GlobalSearchScreenProps['navigation'];
   novel: NovelData | (Omit<NovelData, 'id'> & { id: 'NO_ID' });
   novelBottomSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   onRefreshPage: (page: string) => void;
@@ -76,7 +76,6 @@ const NovelInfoHeader = ({
   deleteDownloadsSnackbar,
   fetching,
   filter,
-  followNovel,
   isLoading = false,
   lastRead,
   navigateToChapter,
@@ -93,6 +92,7 @@ const NovelInfoHeader = ({
   trackerSheetRef,
 }: NovelInfoHeaderProps) => {
   const { hideBackdrop = false } = useAppSettings();
+  const { followNovel } = useNovelContext();
 
   const pluginName = useMemo(
     () =>
