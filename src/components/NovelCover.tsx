@@ -48,6 +48,11 @@ type CoverItemLibrary =
       completeRow?: number;
     };
 
+type CoverItemLibrary =
+  | NovelInfo & {
+      completeRow?: number;
+    };
+
 type CoverItemPlugin =
   | NovelItem & {
       completeRow?: number;
