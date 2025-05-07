@@ -9,7 +9,6 @@ import {
   deleteCachedNovels as _deleteCachedNovels,
   getCachedNovels as _getCachedNovels,
   insertNovelAndChapters,
-  switchNovelToLibraryQuery,
 } from '@database/queries/NovelQueries';
 import {
   bookmarkChapter as _bookmarkChapter,
@@ -276,7 +275,7 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
   };
 
   const followNovel = () => {
-    switchNovelToLibraryQuery(novelPath, pluginId).then(() => {
+    switchNovelToLibrary(novelPath, pluginId).then(() => {
       if (novel) {
         setNovel({
           ...novel,

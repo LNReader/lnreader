@@ -137,7 +137,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
                 onLongPress={async () => {
                   setInActivity(prev => ({ ...prev, [item.path]: true }));
 
-                  await switchNovelToLibraryQuery(item.path, pluginId);
+                  await switchNovelToLibrary(item.path, pluginId);
 
                   setInActivity(prev => ({ ...prev, [item.path]: false }));
                 }}
