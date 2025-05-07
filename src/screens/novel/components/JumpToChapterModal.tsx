@@ -12,8 +12,7 @@ import { Portal, Text } from 'react-native-paper';
 import { useTheme } from '@hooks/persisted';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { NovelScreenProps } from '@navigators/types';
-import { LegendList, LegendListProps } from '@legendapp/list';
-import { FlashList } from '@shopify/flash-list';
+import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
 interface JumpToChapterModalProps {
   hideModal: () => void;
@@ -88,7 +87,7 @@ const JumpToChapterModal = ({
     }
   };
 
-  const renderItem: LegendListProps<ChapterInfo>['renderItem'] = ({ item }) => {
+  const renderItem: ListRenderItem<ChapterInfo> = ({ item }) => {
     return (
       <Pressable
         android_ripple={{ color: theme.rippleColor }}
@@ -217,8 +216,7 @@ const JumpToChapterModal = ({
         </View>
         {result.length ? (
           <View style={[styles.flashlist, { borderColor: theme.outline }]}>
-            <LegendList
-              recycleItems
+            <FlashList
               estimatedItemSize={70}
               data={result}
               extraData={openChapter}
