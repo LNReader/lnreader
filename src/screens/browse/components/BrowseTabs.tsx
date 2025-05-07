@@ -28,7 +28,7 @@ import { useBoolean } from '@hooks';
 import { getPlugin } from '@plugins/pluginManager';
 import { getLocaleLanguageName } from '@utils/constants/languages';
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
-import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
+import { FlashList, ListRenderItem } from '@shopify/flash-list';
 interface AvailableTabProps {
   searchText: string;
   theme: ThemeColors;
@@ -67,7 +67,7 @@ export const InstalledTab = memo(
         });
         setLastUsedPlugin(plugin);
       },
-      [],
+      [navigation, setLastUsedPlugin],
     );
 
     const searchedPlugins = useMemo(() => {
@@ -86,13 +86,13 @@ export const InstalledTab = memo(
       }
     }, [searchText, filteredInstalledPlugins]);
 
-    const renderItem = useCallback(
-      ({ item }: LegendListRenderItemProps<PluginItem>) => {
+    const renderItem: ListRenderItem<PluginItem> = useCallback(
+      ({ item }) => {
         return (
           <Swipeable
             dragOffsetFromLeftEdge={30}
             dragOffsetFromRightEdge={30}
-            renderLeftActions={(progress, dragX, ref) => {
+            renderLeftActions={(_progress, _dragX, ref) => {
               return (
                 <View
                   style={[
@@ -117,7 +117,7 @@ export const InstalledTab = memo(
                 </View>
               );
             }}
-            renderRightActions={(progress, dragX, ref) => (
+            renderRightActions={(_progress, _dragX, ref) => (
               <View
                 style={[styles.buttonGroup, { backgroundColor: theme.error }]}
               >
@@ -145,7 +145,7 @@ export const InstalledTab = memo(
               android_ripple={{ color: theme.rippleColor }}
               onPress={() => navigateToSource(item)}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={[styles.center, styles.row]}>
                 <Image
                   source={{ uri: item.iconUrl }}
                   style={[styles.icon, { backgroundColor: theme.surface }]}
@@ -165,7 +165,7 @@ export const InstalledTab = memo(
                   </Text>
                 </View>
               </View>
-              <View style={{ flex: 1 }} />
+              <View style={styles.flex} />
               {item.hasSettings ? (
                 <IconButtonV2
                   name="cog-outline"
@@ -204,11 +204,18 @@ export const InstalledTab = memo(
           </Swipeable>
         );
       },
-      [theme, searchedPlugins],
+      [
+        theme,
+        navigation,
+        uninstallPlugin,
+        navigateToSource,
+        settingsModal,
+        updatePlugin,
+      ],
     );
 
     return (
-      <LegendList
+      <FlashList
         estimatedItemSize={64}
         data={searchedPlugins}
         extraData={theme}
@@ -216,7 +223,6 @@ export const InstalledTab = memo(
         removeClippedSubviews={true}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id + '_installed'}
-        recycleItems
         ListHeaderComponent={
           <>
             {showMyAnimeList || showAniList ? (
@@ -254,7 +260,9 @@ export const InstalledTab = memo(
                 {renderItem({
                   item: lastUsedPlugin,
                   index: 0,
-                } as LegendListRenderItemProps<PluginItem>)}
+                  target: 'Cell',
+                  extraData: [theme],
+                })}
               </>
             ) : null}
             <Text
@@ -316,7 +324,7 @@ const AvailablePluginCard = ({
           viewStyles,
         ]}
       >
-        <Animated.View style={{ flexDirection: 'row' }}>
+        <Animated.View style={styles.row}>
           <Animated.Image
             source={{ uri: plugin.iconUrl }}
             style={[
@@ -404,22 +412,22 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
       });
   }, [searchText, filteredAvailablePlugins]);
 
-  const renderItem = useCallback(
-    ({ item }: LegendListRenderItemProps<PluginItem & { header: boolean }>) => {
-      return (
-        <AvailablePluginCard
-          plugin={item}
-          theme={theme}
-          installPlugin={installPlugin}
-        />
-      );
-    },
-    [theme, searchedPlugins],
-  );
+  const renderItem: ListRenderItem<PluginItem & { header: boolean }> =
+    useCallback(
+      ({ item }) => {
+        return (
+          <AvailablePluginCard
+            plugin={item}
+            theme={theme}
+            installPlugin={installPlugin}
+          />
+        );
+      },
+      [theme, installPlugin],
+    );
 
   return (
-    <LegendList
-      recycleItems
+    <FlashList
       estimatedItemSize={64}
       data={searchedPlugins}
       extraData={theme}
@@ -444,7 +452,7 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
       }
       ListEmptyComponent={
         !filteredAvailablePlugins.length ? (
-          <View style={{ marginTop: 100 }}>
+          <View style={styles.margintTop100}>
             <EmptyView
               icon="(･Д･。"
               description=" No repositories yet. Add your first plugin repository to get
@@ -466,7 +474,7 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
             />
           </View>
         ) : (
-          <View style={{ marginTop: 100 }}>
+          <View style={styles.margintTop100}>
             <EmptyView
               icon="(･Д･。"
               description="No plugins available for this search term"
@@ -480,6 +488,7 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
 });
 
 const styles = StyleSheet.create({
+  margintTop100: { marginTop: 100 },
   addition: {
     fontSize: 12,
     lineHeight: 20,
@@ -515,4 +524,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     lineHeight: 20,
   },
+  row: {
+    flexDirection: 'row',
+  },
+  center: { alignItems: 'center' },
+  flex: { flex: 1 },
 });
