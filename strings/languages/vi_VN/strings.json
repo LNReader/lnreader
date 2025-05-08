@@ -65,6 +65,7 @@
     "createBackupWarning": "Tạo sao lưu có thể không hoạt đông ở Android 9 hoặc thấp hơn.",
     "downloadingData": "Đang tải xuống dữ liệu",
     "downloadingDownloadedFiles": "Đang tải xuống các tệp",
+    "failed": "Backup failed",
     "drive": {
       "backup": "Sao lưu qua Drive",
       "backupInterruped": "Sao lưu bị gián đoạn",
