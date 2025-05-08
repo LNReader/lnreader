@@ -65,6 +65,7 @@
     "createBackupWarning": "Créer une sauvegarde peut ne pas fonctionner sur les appareils équipés d'Android 9 ou d'une version antérieure.",
     "downloadingData": "Téléchargement de données",
     "downloadingDownloadedFiles": "Downloading Downloaded files",
+    "failed": "Backup failed",
     "drive": {
       "backup": "Drive Backup",
       "backupInterruped": "Drive Backup Interruped",
