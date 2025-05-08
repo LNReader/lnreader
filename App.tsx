@@ -1,11 +1,10 @@
-import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
 import { enableFreeze } from 'react-native-screens';
 
 enableFreeze(true);
 
 import React from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LottieSplashScreen from 'react-native-lottie-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -24,6 +23,8 @@ Notifications.setNotificationHandler({
       shouldShowAlert: true,
       shouldPlaySound: true,
       shouldSetBadge: true,
+      shouldShowBanner: true,
+      shouldShowList: true,
     };
   },
 });
@@ -33,7 +34,7 @@ LottieSplashScreen.hide();
 
 const App = () => {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.flex}>
       <AppErrorBoundary>
         <SafeAreaProvider>
           <PaperProvider>
@@ -49,3 +50,9 @@ const App = () => {
 };
 
 export default App;
+
+const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
+});
