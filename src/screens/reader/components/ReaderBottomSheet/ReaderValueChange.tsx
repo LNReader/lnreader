@@ -5,9 +5,12 @@ import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 import { IconButtonV2 } from '@components';
 import { ChapterReaderSettings } from '@hooks/persisted/useSettings';
 
-type ValueKey<T extends object> = {
-  [K in keyof T]: T[K] extends number ? K : never;
-}[keyof T];
+type ValueKey<T extends object> = Exclude<
+  {
+    [K in keyof T]: T[K] extends number ? K : never;
+  }[keyof T],
+  undefined
+>;
 
 interface ReaderValueChangeProps {
   labelStyle?: TextStyle | TextStyle[];

@@ -84,9 +84,12 @@ export type SettingsStackParamList = {
   RespositorySettings: { url?: string } | undefined;
 };
 
-export type NovelScreenProps = StackScreenProps<ReaderStackParamList, 'Novel'>;
+export type NovelScreenProps = StackScreenProps<
+  ReaderStackParamList & RootStackParamList,
+  'Novel'
+>;
 export type ChapterScreenProps = StackScreenProps<
-  ReaderStackParamList,
+  ReaderStackParamList & RootStackParamList,
   'Chapter'
 >;
 export type ReaderStackParamList = {

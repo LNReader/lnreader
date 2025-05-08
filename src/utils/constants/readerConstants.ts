@@ -1,4 +1,5 @@
 import { ReaderTheme } from '@hooks/persisted/useSettings';
+import { MaterialDesignIconName } from '@type/icon';
 
 export const presetReaderThemes: ReaderTheme[] = [
   { backgroundColor: '#f5f5fa', textColor: '#111111' },
@@ -13,7 +14,7 @@ export const presetReaderThemes: ReaderTheme[] = [
 
 interface TextAlignments {
   value: string;
-  icon: string;
+  icon: MaterialDesignIconName;
 }
 
 export const textAlignments: TextAlignments[] = [

@@ -18,7 +18,7 @@ import { ChapterContextProvider, useChapterContext } from './ChapterContext';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { useBackHandler } from '@hooks/index';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
 
 const Chapter = ({ route, navigation }: ChapterScreenProps) => {
@@ -34,7 +34,7 @@ const Chapter = ({ route, navigation }: ChapterScreenProps) => {
 
   const openDrawer = useCallback(() => {
     setOpen(true);
-  }, [open]);
+  }, []);
 
   return (
     <ChapterContextProvider
@@ -134,7 +134,9 @@ export const ChapterContent = ({
     );
   }
   return (
-    <View style={{ flex: 1, paddingLeft: left, paddingRight: right }}>
+    <View
+      style={[{ paddingLeft: left, paddingRight: right }, styles.container]}
+    >
       {keepScreenOn ? <KeepScreenAwake /> : null}
       {loading ? (
         <ChapterLoadingScreen />
@@ -174,3 +176,7 @@ export const ChapterContent = ({
 };
 
 export default Chapter;
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+});

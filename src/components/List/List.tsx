@@ -92,7 +92,6 @@ const Divider = ({ theme }: { theme: ThemeColors }) => (
 
 const InfoItem = ({
   title,
-  icon = 'information-outline',
   theme,
   style,
 }: {
@@ -102,7 +101,11 @@ const InfoItem = ({
   style?: StyleProp<ViewStyle>;
 }) => (
   <View style={[styles.infoCtn, style]}>
-    <MaterialIcon size={20} color={theme.onSurfaceVariant} name={icon} />
+    <MaterialIcon
+      size={20}
+      color={theme.onSurfaceVariant}
+      name={'information-outline'}
+    />
     <Text style={[styles.infoMsg, { color: theme.onSurfaceVariant }]}>
       {title}
     </Text>

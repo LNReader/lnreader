@@ -73,12 +73,10 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
           />
           <List.InfoItem
             title={getString('backupScreen.restoreLargeBackupsWarning')}
-            icon="information-outline"
             theme={theme}
           />
           <List.InfoItem
             title={getString('backupScreen.createBackupWarning')}
-            icon="information-outline"
             theme={theme}
           />
         </List.Section>

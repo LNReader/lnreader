@@ -71,6 +71,7 @@ export const getString = (
   options?: i18n.TranslateOptions,
 ) => i18n.t(stringKey, options);
 
+// @ts-expect-error
 dayjs.Ls[dayjs.locale()].calendar = {
   sameDay: getString('date.calendar.sameDay'),
   nextDay: getString('date.calendar.nextDay'),
