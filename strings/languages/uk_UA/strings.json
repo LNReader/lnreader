@@ -65,6 +65,7 @@
     "createBackupWarning": "Створення резервної копії може не працювати на пристроях з Android 9 або нижче.",
     "downloadingData": "Завантаження даних",
     "downloadingDownloadedFiles": "Завантаження збережених файлів",
+    "failed": "Backup failed",
     "drive": {
       "backup": "Резервне копіювання в Google Drive",
       "backupInterruped": "Процес резервного копіювання перервано",
