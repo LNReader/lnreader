@@ -60,6 +60,7 @@ export interface StringMap {
   'backupScreen.createBackupWarning': 'string';
   'backupScreen.downloadingData': 'string';
   'backupScreen.downloadingDownloadedFiles': 'string';
+  'backupScreen.failed': 'string';
   'backupScreen.drive.backup': 'string';
   'backupScreen.drive.backupInterruped': 'string';
   'backupScreen.drive.googleDriveBackup': 'string';
