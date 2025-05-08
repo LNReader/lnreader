@@ -65,6 +65,7 @@
     "createBackupWarning": "",
     "downloadingData": "",
     "downloadingDownloadedFiles": "",
+    "failed": "Backup failed",
     "drive": {
       "backup": "",
       "backupInterruped": "",
