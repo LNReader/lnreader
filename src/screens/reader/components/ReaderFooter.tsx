@@ -11,7 +11,7 @@ import Animated, {
 import { ThemeColors } from '@theme/types';
 import { ChapterInfo } from '@database/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { WebviewScreenProps } from '@navigators/types';
+import { ChapterScreenProps } from '@navigators/types';
 import { useChapterContext } from '../ChapterContext';
 import { SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
 import { useNovelContext } from '@screens/novel/NovelContext';
@@ -23,7 +23,7 @@ interface ChapterFooterProps {
   readerSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   scrollToStart: () => void;
   navigateChapter(position: 'NEXT' | 'PREV'): void;
-  navigation: WebviewScreenProps['navigation'];
+  navigation: ChapterScreenProps['navigation'];
   openDrawer: () => void;
 }
 
