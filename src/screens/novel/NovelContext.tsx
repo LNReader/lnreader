@@ -7,6 +7,7 @@ import { useDeviceOrientation } from '@hooks/index';
 
 type NovelContextType = ReturnType<typeof useNovel> & {
   navigationBarHeight: number;
+  statusBarHeight: number;
 };
 
 const defaultValue = {} as NovelContextType;
@@ -32,13 +33,18 @@ export function NovelContextProvider({
     pluginId,
   );
 
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, top } = useSafeAreaInsets();
   const orientation = useDeviceOrientation();
   const NavigationBarHeight = useRef(bottom);
+  const StatusBarHeight = useRef(top);
+
   if (bottom < NavigationBarHeight.current && orientation === 'landscape') {
     NavigationBarHeight.current = bottom;
   } else if (bottom > NavigationBarHeight.current) {
     NavigationBarHeight.current = bottom;
+  }
+  if (top > StatusBarHeight.current) {
+    StatusBarHeight.current = top;
   }
 
   return (
@@ -46,6 +52,7 @@ export function NovelContextProvider({
       value={{
         ...novelHookContent,
         navigationBarHeight: NavigationBarHeight.current,
+        statusBarHeight: StatusBarHeight.current,
       }}
     >
       {children}

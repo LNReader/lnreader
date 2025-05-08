@@ -4,7 +4,6 @@ import { IconButton } from 'react-native-paper';
 import color from 'color';
 import Animated, {
   Easing,
-  FadeOut,
   ReduceMotion,
   withTiming,
 } from 'react-native-reanimated';
@@ -66,6 +65,25 @@ const ChapterFooter = ({
       animations,
     };
   };
+  const exiting = () => {
+    'worklet';
+    const animations = {
+      originY: withTiming(SCREEN_HEIGHT - 64, {
+        duration: 250,
+        easing: fastOutSlowIn,
+        reduceMotion: ReduceMotion.System,
+      }),
+      opacity: withTiming(0, { duration: 150 }),
+    };
+    const initialValues = {
+      originY: SCREEN_HEIGHT - navigationBarHeight - 64,
+      opacity: 1,
+    };
+    return {
+      initialValues,
+      animations,
+    };
+  };
 
   const style = useMemo(
     () => [
@@ -81,7 +99,7 @@ const ChapterFooter = ({
   return (
     <Animated.View
       entering={entering}
-      exiting={FadeOut.duration(150)}
+      exiting={exiting}
       style={[styles.footer, style]}
     >
       <View style={styles.buttonsContainer}>
