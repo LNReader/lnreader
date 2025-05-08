@@ -90,7 +90,8 @@ export function getFirstSync<T = unknown>(queryObject: QueryObject<T>) {
   return defaultQuerySync<T, false>('getFirstSync', queryObject, null);
 }
 
-type TransactionObject = [query, ...params: SQLiteBindValue[]];
+type params = SQLiteBindValue[];
+type TransactionObject = [query, ...params];
 
 export async function transactionAsync(transactionObject: TransactionObject[]) {
   await db.withTransactionAsync(async () => {
