@@ -65,6 +65,7 @@
     "createBackupWarning": "创建备份可能无法在 Android 9 或更低版本的设备上运行。",
     "downloadingData": "下载数据",
     "downloadingDownloadedFiles": "下载已下载文件",
+    "failed": "Backup failed",
     "drive": {
       "backup": "云端硬盘备份",
       "backupInterruped": "云端硬盘备份中断",
