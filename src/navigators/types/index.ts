@@ -89,7 +89,7 @@ export type NovelScreenProps = StackScreenProps<
   'Novel'
 >;
 export type ChapterScreenProps = StackScreenProps<
-  ReaderStackParamList,
+  ReaderStackParamList & RootStackParamList,
   'Chapter'
 >;
 export type ReaderStackParamList = {
