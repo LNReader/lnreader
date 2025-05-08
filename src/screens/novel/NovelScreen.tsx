@@ -231,7 +231,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       swipeMinVelocity={1000}
       drawerStyle={styles.drawer}
       renderDrawerContent={() =>
-        (novel?.totalPages ?? 0) > 1 ? (
+        (novel?.totalPages ?? 0) > 1 || pages.length > 1 ? (
           <NovelDrawer
             theme={theme}
             pages={pages}

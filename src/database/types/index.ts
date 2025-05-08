@@ -18,7 +18,7 @@ export interface NovelInfo {
 export interface DBNovelInfo extends NovelInfo {
   totalChapters: number;
   chaptersDownloaded: number;
-  chaptersRead: number;
+  chaptersUnread: number;
   lastReadAt: string;
   lastUpdatedAt: string;
 }

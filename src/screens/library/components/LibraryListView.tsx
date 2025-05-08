@@ -12,6 +12,7 @@ import { getString } from '@strings/translations';
 import { useTheme } from '@hooks/persisted';
 import { LibraryScreenProps } from '@navigators/types';
 import ServiceManager from '@services/ServiceManager';
+import { useLibraryContext } from '@components/Context/LibraryContext';
 
 interface Props {
   categoryId: number;
@@ -26,33 +27,37 @@ interface Props {
 export const LibraryView: React.FC<Props> = ({
   categoryId,
   categoryName,
-  novels,
   selectedNovelIds,
   setSelectedNovelIds,
   pickAndImport,
   navigation,
 }) => {
+  const { library } = useLibraryContext();
   const theme = useTheme();
-  const renderItem = ({ item }: { item: NovelInfo }) => (
-    <NovelCover
-      item={item}
-      theme={theme}
-      isSelected={selectedNovelIds.includes(item.id)}
-      onLongPress={() => setSelectedNovelIds(xor(selectedNovelIds, [item.id]))}
-      onPress={() => {
-        if (selectedNovelIds.length) {
-          setSelectedNovelIds(xor(selectedNovelIds, [item.id]));
-        } else {
-          navigation.navigate('ReaderStack', {
-            screen: 'Novel',
-            params: item,
-          });
+  const renderItem = ({ item }: { item: NovelInfo }) => {
+    return (
+      <NovelCover
+        item={item}
+        theme={theme}
+        isSelected={selectedNovelIds.includes(item.id)}
+        onLongPress={() =>
+          setSelectedNovelIds(xor(selectedNovelIds, [item.id]))
         }
-      }}
-      libraryStatus={false} // yes but actually no :D
-      selectedNovelIds={selectedNovelIds}
-    />
-  );
+        onPress={() => {
+          if (selectedNovelIds.length) {
+            setSelectedNovelIds(xor(selectedNovelIds, [item.id]));
+          } else {
+            navigation.navigate('ReaderStack', {
+              screen: 'Novel',
+              params: item,
+            });
+          }
+        }}
+        libraryStatus={false} // yes but actually no :D
+        selectedNovelIds={selectedNovelIds}
+      />
+    );
+  };
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -75,7 +80,7 @@ export const LibraryView: React.FC<Props> = ({
   return (
     <View style={{ flex: 1 }}>
       <NovelList
-        data={novels}
+        data={library}
         extraData={[selectedNovelIds]}
         renderItem={renderItem as NovelListRenderItem}
         ListEmptyComponent={
