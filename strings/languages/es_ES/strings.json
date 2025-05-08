@@ -65,6 +65,7 @@
     "createBackupWarning": "Crear un respaldo puede no funcionar en dispositivos con Android 9 o inferior.",
     "downloadingData": "Descargando Datos",
     "downloadingDownloadedFiles": "Descargando archivos descargados",
+    "failed": "Backup failed",
     "drive": {
       "backup": "Drive Backup",
       "backupInterruped": "Drive Backup Interruped",
