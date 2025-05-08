@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@cd-z/react-native-epub-creator": "^2.0.4",
-    "@gorhom/bottom-sheet": "^5.1.2",
+    "@gorhom/bottom-sheet": "^5.1.4",
     "@legendapp/list": "^1.0.0-beta.24",
     "@react-native-community/slider": "4.5.6",
     "@react-native-cookies/cookies": "^6.2.1",
@@ -36,11 +36,11 @@
     "@react-navigation/native": "^7.0.14",
     "@react-navigation/native-stack": "^7.2.0",
     "@react-navigation/stack": "^7.0.17",
-    "@shopify/flash-list": "1.8.0",
+    "@shopify/flash-list": "1.7.6",
     "cheerio": "1.0.0-rc.12",
     "color": "^4.2.3",
     "dayjs": "^1.11.10",
-    "expo": "^53.0.4",
+    "expo": "~53.0.8",
     "expo-clipboard": "~7.1.4",
     "expo-document-picker": "~13.1.5",
     "expo-file-system": "~18.1.8",
@@ -63,8 +63,9 @@
     "react-native-background-actions": "^4.0.1",
     "react-native-device-info": "^14.0.4",
     "react-native-drawer-layout": "^4.0.3",
+    "react-native-edge-to-edge": "^1.6.0",
     "react-native-error-boundary": "^1.1.16",
-    "react-native-gesture-handler": "^2.24.0",
+    "react-native-gesture-handler": "~2.25.0",
     "react-native-lottie-splash-screen": "^1.0.1",
     "react-native-mmkv": "^3.1.0",
     "react-native-pager-view": "6.7.1",
@@ -82,7 +83,7 @@
     "urlencode": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.25.2",
+    "@babel/core": "^7.26.0",
     "@babel/preset-env": "7.25.3",
     "@babel/runtime": "7.25.0",
     "@react-native-community/cli": "15.0.1",
@@ -103,7 +104,7 @@
     "lint-staged": "^12.3.7",
     "prettier": "2.8.8",
     "react-native-dotenv": "^3.4.9",
-    "typescript": "5.0.4"
+    "typescript": "~5.8.3"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
