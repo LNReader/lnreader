@@ -76,25 +76,25 @@ export const migrateNovel = async (
   await db.withTransactionAsync(async () => {
     await db.runAsync(
       migrateNovelMetaDataQuery,
-      fromNovel.cover || toNovel.cover || '',
-      fromNovel.summary || toNovel.summary || '',
-      fromNovel.author || toNovel.author || '',
-      fromNovel.artist || toNovel.artist || '',
-      fromNovel.status || toNovel.status || '',
-      fromNovel.genres || toNovel.genres || '',
-      toNovel.id,
+      fromNovel.cover || toNovel!.cover || '',
+      fromNovel.summary || toNovel!.summary || '',
+      fromNovel.author || toNovel!.author || '',
+      fromNovel.artist || toNovel!.artist || '',
+      fromNovel.status || toNovel!.status || '',
+      fromNovel.genres || toNovel!.genres || '',
+      toNovel!.id,
     );
 
     await db.runAsync(
       'UPDATE OR IGNORE NovelCategory SET novelId = ? WHERE novelId = ?',
-      toNovel.id,
+      toNovel!.id,
       fromNovel.id,
     );
     await db.runAsync('DELETE FROM Novel WHERE id = ?', fromNovel.id);
   });
 
   setMMKVObject(
-    `${NOVEL_SETTINSG_PREFIX}_${toNovel.pluginId}_${toNovel.path}`,
+    `${NOVEL_SETTINSG_PREFIX}_${toNovel!.pluginId}_${toNovel!.path}`,
     getMMKVObject(
       `${NOVEL_SETTINSG_PREFIX}_${fromNovel.pluginId}_${fromNovel.path}`,
     ),
@@ -106,7 +106,7 @@ export const migrateNovel = async (
 
   const setLastRead = (chapter: ChapterInfo) => {
     setMMKVObject(
-      `${LAST_READ_PREFIX}_${toNovel.pluginId}_${toNovel.path}`,
+      `${LAST_READ_PREFIX}_${toNovel!.pluginId}_${toNovel!.path}`,
       chapter,
     );
   };

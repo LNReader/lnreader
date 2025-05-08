@@ -78,11 +78,14 @@ export const getNovelById = async (novelId: number) => {
 export const getNovelByPath = (
   novelPath: string,
   pluginId: string,
-): NovelInfo | null => {
+): NovelInfo | undefined => {
   const res = getFirstSync<NovelInfo>([
     'SELECT * FROM Novel WHERE path = ? AND pluginId = ?',
     [novelPath, pluginId],
   ]);
+  if (!res) {
+    return undefined;
+  }
   return res;
 };
 
