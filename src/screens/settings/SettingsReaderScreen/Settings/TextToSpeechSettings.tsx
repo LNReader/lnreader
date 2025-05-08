@@ -37,7 +37,6 @@ export default function TextToSpeechSettings() {
         <List.SubHeader theme={theme}>Text to Speech</List.SubHeader>
         <View style={styles.row}>
           <Switch
-            theme={theme}
             value={TTSEnable}
             onValueChange={() => {
               setChapterGeneralSettings({

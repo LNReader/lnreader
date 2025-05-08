@@ -141,7 +141,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         description={`${chapterListInfo.updatesPerDay} ${descriptionText}`}
         onPress={updateList}
       >
-        {chapterList.length > 0 ? ( //@ts-expect-error
+        {chapterList.length > 0 ? (
           <FlatList
             data={chapterList}
             keyExtractor={it => 'update' + it.id}
