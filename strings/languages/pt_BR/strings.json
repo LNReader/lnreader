@@ -65,6 +65,7 @@
     "createBackupWarning": "Salvo criado pode não funcionar em aparelhos com androide 9 ou menos.",
     "downloadingData": "Baixando informação",
     "downloadingDownloadedFiles": "Baixando arquivos salvos",
+    "failed": "Backup failed",
     "drive": {
       "backup": "Salvar no Drive",
       "backupInterruped": "",
