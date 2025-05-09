@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ThemeColors } from '@theme/types';
 import { StyleSheet, Text, View, Image } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { Portal, TextInput } from 'react-native-paper';
 import { GoogleSignin, User } from '@react-native-google-signin/google-signin';
 import { Button, EmptyView, Modal } from '@components';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
@@ -276,38 +276,40 @@ export default function GoogleDriveModal({
   };
 
   return (
-    <Modal visible={visible} onDismiss={closeModal}>
-      <>
-        <View style={styles.titleContainer}>
-          <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-            {getString('backupScreen.drive.googleDriveBackup')}
-          </Text>
-          <TouchableOpacity
-            onLongPress={() => {
-              if (user?.user.email) {
-                Clipboard.setStringAsync(user.user.email).then(success => {
-                  if (success) {
-                    showToast(
-                      getString('common.copiedToClipboard', {
-                        name: user.user.email,
-                      }),
-                    );
-                  }
-                });
-              }
-            }}
-          >
-            {user ? (
-              <Image
-                source={{ uri: user?.user.photo || '' }}
-                style={styles.avatar}
-              />
-            ) : null}
-          </TouchableOpacity>
-        </View>
-        {renderModal()}
-      </>
-    </Modal>
+    <Portal>
+      <Modal visible={visible} onDismiss={closeModal}>
+        <>
+          <View style={styles.titleContainer}>
+            <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
+              {getString('backupScreen.drive.googleDriveBackup')}
+            </Text>
+            <TouchableOpacity
+              onLongPress={() => {
+                if (user?.user.email) {
+                  Clipboard.setStringAsync(user.user.email).then(success => {
+                    if (success) {
+                      showToast(
+                        getString('common.copiedToClipboard', {
+                          name: user.user.email,
+                        }),
+                      );
+                    }
+                  });
+                }
+              }}
+            >
+              {user ? (
+                <Image
+                  source={{ uri: user?.user.photo || '' }}
+                  style={styles.avatar}
+                />
+              ) : null}
+            </TouchableOpacity>
+          </View>
+          {renderModal()}
+        </>
+      </Modal>
+    </Portal>
   );
 }
 

@@ -8,7 +8,7 @@ import { fetchTimeout } from '@utils/fetch/fetch';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { TextInput } from 'react-native-paper';
+import { Portal, TextInput } from 'react-native-paper';
 
 enum BackupModal {
   SET_HOST,
@@ -265,16 +265,18 @@ export default function SelfHostModal({
   };
 
   return (
-    <Modal visible={visible} onDismiss={closeModal}>
-      <>
-        <View style={styles.titleContainer}>
-          <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-            {getString('backupScreen.remote.backup')}
-          </Text>
-        </View>
-        {renderModal()}
-      </>
-    </Modal>
+    <Portal>
+      <Modal visible={visible} onDismiss={closeModal}>
+        <>
+          <View style={styles.titleContainer}>
+            <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
+              {getString('backupScreen.remote.backup')}
+            </Text>
+          </View>
+          {renderModal()}
+        </>
+      </Modal>
+    </Portal>
   );
 }
 
