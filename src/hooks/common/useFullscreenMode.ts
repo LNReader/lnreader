@@ -12,6 +12,7 @@ import {
   changeNavigationBarColor,
   setStatusBarColor,
 } from '@theme/utils/setBarColor';
+import { SystemBars } from 'react-native-edge-to-edge';
 
 const useFullscreenMode = () => {
   const { addListener } = useNavigation();
@@ -22,7 +23,7 @@ const useFullscreenMode = () => {
   const setImmersiveMode = useCallback(() => {
     if (fullScreenMode) {
       StatusBar.setHidden(true);
-      NavigationBar.setVisibilityAsync('hidden');
+      SystemBars.setHidden(true);
     } else {
       setStatusBarColor(Color(backgroundColor));
       changeNavigationBarColor(
@@ -34,7 +35,7 @@ const useFullscreenMode = () => {
 
   const showStatusAndNavBar = useCallback(() => {
     StatusBar.setHidden(false);
-    NavigationBar.setVisibilityAsync('visible');
+    SystemBars.setHidden(false);
 
     if (fullScreenMode) {
       /**

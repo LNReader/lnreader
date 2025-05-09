@@ -5,6 +5,7 @@
     "scheme": "lnreader",
     "plugins": [
       "expo-localization",
+      "react-native-edge-to-edge",
       [
         "expo-sqlite",
         {

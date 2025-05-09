@@ -28,7 +28,7 @@ body {
   font-family: var(--readerSettings-fontFamily);
 }
 
-body.page-reader { 
+body.page-reader {
   overflow: hidden;
   padding-bottom: unset;
 }
@@ -38,7 +38,7 @@ body.page-reader {
   padding-right: var(--readerSettings-padding);
 }
 
-body.page-reader > #LNReader-chapter{
+body.page-reader > #LNReader-chapter {
   height: calc(90vh);
   column-width: calc(100vw - var(--readerSettings-padding) * 2);
   column-gap: calc(var(--readerSettings-padding) * 2);
@@ -128,6 +128,7 @@ td {
   top: 50%;
   transform: translateY(-50%);
   right: 5vw;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #ToolWrapper.horizontal {
@@ -150,11 +151,12 @@ td {
 #ToolWrapper.hidden {
   opacity: 0;
   right: 0;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #ToolWrapper.hidden.horizontal {
   opacity: 0;
-  bottom: 0;
+  bottom: 80px;
   right: unset;
 }
 
@@ -302,7 +304,8 @@ td {
   text-align: right;
 }
 
-.highlight, .highlight *{
+.highlight,
+.highlight * {
   color: var(--theme-onSecondary) !important;
   background-color: var(--theme-secondary);
 }
@@ -345,10 +348,10 @@ td {
   align-items: center;
   padding: 4px;
   border-radius: 100%;
-  transition: .5s;
+  transition: 0.5s;
 }
 
-#TTS-Controller.active{
+#TTS-Controller.active {
   opacity: 1;
 }
 
