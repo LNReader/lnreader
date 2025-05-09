@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTheme } from '@hooks/persisted';
 import { Appbar, List, SafeAreaView } from '@components';
-import { Portal } from 'react-native-paper';
 import { useBoolean } from '@hooks';
 import { BackupSettingsScreenProps } from '@navigators/types';
 import GoogleDriveModal from './Components/GoogleDriveModal';
@@ -81,18 +80,16 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
           />
         </List.Section>
       </ScrollView>
-      <Portal>
-        <GoogleDriveModal
-          visible={googleDriveModalVisible}
-          theme={theme}
-          closeModal={closeGoogleDriveModal}
-        />
-        <SelfHostModal
-          theme={theme}
-          visible={selfHostModalVisible}
-          closeModal={closeSelfHostModal}
-        />
-      </Portal>
+      <GoogleDriveModal
+        visible={googleDriveModalVisible}
+        theme={theme}
+        closeModal={closeGoogleDriveModal}
+      />
+      <SelfHostModal
+        theme={theme}
+        visible={selfHostModalVisible}
+        closeModal={closeSelfHostModal}
+      />
     </SafeAreaView>
   );
 };
