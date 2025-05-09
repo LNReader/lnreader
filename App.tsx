@@ -20,7 +20,6 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 Notifications.setNotificationHandler({
   handleNotification: async () => {
     return {
-      shouldShowAlert: true,
       shouldPlaySound: true,
       shouldSetBadge: true,
       shouldShowBanner: true,
