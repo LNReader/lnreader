@@ -28,10 +28,9 @@ Notifications.setNotificationHandler({
   },
 });
 
-createTables();
-LottieSplashScreen.hide();
-
 const App = () => {
+  createTables();
+  LottieSplashScreen.hide();
   return (
     <GestureHandlerRootView style={styles.flex}>
       <AppErrorBoundary>

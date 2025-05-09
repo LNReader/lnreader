@@ -76,6 +76,7 @@ export const useLibrary = (): UseLibraryReturnType => {
 
       // Important to get correct chapters count
       // Count is set by sql trigger
+      refreshCategories();
       const novels = getLibraryNovelsFromDb(
         sortOrder,
         filter,

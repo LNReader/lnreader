@@ -1,6 +1,6 @@
 import * as Localization from 'expo-localization';
-import * as dayjs from 'dayjs';
-import i18n from 'i18n-js';
+import dayjs from 'dayjs';
+import { I18n, TranslateOptions } from 'i18n-js';
 
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import localeData from 'dayjs/plugin/localeData';
@@ -44,8 +44,7 @@ import zhTw from './languages/zh_TW/strings.json';
 
 import { StringMap } from './types';
 
-i18n.fallbacks = true;
-i18n.translations = {
+const i18n = new I18n({
   ar,
   de,
   en,
@@ -61,14 +60,16 @@ i18n.translations = {
   vi,
   'zh-CN': zhCn,
   'zh-TW': zhTw,
-};
+});
+i18n.defaultLocale = 'en';
+i18n.enableFallback = true;
 i18n.locale = Localization.locale;
 dayjs.locale(Localization.locale);
 
 export const localization = Localization.locale;
 export const getString = (
   stringKey: keyof StringMap,
-  options?: i18n.TranslateOptions,
+  options?: TranslateOptions,
 ) => i18n.t(stringKey, options);
 
 // @ts-expect-error

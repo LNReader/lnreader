@@ -43,7 +43,6 @@ export const createTables = () => {
     db.execSync('PRAGMA journal_mode = WAL');
     db.execSync('PRAGMA synchronous = NORMAL');
     db.execSync('PRAGMA temp_store = MEMORY');
-
     db.withTransactionSync(() => {
       db.runSync(createNovelTableQuery);
       db.runSync(createNovelIndexQuery);
