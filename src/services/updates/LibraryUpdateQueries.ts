@@ -58,7 +58,7 @@ const updateNovelChapters = (
   chapters: ChapterItem[],
   downloadNewChapters?: boolean,
   page?: string,
-) => {
+) =>
   db.withExclusiveTransactionAsync(async tx => {
     for (let position = 0; position < chapters.length; position++) {
       const {
@@ -76,18 +76,23 @@ const updateNovelChapters = (
           WHERE NOT EXISTS (SELECT id FROM Chapter WHERE path = ? AND novelId = ?);
         `,
       );
-      const result = await st.executeAsync([
-        path,
-        name,
-        releaseTime || null,
-        novelId,
-        chapterNumber || null,
-        chapterPage,
-        position,
-        path,
-        novelId,
-      ]);
-      const insertId = result.lastInsertRowId;
+      let insertId = -1;
+      try {
+        const result = await st.executeAsync([
+          path,
+          name,
+          releaseTime || null,
+          novelId,
+          chapterNumber || null,
+          chapterPage,
+          position,
+          path,
+          novelId,
+        ]);
+        insertId = result.lastInsertRowId;
+      } finally {
+        await st.finalizeAsync();
+      }
 
       if (insertId && insertId >= 0) {
         if (downloadNewChapters) {
@@ -101,7 +106,7 @@ const updateNovelChapters = (
           });
         }
       } else {
-        tx.runAsync(
+        await tx.runAsync(
           `
               UPDATE Chapter SET
                 name = ?, releaseTime = ?, updatedTime = datetime('now','localtime'), page = ?, position = ?
@@ -123,8 +128,6 @@ const updateNovelChapters = (
       }
     }
   });
-};
-
 export interface UpdateNovelOptions {
   downloadNewChapters?: boolean;
   refreshNovelMetadata?: boolean;
@@ -149,7 +152,7 @@ const updateNovel = async (
     updateNovelTotalPages(novelId, novel.totalPages);
   }
 
-  updateNovelChapters(
+  await updateNovelChapters(
     novel.name,
     novelId,
     novel.chapters || [],
