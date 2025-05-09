@@ -1,5 +1,8 @@
-import React, { useMemo } from 'react';
-import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
+import React, { useCallback, useMemo } from 'react';
+import {
+  BottomTabBarProps,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 
 import Library from '../screens/library/LibraryScreen';
 import Updates from '../screens/updates/UpdatesScreen';
@@ -10,8 +13,12 @@ import More from '../screens/more/MoreScreen';
 import { getString } from '@strings/translations';
 import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
 import { BottomNavigatorParamList } from './types';
+import Icon from '@react-native-vector-icons/material-design-icons';
+import { MaterialDesignIconName } from '@type/icon';
+import { CommonActions } from '@react-navigation/native';
+import { BottomNavigation } from 'react-native-paper';
 
-const Tab = createMaterialBottomTabNavigator<BottomNavigatorParamList>();
+const Tab = createBottomTabNavigator<BottomNavigatorParamList>();
 
 const BottomNavigator = () => {
   const theme = useTheme();
@@ -28,19 +35,97 @@ const BottomNavigator = () => {
     [filteredInstalledPlugins],
   );
 
+  const renderIcon = useCallback(
+    ({ color, route }: { route: { name: string }; color: string }) => {
+      let iconName: MaterialDesignIconName;
+      switch (route.name) {
+        case 'Library':
+          iconName = 'bookmark-box-multiple';
+          break;
+        case 'Updates':
+          iconName = 'alert-decagram-outline';
+          break;
+        case 'History':
+          iconName = 'history';
+          break;
+        case 'Browse':
+          iconName = 'compass-outline';
+          break;
+        case 'More':
+          iconName = 'dots-horizontal';
+          break;
+        default:
+          iconName = 'circle';
+      }
+
+      return <Icon name={iconName} color={color} size={24} />;
+    },
+    [],
+  );
+
+  const renderBottomBar = useCallback(
+    ({ navigation, state, descriptors, insets }: BottomTabBarProps) => (
+      <BottomNavigation.Bar
+        theme={{ colors: theme }}
+        style={{
+          backgroundColor: theme.surface2,
+        }}
+        navigationState={state}
+        safeAreaInsets={insets}
+        onTabPress={({ route, preventDefault }) => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (event.defaultPrevented) {
+            preventDefault();
+          } else {
+            navigation.dispatch({
+              ...CommonActions.navigate(route.name, route.params),
+              target: state.key,
+            });
+          }
+        }}
+        renderIcon={renderIcon}
+        getLabelText={({ route }) => {
+          if (
+            !showLabelsInNav &&
+            route.name !== state.routeNames[state.index]
+          ) {
+            return '';
+          }
+
+          const { options } = descriptors[route.key];
+          const label =
+            typeof options.tabBarLabel === 'string'
+              ? options.tabBarLabel
+              : typeof options.title === 'string'
+              ? options.title
+              : route.name;
+
+          return label;
+        }}
+      />
+    ),
+    [renderIcon, showLabelsInNav, theme],
+  );
+
   return (
     <Tab.Navigator
-      barStyle={{ backgroundColor: theme.surface2 }}
-      theme={{ colors: theme }}
-      activeColor={theme.onSecondaryContainer}
-      shifting={!showLabelsInNav}
+      screenOptions={() => ({
+        headerShown: false,
+        animation: 'shift',
+        lazy: true,
+      })}
+      tabBar={renderBottomBar}
     >
       <Tab.Screen
         name="Library"
         component={Library}
         options={{
           title: getString('library'),
-          tabBarIcon: 'bookmark-box-multiple',
         }}
       />
       {showUpdatesTab ? (
@@ -49,7 +134,6 @@ const BottomNavigator = () => {
           component={Updates}
           options={{
             title: getString('updates'),
-            tabBarIcon: 'alert-decagram-outline',
           }}
         />
       ) : null}
@@ -59,7 +143,6 @@ const BottomNavigator = () => {
           component={History}
           options={{
             title: getString('history'),
-            tabBarIcon: 'history',
           }}
         />
       ) : null}
@@ -68,7 +151,6 @@ const BottomNavigator = () => {
         component={Browse}
         options={{
           title: getString('browse'),
-          tabBarIcon: 'compass-outline',
           tabBarBadge: pluginsWithUpdate
             ? pluginsWithUpdate.toString()
             : undefined,
@@ -79,7 +161,6 @@ const BottomNavigator = () => {
         component={More}
         options={{
           title: getString('more'),
-          tabBarIcon: 'dots-horizontal',
         }}
       />
     </Tab.Navigator>
