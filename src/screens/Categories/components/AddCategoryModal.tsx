@@ -37,6 +37,10 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
     setCategoryName('');
     closeModal();
   }
+  function finalize() {
+    onSuccess();
+    close();
+  }
 
   return (
     <Portal>
@@ -69,8 +73,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
                 } else {
                   createCategory(categoryName);
                 }
-                onSuccess();
-                close();
+                finalize();
               }
             }}
           />

@@ -289,6 +289,18 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     ],
   );
 
+  const navigationState = useMemo(
+    () => ({
+      index,
+      routes: categories.map(category => ({
+        key: String(category.id),
+        title: category.name,
+        ...category,
+      })),
+    }),
+    [categories, index],
+  );
+
   return (
     <SafeAreaView excludeBottom>
       <SearchbarV2
@@ -372,14 +384,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           label: renderLabel,
         }}
         lazy
-        navigationState={{
-          index,
-          routes: categories.map(category => ({
-            key: String(category.id),
-            title: category.name,
-            ...category,
-          })),
-        }}
+        navigationState={navigationState}
         renderTabBar={renderTabBar}
         renderScene={renderScene}
         onIndexChange={setIndex}

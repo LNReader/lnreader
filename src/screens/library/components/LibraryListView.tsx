@@ -12,7 +12,6 @@ import { getString } from '@strings/translations';
 import { useTheme } from '@hooks/persisted';
 import { LibraryScreenProps } from '@navigators/types';
 import ServiceManager from '@services/ServiceManager';
-import { useLibraryContext } from '@components/Context/LibraryContext';
 
 interface Props {
   categoryId: number;
@@ -31,8 +30,8 @@ export const LibraryView: React.FC<Props> = ({
   setSelectedNovelIds,
   pickAndImport,
   navigation,
+  novels,
 }) => {
-  const { library } = useLibraryContext();
   const theme = useTheme();
   const renderItem = ({ item }: { item: NovelInfo }) => {
     return (
@@ -80,7 +79,7 @@ export const LibraryView: React.FC<Props> = ({
   return (
     <View style={{ flex: 1 }}>
       <NovelList
-        data={library}
+        data={novels}
         extraData={[selectedNovelIds]}
         renderItem={renderItem as NovelListRenderItem}
         ListEmptyComponent={
