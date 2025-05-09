@@ -53,10 +53,14 @@ const useFullscreenMode = () => {
         Color(backgroundColor).isDark(),
       );
     }
-  }, [backgroundColor, fullScreenMode]);
+  }, [backgroundColor, fullScreenMode, theme]);
 
   useEffect(() => {
     setImmersiveMode();
+    return () => {
+      StatusBar.setHidden(false);
+      SystemBars.setHidden(false);
+    };
   }, [setImmersiveMode]);
 
   useEffect(() => {
@@ -68,7 +72,7 @@ const useFullscreenMode = () => {
     });
 
     return unsubscribe;
-  }, []);
+  }, [addListener, theme]);
 
   return { setImmersiveMode, showStatusAndNavBar };
 };
