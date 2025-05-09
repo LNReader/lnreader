@@ -40,13 +40,13 @@ export const useLibrary = (): UseLibraryReturnType => {
       setIsLoading(true);
     }
 
-    const [categories, novels] = await Promise.all([
+    const [dbCategories, novels] = await Promise.all([
       getCategoriesFromDb(),
       getLibraryNovelsFromDb(sortOrder, filter, searchText, downloadedOnlyMode),
       // getLibraryNovelsFromDb(),
     ]);
 
-    const res = categories.map(c => ({
+    const res = dbCategories.map(c => ({
       ...c,
       novelIds: (c.novelIds ?? '').split(',').map(Number),
     }));

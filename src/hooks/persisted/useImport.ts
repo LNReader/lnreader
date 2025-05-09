@@ -1,6 +1,6 @@
 import ServiceManager, { BackgroundTask } from '@services/ServiceManager';
 import { DocumentPickerResult } from 'expo-document-picker';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useMMKVObject } from 'react-native-mmkv';
 
 export default function useImport() {
@@ -12,7 +12,7 @@ export default function useImport() {
     [queue],
   );
 
-  const importNovel = (pickedNovel: DocumentPickerResult) => {
+  const importNovel = useCallback((pickedNovel: DocumentPickerResult) => {
     if (pickedNovel.canceled) return;
     ServiceManager.manager.addTask(
       pickedNovel.assets.map(asset => ({
@@ -23,7 +23,7 @@ export default function useImport() {
         },
       })),
     );
-  };
+  }, []);
   const resumeImport = () => ServiceManager.manager.resume();
 
   const pauseImport = () => ServiceManager.manager.pause();
