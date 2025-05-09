@@ -25,7 +25,7 @@
     }
   },
   "dependencies": {
-    "@cd-z/react-native-epub-creator": "^2.0.4",
+    "@cd-z/react-native-epub-creator": "^3.0.0",
     "@gorhom/bottom-sheet": "^5.1.4",
     "@legendapp/list": "^1.0.0-beta.24",
     "@react-native-community/slider": "4.5.6",
@@ -65,6 +65,7 @@
     "react-native-drawer-layout": "^4.0.3",
     "react-native-edge-to-edge": "^1.6.0",
     "react-native-error-boundary": "^1.1.16",
+    "react-native-file-access": "^3.1.1",
     "react-native-gesture-handler": "~2.25.0",
     "react-native-lottie-splash-screen": "^1.0.1",
     "react-native-mmkv": "^3.1.0",
