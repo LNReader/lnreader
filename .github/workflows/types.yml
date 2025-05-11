@@ -1,4 +1,4 @@
-name: Lint
+name: Types Checking
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: ESLint
+    name: Types Checking
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,5 +18,5 @@ jobs:
           node-version: '20'
       - name: Install modules
         run: npm install
-      - name: Run ESLint
-        run: npm run lint
+      - name: Check Types
+        run: npm run type-check
