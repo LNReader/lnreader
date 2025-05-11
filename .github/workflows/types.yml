@@ -1,4 +1,4 @@
-name: Types Checking
+name: Typescript
 on:
   push:
     branches:
