@@ -93,7 +93,7 @@ window.reader = new (function () {
     }
   });
 
-  setInterval(() => {
+  document.onscrollend = () => {
     if (!this.generalSettings.val.pageReader) {
       this.post({
         type: 'save',
@@ -110,7 +110,7 @@ window.reader = new (function () {
         ),
       });
     }
-  }, this.autoSaveInterval);
+  };
 
   if (DEBUG) {
     console = new Object();
@@ -365,6 +365,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       x: clientX / reader.layoutWidth,
       y: clientY / reader.layoutHeight,
     };
+
     if (reader.generalSettings.val.pageReader) {
       const position = detectTapPosition(x, y, true);
       if (position === 'left') {
