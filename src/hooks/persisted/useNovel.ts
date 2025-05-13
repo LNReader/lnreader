@@ -24,6 +24,7 @@ import {
   getCustomPages,
   getChapterCount,
   getPageChaptersBatched,
+  updateChapterProgress as _updateChapterProgress,
 } from '@database/queries/ChapterQueries';
 import { fetchNovel, fetchPage } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
@@ -440,6 +441,25 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
     );
   };
 
+  const updateChapterProgress = useCallback(
+    (chapterId: number, progress: number) => {
+      _updateChapterProgress(chapterId, Math.min(progress, 100));
+
+      mutateChapters(chs =>
+        chs.map(c => {
+          if (c.id !== chapterId) {
+            return c;
+          }
+          return {
+            ...c,
+            progress,
+          };
+        }),
+      );
+    },
+    [mutateChapters],
+  );
+
   const markChaptersRead = (_chapters: ChapterInfo[]) => {
     const chapterIds = _chapters.map(chapter => chapter.id);
     _markChaptersRead(chapterIds);
@@ -605,13 +625,14 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
     followNovel,
     bookmarkChapters,
     markPreviouschaptersRead,
+    markChapterRead,
     markChaptersRead,
     markPreviousChaptersUnread,
     markChaptersUnread,
     setShowChapterTitles,
-    markChapterRead,
     refreshChapters,
     updateChapter,
+    updateChapterProgress,
     deleteChapter,
     deleteChapters,
   };

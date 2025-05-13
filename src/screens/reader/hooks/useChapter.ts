@@ -2,7 +2,6 @@ import {
   getChapter as getDbChapter,
   getNextChapter,
   getPrevChapter,
-  updateChapterProgress,
 } from '@database/queries/ChapterQueries';
 import { insertHistory } from '@database/queries/HistoryQueries';
 import { ChapterInfo } from '@database/types';
@@ -34,7 +33,8 @@ const emmiter = new NativeEventEmitter(NativeVolumeButtonListener);
 export default function useChapter(webViewRef: RefObject<WebView | null>) {
   const { novel, chapter, setChapter, loading, setLoading } =
     useChapterContext();
-  const { setLastRead, markChapterRead } = useNovelContext();
+  const { setLastRead, markChapterRead, updateChapterProgress } =
+    useNovelContext();
   const [hidden, setHidden] = useState(true);
   const [chapterText, setChapterText] = useState('');
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
@@ -155,15 +155,21 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
     (percentage: number) => {
       if (!incognitoMode) {
         updateChapterProgress(chapter.id, percentage > 100 ? 100 : percentage);
-      }
 
-      if (!incognitoMode && percentage >= 97) {
-        // a relative number
-        markChapterRead(chapter.id);
-        updateTracker();
+        if (percentage >= 97) {
+          // a relative number
+          markChapterRead(chapter.id);
+          updateTracker();
+        }
       }
     },
-    [chapter.id, incognitoMode, updateTracker],
+    [
+      chapter.id,
+      incognitoMode,
+      markChapterRead,
+      updateChapterProgress,
+      updateTracker,
+    ],
   );
 
   const hideHeader = () => {
