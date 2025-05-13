@@ -102,13 +102,6 @@ window.reader = new (function () {
           10,
         ),
       });
-    } else {
-      this.post({
-        type: 'save',
-        data: parseInt(
-          ((pageReader.page.val + 1) / pageReader.totalPages.val) * 100,
-        ),
-      });
     }
   };
 
@@ -273,6 +266,12 @@ window.pageReader = new (function () {
     this.page.val = destPage;
     reader.chapterElement.style.transform =
       'translateX(-' + destPage * 100 + '%)';
+    reader.post({
+      type: 'save',
+      data: parseInt(
+        ((pageReader.page.val + 1) / pageReader.totalPages.val) * 100,
+      ),
+    });
   };
 
   van.derive(() => {
