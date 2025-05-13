@@ -71,6 +71,19 @@ export const useTrackedNovel = (novelId: number | 'NO_ID') => {
   const [trackedNovel, setValue] = useMMKVObject<TrackedNovel>(
     `${TRACKED_NOVEL_PREFIX}_${novelId}`,
   );
+  const updateNovelProgess = useCallback(
+    (tracker: TrackerMetadata, chaptersRead: number) => {
+      if (!trackedNovel || novelId === 'NO_ID') {
+        return;
+      }
+      return getTracker(tracker.name).updateUserListEntry(
+        trackedNovel.id,
+        { progress: chaptersRead },
+        tracker.auth,
+      );
+    },
+    [novelId, trackedNovel],
+  );
   if (novelId === 'NO_ID') {
     return {
       trackedNovel: undefined,
@@ -107,20 +120,6 @@ export const useTrackedNovel = (novelId: number | 'NO_ID') => {
     return getTracker(tracker.name).updateUserListEntry(
       trackedNovel.id,
       data,
-      tracker.auth,
-    );
-  };
-
-  const updateNovelProgess = (
-    tracker: TrackerMetadata,
-    chaptersRead: number,
-  ) => {
-    if (!trackedNovel) {
-      return;
-    }
-    return getTracker(tracker.name).updateUserListEntry(
-      trackedNovel.id,
-      { progress: chaptersRead },
       tracker.auth,
     );
   };
@@ -425,21 +424,24 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
     }
   };
 
-  const markChapterRead = (chapterId: number) => {
-    _markChapterRead(chapterId);
+  const markChapterRead = useCallback(
+    (chapterId: number) => {
+      _markChapterRead(chapterId);
 
-    mutateChapters(chs =>
-      chs.map(c => {
-        if (c.id !== chapterId) {
-          return c;
-        }
-        return {
-          ...c,
-          unread: false,
-        };
-      }),
-    );
-  };
+      mutateChapters(chs =>
+        chs.map(c => {
+          if (c.id !== chapterId) {
+            return c;
+          }
+          return {
+            ...c,
+            unread: false,
+          };
+        }),
+      );
+    },
+    [mutateChapters],
+  );
 
   const updateChapterProgress = useCallback(
     (chapterId: number, progress: number) => {

@@ -31,15 +31,25 @@ import { useNovelContext } from '@screens/novel/NovelContext';
 const emmiter = new NativeEventEmitter(NativeVolumeButtonListener);
 
 export default function useChapter(webViewRef: RefObject<WebView | null>) {
-  const { novel, chapter, setChapter, loading, setLoading } =
-    useChapterContext();
+  const {
+    novel,
+    chapter,
+    setChapter,
+    loading,
+    setLoading,
+    chapterText,
+    setChapterText,
+  } = useChapterContext();
   const { setLastRead, markChapterRead, updateChapterProgress } =
     useNovelContext();
   const [hidden, setHidden] = useState(true);
-  const [chapterText, setChapterText] = useState('');
+  const nextChapterTextRef = useRef<string | Promise<string> | undefined>(
+    undefined,
+  );
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
-    ChapterInfo[]
+    ChapterInfo[] | undefined[]
   >([]);
+  const [navChapter, setNavChapter] = useState<ChapterInfo>();
   const { autoScroll, autoScrollInterval, autoScrollOffset, useVolumeButtons } =
     useChapterGeneralSettings();
   const { incognitoMode } = useLibrarySettings();
@@ -81,44 +91,66 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
     };
   }, [useVolumeButtons, chapter, connectVolumeButton]);
 
-  const getChapter = useCallback(async () => {
-    try {
-      const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
+  const loadChapterText = useCallback(
+    async (id: number, path: string) => {
+      const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${id}/index.html`;
       let text = '';
       if (NativeFile.exists(filePath)) {
         text = NativeFile.readFile(filePath);
       } else {
-        await fetchChapter(novel.pluginId, chapter.path)
+        await fetchChapter(novel.pluginId, path)
           .then(res => {
             text = res;
           })
           .catch(e => setError(e.message));
       }
-      setChapterText(
-        sanitizeChapterText(novel.pluginId, novel.name, chapter.name, text),
-      );
+      return text;
+    },
+    [chapter.novelId, novel.pluginId],
+  );
 
-      const [nextChap, prevChap] = await Promise.all([
-        getNextChapter(chapter.novelId, chapter.position!, chapter.page),
-        getPrevChapter(chapter.novelId, chapter.position!, chapter.page),
-      ]);
-      setAdjacentChapter([nextChap!, prevChap!]);
-    } catch (e: any) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [
-    chapter.id,
-    chapter.name,
-    chapter.novelId,
-    chapter.page,
-    chapter.path,
-    chapter.position,
-    novel.name,
-    novel.pluginId,
-    setLoading,
-  ]);
+  const getChapter = useCallback(
+    async (nextChapterId?: number) => {
+      try {
+        let text;
+        const chap = navChapter ?? chapter;
+        if (nextChapterId === chap.id && nextChapterTextRef.current) {
+          text = await nextChapterTextRef.current;
+        } else {
+          text = await loadChapterText(chap.id, chap.path);
+        }
+        setChapterText(
+          sanitizeChapterText(novel.pluginId, novel.name, chap.name, text),
+        );
+
+        const [nextChap, prevChap] = await Promise.all([
+          getNextChapter(chap.novelId, chap.position!, chap.page),
+          getPrevChapter(chap.novelId, chap.position!, chap.page),
+        ]);
+        if (nextChap) {
+          nextChapterTextRef.current = loadChapterText(
+            nextChap.id,
+            nextChap.path,
+          );
+        }
+        setChapter(chap);
+        setAdjacentChapter([nextChap!, prevChap!]);
+      } catch (e: any) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [
+      navChapter,
+      chapter,
+      novel.pluginId,
+      novel.name,
+      setChapter,
+      loadChapterText,
+      setLoading,
+    ],
+  );
 
   const scrollInterval = useRef<NodeJS.Timeout>(null);
   useEffect(() => {
@@ -172,7 +204,7 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
     ],
   );
 
-  const hideHeader = () => {
+  const hideHeader = useCallback(() => {
     if (!hidden) {
       webViewRef.current?.injectJavaScript('reader.hidden.val = true');
       setImmersiveMode();
@@ -181,22 +213,24 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
       showStatusAndNavBar();
     }
     setHidden(!hidden);
-  };
+  }, [hidden, setImmersiveMode, showStatusAndNavBar, webViewRef]);
 
   const navigateChapter = useCallback(
     (position: 'NEXT' | 'PREV') => {
-      let navChapter;
+      let nextNavChapter;
       if (position === 'NEXT') {
-        navChapter = nextChapter;
+        nextNavChapter = nextChapter;
       } else if (position === 'PREV') {
-        navChapter = prevChapter;
+        nextNavChapter = prevChapter;
       } else {
         return;
       }
+      if (nextNavChapter) {
+        if (!nextChapterTextRef.current || position === 'PREV') {
+          setLoading(true);
+        }
 
-      if (navChapter) {
-        setLoading(true);
-        setChapter(navChapter);
+        setNavChapter(nextNavChapter);
       } else {
         showToast(
           position === 'NEXT'
@@ -205,12 +239,12 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
         );
       }
     },
-    [nextChapter, prevChapter, setChapter, setLoading],
+    [nextChapter, prevChapter, setLoading],
   );
 
   useEffect(() => {
-    setLoading(true);
-    getChapter().finally(() => setLoading(false));
+    // setLoading(true);
+    getChapter(nextChapter?.id);
 
     if (!incognitoMode) {
       insertHistory(chapter.id);
@@ -222,12 +256,14 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
         getDbChapter(chapter.id).then(result => result && setLastRead(result));
       }
     };
-  }, [chapter, getChapter, incognitoMode, setLastRead, setLoading]);
+    // eslint wants to add nextChapter.id as a dependency which will cause a rerender
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navChapter, getChapter, incognitoMode, setLastRead, setLoading]);
 
   const refetch = () => {
     setLoading(true);
     setError('');
-    getChapter().finally(() => setLoading(false));
+    getChapter();
   };
 
   return {

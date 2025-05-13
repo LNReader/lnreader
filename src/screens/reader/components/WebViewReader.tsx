@@ -28,7 +28,6 @@ type WebViewPostEvent = {
 };
 
 type WebViewReaderProps = {
-  html: string;
   nextChapter?: ChapterInfo;
   webViewRef: React.RefObject<WebView | null>;
   saveProgress(percentage: number): void;
@@ -54,14 +53,13 @@ const assetsUriPrefix = __DEV__
   : 'file:///android_asset';
 
 const WebViewReader: React.FC<WebViewReaderProps> = ({
-  html,
   webViewRef,
   nextChapter,
   saveProgress,
   onPress,
   navigateChapter,
 }) => {
-  const { novel, chapter } = useChapterContext();
+  const { novel, chapter, chapterText: html } = useChapterContext();
   const theme = useTheme();
   const readerSettings = useMemo(
     () =>

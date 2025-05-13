@@ -39,6 +39,8 @@ window.reader = new (function () {
   this.layoutHeight = window.screen.height;
   this.layoutWidth = window.screen.width;
 
+  this.layoutEvent = undefined;
+
   this.post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
   this.refresh = () => {
     if (this.generalSettings.val.pageReader) {
@@ -289,6 +291,7 @@ window.pageReader = new (function () {
       );
       document.body.classList.add('page-reader');
       setTimeout(() => {
+        console.log('page-reader');
         reader.refresh();
         this.totalPages.val = parseInt(
           (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
@@ -312,9 +315,14 @@ window.pageReader = new (function () {
   });
 })();
 
-window.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener('load', async () => {
   // wait for content is rendered
-  setTimeout(() => {
+  if (reader.layoutEvent) {
+    clearTimeout(reader.layoutEvent);
+  }
+  // console.log('load', JSON.stringify(reader, null, 2));
+
+  reader.layoutEvent = setTimeout(() => {
     reader.refresh();
     if (reader.generalSettings.val.pageReader) {
       pageReader.totalPages.val = parseInt(
@@ -335,7 +343,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         behavior: 'smooth',
       });
     }
-  }, 100);
+  }, 50);
 });
 
 // click handler
@@ -458,6 +466,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 // text options
 (function () {
   van.derive(() => {
+    console.log('helk');
+
     let html = reader.rawHTML;
     if (reader.generalSettings.val.bionicReading) {
       html = textVide.textVide(reader.rawHTML);
