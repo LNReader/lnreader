@@ -1,26 +1,28 @@
 import UIKit
+import Expo
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
+import Lottie
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: ExpoAppDelegate {
   var window: UIWindow?
 
   var reactNativeDelegate: ReactNativeDelegate?
   var reactNativeFactory: RCTReactNativeFactory?
 
-  func application(
+  override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
     let delegate = ReactNativeDelegate()
-    let factory = RCTReactNativeFactory(delegate: delegate)
+    let factory = ExpoReactNativeFactory(delegate: delegate)
     delegate.dependencyProvider = RCTAppDependencyProvider()
 
     reactNativeDelegate = delegate
     reactNativeFactory = factory
-
+    bindReactNativeFactory(factory)
     window = UIWindow(frame: UIScreen.main.bounds)
 
     factory.startReactNative(
@@ -28,14 +30,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       in: window,
       launchOptions: launchOptions
     )
+    
+    if let w = window {
+      let splashScreenBackground = UIColor(red: 31/255, green: 32/255, blue: 36/255, alpha: 1)
+      w.backgroundColor = splashScreenBackground
+      w.rootViewController?.view.backgroundColor = splashScreenBackground
+      let t = Dynamic()
+      let animationSize = CGSize(width: 200, height: 200)
+      let screenBounds = UIScreen.main.bounds
+      let animationX = (screenBounds.width - animationSize.width) / 2
+      let animationY = (screenBounds.height - animationSize.height) / 2
+      let animationUIView: UIView = t.createAnimationView(rootView: UIView(frame:CGRect(x: animationX, y: animationY, width: animationSize.width, height: animationSize.height)), lottieName:"loading")
+      RNSplashScreen.showLottieSplash(animationUIView, inRootView: w)
+      animationUIView.backgroundColor = UIColor(white: 1, alpha:0)
+      t.play(animationView: animationUIView as! AnimationView)
+      RNSplashScreen.setAnimationFinished(true)
+    }
 
-    return true
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
 
-class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
+class ReactNativeDelegate: ExpoReactNativeFactoryDelegate {
   override func sourceURL(for bridge: RCTBridge) -> URL? {
-    self.bundleURL()
+    // needed to return the correct URL for expo-dev-client.
+    bridge.bundleURL ?? bundleURL()
   }
 
   override func bundleURL() -> URL? {
