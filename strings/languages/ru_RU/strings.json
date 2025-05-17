@@ -65,7 +65,7 @@
     "createBackupWarning": "Создание резервной копии может не работать на устройствах с Android 9 или ниже.",
     "downloadingData": "Загрузка данных",
     "downloadingDownloadedFiles": "Загрузка скачанных файлов",
-    "failed": "Backup failed",
+    "failed": "Резервное копирование не удалось",
     "drive": {
       "backup": "Резервная копия диска",
       "backupInterruped": "Резервное копирование прервано",
@@ -359,8 +359,8 @@
       "useCustomJSWarning": "Может поддерживаться не всеми читателями EPUB",
       "useReaderTheme": "Использовать тему для чтения"
     },
-    "coverSaved": "Cover saved",
-    "coverNotSaved": "Cover not saved",
+    "coverSaved": "Обложка сохранена",
+    "coverNotSaved": "Обложка не сохранена",
     "deleteChapterError": "Не получается удалить папку с главами",
     "deleteMessage": "Удалить загруженные главы?",
     "deletedAllDownloads": "Удалить все загрузки",
@@ -395,7 +395,7 @@
     },
     "migrate": "Перенос",
     "noSummary": "Нет сводки",
-    "noCoverFound": "No cover found",
+    "noCoverFound": "Обложка не найдена",
     "progress": "Прогресс %{progress}%",
     "readChaptersDeleted": "Прочитанные главы удалены",
     "startReadingChapters": "Начать чтение %{name}",
@@ -518,7 +518,7 @@
     "DRIVE_RESTORE": "Восстановление с диска",
     "SELF_HOST_BACKUP": "Self host backup",
     "SELF_HOST_RESTORE": "Self host restore",
-    "MIGRATE_NOVEL": "Migrated novel",
-    "DOWNLOAD_CHAPTER": "Downloaded chapter"
+    "MIGRATE_NOVEL": "Перенесённая новелла",
+    "DOWNLOAD_CHAPTER": "Загруженные главы"
   }
 }
