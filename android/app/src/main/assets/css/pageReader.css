@@ -9,3 +9,11 @@ body.page-reader > #LNReader-chapter {
   column-gap: calc(var(--readerSettings-padding) * 2);
   transition: 200ms;
 }
+.transition-chapter {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  right: -100vw;
+  top: 0;
+  background-color: aqua;
+}
