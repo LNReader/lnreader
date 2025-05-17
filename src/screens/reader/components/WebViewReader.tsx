@@ -112,7 +112,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
       mmkvListener.remove();
     };
   }, []);
-
+  console.log('web', chapter, html.match('Chapter 63'));
   return (
     <WebView
       ref={webViewRef}

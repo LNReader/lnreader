@@ -115,17 +115,15 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
         let text;
         const chap = navChapter ?? chapter;
         if (nextChapterId === chap.id && nextChapterTextRef.current) {
-          text = await nextChapterTextRef.current;
+          text = nextChapterTextRef.current;
         } else {
-          text = await loadChapterText(chap.id, chap.path);
+          text = loadChapterText(chap.id, chap.path);
         }
-        setChapterText(
-          sanitizeChapterText(novel.pluginId, novel.name, chap.name, text),
-        );
 
-        const [nextChap, prevChap] = await Promise.all([
+        const [nextChap, prevChap, awaitedText] = await Promise.all([
           getNextChapter(chap.novelId, chap.position!, chap.page),
           getPrevChapter(chap.novelId, chap.position!, chap.page),
+          text,
         ]);
         if (nextChap) {
           nextChapterTextRef.current = loadChapterText(
@@ -134,6 +132,14 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
           );
         }
         setChapter(chap);
+        setChapterText(
+          sanitizeChapterText(
+            novel.pluginId,
+            novel.name,
+            chap.name,
+            awaitedText,
+          ),
+        );
         setAdjacentChapter([nextChap!, prevChap!]);
       } catch (e: any) {
         setError(e.message);

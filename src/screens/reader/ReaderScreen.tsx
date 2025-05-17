@@ -83,7 +83,6 @@ export const ChapterContent = ({
     error,
     prevChapter,
     nextChapter,
-    chapterText,
     saveProgress,
     hideHeader,
     navigateChapter,
@@ -142,7 +141,6 @@ export const ChapterContent = ({
         <ChapterLoadingScreen />
       ) : (
         <WebViewReader
-          html={chapterText}
           nextChapter={nextChapter}
           webViewRef={webViewRef}
           saveProgress={saveProgress}
