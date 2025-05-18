@@ -7,21 +7,16 @@ import Animated, {
   ReduceMotion,
   withTiming,
 } from 'react-native-reanimated';
-import { ThemeColors } from '@theme/types';
-import { ChapterInfo } from '@database/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { ChapterScreenProps } from '@navigators/types';
 import { useChapterContext } from '../ChapterContext';
 import { SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
 import { useNovelContext } from '@screens/novel/NovelContext';
+import { useTheme } from '@hooks/persisted';
 
 interface ChapterFooterProps {
-  theme: ThemeColors;
-  nextChapter: ChapterInfo;
-  prevChapter: ChapterInfo;
   readerSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   scrollToStart: () => void;
-  navigateChapter(position: 'NEXT' | 'PREV'): void;
   navigation: ChapterScreenProps['navigation'];
   openDrawer: () => void;
 }
@@ -29,16 +24,14 @@ interface ChapterFooterProps {
 const fastOutSlowIn = Easing.bezier(0.4, 0.0, 0.2, 1.0);
 
 const ChapterFooter = ({
-  theme,
-  nextChapter,
-  prevChapter,
   readerSheetRef,
   scrollToStart,
-  navigateChapter,
   navigation,
   openDrawer,
 }: ChapterFooterProps) => {
-  const { novel, chapter } = useChapterContext();
+  const { novel, chapter, nextChapter, prevChapter, navigateChapter } =
+    useChapterContext();
+  const theme = useTheme();
   const rippleConfig = {
     color: theme.rippleColor,
     borderless: true,

@@ -1,25 +1,16 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useRef } from 'react';
 import { ChapterInfo, NovelInfo } from '@database/types';
+import WebView from 'react-native-webview';
+import useChapter from './hooks/useChapter';
 
-const defaultValue = {} as {
+type ChapterContextType = ReturnType<typeof useChapter> & {
   novel: NovelInfo;
-  chapter: ChapterInfo;
-  setChapter: (chapter: ChapterInfo) => void;
-  loading: boolean;
-  setLoading: (value: boolean) => void;
-  chapterText: string;
-  setChapterText: (value: string) => void;
+  webViewRef: React.RefObject<WebView<{}> | null>;
 };
 
-const ChapterContext = createContext<{
-  novel: NovelInfo;
-  chapter: ChapterInfo;
-  setChapter: (chapter: ChapterInfo) => void;
-  loading: boolean;
-  setLoading: (value: boolean) => void;
-  chapterText: string;
-  setChapterText: (value: string) => void;
-}>(defaultValue);
+const defaultValue = {} as ChapterContextType;
+
+const ChapterContext = createContext<ChapterContextType>(defaultValue);
 
 export function ChapterContextProvider({
   children,
@@ -30,19 +21,15 @@ export function ChapterContextProvider({
   novel: NovelInfo;
   initialChapter: ChapterInfo;
 }) {
-  const [chapter, setChapter] = useState(initialChapter);
-  const [loading, setLoading] = useState(true);
-  const [chapterText, setChapterText] = useState('');
+  const webViewRef = useRef<WebView>(null);
+  const chapterHookContent = useChapter(webViewRef, initialChapter, novel);
+
   return (
     <ChapterContext.Provider
       value={{
         novel,
-        chapter,
-        setChapter,
-        loading,
-        setLoading,
-        chapterText,
-        setChapterText,
+        webViewRef,
+        ...chapterHookContent,
       }}
     >
       {children}

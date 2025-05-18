@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 window.reader = new (function () {
   const {
     readerSettings,
@@ -40,6 +41,7 @@ window.reader = new (function () {
   this.layoutWidth = window.screen.width;
 
   this.layoutEvent = undefined;
+  this.chapterEndingVisible = van.state(false);
 
   this.post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
   this.refresh = () => {
@@ -108,6 +110,7 @@ window.reader = new (function () {
   };
 
   if (DEBUG) {
+    // eslint-disable-next-line no-global-assign, no-new-object
     console = new Object();
     console.log = function (...data) {
       reader.post({ 'type': 'console', 'msg': data?.join(' ') });
@@ -256,15 +259,45 @@ window.tts = new (function () {
 window.pageReader = new (function () {
   this.page = van.state(0);
   this.totalPages = van.state(0);
+  this.chapterEndingVisible = van.state(
+    initialPageReaderConfig.nextChapterScreenVisible,
+  );
+  this.chapterEnding = document.getElementsByClassName('transition-chapter')[0];
+
+  this.showChapterEnding = (bool, instant) => {
+    if (!this.chapterEnding) {
+      this.chapterEnding =
+        document.getElementsByClassName('transition-chapter')[0];
+      if (!this.chapterEnding) return;
+    }
+    if (bool) {
+      if (!instant) this.chapterEnding.style.transition = '200ms';
+      this.chapterEnding.style.transform = 'translateX(-100%)';
+      this.chapterEndingVisible.val = true;
+    } else {
+      if (!instant) this.chapterEnding.style.transition = '200ms';
+      this.chapterEnding.style.transform = 'translateX(0)';
+      this.chapterEndingVisible.val = false;
+    }
+  };
 
   this.movePage = destPage => {
-    destPage = parseInt(destPage);
+    if (this.chapterEndingVisible.val) {
+      if (destPage < this.totalPages.val) {
+        this.showChapterEnding(false);
+        return;
+      }
+      if (destPage >= this.totalPages.val) {
+        return reader.post({ type: 'next' });
+      }
+    }
+    destPage = parseInt(destPage, 10);
     if (destPage < 0) {
-      this.totalPages.val = 0;
       return reader.post({ type: 'prev' });
     }
     if (destPage >= this.totalPages.val) {
-      this.totalPages.val = 0;
+      this.showChapterEnding(true);
+      // return;
       return reader.post({ type: 'next' });
     }
     console.log('movePage', pageReader.page.val, this.totalPages.val);
@@ -274,12 +307,15 @@ window.pageReader = new (function () {
 
     const newProgress = parseInt(
       ((pageReader.page.val + 1) / pageReader.totalPages.val) * 100,
+      10,
     );
+
     if (newProgress > reader.chapter.progress) {
       reader.post({
         type: 'save',
         data: parseInt(
           ((pageReader.page.val + 1) / pageReader.totalPages.val) * 100,
+          10,
         ),
       });
     }
@@ -305,6 +341,7 @@ window.pageReader = new (function () {
         this.totalPages.val = parseInt(
           (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
             reader.layoutWidth,
+          10,
         );
         this.movePage(this.totalPages.val * ratio);
       }, 100);
@@ -324,36 +361,30 @@ window.pageReader = new (function () {
   });
 })();
 
+document.addEventListener('DOMContentLoaded', () => {
+  if (pageReader.chapterEndingVisible.val) {
+    pageReader.showChapterEnding(true, true);
+  }
+});
+
 function calculatePages() {
   reader.refresh();
-  console.log(
-    pageReader.totalPages.val,
-    reader.chapterElement.scrollWidth,
-    reader.chapterElement.clientWidth,
-    reader.chapterWidth,
-    reader.layoutWidth,
-  );
+
   if (reader.generalSettings.val.pageReader) {
     pageReader.totalPages.val = parseInt(
       (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
         reader.layoutWidth,
+      10,
     );
-    console.log(
-      'move to page',
-      reader.chapter.progress,
-      reader.chapter.chapterNumber,
-      parseInt(
-        pageReader.totalPages.val *
-          Math.min(0.99, reader.chapter.progress / 100),
-      ),
-    );
-    console.log(JSON.stringify(reader.chapter));
-    console.log(JSON.stringify(initialReaderConfig.chapter));
-    console.log(reader.rawHTML.match('Chapter 63'));
+
+    if (initialPageReaderConfig.nextChapterScreenVisible) return;
+
     pageReader.movePage(
-      parseInt(
-        pageReader.totalPages.val *
-          Math.min(0.99, reader.chapter.progress / 100),
+      Math.max(
+        0,
+        Math.round(
+          (pageReader.totalPages.val * reader.chapter.progress) / 100,
+        ) - 1,
       ),
     );
   } else {
@@ -533,8 +564,6 @@ window.addEventListener('load', () => {
 // text options
 (function () {
   van.derive(() => {
-    console.log('helk');
-
     let html = reader.rawHTML;
     if (reader.generalSettings.val.bionicReading) {
       html = textVide.textVide(reader.rawHTML);
