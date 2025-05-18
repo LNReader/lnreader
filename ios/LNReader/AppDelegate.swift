@@ -26,7 +26,7 @@ class AppDelegate: ExpoAppDelegate {
     window = UIWindow(frame: UIScreen.main.bounds)
 
     factory.startReactNative(
-      withModuleName: "LNReader",
+      withModuleName: "main",
       in: window,
       launchOptions: launchOptions
     )
@@ -48,6 +48,10 @@ class AppDelegate: ExpoAppDelegate {
     }
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+  
+  override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    return RCTLinkingManager.application(application, open: url, options: options);
   }
 }
 

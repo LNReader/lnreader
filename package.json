@@ -22,6 +22,14 @@
     "jsSrcsDir": "specs",
     "android": {
       "javaPackageName": "com.lnreader.spec"
+    },
+    "ios": { 
+      "modulesProvider": {
+        "NativeEpubUtil": "RCTNativeEpubUtil",
+        "NativeFile": "RCTNativeFile",
+        "NativeVolumeButtonListener": "RCTNativeVolumeButtonListener",
+        "NativeZipArchive": "RCTNativeZipArchive"
+      }
     }
   },
   "dependencies": {
