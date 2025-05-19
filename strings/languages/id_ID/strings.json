@@ -1,7 +1,7 @@
 {
   "aboutScreen": {
-    "website": "",
-    "discord": "indonesia",
+    "website": "indonesia",
+    "discord": "\nindonesia",
     "github": "Indonesia",
     "helpTranslate": "INDONESIA",
     "sources": "Indonesi",
@@ -14,7 +14,7 @@
     "chapterInsertFailed": "indonesian\n",
     "clearCachedNovels": "",
     "clearCachedNovelsDesc": "bahasa Indonesia",
-    "clearDatabaseWarning": "Read and Downloaded chapters and progress of non-library novels will be lost.",
+    "clearDatabaseWarning": ".",
     "clearUpdatesMessage": "Updates cleared.",
     "clearUpdatesTab": "Clear updates tab",
     "clearUpdatesWarning": "Updates tab will be cleared.",
@@ -208,9 +208,9 @@
     "share": "Share",
     "openInBrowser": "Open in browser",
     "clearCookies": "Clear cookies",
-    "cookiesCleared": "Cookies cleared",
-    "clearData": "Clear WebView data",
-    "dataDeleted": "WebView data cleared"
+    "cookiesCleared": "",
+    "clearData": "",
+    "dataDeleted": "Indonesia"
   },
   "date": {
     "calendar": {
@@ -221,9 +221,9 @@
     }
   },
   "downloadScreen": {
-    "cancelDownloads": "Cancel downloads",
-    "cancelled": "Downloads cancelled.",
-    "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
+    "cancelDownloads": "Indonesia",
+    "cancelled": "Indonesia",
+    "chapterEmptyOrScrapeError": "Indonesia",
     "chapterName": "Chapter: %{name}",
     "completed": "Download completed",
     "dbInfo": "Downloads are saved in a SQLite Database.",
