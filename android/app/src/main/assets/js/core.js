@@ -306,13 +306,19 @@ window.pageReader = new (function () {
       document.getElementsByClassName('transition-chapter')[0].innerText =
         reader.prevChapter.name;
       this.showChapterEnding(true, false, true);
-      return reader.post({ type: 'prev' });
+      setTimeout(() => {
+        reader.post({ type: 'prev' });
+      }, 200);
+      return;
     }
     if (destPage >= this.totalPages.val) {
       document.getElementsByClassName('transition-chapter')[0].innerText =
         reader.nextChapter.name;
       this.showChapterEnding(true);
-      return reader.post({ type: 'next' });
+      setTimeout(() => {
+        reader.post({ type: 'next' });
+      }, 200);
+      return;
     }
     this.page.val = destPage;
     reader.chapterElement.style.transform =

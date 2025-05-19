@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef } from 'react';
+import React, { createContext, useContext, useMemo, useRef } from 'react';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import WebView from 'react-native-webview';
 import useChapter from './hooks/useChapter';
@@ -24,14 +24,17 @@ export function ChapterContextProvider({
   const webViewRef = useRef<WebView>(null);
   const chapterHookContent = useChapter(webViewRef, initialChapter, novel);
 
+  const contextValue = useMemo(
+    () => ({
+      novel,
+      webViewRef,
+      ...chapterHookContent,
+    }),
+    [novel, webViewRef, chapterHookContent],
+  );
+
   return (
-    <ChapterContext.Provider
-      value={{
-        novel,
-        webViewRef,
-        ...chapterHookContent,
-      }}
-    >
+    <ChapterContext.Provider value={contextValue}>
       {children}
     </ChapterContext.Provider>
   );

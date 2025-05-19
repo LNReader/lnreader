@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef } from 'react';
+import React, { createContext, useContext, useMemo, useRef } from 'react';
 import { useNovel } from '@hooks/persisted';
 import { RouteProp } from '@react-navigation/native';
 import { ReaderStackParamList } from '@navigators/types';
@@ -50,15 +50,17 @@ export function NovelContextProvider({
   if (top > StatusBarHeight.current) {
     StatusBarHeight.current = top;
   }
+  const contextValue = useMemo(
+    () => ({
+      ...novelHookContent,
+      navigationBarHeight: NavigationBarHeight.current,
+      statusBarHeight: StatusBarHeight.current,
+      chapterTextCache: chapterTextCache.current,
+    }),
+    [novelHookContent],
+  );
   return (
-    <NovelContext.Provider
-      value={{
-        ...novelHookContent,
-        navigationBarHeight: NavigationBarHeight.current,
-        statusBarHeight: StatusBarHeight.current,
-        chapterTextCache: chapterTextCache.current,
-      }}
-    >
+    <NovelContext.Provider value={contextValue}>
       {children}
     </NovelContext.Provider>
   );

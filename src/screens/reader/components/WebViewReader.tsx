@@ -105,13 +105,11 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
         );
       },
     );
-
     return () => {
       subscription.remove();
       mmkvListener.remove();
     };
   }, [webViewRef]);
-  console.log('web', chapter, html.match('Chapter 63'));
   return (
     <WebView
       ref={webViewRef}
