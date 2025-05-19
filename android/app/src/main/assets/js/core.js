@@ -6,6 +6,7 @@ window.reader = new (function () {
     novel,
     chapter,
     nextChapter,
+    prevChapter,
     batteryLevel,
     autoSaveInterval,
     DEBUG,
@@ -25,6 +26,7 @@ window.reader = new (function () {
   this.novel = novel;
   this.chapter = chapter;
   this.nextChapter = nextChapter;
+  this.prevChapter = prevChapter;
   this.strings = strings;
   this.autoSaveInterval = autoSaveInterval;
   this.rawHTML = this.chapterElement.innerHTML;
@@ -264,27 +266,35 @@ window.pageReader = new (function () {
   );
   this.chapterEnding = document.getElementsByClassName('transition-chapter')[0];
 
-  this.showChapterEnding = (bool, instant) => {
+  this.showChapterEnding = (bool, instant, left) => {
     if (!this.chapterEnding) {
       this.chapterEnding =
         document.getElementsByClassName('transition-chapter')[0];
       if (!this.chapterEnding) return;
     }
+    this.chapterEnding.style.transition = 'unset';
     if (bool) {
-      if (!instant) this.chapterEnding.style.transition = '200ms';
-      this.chapterEnding.style.transform = 'translateX(-100%)';
+      this.chapterEnding.style.transform = `translateX(${left ? -200 : 0}vw)`;
+      requestAnimationFrame(() => {
+        if (!instant) this.chapterEnding.style.transition = '200ms';
+        this.chapterEnding.style.transform = 'translateX(-100vw)';
+      });
       this.chapterEndingVisible.val = true;
     } else {
       if (!instant) this.chapterEnding.style.transition = '200ms';
-      this.chapterEnding.style.transform = 'translateX(0)';
+      this.chapterEnding.style.transform = `translateX(${left ? -200 : 0}vw)`;
       this.chapterEndingVisible.val = false;
     }
   };
 
   this.movePage = destPage => {
     if (this.chapterEndingVisible.val) {
-      if (destPage < this.totalPages.val) {
+      if (destPage < 0) {
         this.showChapterEnding(false);
+        return;
+      }
+      if (destPage < this.totalPages.val) {
+        this.showChapterEnding(false, false, true);
         return;
       }
       if (destPage >= this.totalPages.val) {
@@ -293,14 +303,17 @@ window.pageReader = new (function () {
     }
     destPage = parseInt(destPage, 10);
     if (destPage < 0) {
+      document.getElementsByClassName('transition-chapter')[0].innerText =
+        reader.prevChapter.name;
+      this.showChapterEnding(true, false, true);
       return reader.post({ type: 'prev' });
     }
     if (destPage >= this.totalPages.val) {
+      document.getElementsByClassName('transition-chapter')[0].innerText =
+        reader.nextChapter.name;
       this.showChapterEnding(true);
-      // return;
       return reader.post({ type: 'next' });
     }
-    console.log('movePage', pageReader.page.val, this.totalPages.val);
     this.page.val = destPage;
     reader.chapterElement.style.transform =
       'translateX(-' + destPage * 100 + '%)';
@@ -336,7 +349,6 @@ window.pageReader = new (function () {
       );
       document.body.classList.add('page-reader');
       setTimeout(() => {
-        console.log('page-reader');
         reader.refresh();
         this.totalPages.val = parseInt(
           (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
@@ -410,39 +422,6 @@ window.addEventListener('load', () => {
     requestAnimationFrame(() => setTimeout(calculatePages, 0));
   });
 });
-
-// window.onload = () => {
-//   // wait for content is rendered
-//   requestAnimationFrame(() => {
-//     reader.refresh();
-//     console.log(
-//       pageReader.totalPages.val,
-//       reader.chapterElement.scrollWidth,
-//       reader.chapterElement.clientWidth,
-//       reader.chapterWidth,
-//       reader.layoutWidth,
-//     );
-//     if (reader.generalSettings.val.pageReader) {
-//       pageReader.totalPages.val = parseInt(
-//         (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
-//           reader.layoutWidth,
-//       );
-//       pageReader.movePage(
-//         parseInt(
-//           pageReader.totalPages.val *
-//             Math.min(0.99, reader.chapter.progress / 100),
-//         ),
-//       );
-//     } else {
-//       window.scrollTo({
-//         top:
-//           (reader.chapterHeight * reader.chapter.progress) / 100 -
-//           reader.layoutHeight,
-//         behavior: 'smooth',
-//       });
-//     }
-//   });
-// };
 
 // click handler
 (function () {

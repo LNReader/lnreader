@@ -55,6 +55,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
     navigateChapter,
     saveProgress,
     nextChapter,
+    prevChapter,
     webViewRef,
   } = useChapterContext();
   const theme = useTheme();
@@ -217,7 +218,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
                 nextChapterScreenVisible.current
                   ? 'translateX(-100%)'
                   : 'translateX(0%)'
-              }"></div>
+              };
+              ${chapterGeneralSettings.pageReader ? '' : 'display: none'}"
+              ">${chapter.name}</div>
               <div id="LNReader-chapter">
                 ${html}  
               </div>
@@ -235,6 +238,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
                   novel,
                   chapter,
                   nextChapter,
+                  prevChapter,
                   batteryLevel,
                   autoSaveInterval: 2222,
                   DEBUG: __DEV__,

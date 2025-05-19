@@ -12,8 +12,18 @@ body.page-reader > #LNReader-chapter {
 .transition-chapter {
   height: 100vh;
   width: 100vw;
+  max-width: 100vw;
+
   position: fixed;
-  right: -100vw;
+  left: 100vw;
   top: 0;
-  background-color: aqua;
+
+  box-sizing: border-box;
+  padding: var(--readerSettings-padding);
+  padding-top: 30vh;
+
+  text-align: center;
+  font-size: 2rem;
+  z-index: 888888;
+  background-color: var(--readerSettings-theme);
 }
