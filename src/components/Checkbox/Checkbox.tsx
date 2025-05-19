@@ -68,7 +68,7 @@ interface SortItemProps {
 export const SortItem = ({ label, status, onPress, theme }: SortItemProps) => (
   <Pressable
     android_ripple={{ color: theme.rippleColor }}
-    style={[styles.pressable, { paddingVertical: 16, paddingLeft: 64 }]}
+    style={[styles.pressable, styles.sortItem]}
     onPress={onPress}
   >
     {status ? (
@@ -98,4 +98,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 6,
   },
+  sortItem: { paddingVertical: 16, paddingLeft: 64 },
 });

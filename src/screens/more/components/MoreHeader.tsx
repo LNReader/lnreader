@@ -27,7 +27,7 @@ export const MoreHeader = ({
       mode="small"
       theme={theme}
     />
-    <View style={{ overflow: 'hidden', paddingBottom: 4 }}>
+    <View style={styles.overflow}>
       <View style={[styles.logoContainer, { backgroundColor: theme.surface }]}>
         <Image
           source={require('../../../../assets/logo.png')}
@@ -48,5 +48,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 24,
     paddingTop: 4,
+  },
+  overflow: {
+    overflow: 'hidden',
+    paddingBottom: 4,
   },
 });

@@ -51,7 +51,7 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
       setDownloaded(isDownloadedValue);
       setChapterDownloaded?.(isDownloadedValue);
     }
-  }, [chapterId, isDownloading]);
+  }, [chapterId, isDownloading, setChapterDownloaded]);
   if (isDownloading || downloaded === undefined) {
     return <ChapterDownloadingButton theme={theme} />;
   }

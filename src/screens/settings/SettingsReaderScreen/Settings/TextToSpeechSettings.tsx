@@ -104,7 +104,7 @@ export default function TextToSpeechSettings() {
           </List.Section>
         </>
       ) : null}
-      <View style={{ height: 16 }} />
+      <View style={styles.height} />
       <Portal>
         <VoicePickerModal
           visible={voiceModalVisible}
@@ -130,4 +130,5 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
   },
+  height: { height: 16 },
 });

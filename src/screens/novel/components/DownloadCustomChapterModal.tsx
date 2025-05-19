@@ -53,7 +53,7 @@ const DownloadCustomChapterModal = ({
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
           {getString('novelScreen.download.customAmount')}
         </Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <View style={styles.row}>
           <IconButton
             icon="chevron-double-left"
             animated
@@ -70,7 +70,7 @@ const DownloadCustomChapterModal = ({
           />
           <TextInput
             value={text.toString()}
-            style={{ color: theme.onSurface, marginHorizontal: 4 }}
+            style={[{ color: theme.onSurface }, styles.marginHorizontal]}
             keyboardType="numeric"
             onChangeText={onChangeText}
             onSubmitEditing={onSubmit}
@@ -113,4 +113,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 16,
   },
+  row: { flexDirection: 'row', justifyContent: 'center' },
+  marginHorizontal: { marginHorizontal: 4 },
 });

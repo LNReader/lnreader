@@ -27,6 +27,24 @@ interface EditInfoModalProps {
   setNovel: (novel: NovelInfo | undefined) => void;
 }
 
+// --- Dynamic style helpers ---
+const getModalTitleColor = (theme: ThemeColors) => ({ color: theme.onSurface });
+const getStatusLabelColor = (theme: ThemeColors) => ({
+  color: theme.onSurfaceVariant,
+});
+const getScrollViewStyle = () => styles.statusScrollView;
+const getStatusChipContainer = () => styles.statusChipContainer;
+const getStatusChipPressable = (selected: boolean, theme: ThemeColors) => ({
+  backgroundColor: selected ? theme.rippleColor : 'transparent',
+});
+const getStatusChipText = (selected: boolean, theme: ThemeColors) => ({
+  color: selected ? theme.primary : theme.onSurfaceVariant,
+});
+const getGenreListStyle = () => styles.genreList;
+const getButtonRowStyle = () => styles.buttonRow;
+const getFlex1 = () => styles.flex1;
+
+// --- Main Component ---
 const EditInfoModal = ({
   theme,
   hideModal,
@@ -54,50 +72,32 @@ const EditInfoModal = ({
   return (
     <Portal>
       <Modal visible={modalVisible} onDismiss={hideModal}>
-        <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
+        <Text style={[styles.modalTitle, getModalTitleColor(theme)]}>
           {getString('novelScreen.edit.info')}
         </Text>
-        <View
-          style={{
-            marginVertical: 8,
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <Text style={{ color: theme.onSurfaceVariant }}>
+        <View style={styles.statusRow}>
+          <Text style={getStatusLabelColor(theme)}>
             {getString('novelScreen.edit.status')}
           </Text>
           <ScrollView
-            style={{ marginLeft: 8 }}
+            style={getScrollViewStyle()}
             horizontal
             showsHorizontalScrollIndicator={false}
           >
             {status.map((item, index) => (
-              <View
-                style={{ borderRadius: 8, overflow: 'hidden' }}
-                key={'novelInfo' + index}
-              >
+              <View style={getStatusChipContainer()} key={'novelInfo' + index}>
                 <Pressable
-                  style={{
-                    backgroundColor:
-                      novelInfo.status === item
-                        ? theme.rippleColor
-                        : 'transparent',
-                    paddingVertical: 6,
-                    paddingHorizontal: 12,
-                  }}
+                  style={[
+                    styles.statusChipPressable,
+                    getStatusChipPressable(novelInfo.status === item, theme),
+                  ]}
                   android_ripple={{
                     color: theme.rippleColor,
                   }}
                   onPress={() => setNovelInfo({ ...novel, status: item })}
                 >
                   <Text
-                    style={{
-                      color:
-                        novelInfo.status === item
-                          ? theme.primary
-                          : theme.onSurfaceVariant,
-                    }}
+                    style={getStatusChipText(novelInfo.status === item, theme)}
                   >
                     {translateNovelStatus(item)}
                   </Text>
@@ -185,7 +185,7 @@ const EditInfoModal = ({
 
         {novelInfo.genres !== undefined && novelInfo.genres !== '' ? (
           <FlatList
-            style={{ marginVertical: 8 }}
+            style={getGenreListStyle()}
             horizontal
             data={novelInfo.genres?.split(',')}
             keyExtractor={(_, index) => 'novelTag' + index}
@@ -197,7 +197,7 @@ const EditInfoModal = ({
             showsHorizontalScrollIndicator={false}
           />
         ) : null}
-        <View style={{ flexDirection: 'row' }}>
+        <View style={getButtonRowStyle()}>
           <Button
             onPress={() => {
               setNovelInfo(initialNovelInfo);
@@ -206,7 +206,7 @@ const EditInfoModal = ({
           >
             {getString('common.reset')}
           </Button>
-          <View style={{ flex: 1 }} />
+          <View style={getFlex1()} />
           <Button
             onPress={() => {
               setNovel(novelInfo);
@@ -225,6 +225,17 @@ const EditInfoModal = ({
 
 export default EditInfoModal;
 
+// --- GenreChip with split styles ---
+const getGenreChipContainer = (theme: ThemeColors) => ({
+  backgroundColor: theme.secondaryContainer,
+});
+const getGenreChipText = (theme: ThemeColors) => ({
+  color: theme.onSecondaryContainer,
+});
+const getGenreChipIcon = (theme: ThemeColors) => ({
+  color: theme.onSecondaryContainer,
+});
+
 const GenreChip = ({
   children,
   theme,
@@ -234,35 +245,16 @@ const GenreChip = ({
   theme: ThemeColors;
   onPress: () => void;
 }) => (
-  <View
-    style={{
-      flex: 1,
-      flexDirection: 'row',
-      borderRadius: 8,
-      paddingVertical: 6,
-      paddingHorizontal: 16,
-      marginBottom: 4,
-      marginRight: 8,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: theme.secondaryContainer,
-    }}
-  >
-    <Text
-      style={{
-        fontSize: 12,
-        color: theme.onSecondaryContainer,
-        textTransform: 'capitalize',
-      }}
-    >
+  <View style={[styles.genreChipContainer, getGenreChipContainer(theme)]}>
+    <Text style={[styles.genreChipText, getGenreChipText(theme)]}>
       {children}
     </Text>
     <MaterialCommunityIcons
       name="close"
-      color={theme.onSecondaryContainer}
       size={18}
       onPress={onPress}
-      style={{ marginLeft: 4 }}
+      style={styles.genreChipIcon}
+      {...getGenreChipIcon(theme)}
     />
   </View>
 );
@@ -279,5 +271,48 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     marginBottom: 16,
+  },
+  statusRow: {
+    marginVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  statusScrollView: {
+    marginLeft: 8,
+  },
+  statusChipContainer: {
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  statusChipPressable: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+  },
+  genreList: {
+    marginVertical: 8,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+  },
+  flex1: {
+    flex: 1,
+  },
+  genreChipContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    borderRadius: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    marginBottom: 4,
+    marginRight: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  genreChipText: {
+    fontSize: 12,
+    textTransform: 'capitalize',
+  },
+  genreChipIcon: {
+    marginLeft: 4,
   },
 });

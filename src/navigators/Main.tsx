@@ -65,7 +65,7 @@ const MainNavigator = () => {
       // hack this helps app has enough time to initialize database;
       refreshPlugins();
     }
-  }, [isOnboarded]);
+  }, [isOnboarded, refreshPlugins, updateLibraryOnLaunch]);
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
 

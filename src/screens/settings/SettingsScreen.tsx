@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import { Appbar, List, SafeAreaView } from '@components';
 import { useTheme } from '@hooks/persisted';
@@ -17,7 +17,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
         handleGoBack={navigation.goBack}
         theme={theme}
       />
-      <ScrollView style={{ flex: 1, backgroundColor: theme.background }}>
+      <ScrollView style={[{ backgroundColor: theme.background }, styles.flex]}>
         <List.Item
           title={getString('generalSettings')}
           icon="tune"
@@ -94,3 +94,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
 };
 
 export default SettingsScreen;
+
+const styles = StyleSheet.create({
+  flex: { flex: 1 },
+});

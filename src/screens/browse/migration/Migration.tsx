@@ -47,7 +47,7 @@ const Migration = ({ navigation }: MigrationScreenProps) => {
       />
       <FlatList
         data={plugins}
-        contentContainerStyle={{ paddingBottom: 48 }}
+        contentContainerStyle={styles.paddingBottom}
         keyExtractor={item => item.id}
         renderItem={renderItem}
         ListHeaderComponent={ListHeaderComponent}
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  paddingBottom: { paddingBottom: 48 },
 
   listHeader: {
     padding: 20,

@@ -99,9 +99,9 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
     item,
   }) => (
     <>
-      <View style={{ padding: 8, paddingVertical: 16 }}>
+      <View style={styles.padding}>
         <Text style={{ color: theme.onSurface }}>{item.name}</Text>
-        <Text style={{ color: theme.onSurfaceVariant, fontSize: 12 }}>
+        <Text style={[{ color: theme.onSurfaceVariant }, styles.fontSize]}>
           {item.lang}
         </Text>
       </View>
@@ -135,7 +135,7 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
         />
       ) : null}
       <FlatList
-        contentContainerStyle={{ flexGrow: 1, padding: 4 }}
+        contentContainerStyle={styles.flexGrow}
         data={searchResults}
         keyExtractor={item => item.id}
         renderItem={renderItem}
@@ -160,4 +160,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 16,
   },
+  flexGrow: { flexGrow: 1, padding: 4 },
+  padding: { padding: 8, paddingVertical: 16 },
+  fontSize: { fontSize: 12 },
 });

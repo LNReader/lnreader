@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Divider, Portal } from 'react-native-paper';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
@@ -35,17 +35,17 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const [categories = [], setCategories] = useState<CCategory[]>();
 
-  const getCategories = async () => {
+  const getCategories = useCallback(async () => {
     const res = getCategoriesWithCount(novelIds);
     setCategories(res);
     setSelectedCategories(res.filter(c => c.novelsCount));
-  };
+  }, [novelIds]);
 
   useEffect(() => {
     if (visible) {
       getCategories();
     }
-  }, [visible]);
+  }, [getCategories, visible]);
 
   return (
     <Portal>
@@ -82,12 +82,12 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
           }
         />
         <Divider
-          style={{
-            height: 1,
-            width: '90%',
-            marginLeft: '5%',
-            backgroundColor: theme.onSurfaceDisabled,
-          }}
+          style={[
+            {
+              backgroundColor: theme.onSurfaceDisabled,
+            },
+            styles.divider,
+          ]}
         />
         <View style={styles.btnContainer}>
           <Button
@@ -127,6 +127,7 @@ const SetCategoryModal: React.FC<SetCategoryModalProps> = ({
 export default SetCategoryModal;
 
 const styles = StyleSheet.create({
+  divider: { height: 1, width: '90%', marginLeft: '5%' },
   btnContainer: {
     flexDirection: 'row',
     marginTop: 20,

@@ -86,7 +86,7 @@ export const useLibrary = (): UseLibraryReturnType => {
 
       setLibrary(novels);
     },
-    [downloadedOnlyMode, filter, searchText, sortOrder],
+    [downloadedOnlyMode, filter, refreshCategories, searchText, sortOrder],
   );
 
   useFocusEffect(() => {

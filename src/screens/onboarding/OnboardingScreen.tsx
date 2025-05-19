@@ -15,6 +15,7 @@ enum OnboardingStep {
 export default function OnboardingScreen() {
   const theme = useTheme();
   const [step] = useState<OnboardingStep>(OnboardingStep.PICK_THEME);
+
   const renderStep = () => {
     switch (step) {
       case OnboardingStep.PICK_THEME:
@@ -33,38 +34,25 @@ export default function OnboardingScreen() {
   };
 
   return (
-    <SafeAreaView style={[styles.root, { backgroundColor: theme.background }]}>
+    <SafeAreaView style={[{ backgroundColor: theme.background }, styles.root]}>
       <Image
         source={require('../../../assets/logo.png')}
         tintColor={theme.primary}
-        style={{
-          width: 90,
-          height: 90,
-        }}
+        style={styles.logo}
       />
       <Text
         variant="headlineLarge"
-        style={{
-          fontWeight: '600',
-          paddingBottom: 8,
-          color: theme.onBackground,
-        }}
+        style={[{ color: theme.onBackground }, styles.headline]}
       >
         {getString('onboardingScreen.welcome')}
       </Text>
-      <Text
-        style={{
-          fontWeight: '600',
-          paddingBottom: 8,
-          color: theme.onBackground,
-        }}
-      >
+      <Text style={[{ color: theme.onBackground }, styles.helpText]}>
         {renderHelptext()}
       </Text>
       <View
         style={[
-          styles.stepContainer,
           { backgroundColor: theme.surfaceVariant },
+          styles.stepContainer,
         ]}
       >
         {renderStep()}
@@ -87,6 +75,18 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     paddingHorizontal: 16,
     paddingTop: 40,
+  },
+  logo: {
+    width: 90,
+    height: 90,
+  },
+  headline: {
+    fontWeight: '600',
+    paddingBottom: 8,
+  },
+  helpText: {
+    fontWeight: '600',
+    paddingBottom: 8,
   },
   stepContainer: {
     borderRadius: 8,

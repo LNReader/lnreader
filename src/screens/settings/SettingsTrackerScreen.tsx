@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Portal, Text, Button, Provider } from 'react-native-paper';
 
 import { getTracker, useTheme, useTracker } from '@hooks/persisted';
@@ -25,11 +25,11 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
           theme={theme}
         />
         <View
-          style={{
-            flex: 1,
-            backgroundColor: theme.background,
-            paddingVertical: 8,
-          }}
+          style={[
+            { backgroundColor: theme.background },
+            styles.flex1,
+            styles.screenPadding,
+          ]}
         >
           <List.Section>
             <List.SubHeader theme={theme}>
@@ -91,40 +91,28 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
 
           <Portal>
             <Modal visible={visible} onDismiss={hideModal}>
-              <Text
-                style={{
-                  color: theme.onSurface,
-                  fontSize: 18,
-                }}
-              >
+              <Text style={[{ color: theme.onSurface }, styles.modalText]}>
                 {getString('trackingScreen.logOutMessage', {
                   name: tracker?.name,
                 })}
               </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                }}
-              >
+              <View style={styles.modalButtonRow}>
                 <Button
-                  style={{ marginTop: 30 }}
-                  labelStyle={{
-                    color: theme.primary,
-                    letterSpacing: 0,
-                    textTransform: 'none',
-                  }}
+                  style={styles.modalButton}
+                  labelStyle={[
+                    { color: theme.primary },
+                    styles.modalButtonLabel,
+                  ]}
                   onPress={hideModal}
                 >
                   {getString('common.cancel')}
                 </Button>
                 <Button
-                  style={{ marginTop: 30 }}
-                  labelStyle={{
-                    color: theme.primary,
-                    letterSpacing: 0,
-                    textTransform: 'none',
-                  }}
+                  style={styles.modalButton}
+                  labelStyle={[
+                    { color: theme.primary },
+                    styles.modalButtonLabel,
+                  ]}
                   onPress={() => {
                     removeTracker();
                     hideModal();
@@ -142,3 +130,26 @@ const TrackerScreen = ({ navigation }: TrackerSettingsScreenProps) => {
 };
 
 export default TrackerScreen;
+
+const styles = StyleSheet.create({
+  flex1: {
+    flex: 1,
+  },
+  screenPadding: {
+    paddingVertical: 8,
+  },
+  modalText: {
+    fontSize: 18,
+  },
+  modalButtonRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  modalButton: {
+    marginTop: 30,
+  },
+  modalButtonLabel: {
+    letterSpacing: 0,
+    textTransform: 'none',
+  },
+});

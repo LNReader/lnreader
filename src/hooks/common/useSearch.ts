@@ -14,7 +14,7 @@ const useSearch = (defaultSearchText?: string, clearSearchOnUnfocus = true) => {
         clearSearchbar();
       }
     }
-  }, [isFocused, clearSearchbar]);
+  }, [isFocused, clearSearchbar, clearSearchOnUnfocus]);
 
   return { searchText, setSearchText, clearSearchbar };
 };

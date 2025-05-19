@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ThemeColors } from '@theme/types';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { Portal, TextInput } from 'react-native-paper';
@@ -166,6 +166,15 @@ function RestoreBackup({
     });
   }, []);
 
+  const emptyComponent = useCallback(() => {
+    return (
+      <EmptyView
+        description={getString('backupScreen.noBackupFound')}
+        theme={theme}
+      />
+    );
+  }, [theme]);
+
   return (
     <>
       <FlatList
@@ -187,17 +196,12 @@ function RestoreBackup({
             <Text style={{ color: theme.primary }}>
               {item.name?.replace(/\.backup$/, ' ')}
             </Text>
-            <Text style={{ color: theme.secondary, fontSize: 12 }}>
+            <Text style={[{ color: theme.secondary }, styles.fontSize]}>
               {'(' + dayjs(item.createdTime).format('LL') + ')'}
             </Text>
           </Button>
         )}
-        ListEmptyComponent={() => (
-          <EmptyView
-            description={getString('backupScreen.noBackupFound')}
-            theme={theme}
-          />
-        )}
+        ListEmptyComponent={emptyComponent}
       />
       <View style={styles.footerContainer}>
         <Button
@@ -228,9 +232,9 @@ export default function GoogleDriveModal({
     });
     const isSignedIn = GoogleSignin.hasPreviousSignIn();
     if (isSignedIn) {
-      const user = GoogleSignin.getCurrentUser();
-      if (user) {
-        setUser(user);
+      const localUser = GoogleSignin.getCurrentUser();
+      if (localUser) {
+        setUser(localUser);
         setBackupModal(BackupModal.AUTHORIZED);
       }
     } else {
@@ -350,4 +354,5 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlignVertical: 'center',
   },
+  fontSize: { fontSize: 12 },
 });

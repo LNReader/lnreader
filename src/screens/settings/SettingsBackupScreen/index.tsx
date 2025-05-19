@@ -11,6 +11,7 @@ import {
 } from '@services/backup/legacy';
 import { ScrollView } from 'react-native-gesture-handler';
 import { getString } from '@strings/translations';
+import { StyleSheet } from 'react-native';
 
 const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
   const theme = useTheme();
@@ -33,7 +34,7 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
         handleGoBack={() => navigation.goBack()}
         theme={theme}
       />
-      <ScrollView style={{ paddingBottom: 40 }}>
+      <ScrollView style={styles.paddingBottom}>
         <List.Section>
           <List.SubHeader theme={theme}>
             {getString('backupScreen.remoteBackup')}
@@ -95,3 +96,7 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
 };
 
 export default BackupSettings;
+
+const styles = StyleSheet.create({
+  paddingBottom: { paddingBottom: 40 },
+});

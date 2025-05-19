@@ -185,7 +185,7 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
         { marginLeft: left, marginRight: right },
       ]}
     >
-      <BottomSheetView style={{ flex: 1 }}>
+      <BottomSheetView style={styles.flex}>
         <TabView
           commonOptions={{
             label: renderLabel,
@@ -219,4 +219,5 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
   },
+  flex: { flex: 1 },
 });
