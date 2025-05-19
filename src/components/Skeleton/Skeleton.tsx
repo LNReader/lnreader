@@ -164,7 +164,7 @@ const ChapterListSkeleton = ({ img }: { img?: boolean }) => {
   React.useEffect(() => {
     if (disableLoadingAnimations) return;
     sv.value = withRepeat(withSequence(0, withTiming(160, { duration })), -1);
-  }, [disableLoadingAnimations]);
+  }, [disableLoadingAnimations, sv]);
 
   const skeletonItems = React.useMemo(() => Array.from({ length: 7 }), []);
 
@@ -178,7 +178,7 @@ const ChapterListSkeleton = ({ img }: { img?: boolean }) => {
 
   const LGC = React.useMemo(
     () => createLGC(highlightColor, animatedProps, disableLoadingAnimations),
-    [disableLoadingAnimations, highlightColor],
+    [animatedProps, disableLoadingAnimations, highlightColor],
   );
   const backgroundStyle = React.useMemo(
     () => ({ backgroundColor }),

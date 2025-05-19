@@ -290,6 +290,8 @@ export default function useChapter(
       hideHeader,
       navigateChapter,
       refetch,
+      setChapter,
+      setLoading,
     }),
     [
       hidden,
@@ -304,6 +306,8 @@ export default function useChapter(
       hideHeader,
       navigateChapter,
       refetch,
+      setChapter,
+      setLoading,
     ],
   );
 }

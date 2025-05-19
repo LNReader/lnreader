@@ -4,6 +4,7 @@ import { Button } from '@components';
 import { Dialog, overlay, Portal } from 'react-native-paper';
 import { ThemeColors } from '@theme/types';
 import { getString } from '@strings/translations';
+import { StyleSheet } from 'react-native';
 
 interface RemoveDownloadsDialogProps {
   dialogVisible: boolean;
@@ -23,17 +24,20 @@ const RemoveDownloadsDialog = ({
       <Dialog
         visible={dialogVisible}
         onDismiss={hideDialog}
-        style={{
-          borderRadius: 6,
-          backgroundColor: overlay(2, theme.surface),
-        }}
+        style={[
+          {
+            backgroundColor: overlay(2, theme.surface),
+          },
+          styles.borderRadius,
+        ]}
       >
         <Dialog.Title
-          style={{
-            letterSpacing: 0,
-            fontSize: 16,
-            color: theme.onSurface,
-          }}
+          style={[
+            {
+              color: theme.onSurface,
+            },
+            styles.fontSize,
+          ]}
         >
           {getString('downloadScreen.removeDownloadsWarning')}
         </Dialog.Title>
@@ -47,3 +51,11 @@ const RemoveDownloadsDialog = ({
 };
 
 export default RemoveDownloadsDialog;
+
+const styles = StyleSheet.create({
+  fontSize: {
+    letterSpacing: 0,
+    fontSize: 16,
+  },
+  borderRadius: { borderRadius: 6 },
+});

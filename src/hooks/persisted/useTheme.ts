@@ -55,7 +55,7 @@ export const useTheme = (): ThemeColors => {
     };
 
     return colors;
-  }, [appTheme?.id, isAmoledBlack, customAccent]);
+  }, [appTheme, isAmoledBlack, customAccent]);
 
   return theme;
 };

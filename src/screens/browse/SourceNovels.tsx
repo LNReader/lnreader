@@ -41,11 +41,12 @@ const SourceNovels = ({ navigation, route }: SourceNovelsScreenProps) => {
         renderItem={renderItem}
         ListEmptyComponent={
           <Text
-            style={{
-              color: theme.onSurfaceVariant,
-              padding: 20,
-              textAlign: 'center',
-            }}
+            style={[
+              {
+                color: theme.onSurfaceVariant,
+              },
+              styles.text,
+            ]}
           >
             {getString('browseScreen.noSource')}
           </Text>
@@ -59,4 +60,5 @@ export default SourceNovels;
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  text: { padding: 20, textAlign: 'center' },
 });

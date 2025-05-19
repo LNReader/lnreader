@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RefreshControl, View } from 'react-native';
+import { RefreshControl, StyleSheet, View } from 'react-native';
 import { xor } from 'lodash-es';
 
 import { EmptyView } from '@components/index';
@@ -77,7 +77,7 @@ export const LibraryView: React.FC<Props> = ({
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.flex}>
       <NovelList
         data={novels}
         extraData={[selectedNovelIds]}
@@ -114,3 +114,7 @@ export const LibraryView: React.FC<Props> = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  flex: { flex: 1 },
+});

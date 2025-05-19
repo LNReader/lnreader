@@ -53,7 +53,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
 
   const theme = useTheme();
 
-  const updateList = async () => {
+  const updateList = useCallback(async () => {
     getDetailedUpdates(chapterListInfo.novelId, onlyDownloadedChapters).then(
       res => {
         if (res.length) {
@@ -61,10 +61,10 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         }
       },
     );
-  };
+  }, [chapterListInfo.novelId, getDetailedUpdates, onlyDownloadedChapters]);
   useEffect(() => {
     updateList();
-  }, []);
+  }, [updateList]);
 
   const handleDownloadChapter = (chapter: Update | DownloadedChapter) => {
     if (chapterListInfo.updatesPerDay) {

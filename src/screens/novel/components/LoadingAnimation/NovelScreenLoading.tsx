@@ -112,18 +112,14 @@ export const LoadingChapterItem = memo(() => (
       <LoadingShimmer style={styles.text} height={20} width={FULL_WIDTH - 50} />
       <LoadingShimmer style={styles.text} height={16} width={FULL_WIDTH - 50} />
     </View>
-    <LoadingShimmer
-      style={{ borderRadius: 20, alignSelf: 'center', marginLeft: 20 }}
-      height={30}
-      width={30}
-    />
+    <LoadingShimmer style={styles.loadingChapterItem} height={30} width={30} />
   </View>
 ));
 
 const Chapters = memo(() => (
   <View>
     <LoadingShimmer
-      style={[styles.text, { marginBottom: 5, marginHorizontal: 16 }]}
+      style={[styles.text, styles.chapters]}
       height={30}
       width={FULL_WIDTH}
     />
@@ -144,6 +140,8 @@ const NovelScreenLoading: React.FC<Props> = () => {
 };
 
 const styles = StyleSheet.create({
+  loadingChapterItem: { borderRadius: 20, alignSelf: 'center', marginLeft: 20 },
+  chapters: { marginBottom: 5, marginHorizontal: 16 },
   chapter: {
     flexDirection: 'row',
     marginHorizontal: 16,

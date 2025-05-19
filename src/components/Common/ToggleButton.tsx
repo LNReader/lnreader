@@ -1,9 +1,26 @@
 import React from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, View, StyleSheet } from 'react-native';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 import { ThemeColors } from '../../theme/types';
 import Color from 'color';
 import { MaterialDesignIconName } from '@type/icon';
+
+// --- Dynamic style helpers ---
+
+const getToggleButtonPressableStyle = (
+  selected: boolean,
+  theme: ThemeColors,
+) => ({
+  backgroundColor: selected
+    ? Color(theme.primary).alpha(0.12).string()
+    : 'transparent',
+});
+
+const getToggleColorButtonPressableStyle = (backgroundColor: string) => ({
+  backgroundColor,
+});
+
+// --- Components ---
 
 interface ToggleButtonProps {
   icon: MaterialDesignIconName;
@@ -20,23 +37,13 @@ export const ToggleButton: React.FC<ToggleButtonProps> = ({
   color,
   onPress,
 }) => (
-  <View
-    style={{
-      borderRadius: 6,
-      overflow: 'hidden',
-      marginHorizontal: 6,
-    }}
-  >
+  <View style={styles.toggleButtonContainer}>
     <Pressable
       android_ripple={{ color: theme.rippleColor }}
-      style={{
-        padding: 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: selected
-          ? Color(theme.primary).alpha(0.12).string()
-          : 'transparent',
-      }}
+      style={[
+        styles.toggleButtonPressable,
+        getToggleButtonPressableStyle(selected, theme),
+      ]}
       onPress={onPress}
     >
       <MaterialCommunityIcons
@@ -61,24 +68,13 @@ export const ToggleColorButton: React.FC<ToggleColorButtonProps> = ({
   textColor,
   onPress,
 }) => (
-  <View
-    style={{
-      borderRadius: 50,
-      overflow: 'hidden',
-      marginHorizontal: 6,
-      height: 44,
-      width: 44,
-    }}
-  >
+  <View style={styles.toggleColorButtonContainer}>
     <Pressable
       android_ripple={{ color: textColor }}
-      style={{
-        flex: 1,
-        padding: 10,
-        backgroundColor: backgroundColor,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
+      style={[
+        styles.toggleColorButtonPressable,
+        getToggleColorButtonPressableStyle(backgroundColor),
+      ]}
       onPress={onPress}
     >
       <MaterialCommunityIcons
@@ -89,3 +85,29 @@ export const ToggleColorButton: React.FC<ToggleColorButtonProps> = ({
     </Pressable>
   </View>
 );
+
+const styles = StyleSheet.create({
+  toggleButtonContainer: {
+    borderRadius: 6,
+    overflow: 'hidden',
+    marginHorizontal: 6,
+  },
+  toggleButtonPressable: {
+    padding: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  toggleColorButtonContainer: {
+    borderRadius: 50,
+    overflow: 'hidden',
+    marginHorizontal: 6,
+    height: 44,
+    width: 44,
+  },
+  toggleColorButtonPressable: {
+    flex: 1,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

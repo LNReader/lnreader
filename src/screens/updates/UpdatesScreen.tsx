@@ -47,7 +47,7 @@ const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
         getUpdates();
         setIsLoading(isLoadingUpdates);
       }, 0);
-    }, []),
+    }, [getUpdates, isLoadingUpdates]),
   );
 
   useEffect(

@@ -5,6 +5,7 @@ import { getString } from '@strings/translations';
 import { ChapterInfo } from '@database/types';
 import { useAppSettings } from '@hooks/persisted';
 import Animated, { ZoomIn } from 'react-native-reanimated';
+import { StyleSheet } from 'react-native';
 
 interface ReadButtonProps {
   chapters: ChapterInfo[];
@@ -38,7 +39,7 @@ const ReadButton = ({
                   name: chapters[0].name,
                 })
           }
-          style={{ margin: 16 }}
+          style={styles.margin}
           onPress={navigateToLastReadChapter}
           mode="contained"
         />
@@ -50,3 +51,7 @@ const ReadButton = ({
 };
 
 export default ReadButton;
+
+const styles = StyleSheet.create({
+  margin: { margin: 16 },
+});

@@ -38,6 +38,8 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
     setFalse: closeDeleteCategoryModal,
   } = useBoolean();
 
+  const fontWeight = category.sort === 1 ? '700' : '300';
+
   return (
     <>
       <View
@@ -67,7 +69,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
               styles.name,
               {
                 color: theme.onSurface,
-                fontWeight: category.sort === 1 ? '700' : '300',
+                fontWeight,
               },
             ]}
             onPress={showCategoryModal}

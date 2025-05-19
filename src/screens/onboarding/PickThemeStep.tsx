@@ -17,11 +17,7 @@ const ThemeList = ({
   const [, setTheme] = useMMKVObject('APP_THEME');
   return (
     <FlatList
-      contentContainerStyle={{
-        margin: 'auto',
-        paddingHorizontal: 8,
-        paddingBottom: 8,
-      }}
+      contentContainerStyle={styles.flatListContainer}
       data={list}
       renderItem={({ item }) => (
         <ThemePicker
@@ -92,7 +88,7 @@ export default function PickThemeStep() {
   const theme = useTheme();
   const [, setTheme] = useMMKVObject('APP_THEME');
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.flex}>
       <View style={styles.buttonContainer}>
         <SchemeButton
           onPress={() => {
@@ -140,4 +136,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderTopWidth: 1,
   },
+  flatListContainer: {
+    margin: 'auto',
+    paddingHorizontal: 8,
+    paddingBottom: 8,
+  },
+  flex: { flex: 1 },
 });
