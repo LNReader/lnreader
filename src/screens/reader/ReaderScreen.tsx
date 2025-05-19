@@ -10,10 +10,8 @@ import ChapterDrawer from './components/ChapterDrawer';
 import ChapterLoadingScreen from './ChapterLoadingScreen/ChapterLoadingScreen';
 import { ErrorScreenV2 } from '@components';
 import { ChapterScreenProps } from '@navigators/types';
-import WebView from 'react-native-webview';
 import { getString } from '@strings/translations';
 import KeepScreenAwake from './components/KeepScreenAwake';
-import useChapter from './hooks/useChapter';
 import { ChapterContextProvider, useChapterContext } from './ChapterContext';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { useBackHandler } from '@hooks/index';
@@ -67,7 +65,6 @@ export const ChapterContent = ({
 }: ChapterContentProps) => {
   const { left, right } = useSafeAreaInsets();
   const { novel, chapter } = useChapterContext();
-  const webViewRef = useRef<WebView>(null);
   const readerSheetRef = useRef<BottomSheetModalMethods>(null);
   const theme = useTheme();
   const { pageReader = false, keepScreenOn } = useChapterGeneralSettings();
@@ -77,18 +74,8 @@ export const ChapterContent = ({
     setBookmarked(chapter.bookmark);
   }, [chapter]);
 
-  const {
-    hidden,
-    loading,
-    error,
-    prevChapter,
-    nextChapter,
-    chapterText,
-    saveProgress,
-    hideHeader,
-    navigateChapter,
-    refetch,
-  } = useChapter(webViewRef);
+  const { hidden, loading, error, webViewRef, hideHeader, refetch } =
+    useChapterContext();
 
   const scrollToStart = () =>
     requestAnimationFrame(() => {
@@ -141,14 +128,7 @@ export const ChapterContent = ({
       {loading ? (
         <ChapterLoadingScreen />
       ) : (
-        <WebViewReader
-          html={chapterText}
-          nextChapter={nextChapter}
-          webViewRef={webViewRef}
-          saveProgress={saveProgress}
-          onPress={hideHeader}
-          navigateChapter={navigateChapter}
-        />
+        <WebViewReader onPress={hideHeader} />
       )}
       <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />
       {!hidden ? (
@@ -160,12 +140,8 @@ export const ChapterContent = ({
             setBookmarked={setBookmarked}
           />
           <ReaderFooter
-            theme={theme}
-            nextChapter={nextChapter}
-            prevChapter={prevChapter}
             readerSheetRef={readerSheetRef}
             scrollToStart={scrollToStart}
-            navigateChapter={navigateChapter}
             navigation={navigation}
             openDrawer={openDrawerI}
           />

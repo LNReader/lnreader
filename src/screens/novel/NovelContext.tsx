@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef } from 'react';
+import React, { createContext, useContext, useMemo, useRef } from 'react';
 import { useNovel } from '@hooks/persisted';
 import { RouteProp } from '@react-navigation/native';
 import { ReaderStackParamList } from '@navigators/types';
@@ -8,6 +8,7 @@ import { useDeviceOrientation } from '@hooks/index';
 type NovelContextType = ReturnType<typeof useNovel> & {
   navigationBarHeight: number;
   statusBarHeight: number;
+  chapterTextCache: Map<number, string | Promise<string>>;
 };
 
 const defaultValue = {} as NovelContextType;
@@ -37,6 +38,9 @@ export function NovelContextProvider({
   const orientation = useDeviceOrientation();
   const NavigationBarHeight = useRef(bottom);
   const StatusBarHeight = useRef(top);
+  const chapterTextCache = useRef<Map<number, string | Promise<string>>>(
+    new Map(),
+  );
 
   if (bottom < NavigationBarHeight.current && orientation === 'landscape') {
     NavigationBarHeight.current = bottom;
@@ -46,15 +50,17 @@ export function NovelContextProvider({
   if (top > StatusBarHeight.current) {
     StatusBarHeight.current = top;
   }
-
+  const contextValue = useMemo(
+    () => ({
+      ...novelHookContent,
+      navigationBarHeight: NavigationBarHeight.current,
+      statusBarHeight: StatusBarHeight.current,
+      chapterTextCache: chapterTextCache.current,
+    }),
+    [novelHookContent],
+  );
   return (
-    <NovelContext.Provider
-      value={{
-        ...novelHookContent,
-        navigationBarHeight: NavigationBarHeight.current,
-        statusBarHeight: StatusBarHeight.current,
-      }}
-    >
+    <NovelContext.Provider value={contextValue}>
       {children}
     </NovelContext.Provider>
   );

@@ -1,9 +1,9 @@
 import { StatusBar } from 'react-native';
 import { ThemeColors } from '@theme/types';
 import * as NavigationBar from 'expo-navigation-bar';
-import Color from 'color';
+import Color, { ColorInstance } from 'color';
 
-export const setStatusBarColor = (color: ThemeColors | Color) => {
+export const setStatusBarColor = (color: ThemeColors | ColorInstance) => {
   if (color instanceof Color) {
     // fullscreen reader mode
     StatusBar.setBarStyle(color.isDark() ? 'light-content' : 'dark-content');
