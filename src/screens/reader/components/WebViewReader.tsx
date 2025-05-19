@@ -63,13 +63,17 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
     () =>
       getMMKVObject<ChapterReaderSettings>(CHAPTER_READER_SETTINGS) ||
       initialChapterReaderSettings,
-    [],
+    // needed to preserve settings during chapter change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [chapter.id],
   );
   const chapterGeneralSettings = useMemo(
     () =>
       getMMKVObject<ChapterGeneralSettings>(CHAPTER_GENERAL_SETTINGS) ||
       initialChapterGeneralSettings,
-    [],
+    // needed to preserve settings during chapter change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [chapter.id],
   );
   const batteryLevel = useMemo(() => getBatteryLevelSync(), []);
   const plugin = getPlugin(novel?.pluginId);
