@@ -1,4 +1,4 @@
-import React, { memo, Suspense, useCallback, useEffect, useState } from 'react';
+import React, { memo, Suspense, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { RefreshControl, SectionList, StyleSheet, Text } from 'react-native';
 
@@ -10,45 +10,31 @@ import {
 } from '@components';
 
 import { useSearch } from '@hooks';
-import { useUpdates, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import UpdatesSkeletonLoading from './components/UpdatesSkeletonLoading';
 import UpdateNovelCard from './components/UpdateNovelCard';
-import { useFocusEffect } from '@react-navigation/native';
 import { deleteChapter } from '@database/queries/ChapterQueries';
 import { showToast } from '@utils/showToast';
 import ServiceManager from '@services/ServiceManager';
 import { UpdateScreenProps } from '@navigators/types';
 import { UpdateOverview } from '@database/types';
-import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
-
-const Skeleton = () => <ChapterListSkeleton img />;
+import { useUpdateContext } from '@components/Context/UpdateContext';
 
 const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
   const theme = useTheme();
   const {
-    isLoading: isLoadingUpdates,
     updatesOverview,
     getUpdates,
     lastUpdateTime,
     showLastUpdateTime,
     error,
-  } = useUpdates();
+  } = useUpdateContext();
   const { searchText, setSearchText, clearSearchbar } = useSearch();
-  const [isLoading, setIsLoading] = useState(true);
   const onChangeText = (text: string) => {
     setSearchText(text);
   };
-  useFocusEffect(
-    useCallback(() => {
-      //? Push updates to the end of the stack to avoid lag
-      setTimeout(() => {
-        getUpdates();
-        setIsLoading(isLoadingUpdates);
-      }, 0);
-    }, [getUpdates, isLoadingUpdates]),
-  );
 
   useEffect(
     () =>
@@ -81,9 +67,7 @@ const UpdatesScreen = ({ navigation }: UpdateScreenProps) => {
           },
         ]}
       />
-      {isLoading && updatesOverview.length === 0 ? (
-        <Skeleton />
-      ) : error ? (
+      {error ? (
         <ErrorScreenV2 error={error} />
       ) : (
         <SectionList
