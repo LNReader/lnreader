@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { Button, Modal } from '@components/index';
+import { Button, Modal, SwitchItem } from '@components/index';
 import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { Storage } from '@plugins/helpers/storage';
@@ -9,6 +9,7 @@ import { Storage } from '@plugins/helpers/storage';
 interface PluginSetting {
   value: string;
   label: string;
+  type?: 'Switch';
 }
 
 interface PluginSettings {
@@ -34,7 +35,9 @@ const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
 }) => {
   const theme = useTheme();
 
-  const [formValues, setFormValues] = useState<{ [key: string]: string }>({});
+  const [formValues, setFormValues] = useState<
+    Record<string, string | boolean>
+  >({});
 
   useEffect(() => {
     if (pluginSettings) {
@@ -63,7 +66,7 @@ const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
     }
   }, [pluginSettings, pluginId]);
 
-  const handleChange = (key: string, value: string) => {
+  const handleChange = (key: string, value: string | boolean) => {
     setFormValues(prevValues => ({
       ...prevValues,
       [key]: value,
@@ -97,22 +100,33 @@ const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
         {title}
       </Text>
       <Text style={{ color: theme.onSurfaceVariant }}>{description}</Text>
-
-      {Object.entries(pluginSettings).map(([key, setting]) => (
-        <TextInput
-          key={key}
-          mode="outlined"
-          label={setting.label}
-          value={formValues[key] || ''}
-          onChangeText={value => handleChange(key, value)}
-          placeholder={`Enter ${setting.label}`}
-          placeholderTextColor={theme.onSurfaceDisabled}
-          underlineColor={theme.outline}
-          style={[{ color: theme.onSurface }, styles.textInput]}
-          theme={{ colors: { ...theme } }}
-        />
-      ))}
-
+      {Object.entries(pluginSettings).map(([key, setting]) => {
+        if (setting?.type === 'Switch') {
+          return (
+            <SwitchItem
+              key={key}
+              value={!!formValues[key]}
+              label={setting.label}
+              onPress={() => handleChange(key, !formValues[key])}
+              theme={theme}
+            />
+          );
+        }
+        return (
+          <TextInput
+            key={key}
+            mode="outlined"
+            label={setting.label}
+            value={(formValues[key] ?? '') as string}
+            onChangeText={value => handleChange(key, value)}
+            placeholder={`Enter ${setting.label}`}
+            placeholderTextColor={theme.onSurfaceDisabled}
+            underlineColor={theme.outline}
+            style={[{ color: theme.onSurface }, styles.textInput]}
+            theme={{ colors: { ...theme } }}
+          />
+        );
+      })}
       <View style={styles.customCSSButtons}>
         <Button
           onPress={handleSave}
