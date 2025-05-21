@@ -6,6 +6,9 @@ import {
   Text,
   StyleSheet,
   InteractionManager,
+  ViewStyle,
+  StyleProp,
+  TextStyle,
 } from 'react-native';
 import { useBrowseSettings, usePlugins } from '@hooks/persisted';
 import { PluginItem } from '@plugins/types';
@@ -16,7 +19,7 @@ import { BrowseScreenProps } from '@navigators/types';
 import { Button, IconButtonV2 } from '@components';
 import TrackerCard from '../discover/TrackerCard';
 import { showToast } from '@utils/showToast';
-import { Portal } from 'react-native-paper';
+import { Portal, Text as PaperText } from 'react-native-paper';
 import SourceSettingsModal from './Modals/SourceSettings';
 import { useBoolean, UseBooleanReturnType } from '@hooks';
 import { getPlugin } from '@plugins/pluginManager';
@@ -204,6 +207,31 @@ const Item = memo(
   },
 );
 
+const LatestButton = memo(({ textColor }: { textColor: string }) => {
+  const viewStyle: StyleProp<ViewStyle> = useMemo(
+    () => ({
+      alignItems: 'center',
+      justifyContent: 'center',
+      minWidth: 64,
+      paddingBottom: 1,
+    }),
+    [],
+  );
+  const textStyle: StyleProp<TextStyle> = useMemo(
+    () => ({
+      color: textColor,
+    }),
+    [textColor],
+  );
+  return (
+    <View style={viewStyle}>
+      <PaperText variant="labelLarge" style={[styles.buttonGroup, textStyle]}>
+        {getString('browseScreen.latest')}
+      </PaperText>
+    </View>
+  );
+});
+
 const SkeletonItem = memo(
   ({ item, theme }: { item: PluginItem; theme: ThemeColors }) => {
     const containerStyle = useMemo(
@@ -245,15 +273,7 @@ const SkeletonItem = memo(
       ),
       [theme],
     );
-    const LatestButton = useCallback(
-      () => (
-        <Button
-          title={getString('browseScreen.latest')}
-          textColor={theme.primary}
-        />
-      ),
-      [theme],
-    );
+
     return (
       <Pressable
         style={containerStyle}
@@ -274,7 +294,7 @@ const SkeletonItem = memo(
         <View style={styles.flex} />
         {item.hasSettings ? <CogButton /> : null}
         {item.hasUpdate || __DEV__ ? <DownloadButton /> : null}
-        <LatestButton />
+        <LatestButton textColor={theme.primary} />
       </Pressable>
     );
   },
