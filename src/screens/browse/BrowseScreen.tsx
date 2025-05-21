@@ -8,7 +8,8 @@ import { getString } from '@strings/translations';
 
 import { EmptyView, SafeAreaView, SearchbarV2 } from '@components';
 import { BrowseScreenProps } from '@navigators/types';
-import { AvailableTab, InstalledTab } from './components/BrowseTabs';
+import { AvailableTab } from './components/AvailableTab';
+import { InstalledTab } from './components/InstalledTab';
 
 const routes = [
   { key: 'installedRoute', title: getString('browseScreen.installed') },
