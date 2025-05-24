@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import About from '../screens/more/About';
 import Settings from '../screens/settings/SettingsScreen';
 import BackupSettings from '../screens/settings/SettingsBackupScreen';
-import AdvancedSettings from '../screens/settings/SettingsAdvancedScreen';
+import AdvancedSettings from '../screens/settings/settingsScreens/SettingsAdvancedScreen';
 import SettingsSubScreen from '../screens/settings/settingsScreens/SettingsSubScreen';
 import TaskQueue from '../screens/more/TaskQueueScreen';
 import Downloads from '../screens/more/DownloadsScreen';
