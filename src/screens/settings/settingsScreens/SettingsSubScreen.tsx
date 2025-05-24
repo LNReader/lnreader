@@ -6,11 +6,11 @@ import { Appbar, List } from '@components';
 import S from '../Settings';
 import RenderSettings from '../dynamic/RenderSettingsGroup';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { StackScreenProps } from '@react-navigation/stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SettingsStackParamList } from '@navigators/types';
 import { Settings as SettingsType } from '../Settings.d';
 
-type Props = StackScreenProps<
+type Props = NativeStackScreenProps<
   SettingsStackParamList,
   keyof Omit<SettingsStackParamList, 'Settings'>
 > & { disableAppbar?: boolean };

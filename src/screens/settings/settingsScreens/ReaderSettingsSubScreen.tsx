@@ -4,7 +4,7 @@ import { Appbar } from '@components/index';
 import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import SettingsSubScreen from './SettingsSubScreen';
-import { StackScreenProps } from '@react-navigation/stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SettingsStackParamList } from '@navigators/types';
 import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
 import SettingsWebView from './SettingsWebView';
@@ -17,7 +17,7 @@ export type TextAlignments =
   | 'justify'
   | undefined;
 
-type Props = StackScreenProps<
+type Props = NativeStackScreenProps<
   SettingsStackParamList,
   keyof Omit<SettingsStackParamList, 'Settings'>
 >;
@@ -27,6 +27,12 @@ const ReaderSettingsSubScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const [webViewHeight, setWebViewHeight] = useState(280);
   const layoutHeight = Dimensions.get('window').height;
+  const newRoute: typeof route = {
+    ...route,
+    params: {
+      settingsSource: 'reader',
+    },
+  };
 
   return (
     <>
@@ -65,7 +71,7 @@ const ReaderSettingsSubScreen: React.FC<Props> = ({ navigation, route }) => {
       >
         <SettingsSubScreen
           navigation={navigation}
-          route={route}
+          route={newRoute}
           disableAppbar
         />
       </View>
