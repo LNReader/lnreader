@@ -17,6 +17,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { StyleSheet } from 'react-native';
 
 interface SettingSwitchProps {
   setting: SwitchSetting;
@@ -53,13 +54,22 @@ const SettingSwitchV2 = ({
       res = chapterReaderSettings[setting.valueKey];
     }
     return (res ?? setting.defaultValue) as boolean;
-  }, [librarySettings, appSettings, showLastUpdateTime, chapterSettings]);
+  }, [
+    setting.settingOrigin,
+    setting.defaultValue,
+    setting.valueKey,
+    librarySettings,
+    appSettings,
+    showLastUpdateTime,
+    chapterSettings,
+    chapterReaderSettings,
+  ]);
 
   const dependents = useMemo(() => {
     return setting.dependents?.filter(d =>
       quickSettings ? d.quickSettings : true,
     );
-  }, [setting.dependents?.length]);
+  }, [quickSettings, setting.dependents]);
 
   const maxHeight = useSharedValue(
     currentValue && dependents?.length ? 60 * (dependents?.length ?? 0) : 0,
@@ -88,10 +98,10 @@ const SettingSwitchV2 = ({
       <SwitchItem
         value={currentValue}
         label={setting.title}
-        description={quickSettings ? setting.description : undefined}
+        description={!quickSettings ? setting.description : undefined}
         onPress={() => update(!currentValue, setting.valueKey)}
         theme={theme}
-        style={{ paddingHorizontal: 16 }}
+        style={styles.paddingHorizontal}
         endOfLine={endOfLine}
         quickSettingsItem={quickSettings}
       />
@@ -112,3 +122,7 @@ const SettingSwitchV2 = ({
   );
 };
 export default React.memo(SettingSwitchV2);
+
+const styles = StyleSheet.create({
+  paddingHorizontal: { paddingHorizontal: 16 },
+});
