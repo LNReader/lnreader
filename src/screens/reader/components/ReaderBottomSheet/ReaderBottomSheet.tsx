@@ -21,16 +21,13 @@ import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '@strings/translations';
 
-import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
-import TextSizeSlider from './TextSizeSlider';
-import ReaderThemeSelector from './ReaderThemeSelector';
-import ReaderTextAlignSelector from './ReaderTextAlignSelector';
-import ReaderValueChange from './ReaderValueChange';
-import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { StringMap } from '@strings/types';
+import RenderSettings from '@screens/settings/dynamic/RenderSettings';
+import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
+import ReaderSettings from '@screens/settings/settingsGroups/readerSettingsGroup';
 
 type TabViewLabelProps = {
   route: {
@@ -44,29 +41,20 @@ type TabViewLabelProps = {
   style?: StyleProp<TextStyle | null>;
 };
 
-const ReaderTab: React.FC = React.memo(() => (
-  <Suspense fallback={<></>}>
-    <View style={styles.readerTab}>
-      <TextSizeSlider />
-      <ReaderThemeSelector />
-      <ReaderTextAlignSelector />
-      <ReaderValueChange
-        label={getString('readerScreen.bottomSheet.lineHeight')}
-        valueKey="lineHeight"
-      />
-      <ReaderValueChange
-        label={getString('readerScreen.bottomSheet.padding')}
-        valueKey="padding"
-        valueChange={2}
-        min={0}
-        max={50}
-        decimals={0}
-        unit="px"
-      />
-      <ReaderFontPicker />
-    </View>
-  </Suspense>
-));
+const ReaderTab: React.FC = React.memo(() => {
+  const settings = ReaderSettings.subGroup.filter(
+    v => v.id === 'readerTheme',
+  )[0].settings;
+  return (
+    <Suspense fallback={<></>}>
+      <View style={styles.readerTab}>
+        {settings.map((v, i) => (
+          <RenderSettings key={i} setting={v} />
+        ))}
+      </View>
+    </Suspense>
+  );
+});
 
 const GeneralTab: React.FC = React.memo(() => {
   const theme = useTheme();
