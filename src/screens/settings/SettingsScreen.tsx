@@ -1,15 +1,33 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { Appbar, List, SafeAreaView } from '@components';
 import { useTheme } from '@hooks/persisted';
 
 import { getString } from '@strings/translations';
-import { SettingsScreenProps } from '@navigators/types';
+import { SettingsScreenProps, SettingsStackParamList } from '@navigators/types';
 import Settings from './Settings';
+import {
+  CommonActions,
+  NavigationProp,
+  StackActions,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 
-const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
+const SettingsScreen = ({}: SettingsScreenProps) => {
   const theme = useTheme();
+  const isFocused = useIsFocused();
+  const navigation = useNavigation<NavigationProp<SettingsStackParamList>>();
+  const preloadSubScreen = useCallback(() => {
+    navigation.dispatch(CommonActions.preload('ReaderSettings'));
+  }, [navigation]);
+
+  useEffect(() => {
+    if (!isFocused) return;
+    // current bug in react-navigation lets preloaded screen slide in from the left
+    setTimeout(preloadSubScreen, 0);
+  }, [navigation, isFocused, preloadSubScreen]);
 
   return (
     <SafeAreaView excludeTop>
@@ -28,11 +46,19 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
               title={setting.groupTitle}
               icon={setting.icon}
               onPress={() =>
-                navigation.navigate('SettingsStack', {
-                  screen: key === 'reader' ? 'ReaderSettings' : 'SubScreen',
-                  params: { settingsSource: key },
-                })
+                navigation.dispatch(
+                  StackActions.push(
+                    key === 'reader' ? 'ReaderSettings' : 'SubScreen',
+                    { settingsSource: key },
+                  ),
+                )
               }
+              onPressIn={() => {
+                if (key === 'reader') return;
+                navigation.dispatch(
+                  CommonActions.preload('SubScreen', { settingsSource: key }),
+                );
+              }}
               theme={theme}
             />
           );
@@ -42,10 +68,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           title={getString('common.backup')}
           icon="cloud-upload-outline"
           onPress={() =>
-            navigation.navigate('SettingsStack', {
-              screen: 'BackupSettings',
-              params: { settingsSource: 'general' },
-            })
+            navigation.navigate('BackupSettings', { settingsSource: 'general' })
           }
           theme={theme}
         />
@@ -53,9 +76,8 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
           title={getString('advancedSettings')}
           icon="code-tags"
           onPress={() =>
-            navigation.navigate('SettingsStack', {
-              screen: 'AdvancedSettings',
-              params: { settingsSource: 'general' },
+            navigation.navigate('AdvancedSettings', {
+              settingsSource: 'general',
             })
           }
           theme={theme}
