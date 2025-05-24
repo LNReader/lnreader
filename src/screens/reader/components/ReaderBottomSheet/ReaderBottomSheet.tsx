@@ -6,12 +6,18 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, { RefObject, useMemo, useState, useCallback } from 'react';
+import React, {
+  RefObject,
+  useMemo,
+  useState,
+  useCallback,
+  Suspense,
+} from 'react';
 import Color from 'color';
 
 import { BottomSheetFlashList, BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
-import { useTheme } from '@hooks/persisted';
+import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '@strings/translations';
 
@@ -20,6 +26,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { StringMap } from '@strings/types';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import RenderSettings from '@screens/settings/dynamic/RenderSettings';
+import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
+import ReaderSettings from '@screens/settings/settingsGroups/readerSettingsGroup';
 
 type TabViewLabelProps = {
   route: {
@@ -34,14 +43,17 @@ type TabViewLabelProps = {
 };
 
 const ReaderTab: React.FC = React.memo(() => {
+  const settings = ReaderSettings.subGroup.filter(
+    v => v.id === 'readerTheme',
+  )[0].settings;
   return (
-    <View style={styles.readerTab}>
-      <List.Section>
+    <Suspense fallback={<></>}>
+      <View style={styles.readerTab}>
         {settings.map((v, i) => (
-          <RenderSettings key={tab + i} setting={v} />
+          <RenderSettings key={i} setting={v} />
         ))}
-      </List.Section>
-    </View>
+      </View>
+    </Suspense>
   );
 });
 
