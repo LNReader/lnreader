@@ -17,6 +17,7 @@ interface ListItemProps {
   description?: string | null;
   icon?: string;
   onPress?: () => void;
+  onPressIn?: () => void;
   theme: ThemeColors;
   disabled?: boolean;
   right?: string;
@@ -51,6 +52,7 @@ const Item: React.FC<ListItemProps> = ({
   description,
   icon,
   onPress,
+  onPressIn,
   theme,
   disabled,
   right,
@@ -96,6 +98,7 @@ const Item: React.FC<ListItemProps> = ({
       onPress={onPress}
       rippleColor={theme.rippleColor}
       style={styles.listItemCtn}
+      onPressIn={onPressIn}
     />
   );
 };
