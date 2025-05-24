@@ -18,7 +18,7 @@ const SettingsScreen = ({ navigation }: SettingsScreenProps) => {
         handleGoBack={navigation.goBack}
         theme={theme}
       />
-      <View style={{ flex: 1, backgroundColor: theme.background }}>
+      <ScrollView style={[styles.flex, { backgroundColor: theme.background }]}>
         {Object.typedKeys(Settings).map(key => {
           const setting = Settings[key];
 
