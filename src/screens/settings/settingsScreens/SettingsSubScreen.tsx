@@ -1,5 +1,5 @@
-import React from 'react';
-import { ScrollView, View } from 'react-native';
+import React, { useMemo } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { useTheme } from '@hooks/persisted';
 import { Appbar, List } from '@components';
@@ -8,33 +8,29 @@ import RenderSettings from '../dynamic/RenderSettingsGroup';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { SettingsStackParamList } from '@navigators/types';
-import { Settings } from '../Settings.d';
+import { Settings as SettingsType } from '../Settings.d';
 
 type Props = StackScreenProps<
   SettingsStackParamList,
   keyof Omit<SettingsStackParamList, 'Settings'>
 > & { disableAppbar?: boolean };
 
-const SettingsSubScreen: React.FC<Props> = ({
-  navigation,
-  route,
-  disableAppbar,
-}) => {
+const SettingsSubScreen = ({ navigation, route, disableAppbar }: Props) => {
   const theme = useTheme();
-  const Settings = S[route.params.settingsSource as keyof Settings];
+  const Settings = S[route.params.settingsSource as keyof SettingsType];
   const insets = useSafeAreaInsets();
 
+  const padding = useMemo(
+    () => ({
+      paddingLeft: insets.left,
+      paddingRight: insets.right,
+      marginBottom: disableAppbar ? 0 : insets.bottom,
+    }),
+    [disableAppbar, insets.bottom, insets.left, insets.right],
+  );
+
   return (
-    <ScrollView
-      style={{
-        flex: 1,
-        position: 'relative',
-        paddingLeft: insets.left,
-        paddingRight: insets.right,
-        marginBottom: disableAppbar ? 0 : insets.bottom,
-        // paddingTop: disableAppbar ? 0 : insets.top,
-      }}
-    >
+    <ScrollView style={[styles.scrollView, padding]}>
       {disableAppbar ? null : (
         <Appbar
           title={Settings.groupTitle}
@@ -56,4 +52,11 @@ const SettingsSubScreen: React.FC<Props> = ({
   );
 };
 
-export default SettingsSubScreen;
+export default React.memo(SettingsSubScreen);
+
+const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+    position: 'relative',
+  },
+});
