@@ -184,10 +184,22 @@ const GeneralSettings: SettingsGroup<generalIds> = {
       settings: [
         {
           title: getString('generalSettingsScreen.disableHapticFeedback'),
+          description: getString(
+            'generalSettingsScreen.disableHapticFeedbackDescription',
+          ),
           type: 'Switch',
           settingOrigin: 'App',
-
           valueKey: 'disableHapticFeedback',
+          defaultValue: false,
+        },
+        {
+          title: getString('generalSettingsScreen.disableLoadingAnimations'),
+          description: getString(
+            'generalSettingsScreen.disableLoadingAnimationsDesc',
+          ),
+          type: 'Switch',
+          settingOrigin: 'App',
+          valueKey: 'disableLoadingAnimations',
           defaultValue: false,
         },
       ],

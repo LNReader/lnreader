@@ -46,6 +46,7 @@ export default function SettingsThemePicker({ theme, settings }: ThemePicker) {
       >
         {settings.options.map(item => (
           <TP
+            horizontal
             key={item.id}
             currentTheme={theme}
             theme={item}
