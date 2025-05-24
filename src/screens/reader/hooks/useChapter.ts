@@ -120,7 +120,6 @@ export default function useChapter(
         const chap = navChapter ?? chapter;
         const cachedText = chapterTextCache.get(chap.id);
         const text = cachedText ?? loadChapterText(chap.id, chap.path);
-
         const [nextChap, prevChap, awaitedText] = await Promise.all([
           getNextChapter(chap.novelId, chap.position!, chap.page),
           getPrevChapter(chap.novelId, chap.position!, chap.page),
@@ -292,6 +291,7 @@ export default function useChapter(
       refetch,
       setChapter,
       setLoading,
+      getChapter,
     }),
     [
       hidden,
@@ -308,6 +308,7 @@ export default function useChapter(
       refetch,
       setChapter,
       setLoading,
+      getChapter,
     ],
   );
 }

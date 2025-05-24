@@ -5,19 +5,21 @@ import {
 } from 'react-native-paper';
 
 import { useTheme } from '@hooks/persisted';
+import { ThemeProp } from 'react-native-paper/lib/typescript/types';
 
 interface ButtonProps extends Partial<PaperButtonProps> {
   title?: string;
 }
 
 const Button: React.FC<ButtonProps> = props => {
-  const theme = useTheme();
-
-  return (
-    <PaperButton {...props} theme={{ colors: theme }}>
-      {props.title || props.children}
-    </PaperButton>
+  const t = useTheme();
+  const theme: ThemeProp = React.useMemo(() => ({ colors: t }), [t]);
+  const Children = React.useMemo(
+    () => props.title || props.children,
+    [props.children, props.title],
   );
+
+  return <PaperButton {...props} theme={theme} children={Children} />;
 };
 
-export default Button;
+export default React.memo(Button);
