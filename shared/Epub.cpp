@@ -5,6 +5,7 @@
 #include <vector>
 #include <Epub.hpp>
 #include <sstream>
+#include <regex>
 
 std::string join(const std::string &folder_path, const std::string &child_path)
 {
@@ -60,6 +61,25 @@ std::string getParentPath(const std::string &path)
     }
 
     return path.substr(0, pos);
+}
+
+void clean_summary(std::string &summary)
+{
+    std::regex regx0("&nbsp;", std::regex::gcase);
+    summary = std::regex_replace(summary, regx0, " ");
+    std::regex regx1("</div>\s*|<\p>\s*", std::regex::gcase);
+    summary = std::regex_replace(summary, regx1, "\n");
+    std::regex regx2("<br>\s*" std::regex::gcase);
+    summary = std::regex_replace(summary, regx2, "\n");
+    std::regex regx3("<[^>]+>" std::regex::gcase);
+    summary = std::regex_replace(summary, regx3, "");
+    std::regex regx4("&lt;" std::regex::gcase);
+    summary = std::regex_replace(summary, regx4, "<");
+    std::regex regx5("&gt;" std::regex::gcase);
+    summary = std::regex_replace(summary, regx5, ">");
+    std::regex regx6("&amp;" std::regex::gcase);
+    summary = std::regex_replace(summary, regx6, "&");
+
 }
 
 std::string find_toc_href(const pugi::xml_document &opf_doc)
@@ -198,6 +218,7 @@ void parse_opf_from_folder(const std::string &base_dir,
     meta_out.author = metadata.child("dc:creator").text().as_string();
     meta_out.artist = metadata.child("dc:contributor").text().as_string();
     meta_out.summary = metadata.child("dc:description").text().as_string();
+    clean_summary(meta_out.summary);
 
     std::unordered_map<std::string, std::string> id_to_href;
 
