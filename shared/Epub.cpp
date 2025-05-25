@@ -67,7 +67,7 @@ void clean_summary(std::string &summary)
 {
     std::regex regx0("&nbsp;");
     summary = std::regex_replace(summary, regx0, " ");
-    std::regex regx1("</div>\\s*|<\p>\\s*");
+    std::regex regx1("</div>\\s*|</p>\\s*");
     summary = std::regex_replace(summary, regx1, "\n\n");
     std::regex regx2("<br>\\s*");
     summary = std::regex_replace(summary, regx2, "\n");
