@@ -1,3 +1,4 @@
+import { ValueKey } from '@screens/settings/Settings.d';
 import { getString } from '@strings/translations';
 
 export enum LibraryFilter {
@@ -146,14 +147,24 @@ export const gridSizeList = [
   },
 ];
 
-export const badgesList = [
+export const badgesList: {
+  label: string;
+  key: ValueKey<'Library'>;
+  defaultValue: boolean;
+}[] = [
   {
     label: getString('libraryScreen.bottomSheet.display.downloadBadges'),
+    key: 'showDownloadBadges',
+    defaultValue: true,
   },
   {
     label: getString('libraryScreen.bottomSheet.display.unreadBadges'),
+    key: 'showUnreadBadges',
+    defaultValue: true,
   },
   {
     label: getString('libraryScreen.bottomSheet.display.showNoOfItems'),
+    key: 'showNumberOfNovels',
+    defaultValue: false,
   },
 ];

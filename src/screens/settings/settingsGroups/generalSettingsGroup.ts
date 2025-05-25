@@ -67,12 +67,6 @@ const GeneralSettings: SettingsGroup<generalIds> = {
               .join(', '),
 
           mode: 'multiple',
-          valueKey: [
-            'showDownloadBadges',
-            'showNumberOfNovels',
-            'showUnreadBadges',
-          ],
-          defaultValue: [true, false, true],
           options: badgesList,
         },
         {
