@@ -78,7 +78,7 @@ std::string find_toc_href(const pugi::xml_document &opf_doc)
 }
 
 void parse_navele_recursive(const pugi::xml_node &parent,
-                            std::unordered_map<std::string, std::string> &href_to_label)
+                            std::unordered_map<std::string, std::string> &href_to_label, std::string &nav_folder)
 {
     for (pugi::xml_node li : parent.children("li"))
     {
@@ -93,20 +93,20 @@ void parse_navele_recursive(const pugi::xml_node &parent,
                 href = href.substr(0, sharp);
 
             if (!href.empty() && !label.empty())
-                href_to_label[href] = label;
+                href_to_label[join(nav_folder, href)] = label;
         }
 
-        // Recursively parse nested <ol>
         if (pugi::xml_node sublist = li.child("ol"))
         {
-            parse_navele_recursive(sublist, href_to_label);
+            parse_navele_recursive(sublist, href_to_label, nav_folder);
         }
     }
 }
 
 void parse_nav_xhtml(const std::string &nav_path,
-                     std::unordered_map<std::string, std::string> &href_to_label)
+                     std::unordered_map<std::string, std::string> &path_to_label)
 {
+    std::string nav_folder = getParentPath(nav_path);
     pugi::xml_document nav_doc;
     if (!nav_doc.load_file(nav_path.c_str()))
         return;
@@ -118,13 +118,13 @@ void parse_nav_xhtml(const std::string &nav_path,
         pugi::xml_node ol = node.child("ol");
         if (ol)
         {
-            parse_navele_recursive(ol, href_to_label);
+            parse_navele_recursive(ol, path_to_label, nav_folder);
         }
     }
 }
 
 void parse_navpoint_recursive(const pugi::xml_node &navPoint,
-                              std::unordered_map<std::string, std::string> &result)
+                              std::unordered_map<std::string, std::string> &result, std::string &ncx_folder)
 {
     for (pugi::xml_node point : navPoint.children("navPoint"))
     {
@@ -143,16 +143,16 @@ void parse_navpoint_recursive(const pugi::xml_node &navPoint,
             size_t sharp = src.find('#');
             if (sharp != std::string::npos)
                 src = src.substr(0, sharp);
-            result[src] = label;
+            result[join(ncx_folder, src)] = label;
         }
 
-        parse_navpoint_recursive(point, result);
+        parse_navpoint_recursive(point, result, ncx_folder);
     }
 }
 
 void parse_toc_ncx(const std::string &ncx_path, std::unordered_map<std::string, std::string> &href_to_label)
 {
-
+    std::string ncx_folder = getParentPath(ncx_path);
     pugi::xml_document doc;
     if (!doc.load_file(ncx_path.c_str()))
         return;
@@ -161,7 +161,7 @@ void parse_toc_ncx(const std::string &ncx_path, std::unordered_map<std::string, 
     if (!navMap)
         return;
 
-    parse_navpoint_recursive(navMap, href_to_label);
+    parse_navpoint_recursive(navMap, href_to_label, ncx_folder);
 }
 
 void parse_opf_from_folder(const std::string &base_dir,
@@ -180,17 +180,17 @@ void parse_opf_from_folder(const std::string &base_dir,
         version = package.attribute("version").as_string();
     }
 
-    std::unordered_map<std::string, std::string> href_to_label;
+    std::unordered_map<std::string, std::string> path_to_label;
     std::string toc_href = find_toc_href(opf_doc);
     if (toc_href.find("ncx") != std::string::npos)
     {
         std::string ncx_path = join(opf_dir, toc_href);
-        parse_toc_ncx(ncx_path, href_to_label);
+        parse_toc_ncx(ncx_path, path_to_label);
     }
     else
     {
         std::string nav_path = join(opf_dir, toc_href);
-        parse_nav_xhtml(nav_path, href_to_label);
+        parse_nav_xhtml(nav_path, path_to_label);
     }
 
     auto metadata = opf_doc.child("package").child("metadata");
@@ -246,9 +246,9 @@ void parse_opf_from_folder(const std::string &base_dir,
             Chapter chapter;
             chapter.path = join(opf_dir, chapter_href);
 
-            if (href_to_label.count(chapter_href))
+            if (path_to_label.count(chapter.path))
             {
-                chapter.name = href_to_label[chapter_href];
+                chapter.name = path_to_label[chapter.path];
             }
             if (chapter.name.empty())
             {
