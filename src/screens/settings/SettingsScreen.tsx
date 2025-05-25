@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { Appbar, List, SafeAreaView } from '@components';
@@ -19,15 +19,14 @@ const SettingsScreen = ({}: SettingsScreenProps) => {
   const theme = useTheme();
   const isFocused = useIsFocused();
   const navigation = useNavigation<NavigationProp<SettingsStackParamList>>();
-  const preloadSubScreen = useCallback(() => {
-    navigation.dispatch(CommonActions.preload('ReaderSettings'));
-  }, [navigation]);
 
   useEffect(() => {
     if (!isFocused) return;
     // current bug in react-navigation lets preloaded screen slide in from the left
-    setTimeout(preloadSubScreen, 0);
-  }, [navigation, isFocused, preloadSubScreen]);
+    setTimeout(() => {
+      navigation.dispatch(CommonActions.preload('ReaderSettings'));
+    }, 0);
+  }, [navigation, isFocused]);
 
   return (
     <SafeAreaView excludeTop>
