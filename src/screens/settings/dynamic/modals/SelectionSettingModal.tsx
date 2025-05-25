@@ -8,7 +8,7 @@ import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
 import { Checkbox, List } from '@components';
 import { useBoolean } from '@hooks/index';
-import { ModalSetting } from '@screens/settings/Settings.d';
+import { ModalSetting, ModalSettingsType } from '@screens/settings/Settings.d';
 import { useAppSettings } from '@hooks/persisted/useSettings';
 import { SortItem } from '@components/Checkbox/Checkbox';
 import useUpdateSettingsFn from '../functions/useUpdateSettingsFn';
@@ -18,6 +18,11 @@ interface DisplayModeModalProps {
   theme: ThemeColors;
   quickSettings?: boolean;
 }
+
+type Value<T extends ModalSettingsType['mode']> = T extends 'multiple'
+  ? Array<boolean>
+  : boolean | string | number;
+
 const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
   theme,
   setting,
@@ -29,7 +34,9 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
   const appSettings = useAppSettings();
 
   const update = useUpdateSettingsFn(setting.settingOrigin);
-  const currentValue = useMemo(() => {
+
+  const mode = setting.mode;
+  const currentValue: Value<typeof mode> = useMemo(() => {
     if (setting.mode === 'single' || setting.mode === 'order') {
       if (setting.settingOrigin === 'Library') {
         return librarySettings[setting.valueKey] ?? setting.defaultValue;
@@ -38,17 +45,25 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
       }
     } else if (setting.mode === 'multiple') {
       if (setting.settingOrigin === 'Library') {
-        return setting.valueKey.map((k, i) => {
-          return librarySettings[k] ?? setting.defaultValue[i];
-        });
+        return setting.options.map(k => {
+          return librarySettings[k.key] ?? k.defaultValue;
+        }) as Array<boolean>;
       } else {
-        return setting.valueKey.map((k, i) => {
-          return appSettings[k] ?? setting.defaultValue[i];
-        });
+        return setting.options.map(k => {
+          return appSettings[k.key] ?? k.defaultValue;
+        }) as Array<boolean>;
       }
     }
     return 0;
-  }, [librarySettings, appSettings]);
+  }, [
+    setting.mode,
+    setting.settingOrigin,
+    setting.valueKey,
+    setting.defaultValue,
+    setting.options,
+    librarySettings,
+    appSettings,
+  ]);
 
   function generateDescription() {
     if (!setting.description || quickSettings) {
@@ -78,48 +93,46 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
           <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
             {setting.title}
           </Text>
-          {setting.mode === 'single'
-            ? setting.options.map(mode => (
+          {mode === 'single'
+            ? setting.options.map(m => (
                 <RadioButton
-                  key={mode.value}
-                  status={currentValue === mode.value}
-                  onPress={() => update(mode.value, setting.valueKey)}
-                  label={mode.label}
+                  key={m.value}
+                  status={currentValue === m.value}
+                  onPress={() => update(m.value, setting.valueKey)}
+                  label={m.label}
                   theme={theme}
                 />
               ))
-            : setting.mode === 'multiple'
-            ? setting.options.map((mode, i) => {
+            : mode === 'multiple'
+            ? setting.options.map((m, i) => {
+                const value = (currentValue as Array<boolean>)[i];
                 return (
                   <Checkbox
-                    key={mode.label}
-                    label={mode.label} //@ts-ignore
-                    status={currentValue[i]}
-                    onPress={() =>
-                      //@ts-expect-error
-                      update(!currentValue[i], setting.valueKey[i])
-                    }
+                    key={m.label}
+                    label={m.label}
+                    status={value}
+                    onPress={() => update(!value, m.key)}
                     theme={theme}
                   />
                 );
               })
-            : setting.mode === 'order'
-            ? setting.options.map(mode => {
+            : mode === 'order'
+            ? setting.options.map(m => {
                 return (
                   <SortItem
-                    key={mode.label}
-                    label={mode.label}
+                    key={m.label}
+                    label={m.label}
                     theme={theme}
                     status={
-                      currentValue === mode.ASC
+                      currentValue === m.ASC
                         ? 'asc'
-                        : currentValue === mode.DESC
+                        : currentValue === m.DESC
                         ? 'desc'
                         : undefined
                     }
                     onPress={() =>
                       update(
-                        currentValue === mode.ASC ? mode.DESC : mode.ASC,
+                        currentValue === m.ASC ? m.DESC : m.ASC,
                         setting.valueKey,
                       )
                     }

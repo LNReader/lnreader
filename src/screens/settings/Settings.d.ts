@@ -43,7 +43,7 @@ export type SettingOrigin =
   | 'GeneralChapter'
   | 'ReaderChapter';
 
-export type ModalSettingsType<T extends SettingOrigin> = {
+export type ModalSettingsType<T extends SettingOrigin = 'App'> = {
   settingOrigin: T;
 } & (
   | {
@@ -58,11 +58,13 @@ export type ModalSettingsType<T extends SettingOrigin> = {
     }
   | {
       mode: 'multiple';
-      valueKey: Array<ValueKey<T>>;
-      defaultValue: Array<boolean>;
+      valueKey?: never;
+      defaultValue?: never;
       description?: (value: Array<boolean>) => string;
       options: Array<{
         label: string;
+        key: ValueKey<T>;
+        defaultValue?: boolean;
       }>;
     }
   | {
