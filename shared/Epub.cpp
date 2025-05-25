@@ -68,7 +68,7 @@ void clean_summary(std::string &summary)
     std::regex regx0("&nbsp;", std::regex::gcase);
     summary = std::regex_replace(summary, regx0, " ");
     std::regex regx1("</div>\s*|<\p>\s*", std::regex::gcase);
-    summary = std::regex_replace(summary, regx1, "\n");
+    summary = std::regex_replace(summary, regx1, "\n\n");
     std::regex regx2("<br>\s*" std::regex::gcase);
     summary = std::regex_replace(summary, regx2, "\n");
     std::regex regx3("<[^>]+>" std::regex::gcase);
