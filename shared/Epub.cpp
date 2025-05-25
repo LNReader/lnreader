@@ -79,6 +79,8 @@ void clean_summary(std::string &summary)
     summary = std::regex_replace(summary, regx5, ">");
     std::regex regx6("&amp;" std::regex::gcase);
     summary = std::regex_replace(summary, regx6, "&");
+    std::regex regx_clean("\n\n\n+" std::regex::gcase);
+    summary = std::regex_replace(summary, regx_clean, "\n\n");
 
 }
 
