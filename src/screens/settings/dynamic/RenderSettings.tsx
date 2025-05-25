@@ -12,13 +12,20 @@ import RepoSettings from './components/RepoSettings';
 import TrackerButton from './components/TrackerButton';
 import InfoItem from './components/InfoItem';
 import { memo } from 'react';
+import { SettingsStackParamList } from '@navigators/types';
+import { RouteProp } from '@react-navigation/native';
 
 const RenderSettings = ({
   setting,
   quickSettings,
+  route,
 }: {
   setting: SettingsSubGroupSettings;
   quickSettings?: boolean;
+  route: RouteProp<
+    SettingsStackParamList,
+    keyof Omit<SettingsStackParamList, 'Settings'>
+  >;
 }) => {
   const theme = useTheme();
 
@@ -59,7 +66,13 @@ const RenderSettings = ({
     case 'TTS':
       return <TextToSpeechSettings />;
     case 'Repo':
-      return <RepoSettings />;
+      return (
+        <RepoSettings
+          route={
+            route as RouteProp<SettingsStackParamList, 'RespositorySettings'>
+          }
+        />
+      );
     case 'Tracker':
       return <TrackerButton trackerName={setting.trackerName} />;
     case 'InfoItem':
