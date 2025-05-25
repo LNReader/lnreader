@@ -65,21 +65,21 @@ std::string getParentPath(const std::string &path)
 
 void clean_summary(std::string &summary)
 {
-    std::regex regx0("&nbsp;", std::regex::gcase);
+    std::regex regx0("&nbsp;");
     summary = std::regex_replace(summary, regx0, " ");
-    std::regex regx1("</div>\s*|<\p>\s*", std::regex::gcase);
+    std::regex regx1("</div>\s*|<\p>\s*");
     summary = std::regex_replace(summary, regx1, "\n\n");
-    std::regex regx2("<br>\s*" std::regex::gcase);
+    std::regex regx2("<br>\s*");
     summary = std::regex_replace(summary, regx2, "\n");
-    std::regex regx3("<[^>]+>" std::regex::gcase);
+    std::regex regx3("<[^>]+>");
     summary = std::regex_replace(summary, regx3, "");
-    std::regex regx4("&lt;" std::regex::gcase);
+    std::regex regx4("&lt;");
     summary = std::regex_replace(summary, regx4, "<");
-    std::regex regx5("&gt;" std::regex::gcase);
+    std::regex regx5("&gt;");
     summary = std::regex_replace(summary, regx5, ">");
-    std::regex regx6("&amp;" std::regex::gcase);
+    std::regex regx6("&amp;");
     summary = std::regex_replace(summary, regx6, "&");
-    std::regex regx_clean("\n\n\n+" std::regex::gcase);
+    std::regex regx_clean("\n\n\n+");
     summary = std::regex_replace(summary, regx_clean, "\n\n");
 
 }
