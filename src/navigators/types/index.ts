@@ -73,8 +73,8 @@ export type MoreStackParamList = {
   Statistics: undefined;
 };
 
-type SettingsProps = {
-  settingsSource: keyof Settings;
+type SettingsProps<T extends keyof Settings = keyof Settings> = {
+  settingsSource: T;
 };
 
 export type SettingsStackParamList = {
@@ -85,7 +85,7 @@ export type SettingsStackParamList = {
   BackupSettings: SettingsProps;
   AdvancedSettings: SettingsProps;
   LibrarySettings: SettingsProps;
-  RespositorySettings: SettingsProps;
+  RespositorySettings: SettingsProps<'repo'> & { url: string };
 };
 
 export type NovelScreenProps = NativeStackScreenProps<

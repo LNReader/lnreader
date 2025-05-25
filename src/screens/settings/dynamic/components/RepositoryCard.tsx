@@ -16,7 +16,7 @@ import DeleteRepositoryModal from '../modals/DeleteRepositoryModal';
 
 interface RepositoryCardProps {
   repository: Repository;
-  refetchRepositories: () => void;
+  refetchRepositories: () => Promise<void>;
   upsertRepository: (repositoryUrl: string, repository?: Repository) => void;
 }
 

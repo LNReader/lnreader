@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import { useTheme } from '@hooks/persisted';
 import { Appbar, List } from '@components';
@@ -30,7 +30,10 @@ const SettingsSubScreen = ({ navigation, route, disableAppbar }: Props) => {
   );
 
   return (
-    <ScrollView style={[styles.scrollView, padding]}>
+    <ScrollView
+      style={[styles.scrollView, padding]}
+      contentContainerStyle={styles.contentContainer}
+    >
       {disableAppbar ? null : (
         <Appbar
           title={Settings.groupTitle}
@@ -38,16 +41,16 @@ const SettingsSubScreen = ({ navigation, route, disableAppbar }: Props) => {
           theme={theme}
         />
       )}
-      <List.Section>
+      <List.Section style={styles.view}>
         {Settings.subGroup.map((val, i) => (
           <RenderSettings
             setting={val}
             index={i}
             key={'subscreenSetting' + i}
+            route={route}
           />
         ))}
       </List.Section>
-      {!disableAppbar && <View style={{ height: insets.bottom }} />}
     </ScrollView>
   );
 };
@@ -58,5 +61,12 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     position: 'relative',
+  },
+  contentContainer: {
+    flexGrow: 1,
+  },
+  view: {
+    flex: 1,
+    paddingBottom: 35,
   },
 });
