@@ -4,13 +4,15 @@ import {
   useLibrarySettings,
 } from '@hooks/persisted';
 import {
+  useChapterGeneralSettings,
+  useChapterReaderSettings,
+} from '@hooks/persisted/useSettings';
+import {
   AppSettings,
   ChapterGeneralSettings,
   ChapterReaderSettings,
   LibrarySettings,
-  useChapterGeneralSettings,
-  useChapterReaderSettings,
-} from '@hooks/persisted/useSettings';
+} from '@screens/settings/constants/defaultValues';
 import { SettingOrigin, ValueKey } from '@screens/settings/Settings.d';
 
 type UpdateFunction<T extends ValueKey<SettingOrigin>> = (

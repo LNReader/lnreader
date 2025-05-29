@@ -49,8 +49,16 @@ const TextAreaModal = ({
     } else if (setting.settingOrigin === 'ReaderChapter') {
       res = chapterReaderSettings[setting.valueKey];
     }
-    return (res ?? setting.defaultValue) as string;
-  }, [librarySettings, appSettings, showLastUpdateTime, chapterSettings]);
+    return res as string;
+  }, [
+    setting.settingOrigin,
+    setting.valueKey,
+    librarySettings,
+    appSettings,
+    showLastUpdateTime,
+    chapterSettings,
+    chapterReaderSettings,
+  ]);
 
   return (
     <>

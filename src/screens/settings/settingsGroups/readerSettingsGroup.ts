@@ -1,7 +1,5 @@
 import { getString } from '@strings/translations';
 import { readerIds, SettingsGroup } from '../Settings.d';
-import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
-
 const ReaderSettings: SettingsGroup<readerIds> = {
   groupTitle: getString('readerSettings.title'),
   icon: 'book-open-outline',
@@ -16,34 +14,27 @@ const ReaderSettings: SettingsGroup<readerIds> = {
           type: 'Switch',
           settingOrigin: 'GeneralChapter',
           valueKey: 'keepScreenOn',
-          defaultValue: true,
           quickSettings: true,
         },
-
         {
           title: getString('readerScreen.bottomSheet.swipeGestures'),
           type: 'Switch',
           settingOrigin: 'GeneralChapter',
           valueKey: 'swipeGestures',
-          defaultValue: false,
           quickSettings: true,
         },
-
         {
           title: getString('readerScreen.bottomSheet.pageReader'),
           type: 'Switch',
           settingOrigin: 'GeneralChapter',
           valueKey: 'pageReader',
-          defaultValue: false,
           quickSettings: true,
         },
-
         {
           title: getString('readerScreen.bottomSheet.volumeButtonsScroll'),
           type: 'Switch',
           settingOrigin: 'GeneralChapter',
           valueKey: 'useVolumeButtons',
-          defaultValue: false,
           quickSettings: true,
         },
         {
@@ -51,7 +42,6 @@ const ReaderSettings: SettingsGroup<readerIds> = {
           type: 'Switch',
           settingOrigin: 'GeneralChapter',
           valueKey: 'tapToScroll',
-          defaultValue: false,
           quickSettings: true,
         },
         {
@@ -59,7 +49,6 @@ const ReaderSettings: SettingsGroup<readerIds> = {
           type: 'Switch',
           settingOrigin: 'GeneralChapter',
           valueKey: 'removeExtraParagraphSpacing',
-          defaultValue: false,
           quickSettings: true,
         },
       ],
@@ -73,23 +62,19 @@ const ReaderSettings: SettingsGroup<readerIds> = {
           type: 'Switch',
           settingOrigin: 'GeneralChapter',
           valueKey: 'autoScroll',
-          defaultValue: false,
           quickSettings: true,
-
           dependents: [
             {
               title: getString('readerSettings.autoScrollInterval'),
               type: 'NumberInput',
               settingOrigin: 'GeneralChapter',
               valueKey: 'autoScrollInterval',
-              defaultValue: '10',
             },
             {
               title: getString('readerSettings.autoScrollOffset'),
               type: 'NumberInput',
               settingOrigin: 'GeneralChapter',
               valueKey: 'autoScrollOffset',
-              defaultValue: WINDOW_HEIGHT.toFixed(),
             },
           ],
         },
@@ -108,7 +93,6 @@ const ReaderSettings: SettingsGroup<readerIds> = {
           description: getString('readerSettings.cssHint'),
           openFileLabel: getString('readerSettings.openCSSFile'),
           clearDialog: getString('readerSettings.clearCustomCSS'),
-          defaultValue: '',
         },
       ],
     },
@@ -125,7 +109,6 @@ const ReaderSettings: SettingsGroup<readerIds> = {
           description: getString('readerSettings.jsHint'),
           openFileLabel: getString('readerSettings.openJSFile'),
           clearDialog: getString('readerSettings.clearCustomJS'),
-          defaultValue: '',
         },
       ],
     },
@@ -138,7 +121,6 @@ const ReaderSettings: SettingsGroup<readerIds> = {
           type: 'Switch',
           settingOrigin: 'GeneralChapter',
           valueKey: 'fullScreenMode',
-          defaultValue: true,
           quickSettings: true,
         },
         {
@@ -147,7 +129,6 @@ const ReaderSettings: SettingsGroup<readerIds> = {
           type: 'Switch',
           settingOrigin: 'GeneralChapter',
           valueKey: 'verticalSeekbar',
-          defaultValue: true,
           quickSettings: true,
         },
         {
@@ -155,7 +136,6 @@ const ReaderSettings: SettingsGroup<readerIds> = {
           type: 'Switch',
           settingOrigin: 'GeneralChapter',
           valueKey: 'bionicReading',
-          defaultValue: false,
           quickSettings: true,
         },
         {
@@ -163,7 +143,6 @@ const ReaderSettings: SettingsGroup<readerIds> = {
           type: 'Switch',
           settingOrigin: 'GeneralChapter',
           valueKey: 'showScrollPercentage',
-          defaultValue: false,
           quickSettings: true,
         },
         {
@@ -171,7 +150,6 @@ const ReaderSettings: SettingsGroup<readerIds> = {
           type: 'Switch',
           settingOrigin: 'GeneralChapter',
           valueKey: 'showBatteryAndTime',
-          defaultValue: false,
           quickSettings: true,
         },
       ],

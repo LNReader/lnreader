@@ -109,16 +109,10 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
             {
               backgroundColor: overlay(2, theme.surface),
             },
-            keyboardHeight
-              ? {
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  width: 'auto',
-                  marginBottom: keyboardHeight,
-                }
-              : {},
+            !!keyboardHeight && styles.keyboardAvoiding,
+            !!keyboardHeight && {
+              marginBottom: keyboardHeight,
+            },
           ]}
         >
           <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
@@ -126,24 +120,21 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
           </Text>
           {showAccentColors ? (
             <FlatList
-              contentContainerStyle={{ marginBottom: 8 }}
+              contentContainerStyle={styles.marginBottom}
               data={accentColors}
               numColumns={4}
               keyExtractor={item => item}
               renderItem={({ item }) => (
                 <View
-                  style={{
-                    borderRadius: 4,
-                    overflow: 'hidden',
-                    backgroundColor: item,
-                    flex: 1 / 4,
-                    height: 40,
-                    marginHorizontal: 4,
-                    marginVertical: 4,
-                  }}
+                  style={[
+                    {
+                      backgroundColor: item,
+                    },
+                    styles.flatList,
+                  ]}
                 >
                   <Pressable
-                    style={{ flex: 1 }}
+                    style={styles.flex}
                     android_ripple={{
                       color: 'rgba(0,0,0,0.12)',
                     }}
@@ -177,8 +168,8 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
     if (c > 256 || c < 0) {
       setError('No valid rgb value');
     }
-    var hex = c.toString(16);
-    return hex.length == 1 ? '0' + hex : hex;
+    const hex = c.toString(16);
+    return hex.length === 1 ? '0' + hex : hex;
   }
 
   function rgbToHex(rgb: string) {
@@ -192,10 +183,10 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
     }
     let r, g, b;
     try {
-      r = parseInt(match[0]);
-      g = parseInt(match[1]);
-      b = parseInt(match[2]);
-    } catch (error) {
+      r = parseInt(match[0], 10);
+      g = parseInt(match[1], 10);
+      b = parseInt(match[2], 10);
+    } catch {
       setError('No valid rgb value');
       return rgb;
     }
@@ -218,5 +209,24 @@ const styles = StyleSheet.create({
   errorText: {
     color: '#FF0033',
     paddingTop: 8,
+  },
+  flatList: {
+    borderRadius: 4,
+    overflow: 'hidden',
+    flex: 1 / 4,
+    height: 40,
+    marginHorizontal: 4,
+    marginVertical: 4,
+  },
+  marginBottom: {
+    marginBottom: 8,
+  },
+  flex: { flex: 1 },
+  keyboardAvoiding: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: 'auto',
   },
 });

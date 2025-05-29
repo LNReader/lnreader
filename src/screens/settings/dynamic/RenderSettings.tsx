@@ -22,7 +22,7 @@ const RenderSettings = ({
 }: {
   setting: SettingsSubGroupSettings;
   quickSettings?: boolean;
-  route: RouteProp<
+  route?: RouteProp<
     SettingsStackParamList,
     keyof Omit<SettingsStackParamList, 'Settings'>
   >;

@@ -41,8 +41,16 @@ export default function SettingTextInput({
     } else if (setting.settingOrigin === 'ReaderChapter') {
       res = chapterReaderSettings[setting.valueKey];
     }
-    return (res ?? setting.defaultValue) as boolean;
-  }, [librarySettings, appSettings, showLastUpdateTime, chapterSettings]);
+    return res as boolean;
+  }, [
+    setting.settingOrigin,
+    setting.valueKey,
+    librarySettings,
+    appSettings,
+    showLastUpdateTime,
+    chapterSettings,
+    chapterReaderSettings,
+  ]);
   const labelStyle = [styles.fontSizeL, { color: theme.onSurface }];
 
   return (
