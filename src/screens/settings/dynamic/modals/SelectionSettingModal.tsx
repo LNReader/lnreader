@@ -36,21 +36,21 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
   const update = useUpdateSettingsFn(setting.settingOrigin);
 
   const mode = setting.mode;
-  const currentValue: Value<typeof mode> = useMemo(() => {
+  const currentValue: Value<typeof mode> | undefined = useMemo(() => {
     if (setting.mode === 'single' || setting.mode === 'order') {
       if (setting.settingOrigin === 'Library') {
-        return librarySettings[setting.valueKey] ?? setting.defaultValue;
+        return librarySettings[setting.valueKey];
       } else {
-        return appSettings[setting.valueKey] ?? setting.defaultValue;
+        return appSettings[setting.valueKey];
       }
     } else if (setting.mode === 'multiple') {
       if (setting.settingOrigin === 'Library') {
         return setting.options.map(k => {
-          return librarySettings[k.key] ?? k.defaultValue;
+          return librarySettings[k.key];
         }) as Array<boolean>;
       } else {
         return setting.options.map(k => {
-          return appSettings[k.key] ?? k.defaultValue;
+          return appSettings[k.key];
         }) as Array<boolean>;
       }
     }
@@ -59,7 +59,6 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
     setting.mode,
     setting.settingOrigin,
     setting.valueKey,
-    setting.defaultValue,
     setting.options,
     librarySettings,
     appSettings,

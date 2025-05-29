@@ -3,7 +3,7 @@ import type {
   ChapterGeneralSettings,
   ChapterReaderSettings,
   LibrarySettings,
-} from '@hooks/persisted/useSettings';
+} from './constants/defaultValues';
 import type { ThemeColors } from '@theme/types';
 import InfoItem from './dynamic/components/InfoItem';
 
@@ -49,7 +49,6 @@ export type ModalSettingsType<T extends SettingOrigin = 'App'> = {
   | {
       mode: 'single';
       valueKey: ValueKey<T>;
-      defaultValue: number;
       description?: (value: number) => string;
       options: Array<{
         label: string;
@@ -59,18 +58,15 @@ export type ModalSettingsType<T extends SettingOrigin = 'App'> = {
   | {
       mode: 'multiple';
       valueKey?: never;
-      defaultValue?: never;
       description?: (value: Array<boolean>) => string;
       options: Array<{
         label: string;
         key: ValueKey<T>;
-        defaultValue?: boolean;
       }>;
     }
   | {
       mode: 'order';
       valueKey: ValueKey<T>;
-      defaultValue: string;
       description?: (value: string) => string;
 
       options: Array<{
@@ -92,7 +88,6 @@ export type ModalSetting =
 export type SwitchSettingsType<T extends SettingOrigin> = {
   settingOrigin: T;
   valueKey: ValueKey<T>;
-  defaultValue: boolean;
   dependents?: Array<SettingsSubGroupSettings>;
 };
 
@@ -113,7 +108,6 @@ export type SwitchSetting = BaseSwitchSetting &
 export type NumberInputSettingsType<T extends SettingOrigin> = {
   settingOrigin: T;
   valueKey: ValueKey<T>;
-  defaultValue: string;
 };
 
 type BaseNumberInputSetting = {
@@ -133,7 +127,6 @@ export type NumberInputSetting = BaseNumberInputSetting &
 export type TextAreaSettingsType<T extends SettingOrigin> = {
   settingOrigin: T;
   valueKey: ValueKey<T>;
-  defaultValue: string;
 };
 
 type BaseTextAreaSetting = {
@@ -162,7 +155,6 @@ export type ThemePickerSetting = {
 export type ColorPickerSettingsType<T extends SettingOrigin> = {
   settingOrigin: T;
   // valueKey: ValueKey<T>;
-  // defaultValue: boolean;
 };
 
 type BaseColorPickerSetting = {

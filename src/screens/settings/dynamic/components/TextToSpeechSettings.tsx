@@ -4,7 +4,7 @@ import {
   useChapterReaderSettings,
   useTheme,
 } from '@hooks/persisted';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import VoicePickerModal from '../modals/VoicePickerModal';
 import { useBoolean } from '@hooks';
 import { Portal } from 'react-native-paper';
@@ -31,6 +31,26 @@ export default function TextToSpeechSettings() {
     setFalse: hideVoiceModal,
   } = useBoolean();
 
+  const EndOfLine = useCallback(() => {
+    return (
+      <IconButtonV2
+        name="reload"
+        theme={theme}
+        color={theme.primary}
+        style={styles.marginLeft}
+        onPress={() => {
+          setChapterReaderSettings({
+            tts: {
+              pitch: 1,
+              rate: 1,
+              voice: { name: 'System', language: 'System' } as Voice,
+            },
+          });
+        }}
+      />
+    );
+  }, [setChapterReaderSettings, theme]);
+
   return (
     <>
       <View style={styles.row}>
@@ -38,28 +58,11 @@ export default function TextToSpeechSettings() {
           setting={{
             settingOrigin: 'GeneralChapter',
             valueKey: 'TTSEnable',
-            defaultValue: true,
             title: 'Text to Speech',
             type: 'Switch',
           }}
           theme={theme}
-          endOfLine={() => (
-            <IconButtonV2
-              name="reload"
-              theme={theme}
-              color={theme.primary}
-              style={{ marginLeft: 6 }}
-              onPress={() => {
-                setChapterReaderSettings({
-                  tts: {
-                    pitch: 1,
-                    rate: 1,
-                    voice: { name: 'System', language: 'System' } as Voice,
-                  },
-                });
-              }}
-            />
-          )}
+          endOfLine={EndOfLine}
         />
       </View>
       {TTSEnable ? (
@@ -106,7 +109,7 @@ export default function TextToSpeechSettings() {
           </List.Section>
         </>
       ) : null}
-      <View style={{ height: 16 }} />
+      <View style={styles.height} />
       <Portal>
         <VoicePickerModal
           visible={voiceModalVisible}
@@ -131,5 +134,11 @@ const styles = StyleSheet.create({
   slider: {
     flex: 1,
     height: 40,
+  },
+  height: {
+    height: 16,
+  },
+  marginLeft: {
+    marginLeft: 6,
   },
 });

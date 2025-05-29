@@ -8,11 +8,13 @@ import { MMKVStorage, getMMKVObject } from '@utils/mmkv/mmkv';
 import {
   CHAPTER_GENERAL_SETTINGS,
   CHAPTER_READER_SETTINGS,
-  ChapterGeneralSettings,
-  ChapterReaderSettings,
-  initialChapterGeneralSettings,
-  initialChapterReaderSettings,
 } from '@hooks/persisted/useSettings';
+import {
+  ChapterGeneralDefaultSettings,
+  ChapterGeneralSettings,
+  ChapterReaderDefaultSettings,
+  ChapterReaderSettings,
+} from '@screens/settings/constants/defaultValues';
 import { getBatteryLevelSync } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
 import { dummyHTML } from './utils';
@@ -79,7 +81,7 @@ const SettingsWebView = () => {
   const readerSettings = useMemo(
     () =>
       getMMKVObject<ChapterReaderSettings>(CHAPTER_READER_SETTINGS) ||
-      initialChapterReaderSettings,
+      ChapterReaderDefaultSettings,
     // needed to preserve settings during chapter change
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [chapter.id],
@@ -87,7 +89,7 @@ const SettingsWebView = () => {
   const chapterGeneralSettings = useMemo(
     () =>
       getMMKVObject<ChapterGeneralSettings>(CHAPTER_GENERAL_SETTINGS) ||
-      initialChapterGeneralSettings,
+      ChapterGeneralDefaultSettings,
     // needed to preserve settings during chapter change
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [chapter.id],
@@ -191,7 +193,7 @@ const SettingsWebView = () => {
   const webViewSource = useMemo(
     () => ({
       html: `
-            <html>
+            <html >
               <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
                 ${webViewCSS}

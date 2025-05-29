@@ -16,7 +16,6 @@ import { usePlugins, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
 import AddRepositoryModal from '../dynamic/modals/AddRepositoryModal';
-import CategorySkeletonLoading from '@screens/Categories/components/CategorySkeletonLoading';
 import RepositoryCard from '../dynamic/components/RepositoryCard';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
@@ -36,7 +35,7 @@ const SettingsBrowseScreen = ({
   const [repositories, setRepositories] = useState<Repository[]>(
     getRepositoriesFromDb(),
   );
-  const getRepositories = () => {
+  const getRepositories = async () => {
     setRepositories(getRepositoriesFromDb());
   };
 

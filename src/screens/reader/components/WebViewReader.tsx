@@ -11,11 +11,13 @@ import { MMKVStorage, getMMKVObject } from '@utils/mmkv/mmkv';
 import {
   CHAPTER_GENERAL_SETTINGS,
   CHAPTER_READER_SETTINGS,
-  ChapterGeneralSettings,
-  ChapterReaderSettings,
-  initialChapterGeneralSettings,
-  initialChapterReaderSettings,
 } from '@hooks/persisted/useSettings';
+import {
+  ChapterGeneralDefaultSettings,
+  ChapterGeneralSettings,
+  ChapterReaderDefaultSettings,
+  ChapterReaderSettings,
+} from '@screens/settings/constants/defaultValues';
 import { getBatteryLevelSync } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
 import { PLUGIN_STORAGE } from '@utils/Storages';
@@ -62,7 +64,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
   const readerSettings = useMemo(
     () =>
       getMMKVObject<ChapterReaderSettings>(CHAPTER_READER_SETTINGS) ||
-      initialChapterReaderSettings,
+      ChapterReaderDefaultSettings,
     // needed to preserve settings during chapter change
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [chapter.id],
@@ -70,7 +72,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
   const chapterGeneralSettings = useMemo(
     () =>
       getMMKVObject<ChapterGeneralSettings>(CHAPTER_GENERAL_SETTINGS) ||
-      initialChapterGeneralSettings,
+      ChapterGeneralDefaultSettings,
     // needed to preserve settings during chapter change
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [chapter.id],

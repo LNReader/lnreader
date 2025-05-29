@@ -5,7 +5,7 @@ import { getString } from '@strings/translations';
 import { presetReaderThemes } from '@utils/constants/readerConstants';
 import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 import { FlatList } from 'react-native-gesture-handler';
-import { ReaderTheme } from '@hooks/persisted/useSettings';
+import { ReaderTheme } from '@screens/settings/constants/defaultValues';
 
 interface ReaderThemeSelectorProps {
   label?: string;

@@ -53,10 +53,9 @@ const SettingSwitchV2 = ({
     } else if (setting.settingOrigin === 'ReaderChapter') {
       res = chapterReaderSettings[setting.valueKey];
     }
-    return (res ?? setting.defaultValue) as boolean;
+    return res as boolean;
   }, [
     setting.settingOrigin,
-    setting.defaultValue,
     setting.valueKey,
     librarySettings,
     appSettings,
