@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Modal, overlay, Portal, TextInput } from 'react-native-paper';
-import { List } from '@components';
+import { Modal, overlay, Portal } from 'react-native-paper';
+import { Button, List } from '@components';
 import { ThemeColors } from '@theme/types';
 import { useBoolean } from '@hooks/index';
 import { ColorPickerSetting } from '@screens/settings/Settings.d';
 import { useMMKVString } from 'react-native-mmkv';
 import { useKeyboardHeight } from '@hooks/common/useKeyboardHeight';
 import { useChapterReaderSettings } from '@hooks/persisted';
+import TextInput from '@components/TextInput/TextInput';
+import { getString } from '@strings/translations';
 
 interface ColorPickerModalProps {
   settings: ColorPickerSetting;
@@ -166,18 +168,20 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
             />
           ) : null}
           <TextInput
-            value={text}
             defaultValue={typeof currentValue === 'string' ? currentValue : ''}
             placeholder="Hex Color Code (E.g. #3399FF)"
             onChangeText={setText}
             onSubmitEditing={onSubmitEditing}
-            mode="outlined"
-            theme={{ colors: { ...theme } }}
-            underlineColor={theme.outline}
-            dense
             error={Boolean(error)}
           />
           <Text style={styles.errorText}>{error}</Text>
+          <View style={styles.modalFooterCtn}>
+            <Button
+              title={getString('common.submit')}
+              onPress={onSubmitEditing}
+            />
+            <Button title={getString('common.cancel')} onPress={onDismiss} />
+          </View>
         </Modal>
       </Portal>
     </>
@@ -244,5 +248,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     width: 'auto',
+  },
+  modalFooterCtn: {
+    flexDirection: 'row-reverse',
   },
 });
