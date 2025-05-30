@@ -34,7 +34,7 @@ const TextAreaModal = ({
   const { showLastUpdateTime } = useLastUpdate();
   const chapterSettings = useChapterGeneralSettings();
   const chapterReaderSettings = useChapterReaderSettings();
-  const update = useUpdateSettingsFn(setting.settingOrigin)!;
+  const update = useUpdateSettingsFn(setting.settingOrigin);
 
   const currentValue = useMemo(() => {
     let res;

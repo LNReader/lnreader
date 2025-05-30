@@ -26,6 +26,7 @@ const AppearanceSettings: SettingsGroup<appearanceIds> = {
           title: getString('appearanceScreen.accentColor'),
           description: c => c.toUpperCase() ?? '',
           settingOrigin: 'MMKV',
+          valueKey: undefined,
         },
       ],
     },

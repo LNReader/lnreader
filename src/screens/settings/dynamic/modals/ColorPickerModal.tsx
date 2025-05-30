@@ -8,6 +8,7 @@ import { useBoolean } from '@hooks/index';
 import { ColorPickerSetting } from '@screens/settings/Settings.d';
 import { useMMKVString } from 'react-native-mmkv';
 import { useKeyboardHeight } from '@hooks/common/useKeyboardHeight';
+import { useChapterReaderSettings } from '@hooks/persisted';
 
 interface ColorPickerModalProps {
   settings: ColorPickerSetting;
@@ -22,20 +23,33 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
   showAccentColors,
   quickSettings,
 }) => {
-  const currentValue =
-    settings.settingOrigin === 'MMKV' ? rgbToHex(theme.primary) : '';
-
-  const [text, setText] = useState<string>(currentValue);
   const [error, setError] = useState<string | null>();
   const modalRef = useBoolean();
   const keyboardHeight = useKeyboardHeight();
 
   const [, setCustomAccentColor] = useMMKVString('CUSTOM_ACCENT_COLOR');
+  const {
+    setChapterReaderSettings,
+    theme: t,
+    textColor,
+  } = useChapterReaderSettings();
+
+  const currentValue =
+    settings.settingOrigin === 'MMKV'
+      ? rgbToHex(theme.primary)
+      : settings.valueKey === 'textColor'
+      ? textColor
+      : t;
+  const [text, setText] = useState<string>(currentValue);
 
   const update = (val: string) => {
     setText(val);
     if (settings.settingOrigin === 'MMKV') {
       setCustomAccentColor(val);
+    } else {
+      setChapterReaderSettings({
+        [settings.valueKey]: val,
+      });
     }
   };
 
@@ -53,12 +67,16 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
   };
 
   const onSubmitEditing = () => {
-    const re = /^#([0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3})$/i;
     setError(null);
-    const t = rgbToHex(text);
-    if (error) {
+    const re = /^#([0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3})$/i;
+    let t;
+    try {
+      t = rgbToHex(text);
+    } catch (error) {
+      setError(typeof error === 'string' ? error : '');
       return;
     }
+
     if (t.match(re)) {
       update(t);
       onDismiss();
@@ -178,8 +196,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
     }
     const match = rgb.match(/\d+/g);
     if (match?.length !== 3) {
-      setError('No valid rgb value');
-      return rgb;
+      throw 'No valid rgb value';
     }
     let r, g, b;
     try {
@@ -187,8 +204,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
       g = parseInt(match[1], 10);
       b = parseInt(match[2], 10);
     } catch {
-      setError('No valid rgb value');
-      return rgb;
+      throw 'No valid rgb value';
     }
     return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
   }

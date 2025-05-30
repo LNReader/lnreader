@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { Button, ColorPreferenceItem, List } from '@components/index';
+import { Button, List } from '@components/index';
 
 import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
@@ -15,9 +15,10 @@ import {
 } from '@utils/constants/readerConstants';
 import { useBoolean } from '@hooks';
 import { Portal } from 'react-native-paper';
-import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
 import FontPickerModal from '../modals/FontPickerModal';
 import ReaderFontPicker from '@screens/reader/components/ReaderBottomSheet/ReaderFontPicker';
+import ColorPickerModal from '../modals/ColorPickerModal';
+import { ColorPickerSetting } from '@screens/settings/Settings.d';
 
 const ReaderThemeSettings = ({
   quickSettings,
@@ -34,8 +35,6 @@ const ReaderThemeSettings = ({
     },
   ];
   const readerFontPickerModal = useBoolean();
-  const readerBackgroundModal = useBoolean();
-  const readerTextColorModal = useBoolean();
 
   const isCurrentThemeCustom = readerSettings.customThemes.some(
     item =>
@@ -53,6 +52,28 @@ const ReaderThemeSettings = ({
     item => item.fontFamily === readerSettings.fontFamily,
   )?.name;
 
+  const backgroundColorSetting: ColorPickerSetting = useMemo(
+    () => ({
+      title: getString('readerSettings.backgroundColor'),
+      description: (s: string) => s,
+      type: 'ColorPicker',
+      settingOrigin: 'Library',
+      valueKey: 'backgroundColor',
+    }),
+    [],
+  );
+
+  const textColorSetting: ColorPickerSetting = useMemo(
+    () => ({
+      title: getString('readerSettings.textColor'),
+      description: (s: string) => s,
+      type: 'ColorPicker',
+      settingOrigin: 'Library',
+      valueKey: 'textColor',
+    }),
+    [],
+  );
+
   return (
     <>
       <ReaderThemeSelector
@@ -61,18 +82,8 @@ const ReaderThemeSettings = ({
       />
       {!quickSettings ? (
         <>
-          <ColorPreferenceItem
-            label={getString('readerSettings.backgroundColor')}
-            description={readerSettings.theme}
-            onPress={readerBackgroundModal.setTrue}
-            theme={theme}
-          />
-          <ColorPreferenceItem
-            label={getString('readerSettings.textColor')}
-            description={readerSettings.textColor}
-            onPress={readerTextColorModal.setTrue}
-            theme={theme}
-          />
+          <ColorPickerModal settings={backgroundColorSetting} theme={theme} />
+          <ColorPickerModal settings={textColorSetting} theme={theme} />
         </>
       ) : null}
       {isCurrentThemeCustom ? (
@@ -133,26 +144,6 @@ const ReaderThemeSettings = ({
             Modals
         */}
       <Portal>
-        <ColorPickerModal
-          title={getString('readerSettings.backgroundColor')}
-          visible={readerBackgroundModal.value}
-          color={readerSettings.theme}
-          closeModal={readerBackgroundModal.setFalse}
-          theme={theme}
-          onSubmit={color =>
-            readerSettings.setChapterReaderSettings({ theme: color })
-          }
-        />
-        <ColorPickerModal
-          title={getString('readerSettings.textColor')}
-          visible={readerTextColorModal.value}
-          color={readerSettings.textColor}
-          closeModal={readerTextColorModal.setFalse}
-          theme={theme}
-          onSubmit={color =>
-            readerSettings.setChapterReaderSettings({ textColor: color })
-          }
-        />
         <FontPickerModal
           currentFont={readerSettings.fontFamily}
           visible={readerFontPickerModal.value}
