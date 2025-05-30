@@ -90,7 +90,7 @@ function NovelCover<
     displayMode = DisplayModes.Comfortable,
     showDownloadBadges = true,
     showUnreadBadges = true,
-    novelsPerRow = 3,
+    novelsPerRow,
   } = useLibrarySettings();
 
   const window = useWindowDimensions();

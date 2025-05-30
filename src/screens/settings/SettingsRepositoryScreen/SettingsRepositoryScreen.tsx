@@ -15,8 +15,8 @@ import { useBackHandler, useBoolean } from '@hooks/index';
 import { usePlugins, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
-import AddRepositoryModal from './components/AddRepositoryModal';
-import RepositoryCard from './components/RepositoryCard';
+import AddRepositoryModal from '../dynamic/modals/AddRepositoryModal';
+import RepositoryCard from '../dynamic/components/RepositoryCard';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   RespositorySettingsScreenProps,
@@ -35,7 +35,7 @@ const SettingsBrowseScreen = ({
   const [repositories, setRepositories] = useState<Repository[]>(
     getRepositoriesFromDb(),
   );
-  const getRepositories = () => {
+  const getRepositories = async () => {
     setRepositories(getRepositoriesFromDb());
   };
 

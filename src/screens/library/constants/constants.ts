@@ -1,3 +1,4 @@
+import { ValueKey } from '@screens/settings/Settings.d';
 import { getString } from '@strings/translations';
 
 export enum LibraryFilter {
@@ -76,6 +77,19 @@ export const librarySortOrderList = [
   },
 ];
 
+export enum ChapterSortOrder {
+  BySource_ASC = 'ORDER BY position ASC',
+  BySource_DESC = 'ORDER BY position DESC',
+}
+
+export const chapterSortOrderList = [
+  {
+    label: getString('generalSettingsScreen.bySource'),
+    ASC: ChapterSortOrder.BySource_ASC,
+    DESC: ChapterSortOrder.BySource_DESC,
+  },
+];
+
 export enum DisplayModes {
   Compact,
   Comfortable,
@@ -99,5 +113,54 @@ export const displayModesList = [
   {
     label: getString('libraryScreen.bottomSheet.display.list'),
     value: DisplayModes.List,
+  },
+];
+
+export const GridSizes = {
+  XL: 1,
+  L: 2,
+  M: 3,
+  S: 4,
+  XS: 5,
+} as const;
+
+export const gridSizeList = [
+  {
+    label: 'XL',
+    value: GridSizes.XL,
+  },
+  {
+    label: 'L',
+    value: GridSizes.L,
+  },
+  {
+    label: 'M',
+    value: GridSizes.M,
+  },
+  {
+    label: 'S',
+    value: GridSizes.S,
+  },
+  {
+    label: 'XS',
+    value: GridSizes.XS,
+  },
+];
+
+export const badgesList: {
+  label: string;
+  key: ValueKey<'Library'>;
+}[] = [
+  {
+    label: getString('libraryScreen.bottomSheet.display.downloadBadges'),
+    key: 'showDownloadBadges',
+  },
+  {
+    label: getString('libraryScreen.bottomSheet.display.unreadBadges'),
+    key: 'showUnreadBadges',
+  },
+  {
+    label: getString('libraryScreen.bottomSheet.display.showNoOfItems'),
+    key: 'showNumberOfNovels',
   },
 ];

@@ -18,7 +18,7 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
 }) => {
   const [highlightColor, backgroundColor] = useLoadingColors(theme);
 
-  const { displayMode = DisplayModes.Comfortable, novelsPerRow = 3 } =
+  const { displayMode = DisplayModes.Comfortable, novelsPerRow } =
     useLibrarySettings();
 
   const window = useWindowDimensions();

@@ -4,7 +4,7 @@ import {
   UseLibraryReturnType,
 } from '@screens/library/hooks/useLibrary';
 import { useLibrarySettings } from '@hooks/persisted';
-import { LibrarySettings } from '@hooks/persisted/useSettings';
+import { LibrarySettings } from '@screens/settings/constants/defaultValues';
 
 // type Library = Category & { novels: LibraryNovelInfo[] };
 

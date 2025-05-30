@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 import { IconButtonV2 } from '@components';
-import { ChapterReaderSettings } from '@hooks/persisted/useSettings';
+import { ChapterReaderSettings } from '@screens/settings/constants/defaultValues';
 
 type ValueKey<T extends object> = Exclude<
   {
