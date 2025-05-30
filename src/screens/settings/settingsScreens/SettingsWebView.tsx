@@ -68,7 +68,7 @@ const chapter = {
   'page': '2',
   'path': 'novel/classroom-of-the-elite-547/vol-4-chapter-2-1',
   'position': 0,
-  'progress': 3,
+  'progress': 0,
   'readTime': '2024-06-08 22:56:09',
   'releaseTime': '14 tháng 9 năm 2021',
   'unread': 1,
@@ -162,6 +162,9 @@ const SettingsWebView = () => {
     }
     </style>
     <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
+    <link rel="stylesheet" href="${assetsUriPrefix}/css/pageReader.css">
+    <link rel="stylesheet" href="${assetsUriPrefix}/css/toolWrapper.css">
+    <link rel="stylesheet" href="${assetsUriPrefix}/css/tts.css">
     <style>
     ${readerSettings.customCSS}
   </style>
