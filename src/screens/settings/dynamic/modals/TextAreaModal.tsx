@@ -92,10 +92,8 @@ const TextAreaModal = ({
           placeholder={`${getString('common.example')}: ${setting.placeholder}`}
           openFileLabel={setting.openFileLabel}
           onSave={text => {
-            if (text) {
-              //@ts-ignore
-              update(text, setting.valueKey);
-            }
+            //@ts-ignore
+            update(text, setting.valueKey);
           }}
         />
         <ConfirmationDialog
