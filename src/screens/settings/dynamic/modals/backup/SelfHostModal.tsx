@@ -5,7 +5,7 @@ import ServiceManager from '@services/ServiceManager';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import { fetchTimeout } from '@utils/fetch/fetch';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { Modal, TextInput, overlay } from 'react-native-paper';
@@ -87,7 +87,16 @@ function RestoreBackup({
     list(host).then(items =>
       setBackupList(items.filter(item => item.endsWith('.backup'))),
     );
-  }, []);
+  }, [host]);
+
+  const EmptyComponent = useCallback(() => {
+    return (
+      <EmptyView
+        description={getString('backupScreen.noBackupFound')}
+        theme={theme}
+      />
+    );
+  }, [theme]);
 
   return (
     <>
@@ -115,12 +124,7 @@ function RestoreBackup({
             </Text>
           </Button>
         )}
-        ListEmptyComponent={() => (
-          <EmptyView
-            description={getString('backupScreen.noBackupFound')}
-            theme={theme}
-          />
-        )}
+        ListEmptyComponent={EmptyComponent}
       />
       <View style={styles.footerContainer}>
         <Button
@@ -181,8 +185,8 @@ function SetHost({
                   throw new Error(getString('backupScreen.remote.unknownHost'));
                 }
               })
-              .catch((error: any) => {
-                setError(error.message);
+              .catch(e => {
+                setError(e.message);
               })
               .finally(() => {
                 setFetching(false);
