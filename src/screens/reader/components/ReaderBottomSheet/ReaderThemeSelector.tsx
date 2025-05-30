@@ -1,4 +1,11 @@
-import { StyleSheet, Text, TextStyle, View } from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
 import React from 'react';
 import { ToggleColorButton } from '@components/Common/ToggleButton';
 import { getString } from '@strings/translations';
@@ -25,6 +32,17 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
     setChapterReaderSettings,
   } = useChapterReaderSettings();
 
+  const [listWidth, setListWidth] = React.useState(0);
+
+  const data = [...customThemes, ...presetReaderThemes] as ReaderTheme[];
+  const contentContainerStyle: StyleProp<ViewStyle> =
+    listWidth > 44 * data.length
+      ? {
+          justifyContent: 'flex-end',
+          flex: 1,
+        }
+      : {};
+
   return (
     <View style={styles.container}>
       <Text
@@ -33,7 +51,7 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
         {label || getString('readerScreen.bottomSheet.color')}
       </Text>
       <FlatList
-        data={[...customThemes, ...presetReaderThemes] as ReaderTheme[]}
+        data={data}
         renderItem={({ item, index }) => (
           <ToggleColorButton
             key={index}
@@ -54,7 +72,8 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
         keyExtractor={(item, index) => item.textColor + '_' + index}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ justifyContent: 'flex-end', flex: 1 }}
+        onLayout={e => setListWidth(e.nativeEvent.layout.width)}
+        contentContainerStyle={contentContainerStyle}
       />
     </View>
   );
