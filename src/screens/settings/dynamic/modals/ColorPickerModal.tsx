@@ -71,16 +71,16 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
   const onSubmitEditing = () => {
     setError(null);
     const re = /^#([0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3})$/i;
-    let t;
+    let temp;
     try {
-      t = rgbToHex(text);
-    } catch (error) {
-      setError(typeof error === 'string' ? error : '');
+      temp = rgbToHex(text);
+    } catch (e) {
+      setError(typeof e === 'string' ? e : '');
       return;
     }
 
-    if (t.match(re)) {
-      update(t);
+    if (temp.match(re)) {
+      update(temp);
       onDismiss();
     } else {
       setError('Enter a valid hex color code');

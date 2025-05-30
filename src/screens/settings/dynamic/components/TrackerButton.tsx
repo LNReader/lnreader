@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Modal, Portal, Text, Button } from 'react-native-paper';
 
 import { getTracker, useTheme, useTracker } from '@hooks/persisted';
@@ -39,47 +39,46 @@ const TrackerButton = ({
         <Modal
           visible={visible}
           onDismiss={hideModal}
-          contentContainerStyle={{
-            padding: 20,
-            margin: 20,
-            borderRadius: 6,
-            backgroundColor: theme.overlay3,
-          }}
+          contentContainerStyle={[
+            {
+              backgroundColor: theme.overlay3,
+            },
+            styles.container,
+          ]}
         >
           <Text
-            style={{
-              color: theme.onSurface,
-              fontSize: 18,
-            }}
+            style={[
+              {
+                color: theme.onSurface,
+              },
+              styles.fontSize,
+            ]}
           >
             {getString('trackingScreen.logOutMessage', {
               name: tracker?.name,
             })}
           </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-            }}
-          >
+          <View style={styles.row}>
             <Button
-              style={{ marginTop: 30 }}
-              labelStyle={{
-                color: theme.primary,
-                letterSpacing: 0,
-                textTransform: 'none',
-              }}
+              style={styles.marginTop}
+              labelStyle={[
+                {
+                  color: theme.primary,
+                },
+                styles.letter,
+              ]}
               onPress={hideModal}
             >
               {getString('common.cancel')}
             </Button>
             <Button
-              style={{ marginTop: 30 }}
-              labelStyle={{
-                color: theme.primary,
-                letterSpacing: 0,
-                textTransform: 'none',
-              }}
+              style={styles.marginTop}
+              labelStyle={[
+                {
+                  color: theme.primary,
+                },
+                styles.letter,
+              ]}
               onPress={() => {
                 removeTracker();
                 hideModal();
@@ -94,3 +93,16 @@ const TrackerButton = ({
   );
 };
 export default memo(TrackerButton);
+
+const styles = StyleSheet.create({
+  letter: {
+    letterSpacing: 0,
+    textTransform: 'none',
+  },
+  marginTop: {
+    marginTop: 30,
+  },
+  row: { flexDirection: 'row', justifyContent: 'flex-end' },
+  fontSize: { fontSize: 18 },
+  container: { padding: 20, margin: 20, borderRadius: 6 },
+});

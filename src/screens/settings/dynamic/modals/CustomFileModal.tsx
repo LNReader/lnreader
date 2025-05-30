@@ -91,7 +91,16 @@ const CustomFileModal: React.FC<CustomFileModal> = ({
       buttonMargin.value = 16;
       padding.value = 24;
     }
-  }, [keyboardHeight]);
+  }, [
+    borderRadius,
+    buttonMargin,
+    height,
+    keyboardHeight,
+    marginBottom,
+    marginHorizontal,
+    maxHeight,
+    padding,
+  ]);
 
   const duration = 75;
   const animatedStyles = useAnimatedStyle(() => ({
@@ -114,7 +123,7 @@ const CustomFileModal: React.FC<CustomFileModal> = ({
       onDismiss={onDismiss}
       contentContainerStyle={styles.contentContainer}
     >
-      <Pressable style={{ flex: 1, width: '100%' }} onPress={onDismiss}>
+      <Pressable style={styles.flex} onPress={onDismiss}>
         <Animated.View
           style={[
             styles.modalContainer,
@@ -132,9 +141,8 @@ const CustomFileModal: React.FC<CustomFileModal> = ({
               style={[
                 {
                   color: theme.onSurfaceVariant,
-                  minHeight: 50,
-                  textAlignVertical: 'center',
                 },
+                styles.text,
               ]}
             >
               {description}
@@ -199,4 +207,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 8,
   },
+  flex: { flex: 1, width: '100%' },
+  text: { minHeight: 50, textAlignVertical: 'center' },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 
 import { ThemePicker as TP } from '@components/ThemePicker/ThemePicker';
 
@@ -27,20 +27,17 @@ export default function SettingsThemePicker({ theme, settings }: ThemePicker) {
   return (
     <>
       <Text
-        style={{
-          color: theme.onSurface,
-          paddingHorizontal: 16,
-          paddingVertical: 8,
-        }}
+        style={[
+          {
+            color: theme.onSurface,
+          },
+          styles.padding,
+        ]}
       >
         {settings.title}
       </Text>
       <ScrollView
-        contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingVertical: 8,
-          flexDirection: 'row',
-        }}
+        contentContainerStyle={[styles.row, styles.padding]}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       >
@@ -68,3 +65,13 @@ export default function SettingsThemePicker({ theme, settings }: ThemePicker) {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+  },
+  padding: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+});
