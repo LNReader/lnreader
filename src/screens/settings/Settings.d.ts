@@ -3,6 +3,7 @@ import type {
   ChapterGeneralSettings,
   ChapterReaderSettings,
   LibrarySettings,
+  ReaderTheme,
 } from './constants/defaultValues';
 import type { ThemeColors } from '@theme/types';
 import InfoItem from './dynamic/components/InfoItem';
@@ -154,7 +155,7 @@ export type ThemePickerSetting = {
 
 export type ColorPickerSettingsType<T extends SettingOrigin> = {
   settingOrigin: T;
-  // valueKey: ValueKey<T>;
+  valueKey: T extends 'MMKV' ? undefined : keyof ReaderTheme;
 };
 
 type BaseColorPickerSetting = {
@@ -163,7 +164,8 @@ type BaseColorPickerSetting = {
   type: 'ColorPicker';
 };
 export type ColorPickerSetting =
-  | BaseColorPickerSetting & ColorPickerSettingsType<'MMKV'>;
+  | (BaseColorPickerSetting & ColorPickerSettingsType<'MMKV'>)
+  | (BaseColorPickerSetting & ColorPickerSettingsType<'Library'>);
 
 export type ReaderThemeSetting = { type: 'ReaderTheme' };
 export type ReaderTTSSetting = { type: 'TTS' };
