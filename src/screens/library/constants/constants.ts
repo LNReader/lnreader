@@ -116,13 +116,13 @@ export const displayModesList = [
   },
 ];
 
-export enum GridSizes {
-  XL,
-  L,
-  M,
-  S,
-  XS,
-}
+export const GridSizes = {
+  XL: 1,
+  L: 2,
+  M: 3,
+  S: 4,
+  XS: 5,
+} as const;
 
 export const gridSizeList = [
   {

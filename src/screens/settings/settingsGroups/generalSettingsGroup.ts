@@ -39,7 +39,7 @@ const GeneralSettings: SettingsGroup<generalIds> = {
           settingOrigin: 'Library',
           description: val =>
             ''.concat(
-              val + 1 + ' ' + getString('generalSettingsScreen.itemsPerRow'),
+              val + ' ' + getString('generalSettingsScreen.itemsPerRow'),
             ),
           mode: 'single',
           valueKey: 'novelsPerRow',
