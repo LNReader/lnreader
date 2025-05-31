@@ -50,7 +50,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
       setCustomAccentColor(val);
     } else {
       setChapterReaderSettings({
-        [settings.valueKey]: val,
+        [settings.valueKey === 'backgroundColor' ? 'theme' : 'textColor']: val,
       });
     }
   };
