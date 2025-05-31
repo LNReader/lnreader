@@ -1,12 +1,5 @@
-import {
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextStyle,
-  View,
-  ViewStyle,
-} from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, TextStyle, View } from 'react-native';
+import React, { useCallback, useMemo } from 'react';
 import { ToggleColorButton } from '@components/Common/ToggleButton';
 import { getString } from '@strings/translations';
 import { presetReaderThemes } from '@utils/constants/readerConstants';
@@ -35,13 +28,12 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
   const [listWidth, setListWidth] = React.useState(0);
 
   const data = [...customThemes, ...presetReaderThemes] as ReaderTheme[];
-  const contentContainerStyle: StyleProp<ViewStyle> =
-    listWidth > 44 * data.length
-      ? {
-          justifyContent: 'flex-end',
-          flex: 1,
-        }
-      : {};
+  const spacing = useMemo(
+    () => ({ width: listWidth - 56 * data.length }),
+    [data.length, listWidth],
+  );
+
+  const Spacer = useCallback(() => <View style={spacing} />, [spacing]);
 
   return (
     <View style={styles.container}>
@@ -73,7 +65,7 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         onLayout={e => setListWidth(e.nativeEvent.layout.width)}
-        contentContainerStyle={contentContainerStyle}
+        ListHeaderComponent={Spacer}
       />
     </View>
   );
