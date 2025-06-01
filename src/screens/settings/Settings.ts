@@ -5,16 +5,8 @@ import RepoSettings from './settingsGroups/repoSettingsGroup';
 import type { Settings } from './Settings.d';
 import TrackerSettings from './settingsGroups/trackerSettingsGroup';
 import {
-  AppDefaultSettings,
-  AppSettings,
-  BrowseDefaultSettings,
-  BrowseSettings,
-  ChapterGeneralDefaultSettings,
-  ChapterGeneralSettings,
-  ChapterReaderDefaultSettings,
-  ChapterReaderSettings,
-  LibraryDefaultSettings,
-  LibrarySettings,
+  defaultSettings as de,
+  DefaultSettings,
 } from './constants/defaultValues';
 
 const settings: Settings = {
@@ -26,10 +18,4 @@ const settings: Settings = {
 } as const;
 export default settings;
 
-export const defaultAppSettings: AppSettings = AppDefaultSettings;
-export const defaultBrowseSettings: BrowseSettings = BrowseDefaultSettings;
-export const defaultLibrarySettings: LibrarySettings = LibraryDefaultSettings;
-export const defaultChapterGeneralSettings: ChapterGeneralSettings =
-  ChapterGeneralDefaultSettings;
-export const defaultChapterReaderSettings: ChapterReaderSettings =
-  ChapterReaderDefaultSettings;
+export const defaultSettings: DefaultSettings = de;

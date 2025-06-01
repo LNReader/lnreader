@@ -17,12 +17,12 @@ import { DisplayModes } from '@screens/library/constants/constants';
 import { DBNovelInfo, NovelInfo } from '@database/types';
 import { NovelItem } from '@plugins/types';
 import { ThemeColors } from '@theme/types';
-import { useLibrarySettings } from '@hooks/persisted';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
 import { getString } from '@strings/translations';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { defaultCover } from '@plugins/helpers/constants';
 import { ActivityIndicator } from 'react-native-paper';
+import { useSettingsContext } from './Context/SettingsContext';
 
 interface UnreadBadgeProps {
   chaptersDownloaded: number;
@@ -86,12 +86,8 @@ function NovelCover<
   globalSearch,
   selectedNovelIds,
 }: INovelCover<TNovel>) {
-  const {
-    displayMode = DisplayModes.Comfortable,
-    showDownloadBadges = true,
-    showUnreadBadges = true,
-    novelsPerRow,
-  } = useLibrarySettings();
+  const { displayMode, showDownloadBadges, showUnreadBadges, novelsPerRow } =
+    useSettingsContext();
 
   const window = useWindowDimensions();
 

@@ -28,7 +28,6 @@ const GeneralSettings: SettingsGroup<generalIds> = {
           title: getString('generalSettingsScreen.displayMode'),
           description: val => displayModesList[val].label,
           type: 'Modal',
-          settingOrigin: 'Library',
           mode: 'single',
           valueKey: 'displayMode',
           options: displayModesList,
@@ -36,7 +35,6 @@ const GeneralSettings: SettingsGroup<generalIds> = {
         {
           title: getString('generalSettingsScreen.itemsPerRowLibrary'),
           type: 'Modal',
-          settingOrigin: 'Library',
           description: val =>
             ''.concat(
               val + ' ' + getString('generalSettingsScreen.itemsPerRow'),
@@ -48,7 +46,6 @@ const GeneralSettings: SettingsGroup<generalIds> = {
         {
           title: getString('generalSettingsScreen.novelBadges'),
           type: 'Modal',
-          settingOrigin: 'Library',
           description: val =>
             badgesList
               .filter((v, i) => {
@@ -62,7 +59,6 @@ const GeneralSettings: SettingsGroup<generalIds> = {
         {
           title: getString('generalSettingsScreen.novelSort'),
           type: 'Modal',
-          settingOrigin: 'Library',
           description: val => {
             const v = val.split(' ');
             //@ts-expect-error
@@ -82,13 +78,11 @@ const GeneralSettings: SettingsGroup<generalIds> = {
           title: getString('generalSettingsScreen.updateLibrary'),
           description: getString('generalSettingsScreen.updateLibraryDesc'),
           type: 'Switch',
-          settingOrigin: 'App',
           valueKey: 'updateLibraryOnLaunch',
         },
         {
           title: getString('generalSettingsScreen.useFAB'),
           type: 'Switch',
-          settingOrigin: 'App',
           valueKey: 'useLibraryFAB',
         },
       ],
@@ -100,7 +94,6 @@ const GeneralSettings: SettingsGroup<generalIds> = {
         {
           title: getString('generalSettingsScreen.chapterSort'),
           type: 'Modal',
-          settingOrigin: 'App',
           description: val =>
             `${getString('generalSettingsScreen.bySource')} ${
               val === 'ORDER BY position ASC'
@@ -120,7 +113,6 @@ const GeneralSettings: SettingsGroup<generalIds> = {
         {
           title: getString('generalSettingsScreen.updateOngoing'),
           type: 'Switch',
-          settingOrigin: 'App',
           valueKey: 'onlyUpdateOngoingNovels',
         },
         {
@@ -129,7 +121,6 @@ const GeneralSettings: SettingsGroup<generalIds> = {
             'generalSettingsScreen.refreshMetadataDescription',
           ),
           type: 'Switch',
-          settingOrigin: 'App',
           valueKey: 'refreshNovelMetadata',
         },
         {
@@ -147,7 +138,6 @@ const GeneralSettings: SettingsGroup<generalIds> = {
         {
           title: getString('generalSettingsScreen.downloadNewChapters'),
           type: 'Switch',
-          settingOrigin: 'App',
           valueKey: 'downloadNewChapters',
         },
       ],
@@ -162,7 +152,6 @@ const GeneralSettings: SettingsGroup<generalIds> = {
             'generalSettingsScreen.disableHapticFeedbackDescription',
           ),
           type: 'Switch',
-          settingOrigin: 'App',
           valueKey: 'disableHapticFeedback',
         },
         {
@@ -171,7 +160,6 @@ const GeneralSettings: SettingsGroup<generalIds> = {
             'generalSettingsScreen.disableLoadingAnimationsDesc',
           ),
           type: 'Switch',
-          settingOrigin: 'App',
           valueKey: 'disableLoadingAnimations',
         },
       ],

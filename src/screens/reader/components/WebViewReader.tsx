@@ -7,21 +7,17 @@ import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
 import { getPlugin } from '@plugins/pluginManager';
-import { MMKVStorage, getMMKVObject } from '@utils/mmkv/mmkv';
+import { MMKVStorage } from '@utils/mmkv/mmkv';
 import {
   CHAPTER_GENERAL_SETTINGS,
   CHAPTER_READER_SETTINGS,
 } from '@hooks/persisted/useSettings';
-import {
-  ChapterGeneralDefaultSettings,
-  ChapterGeneralSettings,
-  ChapterReaderDefaultSettings,
-  ChapterReaderSettings,
-} from '@screens/settings/constants/defaultValues';
+
 import { getBatteryLevelSync } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
 import { PLUGIN_STORAGE } from '@utils/Storages';
 import { useChapterContext } from '../ChapterContext';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 type WebViewPostEvent = {
   type: string;
@@ -61,22 +57,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
     webViewRef,
   } = useChapterContext();
   const theme = useTheme();
-  const readerSettings = useMemo(
-    () =>
-      getMMKVObject<ChapterReaderSettings>(CHAPTER_READER_SETTINGS) ||
-      ChapterReaderDefaultSettings,
-    // needed to preserve settings during chapter change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [chapter.id],
-  );
-  const chapterGeneralSettings = useMemo(
-    () =>
-      getMMKVObject<ChapterGeneralSettings>(CHAPTER_GENERAL_SETTINGS) ||
-      ChapterGeneralDefaultSettings,
-    // needed to preserve settings during chapter change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [chapter.id],
-  );
+  const settings = useSettingsContext();
+
   const batteryLevel = useMemo(() => getBatteryLevelSync(), []);
   const plugin = getPlugin(novel?.pluginId);
   const pluginCustomJS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.js`;
@@ -88,7 +70,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
       switch (key) {
         case CHAPTER_READER_SETTINGS:
           webViewRef.current?.injectJavaScript(
-            `reader.readerSettings.val = ${MMKVStorage.getString(
+            `reader.settings.val = ${MMKVStorage.getString(
               CHAPTER_READER_SETTINGS,
             )}`,
           );
@@ -119,7 +101,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
   return (
     <WebView
       ref={webViewRef}
-      style={{ backgroundColor: readerSettings.theme }}
+      style={{ backgroundColor: settings.backgroundColor }}
       allowFileAccess={true}
       originWhitelist={['*']}
       scalesPageToFit={true}
@@ -150,9 +132,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
                 onDone() {
                   webViewRef.current?.injectJavaScript('tts.next?.()');
                 },
-                voice: readerSettings.tts?.voice?.identifier,
-                pitch: readerSettings.tts?.pitch || 1,
-                rate: readerSettings.tts?.rate || 1,
+                voice: settings.tts?.voice?.identifier,
+                pitch: settings.tts?.pitch || 1,
+                rate: settings.tts?.rate || 1,
               });
             } else {
               webViewRef.current?.injectJavaScript('tts.next?.()');
@@ -180,13 +162,13 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
               <style>
               :root {
                 --StatusBar-currentHeight: ${StatusBar.currentHeight}px;
-                --readerSettings-theme: ${readerSettings.theme};
-                --readerSettings-padding: ${readerSettings.padding}px;
-                --readerSettings-textSize: ${readerSettings.textSize}px;
-                --readerSettings-textColor: ${readerSettings.textColor};
-                --readerSettings-textAlign: ${readerSettings.textAlign};
-                --readerSettings-lineHeight: ${readerSettings.lineHeight};
-                --readerSettings-fontFamily: ${readerSettings.fontFamily};
+                --readerSettings-theme: ${settings.backgroundColor};
+                --readerSettings-padding: ${settings.padding}px;
+                --readerSettings-textSize: ${settings.textSize}px;
+                --readerSettings-textColor: ${settings.textColor};
+                --readerSettings-textAlign: ${settings.textAlign};
+                --readerSettings-lineHeight: ${settings.lineHeight};
+                --readerSettings-fontFamily: ${settings.fontFamily};
                 --theme-primary: ${theme.primary};
                 --theme-onPrimary: ${theme.onPrimary};
                 --theme-secondary: ${theme.secondary};
@@ -205,25 +187,23 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
                 }
                 
                 @font-face {
-                  font-family: ${readerSettings.fontFamily};
+                  font-family: ${settings.fontFamily};
                   src: url("file:///android_asset/fonts/${
-                    readerSettings.fontFamily
+                    settings.fontFamily
                   }.ttf");
                 }
                 </style>
 
               <link rel="stylesheet" href="${pluginCustomCSS}">
-              <style>${readerSettings.customCSS}</style>
+              <style>${settings.customCSS}</style>
             </head>
-            <body class="${
-              chapterGeneralSettings.pageReader ? 'page-reader' : ''
-            }">
+            <body class="${settings.pageReader ? 'page-reader' : ''}">
               <div class="transition-chapter" style="transform: ${
                 nextChapterScreenVisible.current
                   ? 'translateX(-100%)'
                   : 'translateX(0%)'
               };
-              ${chapterGeneralSettings.pageReader ? '' : 'display: none'}"
+              ${settings.pageReader ? '' : 'display: none'}"
               ">${chapter.name}</div>
               <div id="LNReader-chapter">
                 ${html}  
@@ -237,8 +217,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
 
 
                 var initialReaderConfig = ${JSON.stringify({
-                  readerSettings,
-                  chapterGeneralSettings,
+                  readerSettings: settings,
+                  chapterGeneralSettings: settings,
                   novel,
                   chapter,
                   nextChapter,
@@ -271,7 +251,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
                     let chapterId =${chapter.id};
                     let novelId =${chapter.novelId};
                     let html = document.getElementById("LNReader-chapter").innerHTML;
-                    ${readerSettings.customJS}
+                    ${settings.customJS}
                   }
                   document.addEventListener("DOMContentLoaded", fn);
               </script>

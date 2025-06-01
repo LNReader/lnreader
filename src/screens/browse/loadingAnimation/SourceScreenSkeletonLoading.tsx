@@ -3,9 +3,9 @@ import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import { ThemeColors } from '@theme/types';
 import useLoadingColors from '@utils/useLoadingColors';
 import LoadingNovel from '@screens/browse/loadingAnimation/LoadingNovel';
-import { useLibrarySettings } from '@hooks/persisted';
 import { DisplayModes } from '@screens/library/constants/constants';
 import { useDeviceOrientation } from '@hooks';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface Props {
   theme: ThemeColors;
@@ -18,8 +18,7 @@ const SourceScreenSkeletonLoading: React.FC<Props> = ({
 }) => {
   const [highlightColor, backgroundColor] = useLoadingColors(theme);
 
-  const { displayMode = DisplayModes.Comfortable, novelsPerRow } =
-    useLibrarySettings();
+  const { displayMode, novelsPerRow } = useSettingsContext();
 
   const window = useWindowDimensions();
   const styles = createStyleSheet();

@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 
 import { Button, List } from '@components/index';
 
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import ReaderTextAlignSelector from '@screens/reader/components/ReaderBottomSheet/ReaderTextAlignSelector';
 import ReaderTextSize from './ReaderTextSize';
@@ -19,6 +19,7 @@ import FontPickerModal from '../modals/FontPickerModal';
 import ReaderFontPicker from '@screens/reader/components/ReaderBottomSheet/ReaderFontPicker';
 import ColorPickerModal from '../modals/ColorPickerModal';
 import { ColorPickerSetting } from '@screens/settings/Settings.d';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 const ReaderThemeSettings = ({
   quickSettings,
@@ -26,7 +27,7 @@ const ReaderThemeSettings = ({
   quickSettings?: boolean;
 }) => {
   const theme = useTheme();
-  const readerSettings = useChapterReaderSettings();
+  const readerSettings = useSettingsContext();
 
   const labelStyle = [
     {
@@ -38,13 +39,13 @@ const ReaderThemeSettings = ({
 
   const isCurrentThemeCustom = readerSettings.customThemes.some(
     item =>
-      item.backgroundColor === readerSettings.theme &&
+      item.backgroundColor === readerSettings.backgroundColor &&
       item.textColor === readerSettings.textColor,
   );
 
   const isCurrentThemePreset = presetReaderThemes.some(
     item =>
-      item.backgroundColor === readerSettings.theme &&
+      item.backgroundColor === readerSettings.backgroundColor &&
       item.textColor === readerSettings.textColor,
   );
 
@@ -93,7 +94,7 @@ const ReaderThemeSettings = ({
             title={getString('readerSettings.deleteCustomTheme')}
             onPress={() =>
               readerSettings.deleteCustomReaderTheme({
-                backgroundColor: readerSettings.theme,
+                backgroundColor: readerSettings.backgroundColor,
                 textColor: readerSettings.textColor,
               })
             }
@@ -106,7 +107,7 @@ const ReaderThemeSettings = ({
             title={getString('readerSettings.saveCustomTheme')}
             onPress={() =>
               readerSettings.saveCustomReaderTheme({
-                backgroundColor: readerSettings.theme,
+                backgroundColor: readerSettings.backgroundColor,
                 textColor: readerSettings.textColor,
               })
             }

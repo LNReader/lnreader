@@ -7,7 +7,7 @@ import {
   changeNavigationBarColor,
   setStatusBarColor,
 } from '@theme/utils/setBarColor';
-import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
+import { usePlugins, useTheme } from '@hooks/persisted';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
 /**
@@ -39,11 +39,15 @@ import ServiceManager from '@services/ServiceManager';
 import ReaderStack from './ReaderStack';
 import { LibraryContextProvider } from '@components/Context/LibraryContext';
 import { UpdateContextProvider } from '@components/Context/UpdateContext';
+import {
+  SettingsContextProvider,
+  useSettingsContext,
+} from '@components/Context/SettingsContext';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
   const theme = useTheme();
-  const { updateLibraryOnLaunch } = useAppSettings();
+  const { updateLibraryOnLaunch } = useSettingsContext();
   const { refreshPlugins } = usePlugins();
   const [isOnboarded] = useMMKVBoolean('IS_ONBOARDED');
 
@@ -105,28 +109,36 @@ const MainNavigator = () => {
         },
       }}
     >
-      <LibraryContextProvider>
-        <UpdateContextProvider>
-          {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-            <Stack.Screen name="ReaderStack" component={ReaderStack} />
-            <Stack.Screen name="MoreStack" component={MoreStack} />
-            <Stack.Screen name="SourceScreen" component={BrowseSourceScreen} />
-            <Stack.Screen name="BrowseMal" component={MalTopNovels} />
-            <Stack.Screen name="BrowseAL" component={AniListTopNovels} />
-            <Stack.Screen name="BrowseSettings" component={BrowseSettings} />
-            <Stack.Screen
-              name="GlobalSearchScreen"
-              component={GlobalSearchScreen}
-            />
-            <Stack.Screen name="Migration" component={Migration} />
-            <Stack.Screen name="SourceNovels" component={SourceNovels} />
-            <Stack.Screen name="MigrateNovel" component={MigrateNovel} />
-            <Stack.Screen name="WebviewScreen" component={WebviewScreen} />
-          </Stack.Navigator>
-        </UpdateContextProvider>
-      </LibraryContextProvider>
+      <SettingsContextProvider>
+        <LibraryContextProvider>
+          <UpdateContextProvider>
+            {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen
+                name="BottomNavigator"
+                component={BottomNavigator}
+              />
+              <Stack.Screen name="ReaderStack" component={ReaderStack} />
+              <Stack.Screen name="MoreStack" component={MoreStack} />
+              <Stack.Screen
+                name="SourceScreen"
+                component={BrowseSourceScreen}
+              />
+              <Stack.Screen name="BrowseMal" component={MalTopNovels} />
+              <Stack.Screen name="BrowseAL" component={AniListTopNovels} />
+              <Stack.Screen name="BrowseSettings" component={BrowseSettings} />
+              <Stack.Screen
+                name="GlobalSearchScreen"
+                component={GlobalSearchScreen}
+              />
+              <Stack.Screen name="Migration" component={Migration} />
+              <Stack.Screen name="SourceNovels" component={SourceNovels} />
+              <Stack.Screen name="MigrateNovel" component={MigrateNovel} />
+              <Stack.Screen name="WebviewScreen" component={WebviewScreen} />
+            </Stack.Navigator>
+          </UpdateContextProvider>
+        </LibraryContextProvider>
+      </SettingsContextProvider>
     </NavigationContainer>
   );
 };

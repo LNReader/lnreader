@@ -37,13 +37,11 @@ const AppearanceSettings: SettingsGroup<appearanceIds> = {
         {
           title: getString('appearanceScreen.hideBackdrop'),
           type: 'Switch',
-          settingOrigin: 'App',
           valueKey: 'hideBackdrop',
         },
         {
           title: getString('advancedSettingsScreen.useFAB'),
           type: 'Switch',
-          settingOrigin: 'App',
           valueKey: 'useFabForContinueReading',
         },
       ],
@@ -55,19 +53,16 @@ const AppearanceSettings: SettingsGroup<appearanceIds> = {
         {
           title: getString('appearanceScreen.showUpdatesInTheNav'),
           type: 'Switch',
-          settingOrigin: 'App',
           valueKey: 'showUpdatesTab',
         },
         {
           title: getString('appearanceScreen.showHistoryInTheNav'),
           type: 'Switch',
-          settingOrigin: 'App',
           valueKey: 'showHistoryTab',
         },
         {
           title: getString('appearanceScreen.alwaysShowNavLabels'),
           type: 'Switch',
-          settingOrigin: 'App',
           valueKey: 'showLabelsInNav',
         },
       ],

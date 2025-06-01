@@ -15,15 +15,13 @@ import {
 } from 'react-native-tab-view';
 import color from 'color';
 
-import { useLibrarySettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import { Checkbox, SortItem } from '@components/Checkbox/Checkbox';
 import {
-  DisplayModes,
   displayModesList,
   LibraryFilter,
   libraryFilterList,
-  LibrarySortOrder,
   librarySortOrderList,
 } from '@screens/library/constants/constants';
 import { RadioButton } from '@components/RadioButton/RadioButton';
@@ -32,6 +30,7 @@ import { BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { FlashList } from '@shopify/flash-list';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface LibraryBottomSheetProps {
   bottomSheetRef: RefObject<BottomSheetModalMethods | null>;
@@ -42,9 +41,9 @@ const FirstRoute = () => {
   const theme = useTheme();
   const {
     filter,
-    setLibrarySettings,
-    downloadedOnlyMode = false,
-  } = useLibrarySettings();
+    setSettings: setLibrarySettings,
+    downloadedOnlyMode,
+  } = useSettingsContext();
 
   return (
     <View style={styles.flex}>
@@ -74,8 +73,7 @@ const FirstRoute = () => {
 
 const SecondRoute = () => {
   const theme = useTheme();
-  const { sortOrder = LibrarySortOrder.DateAdded_DESC, setLibrarySettings } =
-    useLibrarySettings();
+  const { sortOrder, setSettings: setLibrarySettings } = useSettingsContext();
 
   return (
     <View style={styles.flex}>
@@ -109,12 +107,12 @@ const SecondRoute = () => {
 const ThirdRoute = () => {
   const theme = useTheme();
   const {
-    showDownloadBadges = true,
-    showNumberOfNovels = false,
-    showUnreadBadges = true,
-    displayMode = DisplayModes.Comfortable,
-    setLibrarySettings,
-  } = useLibrarySettings();
+    showDownloadBadges,
+    showNumberOfNovels,
+    showUnreadBadges,
+    displayMode,
+    setSettings: setLibrarySettings,
+  } = useSettingsContext();
 
   return (
     <View style={styles.flex}>

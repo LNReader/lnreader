@@ -4,14 +4,14 @@ import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeColors } from '@theme/types';
 import useLoadingColors from '@utils/useLoadingColors';
-import { useAppSettings } from '@hooks/persisted/index';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface Props {
   theme: ThemeColors;
 }
 
 const HistorySkeletonLoading: React.FC<Props> = ({ theme }) => {
-  const { disableLoadingAnimations } = useAppSettings();
+  const { disableLoadingAnimations } = useSettingsContext();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   const [highlightColor, backgroundColor] = useLoadingColors(theme);
 

@@ -5,12 +5,7 @@ import {
 } from '@database/queries/ChapterQueries';
 import { insertHistory } from '@database/queries/HistoryQueries';
 import { ChapterInfo, NovelInfo } from '@database/types';
-import {
-  useChapterGeneralSettings,
-  useLibrarySettings,
-  useTrackedNovel,
-  useTracker,
-} from '@hooks/persisted';
+import { useTrackedNovel, useTracker } from '@hooks/persisted';
 import { fetchChapter } from '@services/plugin/fetch';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import {
@@ -33,6 +28,7 @@ import { getString } from '@strings/translations';
 import NativeVolumeButtonListener from '@specs/NativeVolumeButtonListener';
 import NativeFile from '@specs/NativeFile';
 import { useNovelContext } from '@screens/novel/NovelContext';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 const emmiter = new NativeEventEmitter(NativeVolumeButtonListener);
 
@@ -55,9 +51,13 @@ export default function useChapter(
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
     ChapterInfo[] | undefined[]
   >([]);
-  const { autoScroll, autoScrollInterval, autoScrollOffset, useVolumeButtons } =
-    useChapterGeneralSettings();
-  const { incognitoMode } = useLibrarySettings();
+  const {
+    autoScroll,
+    autoScrollInterval,
+    autoScrollOffset,
+    useVolumeButtons,
+    incognitoMode,
+  } = useSettingsContext();
   const [error, setError] = useState<string>();
   const { tracker } = useTracker();
   const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);

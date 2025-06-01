@@ -1,19 +1,13 @@
 import { StyleSheet, TextInput, View, Text } from 'react-native';
 import { ThemeColors } from '@theme/types';
-import useUpdateSettingsFn from '../functions/useUpdateSettingsFn';
-import { NumberInputSetting } from '../../Settings.d';
-import {
-  useAppSettings,
-  useChapterGeneralSettings,
-  useChapterReaderSettings,
-  useLastUpdate,
-  useLibrarySettings,
-} from '@hooks/persisted';
+import { BaseSetting, NumberInputSetting } from '../../Settings.d';
 import { useMemo } from 'react';
 import { defaultTo } from 'lodash-es';
+import { useSettingsContext } from '@components/Context/SettingsContext';
+import { FilteredSettings } from '@screens/settings/constants/defaultValues';
 
 interface SettingSwitchProps {
-  setting: NumberInputSetting;
+  setting: NumberInputSetting & BaseSetting;
   theme: ThemeColors;
 }
 
@@ -21,37 +15,21 @@ export default function SettingTextInput({
   setting,
   theme,
 }: SettingSwitchProps) {
-  const librarySettings = useLibrarySettings();
-  const appSettings = useAppSettings();
-  const { showLastUpdateTime } = useLastUpdate();
-  const chapterSettings = useChapterGeneralSettings();
-  const chapterReaderSettings = useChapterReaderSettings();
-  const update = useUpdateSettingsFn(setting.settingOrigin)!;
+  const { setSettings, ...settings } = useSettingsContext();
 
   const currentValue = useMemo(() => {
-    let res;
-    if (setting.settingOrigin === 'Library') {
-      res = librarySettings[setting.valueKey];
-    } else if (setting.settingOrigin === 'App') {
-      res = appSettings[setting.valueKey];
-    } else if (setting.settingOrigin === 'lastUpdateTime') {
-      res = showLastUpdateTime;
-    } else if (setting.settingOrigin === 'GeneralChapter') {
-      res = chapterSettings[setting.valueKey];
-    } else if (setting.settingOrigin === 'ReaderChapter') {
-      res = chapterReaderSettings[setting.valueKey];
+    if (setting.settingsOrigin) {
+      throw new Error('settingsOrigin is not implemented');
     }
-    return res as boolean;
-  }, [
-    setting.settingOrigin,
-    setting.valueKey,
-    librarySettings,
-    appSettings,
-    showLastUpdateTime,
-    chapterSettings,
-    chapterReaderSettings,
-  ]);
+    return settings[setting.valueKey];
+  }, [setting.settingsOrigin, setting.valueKey, settings]);
   const labelStyle = [styles.fontSizeL, { color: theme.onSurface }];
+
+  const update = (value: string, key: FilteredSettings<number>) => {
+    setSettings({
+      [key]: parseInt(value, 10),
+    });
+  };
 
   return (
     <View style={styles.autoScrollInterval}>
@@ -64,7 +42,6 @@ export default function SettingTextInput({
         keyboardType="numeric"
         onChangeText={text => {
           if (text) {
-            //@ts-ignore
             update(text, setting.valueKey);
           }
         }}
