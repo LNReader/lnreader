@@ -1,4 +1,4 @@
-import { ValueKey } from '@screens/settings/Settings.d';
+import { FilteredSettings } from '@screens/settings/constants/defaultValues';
 import { getString } from '@strings/translations';
 
 export enum LibraryFilter {
@@ -149,7 +149,7 @@ export const gridSizeList = [
 
 export const badgesList: {
   label: string;
-  key: ValueKey<'Library'>;
+  key: FilteredSettings<boolean>;
 }[] = [
   {
     label: getString('libraryScreen.bottomSheet.display.downloadBadges'),

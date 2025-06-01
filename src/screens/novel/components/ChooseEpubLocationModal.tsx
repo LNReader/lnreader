@@ -7,8 +7,9 @@ import { Button, List, Modal, SwitchItem } from '@components';
 
 import { useBoolean } from '@hooks';
 import { getString } from '@strings/translations';
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { showToast } from '@utils/showToast';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface ChooseEpubLocationModalProps {
   isVisible: boolean;
@@ -23,12 +24,12 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
 }) => {
   const theme = useTheme();
   const {
-    epubLocation = '',
-    epubUseAppTheme = false,
-    epubUseCustomCSS = false,
-    epubUseCustomJS = false,
-    setChapterReaderSettings,
-  } = useChapterReaderSettings();
+    epubLocation,
+    epubUseAppTheme,
+    epubUseCustomCSS,
+    epubUseCustomJS,
+    setSettings: setChapterReaderSettings,
+  } = useSettingsContext();
 
   const [uri, setUri] = useState(epubLocation);
   const useAppTheme = useBoolean(epubUseAppTheme);

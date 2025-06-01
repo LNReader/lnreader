@@ -3,9 +3,10 @@ import React, { useCallback, useMemo } from 'react';
 import { ToggleColorButton } from '@components/Common/ToggleButton';
 import { getString } from '@strings/translations';
 import { presetReaderThemes } from '@utils/constants/readerConstants';
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { FlatList } from 'react-native-gesture-handler';
 import { ReaderTheme } from '@screens/settings/constants/defaultValues';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface ReaderThemeSelectorProps {
   label?: string;
@@ -19,11 +20,11 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
   const theme = useTheme();
 
   const {
-    theme: backgroundColor,
+    backgroundColor,
     textColor,
     customThemes,
-    setChapterReaderSettings,
-  } = useChapterReaderSettings();
+    setSettings: setChapterReaderSettings,
+  } = useSettingsContext();
 
   const [listWidth, setListWidth] = React.useState(0);
 
@@ -55,7 +56,7 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
             textColor={item.textColor}
             onPress={() =>
               setChapterReaderSettings({
-                theme: item.backgroundColor,
+                backgroundColor: item.backgroundColor,
                 textColor: item.textColor,
               })
             }

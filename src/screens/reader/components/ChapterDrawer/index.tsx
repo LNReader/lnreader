@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { useAppSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
@@ -17,6 +17,7 @@ import { useChapterContext } from '@screens/reader/ChapterContext';
 import { useNovelContext } from '@screens/novel/NovelContext';
 import { FlashList, FlashListRef, ViewToken } from '@shopify/flash-list';
 import { ChapterInfo } from '@database/types';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 type ButtonProperties = {
   text: string;
@@ -33,8 +34,8 @@ const ChapterDrawer = () => {
   const { chapters, novelSettings, pages, setPageIndex } = useNovelContext();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const { defaultChapterSort } = useAppSettings();
-  const listRef = useRef<FlashListRef<ChapterInfo> | null>(null);
+  const { defaultChapterSort } = useSettingsContext();
+  const listRef = useRef<FlashList<ChapterInfo> | null>(null);
 
   const styles = createStylesheet(theme, insets);
 

@@ -5,60 +5,46 @@ import { Portal } from 'react-native-paper';
 import { Button, ConfirmationDialog } from '@components';
 
 import { useBoolean } from '@hooks';
-import {
-  useChapterReaderSettings,
-  useAppSettings,
-  useChapterGeneralSettings,
-  useLastUpdate,
-  useLibrarySettings,
-} from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
 import CustomFileModal from './CustomFileModal';
-import { TextAreaSetting } from '@screens/settings/Settings.d';
+import {
+  BaseSetting,
+  SettingOrigin,
+  TextAreaSetting,
+} from '@screens/settings/Settings.d';
 import { ThemeColors } from '@theme/types';
-import useUpdateSettingsFn from '../functions/useUpdateSettingsFn';
+import { useSettingsContext } from '@components/Context/SettingsContext';
+import { FilteredSettings } from '@screens/settings/constants/defaultValues';
 
 const TextAreaModal = ({
   setting,
   theme,
 }: {
-  setting: TextAreaSetting;
+  setting: TextAreaSetting & BaseSetting;
   theme: ThemeColors;
 }) => {
   const showModal = useBoolean();
   const clearModal = useBoolean();
 
-  const librarySettings = useLibrarySettings();
-  const appSettings = useAppSettings();
-  const { showLastUpdateTime } = useLastUpdate();
-  const chapterSettings = useChapterGeneralSettings();
-  const chapterReaderSettings = useChapterReaderSettings();
-  const update = useUpdateSettingsFn(setting.settingOrigin);
+  const settings = useSettingsContext();
 
   const currentValue = useMemo(() => {
-    let res;
-    if (setting.settingOrigin === 'Library') {
-      res = librarySettings[setting.valueKey];
-    } else if (setting.settingOrigin === 'App') {
-      res = appSettings[setting.valueKey];
-    } else if (setting.settingOrigin === 'lastUpdateTime') {
-      res = showLastUpdateTime;
-    } else if (setting.settingOrigin === 'GeneralChapter') {
-      res = chapterSettings[setting.valueKey];
-    } else if (setting.settingOrigin === 'ReaderChapter') {
-      res = chapterReaderSettings[setting.valueKey];
+    return settings[setting.valueKey];
+  }, [setting.valueKey, settings]);
+
+  const update = (
+    value: string,
+    key: FilteredSettings<string>,
+    origin?: SettingOrigin,
+  ) => {
+    if (origin) {
+      throw new Error(`origin: ${origin}. Is not implemented`);
     }
-    return res as string;
-  }, [
-    setting.settingOrigin,
-    setting.valueKey,
-    librarySettings,
-    appSettings,
-    showLastUpdateTime,
-    chapterSettings,
-    chapterReaderSettings,
-  ]);
+    settings.setSettings({
+      [key]: value,
+    });
+  };
 
   return (
     <>
@@ -92,16 +78,14 @@ const TextAreaModal = ({
           placeholder={`${getString('common.example')}: ${setting.placeholder}`}
           openFileLabel={setting.openFileLabel}
           onSave={text => {
-            //@ts-ignore
-            update(text, setting.valueKey);
+            update(text, setting.valueKey, setting.settingsOrigin);
           }}
         />
         <ConfirmationDialog
           title={setting.clearDialog}
           visible={clearModal.value}
           onSubmit={() => {
-            //@ts-ignore
-            update('', setting.valueKey);
+            update('', setting.valueKey, setting.settingsOrigin);
           }}
           onDismiss={clearModal.setFalse}
           theme={theme}

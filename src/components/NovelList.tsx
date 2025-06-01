@@ -1,4 +1,3 @@
-import { useLibrarySettings } from '@hooks/persisted';
 import { DisplayModes } from '@screens/library/constants/constants';
 import React, { useMemo } from 'react';
 import {
@@ -10,6 +9,7 @@ import {
 import { NovelItem } from '@plugins/types';
 import { NovelInfo } from '../database/types';
 import { useDeviceOrientation } from '@hooks';
+import { useSettingsContext } from './Context/SettingsContext';
 
 export type NovelListRenderItem = ListRenderItem<NovelInfo | NovelItem>;
 
@@ -24,8 +24,7 @@ interface NovelListProps extends FlatListProps<NovelInfo | NovelItem> {
 }
 
 const NovelList: React.FC<NovelListProps> = props => {
-  const { displayMode = DisplayModes.Comfortable, novelsPerRow } =
-    useLibrarySettings();
+  const { displayMode, novelsPerRow } = useSettingsContext();
   const orientation = useDeviceOrientation();
 
   const isListView = displayMode === DisplayModes.List;

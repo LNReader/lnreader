@@ -1,16 +1,9 @@
 import {
-  AppDefaultSettings,
-  AppSettings,
-  BrowseDefaultSettings,
-  BrowseSettings,
-  ChapterGeneralDefaultSettings,
-  ChapterGeneralSettings,
-  ChapterReaderDefaultSettings,
-  ChapterReaderSettings,
-  LibraryDefaultSettings,
-  LibrarySettings,
+  defaultSettings,
+  DefaultSettings,
   ReaderTheme,
 } from '@screens/settings/constants/defaultValues';
+import { useCallback, useMemo } from 'react';
 import { useMMKVObject } from 'react-native-mmkv';
 
 export const APP_SETTINGS = 'APP_SETTINGS';
@@ -19,86 +12,71 @@ export const LIBRARY_SETTINGS = 'LIBRARY_SETTINGS';
 export const CHAPTER_GENERAL_SETTINGS = 'CHAPTER_GENERAL_SETTINGS';
 export const CHAPTER_READER_SETTINGS = 'CHAPTER_READER_SETTINGS';
 
-export const useAppSettings = () => {
-  const [appSettings = AppDefaultSettings, setSettings] =
-    useMMKVObject<AppSettings>(APP_SETTINGS);
+export const SETTINGS = 'SETTINGS';
 
-  const setAppSettings = (values: Partial<AppSettings>) =>
-    setSettings({ ...appSettings, ...values });
+export const useSettings = () => {
+  const [settings, _setSettings] = useMMKVObject<DefaultSettings>(SETTINGS);
 
-  return {
-    ...appSettings,
-    setAppSettings,
-  };
-};
+  const [appSettings] = useMMKVObject<Partial<DefaultSettings>>(APP_SETTINGS);
+  const [browseSettings] =
+    useMMKVObject<Partial<DefaultSettings>>(BROWSE_SETTINGS);
+  const [librarySettings] =
+    useMMKVObject<Partial<DefaultSettings>>(LIBRARY_SETTINGS);
+  const [chapterGeneralSettings] = useMMKVObject<Partial<DefaultSettings>>(
+    CHAPTER_GENERAL_SETTINGS,
+  );
+  const [chapterReaderSettings] = useMMKVObject<Partial<DefaultSettings>>(
+    CHAPTER_READER_SETTINGS,
+  );
 
-export const useBrowseSettings = () => {
-  const [browseSettings = BrowseDefaultSettings, setSettings] =
-    useMMKVObject<BrowseSettings>(BROWSE_SETTINGS);
-
-  const setBrowseSettings = (values: Partial<BrowseSettings>) =>
-    setSettings({ ...browseSettings, ...values });
-  return {
-    ...browseSettings,
-    setBrowseSettings,
-  };
-};
-
-export const useLibrarySettings = () => {
-  const [l, setSettings] = useMMKVObject<LibrarySettings>(LIBRARY_SETTINGS);
-
-  const librarySettings = { ...LibraryDefaultSettings, ...l };
-
-  const setLibrarySettings = (value: Partial<LibrarySettings>) =>
-    setSettings({ ...librarySettings, ...value });
-
-  return {
-    ...librarySettings,
-    setLibrarySettings,
-  };
-};
-
-export const useChapterGeneralSettings = () => {
-  const [chapterGeneralSettings = ChapterGeneralDefaultSettings, setSettings] =
-    useMMKVObject<ChapterGeneralSettings>(CHAPTER_GENERAL_SETTINGS);
-
-  const setChapterGeneralSettings = (values: Partial<ChapterGeneralSettings>) =>
-    setSettings({ ...chapterGeneralSettings, ...values });
-
-  return {
-    ...chapterGeneralSettings,
-    setChapterGeneralSettings,
-  };
-};
-
-export const useChapterReaderSettings = () => {
-  const [chapterReaderSettings = ChapterReaderDefaultSettings, setSettings] =
-    useMMKVObject<ChapterReaderSettings>(CHAPTER_READER_SETTINGS);
-
-  const setChapterReaderSettings = (values: Partial<ChapterReaderSettings>) =>
-    setSettings({ ...chapterReaderSettings, ...values });
-
-  const saveCustomReaderTheme = (theme: ReaderTheme) =>
-    setSettings({
+  if (!settings) {
+    _setSettings({
+      ...defaultSettings,
+      ...appSettings,
+      ...browseSettings,
+      ...librarySettings,
+      ...chapterGeneralSettings,
       ...chapterReaderSettings,
-      customThemes: [theme, ...chapterReaderSettings.customThemes],
     });
+  }
 
-  const deleteCustomReaderTheme = (theme: ReaderTheme) =>
-    setSettings({
-      ...chapterReaderSettings,
-      customThemes: chapterReaderSettings.customThemes.filter(
-        v =>
-          !(
-            v.backgroundColor === theme.backgroundColor &&
-            v.textColor === theme.textColor
-          ),
-      ),
-    });
+  const setSettings = useCallback(
+    (values: Partial<DefaultSettings>) =>
+      _setSettings(prev => ({ ...prev, ...values } as DefaultSettings)),
+    [_setSettings],
+  );
+
+  const saveCustomReaderTheme = useCallback(
+    (theme: ReaderTheme) => {
+      const themes = settings?.customThemes || [];
+      setSettings({
+        customThemes: [theme, ...themes],
+      });
+    },
+    [setSettings, settings?.customThemes],
+  );
+
+  const deleteCustomReaderTheme = useCallback(
+    (theme: ReaderTheme) => {
+      const themes = settings?.customThemes || [];
+      setSettings({
+        customThemes: themes.filter(
+          v =>
+            !(
+              v.backgroundColor === theme.backgroundColor &&
+              v.textColor === theme.textColor
+            ),
+        ),
+      });
+    },
+    [setSettings, settings?.customThemes],
+  );
+
+  const s = useMemo(() => (!settings ? defaultSettings : settings), [settings]);
 
   return {
-    ...chapterReaderSettings,
-    setChapterReaderSettings,
+    ...s,
+    setSettings,
     saveCustomReaderTheme,
     deleteCustomReaderTheme,
   };

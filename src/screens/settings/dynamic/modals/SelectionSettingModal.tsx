@@ -5,23 +5,18 @@ import { Portal, Modal, overlay } from 'react-native-paper';
 
 import { RadioButton } from '@components/RadioButton/RadioButton';
 import { ThemeColors } from '@theme/types';
-import { useLibrarySettings } from '@hooks/persisted';
 import { Checkbox, List } from '@components';
 import { useBoolean } from '@hooks/index';
-import { ModalSetting, ModalSettingsType } from '@screens/settings/Settings.d';
-import { useAppSettings } from '@hooks/persisted/useSettings';
+import { BaseSetting, ModalSetting } from '@screens/settings/Settings.d';
 import { SortItem } from '@components/Checkbox/Checkbox';
-import useUpdateSettingsFn from '../functions/useUpdateSettingsFn';
+import { useSettingsContext } from '@components/Context/SettingsContext';
+import { FilteredSettings } from '@screens/settings/constants/defaultValues';
 
 interface DisplayModeModalProps {
-  setting: ModalSetting;
+  setting: ModalSetting & BaseSetting;
   theme: ThemeColors;
   quickSettings?: boolean;
 }
-
-type Value<T extends ModalSettingsType['mode']> = T extends 'multiple'
-  ? Array<boolean>
-  : boolean | string | number;
 
 const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
   theme,
@@ -30,39 +25,34 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
 }) => {
   const modalRef = useBoolean();
 
-  const librarySettings = useLibrarySettings();
-  const appSettings = useAppSettings();
+  const { setSettings, ...settings } = useSettingsContext();
 
-  const update = useUpdateSettingsFn(setting.settingOrigin);
-
-  const mode = setting.mode;
-  const currentValue: Value<typeof mode> | undefined = useMemo(() => {
-    if (setting.mode === 'single' || setting.mode === 'order') {
-      if (setting.settingOrigin === 'Library') {
-        return librarySettings[setting.valueKey];
-      } else {
-        return appSettings[setting.valueKey];
-      }
-    } else if (setting.mode === 'multiple') {
-      if (setting.settingOrigin === 'Library') {
-        return setting.options.map(k => {
-          return librarySettings[k.key];
-        }) as Array<boolean>;
-      } else {
-        return setting.options.map(k => {
-          return appSettings[k.key];
-        }) as Array<boolean>;
-      }
+  const currentValue = useMemo(() => {
+    if (setting.settingsOrigin) {
+      throw new Error('settingsOrigin is not implemented');
     }
-    return 0;
+    if (setting.mode === 'multiple') {
+      return setting.options.map(k => {
+        return settings[k.key];
+      }) as Array<boolean>;
+    }
+    return settings[setting.valueKey];
   }, [
     setting.mode,
-    setting.settingOrigin,
-    setting.valueKey,
     setting.options,
-    librarySettings,
-    appSettings,
+    setting.settingsOrigin,
+    setting.valueKey,
+    settings,
   ]);
+
+  function update<T extends string | number | boolean>(
+    value: T,
+    key: FilteredSettings<T>,
+  ) {
+    setSettings({
+      [key]: value,
+    });
+  }
 
   function generateDescription() {
     if (!setting.description || quickSettings) {
@@ -92,7 +82,7 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
           <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
             {setting.title}
           </Text>
-          {mode === 'single'
+          {setting.mode === 'single'
             ? setting.options.map(m => (
                 <RadioButton
                   key={m.value}
@@ -102,7 +92,7 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
                   theme={theme}
                 />
               ))
-            : mode === 'multiple'
+            : setting.mode === 'multiple'
             ? setting.options.map((m, i) => {
                 const value = (currentValue as Array<boolean>)[i];
                 return (
@@ -115,7 +105,7 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
                   />
                 );
               })
-            : mode === 'order'
+            : setting.mode === 'order'
             ? setting.options.map(m => {
                 return (
                   <SortItem

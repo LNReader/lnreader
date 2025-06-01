@@ -1,9 +1,5 @@
 import { IconButtonV2, List } from '@components';
-import {
-  useChapterGeneralSettings,
-  useChapterReaderSettings,
-  useTheme,
-} from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import React, { useCallback, useEffect, useState } from 'react';
 import VoicePickerModal from '../modals/VoicePickerModal';
 import { useBoolean } from '@hooks';
@@ -12,6 +8,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { getAvailableVoicesAsync, Voice } from 'expo-speech';
 import SettingSwitchV2 from './SettingSwitchV2';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 export default function TextToSpeechSettings() {
   const theme = useTheme();
@@ -23,8 +20,11 @@ export default function TextToSpeechSettings() {
     });
   }, []);
 
-  const { tts, setChapterReaderSettings } = useChapterReaderSettings();
-  const { TTSEnable = true } = useChapterGeneralSettings();
+  const {
+    TTSEnable,
+    tts,
+    setSettings: setChapterReaderSettings,
+  } = useSettingsContext();
   const {
     value: voiceModalVisible,
     setTrue: showVoiceModal,
@@ -56,7 +56,6 @@ export default function TextToSpeechSettings() {
       <View style={styles.row}>
         <SettingSwitchV2
           setting={{
-            settingOrigin: 'GeneralChapter',
             valueKey: 'TTSEnable',
             title: 'Text to Speech',
             type: 'Switch',

@@ -17,7 +17,7 @@ import Color from 'color';
 
 import { BottomSheetFlashList, BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
-import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '@strings/translations';
 
@@ -29,6 +29,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import RenderSettings from '@screens/settings/dynamic/RenderSettings';
 import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
 import ReaderSettings from '@screens/settings/settingsGroups/readerSettingsGroup';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 type TabViewLabelProps = {
   route: {
@@ -59,8 +60,8 @@ const ReaderTab: React.FC = React.memo(() => {
 
 const GeneralTab: React.FC = React.memo(() => {
   const theme = useTheme();
-  const { setChapterGeneralSettings, ...settings } =
-    useChapterGeneralSettings();
+  const { setSettings: setChapterGeneralSettings, ...settings } =
+    useSettingsContext();
 
   const toggleSetting = useCallback(
     (key: keyof typeof settings) =>

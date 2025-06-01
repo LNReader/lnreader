@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { DisplayModes } from '@screens/library/constants/constants';
-import { useAppSettings } from '@hooks/persisted/index';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface Props {
   backgroundColor: string;
@@ -20,7 +20,7 @@ const LoadingNovel: React.FC<Props> = ({
   pictureWidth,
   displayMode,
 }) => {
-  const { disableLoadingAnimations } = useAppSettings();
+  const { disableLoadingAnimations } = useSettingsContext();
   const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
   let randomNumber = Math.random();
   if (randomNumber < 0.1) {

@@ -7,12 +7,12 @@ import { ThemeColors } from '@theme/types';
 import EpubBuilder from '@cd-z/react-native-epub-creator';
 import { ChapterInfo, NovelInfo } from '@database/types';
 
-import { useChapterReaderSettings } from '@hooks/persisted';
 import { useBoolean } from '@hooks/index';
 import { showToast } from '@utils/showToast';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import NativeFile from '@specs/NativeFile';
 import { MaterialDesignIconName } from '@type/icon';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface EpubIconButtonProps {
   theme: ThemeColors;
@@ -37,12 +37,8 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     setTrue: showModal,
     setFalse: hideModal,
   } = useBoolean(false);
-  const readerSettings = useChapterReaderSettings();
-  const {
-    epubUseAppTheme = false,
-    epubUseCustomCSS = false,
-    epubUseCustomJS = false,
-  } = useChapterReaderSettings();
+  const readerSettings = useSettingsContext();
+  const { epubUseAppTheme, epubUseCustomCSS, epubUseCustomJS } = readerSettings;
 
   const epubStyle = useMemo(
     () =>
@@ -66,7 +62,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
                 text-align: ${readerSettings.textAlign};
                 line-height: ${readerSettings.lineHeight};
                 font-family: "${readerSettings.fontFamily}";
-                background-color: "${readerSettings.theme}";
+                background-color: "${readerSettings.backgroundColor}";
               }
               hr {
                 margin-top: 20px;
@@ -102,7 +98,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
       readerSettings.textAlign,
       readerSettings.lineHeight,
       readerSettings.fontFamily,
-      readerSettings.theme,
+      readerSettings.backgroundColor,
       readerSettings.customCSS,
       theme.primary,
       epubUseCustomCSS,

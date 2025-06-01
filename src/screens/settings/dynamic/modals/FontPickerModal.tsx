@@ -4,9 +4,10 @@ import { StyleSheet } from 'react-native';
 import { Portal, Modal, overlay } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 
 import { readerFonts } from '@utils/constants/readerConstants';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface FontPickerModalProps {
   visible: boolean;
@@ -20,7 +21,7 @@ const FontPickerModal: React.FC<FontPickerModalProps> = ({
   visible,
 }) => {
   const theme = useTheme();
-  const { setChapterReaderSettings } = useChapterReaderSettings();
+  const { setSettings: setChapterReaderSettings } = useSettingsContext();
 
   return (
     <Portal>

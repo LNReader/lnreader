@@ -5,15 +5,15 @@ import { Modal, overlay, Portal } from 'react-native-paper';
 import { Button, List } from '@components';
 import { ThemeColors } from '@theme/types';
 import { useBoolean } from '@hooks/index';
-import { ColorPickerSetting } from '@screens/settings/Settings.d';
+import { BaseSetting, ColorPickerSetting } from '@screens/settings/Settings.d';
 import { useMMKVString } from 'react-native-mmkv';
 import { useKeyboardHeight } from '@hooks/common/useKeyboardHeight';
-import { useChapterReaderSettings } from '@hooks/persisted';
 import TextInput from '@components/TextInput/TextInput';
 import { getString } from '@strings/translations';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface ColorPickerModalProps {
-  settings: ColorPickerSetting;
+  settings: ColorPickerSetting & BaseSetting;
   theme: ThemeColors;
   showAccentColors?: boolean;
   quickSettings?: boolean;
@@ -30,26 +30,24 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
   const keyboardHeight = useKeyboardHeight();
 
   const [, setCustomAccentColor] = useMMKVString('CUSTOM_ACCENT_COLOR');
-  const {
-    setChapterReaderSettings,
-    theme: t,
-    textColor,
-  } = useChapterReaderSettings();
+  const { setSettings, ...currentSettings } = useSettingsContext();
 
-  const currentValue =
-    settings.settingOrigin === 'MMKV'
-      ? rgbToHex(theme.primary)
-      : settings.valueKey === 'textColor'
-      ? textColor
-      : t;
+  const currentValue = !settings.settingsOrigin
+    ? currentSettings[settings.valueKey]
+    : settings.settingsOrigin === 'MMKV'
+    ? rgbToHex(theme.primary)
+    : (() => {
+        throw new Error('settings.settingsOrigin is not defined');
+      })();
+
   const [text, setText] = useState<string>(currentValue);
 
   const update = (val: string) => {
     setText(val);
-    if (settings.settingOrigin === 'MMKV') {
+    if (settings.settingsOrigin === 'MMKV') {
       setCustomAccentColor(val);
     } else {
-      setChapterReaderSettings({
+      setSettings({
         [settings.valueKey === 'backgroundColor' ? 'theme' : 'textColor']: val,
       });
     }

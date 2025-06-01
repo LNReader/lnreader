@@ -10,9 +10,10 @@ import {
 } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { Voice } from 'expo-speech';
 import { FlashList } from '@shopify/flash-list';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface VoicePickerModalProps {
   visible: boolean;
@@ -28,7 +29,7 @@ const VoicePickerModal: React.FC<VoicePickerModalProps> = ({
   const theme = useTheme();
   const [searchedVoices, setSearchedVoices] = useState<Voice[]>([]);
   const [searchText, setSearchText] = useState('');
-  const { setChapterReaderSettings, tts } = useChapterReaderSettings();
+  const { setSettings: setChapterReaderSettings, tts } = useSettingsContext();
 
   return (
     <Portal>

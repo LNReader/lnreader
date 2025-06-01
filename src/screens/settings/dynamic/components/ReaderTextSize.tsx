@@ -1,9 +1,10 @@
 import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { IconButtonV2 } from '@components/index';
 import { getString } from '@strings/translations';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface ReaderTextSizeProps {
   labelStyle?: TextStyle | TextStyle[];
@@ -11,7 +12,8 @@ interface ReaderTextSizeProps {
 
 const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({ labelStyle }) => {
   const theme = useTheme();
-  const { textSize, setChapterReaderSettings } = useChapterReaderSettings();
+  const { textSize, setSettings: setChapterReaderSettings } =
+    useSettingsContext();
 
   return (
     <View style={styles.container}>

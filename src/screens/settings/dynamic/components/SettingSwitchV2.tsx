@@ -1,14 +1,7 @@
 import { SwitchItem } from '@components';
 import { ThemeColors } from '@theme/types';
-import useUpdateSettingsFn from '../functions/useUpdateSettingsFn';
-import { SettingOrigin, SwitchSetting, ValueKey } from '../../Settings.d';
-import {
-  useAppSettings,
-  useChapterGeneralSettings,
-  useChapterReaderSettings,
-  useLastUpdate,
-  useLibrarySettings,
-} from '@hooks/persisted';
+import { BaseSetting, SettingOrigin, SwitchSetting } from '../../Settings.d';
+import { useLastUpdate } from '@hooks/persisted';
 import React, { useMemo } from 'react';
 import RenderSettings from '../RenderSettings';
 import Animated, {
@@ -18,9 +11,11 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native';
+import { useSettingsContext } from '@components/Context/SettingsContext';
+import { FilteredSettings } from '@screens/settings/constants/defaultValues';
 
 interface SettingSwitchProps {
-  setting: SwitchSetting;
+  setting: SwitchSetting & BaseSetting;
   theme: ThemeColors;
   quickSettings?: boolean;
   endOfLine?: () => React.ReactNode;
@@ -32,37 +27,13 @@ const SettingSwitchV2 = ({
   quickSettings,
   endOfLine,
 }: SettingSwitchProps): React.ReactElement => {
-  const up = useUpdateSettingsFn(setting.settingOrigin)!;
-
-  const librarySettings = useLibrarySettings();
-  const appSettings = useAppSettings();
-  const chapterSettings = useChapterGeneralSettings();
-  const chapterReaderSettings = useChapterReaderSettings();
-  const { showLastUpdateTime } = useLastUpdate();
+  const settings = useSettingsContext();
+  const { showLastUpdateTime, setShowLastUpdateTime } = useLastUpdate();
 
   const currentValue = useMemo(() => {
-    let res;
-    if (setting.settingOrigin === 'Library') {
-      res = librarySettings[setting.valueKey];
-    } else if (setting.settingOrigin === 'App') {
-      res = appSettings[setting.valueKey];
-    } else if (setting.settingOrigin === 'lastUpdateTime') {
-      res = showLastUpdateTime;
-    } else if (setting.settingOrigin === 'GeneralChapter') {
-      res = chapterSettings[setting.valueKey];
-    } else if (setting.settingOrigin === 'ReaderChapter') {
-      res = chapterReaderSettings[setting.valueKey];
-    }
-    return res as boolean;
-  }, [
-    setting.settingOrigin,
-    setting.valueKey,
-    librarySettings,
-    appSettings,
-    showLastUpdateTime,
-    chapterSettings,
-    chapterReaderSettings,
-  ]);
+    if (setting?.settingsOrigin === 'lastUpdateTime') return showLastUpdateTime;
+    return settings[setting.valueKey];
+  }, [setting?.settingsOrigin, setting.valueKey, settings, showLastUpdateTime]);
 
   const dependents = useMemo(() => {
     return setting.dependents?.filter(d =>
@@ -74,12 +45,20 @@ const SettingSwitchV2 = ({
     currentValue && dependents?.length ? 60 * (dependents?.length ?? 0) : 0,
   );
   const opacity = useSharedValue(1);
-  const update = (value: unknown, key: ValueKey<SettingOrigin>) => {
+  const update = (
+    value: boolean,
+    key: FilteredSettings<boolean>,
+    origin?: SettingOrigin,
+  ) => {
     maxHeight.value = value ? 60 * (dependents?.length ?? 0) : 0;
     opacity.value = value ? 1 : 0;
 
-    //@ts-ignore
-    up(value, key);
+    if (origin === 'lastUpdateTime') {
+      setShowLastUpdateTime(value);
+    }
+    settings.setSettings({
+      [key]: value,
+    });
   };
   const duration = 250;
   const hideDependents = useAnimatedStyle(() => {
@@ -98,7 +77,9 @@ const SettingSwitchV2 = ({
         value={currentValue}
         label={setting.title}
         description={!quickSettings ? setting.description : undefined}
-        onPress={() => update(!currentValue, setting.valueKey)}
+        onPress={() =>
+          update(!currentValue, setting.valueKey, setting.settingsOrigin)
+        }
         theme={theme}
         style={styles.paddingHorizontal}
         endOfLine={endOfLine}

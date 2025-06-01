@@ -5,7 +5,12 @@ import {
 } from '@screens/library/constants/constants';
 import { Voice } from 'expo-speech';
 
-export interface AppSettings {
+export interface ReaderTheme {
+  backgroundColor: string;
+  textColor: string;
+}
+
+export interface DefaultSettings extends ReaderTheme {
   /**
    * General settings
    */
@@ -45,15 +50,19 @@ export interface AppSettings {
 
   hideBackdrop: boolean;
   defaultChapterSort: string;
-}
 
-export interface BrowseSettings {
+  /**
+   * Browse settings
+   */
+
   showMyAnimeList: boolean;
   showAniList: boolean;
-  globalSearchConcurrency?: number;
-}
+  globalSearchConcurrency: number;
 
-export interface LibrarySettings {
+  /**
+   * Library settings
+   */
+
   sortOrder: LibrarySortOrder;
   filter?: LibraryFilter;
   showDownloadBadges: boolean;
@@ -61,11 +70,11 @@ export interface LibrarySettings {
   showNumberOfNovels: boolean;
   displayMode: DisplayModes;
   novelsPerRow: number;
-  incognitoMode: boolean;
-  downloadedOnlyMode: boolean;
-}
 
-export interface ChapterGeneralSettings {
+  /**
+   * Chapter general settings
+   */
+
   keepScreenOn: boolean;
   fullScreenMode: boolean;
   pageReader: boolean;
@@ -81,16 +90,11 @@ export interface ChapterGeneralSettings {
   bionicReading: boolean;
   tapToScroll: boolean;
   TTSEnable: boolean;
-}
 
-export interface ReaderTheme {
-  backgroundColor: string;
-  textColor: string;
-}
+  /**
+   * Chapter reader settings
+   */
 
-export interface ChapterReaderSettings {
-  theme: string;
-  textColor: string;
   textSize: number;
   textAlign: string;
   padding: number;
@@ -110,7 +114,13 @@ export interface ChapterReaderSettings {
   epubUseCustomJS: boolean;
 }
 
-export const AppDefaultSettings: AppSettings = {
+export type FilteredSettings<T = any> = NonNullable<
+  {
+    [K in keyof DefaultSettings]: DefaultSettings[K] extends T ? K : never;
+  }[keyof DefaultSettings]
+>;
+
+export const defaultSettings: DefaultSettings = {
   /**
    * General settings
    */
@@ -150,15 +160,19 @@ export const AppDefaultSettings: AppSettings = {
 
   hideBackdrop: false,
   defaultChapterSort: 'ORDER BY position ASC',
-};
 
-export const BrowseDefaultSettings: BrowseSettings = {
+  /**
+   * Browse settings
+   */
+
   showMyAnimeList: true,
   showAniList: true,
   globalSearchConcurrency: 3,
-};
 
-export const ChapterGeneralDefaultSettings: ChapterGeneralSettings = {
+  /**
+   * Chapter general settings
+   */
+
   keepScreenOn: true,
   fullScreenMode: true,
   pageReader: false,
@@ -174,10 +188,12 @@ export const ChapterGeneralDefaultSettings: ChapterGeneralSettings = {
   bionicReading: false,
   tapToScroll: false,
   TTSEnable: false,
-};
 
-export const ChapterReaderDefaultSettings: ChapterReaderSettings = {
-  theme: '#292832',
+  /**
+   * Chapter reader settings
+   */
+
+  backgroundColor: '#292832',
   textColor: '#CCCCCC',
   textSize: 16,
   textAlign: 'left',
@@ -195,12 +211,12 @@ export const ChapterReaderDefaultSettings: ChapterReaderSettings = {
   epubUseAppTheme: false,
   epubUseCustomCSS: false,
   epubUseCustomJS: false,
-};
 
-export const LibraryDefaultSettings: LibrarySettings = {
+  /**
+   * Library settings
+   */
+
   showNumberOfNovels: false,
-  downloadedOnlyMode: false,
-  incognitoMode: false,
   displayMode: DisplayModes.Comfortable,
   showDownloadBadges: true,
   showUnreadBadges: true,
