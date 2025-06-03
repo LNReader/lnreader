@@ -28,10 +28,10 @@
     "novelInsertFailed": "ошибка вставки главы",
     "useFAB": "Использовать плавающую кнопку действия вместо основной кнопки",
     "userAgent": "User Agent",
-    "recreateDBIndexes": "Recreate DB indexes",
-    "recreateDBIndexesToast": "Recreated DB indexes",
-    "recreateDBIndexesDialogTitle": "All DB indexes will be recreated.\nThis may take a while.",
-    "recreateDBIndexesDesc": "Recreates DB indexes. This may improve performance on slower devices."
+    "recreateDBIndexes": "Пересоздать индексы базы данных",
+    "recreateDBIndexesToast": "Индексы базы данных пересозданы",
+    "recreateDBIndexesDialogTitle": "Все индексы базы данных будут пересозданы.\nЭто может занять некоторое время.",
+    "recreateDBIndexesDesc": "Пересоздаёт индексы базы данных. Это может улучшить производительность на слабых устройствах."
   },
   "appearance": "Внешний вид",
   "appearanceScreen": {
@@ -516,8 +516,8 @@
     "UPDATE_LIBRARY": "Обновление библиотеки",
     "DRIVE_BACKUP": "Резервное копирование",
     "DRIVE_RESTORE": "Восстановление с диска",
-    "SELF_HOST_BACKUP": "Self host backup",
-    "SELF_HOST_RESTORE": "Self host restore",
+    "SELF_HOST_BACKUP": "Локальное резервное копирование",
+    "SELF_HOST_RESTORE": "Локальное восстановление",
     "MIGRATE_NOVEL": "Перенесённая новелла",
     "DOWNLOAD_CHAPTER": "Загруженные главы"
   }
