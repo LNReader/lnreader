@@ -136,5 +136,8 @@
   },
   "engines": {
     "node": ">=20"
-  }
+  },
+  "trustedDependencies": [
+    "protobufjs"
+  ]
 }

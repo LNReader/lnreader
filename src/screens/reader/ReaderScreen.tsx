@@ -68,7 +68,7 @@ export const ChapterContent = ({
   const { novel, chapter } = useChapterContext();
   const readerSheetRef = useRef<BottomSheetModalMethods>(null);
   const theme = useTheme();
-  const { pageReader = false, keepScreenOn } = useSettingsContext();
+  const { pageReader, keepScreenOn } = useSettingsContext();
   const [bookmarked, setBookmarked] = useState(chapter.bookmark);
 
   useEffect(() => {
