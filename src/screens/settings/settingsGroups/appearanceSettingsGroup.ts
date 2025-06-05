@@ -25,7 +25,7 @@ const AppearanceSettings: SettingsGroup<appearanceIds> = {
           type: 'ColorPicker',
           title: getString('appearanceScreen.accentColor'),
           description: c => c.toUpperCase() ?? '',
-          settingOrigin: 'MMKV',
+          settingsOrigin: 'MMKV',
           valueKey: undefined,
         },
       ],
