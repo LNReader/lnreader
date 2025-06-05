@@ -84,7 +84,7 @@ export interface DefaultSettings extends ReaderTheme {
   showBatteryAndTime: boolean;
   autoScroll: boolean;
   autoScrollInterval: number;
-  autoScrollOffset: number | null;
+  autoScrollOffsetPercent: number;
   verticalSeekbar: boolean;
   removeExtraParagraphSpacing: boolean;
   bionicReading: boolean;
@@ -182,7 +182,7 @@ export const defaultSettings: DefaultSettings = {
   showBatteryAndTime: false,
   autoScroll: false,
   autoScrollInterval: 10,
-  autoScrollOffset: null,
+  autoScrollOffsetPercent: 100,
   verticalSeekbar: true,
   removeExtraParagraphSpacing: false,
   bionicReading: false,
