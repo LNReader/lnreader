@@ -63,9 +63,9 @@ const ReaderSettings: SettingsGroup<readerIds> = {
               valueKey: 'autoScrollInterval',
             },
             {
-              title: getString('readerSettings.autoScrollOffset'),
+              title: getString('readerSettings.autoScrollOffsetPercent'),
               type: 'NumberInput',
-              valueKey: 'autoScrollOffset',
+              valueKey: 'autoScrollOffsetPercent',
             },
           ],
         },
