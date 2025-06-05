@@ -18,7 +18,7 @@ import { Portal } from 'react-native-paper';
 import FontPickerModal from '../modals/FontPickerModal';
 import ReaderFontPicker from '@screens/reader/components/ReaderBottomSheet/ReaderFontPicker';
 import ColorPickerModal from '../modals/ColorPickerModal';
-import { ColorPickerSetting } from '@screens/settings/Settings.d';
+import { BaseSetting, ColorPickerSetting } from '@screens/settings/Settings.d';
 import { useSettingsContext } from '@components/Context/SettingsContext';
 
 const ReaderThemeSettings = ({
@@ -53,23 +53,21 @@ const ReaderThemeSettings = ({
     item => item.fontFamily === readerSettings.fontFamily,
   )?.name;
 
-  const backgroundColorSetting: ColorPickerSetting = useMemo(
+  const backgroundColorSetting = useMemo<ColorPickerSetting & BaseSetting>(
     () => ({
       title: getString('readerSettings.backgroundColor'),
       description: (s: string) => s,
       type: 'ColorPicker',
-      settingOrigin: 'Library',
       valueKey: 'backgroundColor',
     }),
     [],
   );
 
-  const textColorSetting: ColorPickerSetting = useMemo(
+  const textColorSetting = useMemo<ColorPickerSetting & BaseSetting>(
     () => ({
       title: getString('readerSettings.textColor'),
       description: (s: string) => s,
       type: 'ColorPicker',
-      settingOrigin: 'Library',
       valueKey: 'textColor',
     }),
     [],

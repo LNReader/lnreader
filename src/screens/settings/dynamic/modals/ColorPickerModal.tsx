@@ -12,6 +12,29 @@ import TextInput from '@components/TextInput/TextInput';
 import { getString } from '@strings/translations';
 import { useSettingsContext } from '@components/Context/SettingsContext';
 
+const accentColors = [
+  '#EF5350',
+  '#EC407A',
+  '#AB47BC',
+  '#7E57C2',
+  '#5C6BC0',
+  '#42A5F5',
+  '#29B6FC',
+  '#26C6DA',
+  '#26A69A',
+  '#66BB6A',
+  '#9CCC65',
+  '#D4E157',
+  '#FFEE58',
+  '#FFCA28',
+  '#FFA726',
+  '#FF7043',
+  '#8D6E63',
+  '#BDBDBD',
+  '#78909C',
+  '#000000',
+];
+
 interface ColorPickerModalProps {
   settings: ColorPickerSetting & BaseSetting;
   theme: ThemeColors;
@@ -37,7 +60,11 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
     : settings.settingsOrigin === 'MMKV'
     ? rgbToHex(theme.primary)
     : (() => {
-        throw new Error('settings.settingsOrigin is not defined');
+        throw new Error(
+          `settings.settingsOrigin in setting:
+          ${JSON.stringify(settings, null, 2)}
+         is not defined`,
+        );
       })();
 
   const [text, setText] = useState<string>(currentValue);
@@ -84,29 +111,6 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
       setError('Enter a valid hex color code');
     }
   };
-
-  const accentColors = [
-    '#EF5350',
-    '#EC407A',
-    '#AB47BC',
-    '#7E57C2',
-    '#5C6BC0',
-    '#42A5F5',
-    '#29B6FC',
-    '#26C6DA',
-    '#26A69A',
-    '#66BB6A',
-    '#9CCC65',
-    '#D4E157',
-    '#FFEE58',
-    '#FFCA28',
-    '#FFA726',
-    '#FF7043',
-    '#8D6E63',
-    '#BDBDBD',
-    '#78909C',
-    '#000000',
-  ];
 
   return (
     <>
