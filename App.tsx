@@ -15,7 +15,6 @@ import { createTables } from '@database/db';
 import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
 
 import Main from './src/navigators/Main';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 // Rozenite DevTools
 import { useReactNavigationDevTools } from '@rozenite/react-navigation-plugin';

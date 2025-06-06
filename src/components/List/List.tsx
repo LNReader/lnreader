@@ -211,7 +211,8 @@ const styles = StyleSheet.create({
     marginVertical: 0,
   },
   pressable: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

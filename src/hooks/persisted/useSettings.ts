@@ -3,7 +3,7 @@ import {
   DefaultSettings,
   ReaderTheme,
 } from '@screens/settings/constants/defaultValues';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useMMKVObject } from 'react-native-mmkv';
 
 export const APP_SETTINGS = 'APP_SETTINGS';
@@ -17,6 +17,7 @@ export const SETTINGS = 'SETTINGS';
 export const useSettings = () => {
   const [settings, _setSettings] = useMMKVObject<DefaultSettings>(SETTINGS);
 
+  // Keep reading the partial settings
   const [appSettings] = useMMKVObject<Partial<DefaultSettings>>(APP_SETTINGS);
   const [browseSettings] =
     useMMKVObject<Partial<DefaultSettings>>(BROWSE_SETTINGS);
@@ -29,16 +30,27 @@ export const useSettings = () => {
     CHAPTER_READER_SETTINGS,
   );
 
-  if (!settings) {
-    _setSettings({
-      ...defaultSettings,
-      ...appSettings,
-      ...browseSettings,
-      ...librarySettings,
-      ...chapterGeneralSettings,
-      ...chapterReaderSettings,
-    });
-  }
+
+  useEffect(() => {
+    if (settings === undefined) {
+      _setSettings({
+        ...defaultSettings,
+        ...appSettings,
+        ...browseSettings,
+        ...librarySettings,
+        ...chapterGeneralSettings,
+        ...chapterReaderSettings,
+      });
+    }
+  }, [
+    settings,
+    _setSettings,
+    appSettings,
+    browseSettings,
+    librarySettings,
+    chapterGeneralSettings,
+    chapterReaderSettings,
+  ]);
 
   const setSettings = useCallback(
     (values: Partial<DefaultSettings>) =>
@@ -72,12 +84,16 @@ export const useSettings = () => {
     [setSettings, settings?.customThemes],
   );
 
-  const s = useMemo(() => (!settings ? defaultSettings : settings), [settings]);
+  // Memoize the final settings object to provide a stable default
+  const value = useMemo(
+    () => ({
+      ...(settings || defaultSettings), // Use loaded settings or fall back to default
+      setSettings,
+      saveCustomReaderTheme,
+      deleteCustomReaderTheme,
+    }),
+    [settings, setSettings, saveCustomReaderTheme, deleteCustomReaderTheme],
+  );
 
-  return {
-    ...s,
-    setSettings,
-    saveCustomReaderTheme,
-    deleteCustomReaderTheme,
-  };
+  return value;
 };
