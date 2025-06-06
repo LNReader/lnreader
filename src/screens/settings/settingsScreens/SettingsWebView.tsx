@@ -202,7 +202,7 @@ const SettingsWebView = () => {
                             ${settings.pageReader ? '' : 'display: none'}"
                             >${chapter.name}</div>
                             <div id="LNReader-chapter">
-                              ${dummyHTML}  
+                              ${dummyHTML}
                             </div>
                             <div id="reader-ui"></div>
                             </body>
@@ -210,8 +210,8 @@ const SettingsWebView = () => {
                               var initialPageReaderConfig = ${JSON.stringify({
                                 nextChapterScreenVisible: false,
                               })};
-              
-              
+
+
                               var initialReaderConfig = ${JSON.stringify({
                                 readerSettings: settings,
                                 chapterGeneralSettings: settings,
@@ -247,7 +247,7 @@ const SettingsWebView = () => {
                               async function fn(){
                                   let novelName = "${novel.name}";
                                   let chapterName = "${chapter.name}";
-                                  let sourceId = "${novel.pluginId}"; 
+                                  let sourceId = "${novel.pluginId}";
                                   let chapterId =${chapter.id};
                                   let novelId =${chapter.novelId};
                                   let html = document.getElementById("LNReader-chapter").innerHTML;
