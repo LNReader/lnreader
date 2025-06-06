@@ -76,7 +76,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
       setCustomAccentColor(val);
     } else {
       setSettings({
-        [settings.valueKey === 'backgroundColor' ? 'theme' : 'textColor']: val,
+        [settings.valueKey!]: val,
       });
     }
   };
