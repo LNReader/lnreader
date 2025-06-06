@@ -15,7 +15,6 @@ import { createTables } from '@database/db';
 import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
 
 import Main from './src/navigators/Main';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 declare global {
   interface ObjectConstructor {
@@ -43,10 +42,8 @@ const App = () => {
       <AppErrorBoundary>
         <SafeAreaProvider>
           <PaperProvider>
-            <BottomSheetModalProvider>
-              <StatusBar translucent={true} backgroundColor="transparent" />
-              <Main />
-            </BottomSheetModalProvider>
+            <StatusBar translucent={true} backgroundColor="transparent" />
+            <Main />
           </PaperProvider>
         </SafeAreaProvider>
       </AppErrorBoundary>

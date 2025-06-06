@@ -28,8 +28,8 @@ import { StringMap } from '@strings/types';
 import RenderSettings from '@screens/settings/dynamic/RenderSettings';
 import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
 import ReaderSettings from '@screens/settings/settingsGroups/readerSettingsGroup';
-import { useSettingsContext } from '@components/Context/SettingsContext';
 import { FilteredSettings } from '@screens/settings/constants/defaultValues';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 type TabViewLabelProps = {
   route: {
@@ -60,13 +60,12 @@ const ReaderTab: React.FC = React.memo(() => {
 
 const GeneralTab: React.FC = React.memo(() => {
   const theme = useTheme();
-  const { setSettings: setChapterGeneralSettings, ...settings } =
-    useSettingsContext();
+  const settings = useSettingsContext();
 
   const toggleSetting = useCallback(
-    (key: FilteredSettings) =>
-      setChapterGeneralSettings({ [key]: !settings[key] }),
-    [setChapterGeneralSettings, settings],
+    (key: FilteredSettings<boolean>) =>
+      settings.setSettings?.({ [key]: !settings[key] }),
+    [settings],
   );
 
   const preferences: { key: FilteredSettings<boolean>; label: string }[] =
