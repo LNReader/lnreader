@@ -10,7 +10,15 @@ import { db } from '@database/db';
 import { BackgroundTaskMetadata } from '@services/ServiceManager';
 import NativeFile from '@specs/NativeFile';
 import NativeZipArchive from '@specs/NativeZipArchive';
-import NativeEpubUtil from '@specs/NativeEpubUtil';
+import NativeEpub from '@specs/NativeEpub';
+
+const decodePath = (path: string) => {
+  try {
+    return decodeURI(path);
+  } catch {
+    return path;
+  }
+};
 
 const insertLocalNovel = async (
   name: string,
@@ -34,8 +42,12 @@ const insertLocalNovel = async (
     NativeFile.mkdir(novelDir);
     const newCoverPath =
       'file://' + novelDir + '/' + cover?.split(/[/\\]/).pop();
-    if (cover && NativeFile.exists(cover)) {
-      NativeFile.moveFile(cover, newCoverPath);
+
+    if (cover) {
+      const decodedPath = decodePath(cover);
+      if (NativeFile.exists(decodedPath)) {
+        NativeFile.moveFile(decodedPath, newCoverPath);
+      }
     }
     await updateNovelInfo({
       id: insertedNovel.lastInsertRowId,
@@ -61,7 +73,7 @@ const insertLocalChapter = async (
   name: string,
   path: string,
   releaseTime: string,
-): Promise<string[]> => {
+) => {
   const insertedChapter = await db.runAsync(
     'INSERT INTO Chapter(novelId, name, path, releaseTime, position) VALUES(?, ?, ?, ?, ?)',
     novelId,
@@ -72,25 +84,15 @@ const insertLocalChapter = async (
   );
   if (insertedChapter.lastInsertRowId && insertedChapter.lastInsertRowId >= 0) {
     let chapterText: string = '';
-    try {
-      path = decodeURI(path);
-    } catch {
-      // nothing to do
-    }
-    chapterText = NativeFile.readFile(path);
+    chapterText = NativeFile.readFile(decodePath(path));
     if (!chapterText) {
       return [];
     }
-    const staticPaths: string[] = [];
     const novelDir = NOVEL_STORAGE + '/local/' + novelId;
-    const epubContentDir = path.replace(/[^\\/]+$/, '');
     chapterText = chapterText.replace(
       /(href|src)=(["'])(.*?)\2/g,
       (_, $1, __, $3: string) => {
-        if ($3) {
-          staticPaths.push(epubContentDir + '/' + $3);
-        }
-        return `${$1}="file://${novelDir}/${$3.split(/[\\/]/)?.pop()}"`;
+        return `${$1}="file://${novelDir}/${$3.split(/[\\/]/).pop()}"`;
       },
     );
     NativeFile.mkdir(novelDir + '/' + insertedChapter.lastInsertRowId);
@@ -98,7 +100,7 @@ const insertLocalChapter = async (
       novelDir + '/' + insertedChapter.lastInsertRowId + '/index.html',
       chapterText,
     );
-    return staticPaths;
+    return;
   }
   throw new Error(getString('advancedSettingsScreen.chapterInsertFailed'));
 };
@@ -131,11 +133,8 @@ export const importEpub = async (
   }
   NativeFile.mkdir(epubDirPath);
   await NativeZipArchive.unzip(epubFilePath, epubDirPath);
-  const novel = NativeEpubUtil.parseNovelAndChapters(epubDirPath);
-  if (novel === null) {
-    throw new Error(getString('advancedSettingsScreen.novelInsertFailed'));
-  }
-  if (!novel || !novel.name) {
+  const novel = NativeEpub.parseNovelAndChapters(epubDirPath);
+  if (!novel.name) {
     novel.name = filename.replace('.epub', '') || 'Untitled';
   }
   const novelId = await insertLocalNovel(
@@ -147,7 +146,6 @@ export const importEpub = async (
     novel.summary || '',
   );
   const now = dayjs().toISOString();
-  const filePathSet = new Set<string>();
   if (novel.chapters) {
     for (let i = 0; i < novel.chapters?.length; i++) {
       const chapter = novel.chapters[i];
@@ -160,14 +158,7 @@ export const importEpub = async (
         progressText: chapter.name,
       }));
 
-      const filePaths = await insertLocalChapter(
-        novelId,
-        i,
-        chapter.name,
-        chapter.path,
-        now,
-      );
-      filePaths.forEach(filePath => filePathSet.add(filePath));
+      await insertLocalChapter(novelId, i, chapter.name, chapter.path, now);
 
       setMeta(meta => ({
         ...meta,
@@ -182,10 +173,22 @@ export const importEpub = async (
     progressText: getString('advancedSettingsScreen.importStaticFiles'),
   }));
 
-  for (const filePath of filePathSet) {
-    if (NativeFile.exists(filePath)) {
+  for (const filePath of novel.imagePaths) {
+    const decodedPath = decodePath(filePath);
+
+    if (NativeFile.exists(decodedPath)) {
       NativeFile.moveFile(
-        filePath,
+        decodedPath,
+        novelDir + '/' + filePath.split(/[\\/]/).pop(),
+      );
+    }
+  }
+
+  for (const filePath of novel.cssPaths) {
+    const decodedPath = decodePath(filePath);
+    if (NativeFile.exists(decodedPath)) {
+      NativeFile.moveFile(
+        decodedPath,
         novelDir + '/' + filePath.split(/[\\/]/).pop(),
       );
     }

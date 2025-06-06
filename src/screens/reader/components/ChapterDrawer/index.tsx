@@ -29,7 +29,7 @@ type ButtonsProperties = {
 };
 
 const ChapterDrawer = () => {
-  const { chapter, setChapter, setLoading } = useChapterContext();
+  const { chapter, getChapter, setLoading } = useChapterContext();
   const { chapters, novelSettings, pages, setPageIndex } = useNovelContext();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
@@ -167,7 +167,7 @@ const ChapterDrawer = () => {
               chapterId: chapter.id,
               onPress: () => {
                 setLoading(true);
-                setChapter(val.item);
+                getChapter(val.item);
               },
             })
           }
