@@ -55,17 +55,18 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
   const [, setCustomAccentColor] = useMMKVString('CUSTOM_ACCENT_COLOR');
   const { setSettings, ...currentSettings } = useSettingsContext();
 
-  const currentValue = !settings.settingsOrigin
-    ? currentSettings[settings.valueKey]
-    : settings.settingsOrigin === 'MMKV'
-    ? rgbToHex(theme.primary)
-    : (() => {
-        throw new Error(
-          `settings.settingsOrigin in setting:
+  const currentValue =
+    settings.settingsOrigin === 'MMKV'
+      ? rgbToHex(theme.primary)
+      : !settings.settingsOrigin
+      ? currentSettings[settings.valueKey!]
+      : (() => {
+          throw new Error(
+            `settings.settingsOrigin in setting:
           ${JSON.stringify(settings, null, 2)}
          is not defined`,
-        );
-      })();
+          );
+        })();
 
   const [text, setText] = useState<string>(currentValue);
 

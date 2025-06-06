@@ -126,8 +126,8 @@ const GeneralSettings: SettingsGroup<generalIds> = {
         {
           title: getString('generalSettingsScreen.updateTime'),
           type: 'Switch',
-          settingOrigin: 'lastUpdateTime',
-          valueKey: 'showLastUpdateTime',
+          settingsOrigin: 'lastUpdateTime',
+          valueKey: undefined,
         },
       ],
     },

@@ -52,13 +52,17 @@ export type ModalSetting = ModalSettingsType & {
   title: string;
   type: 'Modal';
 };
-export type SwitchSetting = {
+export type _SwitchSetting<T extends SettingOrigin | undefined = undefined> = {
   title: string;
   description?: string;
   type: 'Switch';
-  valueKey: FilteredSettings<boolean>;
+  settingsOrigin?: T;
+  valueKey: T extends undefined ? FilteredSettings<boolean> : undefined;
   dependents?: Array<SettingsSubGroupSettings>;
 };
+export type SwitchSetting =
+  | _SwitchSetting<'lastUpdateTime'>
+  | _SwitchSetting<undefined>;
 
 export type NumberInputSetting = {
   title: string;
@@ -83,12 +87,16 @@ export type ThemePickerSetting = {
   options: Array<ThemeColors>;
 };
 
-export type ColorPickerSetting = {
+type _ColorPickerSetting<T extends SettingOrigin | undefined = undefined> = {
   title: string;
   description?: (val: string) => string;
   type: 'ColorPicker';
-  valueKey: keyof ReaderTheme;
+  settingsOrigin?: T;
+  valueKey: T extends undefined ? keyof ReaderTheme : undefined;
 };
+export type ColorPickerSetting =
+  | _ColorPickerSetting<'MMKV'>
+  | _ColorPickerSetting<undefined>;
 
 export type ReaderThemeSetting = { type: 'ReaderTheme' };
 export type ReaderTTSSetting = { type: 'TTS' };
@@ -101,7 +109,6 @@ export type InfoItem = { type: 'InfoItem'; title: string };
 
 export type BaseSetting = {
   quickSettings?: boolean;
-  settingsOrigin?: SettingOrigin;
 };
 
 export type SettingsSubGroupSettings = BaseSetting &
