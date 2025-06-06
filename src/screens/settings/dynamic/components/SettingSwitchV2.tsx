@@ -31,9 +31,9 @@ const SettingSwitchV2 = ({
   const { showLastUpdateTime, setShowLastUpdateTime } = useLastUpdate();
 
   const currentValue = useMemo(() => {
-    if (setting?.settingsOrigin === 'lastUpdateTime') return showLastUpdateTime;
-    return settings[setting.valueKey];
-  }, [setting?.settingsOrigin, setting.valueKey, settings, showLastUpdateTime]);
+    if (setting.settingsOrigin === 'lastUpdateTime') return showLastUpdateTime;
+    return settings[setting.valueKey!];
+  }, [setting.settingsOrigin, setting.valueKey, settings, showLastUpdateTime]);
 
   const dependents = useMemo(() => {
     return setting.dependents?.filter(d =>
@@ -47,14 +47,14 @@ const SettingSwitchV2 = ({
   const opacity = useSharedValue(1);
   const update = (
     value: boolean,
-    key: FilteredSettings<boolean>,
+    key?: FilteredSettings<boolean>,
     origin?: SettingOrigin,
   ) => {
     maxHeight.value = value ? 60 * (dependents?.length ?? 0) : 0;
     opacity.value = value ? 1 : 0;
 
-    if (origin === 'lastUpdateTime') {
-      setShowLastUpdateTime(value);
+    if (origin === 'lastUpdateTime' || !key) {
+      return setShowLastUpdateTime(value);
     }
     settings.setSettings({
       [key]: value,
