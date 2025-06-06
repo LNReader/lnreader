@@ -33,9 +33,9 @@ import { getString } from '@strings/translations';
 import dayjs from 'dayjs';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import { useAppSettings } from './useSettings';
 import NativeFile from '@specs/NativeFile';
 import { useLibraryContext } from '@components/Context/LibraryContext';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 // #region constants
 
@@ -147,7 +147,7 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
     novel ? calculatePages(novel) : [],
   );
 
-  const { defaultChapterSort } = useAppSettings();
+  const { defaultChapterSort } = useSettingsContext();
 
   const novelPath = novel?.path ?? (novelOrPath as string);
 

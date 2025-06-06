@@ -3,9 +3,9 @@ import React from 'react';
 import { Button } from '@components';
 import { getString } from '@strings/translations';
 import { ChapterInfo } from '@database/types';
-import { useAppSettings } from '@hooks/persisted';
 import Animated, { ZoomIn } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface ReadButtonProps {
   chapters: ChapterInfo[];
@@ -18,7 +18,7 @@ const ReadButton = ({
   lastRead,
   navigateToChapter,
 }: ReadButtonProps) => {
-  const { useFabForContinueReading = false } = useAppSettings();
+  const { useFabForContinueReading = false } = useSettingsContext();
 
   const navigateToLastReadChapter = () => {
     if (lastRead) {

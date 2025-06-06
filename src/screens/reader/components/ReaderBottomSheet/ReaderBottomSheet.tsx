@@ -17,20 +17,19 @@ import Color from 'color';
 
 import { BottomSheetFlashList, BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
-import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '@strings/translations';
 
-import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
-import TextSizeSlider from './TextSizeSlider';
-import ReaderThemeSelector from './ReaderThemeSelector';
-import ReaderTextAlignSelector from './ReaderTextAlignSelector';
-import ReaderValueChange from './ReaderValueChange';
-import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { StringMap } from '@strings/types';
+import RenderSettings from '@screens/settings/dynamic/RenderSettings';
+import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
+import ReaderSettings from '@screens/settings/settingsGroups/readerSettingsGroup';
+import { FilteredSettings } from '@screens/settings/constants/defaultValues';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 type TabViewLabelProps = {
   route: {
@@ -44,65 +43,56 @@ type TabViewLabelProps = {
   style?: StyleProp<TextStyle | null>;
 };
 
-const ReaderTab: React.FC = React.memo(() => (
-  <Suspense fallback={<></>}>
-    <View style={styles.readerTab}>
-      <TextSizeSlider />
-      <ReaderThemeSelector />
-      <ReaderTextAlignSelector />
-      <ReaderValueChange
-        label={getString('readerScreen.bottomSheet.lineHeight')}
-        valueKey="lineHeight"
-      />
-      <ReaderValueChange
-        label={getString('readerScreen.bottomSheet.padding')}
-        valueKey="padding"
-        valueChange={2}
-        min={0}
-        max={50}
-        decimals={0}
-        unit="px"
-      />
-      <ReaderFontPicker />
-    </View>
-  </Suspense>
-));
+const ReaderTab: React.FC = React.memo(() => {
+  const settings = ReaderSettings.subGroup.filter(
+    v => v.id === 'readerTheme',
+  )[0].settings;
+  return (
+    <Suspense fallback={<></>}>
+      <View style={styles.readerTab}>
+        {settings.map((v, i) => (
+          <RenderSettings key={i} setting={v} />
+        ))}
+      </View>
+    </Suspense>
+  );
+});
 
 const GeneralTab: React.FC = React.memo(() => {
   const theme = useTheme();
-  const { setChapterGeneralSettings, ...settings } =
-    useChapterGeneralSettings();
+  const settings = useSettingsContext();
 
   const toggleSetting = useCallback(
-    (key: keyof typeof settings) =>
-      setChapterGeneralSettings({ [key]: !settings[key] }),
-    [setChapterGeneralSettings, settings],
+    (key: FilteredSettings<boolean>) =>
+      settings.setSettings?.({ [key]: !settings[key] }),
+    [settings],
   );
 
-  const preferences = useMemo(
-    () => [
-      { key: 'fullScreenMode', label: 'fullscreen' },
-      { key: 'autoScroll', label: 'autoscroll' },
-      { key: 'verticalSeekbar', label: 'verticalSeekbar' },
-      { key: 'showBatteryAndTime', label: 'showBatteryAndTime' },
-      { key: 'showScrollPercentage', label: 'showProgressPercentage' },
-      { key: 'swipeGestures', label: 'swipeGestures' },
-      { key: 'pageReader', label: 'pageReader' },
-      { key: 'removeExtraParagraphSpacing', label: 'removeExtraSpacing' },
-      { key: 'useVolumeButtons', label: 'volumeButtonsScroll' },
-      { key: 'bionicReading', label: 'bionicReading' },
-      { key: 'tapToScroll', label: 'tapToScroll' },
-      { key: 'keepScreenOn', label: 'keepScreenOn' },
-    ],
-    [],
-  );
+  const preferences: { key: FilteredSettings<boolean>; label: string }[] =
+    useMemo(
+      () => [
+        { key: 'fullScreenMode', label: 'fullscreen' },
+        { key: 'autoScroll', label: 'autoscroll' },
+        { key: 'verticalSeekbar', label: 'verticalSeekbar' },
+        { key: 'showBatteryAndTime', label: 'showBatteryAndTime' },
+        { key: 'showScrollPercentage', label: 'showProgressPercentage' },
+        { key: 'swipeGestures', label: 'swipeGestures' },
+        { key: 'pageReader', label: 'pageReader' },
+        { key: 'removeExtraParagraphSpacing', label: 'removeExtraSpacing' },
+        { key: 'useVolumeButtons', label: 'volumeButtonsScroll' },
+        { key: 'bionicReading', label: 'bionicReading' },
+        { key: 'tapToScroll', label: 'tapToScroll' },
+        { key: 'keepScreenOn', label: 'keepScreenOn' },
+      ],
+      [],
+    );
 
   const renderItem = useCallback(
     ({
       item,
     }: {
       item: {
-        key: string;
+        key: FilteredSettings<boolean>;
         label: string;
       };
     }) => (
@@ -111,7 +101,7 @@ const GeneralTab: React.FC = React.memo(() => {
         label={getString(
           `readerScreen.bottomSheet.${item.label}` as keyof StringMap,
         )}
-        onPress={() => toggleSetting(item.key as keyof typeof settings)} // @ts-ignore
+        onPress={() => toggleSetting(item.key)}
         value={settings[item.key]}
         theme={theme}
       />

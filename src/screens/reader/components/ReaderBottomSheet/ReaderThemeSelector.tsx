@@ -1,11 +1,12 @@
 import { StyleSheet, Text, TextStyle, View } from 'react-native';
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ToggleColorButton } from '@components/Common/ToggleButton';
 import { getString } from '@strings/translations';
 import { presetReaderThemes } from '@utils/constants/readerConstants';
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { FlatList } from 'react-native-gesture-handler';
-import { ReaderTheme } from '@hooks/persisted/useSettings';
+import { ReaderTheme } from '@screens/settings/constants/defaultValues';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface ReaderThemeSelectorProps {
   label?: string;
@@ -19,11 +20,21 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
   const theme = useTheme();
 
   const {
-    theme: backgroundColor,
+    backgroundColor,
     textColor,
     customThemes,
-    setChapterReaderSettings,
-  } = useChapterReaderSettings();
+    setSettings: setChapterReaderSettings,
+  } = useSettingsContext();
+
+  const [listWidth, setListWidth] = React.useState(0);
+
+  const data = [...customThemes, ...presetReaderThemes] as ReaderTheme[];
+  const spacing = useMemo(
+    () => ({ width: listWidth - 56 * data.length }),
+    [data.length, listWidth],
+  );
+
+  const Spacer = useCallback(() => <View style={spacing} />, [spacing]);
 
   return (
     <View style={styles.container}>
@@ -33,7 +44,7 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
         {label || getString('readerScreen.bottomSheet.color')}
       </Text>
       <FlatList
-        data={[...customThemes, ...presetReaderThemes] as ReaderTheme[]}
+        data={data}
         renderItem={({ item, index }) => (
           <ToggleColorButton
             key={index}
@@ -45,7 +56,7 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
             textColor={item.textColor}
             onPress={() =>
               setChapterReaderSettings({
-                theme: item.backgroundColor,
+                backgroundColor: item.backgroundColor,
                 textColor: item.textColor,
               })
             }
@@ -54,6 +65,8 @@ const ReaderThemeSelector: React.FC<ReaderThemeSelectorProps> = ({
         keyExtractor={(item, index) => item.textColor + '_' + index}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
+        onLayout={e => setListWidth(e.nativeEvent.layout.width)}
+        ListHeaderComponent={Spacer}
       />
     </View>
   );
