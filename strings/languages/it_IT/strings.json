@@ -1,17 +1,17 @@
 {
   "aboutScreen": {
-    "website": "Website",
+    "website": "Sito Web",
     "discord": "Discord",
-    "github": "Github",
-    "helpTranslate": "Help translate",
-    "sources": "Sources",
-    "version": "Version",
-    "whatsNew": "What's new"
+    "github": "GitHub",
+    "helpTranslate": "Aiutaci a Tradurre",
+    "sources": "Fonti",
+    "version": "Versione",
+    "whatsNew": "Novità"
   },
-  "advancedSettings": "Advanced",
+  "advancedSettings": "Avanzate",
   "advancedSettingsScreen": {
-    "cachedNovelsDeletedToast": "Cached novels deleted",
-    "chapterInsertFailed": "chapter insert failed",
+    "cachedNovelsDeletedToast": "Romanzi in cache eliminati",
+    "chapterInsertFailed": "Inserimento capitolo non riuscito",
     "clearCachedNovels": "Clear cached novels",
     "clearCachedNovelsDesc": "Delete cached novels which not in your library",
     "clearDatabaseWarning": "Read and Downloaded chapters and progress of non-library novels will be lost.",
