@@ -188,7 +188,7 @@
     "remove": "Удалить",
     "reset": "Сбросить",
     "restore": "Восстановить",
-    "resume": "Возобновить",
+    "resume": "Продолжить",
     "retry": "Повторить",
     "save": "Сохранить",
     "search": "Поиск",
@@ -398,7 +398,7 @@
     "noCoverFound": "Обложка не найдена",
     "progress": "Прогресс %{progress}%",
     "readChaptersDeleted": "Прочитанные главы удалены",
-    "startReadingChapters": "Начать чтение %{name}",
+    "startReadingChapters": "Начать %{name}",
     "status": {
       "cancelled": "Отменено",
       "completed": "Завершено",
