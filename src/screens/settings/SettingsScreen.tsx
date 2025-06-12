@@ -70,6 +70,14 @@ const SettingsScreen = ({}: SettingsScreenProps) => {
             />
           );
         })}
+        <List.Item
+          title="Custom Code"
+          icon="cloud-upload-outline"
+          onPress={() =>
+            navigation.navigate('CustomCode', { settingsSource: 'general' })
+          }
+          theme={theme}
+        />
 
         <List.Item
           title={getString('common.backup')}

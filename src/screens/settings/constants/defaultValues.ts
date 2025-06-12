@@ -112,7 +112,21 @@ export interface DefaultSettings extends ReaderTheme {
   epubUseAppTheme: boolean;
   epubUseCustomCSS: boolean;
   epubUseCustomJS: boolean;
+
+  /**
+   * Custom code
+   */
+  replaceText: Map<string, string>;
+  removeText: string[];
+  codeSnippetsCSS: CodeSnippet[];
+  codeSnippetsJS: CodeSnippet[];
 }
+
+type CodeSnippet = {
+  name: string;
+  code: string;
+  active: boolean;
+};
 
 export type FilteredSettings<T = any> = NonNullable<
   {
@@ -222,4 +236,12 @@ export const defaultSettings: DefaultSettings = {
   showUnreadBadges: true,
   novelsPerRow: 3,
   sortOrder: LibrarySortOrder.DateAdded_DESC,
+
+  /**
+   * Custom code
+   */
+  replaceText: new Map(),
+  removeText: [],
+  codeSnippetsCSS: [],
+  codeSnippetsJS: [],
 };

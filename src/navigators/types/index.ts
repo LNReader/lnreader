@@ -86,6 +86,7 @@ export type SettingsStackParamList = {
   AdvancedSettings: SettingsProps;
   LibrarySettings: SettingsProps;
   RespositorySettings: SettingsProps<'repo'> & { url: string };
+  CustomCode: SettingsProps;
 };
 
 export type NovelScreenProps = NativeStackScreenProps<
@@ -172,6 +173,12 @@ export type BackupSettingsScreenProps = NativeStackScreenProps<
   SettingsStackParamList,
   'BackupSettings'
 >;
+
+export type CustomCodeSettingsScreenProps = NativeStackScreenProps<
+  SettingsStackParamList,
+  'CustomCode'
+>;
+
 export type AdvancedSettingsScreenProps = NativeStackScreenProps<
   SettingsStackParamList,
   'AdvancedSettings'
