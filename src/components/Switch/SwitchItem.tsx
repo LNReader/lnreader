@@ -18,6 +18,8 @@ interface SwitchItemProps {
   theme: ThemeColors;
   size?: number;
   style?: StyleProp<ViewStyle>;
+  endOfLine?: () => React.ReactNode;
+  quickSettingsItem?: boolean;
 }
 
 const SwitchItem: React.FC<SwitchItemProps> = ({
@@ -28,50 +30,61 @@ const SwitchItem: React.FC<SwitchItemProps> = ({
   value,
   size,
   style,
-}) => (
-  <Pressable
-    android_ripple={{ color: theme.rippleColor }}
-    style={[styles.container, style]}
-    onPress={onPress}
-  >
-    <View style={styles.labelContainer}>
-      <Text style={[{ color: theme.onSurface }, styles.label]}>{label}</Text>
-      {description ? (
-        <Text style={[styles.description, { color: theme.onSurfaceVariant }]}>
-          {description}
+  endOfLine,
+  quickSettingsItem,
+}) => {
+  const color = quickSettingsItem ? theme.onSurfaceVariant : theme.onSurface;
+  const fontSize = quickSettingsItem ? 14 : 16;
+
+  return (
+    <Pressable
+      android_ripple={{ color: theme.rippleColor }}
+      onPress={onPress}
+      style={[styles.container, style]}
+    >
+      <View style={styles.labelContainer}>
+        <Text
+          style={{
+            color,
+            fontSize,
+          }}
+        >
+          {label}
         </Text>
-      ) : null}
-    </View>
-    <Switch
-      value={value}
-      onValueChange={onPress}
-      style={styles.switch}
-      size={size}
-    />
-  </Pressable>
-);
+        {description && !quickSettingsItem ? (
+          <Text style={[styles.description, { color: theme.onSurfaceVariant }]}>
+            {description}
+          </Text>
+        ) : null}
+      </View>
+      <Switch
+        value={value}
+        onValueChange={onPress}
+        style={styles.switch}
+        size={size}
+      />
+      {endOfLine ? endOfLine() : null}
+    </Pressable>
+  );
+};
 
 export default SwitchItem;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 16,
     paddingVertical: 12,
-  },
-  description: {
-    fontSize: 12,
-    lineHeight: 20,
-  },
-  label: {
-    fontSize: 16,
   },
   labelContainer: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'column',
+  },
+  description: {
+    fontSize: 12,
   },
   switch: {
-    marginLeft: 8,
+    alignSelf: 'center',
   },
 });

@@ -1,6 +1,6 @@
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { ThemeColors } from '@theme/types';
 import color from 'color';
-import { useAppSettings } from '@hooks/persisted';
 import { interpolateColor } from 'react-native-reanimated';
 
 const useLoadingColors = (theme: ThemeColors) => {
@@ -18,7 +18,7 @@ const useLoadingColors = (theme: ThemeColors) => {
     adjustedBackgroundColor = backgroundColor.darken(0.04).toString();
   }
 
-  const { disableLoadingAnimations } = useAppSettings();
+  const { disableLoadingAnimations } = useSettingsContext();
 
   if (disableLoadingAnimations) {
     //If loading animations is disabled highlight color is never shown so make background color more visible to compensate

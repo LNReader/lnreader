@@ -15,7 +15,20 @@ import { createTables } from '@database/db';
 import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
 
 import Main from './src/navigators/Main';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+
+declare global {
+  interface ObjectConstructor {
+    typedKeys<T>(obj: T): Array<keyof T>;
+  }
+}
+Object.typedKeys = Object.keys as any;
+
+declare global {
+  interface ObjectConstructor {
+    typedKeys<T>(obj: T): Array<keyof T>;
+  }
+}
+Object.typedKeys = Object.keys as any;
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
@@ -36,10 +49,8 @@ const App = () => {
       <AppErrorBoundary>
         <SafeAreaProvider>
           <PaperProvider>
-            <BottomSheetModalProvider>
-              <StatusBar translucent={true} backgroundColor="transparent" />
-              <Main />
-            </BottomSheetModalProvider>
+            <StatusBar translucent={true} backgroundColor="transparent" />
+            <Main />
           </PaperProvider>
         </SafeAreaProvider>
       </AppErrorBoundary>
