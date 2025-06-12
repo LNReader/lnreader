@@ -3,16 +3,21 @@ import { useSettingsContext } from '@components/Context/SettingsContext';
 import KeyboardAvoidingModal from '@components/Modal/KeyboardAvoidingModal';
 import { useBoolean } from '@hooks/index';
 import { useTheme } from '@hooks/persisted';
-import React, { useMemo, useRef } from 'react';
-import { TextInput as RNTextInput, StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { FlashList } from '@shopify/flash-list';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { TextInput as RNTextInput, StyleSheet, View } from 'react-native';
+import { TextInput, Text } from 'react-native-paper';
 
-type ReplaceItemModalProps = {};
+type ReplaceItemModalProps = { showReplace?: boolean };
 
-const ReplaceItemModal = ({}: ReplaceItemModalProps) => {
+const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
   const theme = useTheme();
   const modal = useBoolean(false);
-  const { setSettings, replaceText } = useSettingsContext();
+  const { setSettings, replaceText, removeText } = useSettingsContext();
+  const replaceArray = useMemo(() => {
+    return Object.entries(replaceText);
+  }, [replaceText]);
+  const arrayLength = showReplace ? replaceArray.length : removeText.length;
 
   const textRef = useRef<RNTextInput>(null);
   const replaceTextRef = useRef<RNTextInput>(null);
@@ -22,14 +27,26 @@ const ReplaceItemModal = ({}: ReplaceItemModalProps) => {
 
   const cancel = () => {
     textRef.current?.clear();
-    replaceTextRef.current?.clear();
+    setText('');
+    if (showReplace) {
+      replaceTextRef.current?.clear();
+      setReplacementText('');
+    }
   };
 
   const save = () => {
-    if (!text || !replacementText) return;
-    if (text === undefined || replacementText === undefined) return;
-    replaceText.set(text, replacementText);
-    setSettings({ replaceText: replaceText });
+    if (!text || (showReplace && !replacementText)) return;
+    if (text === undefined || (showReplace && replacementText === undefined)) {
+      return;
+    }
+
+    if (showReplace) {
+      replaceText[text] = replacementText;
+      setSettings({ replaceText: replaceText });
+    } else {
+      removeText.push(text);
+      setSettings({ removeText: removeText });
+    }
     cancel();
   };
 
@@ -37,15 +54,71 @@ const ReplaceItemModal = ({}: ReplaceItemModalProps) => {
     return { colors: theme };
   }, [theme]);
 
+  const ReplaceItem = useCallback(
+    ({ item }: { item: [string, string] }) => {
+      return (
+        <View style={styles.itemRow}>
+          <Text numberOfLines={1} style={styles.textItem} theme={colorTheme}>
+            {item[0]}
+          </Text>
+          <Text numberOfLines={1} style={styles.spaceItem} theme={colorTheme}>
+            {' -> '}
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={[styles.textItem, styles.textItemRight]}
+            theme={colorTheme}
+          >
+            {item[1]}
+          </Text>
+        </View>
+      );
+    },
+    [colorTheme],
+  );
+  const RemoveItem = useCallback(
+    ({ item }: { item: string }) => {
+      return (
+        <View style={styles.itemRow}>
+          <Text numberOfLines={1} style={styles.textItem} theme={colorTheme}>
+            {item}
+          </Text>
+        </View>
+      );
+    },
+    [colorTheme],
+  );
+
   return (
     <>
       <List.Item
-        title={'Replace'}
-        description={'Replace text'}
+        title={showReplace ? 'Replace' : 'Remove'}
+        description={showReplace ? 'Replace text' : 'Remove text'}
         theme={theme}
         right="plus"
         onPress={modal.setTrue}
       />
+      <View
+        style={{
+          height: Math.min(100, arrayLength * 48),
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
+        {showReplace ? (
+          <FlashList
+            estimatedItemSize={46}
+            data={replaceArray}
+            renderItem={ReplaceItem}
+          />
+        ) : (
+          <FlashList
+            estimatedItemSize={46}
+            data={removeText}
+            renderItem={RemoveItem}
+          />
+        )}
+      </View>
       <KeyboardAvoidingModal
         visible={modal.value}
         onDismiss={modal.setFalse}
@@ -63,16 +136,18 @@ const ReplaceItemModal = ({}: ReplaceItemModalProps) => {
           mode="outlined"
           style={styles.textfield}
         />
-        <TextInput
-          ref={replaceTextRef}
-          label={'replace'}
-          theme={colorTheme}
-          defaultValue={replacementText}
-          onChangeText={setReplacementText}
-          autoCorrect={false}
-          mode="outlined"
-          style={[styles.textfield, styles.bottom]}
-        />
+        {!showReplace ? null : (
+          <TextInput
+            ref={replaceTextRef}
+            label={'replace'}
+            theme={colorTheme}
+            defaultValue={replacementText}
+            onChangeText={setReplacementText}
+            autoCorrect={false}
+            mode="outlined"
+            style={[styles.textfield, styles.bottom]}
+          />
+        )}
       </KeyboardAvoidingModal>
     </>
   );
@@ -86,5 +161,25 @@ const styles = StyleSheet.create({
   },
   bottom: {
     marginBottom: 24,
+  },
+  itemRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 24,
+    marginVertical: 8,
+  },
+  textItem: {
+    flexGrow: 1,
+    flexBasis: '0%',
+    overflow: 'hidden',
+  },
+  textItemRight: {
+    textAlign: 'right',
+  },
+  spaceItem: {
+    flexShrink: 1,
+    textAlign: 'center',
+    flexBasis: '10%',
   },
 });

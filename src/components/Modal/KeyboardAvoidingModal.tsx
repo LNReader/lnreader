@@ -100,7 +100,12 @@ const KeyboardAvoidingModal: React.FC<DefaultModalProps> = ({
   return (
     <Portal>
       <SafeAreaView>
-        <Modal visible={visible} onDismiss={onDismiss} {...props}>
+        <Modal
+          visible={visible}
+          onDismiss={onDismiss}
+          {...props}
+          style={styles.contentContainer}
+        >
           <Animated.View
             ref={animatedRef}
             style={[
@@ -131,10 +136,12 @@ const KeyboardAvoidingModal: React.FC<DefaultModalProps> = ({
 export default KeyboardAvoidingModal;
 
 const styles = StyleSheet.create({
+  contentContainer: {
+    paddingHorizontal: 24,
+  },
   modalContainer: {
     maxHeight: WINDOW_HEIGHT,
     borderRadius: 28,
-    margin: 30,
     padding: 24,
     shadowColor: 'transparent', // Modal weird shadow fix
   },

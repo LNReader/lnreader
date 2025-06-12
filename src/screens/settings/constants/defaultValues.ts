@@ -116,7 +116,7 @@ export interface DefaultSettings extends ReaderTheme {
   /**
    * Custom code
    */
-  replaceText: Map<string, string>;
+  replaceText: Record<string, string>;
   removeText: string[];
   codeSnippetsCSS: CodeSnippet[];
   codeSnippetsJS: CodeSnippet[];
@@ -240,7 +240,7 @@ export const defaultSettings: DefaultSettings = {
   /**
    * Custom code
    */
-  replaceText: new Map(),
+  replaceText: {},
   removeText: [],
   codeSnippetsCSS: [],
   codeSnippetsJS: [],

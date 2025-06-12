@@ -11,7 +11,6 @@ import ReplaceItemModal from './Modals/ReplaceItemModal';
 const SettingsCustomCode = ({ navigation }: CustomCodeSettingsScreenProps) => {
   const theme = useTheme();
 
-  const replaceModal = useBoolean(false);
   return (
     <>
       <SafeAreaView excludeTop>
@@ -23,13 +22,8 @@ const SettingsCustomCode = ({ navigation }: CustomCodeSettingsScreenProps) => {
         <ScrollView style={styles.paddingBottom}>
           <List.Section>
             <List.SubHeader theme={theme}>{'Text manipulation'}</List.SubHeader>
+            <ReplaceItemModal showReplace />
             <ReplaceItemModal />
-            <List.Item
-              title={'Remove'}
-              description={'Remove text'}
-              theme={theme}
-              right="plus"
-            />
             <List.Divider theme={theme} />
             <List.SubHeader theme={theme}>{'Code Snippets'}</List.SubHeader>
           </List.Section>
