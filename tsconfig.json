@@ -1,18 +1,9 @@
 {
-  "extends": "@react-native/typescript-config",
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": [
-    "**/node_modules",
-    "**/Pods",
-    "babel.config.js",
-    "metro.config.js"
-  ],
   "compilerOptions": {
     "baseUrl": ".",
     "noUnusedLocals": true,
     "module": "ES2022",
-    "lib": ["ES2022", "DOM"],
-    "target": "ES2022",
+    "lib": ["ES2024"],
     "paths": {
       "@components": ["src/components/index"],
       "@components/*": ["src/components/*"],
@@ -32,5 +23,7 @@
       "@specs/*": ["specs/*"]
     },
     "types": ["react-native"]
-  }
+  },
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"],
+  "extends": "@react-native/typescript-config/tsconfig.json"
 }

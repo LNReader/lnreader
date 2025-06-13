@@ -49,7 +49,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
   const {
     novel,
     chapter,
-    chapterText: html,
+    chapterText,
     navigateChapter,
     saveProgress,
     nextChapter,
@@ -64,6 +64,32 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
   const pluginCustomJS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.js`;
   const pluginCustomCSS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.css`;
   const nextChapterScreenVisible = useRef<boolean>(false);
+
+  const html = useMemo(() => {
+    let chText = chapterText;
+    settings.removeText.forEach(text => {
+      const m = text.match(/^\/(.*)\/([gmiyuvsd]*)$/);
+      if (m) {
+        const regex = new RegExp(m[1], m[2] ?? '');
+        chText = chText.replace(regex, '');
+      } else {
+        chText = chText.replaceAll(text, '');
+      }
+    });
+    Object.entries(settings.replaceText).forEach(([text, replacement]) => {
+      const m = text.match(/^\/(.*)\/([gmiyuvsd]*)$/);
+      if (m) {
+        const regex = new RegExp(m[1], m[2] ?? '');
+        chText = chText.replace(regex, replacement);
+      } else {
+        chText = chText.replaceAll(text, replacement);
+      }
+    });
+    return chText;
+  }, [chapterText, settings.removeText, settings.replaceText]);
+
+  if (chapterText === undefined) {
+  }
 
   useEffect(() => {
     const mmkvListener = MMKVStorage.addOnValueChangedListener(key => {
@@ -185,7 +211,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
                 --theme-outline: ${theme.outline};
                 --theme-rippleColor: ${theme.rippleColor};
                 }
-                
+
                 @font-face {
                   font-family: ${settings.fontFamily};
                   src: url("file:///android_asset/fonts/${
@@ -206,7 +232,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
               ${settings.pageReader ? '' : 'display: none'}"
               ">${chapter.name}</div>
               <div id="LNReader-chapter">
-                ${html}  
+                ${html}
               </div>
               <div id="reader-ui"></div>
               </body>
@@ -247,7 +273,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
                 async function fn(){
                     let novelName = "${novel.name}";
                     let chapterName = "${chapter.name}";
-                    let sourceId = "${novel.pluginId}"; 
+                    let sourceId = "${novel.pluginId}";
                     let chapterId =${chapter.id};
                     let novelId =${chapter.novelId};
                     let html = document.getElementById("LNReader-chapter").innerHTML;

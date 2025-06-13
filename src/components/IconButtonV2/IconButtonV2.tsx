@@ -42,6 +42,7 @@ const IconButton: React.FC<Props> = ({
         name={name}
         size={size}
         color={disabled ? theme.outline : color || theme.onSurface}
+        style={{ textAlign: 'center' }}
       />
     </Pressable>
   </View>
