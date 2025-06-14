@@ -11,11 +11,12 @@ import MaterialIcon from '@react-native-vector-icons/material-design-icons';
 
 import { List as PaperList, Divider as PaperDivider } from 'react-native-paper';
 import { ThemeColors } from '../../theme/types';
+import { MaterialDesignIconName } from '@type/icon';
 
 interface ListItemProps {
   title: string;
   description?: string | null;
-  icon?: string;
+  icon?: MaterialDesignIconName;
   onPress?: () => void;
   onPressIn?: () => void;
   theme: ThemeColors;

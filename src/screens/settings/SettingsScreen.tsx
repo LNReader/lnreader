@@ -72,7 +72,7 @@ const SettingsScreen = ({}: SettingsScreenProps) => {
         })}
         <List.Item
           title="Custom Code"
-          icon="cloud-upload-outline"
+          icon="code-braces"
           onPress={() =>
             navigation.navigate('CustomCode', { settingsSource: 'general' })
           }
