@@ -1,11 +1,8 @@
-import { Appbar, List, Modal, SafeAreaView } from '@components';
-import { useBoolean } from '@hooks/index';
+import { Appbar, List, SafeAreaView } from '@components';
 import { useTheme } from '@hooks/persisted';
 import { CustomCodeSettingsScreenProps } from '@navigators/types';
-import { getString } from '@strings/translations';
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { Portal } from 'react-native-paper';
 import ReplaceItemModal from './Modals/ReplaceItemModal';
 
 const SettingsCustomCode = ({ navigation }: CustomCodeSettingsScreenProps) => {

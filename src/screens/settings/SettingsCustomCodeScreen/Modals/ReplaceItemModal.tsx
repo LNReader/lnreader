@@ -1,29 +1,28 @@
-import { IconButtonV2, List } from '@components';
+import { AnimatedIconButton, List } from '@components';
 import { useSettingsContext } from '@components/Context/SettingsContext';
 import KeyboardAvoidingModal from '@components/Modal/KeyboardAvoidingModal';
 import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
 import { useBoolean } from '@hooks/index';
 import { useTheme } from '@hooks/persisted';
-import Icon from '@react-native-vector-icons/material-design-icons';
 import { FlashList } from '@shopify/flash-list';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useCallback, useMemo, useRef } from 'react';
-import {
-  Dimensions,
-  TextInput as RNTextInput,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { TextInput, Text } from 'react-native-paper';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { TextInput as RNTextInput, StyleSheet } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import Animated, {
+  FadeIn,
+  FadeOut,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import {
+  LIST_ITEM_LINE_HEIGHT,
+  RemoveItem,
+  ReplaceItem,
+} from '../Components/ListItems';
 
-const windowDimensions = Dimensions.get('window');
-const fontSize = 14 * windowDimensions.fontScale;
-const lineHeight = fontSize * 1.2;
+const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 type ReplaceItemModalProps = { showReplace?: boolean };
 
@@ -43,13 +42,17 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
 
   const [text, setText] = React.useState('');
   const [replacementText, setReplacementText] = React.useState('');
+  const [editing, setEditing] = React.useState<string | undefined>();
+
   const listSize = useSharedValue<number | `${number}%`>(
     Math.min(110, arrayLength * 48),
   );
+  const iconRotation = useSharedValue<number>(0);
 
   const cancel = () => {
     textRef.current?.clear();
     setText('');
+    setEditing(undefined);
     if (showReplace) {
       replaceTextRef.current?.clear();
       setReplacementText('');
@@ -57,16 +60,21 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
   };
 
   const save = () => {
-    if (!text || (showReplace && !replacementText)) return;
     if (text === undefined || (showReplace && replacementText === undefined)) {
       return;
     }
 
     if (showReplace) {
+      if (editing && editing !== text) delete replaceText[editing];
       replaceText[text] = replacementText;
       setSettings({ replaceText: replaceText });
     } else {
-      removeText.push(text);
+      if (editing) {
+        const i = removeText.findIndex(v => v === editing);
+        removeText[i] = text;
+      } else {
+        removeText.push(text);
+      }
       setSettings({ removeText: removeText });
     }
     cancel();
@@ -85,68 +93,45 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
     [removeText, replaceText, setSettings, showReplace],
   );
 
+  const editItem = useCallback(
+    (item: string[]) => {
+      setEditing(item[0]);
+      setText(item[0]);
+      if (showReplace) {
+        setReplacementText(item[1]);
+      }
+      modal.setTrue();
+    },
+    [modal, showReplace],
+  );
+
   const colorTheme = useMemo(() => {
     return { colors: theme };
   }, [theme]);
 
-  const ReplaceItem = useCallback(
-    ({ item }: { item: [string, string] }) => {
-      return (
-        <View style={styles.itemRow}>
-          <Text numberOfLines={1} style={styles.textItem} theme={colorTheme}>
-            {item[0]}
-          </Text>
-          <Text numberOfLines={1} style={styles.spaceItem} theme={colorTheme}>
-            {' -> '}
-          </Text>
-          <Text
-            numberOfLines={1}
-            style={[styles.textItem, styles.textItemRight]}
-            theme={colorTheme}
-          >
-            {item[1]}
-          </Text>
-          <Icon
-            name="trash-can-outline"
-            size={20}
-            color={theme.onBackground}
-            onPress={() => removeItem(item[0])}
-          />
-        </View>
-      );
+  const calcListSize = useCallback(
+    (toggle: boolean = true) => {
+      if (toggle) {
+        listExpanded.toggle();
+        iconRotation.value = listExpanded.value ? 0 : 180;
+      }
+      if (listExpanded.value) {
+        listSize.value = Math.min(
+          WINDOW_HEIGHT * 0.6,
+          arrayLength * (LIST_ITEM_LINE_HEIGHT + 16),
+        );
+      } else {
+        listSize.value = Math.min(
+          110,
+          arrayLength * (LIST_ITEM_LINE_HEIGHT + 16),
+        );
+      }
     },
-    [colorTheme, removeItem, theme.onBackground],
+    [arrayLength, iconRotation, listExpanded, listSize],
   );
-  const RemoveItem = useCallback(
-    ({ item, index }: { item: string; index: number }) => {
-      return (
-        <View style={styles.itemRow}>
-          <Text numberOfLines={1} style={styles.textItem} theme={colorTheme}>
-            {item}
-          </Text>
-          <Icon
-            name="trash-can-outline"
-            size={20}
-            color={theme.onBackground}
-            onPress={() => removeItem(index)}
-          />
-        </View>
-      );
-    },
-    [colorTheme, removeItem, theme.onBackground],
-  );
-
-  const toggleList = () => {
-    if (listExpanded.value) {
-      listSize.value = Math.min(110, arrayLength * (lineHeight + 16));
-    } else {
-      listSize.value = Math.min(
-        WINDOW_HEIGHT * 0.6,
-        arrayLength * (lineHeight + 16),
-      );
-    }
-    listExpanded.toggle();
-  };
+  useEffect(() => {
+    calcListSize(false);
+  }, [replaceArray, removeText, calcListSize]);
 
   const animatedListSize = useAnimatedStyle(() => ({
     height: withTiming(listSize.value, { duration: 250 }),
@@ -165,35 +150,49 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
       />
       <Animated.View style={animatedListSize}>
         {arrayLength <= 3 || listExpanded.value ? null : (
-          <LinearGradient
+          <AnimatedLinearGradient
+            entering={FadeIn.duration(150)}
+            exiting={FadeOut.duration(150)}
             colors={['transparent', 'transparent', theme.background]}
             style={styles.gradient}
-            onTouchEnd={toggleList}
+            onTouchEnd={() => calcListSize()}
           />
         )}
         {showReplace ? (
           <FlashList
             estimatedItemSize={46}
             data={replaceArray}
-            renderItem={ReplaceItem}
+            renderItem={({ item }) => (
+              <ReplaceItem
+                item={item}
+                removeItem={removeItem}
+                editItem={editItem}
+              />
+            )}
           />
         ) : (
           <FlashList
             estimatedItemSize={46}
             data={removeText}
-            renderItem={RemoveItem}
+            renderItem={({ item, index }) => (
+              <RemoveItem
+                item={item}
+                index={index}
+                removeItem={removeItem}
+                editItem={editItem}
+              />
+            )}
           />
         )}
       </Animated.View>
-      {!listExpanded.value ? null : (
-        <IconButtonV2
-          name="menu-up"
-          theme={theme}
-          onPress={toggleList}
-          style={styles.marginHorizontal}
-          color={theme.primary}
-        />
-      )}
+      <AnimatedIconButton
+        name="menu-down"
+        theme={theme}
+        onPress={calcListSize}
+        style={styles.marginHorizontal}
+        color={theme.primary}
+        rotation={iconRotation}
+      />
       <KeyboardAvoidingModal
         visible={modal.value}
         onDismiss={modal.setFalse}
@@ -239,30 +238,6 @@ const styles = StyleSheet.create({
   },
   marginHorizontal: {
     marginHorizontal: 16,
-  },
-  itemRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: 24,
-    marginVertical: 8,
-    gap: 8,
-    height: Math.max(lineHeight, 20),
-  },
-  textItem: {
-    flexGrow: 1,
-    flexBasis: '0%',
-    overflow: 'hidden',
-    fontSize,
-    lineHeight: lineHeight,
-  },
-  textItemRight: {
-    textAlign: 'right',
-  },
-  spaceItem: {
-    flexShrink: 1,
-    textAlign: 'center',
-    flexBasis: '10%',
   },
   gradient: {
     position: 'absolute',
