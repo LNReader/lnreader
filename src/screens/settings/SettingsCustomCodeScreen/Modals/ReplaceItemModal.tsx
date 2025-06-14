@@ -24,12 +24,19 @@ import {
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
-type ReplaceItemModalProps = { showReplace?: boolean };
+type ReplaceItemModalProps = {
+  showReplace?: boolean;
+  listExpanded: boolean;
+  toggleList: () => void;
+};
 
-const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
+const ReplaceItemModal = ({
+  showReplace = false,
+  listExpanded = false,
+  toggleList,
+}: ReplaceItemModalProps) => {
   const theme = useTheme();
   const modal = useBoolean(false);
-  const listExpanded = useBoolean(false);
   const { setSettings, replaceText, removeText } = useSettingsContext();
   const replaceArray = useMemo(() => {
     return Object.entries(replaceText);
@@ -43,6 +50,7 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
   const [text, setText] = React.useState('');
   const [replacementText, setReplacementText] = React.useState('');
   const [editing, setEditing] = React.useState<string | undefined>();
+  const [error, setError] = React.useState<[string, string] | undefined>();
 
   const listSize = useSharedValue<number | `${number}%`>(
     Math.min(110, arrayLength * 48),
@@ -50,6 +58,7 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
   const iconRotation = useSharedValue<number>(0);
 
   const cancel = () => {
+    setError(undefined);
     textRef.current?.clear();
     setText('');
     setEditing(undefined);
@@ -60,8 +69,16 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
   };
 
   const save = () => {
-    if (text === undefined || (showReplace && replacementText === undefined)) {
-      return;
+    if (!text || (showReplace && !replacementText)) {
+      const e: [string, string] = ['', ''];
+      if (!text) {
+        e[0] = 'Enter a match';
+      }
+      if (!replacementText) {
+        e[1] = 'Enter a replace';
+      }
+      setError(e);
+      return false;
     }
 
     if (showReplace) {
@@ -72,12 +89,16 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
       if (editing) {
         const i = removeText.findIndex(v => v === editing);
         removeText[i] = text;
-      } else {
+      } else if (!removeText.includes(text)) {
         removeText.push(text);
+      } else {
+        setError(['Item already exists', '']);
+        return false;
       }
       setSettings({ removeText: removeText });
     }
     cancel();
+    return true;
   };
 
   const removeItem = useCallback(
@@ -112,10 +133,10 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
   const calcListSize = useCallback(
     (toggle: boolean = true) => {
       if (toggle) {
-        listExpanded.toggle();
-        iconRotation.value = listExpanded.value ? 0 : 180;
+        toggleList();
+        iconRotation.value = listExpanded ? 0 : 180;
       }
-      if (listExpanded.value) {
+      if (listExpanded) {
         listSize.value = Math.min(
           WINDOW_HEIGHT * 0.6,
           arrayLength * (LIST_ITEM_LINE_HEIGHT + 16),
@@ -127,11 +148,14 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
         );
       }
     },
-    [arrayLength, iconRotation, listExpanded, listSize],
+    [arrayLength, iconRotation, listExpanded, listSize, toggleList],
   );
   useEffect(() => {
     calcListSize(false);
   }, [replaceArray, removeText, calcListSize]);
+  useEffect(() => {
+    iconRotation.value = !listExpanded ? 0 : 180;
+  }, [iconRotation, listExpanded]);
 
   const animatedListSize = useAnimatedStyle(() => ({
     height: withTiming(listSize.value, { duration: 250 }),
@@ -149,7 +173,7 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
         onPress={modal.setTrue}
       />
       <Animated.View style={animatedListSize}>
-        {arrayLength <= 3 || listExpanded.value ? null : (
+        {arrayLength <= 3 || listExpanded ? null : (
           <AnimatedLinearGradient
             entering={FadeIn.duration(150)}
             exiting={FadeOut.duration(150)}
@@ -195,7 +219,10 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
       />
       <KeyboardAvoidingModal
         visible={modal.value}
-        onDismiss={modal.setFalse}
+        onDismiss={() => {
+          modal.setFalse();
+          setError(undefined);
+        }}
         onSave={save}
         onCancel={cancel}
         title="Edit Replace"
@@ -209,6 +236,7 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
           autoCorrect={false}
           mode="outlined"
           style={styles.textfield}
+          error={error && !!error[0]}
         />
         {!showReplace ? null : (
           <TextInput
@@ -220,6 +248,7 @@ const ReplaceItemModal = ({ showReplace = false }: ReplaceItemModalProps) => {
             autoCorrect={false}
             mode="outlined"
             style={[styles.textfield, styles.bottom]}
+            error={error && !!error[1]}
           />
         )}
       </KeyboardAvoidingModal>

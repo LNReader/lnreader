@@ -5,8 +5,20 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import ReplaceItemModal from './Modals/ReplaceItemModal';
 
+const defaultExtended = [false, false, false, false];
+
 const SettingsCustomCode = ({ navigation }: CustomCodeSettingsScreenProps) => {
   const theme = useTheme();
+  const [extended, setExtended] = React.useState(defaultExtended);
+
+  const toggleExtended = React.useCallback(
+    (index: number) => {
+      const newExtended = [...defaultExtended];
+      newExtended[index] = !extended[index];
+      setExtended(newExtended);
+    },
+    [extended],
+  );
 
   return (
     <>
@@ -19,8 +31,15 @@ const SettingsCustomCode = ({ navigation }: CustomCodeSettingsScreenProps) => {
         <ScrollView style={styles.paddingBottom}>
           <List.Section>
             <List.SubHeader theme={theme}>{'Text manipulation'}</List.SubHeader>
-            <ReplaceItemModal showReplace />
-            <ReplaceItemModal />
+            <ReplaceItemModal
+              showReplace
+              toggleList={() => toggleExtended(0)}
+              listExpanded={extended[0]}
+            />
+            <ReplaceItemModal
+              toggleList={() => toggleExtended(1)}
+              listExpanded={extended[1]}
+            />
             <List.Divider theme={theme} />
             <List.SubHeader theme={theme}>{'Code Snippets'}</List.SubHeader>
           </List.Section>

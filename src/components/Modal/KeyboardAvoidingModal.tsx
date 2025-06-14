@@ -25,9 +25,10 @@ export type DefaultModalProps = {
    */
   title: string;
   /**
-   * Dismisses the modal with onDismiss and calls onSave
+   * Dismisses the modal with onDismiss and calls onSave.
+   * If onSave returns false, the modal will not be dismissed.
    */
-  onSave: () => void;
+  onSave: () => void | boolean;
   /**
    * The function to dismiss the modal
    */
@@ -90,8 +91,8 @@ const KeyboardAvoidingModal: React.FC<DefaultModalProps> = ({
     };
   });
 
-  const dismiss = (op?: () => void) => {
-    op?.();
+  const dismiss = (op?: () => void | boolean) => {
+    if (op?.() === false) return;
     onDismiss();
   };
   const save = () => dismiss(onSave);
