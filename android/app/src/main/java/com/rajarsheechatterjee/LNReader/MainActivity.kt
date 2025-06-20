@@ -1,38 +1,29 @@
 package com.rajarsheechatterjee.LNReader
 
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.View
-import android.view.WindowManager
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
+import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.rajarsheechatterjee.NativeVolumeButtonListener.NativeVolumeButtonListener
 import expo.modules.ReactActivityDelegateWrapper
 import org.devio.rn.splashscreen.SplashScreen
 
 class MainActivity : ReactActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            val layoutParams = WindowManager.LayoutParams()
-            layoutParams.layoutInDisplayCutoutMode =
-                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
-            window.attributes = layoutParams
-        }
-        window.statusBarColor = Color.TRANSPARENT
-        window.navigationBarColor = Color.TRANSPARENT
-        @Suppress("DEPRECATION")
-        window.decorView.systemUiVisibility =
-            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        // set transparent statusBar and navigationBar under styles.xml
         super.onCreate(null)
         SplashScreen.show(this, R.style.SplashScreenTheme, R.id.lottie)
         SplashScreen.setAnimationFinished(true)
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (handleSPenKeyEvent(event)) {
+            return true
+        }
+        
         if (NativeVolumeButtonListener.isActive) {
             val action = event.action
             return when (event.keyCode) {
@@ -54,6 +45,65 @@ class MainActivity : ReactActivity() {
             }
         }
         return super.dispatchKeyEvent(event)
+    }
+
+    private fun handleSPenKeyEvent(event: KeyEvent): Boolean {
+        val isUp = event.action == KeyEvent.ACTION_UP
+        val ctrlPressed = event.metaState and KeyEvent.META_CTRL_ON > 0
+
+        return when (event.keyCode) {
+            KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                if (isUp && ctrlPressed) {
+                    sendSPenEvent("NEXT_PAGE")
+                }
+                ctrlPressed // Only consume if ctrl is pressed (S Pen action)
+            }
+            KeyEvent.KEYCODE_DPAD_LEFT -> {
+                if (isUp && ctrlPressed) {
+                    sendSPenEvent("PREVIOUS_PAGE")
+                }
+                ctrlPressed // Only consume if ctrl is pressed (S Pen action)
+            }
+            KeyEvent.KEYCODE_N -> {
+                if (isUp) {
+                    sendSPenEvent("NEXT_CHAPTER")
+                }
+                true
+            }
+            KeyEvent.KEYCODE_P -> {
+                if (isUp) {
+                    sendSPenEvent("PREVIOUS_CHAPTER")
+                }
+                true
+            }
+            KeyEvent.KEYCODE_M -> {
+                if (isUp) {
+                    sendSPenEvent("TOGGLE_MENU")
+                }
+                true
+            }
+            KeyEvent.KEYCODE_BACK -> {
+                if (isUp) {
+                    sendSPenEvent("BACK")
+                }
+                false
+            }
+            else -> false
+        }
+    }
+
+    private fun sendSPenEvent(action: String) {
+        try {
+            val reactContext = reactInstanceManager?.currentReactContext
+            if (reactContext != null) {
+                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                    ?.emit("SPenAction", action)
+            }
+        } catch (e: Exception) {
+            if (BuildConfig.DEBUG) {
+                android.util.Log.w("SPen", "Failed to send S Pen event: $action", e)
+            }
+        }
     }
 
     /**

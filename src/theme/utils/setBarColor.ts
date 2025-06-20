@@ -1,21 +1,16 @@
-import { StatusBar } from 'react-native';
 import { ThemeColors } from '@theme/types';
-import * as NavigationBar from 'expo-navigation-bar';
+import { SystemBars } from 'react-native-edge-to-edge';
 import Color, { ColorInstance } from 'color';
 
 export const setStatusBarColor = (color: ThemeColors | ColorInstance) => {
   if (color instanceof Color) {
     // fullscreen reader mode
-    StatusBar.setBarStyle(color.isDark() ? 'light-content' : 'dark-content');
-    StatusBar.setBackgroundColor(color.hexa());
+    SystemBars.setStyle({ statusBar: color.isDark() ? 'light' : 'dark' });
   } else {
-    StatusBar.setTranslucent(true);
-    StatusBar.setBackgroundColor('transparent');
-    StatusBar.setBarStyle(color.isDark ? 'light-content' : 'dark-content');
+    SystemBars.setStyle({ statusBar: color.isDark ? 'light' : 'dark' });
   }
 };
 
 export const changeNavigationBarColor = (color: string, isDark = false) => {
-  NavigationBar.setBackgroundColorAsync(color);
-  NavigationBar.setButtonStyleAsync(isDark ? 'light' : 'dark');
+  SystemBars.setStyle({ navigationBar: isDark ? 'light' : 'dark' });
 };

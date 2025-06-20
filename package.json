@@ -23,7 +23,7 @@
     "android": {
       "javaPackageName": "com.lnreader.spec"
     },
-    "ios": { 
+    "ios": {
       "modulesProvider": {
         "NativeEpubUtil": "RCTNativeEpubUtil",
         "NativeFile": "RCTNativeFile",
@@ -72,7 +72,7 @@
     "react-native-background-actions": "^4.0.1",
     "react-native-device-info": "^14.0.4",
     "react-native-drawer-layout": "^4.1.8",
-    "react-native-edge-to-edge": "^1.6.0",
+    "react-native-edge-to-edge": "^1.6.1",
     "react-native-error-boundary": "^2.0.0",
     "react-native-file-access": "^3.1.1",
     "react-native-gesture-handler": "~2.25.0",
@@ -95,7 +95,7 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "7.25.3",
-    "@babel/runtime": "7.25.0",
+    "@babel/runtime": "^7.27.6",
     "@react-native-community/cli": "^18.0.0",
     "@react-native-community/cli-platform-android": "^18.0.0",
     "@react-native-community/cli-platform-ios": "^18.0.0",

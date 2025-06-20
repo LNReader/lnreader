@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react';
-import { StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import {
   useChapterGeneralSettings,
@@ -7,7 +6,6 @@ import {
   useTheme,
 } from '../persisted';
 import Color from 'color';
-import * as NavigationBar from 'expo-navigation-bar';
 import {
   changeNavigationBarColor,
   setStatusBarColor,
@@ -22,8 +20,7 @@ const useFullscreenMode = () => {
 
   const setImmersiveMode = useCallback(() => {
     if (fullScreenMode) {
-      StatusBar.setHidden(true);
-      SystemBars.setHidden(true);
+      SystemBars.setHidden({ statusBar: true });
     } else {
       setStatusBarColor(Color(backgroundColor));
       changeNavigationBarColor(
@@ -34,8 +31,7 @@ const useFullscreenMode = () => {
   }, [backgroundColor, fullScreenMode]);
 
   const showStatusAndNavBar = useCallback(() => {
-    StatusBar.setHidden(false);
-    SystemBars.setHidden(false);
+    SystemBars.setHidden({ statusBar: false });
 
     if (fullScreenMode) {
       /**
@@ -58,17 +54,15 @@ const useFullscreenMode = () => {
   useEffect(() => {
     setImmersiveMode();
     return () => {
-      StatusBar.setHidden(false);
-      SystemBars.setHidden(false);
+      SystemBars.setHidden({ statusBar: false });
     };
   }, [setImmersiveMode]);
 
   useEffect(() => {
     const unsubscribe = addListener('beforeRemove', () => {
-      StatusBar.setHidden(false);
-      NavigationBar.setVisibilityAsync('visible');
+      SystemBars.setHidden({ statusBar: false, navigationBar: false });
       setStatusBarColor(theme);
-      changeNavigationBarColor(Color(theme.surface2).hex(), theme.isDark);
+      changeNavigationBarColor(Color(theme.surface2).hexa(), theme.isDark);
     });
 
     return unsubscribe;

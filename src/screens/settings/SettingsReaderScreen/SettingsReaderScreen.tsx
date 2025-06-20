@@ -1,4 +1,4 @@
-import { View, ScrollView, StatusBar } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
@@ -42,7 +42,7 @@ const SettingsReaderScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation();
   const webViewRef = useRef<WebView>(null);
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, top } = useSafeAreaInsets();
   const novel = {
     'artist': null,
     'author': 'LNReader-kun',
@@ -89,7 +89,7 @@ const SettingsReaderScreen = () => {
   <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
     <style>
     :root {
-      --StatusBar-currentHeight: ${StatusBar.currentHeight};
+      --StatusBar-currentHeight: ${top}px;
       --readerSettings-theme: ${readerSettings.theme};
       --readerSettings-padding: ${readerSettings.padding}px;
       --readerSettings-textSize: ${readerSettings.textSize}px;

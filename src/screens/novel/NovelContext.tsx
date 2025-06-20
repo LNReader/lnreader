@@ -3,7 +3,6 @@ import { useNovel } from '@hooks/persisted';
 import { RouteProp } from '@react-navigation/native';
 import { ReaderStackParamList } from '@navigators/types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useDeviceOrientation } from '@hooks/index';
 
 type NovelContextType = ReturnType<typeof useNovel> & {
   navigationBarHeight: number;
@@ -34,30 +33,22 @@ export function NovelContextProvider({
     pluginId,
   );
 
-  const { bottom, top } = useSafeAreaInsets();
-  const orientation = useDeviceOrientation();
-  const NavigationBarHeight = useRef(bottom);
-  const StatusBarHeight = useRef(top);
+  const { top, bottom } = useSafeAreaInsets();
   const chapterTextCache = useRef<Map<number, string | Promise<string>>>(
     new Map(),
   );
 
-  if (bottom < NavigationBarHeight.current && orientation === 'landscape') {
-    NavigationBarHeight.current = bottom;
-  } else if (bottom > NavigationBarHeight.current) {
-    NavigationBarHeight.current = bottom;
-  }
-  if (top > StatusBarHeight.current) {
-    StatusBarHeight.current = top;
-  }
+  // Use safeareainset directly since navigationbar state is accounted for
+  const navigationBarHeight = bottom;
+  const statusBarHeight = top;
   const contextValue = useMemo(
     () => ({
       ...novelHookContent,
-      navigationBarHeight: NavigationBarHeight.current,
-      statusBarHeight: StatusBarHeight.current,
+      navigationBarHeight,
+      statusBarHeight,
       chapterTextCache: chapterTextCache.current,
     }),
-    [novelHookContent],
+    [novelHookContent, navigationBarHeight, statusBarHeight],
   );
   return (
     <NovelContext.Provider value={contextValue}>

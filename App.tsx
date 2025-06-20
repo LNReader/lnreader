@@ -4,7 +4,8 @@ import { enableFreeze } from 'react-native-screens';
 enableFreeze(true);
 
 import React from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { SystemBars } from 'react-native-edge-to-edge';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LottieSplashScreen from 'react-native-lottie-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -37,7 +38,7 @@ const App = () => {
         <SafeAreaProvider>
           <PaperProvider>
             <BottomSheetModalProvider>
-              <StatusBar translucent={true} backgroundColor="transparent" />
+              <SystemBars style="light" />
               <Main />
             </BottomSheetModalProvider>
           </PaperProvider>

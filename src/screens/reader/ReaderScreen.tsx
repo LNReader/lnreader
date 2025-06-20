@@ -14,7 +14,7 @@ import { getString } from '@strings/translations';
 import KeepScreenAwake from './components/KeepScreenAwake';
 import { ChapterContextProvider, useChapterContext } from './ChapterContext';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { useBackHandler } from '@hooks/index';
+import { useBackHandler, useSPen } from '@hooks/index';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, View } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
@@ -64,7 +64,7 @@ export const ChapterContent = ({
   openDrawer,
 }: ChapterContentProps) => {
   const { left, right } = useSafeAreaInsets();
-  const { novel, chapter } = useChapterContext();
+  const { novel, chapter, navigateChapter } = useChapterContext();
   const readerSheetRef = useRef<BottomSheetModalMethods>(null);
   const theme = useTheme();
   const { pageReader = false, keepScreenOn } = useChapterGeneralSettings();
@@ -74,8 +74,30 @@ export const ChapterContent = ({
     setBookmarked(chapter.bookmark);
   }, [chapter]);
 
-  const { hidden, loading, error, webViewRef, hideHeader, refetch } =
+  const { hidden, loading, error, webViewRef, hideHeader, refetch, scrollUp, scrollDown } =
     useChapterContext();
+
+  // S Pen functionality
+  useSPen({
+    onNextPage: scrollDown,
+    onPreviousPage: scrollUp,
+    onNextChapter: () => {
+      navigateChapter('NEXT');
+    },
+    onPreviousChapter: () => {
+      navigateChapter('PREV');
+    },
+    onToggleMenu: () => {
+      hideHeader();
+    },
+    onBack: () => {
+      if (!hidden) {
+        hideHeader();
+      } else {
+        navigation.goBack();
+      }
+    },
+  });
 
   const scrollToStart = () =>
     requestAnimationFrame(() => {
