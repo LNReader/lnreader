@@ -520,13 +520,5 @@
     "SELF_HOST_RESTORE": "Self host restore",
     "MIGRATE_NOVEL": "Migrated novel",
     "DOWNLOAD_CHAPTER": "Downloaded chapter"
-  },
-  "sPenActions": {
-    "nextPage": "Next page",
-    "previousPage": "Previous page",
-    "back": "Back",
-    "nextChapter": "Next chapter",
-    "previousChapter": "Previous chapter",
-    "toggleMenu": "Toggle menu"
   }
 }

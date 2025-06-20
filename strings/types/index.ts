@@ -423,10 +423,4 @@ export interface StringMap {
   'notifications.SELF_HOST_RESTORE': 'string';
   'notifications.MIGRATE_NOVEL': 'string';
   'notifications.DOWNLOAD_CHAPTER': 'string';
-  'sPenActions.nextPage': 'string';
-  'sPenActions.previousPage': 'string';
-  'sPenActions.back': 'string';
-  'sPenActions.nextChapter': 'string';
-  'sPenActions.previousChapter': 'string';
-  'sPenActions.toggleMenu': 'string';
 }
