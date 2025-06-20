@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { DeviceEventEmitter } from 'react-native';
 
-export type SPenAction = 
+export type SPenAction =
   | 'NEXT_PAGE'
   | 'PREVIOUS_PAGE'
   | 'NEXT_CHAPTER'
@@ -44,7 +44,7 @@ export const useSPen = (handlers: SPenHandlers) => {
     };
 
     const subscription = DeviceEventEmitter.addListener('SPenAction', handleSPenAction);
-    
+
     return () => {
       subscription.remove();
     };

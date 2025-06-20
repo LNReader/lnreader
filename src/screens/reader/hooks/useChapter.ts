@@ -63,20 +63,22 @@ export default function useChapter(
   const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 
-  // Shared scroll functions (used by both volume buttons and S Pen)
-  const scroll = useCallback((direction: 'up' | 'down') => {
-    const multiplier = direction === 'up' ? -0.75 : 0.75;
+  const scrollUp = useCallback(() => {
     webViewRef.current?.injectJavaScript(`(()=>{
         window.scrollBy({top: ${
-          Dimensions.get('window').height * multiplier
+          Dimensions.get('window').height * -0.75
         }, behavior: 'smooth'})
       })()`);
   }, [webViewRef]);
 
-  const scrollUp = () => scroll('up');
-  const scrollDown = () => scroll('down');
+  const scrollDown = useCallback(() => {
+    webViewRef.current?.injectJavaScript(`(()=>{
+        window.scrollBy({top: ${
+          Dimensions.get('window').height * 0.75
+        }, behavior: 'smooth'})
+      })()`);
+  }, [webViewRef]);
 
-  // Volume button event listeners
   useEffect(() => {
     if (useVolumeButtons) {
       emmiter.addListener('VolumeUp', scrollUp);
@@ -88,7 +90,7 @@ export default function useChapter(
       emmiter.removeAllListeners('VolumeDown');
       Speech.stop();
     };
-  }, [useVolumeButtons, chapter, scroll]);
+  }, [useVolumeButtons, chapter, scrollUp, scrollDown]);
 
   const loadChapterText = useCallback(
     async (id: number, path: string) => {
