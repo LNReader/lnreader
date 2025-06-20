@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import { Portal } from 'react-native-paper';
 import ChooseEpubLocationModal from './ChooseEpubLocationModal';
-import { StatusBar, StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 import { ThemeColors } from '@theme/types';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import EpubBuilder from '@cd-z/react-native-epub-creator';
 import { ChapterInfo, NovelInfo } from '@database/types';
@@ -43,6 +44,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     epubUseCustomCSS = false,
     epubUseCustomJS = false,
   } = useChapterReaderSettings();
+  const { top } = useSafeAreaInsets();
 
   const epubStyle = useMemo(
     () =>
@@ -54,7 +56,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
               html {
                 scroll-behavior: smooth;
                 overflow-x: hidden;
-                padding-top: ${StatusBar.currentHeight};
+                padding-top: ${top}px;
                 word-wrap: break-word;
               }
               body {
@@ -106,6 +108,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
       readerSettings.customCSS,
       theme.primary,
       epubUseCustomCSS,
+      top,
     ],
   );
 
