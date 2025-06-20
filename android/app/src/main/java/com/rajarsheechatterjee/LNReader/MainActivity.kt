@@ -49,20 +49,19 @@ class MainActivity : ReactActivity() {
 
     private fun handleSPenKeyEvent(event: KeyEvent): Boolean {
         val isUp = event.action == KeyEvent.ACTION_UP
-        val ctrlPressed = event.metaState and KeyEvent.META_CTRL_ON > 0
 
         return when (event.keyCode) {
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                if (isUp && ctrlPressed) {
+                if (isUp) {
                     sendSPenEvent("NEXT_PAGE")
                 }
-                ctrlPressed // Only consume if ctrl is pressed (S Pen action)
+                true
             }
             KeyEvent.KEYCODE_DPAD_LEFT -> {
-                if (isUp && ctrlPressed) {
+                if (isUp) {
                     sendSPenEvent("PREVIOUS_PAGE")
                 }
-                ctrlPressed // Only consume if ctrl is pressed (S Pen action)
+                true
             }
             KeyEvent.KEYCODE_N -> {
                 if (isUp) {

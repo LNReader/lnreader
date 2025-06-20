@@ -8,7 +8,7 @@
         priority="1"
         repeatable="true"
         repeatable_interval="short"
-        trigger_key="CTRL_LEFT+DPAD_RIGHT">
+        trigger_key="DPAD_RIGHT">
         <preference
             name="gesture"
             value="click" />
@@ -19,7 +19,7 @@
         priority="2"
         repeatable="true"
         repeatable_interval="short"
-        trigger_key="CTRL_LEFT+DPAD_LEFT">
+        trigger_key="DPAD_LEFT">
         <preference
             name="gesture"
             value="double_click" />
@@ -44,7 +44,7 @@
         trigger_key="N">
         <preference
             name="gesture"
-            value="swipe_right" />
+            value="swipe_left" />
     </action>
     <action
         id="lnreader_previous_chapter"
@@ -55,7 +55,7 @@
         trigger_key="P">
         <preference
             name="gesture"
-            value="swipe_left" />
+            value="swipe_right" />
     </action>
     <action
         id="lnreader_toggle_menu"
@@ -66,6 +66,6 @@
         trigger_key="M">
         <preference
             name="gesture"
-            value="tap_and_hold" />
+            value="circle_cw" />
     </action>
 </remote-actions>
