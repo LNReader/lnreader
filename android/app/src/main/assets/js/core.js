@@ -126,27 +126,22 @@ window.reader = new (function () {
 })();
 
 window.tts = new (function () {
-  this.readableNodeNames = [
-    '#text',
-    'B',
-    'I',
-    'SPAN',
-    'EM',
-    'BR',
-    'STRONG',
-    'A',
-  ];
-  this.prevElement = null;
-  this.currentElement = reader.chapterElement;
-  this.started = false;
-  this.reading = false;
+  Object.assign(this, {
+    readableNodeNames: ['#text', 'B', 'I', 'SPAN', 'EM', 'BR', 'STRONG', 'A'],
+    prevElement: null,
+    currentElement: reader.chapterElement,
+    started: false,
+    reading: false,
+    queueBuffer: [],
+    currentQueueIndex: 0,
+    queueSize: 3,
+    isQueueing: false,
+    isPaused: false
+  });
 
   this.readable = element => {
-    ele = element ?? this.currentElement;
-    if (
-      ele.nodeName !== 'SPAN' &&
-      this.readableNodeNames.includes(ele.nodeName)
-    ) {
+    const ele = element ?? this.currentElement;
+    if (ele.nodeName !== 'SPAN' && this.readableNodeNames.includes(ele.nodeName)) {
       return false;
     }
     if (!ele.hasChildNodes()) {
@@ -165,96 +160,207 @@ window.tts = new (function () {
     if (this.currentElement.isSameNode(reader.chapterElement) && this.started) {
       return false;
     } else {
-      this.started = true;
+    this.started = true;
     }
 
     // is read, have to go next or go back
     if (this.currentElement.isSameNode(this.prevElement)) {
       this.prevElement = this.currentElement;
-      if (this.currentElement.nextElementSibling) {
-        this.currentElement = this.currentElement.nextElementSibling;
-      } else {
-        this.currentElement = this.currentElement.parentElement;
-      }
+      this.currentElement = this.currentElement.nextElementSibling || this.currentElement.parentElement;
       return this.findNextTextNode();
-    } else {
-      // can read? read it
-      if (this.readable()) {
-        return true;
+    }
+    // can read? read it
+    if (this.readable()) return true;
+
+    this.prevElement = this.currentElement;
+    this.currentElement = (!this.prevElement?.parentElement?.isSameNode(this.currentElement) && this.currentElement.firstElementChild) ||
+                         this.currentElement.nextElementSibling ||
+                         this.currentElement.parentElement;
+    return this.findNextTextNode();
+  };
+
+  // Handle (possibly) problematic characters
+  this.sanitizeTextForTTS = (text) => {
+    if (!text) return '';
+    
+    return text
+      .replace(/</g, '(')
+      .replace(/>/g, ')')
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
+
+  this.collectParagraphs = (startElement, count) => {
+    const [originalCurrent, originalPrev, originalStarted] = [this.currentElement, this.prevElement, this.started];
+    [this.currentElement, this.prevElement, this.started] = [startElement, this.prevElement, this.started];
+
+    const paragraphs = [];
+    for (let i = 0; i < count && this.findNextTextNode(); i++) {
+      const rawText = this.currentElement?.innerText?.trim();
+      if (rawText?.length) {
+        const sanitizedText = this.sanitizeTextForTTS(rawText);
+        if (sanitizedText.length) {
+          paragraphs.push({ element: this.currentElement, text: sanitizedText });
+        }
       }
-      if (
-        !this.prevElement?.parentElement?.isSameNode(this.currentElement) &&
-        this.currentElement.firstElementChild
-      ) {
-        // go deep
-        this.prevElement = this.currentElement;
-        this.currentElement = this.currentElement.firstElementChild;
-      } else if (this.currentElement.nextElementSibling) {
-        this.prevElement = this.currentElement;
-        this.currentElement = this.currentElement.nextElementSibling;
-      } else {
-        this.prevElement = this.currentElement;
-        this.currentElement = this.currentElement.parentElement;
+      this.prevElement = this.currentElement;
+    }
+
+    [this.currentElement, this.prevElement, this.started] = [originalCurrent, originalPrev, originalStarted];
+    return paragraphs;
+  };
+
+  this.updateTTSIcon = () => {
+    const controller = document.getElementById('TTS-Controller')?.firstElementChild;
+    if (controller) controller.innerHTML = volumnIcon;
+  };
+
+  this.queueParagraphs = () => {
+    if (this.isQueueing) return;
+    this.isQueueing = true;
+
+    try {
+      const paragraphs = this.collectParagraphs(this.currentElement, this.queueSize);
+      if (!paragraphs.length) {
+        this.reading = false;
+        this.stop();
+        this.updateTTSIcon();
+        return;
       }
-      return this.findNextTextNode();
+
+      this.queueBuffer = paragraphs;
+      this.currentQueueIndex = 0;
+
+      // Highlight and speak first paragraph
+      this.currentElement?.classList?.remove('highlight');
+      this.currentElement = paragraphs[0].element;
+      this.currentElement.classList.add('highlight');
+      this.prevElement = this.currentElement;
+
+      // Queue paragraphs into expo-speech
+      paragraphs.forEach(p => reader.post({ type: 'speak', data: p.text }));
+    } catch (e) {
+      console.error('Error queuing paragraphs:', e);
+    } finally {
+      this.isQueueing = false;
     }
   };
 
   this.next = () => {
     try {
       this.currentElement?.classList?.remove('highlight');
-      if (this.findNextTextNode()) {
-        this.reading = true;
-        this.speak();
+
+      if (this.queueBuffer.length > 0) {
+        this.currentQueueIndex++;
+
+        if (this.currentQueueIndex < this.queueBuffer.length) {
+          const nextParagraph = this.queueBuffer[this.currentQueueIndex];
+          this.currentElement = nextParagraph.element;
+          this.currentElement.classList.add('highlight');
+          this.prevElement = this.currentElement;
+
+          // Queue more paragraphs when near end
+          if (this.currentQueueIndex >= this.queueBuffer.length - 1) {
+            const [tempCurrent, tempPrev] = [this.currentElement, this.prevElement];
+            const lastElement = this.queueBuffer[this.queueBuffer.length - 1].element;
+            [this.currentElement, this.prevElement] = [lastElement, lastElement];
+
+            setTimeout(() => {
+              const moreParagraphs = this.collectParagraphs(this.currentElement, this.queueSize);
+              this.queueBuffer.push(...moreParagraphs);
+              moreParagraphs.forEach(p => reader.post({ type: 'speak', data: p.text }));
+              [this.currentElement, this.prevElement] = [tempCurrent, tempPrev];
+            }, 100);
+          }
+        } else {
+          // Queue over
+          if (this.queueBuffer.length > 0) {
+            const lastElement = this.queueBuffer[this.queueBuffer.length - 1].element;
+            [this.currentElement, this.prevElement] = [lastElement, lastElement];
+          }
+          
+          if (this.findNextTextNode()) {
+            this.queueParagraphs();
+          } else {
+            this.reading = false;
+            this.stop();
+            this.updateTTSIcon();
+          }
+        }
       } else {
-        this.reading = false;
-        this.stop();
-        document.getElementById('TTS-Controller').firstElementChild.innerHTML =
-          volumnIcon;
+        // Fallback behavior
+        if (this.findNextTextNode()) {
+          this.reading = true;
+          this.speak();
+        } else {
+          this.reading = false;
+          this.stop();
+          this.updateTTSIcon();
+        }
       }
     } catch (e) {
-      alert(e);
+      console.error('TTS next error:', e);
     }
   };
 
   this.start = element => {
     this.stop();
-    this.currentElement = element ?? reader.chapterElement;
-    this.next();
+    Object.assign(this, {
+      currentElement: element ?? reader.chapterElement,
+      queueBuffer: [],
+      currentQueueIndex: 0,
+      reading: true
+    });
+    this.queueParagraphs();
   };
 
   this.resume = () => {
     if (!this.reading) {
-      if (
-        this.currentElement &&
-        this.currentElement.id !== 'LNReader-chapter'
-      ) {
-        this.speak();
+      if (this.isPaused && this.currentElement?.id !== 'LNReader-chapter') {
+        this.isPaused = false;
         this.reading = true;
+        this.currentElement.classList.add('highlight');
+        const sanitizedText = this.sanitizeTextForTTS(this.currentElement.innerText);
+        reader.post({ type: 'speak', data: sanitizedText });
+
+        setTimeout(() => {
+          const remainingParagraphs = this.collectParagraphs(this.currentElement, this.queueSize - 1);
+          remainingParagraphs.forEach(p => reader.post({ type: 'speak', data: p.text }));
+          this.queueBuffer = [{ element: this.currentElement, text: sanitizedText }, ...remainingParagraphs];
+          this.currentQueueIndex = 0;
+        }, 100);
       } else {
-        this.next();
+        this.start();
       }
     }
   };
 
   this.pause = () => {
     this.reading = false;
+    this.isPaused = true;
     reader.post({ type: 'stop-speak' });
   };
 
   this.stop = () => {
     reader.post({ type: 'stop-speak' });
     this.currentElement?.classList?.remove('highlight');
-    this.prevElement = null;
-    this.currentElement = reader.chapterElement;
-    this.started = false;
-    this.reading = false;
+    Object.assign(this, {
+      prevElement: null,
+      currentElement: reader.chapterElement,
+      started: false,
+      reading: false,
+      isPaused: false,
+      queueBuffer: [],
+      currentQueueIndex: 0,
+      isQueueing: false
+    });
   };
 
   this.speak = () => {
     this.prevElement = this.currentElement;
     this.currentElement.classList.add('highlight');
-    reader.post({ type: 'speak', data: this.currentElement?.innerText });
+    const sanitizedText = this.sanitizeTextForTTS(this.currentElement?.innerText);
+    reader.post({ type: 'speak', data: sanitizedText });
   };
 })();
 
