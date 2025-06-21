@@ -136,12 +136,15 @@ window.tts = new (function () {
     currentQueueIndex: 0,
     queueSize: 3,
     isQueueing: false,
-    isPaused: false
+    isPaused: false,
   });
 
   this.readable = element => {
     const ele = element ?? this.currentElement;
-    if (ele.nodeName !== 'SPAN' && this.readableNodeNames.includes(ele.nodeName)) {
+    if (
+      ele.nodeName !== 'SPAN' &&
+      this.readableNodeNames.includes(ele.nodeName)
+    ) {
       return false;
     }
     if (!ele.hasChildNodes()) {
@@ -154,35 +157,35 @@ window.tts = new (function () {
     }
     return true;
   };
-
   // if can find a readable node, else stop tts
   this.findNextTextNode = () => {
-    if (this.currentElement.isSameNode(reader.chapterElement) && this.started) {
+    if (this.currentElement.isSameNode(reader.chapterElement) && this.started)
       return false;
-    } else {
     this.started = true;
-    }
 
-    // is read, have to go next or go back
     if (this.currentElement.isSameNode(this.prevElement)) {
       this.prevElement = this.currentElement;
-      this.currentElement = this.currentElement.nextElementSibling || this.currentElement.parentElement;
+      this.currentElement =
+        this.currentElement.nextElementSibling ||
+        this.currentElement.parentElement;
       return this.findNextTextNode();
     }
     // can read? read it
     if (this.readable()) return true;
 
     this.prevElement = this.currentElement;
-    this.currentElement = (!this.prevElement?.parentElement?.isSameNode(this.currentElement) && this.currentElement.firstElementChild) ||
-                         this.currentElement.nextElementSibling ||
-                         this.currentElement.parentElement;
+    this.currentElement =
+      (!this.prevElement?.parentElement?.isSameNode(this.currentElement) &&
+        this.currentElement.firstElementChild) ||
+      this.currentElement.nextElementSibling ||
+      this.currentElement.parentElement;
     return this.findNextTextNode();
   };
 
   // Handle (possibly) problematic characters
-  this.sanitizeTextForTTS = (text) => {
+  this.sanitizeTextForTTS = text => {
     if (!text) return '';
-    
+
     return text
       .replace(/</g, '(')
       .replace(/>/g, ')')
@@ -191,8 +194,16 @@ window.tts = new (function () {
   };
 
   this.collectParagraphs = (startElement, count) => {
-    const [originalCurrent, originalPrev, originalStarted] = [this.currentElement, this.prevElement, this.started];
-    [this.currentElement, this.prevElement, this.started] = [startElement, this.prevElement, this.started];
+    const [originalCurrent, originalPrev, originalStarted] = [
+      this.currentElement,
+      this.prevElement,
+      this.started,
+    ];
+    [this.currentElement, this.prevElement, this.started] = [
+      startElement,
+      this.prevElement,
+      this.started,
+    ];
 
     const paragraphs = [];
     for (let i = 0; i < count && this.findNextTextNode(); i++) {
@@ -200,18 +211,26 @@ window.tts = new (function () {
       if (rawText?.length) {
         const sanitizedText = this.sanitizeTextForTTS(rawText);
         if (sanitizedText.length) {
-          paragraphs.push({ element: this.currentElement, text: sanitizedText });
+          paragraphs.push({
+            element: this.currentElement,
+            text: sanitizedText,
+          });
         }
       }
       this.prevElement = this.currentElement;
     }
 
-    [this.currentElement, this.prevElement, this.started] = [originalCurrent, originalPrev, originalStarted];
+    [this.currentElement, this.prevElement, this.started] = [
+      originalCurrent,
+      originalPrev,
+      originalStarted,
+    ];
     return paragraphs;
   };
 
   this.updateTTSIcon = () => {
-    const controller = document.getElementById('TTS-Controller')?.firstElementChild;
+    const controller =
+      document.getElementById('TTS-Controller')?.firstElementChild;
     if (controller) controller.innerHTML = volumnIcon;
   };
 
@@ -220,7 +239,10 @@ window.tts = new (function () {
     this.isQueueing = true;
 
     try {
-      const paragraphs = this.collectParagraphs(this.currentElement, this.queueSize);
+      const paragraphs = this.collectParagraphs(
+        this.currentElement,
+        this.queueSize,
+      );
       if (!paragraphs.length) {
         this.reading = false;
         this.stop();
@@ -261,24 +283,40 @@ window.tts = new (function () {
 
           // Queue more paragraphs when near end
           if (this.currentQueueIndex >= this.queueBuffer.length - 1) {
-            const [tempCurrent, tempPrev] = [this.currentElement, this.prevElement];
-            const lastElement = this.queueBuffer[this.queueBuffer.length - 1].element;
-            [this.currentElement, this.prevElement] = [lastElement, lastElement];
+            const [tempCurrent, tempPrev] = [
+              this.currentElement,
+              this.prevElement,
+            ];
+            const lastElement =
+              this.queueBuffer[this.queueBuffer.length - 1].element;
+            [this.currentElement, this.prevElement] = [
+              lastElement,
+              lastElement,
+            ];
 
             setTimeout(() => {
-              const moreParagraphs = this.collectParagraphs(this.currentElement, this.queueSize);
+              const moreParagraphs = this.collectParagraphs(
+                this.currentElement,
+                this.queueSize,
+              );
               this.queueBuffer.push(...moreParagraphs);
-              moreParagraphs.forEach(p => reader.post({ type: 'speak', data: p.text }));
+              moreParagraphs.forEach(p =>
+                reader.post({ type: 'speak', data: p.text }),
+              );
               [this.currentElement, this.prevElement] = [tempCurrent, tempPrev];
             }, 100);
           }
         } else {
           // Queue over
           if (this.queueBuffer.length > 0) {
-            const lastElement = this.queueBuffer[this.queueBuffer.length - 1].element;
-            [this.currentElement, this.prevElement] = [lastElement, lastElement];
+            const lastElement =
+              this.queueBuffer[this.queueBuffer.length - 1].element;
+            [this.currentElement, this.prevElement] = [
+              lastElement,
+              lastElement,
+            ];
           }
-          
+
           if (this.findNextTextNode()) {
             this.queueParagraphs();
           } else {
@@ -299,7 +337,7 @@ window.tts = new (function () {
         }
       }
     } catch (e) {
-      console.error('TTS next error:', e);
+      alert(e);
     }
   };
 
@@ -309,7 +347,7 @@ window.tts = new (function () {
       currentElement: element ?? reader.chapterElement,
       queueBuffer: [],
       currentQueueIndex: 0,
-      reading: true
+      reading: true,
     });
     this.queueParagraphs();
   };
@@ -320,13 +358,23 @@ window.tts = new (function () {
         this.isPaused = false;
         this.reading = true;
         this.currentElement.classList.add('highlight');
-        const sanitizedText = this.sanitizeTextForTTS(this.currentElement.innerText);
+        const sanitizedText = this.sanitizeTextForTTS(
+          this.currentElement.innerText,
+        );
         reader.post({ type: 'speak', data: sanitizedText });
 
         setTimeout(() => {
-          const remainingParagraphs = this.collectParagraphs(this.currentElement, this.queueSize - 1);
-          remainingParagraphs.forEach(p => reader.post({ type: 'speak', data: p.text }));
-          this.queueBuffer = [{ element: this.currentElement, text: sanitizedText }, ...remainingParagraphs];
+          const remainingParagraphs = this.collectParagraphs(
+            this.currentElement,
+            this.queueSize - 1,
+          );
+          remainingParagraphs.forEach(p =>
+            reader.post({ type: 'speak', data: p.text }),
+          );
+          this.queueBuffer = [
+            { element: this.currentElement, text: sanitizedText },
+            ...remainingParagraphs,
+          ];
           this.currentQueueIndex = 0;
         }, 100);
       } else {
@@ -352,14 +400,16 @@ window.tts = new (function () {
       isPaused: false,
       queueBuffer: [],
       currentQueueIndex: 0,
-      isQueueing: false
+      isQueueing: false,
     });
   };
 
   this.speak = () => {
     this.prevElement = this.currentElement;
     this.currentElement.classList.add('highlight');
-    const sanitizedText = this.sanitizeTextForTTS(this.currentElement?.innerText);
+    const sanitizedText = this.sanitizeTextForTTS(
+      this.currentElement?.innerText,
+    );
     reader.post({ type: 'speak', data: sanitizedText });
   };
 })();
