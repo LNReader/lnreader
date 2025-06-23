@@ -54,6 +54,7 @@
     "expo-file-system": "~18.1.8",
     "expo-haptics": "~14.1.4",
     "expo-keep-awake": "~14.1.4",
+    "expo-key-event": "^1.4.0",
     "expo-linear-gradient": "~14.1.4",
     "expo-linking": "~7.1.4",
     "expo-localization": "~16.1.5",

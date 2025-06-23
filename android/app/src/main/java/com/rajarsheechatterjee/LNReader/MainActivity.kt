@@ -6,7 +6,6 @@ import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
-import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.rajarsheechatterjee.NativeVolumeButtonListener.NativeVolumeButtonListener
 import expo.modules.ReactActivityDelegateWrapper
 import org.devio.rn.splashscreen.SplashScreen
@@ -20,10 +19,6 @@ class MainActivity : ReactActivity() {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (handleSPenKeyEvent(event)) {
-            return true
-        }
-        
         if (NativeVolumeButtonListener.isActive) {
             val action = event.action
             return when (event.keyCode) {
@@ -45,64 +40,6 @@ class MainActivity : ReactActivity() {
             }
         }
         return super.dispatchKeyEvent(event)
-    }
-
-    private fun handleSPenKeyEvent(event: KeyEvent): Boolean {
-        val isUp = event.action == KeyEvent.ACTION_UP
-
-        return when (event.keyCode) {
-            KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                if (isUp) {
-                    sendSPenEvent("NEXT_PAGE")
-                }
-                true
-            }
-            KeyEvent.KEYCODE_DPAD_LEFT -> {
-                if (isUp) {
-                    sendSPenEvent("PREVIOUS_PAGE")
-                }
-                true
-            }
-            KeyEvent.KEYCODE_N -> {
-                if (isUp) {
-                    sendSPenEvent("NEXT_CHAPTER")
-                }
-                true
-            }
-            KeyEvent.KEYCODE_P -> {
-                if (isUp) {
-                    sendSPenEvent("PREVIOUS_CHAPTER")
-                }
-                true
-            }
-            KeyEvent.KEYCODE_M -> {
-                if (isUp) {
-                    sendSPenEvent("TOGGLE_MENU")
-                }
-                true
-            }
-            KeyEvent.KEYCODE_BACK -> {
-                if (isUp) {
-                    sendSPenEvent("BACK")
-                }
-                false
-            }
-            else -> false
-        }
-    }
-
-    private fun sendSPenEvent(action: String) {
-        try {
-            val reactContext = reactInstanceManager?.currentReactContext
-            if (reactContext != null) {
-                reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                    ?.emit("SPenAction", action)
-            }
-        } catch (e: Exception) {
-            if (BuildConfig.DEBUG) {
-                android.util.Log.w("SPen", "Failed to send S Pen event: $action", e)
-            }
-        }
     }
 
     /**
