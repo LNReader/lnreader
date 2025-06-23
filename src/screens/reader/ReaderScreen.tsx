@@ -14,7 +14,8 @@ import { getString } from '@strings/translations';
 import KeepScreenAwake from './components/KeepScreenAwake';
 import { ChapterContextProvider, useChapterContext } from './ChapterContext';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { useBackHandler, useSPen } from '@hooks/index';
+import { useBackHandler } from '@hooks/index';
+import { useSPen } from './hooks/useSPen';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StyleSheet, View } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
@@ -74,8 +75,16 @@ export const ChapterContent = ({
     setBookmarked(chapter.bookmark);
   }, [chapter]);
 
-  const { hidden, loading, error, webViewRef, hideHeader, refetch, scrollUp, scrollDown } =
-    useChapterContext();
+  const {
+    hidden,
+    loading,
+    error,
+    webViewRef,
+    hideHeader,
+    refetch,
+    scrollUp,
+    scrollDown,
+  } = useChapterContext();
 
   // S Pen functionality
   useSPen({

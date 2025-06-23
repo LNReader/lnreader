@@ -41,11 +41,15 @@ const ChapterFooter = ({
   const entering = () => {
     'worklet';
     const animations = {
-      transform: [{ translateY: withTiming(0, {
-        duration: 250,
-        easing: fastOutSlowIn,
-        reduceMotion: ReduceMotion.System,
-      }) }],
+      transform: [
+        {
+          translateY: withTiming(0, {
+            duration: 250,
+            easing: fastOutSlowIn,
+            reduceMotion: ReduceMotion.System,
+          }),
+        },
+      ],
       opacity: withTiming(1, { duration: 150 }),
     };
     const initialValues = {
@@ -60,11 +64,15 @@ const ChapterFooter = ({
   const exiting = () => {
     'worklet';
     const animations = {
-      transform: [{ translateY: withTiming(100, {
-        duration: 250,
-        easing: fastOutSlowIn,
-        reduceMotion: ReduceMotion.System,
-      }) }],
+      transform: [
+        {
+          translateY: withTiming(100, {
+            duration: 250,
+            easing: fastOutSlowIn,
+            reduceMotion: ReduceMotion.System,
+          }),
+        },
+      ],
       opacity: withTiming(0, { duration: 150 }),
     };
     const initialValues = {
