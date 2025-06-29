@@ -125,6 +125,7 @@ export interface DefaultSettings extends ReaderTheme {
 type CodeSnippet = {
   name: string;
   code: string;
+  lang: 'js' | 'css';
   active: boolean;
 };
 

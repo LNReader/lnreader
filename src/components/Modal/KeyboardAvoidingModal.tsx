@@ -69,7 +69,11 @@ const KeyboardAvoidingModal: React.FC<DefaultModalProps> = ({
   }, [kH, keyboardHeight]);
 
   const AvoidKeyboard = useAnimatedStyle(() => {
-    let m: { height: number; pageY: number } | null = measure(animatedRef);
+    let m: { height: number; pageY: number } | null = null;
+    if (_WORKLET) {
+      m = measure(animatedRef);
+    }
+
     if (!m) {
       m = {
         height: 0,

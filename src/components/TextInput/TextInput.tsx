@@ -3,6 +3,8 @@ import {
   StyleSheet,
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
+  NativeSyntheticEvent,
+  TextInputFocusEventData,
 } from 'react-native';
 
 import { useTheme } from '@hooks/persisted';
@@ -12,34 +14,38 @@ interface TextInputProps extends RNTextInputProps {
   value?: never;
 }
 
-const TextInput = (props: TextInputProps) => {
+const TextInput = ({
+  onBlur,
+  onFocus,
+  error,
+  style,
+  ...props
+}: TextInputProps) => {
   const theme = useTheme();
 
-  const inputRef = useRef<RNTextInput>(null);
   const [inputFocused, setInputFocused] = useState(false);
 
-  const onFocus: RNTextInputProps['onFocus'] = e => {
+  const _onFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
     setInputFocused(true);
-    props.onFocus?.(e);
+    onFocus?.(e);
   };
-  const onBlur: RNTextInputProps['onBlur'] = e => {
+  const _onBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
     setInputFocused(false);
-    props.onBlur?.(e);
+    onBlur?.(e);
   };
 
-  const borderWidth = inputFocused || props.error ? 2 : 1;
-  const margin = inputFocused || props.error ? 0 : 1;
+  const borderWidth = inputFocused || error ? 2 : 1;
+  const margin = inputFocused || error ? 0 : 1;
   return (
     <RNTextInput
-      ref={inputRef}
       placeholderTextColor={'grey'}
-      onFocus={onFocus}
-      onBlur={onBlur}
+      onFocus={_onFocus}
+      onBlur={_onBlur}
       style={[
         {
           color: theme.onBackground,
           backgroundColor: theme.background,
-          borderColor: props.error
+          borderColor: error
             ? theme.error
             : inputFocused
             ? theme.primary
@@ -48,7 +54,7 @@ const TextInput = (props: TextInputProps) => {
           margin: margin,
         },
         styles.textInput,
-        props.style,
+        style,
       ]}
       {...props}
     />

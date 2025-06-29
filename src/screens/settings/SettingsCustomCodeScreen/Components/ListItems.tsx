@@ -1,12 +1,12 @@
 import { useTheme } from '@hooks/persisted';
 import { useMemo } from 'react';
-import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
+import { PixelRatio, Pressable, StyleSheet, View } from 'react-native';
 import Icon from '@react-native-vector-icons/material-design-icons';
 import { Text } from 'react-native-paper';
 
-const windowDimensions = Dimensions.get('window');
-const fontSize = 14 * windowDimensions.fontScale;
-export const LIST_ITEM_LINE_HEIGHT = fontSize * 1.2;
+const fontScale = PixelRatio.getFontScale();
+const fontSize = 14;
+export const LIST_ITEM_LINE_HEIGHT = fontSize * fontScale * 1.2;
 
 export const ReplaceItem = ({
   item,
