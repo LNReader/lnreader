@@ -71,7 +71,7 @@ void clean_summary(std::string &summary)
     summary = std::regex_replace(summary, regx1, "\n\n");
     std::regex regx2("<br>\\s*");
     summary = std::regex_replace(summary, regx2, "\n");
-    std::regex regx3("<[^>]+>");
+    std::regex regx3("<\/?[a-zA-Z][a-zA-Z0-9\-]+>");
     summary = std::regex_replace(summary, regx3, "");
     std::regex regx4("&lt;");
     summary = std::regex_replace(summary, regx4, "<");
