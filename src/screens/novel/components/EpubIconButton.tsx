@@ -157,7 +157,9 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
           const urlMatcher = new RegExp(regexString, 'g');
           for (const match of downloaded.matchAll(urlMatcher)) {
             const path = match[1];
+
             if (!path) continue;
+
             if (!NativeFile.exists(path)) {
               const figureMatcher = new RegExp(`<figure.*?${path}.*?</figure>`);
               downloaded = downloaded.replace(figureMatcher, '');
