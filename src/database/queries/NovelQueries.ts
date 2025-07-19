@@ -11,6 +11,7 @@ import {
   QueryObject,
   runAsync,
   runSync,
+  transactionAsync,
 } from '../utils/helpers';
 import { getString } from '@strings/translations';
 import { BackupNovel, NovelInfo } from '../types';
@@ -123,23 +124,8 @@ export const switchNovelToLibraryQuery = async (
     }
     await runAsync(queries);
     return { ...novel, inLibrary: !novel.inLibrary };
-  } else {
-    const sourceNovel = await fetchNovel(pluginId, novelPath);
-    const novelId = await insertNovelAndChapters(pluginId, sourceNovel);
-    if (novelId) {
-      await runAsync([
-        [
-          'UPDATE Novel SET inLibrary = 1 WHERE id = ?',
-          [novelId],
-          () => showToast(getString('browseScreen.addedToLibrary')),
-        ],
-        [
-          'INSERT INTO NovelCategory (novelId, categoryId) VALUES (?, (SELECT DISTINCT id FROM Category WHERE sort = 1))',
-          [novelId],
-        ],
-      ]);
-    }
   }
+  return undefined;
 };
 
 // allow to delete local novels
@@ -314,17 +300,57 @@ const restoreObjectQuery = (table: string, obj: any) => {
 
 export const _restoreNovelAndChapters = async (backupNovel: BackupNovel) => {
   const { chapters, ...novel } = backupNovel;
-  await runAsync([
-    ['DELETE FROM Novel WHERE id = ?', [novel.id]],
-    [
-      restoreObjectQuery('Novel', novel),
-      Object.values(novel) as string[] | number[],
-    ],
-  ]);
-  runAsync(
-    chapters.map(chapter => [
-      restoreObjectQuery('Chapter', chapter),
-      Object.values(chapter) as string[] | number[],
-    ]),
-  );
+
+  try {
+    // Prepare all transaction queries
+    const transactionQueries: [string, ...(string | number | null)[]][] = [];
+
+    // Delete existing data
+    transactionQueries.push([
+      'DELETE FROM Chapter WHERE novelId = ?',
+      novel.id,
+    ]);
+    transactionQueries.push(['DELETE FROM Novel WHERE id = ?', novel.id]);
+
+    // Insert novel
+    const novelWithLibraryFlag = { ...novel, inLibrary: 1 };
+    const novelQuery = restoreObjectQuery('Novel', novelWithLibraryFlag);
+    const novelValues = Object.values(novelWithLibraryFlag).map(value =>
+      value === null || value === undefined ? null : value,
+    ) as (string | number | null)[];
+
+    transactionQueries.push([novelQuery, ...novelValues]);
+
+    // Insert chapters in batches
+    if (chapters.length > 0) {
+      const BULK_SIZE = 500;
+      const chapterKeys = Object.keys(chapters[0]);
+
+      for (let i = 0; i < chapters.length; i += BULK_SIZE) {
+        const batch = chapters.slice(i, i + BULK_SIZE);
+        const placeholders = chapterKeys.map(() => '?').join(',');
+        const valueGroups = batch.map(() => `(${placeholders})`).join(',');
+        const bulkQuery = `INSERT INTO Chapter (${chapterKeys.join(
+          ',',
+        )}) VALUES ${valueGroups}`;
+
+        const allValues: (string | number | null)[] = [];
+        for (const chapter of batch) {
+          const chapterValues = Object.values(chapter).map(value =>
+            value === null || value === undefined ? null : value,
+          ) as (string | number | null)[];
+          allValues.push(...chapterValues);
+        }
+
+        transactionQueries.push([bulkQuery, ...allValues]);
+      }
+    }
+
+    // Execute all queries in a transaction
+    await transactionAsync(transactionQueries);
+  } catch (error: any) {
+    throw new Error(
+      `Failed to restore novel "${novel.name}": ${error.message}`,
+    );
+  }
 };

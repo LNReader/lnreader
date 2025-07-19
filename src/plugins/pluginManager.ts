@@ -162,4 +162,5 @@ export {
   updatePlugin,
   fetchPlugins,
   LOCAL_PLUGIN_ID,
+  plugins,
 };

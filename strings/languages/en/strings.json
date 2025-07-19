@@ -55,8 +55,7 @@
       "tako": "Tako",
       "teal": "Teal",
       "turquoise": "Turquoise",
-      "yotsuba": "Yotsuba",
-      "catppuccin": "Catppuccin"
+      "yotsuba": "Yotsuba"
     }
   },
   "backupScreen": {
@@ -67,14 +66,18 @@
     "downloadingData": "Downloading Data",
     "downloadingDownloadedFiles": "Downloading Downloaded files",
     "failed": "Backup failed",
+    "backupCreated": "Backup created: %{fileName}",
+    "localBackup": "Local Backup",
+    "includeDownloadedChapters": "Include downloaded chapters",
+    "includeDownloadedChaptersDesc": "May take a while depending on backup size",
     "drive": {
       "backup": "Drive Backup",
-      "backupInterruped": "Drive Backup Interruped",
+      "backupInterruped": "Drive Backup Interrupted",
       "googleDriveBackup": "Google Drive Backup",
       "restore": "Drive Restore",
-      "restoreInterruped": "Drive Restore Interruped"
+      "restoreInterruped": "Drive Restore Interrupted"
     },
-    "googeDrive": "Googe Drive",
+    "googeDrive": "Google Drive",
     "googeDriveDesc": "Backup to your Google Drive",
     "invalidBackupFolder": "Invalid backup folder",
     "legacy": {
@@ -105,6 +108,7 @@
   "browse": "Browse",
   "browseScreen": {
     "addedToLibrary": "Added to library",
+    "hideInLibraryItems": "Hide in library",
     "available": "Available",
     "discover": "Discover",
     "globalSearch": "Global search",
@@ -519,6 +523,8 @@
     "DRIVE_RESTORE": "Drive restore",
     "SELF_HOST_BACKUP": "Self host backup",
     "SELF_HOST_RESTORE": "Self host restore",
+    "LOCAL_BACKUP": "Local backup",
+    "LOCAL_RESTORE": "Local restore",
     "MIGRATE_NOVEL": "Migrated novel",
     "DOWNLOAD_CHAPTER": "Downloaded chapter"
   }

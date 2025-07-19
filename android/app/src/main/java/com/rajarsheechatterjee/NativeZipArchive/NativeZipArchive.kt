@@ -120,4 +120,23 @@ class NativeZipArchive(context: ReactApplicationContext) : NativeZipArchiveSpec(
             }
         }.start()
     }
+
+    @ReactMethod
+    override fun zip(sourceDirPath: String, destFilePath: String, promise: Promise) {
+        Thread {
+            try {
+                val destFile = File(destFilePath)
+                destFile.parentFile?.mkdirs()
+
+                FileOutputStream(destFile).use { fos ->
+                    ZipOutputStream(fos).use { zos ->
+                        zipProcess(sourceDirPath, zos)
+                    }
+                }
+                promise.resolve(null)
+            } catch (e: Exception) {
+                promise.reject(e)
+            }
+        }.start()
+    }
 }

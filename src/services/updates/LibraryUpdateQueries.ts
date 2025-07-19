@@ -21,7 +21,11 @@ const updateNovelMetadata = async (
   if (cover) {
     const novelCoverPath = novelDir + '/cover.png';
     const novelCoverUri = 'file://' + novelCoverPath;
-    downloadFile(cover, novelCoverPath, getPlugin(pluginId)?.imageRequestInit);
+    await downloadFile(
+      cover,
+      novelCoverPath,
+      getPlugin(pluginId)?.imageRequestInit,
+    );
     cover = novelCoverUri + '?' + Date.now();
   }
 
@@ -178,4 +182,4 @@ const updateNovelPage = async (
   );
 };
 
-export { updateNovel, updateNovelPage };
+export { updateNovel, updateNovelPage, updateNovelChapters };

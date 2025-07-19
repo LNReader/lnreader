@@ -101,3 +101,9 @@ export async function transactionAsync(transactionObject: TransactionObject[]) {
     await Promise.all(promises);
   });
 }
+
+export async function exclusiveTransactionAsync(
+  callback: (tx: any) => Promise<void>,
+): Promise<void> {
+  await db.withExclusiveTransactionAsync(callback);
+}

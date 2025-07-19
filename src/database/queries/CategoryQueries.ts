@@ -1,9 +1,13 @@
-import * as SQLite from 'expo-sqlite';
 import { BackupCategory, Category, NovelCategory, CCategory } from '../types';
 import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
 import { db } from '@database/db';
-import { getAllSync, runSync } from '@database/utils/helpers';
+import {
+  getAllSync,
+  getFirstAsync,
+  runSync,
+  transactionAsync,
+} from '@database/utils/helpers';
 
 const getCategoriesQuery = `
     SELECT 
@@ -102,21 +106,56 @@ export const updateCategoryOrderInDb = (categories: Category[]): void => {
 export const getAllNovelCategories = () =>
   getAllSync<NovelCategory>(['SELECT * FROM NovelCategory']);
 
-export const _restoreCategory = (category: BackupCategory) => {
-  const d = category.novelIds.map(novelId => [
-    'INSERT INTO NovelCategory (categoryId, novelId) VALUES (?, ?)',
-    [category.id, novelId],
-  ]) as Array<[string, SQLite.SQLiteBindParams]>;
+export const _restoreCategory = async (category: BackupCategory) => {
+  try {
+    const existingNovelIds: number[] = [];
 
-  runSync([
-    [
+    for (const novelId of category.novelIds) {
+      const result = await getFirstAsync<{ id: number }>([
+        'SELECT id FROM Novel WHERE id = ?',
+        [novelId],
+      ]);
+      if (result) {
+        existingNovelIds.push(novelId);
+      }
+    }
+
+    const transactions: [string, ...any[]][] = [];
+
+    // Delete existing category and novel associations
+    transactions.push([
+      'DELETE FROM NovelCategory WHERE categoryId = ?',
+      category.id,
+    ]);
+    transactions.push([
       'DELETE FROM Category WHERE id = ? OR sort = ?',
-      [category.id, category.sort],
-    ],
-    [
+      category.id,
+      category.sort,
+    ]);
+
+    // Insert the category
+    transactions.push([
       'INSERT INTO Category (id, name, sort) VALUES (?, ?, ?)',
-      [category.id, category.name, category.sort],
-    ],
-    ...d,
-  ]);
+      category.id,
+      category.name,
+      category.sort,
+    ]);
+
+    // Insert novel associations if they exist
+    if (existingNovelIds.length > 0) {
+      for (const novelId of existingNovelIds) {
+        transactions.push([
+          'INSERT INTO NovelCategory (categoryId, novelId) VALUES (?, ?)',
+          category.id,
+          novelId,
+        ]);
+      }
+    }
+
+    return await transactionAsync(transactions);
+  } catch (error: any) {
+    throw new Error(
+      `Failed to restore category "${category.name}": ${error.message}`,
+    );
+  }
 };

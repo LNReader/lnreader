@@ -15,6 +15,7 @@ import {
 import { migrateNovel, MigrateNovelData } from './migrate/migrateNovel';
 import { downloadChapter } from './download/downloadChapter';
 import { askForPostNotificationsPermission } from '@utils/askForPostNoftificationsPermission';
+import { createBackup, restoreBackup } from './backup/local';
 
 type taskNames =
   | 'IMPORT_EPUB'
@@ -23,6 +24,8 @@ type taskNames =
   | 'DRIVE_RESTORE'
   | 'SELF_HOST_BACKUP'
   | 'SELF_HOST_RESTORE'
+  | 'LOCAL_BACKUP'
+  | 'LOCAL_RESTORE'
   | 'MIGRATE_NOVEL'
   | 'DOWNLOAD_CHAPTER';
 
@@ -45,7 +48,16 @@ export type BackgroundTask =
   | { name: 'DRIVE_RESTORE'; data: DriveFile }
   | { name: 'SELF_HOST_BACKUP'; data: SelfHostData }
   | { name: 'SELF_HOST_RESTORE'; data: SelfHostData }
+  | {
+      name: 'LOCAL_BACKUP';
+      data: { includeDownloads: boolean; directoryUri?: string };
+    }
+  | {
+      name: 'LOCAL_RESTORE';
+      data: { includeDownloads: boolean; backupFile?: any };
+    }
   | { name: 'MIGRATE_NOVEL'; data: MigrateNovelData }
+  | { name: 'MASS_IMPORT'; data: { urls: string[] } }
   | DownloadChapterTask;
 export type DownloadChapterTask = {
   name: 'DOWNLOAD_CHAPTER';
@@ -57,6 +69,7 @@ export type BackgroundTaskMetadata = {
   isRunning: boolean;
   progress: number | undefined;
   progressText: string | undefined;
+  result?: any;
 };
 
 export type QueuedBackgroundTask = {
@@ -64,6 +77,8 @@ export type QueuedBackgroundTask = {
   meta: BackgroundTaskMetadata;
   id: string;
 };
+
+type TaskListListener = (tasks: QueuedBackgroundTask[]) => void;
 
 function makeId() {
   return (
@@ -77,6 +92,7 @@ export default class ServiceManager {
   lastNotifUpdate = 0;
   currentPendingUpdate = 0;
   private static instance?: ServiceManager;
+  private listeners: { [key: string]: TaskListListener[] } = {};
 
   private constructor() {}
 
@@ -87,15 +103,36 @@ export default class ServiceManager {
     return this.instance;
   }
 
+  private notifyListeners(taskName: taskNames) {
+    const tasks = this.getTaskList();
+    const listeners = this.listeners[taskName] || [];
+    for (const listener of listeners) {
+      listener(tasks);
+    }
+  }
+
+  private updateTaskList(
+    tasks: QueuedBackgroundTask[],
+    notifyTaskName?: taskNames,
+  ) {
+    setMMKVObject(this.STORE_KEY, tasks);
+    if (notifyTaskName) {
+      this.notifyListeners(notifyTaskName);
+    }
+  }
+
   get isRunning() {
     return BackgroundService.isRunning();
   }
 
   isMultiplicableTask(task: BackgroundTask) {
     return (
-      ['DOWNLOAD_CHAPTER', 'IMPORT_EPUB', 'MIGRATE_NOVEL'] as Array<
-        BackgroundTask['name']
-      >
+      [
+        'DOWNLOAD_CHAPTER',
+        'IMPORT_EPUB',
+        'MIGRATE_NOVEL',
+        'MASS_IMPORT',
+      ] as Array<BackgroundTask['name']>
     ).includes(task.name);
   }
 
@@ -127,6 +164,10 @@ export default class ServiceManager {
     transformer: (meta: BackgroundTaskMetadata) => BackgroundTaskMetadata,
   ) {
     const taskList = [...this.getTaskList()];
+    if (!taskList[0]) {
+      return;
+    }
+    const taskName = taskList[0].task.name;
     taskList[0] = {
       ...taskList[0],
       meta: transformer(taskList[0].meta),
@@ -168,7 +209,7 @@ export default class ServiceManager {
       }
     }
 
-    setMMKVObject(this.STORE_KEY, taskList);
+    this.updateTaskList(taskList, taskName);
   }
 
   //gets the progress bar for download chapters notification
@@ -233,6 +274,18 @@ export default class ServiceManager {
         return createSelfHostBackup(task.task.data, this.setMeta.bind(this));
       case 'SELF_HOST_RESTORE':
         return selfHostRestore(task.task.data, this.setMeta.bind(this));
+      case 'LOCAL_BACKUP':
+        return createBackup(
+          task.task.data.includeDownloads,
+          this.setMeta.bind(this),
+          task.task.data.directoryUri,
+        );
+      case 'LOCAL_RESTORE':
+        return restoreBackup(
+          task.task.data.includeDownloads,
+          this.setMeta.bind(this),
+          task.task.data.backupFile,
+        );
       case 'MIGRATE_NOVEL':
         return migrateNovel(task.task.data, this.setMeta.bind(this));
       case 'DOWNLOAD_CHAPTER':
@@ -250,6 +303,8 @@ export default class ServiceManager {
       'DRIVE_RESTORE': 0,
       'SELF_HOST_BACKUP': 0,
       'SELF_HOST_RESTORE': 0,
+      'LOCAL_BACKUP': 0,
+      'LOCAL_RESTORE': 0,
       'MIGRATE_NOVEL': 0,
       'DOWNLOAD_CHAPTER': 0,
     };
@@ -279,7 +334,10 @@ export default class ServiceManager {
           trigger: null,
         });
       } finally {
-        setMMKVObject(manager.STORE_KEY, manager.getTaskList().slice(1));
+        manager.updateTaskList(
+          manager.getTaskList().slice(1),
+          currentTask.task.name,
+        );
       }
     }
 
@@ -323,6 +381,10 @@ export default class ServiceManager {
         return 'Self Host Backup';
       case 'SELF_HOST_RESTORE':
         return 'Self Host Restore';
+      case 'LOCAL_BACKUP':
+        return 'Local Backup';
+      case 'LOCAL_RESTORE':
+        return 'Local Restore';
       default:
         return 'Unknown Task';
     }
@@ -357,30 +419,49 @@ export default class ServiceManager {
         id: makeId(),
       }));
 
-      setMMKVObject(this.STORE_KEY, currentTasks.concat(newTasks));
+      this.updateTaskList(currentTasks.concat(newTasks));
       this.start();
     }
+  }
+
+  observe(
+    taskName: taskNames,
+    listener: (task: QueuedBackgroundTask | undefined) => void,
+  ): () => void {
+    const taskListener: TaskListListener = tasks => {
+      const task = tasks.find(t => t.task.name === taskName);
+      listener(task);
+    };
+    if (!this.listeners[taskName]) {
+      this.listeners[taskName] = [];
+    }
+    this.listeners[taskName].push(taskListener);
+    return () => {
+      this.listeners[taskName] = this.listeners[taskName].filter(
+        l => l !== taskListener,
+      );
+    };
   }
 
   removeTasksByName(name: BackgroundTask['name']) {
     const taskList = this.getTaskList();
     if (taskList[0]?.task?.name === name) {
       this.pause();
-      setMMKVObject(
-        this.STORE_KEY,
+      this.updateTaskList(
         taskList.filter(t => t.task.name !== name),
+        name,
       );
       this.resume();
     } else {
-      setMMKVObject(
-        this.STORE_KEY,
+      this.updateTaskList(
         taskList.filter(t => t.task.name !== name),
+        name,
       );
     }
   }
 
   clearTaskList() {
-    setMMKVObject(this.STORE_KEY, []);
+    this.updateTaskList([]);
   }
 
   pause() {
