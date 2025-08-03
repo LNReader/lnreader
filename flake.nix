@@ -67,7 +67,6 @@
                 which
                 rsync
                 scrcpy
-                
               ]
               ++ pkgs.lib.optionals enableEmulator [
                 libglvnd
@@ -175,7 +174,7 @@
                 echo "  scrcpy"
                 echo "--------------------------"
               '';
-            };            
+            };
         };
       });
 }
