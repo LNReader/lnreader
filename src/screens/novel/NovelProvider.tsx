@@ -68,5 +68,8 @@ export function NovelContextProvider({
 
 export const useNovelContext = () => {
   const context = useContext(NovelContext);
+  if (!context) {
+    throw new Error('useNovelContext must be used within NovelContextProvider');
+  }
   return context;
 };

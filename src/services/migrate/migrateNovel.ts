@@ -12,7 +12,7 @@ import { getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
 import {
   LAST_READ_PREFIX,
   NOVEL_SETTINSG_PREFIX,
-} from '@hooks/persisted/useNovel';
+} from '@hooks/persisted/novel/useNovel';
 import { sleep } from '@utils/sleep';
 import ServiceManager, {
   BackgroundTaskMetadata,

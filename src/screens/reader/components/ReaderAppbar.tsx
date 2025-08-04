@@ -12,7 +12,7 @@ import Animated, {
 import { ThemeColors } from '@theme/types';
 import { bookmarkChapter } from '@database/queries/ChapterQueries';
 import { useChapterContext } from '../ChapterContext';
-import { useNovelContext } from '@screens/novel/NovelContext';
+import { useNovelContext } from '@screens/novel/NovelProvider';
 
 interface ReaderAppbarProps {
   theme: ThemeColors;

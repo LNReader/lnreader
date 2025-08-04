@@ -5,7 +5,12 @@ import {
 } from '@database/queries/ChapterQueries';
 import { insertHistory } from '@database/queries/HistoryQueries';
 import { ChapterInfo, NovelInfo } from '@database/types';
-import { useTrackedNovel, useTracker } from '@hooks/persisted';
+import {
+  useChapterGeneralSettings,
+  useLibrarySettings,
+  useTrackedNovel,
+  useTracker,
+} from '@hooks/persisted';
 import { fetchChapter } from '@services/plugin/fetch';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import {
@@ -22,12 +27,12 @@ import WebView from 'react-native-webview';
 import { useFullscreenMode } from '@hooks';
 import { Dimensions, NativeEventEmitter } from 'react-native';
 import * as Speech from 'expo-speech';
+import { defaultTo } from 'lodash-es';
 import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
 import NativeVolumeButtonListener from '@specs/NativeVolumeButtonListener';
 import NativeFile from '@specs/NativeFile';
-import { useNovelContext } from '@screens/novel/NovelContext';
-import { useSettingsContext } from '@components/Context/SettingsContext';
+import { useNovelContext } from '@screens/novel/NovelProvider';
 
 const emmiter = new NativeEventEmitter(NativeVolumeButtonListener);
 
@@ -50,13 +55,9 @@ export default function useChapter(
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
     ChapterInfo[] | undefined[]
   >([]);
-  const {
-    autoScroll,
-    autoScrollInterval,
-    autoScrollOffsetPercent,
-    useVolumeButtons,
-    incognitoMode,
-  } = useSettingsContext();
+  const { autoScroll, autoScrollInterval, autoScrollOffset, useVolumeButtons } =
+    useChapterGeneralSettings();
+  const { incognitoMode } = useLibrarySettings();
   const [error, setError] = useState<string>();
   const { tracker } = useTracker();
   const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
@@ -166,9 +167,10 @@ export default function useChapter(
     if (autoScroll) {
       scrollInterval.current = setInterval(() => {
         webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top:${
-            Dimensions.get('window').height * (autoScrollOffsetPercent / 100)
-          },behavior:'smooth'})
+          window.scrollBy({top:${defaultTo(
+            autoScrollOffset,
+            Dimensions.get('window').height,
+          )},behavior:'smooth'})
         })()`);
       }, autoScrollInterval * 1000);
     } else {
@@ -182,7 +184,7 @@ export default function useChapter(
         clearInterval(scrollInterval.current);
       }
     };
-  }, [autoScroll, autoScrollInterval, autoScrollOffsetPercent, webViewRef]);
+  }, [autoScroll, autoScrollInterval, autoScrollOffset, webViewRef]);
 
   const updateTracker = useCallback(() => {
     const chapterNumber = parseChapterNumber(novel.name, chapter.name);

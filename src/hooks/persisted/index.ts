@@ -5,6 +5,7 @@ export { default as useHistory } from './useHistory';
 export { useSettings } from './useSettings';
 export { default as usePlugins } from './usePlugins';
 export { getTracker, useTracker } from './useTracker';
-export { useTrackedNovel, useNovel } from './useNovel';
+export { useNovel } from './novel/useNovel';
+export { useTrackedNovel } from './novel/useTrackedNovel';
 export { default as useDownload } from './useDownload';
 export { default as useUserAgent } from './useUserAgent';

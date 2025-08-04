@@ -28,7 +28,7 @@ import { MaterialDesignIconName } from '@type/icon';
 import NovelScreenList from './components/NovelScreenList';
 import { ThemeColors } from '@theme/types';
 import { SafeAreaView } from '@components';
-import { useNovelContext } from './NovelContext';
+import { useNovelContext } from './NovelProvider';
 import { FlashListRef } from '@shopify/flash-list';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {

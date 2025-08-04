@@ -11,7 +11,7 @@ import {
   NovelScreenProps,
   ReaderStackParamList,
 } from './types';
-import { NovelContextProvider } from '@screens/novel/NovelContext';
+import { NovelContextProvider } from '@screens/novel/NovelProvider';
 
 const Stack = createNativeStackNavigator<ReaderStackParamList>();
 

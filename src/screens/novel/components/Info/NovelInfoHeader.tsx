@@ -37,8 +37,7 @@ import {
   NovelMetaSkeleton,
   VerticalBarSkeleton,
 } from '@components/Skeleton/Skeleton';
-import { useNovelContext } from '@screens/novel/NovelContext';
-import { useSettingsContext } from '@components/Context/SettingsContext';
+import { useNovelContext } from '@screens/novel/NovelProvider';
 
 interface NovelInfoHeaderProps {
   chapters: ChapterInfo[];
