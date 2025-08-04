@@ -208,38 +208,8 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
     [novelSettings, setNovelSettings],
   );
 
-  const followNovel = useCallback(() => {
-    switchNovelToLibrary(novelPath, pluginId).then(() => {
-      if (novel) {
-        setNovel({
-          ...novel,
-          inLibrary: !novel?.inLibrary,
-        });
-      }
-    });
-  }, [novel, novelPath, pluginId, switchNovelToLibrary]);
-
   // #endregion
   // #region getters
-
-  const getNovel = useCallback(async () => {
-    let tmpNovel = getNovelByPath(novelPath, pluginId);
-    if (!tmpNovel) {
-      const sourceNovel = await fetchNovel(pluginId, novelPath).catch(() => {
-        throw new Error(getString('updatesScreen.unableToGetNovel'));
-      });
-
-      await insertNovelAndChapters(pluginId, sourceNovel);
-      tmpNovel = getNovelByPath(novelPath, pluginId);
-
-      if (!tmpNovel) {
-        return;
-      }
-    }
-    setPages(calculatePages(tmpNovel));
-
-    setNovel(tmpNovel);
-  }, [novelPath, pluginId]);
 
   const getChapters = useCallback(async () => {
     const page = pages[pageIndex];
