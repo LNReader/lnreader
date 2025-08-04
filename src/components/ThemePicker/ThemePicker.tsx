@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     width: '33%',
   },
   horizontalContainer: {
-    width: undefined,
+    width: 'auto',
     marginHorizontal: 4,
   },
   card: {

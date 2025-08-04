@@ -2,6 +2,11 @@
 
 Contributions are welcome and are greatly appreciated!
 
+## Setup your environment with nix
+
+If you are on a Linux system, you can install the nix package manager and use the nix flakes to set up your development environment.
+See [CONTRIBUTING-NIX.md](CONTRIBUTING-NIX.md)
+
 ## Setting up your environment
 
 After forking to your own github org or account, do the following steps to get started:

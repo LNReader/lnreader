@@ -450,7 +450,7 @@
   },
   "readerSettings": {
     "autoScrollInterval": "Auto scroll interval (in seconds)",
-    "autoScrollOffset": "Auto scroll offset (screen height by default)",
+    "autoScrollOffsetPercent": "Auto scroll offset (percent of screen height)",
     "backgroundColor": "Background color",
     "backgroundColorModal": "Reader background color",
     "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",

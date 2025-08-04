@@ -14,7 +14,9 @@
     "open": "open ./android/app/build/outputs/apk/release/",
     "strings": "node scripts/stringTypes.cjs",
     "prepare": "husky install",
-    "rebuild": "rm -rf node_modules/ ./android/build/ ./android/app/build/ ./android/app/.cxx && npm i && cd android/ && ./gradlew clean && cd .. && npm start -- --reset-cache"
+    "rebuild": "rm -rf node_modules/ ./android/build/ ./android/app/build/ ./android/app/.cxx && npm i && cd android/ && ./gradlew clean && cd .. && npm start -- --reset-cache",
+    "nix": "nix develop --extra-experimental-features nix-command --extra-experimental-features flakes",
+    "nix-emulator": "nix develop .#emulator --extra-experimental-features nix-command --extra-experimental-features flakes"
   },
   "codegenConfig": {
     "name": "LNReaderSpec",
@@ -23,7 +25,7 @@
     "android": {
       "javaPackageName": "com.lnreader.spec"
     },
-    "ios": { 
+    "ios": {
       "modulesProvider": {
         "NativeEpubUtil": "RCTNativeEpubUtil",
         "NativeFile": "RCTNativeFile",
@@ -43,7 +45,6 @@
     "@react-navigation/bottom-tabs": "^7.3.12",
     "@react-navigation/native": "^7.1.8",
     "@react-navigation/native-stack": "^7.3.0",
-    "@react-navigation/stack": "^7.3.0",
     "@shopify/flash-list": "1.8.0",
     "cheerio": "1.0.0-rc.12",
     "color": "^5.0.0",
@@ -125,5 +126,8 @@
   },
   "engines": {
     "node": ">=20"
-  }
+  },
+  "trustedDependencies": [
+    "protobufjs"
+  ]
 }

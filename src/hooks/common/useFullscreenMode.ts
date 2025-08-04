@@ -1,11 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import {
-  useChapterGeneralSettings,
-  useChapterReaderSettings,
-  useTheme,
-} from '../persisted';
+import { useTheme } from '../persisted';
 import Color from 'color';
 import * as NavigationBar from 'expo-navigation-bar';
 import {
@@ -13,11 +9,11 @@ import {
   setStatusBarColor,
 } from '@theme/utils/setBarColor';
 import { SystemBars } from 'react-native-edge-to-edge';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 const useFullscreenMode = () => {
   const { addListener } = useNavigation();
-  const { theme: backgroundColor } = useChapterReaderSettings();
-  const { fullScreenMode } = useChapterGeneralSettings();
+  const { backgroundColor, fullScreenMode } = useSettingsContext();
   const theme = useTheme();
 
   const setImmersiveMode = useCallback(() => {
