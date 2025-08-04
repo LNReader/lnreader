@@ -1,5 +1,5 @@
 import { List } from '@components';
-import { SettingSubGroup } from '../Settings.d';
+import { SettingSubGroup } from '../Settings';
 import { useTheme } from '@hooks/persisted';
 import RenderSettings from './RenderSettings';
 import { RouteProp } from '@react-navigation/native';

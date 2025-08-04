@@ -1,5 +1,5 @@
 import { getString } from '@strings/translations';
-import { appearanceIds, SettingsGroup } from '../Settings.d';
+import { appearanceIds, SettingsGroup } from '../Settings';
 import { darkThemes, lightThemes } from '@theme/md3';
 
 const AppearanceSettings: SettingsGroup<appearanceIds> = {

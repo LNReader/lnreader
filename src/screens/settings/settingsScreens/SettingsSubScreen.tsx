@@ -8,7 +8,7 @@ import RenderSettings from '../dynamic/RenderSettingsGroup';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SettingsStackParamList } from '@navigators/types';
-import { Settings as SettingsType } from '../Settings.d';
+import { Settings as SettingsType } from '../Settings';
 
 type Props = NativeStackScreenProps<
   SettingsStackParamList,

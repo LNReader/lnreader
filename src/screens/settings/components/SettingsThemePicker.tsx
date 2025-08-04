@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 import { ThemePicker as TP } from '@components/ThemePicker/ThemePicker';
 
 import { ThemeColors } from '@theme/types';
-import { ThemePickerSetting } from '../Settings.d';
+import { ThemePickerSetting } from '../Settings';
 import {
   useMMKVBoolean,
   useMMKVObject,

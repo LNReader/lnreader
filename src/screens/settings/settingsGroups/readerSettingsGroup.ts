@@ -1,5 +1,5 @@
 import { getString } from '@strings/translations';
-import { readerIds, SettingsGroup } from '../Settings.d';
+import { readerIds, SettingsGroup } from '../Settings';
 const ReaderSettings: SettingsGroup<readerIds> = {
   groupTitle: getString('readerSettings.title'),
   icon: 'book-open-outline',

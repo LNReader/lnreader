@@ -12,7 +12,7 @@ import {
   BaseSetting,
   SettingOrigin,
   TextAreaSetting,
-} from '@screens/settings/Settings.d';
+} from '@type/Settings';
 import { ThemeColors } from '@theme/types';
 import { useSettingsContext } from '@components/Context/SettingsContext';
 import { FilteredSettings } from '@screens/settings/constants/defaultValues';

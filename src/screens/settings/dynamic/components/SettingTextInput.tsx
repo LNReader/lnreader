@@ -1,6 +1,6 @@
 import { StyleSheet, TextInput, View, Text } from 'react-native';
 import { ThemeColors } from '@theme/types';
-import { BaseSetting, NumberInputSetting } from '../../Settings.d';
+import { BaseSetting, NumberInputSetting } from '../../Settings';
 import { useMemo } from 'react';
 import { defaultTo } from 'lodash-es';
 import { useSettingsContext } from '@components/Context/SettingsContext';

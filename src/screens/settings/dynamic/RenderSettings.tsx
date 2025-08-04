@@ -1,4 +1,4 @@
-import { SettingsSubGroupSettings } from '../Settings.d';
+import { SettingsItem } from '../Settings';
 import SettingSwitchV2 from './components/SettingSwitchV2';
 import { useTheme } from '@hooks/persisted';
 import SettingsThemePicker from '../components/SettingsThemePicker';
@@ -20,7 +20,7 @@ const RenderSettings = ({
   quickSettings,
   route,
 }: {
-  setting: SettingsSubGroupSettings;
+  setting: SettingsItem;
   quickSettings?: boolean;
   route?: RouteProp<
     SettingsStackParamList,

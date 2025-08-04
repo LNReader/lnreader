@@ -1,6 +1,6 @@
 import { SwitchItem } from '@components';
 import { ThemeColors } from '@theme/types';
-import { BaseSetting, SettingOrigin, SwitchSetting } from '../../Settings.d';
+import { BaseSetting, SettingOrigin, SwitchSetting } from '../../Settings';
 import { useLastUpdate } from '@hooks/persisted';
 import React, { useMemo } from 'react';
 import RenderSettings from '../RenderSettings';

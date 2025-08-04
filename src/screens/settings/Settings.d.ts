@@ -58,7 +58,7 @@ export type _SwitchSetting<T extends SettingOrigin | undefined = undefined> = {
   type: 'Switch';
   settingsOrigin?: T;
   valueKey: T extends undefined ? FilteredSettings<boolean> : undefined;
-  dependents?: Array<SettingsSubGroupSettings>;
+  dependents?: Array<SettingsItem>;
 };
 export type SwitchSetting =
   | _SwitchSetting<'lastUpdateTime'>
@@ -111,7 +111,7 @@ export type BaseSetting = {
   quickSettings?: boolean;
 };
 
-export type SettingsSubGroupSettings = BaseSetting &
+export type SettingsItem = BaseSetting &
   (
     | ModalSetting
     | SwitchSetting
@@ -126,10 +126,12 @@ export type SettingsSubGroupSettings = BaseSetting &
     | InfoItem
   );
 
+  export type QuickSettingsItem = { quickSettings: true } & SettingsItem;
+
 export interface SettingSubGroup<T extends string> {
   subGroupTitle: string;
   id: T;
-  settings: Array<SettingsSubGroupSettings>;
+  settings: Array<SettingsItem>;
 }
 
 export interface SettingsGroup<T extends string> {

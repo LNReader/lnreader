@@ -7,7 +7,7 @@ import { RadioButton } from '@components/RadioButton/RadioButton';
 import { ThemeColors } from '@theme/types';
 import { Checkbox, List } from '@components';
 import { useBoolean } from '@hooks/index';
-import { BaseSetting, ModalSetting } from '@screens/settings/Settings.d';
+import { BaseSetting, ModalSetting } from '@type/Settings';
 import { SortItem } from '@components/Checkbox/Checkbox';
 import { useSettingsContext } from '@components/Context/SettingsContext';
 import { FilteredSettings } from '@screens/settings/constants/defaultValues';

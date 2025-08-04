@@ -6,7 +6,7 @@ import {
   librarySortOrderList,
 } from '@screens/library/constants/constants';
 import { getString } from '@strings/translations';
-import { generalIds, SettingsGroup } from '../Settings.d';
+import { generalIds, SettingsGroup } from '../Settings';
 const sortOrderNameMap = new Map<string, string>([
   ['name', 'libraryScreen.bottomSheet.sortOrders.alphabetically'],
   ['chaptersDownloaded', 'libraryScreen.bottomSheet.sortOrders.download'],

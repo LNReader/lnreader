@@ -1,5 +1,5 @@
 import { getString } from '@strings/translations';
-import { SettingsGroup, trackerIds } from '../Settings.d';
+import { SettingsGroup, trackerIds } from '../Settings';
 
 const TrackerSettings: SettingsGroup<trackerIds> = {
   groupTitle: getString('tracking'),

@@ -27,10 +27,12 @@ import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/typ
 import { StringMap } from '@strings/types';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import RenderSettings from '@screens/settings/dynamic/RenderSettings';
-import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
 import ReaderSettings from '@screens/settings/settingsGroups/readerSettingsGroup';
-import { FilteredSettings } from '@screens/settings/constants/defaultValues';
 import { useSettingsContext } from '@components/Context/SettingsContext';
+import SETTINGS, {
+  QuickSettingsItem,
+  readerIds,
+} from '@screens/settings/Settings';
 
 type TabViewLabelProps = {
   route: {
@@ -60,65 +62,32 @@ const ReaderTab: React.FC = React.memo(() => {
 });
 
 const GeneralTab: React.FC = React.memo(() => {
-  const theme = useTheme();
   const settings = useSettingsContext();
 
-  const toggleSetting = useCallback(
-    (key: FilteredSettings<boolean>) =>
-      settings.setSettings?.({ [key]: !settings[key] }),
-    [settings],
-  );
-
-  const preferences: { key: FilteredSettings<boolean>; label: string }[] =
-    useMemo(
-      () => [
-        { key: 'fullScreenMode', label: 'fullscreen' },
-        { key: 'autoScroll', label: 'autoscroll' },
-        { key: 'verticalSeekbar', label: 'verticalSeekbar' },
-        { key: 'showBatteryAndTime', label: 'showBatteryAndTime' },
-        { key: 'showScrollPercentage', label: 'showProgressPercentage' },
-        { key: 'swipeGestures', label: 'swipeGestures' },
-        { key: 'pageReader', label: 'pageReader' },
-        { key: 'removeExtraParagraphSpacing', label: 'removeExtraSpacing' },
-        { key: 'useVolumeButtons', label: 'volumeButtonsScroll' },
-        { key: 'bionicReading', label: 'bionicReading' },
-        { key: 'tapToScroll', label: 'tapToScroll' },
-        { key: 'keepScreenOn', label: 'keepScreenOn' },
-      ],
-      [],
-    );
+  const quickSettings = useMemo(() => {
+    const ids: readerIds[] = ['general', 'autoScroll', 'display'];
+    const selectedSettings = SETTINGS.reader.subGroup
+      .filter(sg => ids.includes(sg.id))
+      .flatMap(sg => sg.settings);
+    return (selectedSettings?.filter(s => s.quickSettings) ??
+      []) as Array<QuickSettingsItem>;
+  }, []);
 
   const renderItem = useCallback(
-    ({
-      item,
-    }: {
-      item: {
-        key: FilteredSettings<boolean>;
-        label: string;
-      };
-    }) => (
-      <ReaderSheetPreferenceItem
-        key={item.key}
-        label={getString(
-          `readerScreen.bottomSheet.${item.label}` as keyof StringMap,
-        )}
-        onPress={() => toggleSetting(item.key)}
-        value={settings[item.key]}
-        theme={theme}
-      />
+    ({ item }: { item: QuickSettingsItem }) => (
+      <RenderSettings setting={item} quickSettings />
     ),
-    [settings, theme, toggleSetting],
+    [],
   );
 
   return (
-    <View style={{ flex: 1 }}>
-      <BottomSheetFlashList
-        data={preferences}
-        extraData={[settings]}
-        keyExtractor={(item: { key: string }) => item.key}
-        renderItem={renderItem}
-      />
-    </View>
+    <BottomSheetFlashList
+      data={quickSettings}
+      extraData={[settings]}
+      keyExtractor={(_, i) => `general${i}`}
+      renderItem={renderItem}
+      estimatedItemSize={60}
+    />
   );
 });
 
