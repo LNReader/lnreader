@@ -8,7 +8,6 @@ import { StatusBar, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LottieSplashScreen from 'react-native-lottie-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider as PaperProvider } from 'react-native-paper';
 import * as Notifications from 'expo-notifications';
 
 import { createTables } from '@database/db';
@@ -41,10 +40,8 @@ const App = () => {
     <GestureHandlerRootView style={styles.flex}>
       <AppErrorBoundary>
         <SafeAreaProvider>
-          <PaperProvider>
             <StatusBar translucent={true} backgroundColor="transparent" />
             <Main />
-          </PaperProvider>
         </SafeAreaProvider>
       </AppErrorBoundary>
     </GestureHandlerRootView>
