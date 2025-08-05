@@ -123,6 +123,9 @@ const useNovelState = () => {
   }, [novel]);
 
   return {
+    novel,
+    path,
+    pluginId,
     getNovel,
     followNovel,
     setCustomNovelCover,

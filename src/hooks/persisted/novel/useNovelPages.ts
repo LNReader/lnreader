@@ -10,7 +10,7 @@ const useNovelPages = () => {
       'useNovelState must be used within NovelPageContextProvider',
     );
   }
-  const { setPages } = novelPage;
+  const { setPages, pages, pageIndex } = novelPage;
 
   const calculatePages = useCallback(
     (tmpNovel: NovelInfo, setNewPages?: boolean) => {
@@ -31,7 +31,7 @@ const useNovelPages = () => {
     },
     [setPages],
   );
-  return { calculatePages };
+  return { pages, pageIndex, calculatePages };
 };
 
 export default useNovelPages;
