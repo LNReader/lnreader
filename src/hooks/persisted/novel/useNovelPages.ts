@@ -1,7 +1,7 @@
 import { getCustomPages } from '@database/queries/ChapterQueries';
 import { NovelInfo } from '@database/types';
 import { NovelPageContext } from '@screens/novel/context/NovelPageContext';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 
 const useNovelPages = () => {
   const novelPage = useContext(NovelPageContext);
@@ -10,7 +10,7 @@ const useNovelPages = () => {
       'useNovelState must be used within NovelPageContextProvider',
     );
   }
-  const { setPages, pages, pageIndex } = novelPage;
+  const { pages, setPages, pageIndex, setPageIndex } = novelPage;
 
   const calculatePages = useCallback(
     (tmpNovel: NovelInfo, setNewPages?: boolean) => {
@@ -31,7 +31,25 @@ const useNovelPages = () => {
     },
     [setPages],
   );
-  return { pages, pageIndex, calculatePages };
+
+  const openPage = useCallback(
+    (index: number) => {
+      setPageIndex(index);
+    },
+    [setPageIndex],
+  );
+
+  const result = useMemo(
+    () => ({
+      pages,
+      pageIndex,
+      calculatePages,
+      openPage,
+    }),
+    [calculatePages, pages, pageIndex, openPage],
+  );
+
+  return result;
 };
 
 export default useNovelPages;

@@ -2,6 +2,7 @@ import { useAppSettings } from '@hooks/persisted';
 import { NovelSettings } from '@hooks/persisted/novel/useNovel';
 import { ReaderStackParamList } from '@navigators/types';
 import { RouteProp } from '@react-navigation/native';
+import { NOVEL_SETTINSG_PREFIX } from '@utils/constants/mmkv';
 import { createContext, useMemo } from 'react';
 import { useMMKVObject } from 'react-native-mmkv';
 

@@ -11,7 +11,7 @@ import { fetchNovel } from '@services/plugin/fetch';
 import { getString } from '@strings/translations';
 import { showToast } from '@utils/showToast';
 import { StorageAccessFramework } from 'expo-file-system';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useEffect, useMemo } from 'react';
 import useNovelPages from './useNovelPages';
 
 const useNovelState = () => {
@@ -22,7 +22,7 @@ const useNovelState = () => {
     );
   }
 
-  const { novel, setNovel, path, pluginId } = novelState;
+  const { novel, setNovel, path, pluginId, loading, setLoading } = novelState;
   const { calculatePages } = useNovelPages();
   const { switchNovelToLibrary } = useLibraryContext();
 
@@ -56,7 +56,7 @@ const useNovelState = () => {
     });
   }, [novel, path, pluginId, setNovel, switchNovelToLibrary]);
 
-  const setCustomNovelCover = async () => {
+  const setCustomNovelCover = useCallback(async () => {
     if (!novel) {
       return;
     }
@@ -67,7 +67,7 @@ const useNovelState = () => {
         cover: newCover,
       });
     }
-  };
+  }, [novel, setNovel]);
 
   const saveNovelCover = useCallback(async () => {
     if (!novel) {
@@ -122,15 +122,42 @@ const useNovelState = () => {
     }
   }, [novel]);
 
-  return {
-    novel,
-    path,
-    pluginId,
-    getNovel,
-    followNovel,
-    setCustomNovelCover,
-    saveNovelCover,
-  };
+  useEffect(() => {
+    if (novel) {
+      setLoading(false);
+    } else {
+      getNovel().finally(() => {
+        //? Sometimes loading state changes doesn't trigger rerender causing NovelScreen to be in endless loading state
+        setLoading(false);
+        // getNovel();
+      });
+    }
+  }, [getNovel, novel, setLoading]);
+
+  const result = useMemo(
+    () => ({
+      novel,
+      loading,
+      path,
+      pluginId,
+      getNovel,
+      followNovel,
+      setCustomNovelCover,
+      saveNovelCover,
+    }),
+    [
+      loading,
+      novel,
+      path,
+      pluginId,
+      getNovel,
+      followNovel,
+      setCustomNovelCover,
+      saveNovelCover,
+    ],
+  );
+
+  return result;
 };
 
 export default useNovelState;

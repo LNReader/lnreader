@@ -1,8 +1,8 @@
 import { SearchResult, UserListEntry } from '@services/Trackers';
 import { useCallback } from 'react';
 import { useMMKVObject } from 'react-native-mmkv';
-import { TRACKED_NOVEL_PREFIX } from './useNovel';
 import { TrackerMetadata, getTracker } from '../useTracker';
+import { TRACKED_NOVEL_PREFIX } from '@utils/constants/mmkv';
 
 type TrackedNovel = SearchResult & UserListEntry;
 
