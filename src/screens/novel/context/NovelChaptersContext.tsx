@@ -30,7 +30,7 @@ export const NovelChaptersContext = createContext<
   (ChapterState & ChapterActions) | null
 >(null);
 
-export function NovelStateContextProvider({
+export function NovelChaptersContextProvider({
   children,
 }: {
   children: React.JSX.Element;

@@ -1,5 +1,4 @@
 import { useAppSettings } from '@hooks/persisted';
-import { NovelSettings } from '@hooks/persisted/novel/useNovel';
 import { ReaderStackParamList } from '@navigators/types';
 import { RouteProp } from '@react-navigation/native';
 import { NOVEL_SETTINSG_PREFIX } from '@utils/constants/mmkv';
@@ -11,6 +10,12 @@ type Route =
   | RouteProp<ReaderStackParamList, 'Chapter'>['params']['novel'];
 type Path = Route['path'];
 type PluginId = Route['pluginId'];
+
+export interface NovelSettings {
+  sort?: string;
+  filter?: string;
+  showChapterTitles?: boolean;
+}
 
 interface SettingsState {
   novelSettings: NovelSettings;

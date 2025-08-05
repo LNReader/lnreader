@@ -7,17 +7,21 @@ import React, {
 } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { useTheme } from '@hooks/persisted';
+import {
+  useAppSettings,
+  useNovelChapters,
+  useNovelPages,
+  useNovelSettings,
+  useTheme,
+} from '@hooks/persisted';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import renderListChapter from './RenderListChapter';
 import { useChapterContext } from '@screens/reader/ChapterContext';
-import { useNovelContext } from '@screens/novel/NovelProvider';
 import { FlashList, FlashListRef, ViewToken } from '@shopify/flash-list';
 import { ChapterInfo } from '@database/types';
-import { useSettingsContext } from '@components/Context/SettingsContext';
 
 type ButtonProperties = {
   text: string;
@@ -31,15 +35,17 @@ type ButtonsProperties = {
 
 const ChapterDrawer = () => {
   const { chapter, getChapter, setLoading } = useChapterContext();
-  const { chapters, novelSettings, pages, setPageIndex } = useNovelContext();
+  const { chapters } = useNovelChapters();
+  const { pages, setPageIndex } = useNovelPages();
+  const { novelSettings } = useNovelSettings();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const { defaultChapterSort } = useSettingsContext();
+  const { defaultChapterSort } = useAppSettings();
   const listRef = useRef<FlashListRef<ChapterInfo> | null>(null);
 
   const styles = createStylesheet(theme, insets);
 
-  const { sort = defaultChapterSort } = novelSettings;
+  const { sort } = novelSettings;
   const listAscending = sort === 'ORDER BY position ASC';
 
   const defaultButtonLayout: ButtonsProperties = useMemo(

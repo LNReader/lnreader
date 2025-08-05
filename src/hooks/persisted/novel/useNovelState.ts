@@ -6,15 +6,32 @@ import {
 } from '@database/queries/NovelQueries';
 import { downloadFile } from '@plugins/helpers/fetch';
 import FileManager from '@specs/NativeFile';
-import { NovelStateContext } from '@screens/novel/context/NovelStateContext';
+import {
+  NovelStateContext,
+  RouteNovel,
+} from '@screens/novel/context/NovelStateContext';
 import { fetchNovel } from '@services/plugin/fetch';
 import { getString } from '@strings/translations';
 import { showToast } from '@utils/showToast';
 import { StorageAccessFramework } from 'expo-file-system';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import useNovelPages from './useNovelPages';
+import { NovelInfo } from '@database/types';
 
-const useNovelState = () => {
+type NovelState = {
+  path: string;
+  pluginId: string;
+  setNovel: (novel: NovelInfo) => void;
+  followNovel: () => void;
+  setCustomNovelCover: () => Promise<void>;
+  saveNovelCover: () => Promise<void>;
+  getNovel: () => void;
+} & (
+  | { novel: NovelInfo; loading: false }
+  | { novel: RouteNovel; loading: true }
+);
+
+const useNovelState = (): NovelState => {
   const novelState = useContext(NovelStateContext);
   if (!novelState) {
     throw new Error(
@@ -47,17 +64,17 @@ const useNovelState = () => {
 
   const followNovel = useCallback(() => {
     switchNovelToLibrary(path, pluginId).then(() => {
-      if (novel) {
+      if (!loading) {
         setNovel({
           ...novel,
           inLibrary: !novel?.inLibrary,
         });
       }
     });
-  }, [novel, path, pluginId, setNovel, switchNovelToLibrary]);
+  }, [loading, novel, path, pluginId, setNovel, switchNovelToLibrary]);
 
   const setCustomNovelCover = useCallback(async () => {
-    if (!novel) {
+    if (loading) {
       return;
     }
     const newCover = await pickCustomNovelCover(novel);
@@ -67,7 +84,7 @@ const useNovelState = () => {
         cover: newCover,
       });
     }
-  }, [novel, setNovel]);
+  }, [loading, novel, setNovel]);
 
   const saveNovelCover = useCallback(async () => {
     if (!novel) {
@@ -127,9 +144,7 @@ const useNovelState = () => {
       setLoading(false);
     } else {
       getNovel().finally(() => {
-        //? Sometimes loading state changes doesn't trigger rerender causing NovelScreen to be in endless loading state
         setLoading(false);
-        // getNovel();
       });
     }
   }, [getNovel, novel, setLoading]);
@@ -141,23 +156,25 @@ const useNovelState = () => {
       path,
       pluginId,
       getNovel,
+      setNovel,
       followNovel,
       setCustomNovelCover,
       saveNovelCover,
     }),
     [
-      loading,
       novel,
+      loading,
       path,
       pluginId,
       getNovel,
+      setNovel,
       followNovel,
       setCustomNovelCover,
       saveNovelCover,
     ],
   );
 
-  return result;
+  return result as NovelState;
 };
 
 export default useNovelState;

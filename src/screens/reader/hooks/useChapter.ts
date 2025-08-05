@@ -8,6 +8,8 @@ import { ChapterInfo, NovelInfo } from '@database/types';
 import {
   useChapterGeneralSettings,
   useLibrarySettings,
+  useNovelChapters,
+  useNovelLastRead,
   useTrackedNovel,
   useTracker,
 } from '@hooks/persisted';
@@ -32,7 +34,7 @@ import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
 import NativeVolumeButtonListener from '@specs/NativeVolumeButtonListener';
 import NativeFile from '@specs/NativeFile';
-import { useNovelContext } from '@screens/novel/NovelProvider';
+import { useNovelChapterCache } from '@screens/novel/context/NovelChapterCacheContext';
 
 const emmiter = new NativeEventEmitter(NativeVolumeButtonListener);
 
@@ -41,12 +43,9 @@ export default function useChapter(
   initialChapter: ChapterInfo,
   novel: NovelInfo,
 ) {
-  const {
-    setLastRead,
-    markChapterRead,
-    updateChapterProgress,
-    chapterTextCache,
-  } = useNovelContext();
+  const { markChapterRead, updateChapterProgress } = useNovelChapters();
+  const { setLastRead } = useNovelLastRead();
+  const { chapterTextCache } = useNovelChapterCache();
   const [hidden, setHidden] = useState(true);
   const [chapter, setChapter] = useState(initialChapter);
   const [loading, setLoading] = useState(true);

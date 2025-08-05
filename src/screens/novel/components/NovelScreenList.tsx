@@ -2,10 +2,17 @@ import * as React from 'react';
 import ChapterItem from './ChapterItem';
 import NovelInfoHeader from './Info/NovelInfoHeader';
 import { useRef, useState, useCallback, useMemo } from 'react';
-import { pickCustomNovelCover } from '@database/queries/NovelQueries';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { useBoolean } from '@hooks/index';
-import { useAppSettings, useDownload, useTheme } from '@hooks/persisted';
+import {
+  useAppSettings,
+  useDownload,
+  useTheme,
+  useNovelChapters,
+  useNovelSettings,
+  useNovelState,
+  useNovelLastRead,
+} from '@hooks/persisted';
 import {
   updateNovel,
   updateNovelPage,
@@ -27,10 +34,6 @@ import { AnimatedFAB } from 'react-native-paper';
 import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
-import { useNovelContext } from '../NovelProvider';
-import FileManager from '@specs/NativeFile';
-import { downloadFile } from '@plugins/helpers/fetch';
-import { StorageAccessFramework } from 'expo-file-system/legacy';
 
 type NovelScreenListProps = {
   headerOpacity: SharedValue<number>;
@@ -64,23 +67,12 @@ const NovelScreenList = ({
   setSelected,
   getNextChapterBatch,
 }: NovelScreenListProps) => {
-  const {
-    chapters,
-    deleteChapter,
-    fetching,
-    getNovel,
-    lastRead,
-    loading,
-    novelSettings,
-    pages,
-    setNovel,
-    sortAndFilterChapters,
-    setShowChapterTitles,
-    updateChapter,
-    novel: fetchedNovel,
-    batchInformation,
-    pageIndex,
-  } = useNovelContext();
+  const { getNovel, novel: fetchedNovel, loading } = useNovelState();
+  const { chapters, deleteChapter, fetching, batchInformation, updateChapter } =
+    useNovelChapters();
+  const { novelSettings, sortAndFilterChapters, setShowChapterTitles } =
+    useNovelSettings();
+  const { lastRead } = useNovelLastRead();
 
   const { pluginId } = routeBaseNovel;
 
@@ -352,43 +344,26 @@ const NovelScreenList = ({
   // Memoize the header component props
   const renderHeader = useMemo(() => {
     const props = {
-      chapters,
       deleteDownloadsSnackbar,
-      fetching,
       filter,
-      isLoading: loading,
       lastRead,
       navigateToChapter,
       navigation,
-      novel,
       novelBottomSheetRef,
       onRefreshPage,
       openDrawer,
-      page: pages.length > 1 ? pages[pageIndex] : undefined,
-      setCustomNovelCover,
-      saveNovelCover,
-      theme,
       totalChapters: batchInformation.totalChapters,
       trackerSheetRef,
     };
     return <MemoizedNovelInfoHeader {...props} />;
   }, [
-    chapters,
     deleteDownloadsSnackbar,
-    fetching,
     filter,
-    loading,
     lastRead,
     navigateToChapter,
     navigation,
-    novel,
     onRefreshPage,
     openDrawer,
-    pages,
-    pageIndex,
-    setCustomNovelCover,
-    saveNovelCover,
-    theme,
     batchInformation.totalChapters,
   ]);
 

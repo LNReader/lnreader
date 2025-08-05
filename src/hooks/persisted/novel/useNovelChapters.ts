@@ -37,18 +37,19 @@ const useNovelChapters = () => {
     batchInformation,
     setChapters,
     _setChapters,
+    updateChapter,
     extendChapters,
     mutateChapters,
     setFetching,
     setBatchInformation,
   } = NovelChapters;
-  const { novel, path, pluginId } = useNovelState();
-  const { pages, pageIndex } = useNovelPages();
+  const { novel, path, pluginId, loading } = useNovelState();
+  const { pages, pageIndex, page } = useNovelPages();
   const { novelSettings } = useNovelSettings();
   const currentPage = pages[pageIndex];
 
   const getChapters = useCallback(async () => {
-    if (novel && currentPage) {
+    if (!loading) {
       let newChapters: ChapterInfo[] = [];
 
       const config = [
@@ -90,10 +91,11 @@ const useNovelChapters = () => {
       setChapters(newChapters);
     }
   }, [
-    novel,
-    currentPage,
+    loading,
+    novel.id,
     novelSettings.sort,
     novelSettings.filter,
+    currentPage,
     setBatchInformation,
     setChapters,
     _setChapters,
@@ -102,9 +104,8 @@ const useNovelChapters = () => {
   ]);
 
   const getNextChapterBatch = useCallback(() => {
-    const page = pages[pageIndex];
     const nextBatch = batchInformation.batch + 1;
-    if (novel && page && nextBatch <= batchInformation.total) {
+    if (!loading && page && nextBatch <= batchInformation.total) {
       let newChapters: ChapterInfo[] = [];
 
       try {
@@ -124,13 +125,13 @@ const useNovelChapters = () => {
     }
   }, [
     batchInformation,
-    extendChapters,
-    novel,
-    novelSettings.filter,
-    pageIndex,
-    pages,
+    loading,
+    page,
     setBatchInformation,
+    extendChapters,
+    novel.id,
     novelSettings.sort,
+    novelSettings.filter,
   ]);
 
   // #region Mark chapters
@@ -157,7 +158,7 @@ const useNovelChapters = () => {
 
   const markPreviouschaptersRead = useCallback(
     (chapterId: number) => {
-      if (novel) {
+      if (!loading) {
         _markPreviuschaptersRead(chapterId, novel.id);
         mutateChapters(chs =>
           chs.map(chapter =>
@@ -166,7 +167,7 @@ const useNovelChapters = () => {
         );
       }
     },
-    [mutateChapters, novel],
+    [loading, mutateChapters, novel.id],
   );
 
   const markChapterRead = useCallback(
@@ -229,7 +230,7 @@ const useNovelChapters = () => {
 
   const markPreviousChaptersUnread = useCallback(
     (chapterId: number) => {
-      if (novel) {
+      if (!loading) {
         _markPreviousChaptersUnread(chapterId, novel.id);
         mutateChapters(chs =>
           chs.map(chapter =>
@@ -238,7 +239,7 @@ const useNovelChapters = () => {
         );
       }
     },
-    [mutateChapters, novel],
+    [loading, mutateChapters, novel.id],
   );
 
   const markChaptersUnread = useCallback(
@@ -266,7 +267,7 @@ const useNovelChapters = () => {
 
   const deleteChapter = useCallback(
     (_chapter: ChapterInfo) => {
-      if (novel) {
+      if (!loading) {
         _deleteChapter(novel.pluginId, novel.id, _chapter.id).then(() => {
           mutateChapters(chs =>
             chs.map(chapter => {
@@ -283,12 +284,12 @@ const useNovelChapters = () => {
         });
       }
     },
-    [mutateChapters, novel],
+    [loading, mutateChapters, novel.id, novel.pluginId],
   );
 
   const deleteChapters = useCallback(
     (_chaters: ChapterInfo[]) => {
-      if (novel) {
+      if (!loading) {
         _deleteChapters(novel.pluginId, novel.id, _chaters).then(() => {
           showToast(
             getString('updatesScreen.deletedChapters', {
@@ -309,11 +310,11 @@ const useNovelChapters = () => {
         });
       }
     },
-    [novel, mutateChapters],
+    [loading, novel.pluginId, novel.id, mutateChapters],
   );
 
   const refreshChapters = useCallback(() => {
-    if (novel?.id && !fetching) {
+    if (!loading && !fetching) {
       _getPageChapters(
         novel.id,
         novelSettings.sort,
@@ -324,8 +325,9 @@ const useNovelChapters = () => {
       });
     }
   }, [
-    novel?.id,
+    loading,
     fetching,
+    novel.id,
     novelSettings.sort,
     novelSettings.filter,
     currentPage,
@@ -351,7 +353,10 @@ const useNovelChapters = () => {
   const result = useMemo(
     () => ({
       chapters,
+      fetching,
+      batchInformation,
       getChapters,
+      updateChapter,
       getNextChapterBatch,
       bookmarkChapters,
       markPreviouschaptersRead,
@@ -365,19 +370,22 @@ const useNovelChapters = () => {
       refreshChapters,
     }),
     [
-      bookmarkChapters,
       chapters,
+      fetching,
+      batchInformation,
+      getChapters,
+      updateChapter,
+      getNextChapterBatch,
+      bookmarkChapters,
+      markPreviouschaptersRead,
+      markChapterRead,
+      updateChapterProgress,
+      markChaptersRead,
+      markPreviousChaptersUnread,
+      markChaptersUnread,
       deleteChapter,
       deleteChapters,
-      getChapters,
-      getNextChapterBatch,
-      markChapterRead,
-      markChaptersRead,
-      markChaptersUnread,
-      markPreviousChaptersUnread,
-      markPreviouschaptersRead,
       refreshChapters,
-      updateChapterProgress,
     ],
   );
 

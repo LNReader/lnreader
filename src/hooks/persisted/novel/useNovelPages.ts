@@ -39,14 +39,18 @@ const useNovelPages = () => {
     [setPageIndex],
   );
 
+  const page = pages[pageIndex];
+
   const result = useMemo(
     () => ({
+      page,
       pages,
       pageIndex,
+      setPageIndex,
       calculatePages,
       openPage,
     }),
-    [calculatePages, pages, pageIndex, openPage],
+    [page, pages, pageIndex, setPageIndex, calculatePages, openPage],
   );
 
   return result;

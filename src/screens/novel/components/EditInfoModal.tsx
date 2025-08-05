@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   Pressable,
@@ -15,16 +15,15 @@ import { updateNovelInfo } from '@database/queries/NovelQueries';
 import { getString } from '@strings/translations';
 import { Button, Modal } from '@components';
 import { ThemeColors } from '@theme/types';
-import { NovelInfo } from '@database/types';
 import { NovelStatus } from '@plugins/types';
 import { translateNovelStatus } from '@utils/translateEnum';
+import useNovelState from '@hooks/persisted/novel/useNovelState';
+import { NovelInfo } from '@database/types';
 
 interface EditInfoModalProps {
   theme: ThemeColors;
   hideModal: () => void;
   modalVisible: boolean;
-  novel: NovelInfo;
-  setNovel: (novel: NovelInfo | undefined) => void;
 }
 
 // --- Dynamic style helpers ---
@@ -49,15 +48,21 @@ const EditInfoModal = ({
   theme,
   hideModal,
   modalVisible,
-  novel,
-  setNovel,
 }: EditInfoModalProps) => {
+  const { novel: _novel, setNovel, loading } = useNovelState();
+  const novel = _novel as NovelInfo;
   const initialNovelInfo = { ...novel };
-  const [novelInfo, setNovelInfo] = useState(novel);
+  const [novelInfo, setNovelInfo] = useState<NovelInfo>(novel);
 
   const [newGenre, setNewGenre] = useState('');
 
+  useEffect(() => {
+    if (loading) return;
+    setNovelInfo(novel);
+  }, [loading, novel]);
+
   const removeTag = (t: string) => {
+    if (!novelInfo || loading) return;
     setNovelInfo({
       ...novel,
       genres: novelInfo.genres
@@ -68,6 +73,8 @@ const EditInfoModal = ({
   };
 
   const status = Object.values(NovelStatus);
+
+  if (!novelInfo || loading) return null;
 
   return (
     <Portal>
@@ -120,7 +127,7 @@ const EditInfoModal = ({
           style={styles.inputWrapper}
         />
         <TextInput
-          defaultValue={initialNovelInfo.author}
+          defaultValue={initialNovelInfo.author ?? ''}
           value={novelInfo.author}
           placeholder={getString('novelScreen.edit.author', {
             author: novel.author,
