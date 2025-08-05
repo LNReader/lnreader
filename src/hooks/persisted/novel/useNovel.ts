@@ -41,17 +41,6 @@ import { useSettingsContext } from '@components/Context/SettingsContext';
 // store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
 // store key: '<PREFIX>_<novel.id>',
 
-export const TRACKED_NOVEL_PREFIX = 'TRACKED_NOVEL_PREFIX';
-
-export const NOVEL_PAGE_INDEX_PREFIX = 'NOVEL_PAGE_INDEX_PREFIX';
-
-export const LAST_READ_PREFIX = 'LAST_READ_PREFIX';
-
-const defaultNovelSettings: NovelSettings = {
-  showChapterTitles: true,
-};
-const defaultPageIndex = 0;
-
 // #endregion
 // #region types
 
@@ -111,26 +100,6 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
       setPageIndex(index);
     },
     [setPageIndex],
-  );
-
-  const sortAndFilterChapters = useCallback(
-    async (sort?: string, filter?: string) => {
-      if (novel) {
-        setNovelSettings({
-          showChapterTitles: novelSettings?.showChapterTitles,
-          sort,
-          filter,
-        });
-      }
-    },
-    [novel, novelSettings?.showChapterTitles, setNovelSettings],
-  );
-
-  const setShowChapterTitles = useCallback(
-    (v: boolean) => {
-      setNovelSettings({ ...novelSettings, showChapterTitles: v });
-    },
-    [novelSettings, setNovelSettings],
   );
 
   // #endregion
@@ -221,22 +190,4 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
 
 // #region DeleteCachedNovels
 
-export const deleteCachedNovels = async () => {
-  const cachedNovels = await _getCachedNovels();
-  for (const novel of cachedNovels) {
-    MMKVStorage.delete(`${TRACKED_NOVEL_PREFIX}_${novel.id}`);
-    MMKVStorage.delete(
-      `${NOVEL_PAGE_INDEX_PREFIX}_${novel.pluginId}_${novel.path}`,
-    );
-    MMKVStorage.delete(
-      `${NOVEL_SETTINSG_PREFIX}_${novel.pluginId}_${novel.path}`,
-    );
-    MMKVStorage.delete(`${LAST_READ_PREFIX}_${novel.pluginId}_${novel.path}`);
-    const novelDir = NOVEL_STORAGE + '/' + novel.pluginId + '/' + novel.id;
-    if (NativeFile.exists(novelDir)) {
-      NativeFile.unlink(novelDir);
-    }
-  }
-  _deleteCachedNovels();
-};
 // #endregion

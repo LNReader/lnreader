@@ -22,14 +22,7 @@ import { getString } from '@strings/translations';
 import { showToast } from '@utils/showToast';
 import useNovelState from './useNovelState';
 import useNovelPages from './useNovelPages';
-import { useMMKVObject } from 'react-native-mmkv';
-import { NovelSettings } from './useNovel';
-import { useAppSettings } from '../useSettings';
-
-export const NOVEL_SETTINSG_PREFIX = 'NOVEL_SETTINGS';
-const defaultNovelSettings: NovelSettings = {
-  showChapterTitles: true,
-};
+import useNovelSettings from './useNovelSettings';
 
 const useNovelChapters = () => {
   const NovelChapters = useContext(NovelChaptersContext);
@@ -51,14 +44,8 @@ const useNovelChapters = () => {
   } = NovelChapters;
   const { novel, path, pluginId } = useNovelState();
   const { pages, pageIndex } = useNovelPages();
-  const { defaultChapterSort } = useAppSettings();
+  const { novelSettings } = useNovelSettings();
   const currentPage = pages[pageIndex];
-
-  const [novelSettings = defaultNovelSettings] = useMMKVObject<NovelSettings>(
-    `${NOVEL_SETTINSG_PREFIX}_${pluginId}_${path}`,
-  );
-
-  const settingsSort = novelSettings.sort || defaultChapterSort;
 
   const getChapters = useCallback(async () => {
     if (novel && currentPage) {
@@ -66,7 +53,7 @@ const useNovelChapters = () => {
 
       const config = [
         novel.id,
-        settingsSort,
+        novelSettings.sort,
         novelSettings.filter,
         currentPage,
       ] as const;
@@ -105,7 +92,7 @@ const useNovelChapters = () => {
   }, [
     novel,
     currentPage,
-    settingsSort,
+    novelSettings.sort,
     novelSettings.filter,
     setBatchInformation,
     setChapters,
@@ -124,7 +111,7 @@ const useNovelChapters = () => {
         newChapters =
           getPageChaptersBatched(
             novel.id,
-            settingsSort,
+            novelSettings.sort,
             novelSettings.filter,
             page,
             nextBatch,
@@ -143,7 +130,7 @@ const useNovelChapters = () => {
     pageIndex,
     pages,
     setBatchInformation,
-    settingsSort,
+    novelSettings.sort,
   ]);
 
   // #region Mark chapters
@@ -329,7 +316,7 @@ const useNovelChapters = () => {
     if (novel?.id && !fetching) {
       _getPageChapters(
         novel.id,
-        settingsSort,
+        novelSettings.sort,
         novelSettings.filter,
         currentPage,
       ).then(chs => {
@@ -339,7 +326,7 @@ const useNovelChapters = () => {
   }, [
     novel?.id,
     fetching,
-    settingsSort,
+    novelSettings.sort,
     novelSettings.filter,
     currentPage,
     setChapters,
