@@ -1,21 +1,13 @@
-import React, { createContext, useContext, useMemo, useRef } from 'react';
-import { useNovel } from '@hooks/persisted';
+import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { ReaderStackParamList } from '@navigators/types';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useDeviceOrientation } from '@hooks/index';
+import { NovelStateContextProvider } from './context/NovelStateContext';
+import { NovelChaptersContextProvider } from './context/NovelChaptersContext';
+import { NovelPageContextProvider } from './context/NovelPageContext';
+import { NovelSettingsContextProvider } from './context/NovelSettingsContext';
+import { NovelLastReadContextProvider } from './context/NovelLastReadContext';
 
-type NovelContextType = ReturnType<typeof useNovel> & {
-  navigationBarHeight: number;
-  statusBarHeight: number;
-  chapterTextCache: Map<number, string | Promise<string>>;
-};
-
-const defaultValue = {} as NovelContextType;
-
-const NovelContext = createContext<NovelContextType>(defaultValue);
-
-export function NovelContextProvider({
+export function NovelProvider({
   children,
 
   route,
@@ -26,50 +18,26 @@ export function NovelContextProvider({
     | RouteProp<ReaderStackParamList, 'Novel'>
     | RouteProp<ReaderStackParamList, 'Chapter'>;
 }) {
-  const { path, pluginId } =
+  const RouteNovelParams =
     'novel' in route.params ? route.params.novel : route.params;
 
-  const novelHookContent = useNovel(
-    'id' in route.params ? route.params : path,
-    pluginId,
-  );
-
-  const { bottom, top } = useSafeAreaInsets();
-  const orientation = useDeviceOrientation();
-  const NavigationBarHeight = useRef(bottom);
-  const StatusBarHeight = useRef(top);
-  const chapterTextCache = useRef<Map<number, string | Promise<string>>>(
-    new Map(),
-  );
-
-  if (bottom < NavigationBarHeight.current && orientation === 'landscape') {
-    NavigationBarHeight.current = bottom;
-  } else if (bottom > NavigationBarHeight.current) {
-    NavigationBarHeight.current = bottom;
-  }
-  if (top > StatusBarHeight.current) {
-    StatusBarHeight.current = top;
-  }
-  const contextValue = useMemo(
-    () => ({
-      ...novelHookContent,
-      navigationBarHeight: NavigationBarHeight.current,
-      statusBarHeight: StatusBarHeight.current,
-      chapterTextCache: chapterTextCache.current,
-    }),
-    [novelHookContent],
-  );
   return (
-    <NovelContext.Provider value={contextValue}>
-      {children}
-    </NovelContext.Provider>
+    <NovelStateContextProvider novelParams={RouteNovelParams}>
+      <NovelChaptersContextProvider>
+        <NovelPageContextProvider>
+          <NovelLastReadContextProvider
+            path={RouteNovelParams.path}
+            pluginId={RouteNovelParams.pluginId}
+          >
+            <NovelSettingsContextProvider
+              path={RouteNovelParams.path}
+              pluginId={RouteNovelParams.pluginId}
+            >
+              {children}
+            </NovelSettingsContextProvider>
+          </NovelLastReadContextProvider>
+        </NovelPageContextProvider>
+      </NovelChaptersContextProvider>
+    </NovelStateContextProvider>
   );
 }
-
-export const useNovelContext = () => {
-  const context = useContext(NovelContext);
-  if (!context) {
-    throw new Error('useNovelContext must be used within NovelContextProvider');
-  }
-  return context;
-};
