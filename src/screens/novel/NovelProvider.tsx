@@ -25,25 +25,25 @@ export function NovelProvider({
 
   return (
     <HeightContextProvider>
-      <NovelStateContextProvider novelParams={RouteNovelParams}>
-        <NovelChaptersContextProvider>
-          <NovelChapterCacheContextProvider>
-            <NovelPageContextProvider>
-              <NovelLastReadContextProvider
-                path={RouteNovelParams.path}
-                pluginId={RouteNovelParams.pluginId}
-              >
-                <NovelSettingsContextProvider
+      <NovelPageContextProvider>
+        <NovelSettingsContextProvider
+          path={RouteNovelParams.path}
+          pluginId={RouteNovelParams.pluginId}
+        >
+          <NovelStateContextProvider novelParams={RouteNovelParams}>
+            <NovelChaptersContextProvider>
+              <NovelChapterCacheContextProvider>
+                <NovelLastReadContextProvider
                   path={RouteNovelParams.path}
                   pluginId={RouteNovelParams.pluginId}
                 >
                   {children}
-                </NovelSettingsContextProvider>
-              </NovelLastReadContextProvider>
-            </NovelPageContextProvider>
-          </NovelChapterCacheContextProvider>
-        </NovelChaptersContextProvider>
-      </NovelStateContextProvider>
+                </NovelLastReadContextProvider>
+              </NovelChapterCacheContextProvider>
+            </NovelChaptersContextProvider>
+          </NovelStateContextProvider>
+        </NovelSettingsContextProvider>
+      </NovelPageContextProvider>
     </HeightContextProvider>
   );
 }

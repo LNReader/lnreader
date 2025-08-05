@@ -7,7 +7,7 @@ const useNovelPages = () => {
   const novelPage = useContext(NovelPageContext);
   if (!novelPage) {
     throw new Error(
-      'useNovelState must be used within NovelPageContextProvider',
+      'useNovelPages must be used within NovelPageContextProvider',
     );
   }
   const { pages, setPages, pageIndex, setPageIndex } = novelPage;

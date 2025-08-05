@@ -1,8 +1,23 @@
+import {
+  getChapterCount,
+  getPageChaptersBatched,
+  insertChapters,
+  getPageChapters as _getPageChapters,
+} from '@database/queries/ChapterQueries';
 import { ChapterInfo } from '@database/types';
+import { useNovelPages, useNovelSettings } from '@hooks/persisted';
 import useNovelState from '@hooks/persisted/novel/useNovelState';
+import { fetchPage } from '@services/plugin/fetch';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
+import { showToast } from '@utils/showToast';
 import dayjs from 'dayjs';
-import { createContext, useCallback, useMemo, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 // ChapterStateContext.tsx
 interface ChapterState {
@@ -17,7 +32,7 @@ interface ChapterState {
 
 interface ChapterActions {
   setChapters: (chapters: ChapterInfo[]) => void;
-  _setChapters: (chapters: ChapterInfo[]) => void;
+  getChapters: () => Promise<void>;
 
   extendChapters: (chapters: ChapterInfo[]) => void;
   mutateChapters: (mutation: (chs: ChapterInfo[]) => ChapterInfo[]) => void;
@@ -35,9 +50,11 @@ export function NovelChaptersContextProvider({
 }: {
   children: React.JSX.Element;
 }) {
-  const { novel } = useNovelState();
+  const { novel, loading, path, pluginId } = useNovelState();
+  const { novelSettings } = useNovelSettings();
+  const { page: currentPage } = useNovelPages();
   const [chapters, _setChapters] = useState<ChapterInfo[]>([]);
-  const [fetching, setFetching] = useState(true);
+  const [fetching, setFetching] = useState(false);
   const [batchInformation, setBatchInformation] = useState<{
     batch: number;
     total: number;
@@ -100,13 +117,84 @@ export function NovelChaptersContextProvider({
     [transformChapters],
   );
 
+  const getChapters = useCallback(async () => {
+    if (!loading) {
+      let newChapters: ChapterInfo[] = [];
+
+      const config = [
+        novel.id,
+        novelSettings.sort,
+        novelSettings.filter,
+        currentPage,
+      ] as const;
+
+      let chapterCount = getChapterCount(novel.id, currentPage);
+
+      if (chapterCount) {
+        try {
+          newChapters = getPageChaptersBatched(...config) || [];
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error('teaser', error);
+        }
+      }
+      // Fetch next page if no chapters
+      else if (Number(currentPage)) {
+        _setChapters([]);
+        const sourcePage = await fetchPage(pluginId, path, currentPage);
+        const sourceChapters = sourcePage.chapters.map(ch => {
+          return {
+            ...ch,
+            page: currentPage,
+          };
+        });
+        await insertChapters(novel.id, sourceChapters);
+        newChapters = await _getPageChapters(...config);
+        chapterCount = getChapterCount(novel.id, currentPage);
+      }
+
+      setBatchInformation({
+        batch: 0,
+        total: Math.floor(chapterCount / 300),
+        totalChapters: chapterCount,
+      });
+      setChapters(newChapters);
+    }
+  }, [
+    loading,
+    novel.id,
+    novelSettings.sort,
+    novelSettings.filter,
+    currentPage,
+    setBatchInformation,
+    setChapters,
+    _setChapters,
+    pluginId,
+    path,
+  ]);
+
+  useEffect(() => {
+    if (loading) return;
+
+    getChapters()
+      .catch(e => {
+        // eslint-disable-next-line no-console
+        if (__DEV__) console.error(e);
+
+        showToast(e.message);
+      })
+      .finally(() => {
+        setFetching(false);
+      });
+  }, [getChapters, loading]);
+
   const contextValue = useMemo(
     () => ({
       chapters,
       fetching,
       batchInformation,
       setChapters,
-      _setChapters,
+      getChapters,
       extendChapters,
       mutateChapters,
       updateChapter,
@@ -118,6 +206,7 @@ export function NovelChaptersContextProvider({
       chapters,
       extendChapters,
       fetching,
+      getChapters,
       mutateChapters,
       setChapters,
       updateChapter,

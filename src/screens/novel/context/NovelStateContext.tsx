@@ -1,7 +1,20 @@
+import {
+  getNovelByPath,
+  insertNovelAndChapters,
+} from '@database/queries/NovelQueries';
 import { NovelInfo } from '@database/types';
+import { useNovelPages } from '@hooks/persisted';
 import { ReaderStackParamList } from '@navigators/types';
 import { RouteProp } from '@react-navigation/native';
-import { createContext, useMemo, useState } from 'react';
+import { fetchNovel } from '@services/plugin/fetch';
+import { getString } from '@strings/translations';
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 type Route = RouteProp<ReaderStackParamList, 'Novel'>;
 type Params = Route['params'];
@@ -29,6 +42,7 @@ interface NovelState {
 interface NovelActions {
   setNovel: (novel: NovelInfo) => void;
   setLoading: (loading: boolean) => void;
+  getNovel: () => Promise<void>;
 }
 
 export const NovelStateContext = createContext<
@@ -42,6 +56,7 @@ export function NovelStateContextProvider({
   children: React.JSX.Element;
   novelParams: Route['params'];
 }) {
+  const { calculatePages } = useNovelPages();
   const routeNovel: RouteNovel = useMemo(
     () => ({
       inLibrary: false,
@@ -55,6 +70,34 @@ export function NovelStateContextProvider({
 
   const [novel, setNovel] = useState<NovelInfo | RouteNovel>(routeNovel);
   const [loading, setLoading] = useState(true);
+  const path = routeNovel.path;
+  const pluginId = routeNovel.pluginId;
+
+  const getNovel = useCallback(async () => {
+    let tmpNovel = getNovelByPath(path, pluginId);
+    if (!tmpNovel) {
+      const sourceNovel = await fetchNovel(pluginId, path).catch(() => {
+        throw new Error(getString('updatesScreen.unableToGetNovel'));
+      });
+
+      await insertNovelAndChapters(pluginId, sourceNovel);
+      tmpNovel = getNovelByPath(path, pluginId);
+
+      if (!tmpNovel) {
+        return;
+      }
+    }
+    calculatePages(tmpNovel, true);
+
+    setNovel(tmpNovel);
+  }, [calculatePages, path, pluginId, setNovel]);
+
+  useEffect(() => {
+    getNovel().finally(() => {
+      setLoading(false);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const contextValue = useMemo(
     () =>
@@ -65,8 +108,9 @@ export function NovelStateContextProvider({
         pluginId: novelParams.pluginId,
         setNovel,
         setLoading,
+        getNovel,
       } as (NovelState & NovelActions) | (NovelStateLoading & NovelActions)),
-    [loading, novel, novelParams.path, novelParams.pluginId],
+    [getNovel, loading, novel, novelParams.path, novelParams.pluginId],
   );
 
   return (

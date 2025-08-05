@@ -1,21 +1,15 @@
 import { useLibraryContext } from '@components/Context/LibraryContext';
-import {
-  getNovelByPath,
-  insertNovelAndChapters,
-  pickCustomNovelCover,
-} from '@database/queries/NovelQueries';
+import { pickCustomNovelCover } from '@database/queries/NovelQueries';
 import { downloadFile } from '@plugins/helpers/fetch';
 import FileManager from '@specs/NativeFile';
 import {
   NovelStateContext,
   RouteNovel,
 } from '@screens/novel/context/NovelStateContext';
-import { fetchNovel } from '@services/plugin/fetch';
 import { getString } from '@strings/translations';
 import { showToast } from '@utils/showToast';
 import { StorageAccessFramework } from 'expo-file-system';
-import { useCallback, useContext, useEffect, useMemo } from 'react';
-import useNovelPages from './useNovelPages';
+import { useCallback, useContext, useMemo } from 'react';
 import { NovelInfo } from '@database/types';
 
 type NovelState = {
@@ -39,28 +33,9 @@ const useNovelState = (): NovelState => {
     );
   }
 
-  const { novel, setNovel, path, pluginId, loading, setLoading } = novelState;
-  const { calculatePages } = useNovelPages();
+  const { novel, setNovel, path, pluginId, loading, getNovel } = novelState;
+
   const { switchNovelToLibrary } = useLibraryContext();
-
-  const getNovel = useCallback(async () => {
-    let tmpNovel = getNovelByPath(path, pluginId);
-    if (!tmpNovel) {
-      const sourceNovel = await fetchNovel(pluginId, path).catch(() => {
-        throw new Error(getString('updatesScreen.unableToGetNovel'));
-      });
-
-      await insertNovelAndChapters(pluginId, sourceNovel);
-      tmpNovel = getNovelByPath(path, pluginId);
-
-      if (!tmpNovel) {
-        return;
-      }
-    }
-    calculatePages(tmpNovel, true);
-
-    setNovel(tmpNovel);
-  }, [calculatePages, path, pluginId, setNovel]);
 
   const followNovel = useCallback(() => {
     switchNovelToLibrary(path, pluginId).then(() => {
@@ -138,16 +113,6 @@ const useNovelState = (): NovelState => {
       }
     }
   }, [novel]);
-
-  useEffect(() => {
-    if (novel) {
-      setLoading(false);
-    } else {
-      getNovel().finally(() => {
-        setLoading(false);
-      });
-    }
-  }, [getNovel, novel, setLoading]);
 
   const result = useMemo(
     () => ({
