@@ -6,6 +6,8 @@ import { NovelChaptersContextProvider } from './context/NovelChaptersContext';
 import { NovelPageContextProvider } from './context/NovelPageContext';
 import { NovelSettingsContextProvider } from './context/NovelSettingsContext';
 import { NovelLastReadContextProvider } from './context/NovelLastReadContext';
+import { HeightContextProvider } from './context/HeightsContext';
+import { NovelChapterCacheContextProvider } from './context/NovelChapterCacheContext';
 
 export function NovelProvider({
   children,
@@ -22,22 +24,26 @@ export function NovelProvider({
     'novel' in route.params ? route.params.novel : route.params;
 
   return (
-    <NovelStateContextProvider novelParams={RouteNovelParams}>
-      <NovelChaptersContextProvider>
-        <NovelPageContextProvider>
-          <NovelLastReadContextProvider
-            path={RouteNovelParams.path}
-            pluginId={RouteNovelParams.pluginId}
-          >
-            <NovelSettingsContextProvider
-              path={RouteNovelParams.path}
-              pluginId={RouteNovelParams.pluginId}
-            >
-              {children}
-            </NovelSettingsContextProvider>
-          </NovelLastReadContextProvider>
-        </NovelPageContextProvider>
-      </NovelChaptersContextProvider>
-    </NovelStateContextProvider>
+    <HeightContextProvider>
+      <NovelStateContextProvider novelParams={RouteNovelParams}>
+        <NovelChaptersContextProvider>
+          <NovelChapterCacheContextProvider>
+            <NovelPageContextProvider>
+              <NovelLastReadContextProvider
+                path={RouteNovelParams.path}
+                pluginId={RouteNovelParams.pluginId}
+              >
+                <NovelSettingsContextProvider
+                  path={RouteNovelParams.path}
+                  pluginId={RouteNovelParams.pluginId}
+                >
+                  {children}
+                </NovelSettingsContextProvider>
+              </NovelLastReadContextProvider>
+            </NovelPageContextProvider>
+          </NovelChapterCacheContextProvider>
+        </NovelChaptersContextProvider>
+      </NovelStateContextProvider>
+    </HeightContextProvider>
   );
 }
