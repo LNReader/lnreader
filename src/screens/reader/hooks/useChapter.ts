@@ -120,8 +120,8 @@ export default function useChapter(
         const cachedText = chapterTextCache.get(chap.id);
         const text = cachedText ?? loadChapterText(chap.id, chap.path);
         const [nextChap, prevChap, awaitedText] = await Promise.all([
-          getNextChapter(chap.novelId, chap.position!, chap.page),
-          getPrevChapter(chap.novelId, chap.position!, chap.page),
+          getNextChapter(chap.novelId, chap.position!, chap.page, novel.name),
+          getPrevChapter(chap.novelId, chap.position!, chap.page, novel.name),
           text,
         ]);
         if (nextChap && !chapterTextCache.get(nextChap.id)) {
@@ -252,15 +252,19 @@ export default function useChapter(
   useEffect(() => {
     if (!incognitoMode) {
       insertHistory(chapter.id);
-      getDbChapter(chapter.id).then(result => result && setLastRead(result));
+      getDbChapter(chapter.id, novel.name).then(
+        result => result && setLastRead(result),
+      );
     }
 
     return () => {
       if (!incognitoMode) {
-        getDbChapter(chapter.id).then(result => result && setLastRead(result));
+        getDbChapter(chapter.id, novel.name).then(
+          result => result && setLastRead(result),
+        );
       }
     };
-  }, [incognitoMode, setLastRead, setLoading, chapter.id]);
+  }, [incognitoMode, setLastRead, setLoading, chapter.id, novel.name]);
 
   useEffect(() => {
     if (!chapter || !chapterText) {

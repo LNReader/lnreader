@@ -37,7 +37,6 @@ const useNovelChapters = () => {
     updateChapter,
     extendChapters,
     mutateChapters,
-    setBatchInformation,
   } = NovelChapters;
   const { novel, loading } = useNovelState();
   const { pages, pageIndex, page } = useNovelPages();
@@ -53,6 +52,7 @@ const useNovelChapters = () => {
         newChapters =
           getPageChaptersBatched(
             novel.id,
+            novel.name,
             novelSettings.sort,
             novelSettings.filter,
             page,
@@ -61,16 +61,15 @@ const useNovelChapters = () => {
       } catch (error) {
         console.error('teaser', error);
       }
-      setBatchInformation({ ...batchInformation, batch: nextBatch });
-      extendChapters(newChapters);
+      extendChapters(newChapters, { ...batchInformation, batch: nextBatch });
     }
   }, [
     batchInformation,
     loading,
     page,
-    setBatchInformation,
     extendChapters,
     novel.id,
+    novel.name,
     novelSettings.sort,
     novelSettings.filter,
   ]);
@@ -207,7 +206,7 @@ const useNovelChapters = () => {
   // #region refresh and delete
 
   const deleteChapter = useCallback(
-    (_chapter: ChapterInfo) => {
+    async (_chapter: ChapterInfo) => {
       if (!loading) {
         _deleteChapter(novel.pluginId, novel.id, _chapter.id).then(() => {
           mutateChapters(chs =>
@@ -258,17 +257,19 @@ const useNovelChapters = () => {
     if (!loading && !fetching) {
       _getPageChapters(
         novel.id,
+        novel.name,
         novelSettings.sort,
         novelSettings.filter,
         currentPage,
       ).then(chs => {
-        setChapters(chs);
+        setChapters(chs, { ...batchInformation });
       });
     }
   }, [
     loading,
     fetching,
     novel.id,
+    novel.name,
     novelSettings.sort,
     novelSettings.filter,
     currentPage,

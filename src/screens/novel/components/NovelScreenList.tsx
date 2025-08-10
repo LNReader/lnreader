@@ -2,7 +2,7 @@ import * as React from 'react';
 import ChapterItem from './ChapterItem';
 import NovelInfoHeader from './Info/NovelInfoHeader';
 import { useRef, useState, useCallback, useMemo } from 'react';
-import { ChapterInfo, NovelInfo } from '@database/types';
+import { ChapterInfo } from '@database/types';
 import { useBoolean } from '@hooks/index';
 import {
   useAppSettings,
@@ -67,7 +67,7 @@ const NovelScreenList = ({
   setSelected,
   getNextChapterBatch,
 }: NovelScreenListProps) => {
-  const { getNovel, novel: fetchedNovel, loading } = useNovelState();
+  const { getNovel, novel, loading } = useNovelState();
   const { chapters, deleteChapter, fetching, batchInformation, updateChapter } =
     useNovelChapters();
   const { novelSettings, sortAndFilterChapters, setShowChapterTitles } =
@@ -76,19 +76,6 @@ const NovelScreenList = ({
 
   const { pluginId } = routeBaseNovel;
 
-  // Memoize route novel to prevent recreation on every render
-  const routeNovel: Omit<NovelInfo, 'id'> & { id: 'NO_ID' } = useMemo(
-    () => ({
-      inLibrary: false,
-      isLocal: false,
-      totalPages: 0,
-      ...routeBaseNovel,
-      id: 'NO_ID',
-    }),
-    [routeBaseNovel],
-  );
-
-  const novel = fetchedNovel ?? routeNovel;
   const [updating, setUpdating] = useState(false);
 
   const {
@@ -116,7 +103,6 @@ const NovelScreenList = ({
   const trackerSheetRef = useRef<BottomSheetModalMethods>(null);
 
   const deleteDownloadsSnackbar = useBoolean();
-
   // Memoize selected chapter IDs for faster lookup
   const selectedIds = useMemo(
     () => new Set(selected.map(chapter => chapter.id)),
@@ -381,7 +367,7 @@ const NovelScreenList = ({
         onEndReached={getNextChapterBatch}
         onEndReachedThreshold={6}
         onScroll={onPageScroll}
-        drawDistance={1000}
+        drawDistance={400}
         ListHeaderComponent={renderHeader}
       />
       {novel.id !== 'NO_ID' && (

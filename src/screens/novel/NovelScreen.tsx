@@ -183,7 +183,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   const renderDrawerContent = useCallback(() => {
     if (loading) {
-      return <NovelScreenLoading theme={theme} />;
+      return null;
     }
     if ((novel?.totalPages ?? 0) > 1 || pages.length > 1) {
       return (
@@ -257,7 +257,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
             )}
           </Portal>
           <SafeAreaView excludeTop>
-            <Suspense fallback={<NovelScreenLoading theme={theme} />}>
+            {/* <Suspense fallback={<NovelScreenLoading theme={theme} />}> */}
+            <Suspense fallback={<></>}>
               <NovelScreenList
                 headerOpacity={headerOpacity}
                 listRef={chapterListRef}

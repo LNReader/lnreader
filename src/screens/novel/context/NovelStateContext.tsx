@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
   getNovelByPath,
   insertNovelAndChapters,
@@ -8,13 +9,7 @@ import { ReaderStackParamList } from '@navigators/types';
 import { RouteProp } from '@react-navigation/native';
 import { fetchNovel } from '@services/plugin/fetch';
 import { getString } from '@strings/translations';
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, useCallback, useMemo, useState } from 'react';
 
 type Route = RouteProp<ReaderStackParamList, 'Novel'>;
 type Params = Route['params'];
@@ -42,7 +37,7 @@ interface NovelState {
 interface NovelActions {
   setNovel: (novel: NovelInfo) => void;
   setLoading: (loading: boolean) => void;
-  getNovel: () => Promise<void>;
+  getNovel: () => Promise<NovelInfo | undefined>;
 }
 
 export const NovelStateContext = createContext<
@@ -56,6 +51,8 @@ export function NovelStateContextProvider({
   children: React.JSX.Element;
   novelParams: Route['params'];
 }) {
+  const t = Date.now() - 1754470000000;
+  console.time('NovelStateContextProvider ' + t);
   const { calculatePages } = useNovelPages();
   const routeNovel: RouteNovel = useMemo(
     () => ({
@@ -74,6 +71,8 @@ export function NovelStateContextProvider({
   const pluginId = routeNovel.pluginId;
 
   const getNovel = useCallback(async () => {
+    const t = Date.now() - 1754470000000;
+    console.time('getNovel ' + t);
     let tmpNovel = getNovelByPath(path, pluginId);
     if (!tmpNovel) {
       const sourceNovel = await fetchNovel(pluginId, path).catch(() => {
@@ -90,14 +89,10 @@ export function NovelStateContextProvider({
     calculatePages(tmpNovel, true);
 
     setNovel(tmpNovel);
-  }, [calculatePages, path, pluginId, setNovel]);
-
-  useEffect(() => {
-    getNovel().finally(() => {
-      setLoading(false);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    setLoading(false);
+    console.timeEnd('getNovel ' + t);
+    return tmpNovel;
+  }, [calculatePages, path, pluginId]);
 
   const contextValue = useMemo(
     () =>
@@ -112,7 +107,7 @@ export function NovelStateContextProvider({
       } as (NovelState & NovelActions) | (NovelStateLoading & NovelActions)),
     [getNovel, loading, novel, novelParams.path, novelParams.pluginId],
   );
-
+  console.timeEnd('NovelStateContextProvider ' + t);
   return (
     <NovelStateContext.Provider value={contextValue}>
       {children}
