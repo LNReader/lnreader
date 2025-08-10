@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
 import { Category } from '@database/types';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import AddCategoryModal from './AddCategoryModal';
 import { useBoolean } from '@hooks';
 import { overlay, Portal } from 'react-native-paper';

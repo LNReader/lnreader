@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { Appbar, List, SafeAreaView } from '@components';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 
 import { getString } from '@strings/translations';
 import { SettingsScreenProps, SettingsStackParamList } from '@navigators/types';

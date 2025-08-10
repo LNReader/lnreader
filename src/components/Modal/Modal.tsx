@@ -1,5 +1,5 @@
 import SafeAreaView from '@components/SafeAreaView/SafeAreaView';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { ModalProps, overlay, Modal as PaperModal } from 'react-native-paper';

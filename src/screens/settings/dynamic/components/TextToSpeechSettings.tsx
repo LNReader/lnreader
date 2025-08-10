@@ -1,14 +1,17 @@
 import { IconButtonV2, List } from '@components';
-import { useTheme } from '@hooks/persisted';
-import React, { useCallback, useEffect, useState } from 'react';
-import VoicePickerModal from '../modals/VoicePickerModal';
+import {
+  useChapterGeneralSettings,
+  useChapterReaderSettings,
+} from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
+import React, { useEffect, useState } from 'react';
+import VoicePickerModal from '../Modals/VoicePickerModal';
 import { useBoolean } from '@hooks';
 import { Portal } from 'react-native-paper';
 import { StyleSheet, View, Text } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { getAvailableVoicesAsync, Voice } from 'expo-speech';
-import SettingSwitchV2 from './SettingSwitchV2';
-import { useSettingsContext } from '@components/Context/SettingsContext';
+import Switch from '@components/Switch/Switch';
 
 export default function TextToSpeechSettings() {
   const theme = useTheme();
@@ -20,49 +23,42 @@ export default function TextToSpeechSettings() {
     });
   }, []);
 
-  const {
-    TTSEnable,
-    tts,
-    setSettings: setChapterReaderSettings,
-  } = useSettingsContext();
+  const { tts, setChapterReaderSettings } = useChapterReaderSettings();
+  const { TTSEnable = true, setChapterGeneralSettings } =
+    useChapterGeneralSettings();
   const {
     value: voiceModalVisible,
     setTrue: showVoiceModal,
     setFalse: hideVoiceModal,
   } = useBoolean();
-
-  const EndOfLine = useCallback(() => {
-    return (
-      <IconButtonV2
-        name="reload"
-        theme={theme}
-        color={theme.primary}
-        style={styles.marginLeft}
-        onPress={() => {
-          setChapterReaderSettings({
-            tts: {
-              pitch: 1,
-              rate: 1,
-              voice: { name: 'System', language: 'System' } as Voice,
-            },
-          });
-        }}
-      />
-    );
-  }, [setChapterReaderSettings, theme]);
-
   return (
     <>
       <View style={styles.row}>
-        <SettingSwitchV2
-          setting={{
-            valueKey: 'TTSEnable',
-            title: 'Text to Speech',
-            type: 'Switch',
-          }}
-          theme={theme}
-          endOfLine={EndOfLine}
-        />
+        <List.SubHeader theme={theme}>Text to Speech</List.SubHeader>
+        <View style={styles.row}>
+          <Switch
+            value={TTSEnable}
+            onValueChange={() => {
+              setChapterGeneralSettings({
+                TTSEnable: !TTSEnable,
+              });
+            }}
+          />
+          <IconButtonV2
+            name="reload"
+            theme={theme}
+            color={theme.primary}
+            onPress={() => {
+              setChapterReaderSettings({
+                tts: {
+                  pitch: 1,
+                  rate: 1,
+                  voice: { name: 'System', language: 'System' } as Voice,
+                },
+              });
+            }}
+          />
+        </View>
       </View>
       {TTSEnable ? (
         <>
@@ -121,23 +117,18 @@ export default function TextToSpeechSettings() {
 }
 
 const styles = StyleSheet.create({
+  label: {
+    fontSize: 16,
+    textAlign: 'center',
+  },
   row: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  label: {
-    textAlign: 'center',
-    fontSize: 16,
   },
   slider: {
     flex: 1,
     height: 40,
   },
-  height: {
-    height: 16,
-  },
-  marginLeft: {
-    marginLeft: 6,
-  },
+  height: { height: 16 },
 });

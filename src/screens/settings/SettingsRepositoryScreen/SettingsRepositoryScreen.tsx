@@ -12,7 +12,8 @@ import {
 } from '@database/queries/RepositoryQueries';
 import { Repository } from '@database/types';
 import { useBackHandler, useBoolean } from '@hooks/index';
-import { usePlugins, useTheme } from '@hooks/persisted';
+import { usePlugins } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { getString } from '@strings/translations';
 
 import AddRepositoryModal from '../dynamic/modals/AddRepositoryModal';

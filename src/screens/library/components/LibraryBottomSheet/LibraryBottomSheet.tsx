@@ -15,13 +15,16 @@ import {
 } from 'react-native-tab-view';
 import color from 'color';
 
-import { useTheme } from '@hooks/persisted';
+import { useLibrarySettings } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { getString } from '@strings/translations';
 import { Checkbox, SortItem } from '@components/Checkbox/Checkbox';
 import {
+  DisplayModes,
   displayModesList,
   LibraryFilter,
   libraryFilterList,
+  LibrarySortOrder,
   librarySortOrderList,
 } from '@screens/library/constants/constants';
 import { RadioButton } from '@components/RadioButton/RadioButton';
@@ -31,7 +34,6 @@ import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { FlashList } from '@shopify/flash-list';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface LibraryBottomSheetProps {
   bottomSheetRef: RefObject<BottomSheetModalMethods | null>;
@@ -42,9 +44,9 @@ const FirstRoute = () => {
   const theme = useTheme();
   const {
     filter,
-    setSettings: setLibrarySettings,
-    downloadedOnlyMode,
-  } = useSettingsContext();
+    setLibrarySettings,
+    downloadedOnlyMode = false,
+  } = useLibrarySettings();
 
   return (
     <View style={styles.flex}>
@@ -73,7 +75,8 @@ const FirstRoute = () => {
 
 const SecondRoute = () => {
   const theme = useTheme();
-  const { sortOrder, setSettings: setLibrarySettings } = useSettingsContext();
+  const { sortOrder = LibrarySortOrder.DateAdded_DESC, setLibrarySettings } =
+    useLibrarySettings();
 
   return (
     <View style={styles.flex}>
@@ -106,12 +109,12 @@ const SecondRoute = () => {
 const ThirdRoute = () => {
   const theme = useTheme();
   const {
-    showDownloadBadges,
-    showNumberOfNovels,
-    showUnreadBadges,
-    displayMode,
-    setSettings: setLibrarySettings,
-  } = useSettingsContext();
+    showDownloadBadges = true,
+    showNumberOfNovels = false,
+    showUnreadBadges = true,
+    displayMode = DisplayModes.Comfortable,
+    setLibrarySettings,
+  } = useLibrarySettings();
 
   return (
     <View style={styles.flex}>

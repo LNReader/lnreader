@@ -8,7 +8,7 @@ import AddCategoryModal from './components/AddCategoryModal';
 
 import { updateCategoryOrderInDb } from '@database/queries/CategoryQueries';
 import { useBoolean } from '@hooks';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { getString } from '@strings/translations';
 
 import CategoryCard from './components/CategoryCard';

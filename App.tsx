@@ -14,6 +14,8 @@ import * as Notifications from 'expo-notifications';
 
 import { createTables } from '@database/db';
 import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
+import { ThemeContextProvider } from '@providers/ThemeProvider';
+import { RootStackParamList } from '@navigators/types';
 
 import Main from './src/navigators/Main';
 
@@ -47,7 +49,7 @@ createTables();
 LottieSplashScreen.hide();
 
 const App = () => {
-  const navigationRef = useRef<NavigationContainerRef<any>>(null);
+  const navigationRef = useRef<NavigationContainerRef<RootStackParamList>>(null);
 
   // Enable React Navigation DevTools in development
   useReactNavigationDevTools({ ref: navigationRef });
@@ -59,17 +61,18 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={styles.flex}>
-      <AppErrorBoundary>
-        <SafeAreaProvider>
-          <PaperProvider>
-            <BottomSheetModalProvider>
-              <StatusBar translucent={true} backgroundColor="transparent" />
-              {/* @ts-ignore */}
-              <Main ref={navigationRef} />
-            </BottomSheetModalProvider>
-          </PaperProvider>
-        </SafeAreaProvider>
-      </AppErrorBoundary>
+      <ThemeContextProvider>
+        <AppErrorBoundary>
+          <SafeAreaProvider>
+            <PaperProvider>
+              <BottomSheetModalProvider>
+                <StatusBar translucent={true} backgroundColor="transparent" />
+                <Main ref={navigationRef} />
+              </BottomSheetModalProvider>
+            </PaperProvider>
+          </SafeAreaProvider>
+        </AppErrorBoundary>
+      </ThemeContextProvider>
     </GestureHandlerRootView>
   );
 };

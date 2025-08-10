@@ -9,7 +9,7 @@ import { getString } from '@strings/translations';
 import { Button, Modal, SwitchItem } from '@components';
 
 import { Portal, Text } from 'react-native-paper';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { ChapterInfo } from '@database/types';
 import { NovelScreenProps } from '@navigators/types';
 import { FlashList, FlashListRef, ListRenderItem } from '@shopify/flash-list';

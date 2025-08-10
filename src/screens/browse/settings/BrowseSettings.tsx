@@ -2,13 +2,13 @@ import { FlatList, StyleSheet } from 'react-native';
 import React from 'react';
 import { Appbar, List, SwitchItem } from '@components';
 
-import { usePlugins, useTheme } from '@hooks/persisted/index';
+import { useBrowseSettings, usePlugins } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { getString } from '@strings/translations';
 import { getLocaleLanguageName, languages } from '@utils/constants/languages';
 import { BrowseSettingsScreenProp } from '@navigators/types/index';
 import { useBoolean } from '@hooks';
 import ConcurrentSearchesModal from '@screens/browse/settings/modals/ConcurrentSearchesModal';
-import { useSettingsContext } from '@components/Context/SettingsContext';
 
 const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
   const theme = useTheme();
@@ -19,8 +19,8 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
     showMyAnimeList,
     showAniList,
     globalSearchConcurrency,
-    setSettings: setBrowseSettings,
-  } = useSettingsContext();
+    setBrowseSettings,
+  } = useBrowseSettings();
 
   const globalSearchConcurrencyModal = useBoolean();
 

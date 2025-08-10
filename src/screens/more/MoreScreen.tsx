@@ -5,12 +5,12 @@ import { getString } from '@strings/translations';
 import { List, SafeAreaView } from '@components';
 
 import { MoreHeader } from './components/MoreHeader';
-import { useTheme } from '@hooks/persisted';
+import { useLibrarySettings } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { MoreStackScreenProps } from '@navigators/types';
 import Switch from '@components/Switch/Switch';
 import { useMMKVObject } from 'react-native-mmkv';
 import ServiceManager, { BackgroundTask } from '@services/ServiceManager';
-import { useSettingsContext } from '@components/Context/SettingsContext';
 
 const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
   const theme = useTheme();
@@ -18,10 +18,10 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
     ServiceManager.manager.STORE_KEY,
   );
   const {
-    incognitoMode,
-    downloadedOnlyMode,
-    setSettings: setLibrarySettings,
-  } = useSettingsContext();
+    incognitoMode = false,
+    downloadedOnlyMode = false,
+    setLibrarySettings,
+  } = useLibrarySettings();
 
   const enableDownloadedOnlyMode = () =>
     setLibrarySettings({ downloadedOnlyMode: !downloadedOnlyMode });

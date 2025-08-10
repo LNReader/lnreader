@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import {
-  createBottomTabNavigator,
   BottomTabBarProps,
+  createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 
 import Library from '../screens/library/LibraryScreen';
@@ -11,21 +11,24 @@ import Browse from '../screens/browse/BrowseScreen';
 import More from '../screens/more/MoreScreen';
 
 import { getString } from '@strings/translations';
-import { usePlugins, useTheme } from '@hooks/persisted';
+import { useAppSettings, usePlugins } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { BottomNavigatorParamList } from './types';
 import Icon from '@react-native-vector-icons/material-design-icons';
 import { MaterialDesignIconName } from '@type/icon';
-import { useSettingsContext } from '@components/Context/SettingsContext';
-import { Easing } from 'react-native';
-import { CustomBottomTabBar } from '@components';
+import { CommonActions } from '@react-navigation/native';
+import { BottomNavigation } from 'react-native-paper';
 
 const Tab = createBottomTabNavigator<BottomNavigatorParamList>();
 
 const BottomNavigator = () => {
   const theme = useTheme();
 
-  const { showHistoryTab, showUpdatesTab, showLabelsInNav } =
-    useSettingsContext();
+  const {
+    showHistoryTab = true,
+    showUpdatesTab = true,
+    showLabelsInNav = false,
+  } = useAppSettings();
 
   const { filteredInstalledPlugins } = usePlugins();
   const pluginsWithUpdate = useMemo(
@@ -63,14 +66,48 @@ const BottomNavigator = () => {
 
   const renderBottomBar = useCallback(
     ({ navigation, state, descriptors, insets }: BottomTabBarProps) => (
-      <CustomBottomTabBar
-        navigation={navigation}
-        state={state}
-        descriptors={descriptors}
-        insets={insets}
-        theme={theme}
-        showLabelsInNav={showLabelsInNav}
+      <BottomNavigation.Bar
+        theme={{ colors: theme }}
+        style={{
+          backgroundColor: theme.surface2,
+        }}
+        navigationState={state}
+        safeAreaInsets={insets}
+        onTabPress={({ route, preventDefault }) => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (event.defaultPrevented) {
+            preventDefault();
+          } else {
+            navigation.dispatch({
+              ...CommonActions.navigate(route.name, route.params),
+              target: state.key,
+            });
+          }
+        }}
         renderIcon={renderIcon}
+        getLabelText={({ route }) => {
+          if (
+            !showLabelsInNav &&
+            route.name !== state.routeNames[state.index]
+          ) {
+            return '';
+          }
+
+          const { options } = descriptors[route.key];
+          const label =
+            typeof options.tabBarLabel === 'string'
+              ? options.tabBarLabel
+              : typeof options.title === 'string'
+              ? options.title
+              : route.name;
+
+          return label;
+        }}
       />
     ),
     [renderIcon, showLabelsInNav, theme],
@@ -81,11 +118,7 @@ const BottomNavigator = () => {
       screenOptions={() => ({
         headerShown: false,
         animation: 'shift',
-        transitionSpec: {
-          animation: 'timing',
-          config: { duration: 100, easing: Easing.out(Easing.ease) },
-        },
-        // lazy: true,
+        lazy: true,
       })}
       tabBar={renderBottomBar}
     >

@@ -11,7 +11,8 @@ import {
 import { List } from 'react-native-paper';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import ChapterItem from '@screens/novel/components/ChapterItem';
-import { useDownload, useTheme, useUpdates } from '@hooks/persisted';
+import { useDownload, useUpdates } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { RootStackParamList } from '@navigators/types';
 import { FlatList } from 'react-native-gesture-handler';
 import { defaultCover } from '@plugins/helpers/constants';

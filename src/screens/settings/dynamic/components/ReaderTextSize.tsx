@@ -1,10 +1,10 @@
 import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 
-import { useTheme } from '@hooks/persisted';
+import { useChapterReaderSettings } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { IconButtonV2 } from '@components/index';
 import { getString } from '@strings/translations';
-import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface ReaderTextSizeProps {
   labelStyle?: TextStyle | TextStyle[];
@@ -12,8 +12,7 @@ interface ReaderTextSizeProps {
 
 const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({ labelStyle }) => {
   const theme = useTheme();
-  const { textSize, setSettings: setChapterReaderSettings } =
-    useSettingsContext();
+  const { textSize, setChapterReaderSettings } = useChapterReaderSettings();
 
   return (
     <View style={styles.container}>
@@ -47,18 +46,18 @@ const ReaderTextSize: React.FC<ReaderTextSizeProps> = ({ labelStyle }) => {
 export default ReaderTextSize;
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
+  buttonContainer: {
     alignItems: 'center',
+    flexDirection: 'row',
+  },
+  container: {
+    alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
     marginVertical: 6,
+    paddingHorizontal: 16,
   },
   value: {
     paddingHorizontal: 24,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 });

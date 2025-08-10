@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, Text, FlatListProps } from 'react-native';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 
 import ListView from '../../components/ListView';
 import { Appbar } from '@components';

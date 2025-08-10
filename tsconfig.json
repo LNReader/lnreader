@@ -1,10 +1,13 @@
 {
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"],
   "compilerOptions": {
     "baseUrl": ".",
     "noUnusedLocals": true,
-    "module": "ESNext",
-    "lib": ["ESNext", "DOM"],
-    "target": "ES2020",
+    "module": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "target": "ES2022",
     "paths": {
       "@components": ["src/components/index"],
       "@components/*": ["src/components/*"],
@@ -16,6 +19,7 @@
       "@theme/*": ["src/theme/*"],
       "@utils/*": ["src/utils/*"],
       "@plugins/*": ["src/plugins/*"],
+      "@providers/*": ["src/providers/*"],
       "@services/*": ["src/services/*"],
       "@navigators/*": ["src/navigators/*"],
       "@native/*": ["src/native/*"],
@@ -24,7 +28,5 @@
       "@specs/*": ["specs/*"]
     },
     "types": ["react-native"]
-  },
-  "exclude": ["node_modules", "babel.config.js", "metro.config.js"],
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  }
 }

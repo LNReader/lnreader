@@ -29,11 +29,11 @@ import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/typ
 import { UseBooleanReturnType } from '@hooks';
 import {
   useAppSettings,
-  useTheme,
   useNovelChapters,
   useNovelPages,
   useNovelState,
 } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { NovelStatus, PluginItem } from '@plugins/types';
 import { translateNovelStatus } from '@utils/translateEnum';
 import { getMMKVObject } from '@utils/mmkv/mmkv';

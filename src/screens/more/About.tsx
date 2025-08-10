@@ -5,7 +5,7 @@ import * as Linking from 'expo-linking';
 
 import { getString } from '@strings/translations';
 import { MoreHeader } from './components/MoreHeader';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { List, SafeAreaView } from '@components';
 import { AboutScreenProps } from '@navigators/types';
 import { GIT_HASH, RELEASE_DATE, BUILD_TYPE } from '@env';

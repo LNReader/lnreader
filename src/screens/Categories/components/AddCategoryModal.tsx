@@ -10,7 +10,7 @@ import {
   isCategoryNameDuplicate,
   updateCategory,
 } from '../../../database/queries/CategoryQueries';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 
 import { getString } from '@strings/translations';
 import { showToast } from '@utils/showToast';

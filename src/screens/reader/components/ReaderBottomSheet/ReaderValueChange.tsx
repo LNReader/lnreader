@@ -1,10 +1,10 @@
 import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 
-import { useTheme } from '@hooks/persisted';
+import { useChapterReaderSettings } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { IconButtonV2 } from '@components';
-import { DefaultSettings } from '@screens/settings/constants/defaultValues';
-import { useSettingsContext } from '@components/Context/SettingsContext';
+import { ChapterReaderSettings } from '@hooks/persisted/useSettings';
 
 type ValueKey<T extends object> = Exclude<
   {
@@ -17,7 +17,7 @@ interface ReaderValueChangeProps {
   labelStyle?: TextStyle | TextStyle[];
   valueChange?: number;
   label: string;
-  valueKey: ValueKey<DefaultSettings>;
+  valueKey: ValueKey<ChapterReaderSettings>;
   decimals?: number;
   min?: number;
   max?: number;
@@ -35,7 +35,7 @@ const ReaderValueChange: React.FC<ReaderValueChangeProps> = ({
   unit = '%',
 }) => {
   const theme = useTheme();
-  const { setSettings, ...settings } = useSettingsContext();
+  const { setChapterReaderSettings, ...settings } = useChapterReaderSettings();
 
   return (
     <View style={styles.container}>
@@ -49,7 +49,7 @@ const ReaderValueChange: React.FC<ReaderValueChangeProps> = ({
           size={26}
           disabled={settings[valueKey] <= min}
           onPress={() =>
-            setSettings({
+            setChapterReaderSettings({
               [valueKey]: Math.max(min, settings[valueKey] - valueChange),
             })
           }
@@ -64,7 +64,7 @@ const ReaderValueChange: React.FC<ReaderValueChangeProps> = ({
           size={26}
           disabled={settings[valueKey] >= max}
           onPress={() =>
-            setSettings({
+            setChapterReaderSettings({
               [valueKey]: Math.min(max, settings[valueKey] + valueChange),
             })
           }

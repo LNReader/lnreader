@@ -5,7 +5,7 @@ import { Portal, TextInput } from 'react-native-paper';
 import { Button, Modal } from '@components/index';
 
 import { Repository } from '@database/types';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 
 import { getString } from '@strings/translations';
 

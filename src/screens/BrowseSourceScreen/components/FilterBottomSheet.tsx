@@ -14,7 +14,7 @@ import {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import {
   FilterTypes,
   FilterToValues,

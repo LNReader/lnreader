@@ -8,7 +8,7 @@ import { IconButtonV2 } from '@components';
 
 import { defaultCover } from '@plugins/helpers/constants';
 import { getString } from '@strings/translations';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 
 import { History, NovelInfo } from '@database/types';
 import { HistoryScreenProps } from '@navigators/types';

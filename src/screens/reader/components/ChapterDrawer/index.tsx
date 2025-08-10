@@ -12,8 +12,8 @@ import {
   useNovelChapters,
   useNovelPages,
   useNovelSettings,
-  useTheme,
 } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';

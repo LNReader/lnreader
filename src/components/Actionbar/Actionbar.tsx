@@ -1,4 +1,4 @@
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 import React from 'react';
 import {
   Dimensions,

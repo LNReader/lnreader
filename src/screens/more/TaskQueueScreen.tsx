@@ -8,7 +8,7 @@ import {
   overlay,
 } from 'react-native-paper';
 
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/ThemeProvider';
 
 import { showToast } from '../../utils/showToast';
 import { getString } from '@strings/translations';
