@@ -207,7 +207,7 @@ export const getNovelChapters = (novelId: number) =>
     ),
   );
 
-export const getChapter = (chapterId: number, novelName: string) =>
+export const getChapter = (chapterId: number, novelName?: string) =>
   normaliseAsyncChapter(
     db.getFirstAsync<ChapterInfo>(
       'SELECT * FROM Chapter WHERE id = ?',

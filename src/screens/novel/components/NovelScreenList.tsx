@@ -260,7 +260,6 @@ const NovelScreenList = ({
     [selected, chapters, disableHapticFeedback, setSelected],
   );
 
-  // Memoize the renderItem function
   const renderItem = useCallback(
     ({ item, index }: { item: ChapterInfo; index: number }) => {
       if (novel.id === 'NO_ID') {
@@ -271,7 +270,6 @@ const NovelScreenList = ({
           isDownloading={downloadingIds.has(item.id)}
           isBookmarked={!!item.bookmark}
           isLocal={novel.isLocal}
-          theme={theme}
           chapter={item}
           showChapterTitles={showChapterTitles}
           deleteChapter={() => deleteChapter(item)}
@@ -290,7 +288,6 @@ const NovelScreenList = ({
     [
       novel,
       downloadingIds,
-      theme,
       showChapterTitles,
       isSelected,
       onSelectPress,
@@ -302,7 +299,6 @@ const NovelScreenList = ({
     ],
   );
 
-  // Optimize extraData to only include what actually affects rendering
   const extraData = useMemo(
     () => ({
       chaptersLength: chapters.length,

@@ -4,7 +4,7 @@ import ServiceManager, {
   DownloadChapterTask,
   QueuedBackgroundTask,
 } from '@services/ServiceManager';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useMMKVObject } from 'react-native-mmkv';
 
 export const DOWNLOAD_QUEUE = 'DOWNLOAD';
@@ -20,39 +20,45 @@ export default function useDownload() {
     [queue],
   ) as { task: DownloadChapterTask; meta: BackgroundTaskMetadata }[];
 
-  const downloadChapter = (novel: NovelInfo, chapter: ChapterInfo) =>
-    ServiceManager.manager.addTask({
-      name: 'DOWNLOAD_CHAPTER',
-      data: {
-        chapterId: chapter.id,
-        novelName: novel.name,
-        chapterName: chapter.name,
-      },
-    });
-  const downloadChapters = (novel: NovelInfo, chapters: ChapterInfo[]) =>
-    ServiceManager.manager.addTask(
-      chapters.map(chapter => ({
+  const downloadChapter = useCallback(
+    (novel: NovelInfo, chapter: ChapterInfo) =>
+      ServiceManager.manager.addTask({
         name: 'DOWNLOAD_CHAPTER',
         data: {
           chapterId: chapter.id,
           novelName: novel.name,
           chapterName: chapter.name,
         },
-      })),
-    );
-  const resumeDowndload = () => ServiceManager.manager.resume();
+      }),
+    [],
+  );
+  const downloadChapters = useCallback(
+    (novel: NovelInfo, chapters: ChapterInfo[]) =>
+      ServiceManager.manager.addTask(
+        chapters.map(chapter => ({
+          name: 'DOWNLOAD_CHAPTER',
+          data: {
+            chapterId: chapter.id,
+            novelName: novel.name,
+            chapterName: chapter.name,
+          },
+        })),
+      ),
+    [],
+  );
 
-  const pauseDownload = () => ServiceManager.manager.pause();
+  const hookContent = useMemo(
+    () => ({
+      downloadQueue,
+      downloadChapter,
+      downloadChapters,
+      resumeDowndload: () => ServiceManager.manager.resume(),
+      pauseDownload: () => ServiceManager.manager.pause(),
+      cancelDownload: () =>
+        ServiceManager.manager.removeTasksByName('DOWNLOAD_CHAPTER'),
+    }),
+    [downloadChapter, downloadChapters, downloadQueue],
+  );
 
-  const cancelDownload = () =>
-    ServiceManager.manager.removeTasksByName('DOWNLOAD_CHAPTER');
-
-  return {
-    downloadQueue,
-    resumeDowndload,
-    downloadChapter,
-    downloadChapters,
-    pauseDownload,
-    cancelDownload,
-  };
+  return hookContent;
 }

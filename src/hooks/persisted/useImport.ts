@@ -30,18 +30,18 @@ export default function useImport() {
       })),
     );
   }, []);
-  const resumeImport = () => ServiceManager.manager.resume();
 
-  const pauseImport = () => ServiceManager.manager.pause();
+  const hookContent = useMemo(
+    () => ({
+      importQueue,
+      importNovel,
+      resumeImport: () => ServiceManager.manager.resume(),
+      pauseImport: () => ServiceManager.manager.pause(),
+      cancelImport: () =>
+        ServiceManager.manager.removeTasksByName('IMPORT_EPUB'),
+    }),
+    [importNovel, importQueue],
+  );
 
-  const cancelImport = () =>
-    ServiceManager.manager.removeTasksByName('IMPORT_EPUB');
-
-  return {
-    importQueue,
-    importNovel,
-    resumeImport,
-    pauseImport,
-    cancelImport,
-  };
+  return hookContent;
 }

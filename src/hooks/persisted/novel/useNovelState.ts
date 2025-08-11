@@ -19,7 +19,7 @@ type NovelState = {
   followNovel: () => void;
   setCustomNovelCover: () => Promise<void>;
   saveNovelCover: () => Promise<void>;
-  getNovel: () => void;
+  getNovel: () => Promise<NovelInfo | undefined>;
 } & (
   | { novel: NovelInfo; loading: false }
   | { novel: RouteNovel; loading: true }

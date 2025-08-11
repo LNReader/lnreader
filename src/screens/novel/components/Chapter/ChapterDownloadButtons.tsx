@@ -1,18 +1,16 @@
-import React, { useEffect, useRef } from 'react';
-import { MD3ThemeType } from '@theme/types';
+import React, { memo, useMemo, useCallback, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
-
 import { Menu, overlay } from 'react-native-paper';
-import { getString } from '@strings/translations';
-import { isChapterDownloaded } from '@database/queries/ChapterQueries';
-import { useBoolean } from '@hooks/index';
-import { IconButtonV2 } from '@components';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 import Color from 'color';
+import { getString } from '@strings/translations';
+import type { MD3ThemeType } from '@theme/types';
+import { useTheme } from '@providers/ThemeProvider';
+import { IconButtonV2 } from '@components';
 
-interface DownloadButtonProps {
+interface Props {
   chapterId: number;
-  isDownloaded: boolean;
+  isDownloaded: boolean | undefined;
   isDownloading?: boolean;
   theme: MD3ThemeType;
   deleteChapter: () => void;
@@ -20,8 +18,7 @@ interface DownloadButtonProps {
   setChapterDownloaded?: (value: boolean) => void;
 }
 
-export const DownloadButton: React.FC<DownloadButtonProps> = ({
-  chapterId,
+const DownloadButtonControlled: React.FC<Props> = ({
   isDownloaded,
   isDownloading,
   theme,
@@ -29,133 +26,121 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
   downloadChapter,
   setChapterDownloaded,
 }) => {
-  const [downloaded, setDownloaded] = React.useState<boolean | undefined>(
-    isDownloaded,
+  // local menu state only
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const rippleStyle = useMemo(
+    () => ({ color: Color(theme.primary).alpha(0.12).string() }),
+    [theme.primary],
   );
 
-  const {
-    value: deleteChapterMenuVisible,
-    setTrue: showDeleteChapterMenu,
-    setFalse: hideDeleteChapterMenu,
-  } = useBoolean();
+  const menuContentStyle = useMemo(
+    () => ({ backgroundColor: overlay(2, theme.surface) }),
+    [theme.surface],
+  );
+  const menuTitleStyle = useMemo(
+    () => ({ color: theme.onSurface }),
+    [theme.onSurface],
+  );
 
-  const isFirstRender = useRef(true);
+  const onDelete = useCallback(() => {
+    deleteChapter();
+    setMenuVisible(false);
+    setChapterDownloaded?.(false);
+  }, [deleteChapter, setChapterDownloaded]);
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return; // Skip the first render as it leads to 'Maximum update depth exceeded.' error
-    }
-    if (!isDownloading) {
-      const isDownloadedValue = isChapterDownloaded(chapterId);
-      setDownloaded(isDownloadedValue);
-      setChapterDownloaded?.(isDownloadedValue);
-    }
-  }, [chapterId, isDownloading, setChapterDownloaded]);
-  if (isDownloading || downloaded === undefined) {
-    return <ChapterDownloadingButton theme={theme} />;
+  const onDownload = useCallback(() => {
+    downloadChapter();
+  }, [downloadChapter]);
+
+  if (isDownloading || isDownloaded === undefined) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator
+          color={theme.outline}
+          size={25}
+          style={styles.activityIndicator}
+        />
+      </View>
+    );
   }
-  return downloaded ? (
-    <Menu
-      visible={deleteChapterMenuVisible}
-      onDismiss={hideDeleteChapterMenu}
-      anchor={
-        <DeleteChapterButton theme={theme} onPress={showDeleteChapterMenu} />
-      }
-      contentStyle={{ backgroundColor: overlay(2, theme.surface) }}
-    >
-      <Menu.Item
-        onPress={() => {
-          deleteChapter();
-          hideDeleteChapterMenu();
-          setDownloaded(false);
-        }}
-        title={getString('common.delete')}
-        titleStyle={{ color: theme.onSurface }}
-      />
-    </Menu>
-  ) : (
-    <DownloadChapterButton
-      theme={theme}
-      onPress={() => {
-        downloadChapter();
-        setDownloaded(undefined);
-      }}
-    />
+
+  if (isDownloaded) {
+    return (
+      <Menu
+        visible={menuVisible}
+        onDismiss={() => setMenuVisible(false)}
+        anchor={
+          <View style={styles.container}>
+            <Pressable
+              style={styles.pressable}
+              onPress={() => setMenuVisible(true)}
+              android_ripple={rippleStyle}
+            >
+              <MaterialCommunityIcons
+                name="check-circle"
+                size={25}
+                color={theme.onSurface}
+              />
+            </Pressable>
+          </View>
+        }
+        contentStyle={menuContentStyle}
+      >
+        <Menu.Item
+          onPress={onDelete}
+          title={getString('common.delete')}
+          titleStyle={menuTitleStyle}
+        />
+      </Menu>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <Pressable
+        style={styles.pressable}
+        onPress={onDownload}
+        android_ripple={rippleStyle}
+      >
+        <MaterialCommunityIcons
+          name="arrow-down-circle-outline"
+          size={25}
+          color={theme.outline}
+        />
+      </Pressable>
+    </View>
   );
 };
 
-interface theme {
-  theme: MD3ThemeType;
+function areEqual(a: Props, b: Props) {
+  return (
+    a.isDownloaded === b.isDownloaded &&
+    a.isDownloading === b.isDownloading &&
+    a.deleteChapter === b.deleteChapter &&
+    a.downloadChapter === b.downloadChapter &&
+    a.theme.primary === b.theme.primary &&
+    a.theme.surface === b.theme.surface &&
+    a.theme.outline === b.theme.outline
+  );
 }
-type buttonPropType = theme & {
-  onPress: () => void;
-};
-export const ChapterDownloadingButton: React.FC<theme> = ({ theme }) => (
-  <View style={styles.container}>
-    <ActivityIndicator
-      color={theme.outline}
-      size={25}
-      style={styles.activityIndicator}
+
+export const DownloadButton = memo(DownloadButtonControlled, areEqual);
+
+const ChapterBookmarkButtonI: React.FC = () => {
+  const theme = useTheme();
+
+  return (
+    <IconButtonV2
+      name="bookmark"
+      theme={theme}
+      color={theme.primary}
+      size={18}
+      style={styles.iconButtonLeft}
     />
-  </View>
-);
-
-const DownloadIcon: React.FC<theme> = ({ theme }) => (
-  <MaterialCommunityIcons
-    name="arrow-down-circle-outline"
-    size={25}
-    color={theme.outline}
-  />
-);
-
-export const DownloadChapterButton: React.FC<buttonPropType> = ({
-  theme,
-  onPress,
-}) => (
-  <View style={styles.container}>
-    <Pressable
-      style={styles.pressable}
-      onPress={onPress}
-      android_ripple={{ color: Color(theme.primary).alpha(0.12).string() }}
-    >
-      <DownloadIcon theme={theme} />
-    </Pressable>
-  </View>
-);
-
-const DeleteIcon: React.FC<theme> = ({ theme }) => (
-  <MaterialCommunityIcons
-    name="check-circle"
-    size={25}
-    color={theme.onSurface}
-  />
-);
-
-export const DeleteChapterButton: React.FC<buttonPropType> = ({
-  theme,
-  onPress,
-}) => (
-  <View style={styles.container}>
-    <Pressable
-      style={styles.pressable}
-      onPress={onPress}
-      android_ripple={{ color: Color(theme.primary).alpha(0.12).string() }}
-    >
-      <DeleteIcon theme={theme} />
-    </Pressable>
-  </View>
-);
-
-export const ChapterBookmarkButton: React.FC<theme> = ({ theme }) => (
-  <IconButtonV2
-    name="bookmark"
-    theme={theme}
-    color={theme.primary}
-    size={18}
-    style={styles.iconButtonLeft}
-  />
-);
+  );
+};
+export const ChapterBookmarkButton = memo(ChapterBookmarkButtonI);
 
 const styles = StyleSheet.create({
   activityIndicator: { margin: 3.5, padding: 5 },
@@ -173,6 +158,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  iconButton: { margin: 2 },
   iconButtonLeft: { marginLeft: 2 },
 });

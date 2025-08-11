@@ -4,16 +4,15 @@ import {
   ChapterBookmarkButton,
   DownloadButton,
 } from './Chapter/ChapterDownloadButtons';
-import { ThemeColors } from '@theme/types';
 import { ChapterInfo } from '@database/types';
-import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 import { getString } from '@strings/translations';
+import { useTheme } from '@providers/ThemeProvider';
+import { isChapterDownloaded } from '@database/queries/ChapterQueries';
 
 interface ChapterItemProps {
   isDownloading?: boolean;
   isBookmarked?: boolean;
   chapter: ChapterInfo;
-  theme: ThemeColors;
   showChapterTitles: boolean;
   isSelected?: boolean;
   downloadChapter: () => void;
@@ -29,10 +28,9 @@ interface ChapterItemProps {
 }
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
-  isDownloading,
+  isDownloading: isDownloadingProp,
   isBookmarked,
   chapter,
-  theme,
   showChapterTitles,
   downloadChapter,
   deleteChapter,
@@ -46,13 +44,33 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   isUpdateCard,
   novelName,
 }) => {
-  const { id, name, unread, releaseTime, bookmark, chapterNumber, progress } =
-    chapter;
+  const {
+    id,
+    name,
+    unread,
+    releaseTime,
+    bookmark,
+    chapterNumber,
+    progress,
+    isDownloaded: isDownloadedProp,
+  } = chapter;
+  chapter;
 
-  isBookmarked ??= bookmark;
+  const isBookmarkedLocal = isBookmarked ?? bookmark;
+
+  const theme = useTheme();
+
+  const isDownloaded = useMemo(() => {
+    console.log(isDownloadedProp, isDownloadingProp);
+
+    if (!isDownloadingProp) {
+      return isChapterDownloaded(id) ?? false;
+    }
+    return isDownloadedProp;
+  }, [id, isDownloadedProp, isDownloadingProp]);
 
   const highlight = useMemo(
-    () => [{ backgroundColor: theme.rippleColor }],
+    () => ({ backgroundColor: theme.rippleColor }),
     [theme.rippleColor],
   );
 
@@ -62,17 +80,24 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
 
   const titleColour = useMemo(() => {
     if (!unread) return theme.outline;
-    return bookmark ? theme.primary : theme.onSurface;
-  }, [unread, bookmark, theme]);
+    return isBookmarkedLocal ? theme.primary : theme.onSurface;
+  }, [
+    unread,
+    isBookmarkedLocal,
+    theme.outline,
+    theme.primary,
+    theme.onSurface,
+  ]);
 
-  const updateTitle = useMemo(
+  const updateTitleStyle = useMemo(
     () => ({
       fontSize: 14,
       color: unread ? theme.onSurface : theme.outline,
     }),
-    [theme.onSurface, theme.outline, unread],
+    [unread, theme.onSurface, theme.outline],
   );
-  const title = useMemo(
+
+  const titleStyle = useMemo(
     () => ({
       fontSize: isUpdateCard ? 12 : 14,
       color: titleColour,
@@ -80,26 +105,28 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
     }),
     [isUpdateCard, titleColour],
   );
-  const meta = useMemo(
+
+  const metaStyle = useMemo(
     () => [
       styles.text,
       {
         marginTop: 4,
         color: !unread
           ? theme.outline
-          : isBookmarked
+          : isBookmarkedLocal
           ? theme.primary
           : theme.onSurfaceVariant,
       },
     ],
     [
-      isBookmarked,
-      theme.onSurfaceVariant,
+      unread,
+      isBookmarkedLocal,
       theme.outline,
       theme.primary,
-      unread,
+      theme.onSurfaceVariant,
     ],
   );
+
   const progressStyle = useMemo(
     () => ({
       fontSize: 12,
@@ -110,8 +137,26 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
     [releaseTime, theme.outline],
   );
 
+  // memoize strings so translation lookup / interpolation isn't done every render
+  const titleText = useMemo(
+    () =>
+      showChapterTitles
+        ? name
+        : getString('novelScreen.chapterChapnum', { num: chapterNumber }),
+    [showChapterTitles, name, chapterNumber],
+  );
+
+  const progressText = useMemo(
+    () => getString('novelScreen.progress', { progress }),
+    [progress],
+  );
+
   const handlePress = useCallback(() => {
-    onSelectPress ? onSelectPress(chapter) : navigateToChapter(chapter);
+    if (onSelectPress) {
+      onSelectPress(chapter);
+    } else {
+      navigateToChapter(chapter);
+    }
   }, [onSelectPress, navigateToChapter, chapter]);
 
   const handleLong = useCallback(() => {
@@ -126,37 +171,30 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
       android_ripple={{ color: theme.rippleColor }}
     >
       {left}
-      {isBookmarked ? <ChapterBookmarkButton theme={theme} /> : null}
+      {isBookmarkedLocal ? <ChapterBookmarkButton /> : null}
 
       <View style={styles.flex1}>
         {isUpdateCard && (
-          <Text style={updateTitle} numberOfLines={1}>
+          <Text style={updateTitleStyle} numberOfLines={1}>
             {novelName}
           </Text>
         )}
 
         <View style={styles.rowCenter}>
           {unread && (
-            <MaterialCommunityIcons
-              name="circle"
-              color={theme.primary}
-              size={8}
-              style={styles.unreadIcon}
+            <View
+              style={[styles.unreadDot, { backgroundColor: theme.primary }]}
             />
           )}
 
-          <Text style={title} numberOfLines={1} ellipsizeMode="tail">
-            {showChapterTitles
-              ? name
-              : getString('novelScreen.chapterChapnum', {
-                  num: chapterNumber,
-                })}
+          <Text style={titleStyle} numberOfLines={1} ellipsizeMode="tail">
+            {titleText}
           </Text>
         </View>
 
         <View style={styles.rowCenter}>
           {releaseTime && !isUpdateCard && (
-            <Text style={meta} numberOfLines={1}>
+            <Text style={metaStyle} numberOfLines={1}>
               {releaseTime}
             </Text>
           )}
@@ -164,7 +202,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
           {!isUpdateCard && (progress ?? 0) > 0 && unread && (
             <Text style={progressStyle} numberOfLines={1}>
               {releaseTime ? '•  ' : ''}
-              {getString('novelScreen.progress', { progress })}
+              {progressText}
             </Text>
           )}
         </View>
@@ -172,8 +210,8 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
 
       {!isLocal && (
         <DownloadButton
-          isDownloading={isDownloading}
-          isDownloaded={chapter.isDownloaded}
+          isDownloading={isDownloadingProp}
+          isDownloaded={isDownloaded}
           chapterId={id}
           theme={theme}
           setChapterDownloaded={setChapterDownloaded}
@@ -185,15 +223,35 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   );
 };
 
+// comparator: must include any prop that affects rendering or handlers.
+// compare shallowly and include theme color primitives used.
 function areEqual(prev: ChapterItemProps, next: ChapterItemProps) {
+  const prevBook = prev.isBookmarked ?? prev.chapter.bookmark;
+  const nextBook = next.isBookmarked ?? next.chapter.bookmark;
+
   return (
     prev.isSelected === next.isSelected &&
     prev.isDownloading === next.isDownloading &&
-    prev.isBookmarked === next.isBookmarked &&
+    prevBook === nextBook &&
+    prev.chapter.id === next.chapter.id &&
+    prev.chapter.name === next.chapter.name &&
     prev.chapter.unread === next.chapter.unread &&
     prev.chapter.bookmark === next.chapter.bookmark &&
     prev.chapter.isDownloaded === next.chapter.isDownloaded &&
-    prev.chapter.progress === next.chapter.progress
+    prev.chapter.progress === next.chapter.progress &&
+    prev.chapter.releaseTime === next.chapter.releaseTime &&
+    prev.chapter.chapterNumber === next.chapter.chapterNumber &&
+    prev.showChapterTitles === next.showChapterTitles &&
+    prev.isLocal === next.isLocal &&
+    prev.isUpdateCard === next.isUpdateCard &&
+    prev.novelName === next.novelName &&
+    prev.left === next.left &&
+    prev.downloadChapter === next.downloadChapter &&
+    prev.deleteChapter === next.deleteChapter &&
+    prev.setChapterDownloaded === next.setChapterDownloaded &&
+    prev.onSelectPress === next.onSelectPress &&
+    prev.onSelectLongPress === next.onSelectLongPress &&
+    prev.navigateToChapter === next.navigateToChapter
   );
 }
 
@@ -216,7 +274,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 12,
   },
-  unreadIcon: {
+  unreadDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
     marginRight: 4,
   },
   rowCenter: { flexDirection: 'row', alignItems: 'center' },
