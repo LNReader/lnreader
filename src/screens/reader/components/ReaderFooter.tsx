@@ -11,7 +11,7 @@ import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/typ
 import { ChapterScreenProps } from '@navigators/types';
 import { useChapterContext } from '../ChapterContext';
 import { SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { useHeightContext } from '@screens/novel/context/HeightsContext';
 
 interface ChapterFooterProps {

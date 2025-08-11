@@ -9,7 +9,7 @@ import Animated, {
 
 import { Portal, Appbar, Snackbar } from 'react-native-paper';
 import { useDownload } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import JumpToChapterModal from './components/JumpToChapterModal';
 import { Actionbar } from '../../components/Actionbar/Actionbar';
 import EditInfoModal from './components/EditInfoModal';

@@ -6,7 +6,7 @@ import {
 } from './Chapter/ChapterDownloadButtons';
 import { ChapterInfo } from '@database/types';
 import { getString } from '@strings/translations';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { isChapterDownloaded } from '@database/queries/ChapterQueries';
 
 interface ChapterItemProps {
@@ -55,14 +55,15 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
     isDownloaded: isDownloadedProp,
   } = chapter;
   chapter;
+  if (name === 'Chapter 2: Rice Farming 101') {
+    console.log(name, isDownloadedProp);
+  }
 
   const isBookmarkedLocal = isBookmarked ?? bookmark;
 
   const theme = useTheme();
 
   const isDownloaded = useMemo(() => {
-    console.log(isDownloadedProp, isDownloadingProp);
-
     if (!isDownloadingProp) {
       return isChapterDownloaded(id) ?? false;
     }

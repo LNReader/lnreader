@@ -3,7 +3,7 @@ import { NativeEventEmitter, NativeModules, StatusBar } from 'react-native';
 import WebView from 'react-native-webview';
 import color from 'color';
 
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import KeyboardAvoidingModal from '@components/Modal/KeyboardAvoidingModal';
 import { TextInput } from 'react-native-paper';

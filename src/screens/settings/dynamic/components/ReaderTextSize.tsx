@@ -2,7 +2,7 @@ import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 
 import { useChapterReaderSettings } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { IconButtonV2 } from '@components/index';
 import { getString } from '@strings/translations';
 

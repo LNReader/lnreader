@@ -1,5 +1,5 @@
 import { useAppSettings } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import * as React from 'react';
 import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import Animated, {

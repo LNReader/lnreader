@@ -12,7 +12,7 @@ import Color from 'color';
 import { BottomSheetFlashList, BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { useChapterGeneralSettings } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '@strings/translations';
 

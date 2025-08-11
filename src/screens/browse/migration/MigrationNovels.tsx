@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, FlatListProps } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import { usePlugins } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 
 import EmptyView from '@components/EmptyView';
 import MigrationNovelList from './MigrationNovelList';

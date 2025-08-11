@@ -5,7 +5,7 @@ import {
   useChapterGeneralSettings,
   useChapterReaderSettings,
 } from '../persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import Color from 'color';
 import * as NavigationBar from 'expo-navigation-bar';
 import {

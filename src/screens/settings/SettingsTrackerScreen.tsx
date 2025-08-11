@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Portal, Text, Button, Provider } from 'react-native-paper';
 
 import { getTracker, useTracker } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { Appbar, List, Modal, SafeAreaView } from '@components';
 import { TrackerSettingsScreenProps } from '@navigators/types';
 import { getString } from '@strings/translations';

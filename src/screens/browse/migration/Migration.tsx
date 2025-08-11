@@ -4,7 +4,7 @@ import { StyleSheet, View, FlatList, Text, FlatListProps } from 'react-native';
 import MigrationSourceItem from './MigrationSourceItem';
 
 import { usePlugins } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 import { MigrationScreenProps } from '@navigators/types';

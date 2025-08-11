@@ -13,7 +13,7 @@ import {
 import { Repository } from '@database/types';
 import { useBackHandler, useBoolean } from '@hooks/index';
 import { usePlugins } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 
 import AddRepositoryModal from '../dynamic/modals/AddRepositoryModal';

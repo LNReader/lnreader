@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 
 import {

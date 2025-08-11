@@ -5,7 +5,7 @@ import MaterialCommunityIcons from '@react-native-vector-icons/material-design-i
 import Color from 'color';
 import { getString } from '@strings/translations';
 import type { MD3ThemeType } from '@theme/types';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { IconButtonV2 } from '@components';
 
 interface Props {
@@ -19,7 +19,7 @@ interface Props {
 }
 
 const DownloadButtonControlled: React.FC<Props> = ({
-  isDownloaded,
+  isDownloaded: isDownloadedProp,
   isDownloading,
   theme,
   deleteChapter,
@@ -28,6 +28,7 @@ const DownloadButtonControlled: React.FC<Props> = ({
 }) => {
   // local menu state only
   const [menuVisible, setMenuVisible] = useState(false);
+  const [isDownloaded, setIsDownloaded] = useState(isDownloadedProp);
 
   const rippleStyle = useMemo(
     () => ({ color: Color(theme.primary).alpha(0.12).string() }),
@@ -46,11 +47,12 @@ const DownloadButtonControlled: React.FC<Props> = ({
   const onDelete = useCallback(() => {
     deleteChapter();
     setMenuVisible(false);
-    setChapterDownloaded?.(false);
-  }, [deleteChapter, setChapterDownloaded]);
+    setIsDownloaded(false);
+  }, [deleteChapter]);
 
   const onDownload = useCallback(() => {
     downloadChapter();
+    setIsDownloaded(true);
   }, [downloadChapter]);
 
   if (isDownloading || isDownloaded === undefined) {

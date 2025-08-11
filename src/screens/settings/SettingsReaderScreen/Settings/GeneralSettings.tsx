@@ -12,7 +12,7 @@ import { defaultTo } from 'lodash-es';
 import { Button, List } from '@components/index';
 
 import { useChapterGeneralSettings } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import SettingSwitch from '../../components/SettingSwitch';
 

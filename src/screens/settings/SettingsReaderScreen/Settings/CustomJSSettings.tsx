@@ -6,7 +6,7 @@ import { Button, List, ConfirmationDialog } from '@components/index';
 
 import { useBoolean } from '@hooks';
 import { useChapterReaderSettings } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 
 import CustomFileModal from '../Modals/CustomFileModal';

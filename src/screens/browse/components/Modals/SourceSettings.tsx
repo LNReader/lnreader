@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { Button, Modal, SwitchItem } from '@components/index';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import { Storage } from '@plugins/helpers/storage';
 

@@ -1,22 +1,16 @@
 import { useLibraryContext } from '@components/Context/LibraryContext';
-import ServiceManager, { BackgroundTask } from '@services/ServiceManager';
+import { useQueue } from '@providers/Providers';
+import ServiceManager from '@services/ServiceManager';
 import { DocumentPickerResult } from 'expo-document-picker';
 import { useCallback, useEffect, useMemo } from 'react';
-import { useMMKVObject } from 'react-native-mmkv';
 
 export default function useImport() {
   const { refetchLibrary } = useLibraryContext();
-  const [queue] = useMMKVObject<BackgroundTask[]>(
-    ServiceManager.manager.STORE_KEY,
-  );
-  const importQueue = useMemo(
-    () => queue?.filter(t => t.name === 'IMPORT_EPUB') || [],
-    [queue],
-  );
+  const { importQueue } = useQueue();
 
   useEffect(() => {
     refetchLibrary();
-  }, [importQueue, refetchLibrary]);
+  }, [importQueue.length, refetchLibrary]);
 
   const importNovel = useCallback((pickedNovel: DocumentPickerResult) => {
     if (pickedNovel.canceled) return;

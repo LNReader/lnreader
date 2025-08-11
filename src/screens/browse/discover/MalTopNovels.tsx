@@ -16,7 +16,7 @@ import { SafeAreaView, SearchbarV2 } from '@components';
 import { showToast } from '@utils/showToast';
 import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
 import MalNovelCard from './TrackerNovelCard';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import MalLoading from '../loadingAnimation/MalLoading';
 import { BrowseMalScreenProps } from '@navigators/types';
 

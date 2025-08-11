@@ -6,7 +6,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Button from './Button/Button';
 import { getString } from '@strings/translations';
 
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { Modal } from '@components';
 
 interface NewUpdateDialogProps {

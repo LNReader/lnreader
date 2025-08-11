@@ -13,7 +13,7 @@ import HistoryCard from './components/HistoryCard/HistoryCard';
 
 import { useSearch, useBoolean } from '@hooks';
 import { useHistory } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 
 import { convertDateToISOString } from '@database/utils/convertDateToISOString';
 

@@ -33,7 +33,7 @@ import { AnimatedFAB } from 'react-native-paper';
 import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 
 type NovelScreenListProps = {
   headerOpacity: SharedValue<number>;
@@ -301,13 +301,13 @@ const NovelScreenList = ({
 
   const extraData = useMemo(
     () => ({
-      chaptersLength: chapters.length,
+      chapters,
       selectedLength: selected.length,
       novelId: novel.id,
       loading,
       downloadingIds: Array.from(downloadingIds).sort().join(','), // Convert to string for stable comparison
     }),
-    [chapters.length, selected.length, novel.id, loading, downloadingIds],
+    [chapters, selected.length, novel.id, loading, downloadingIds],
   );
 
   const keyExtractor = useCallback((item: ChapterInfo) => 'c' + item.id, []);

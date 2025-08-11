@@ -4,7 +4,7 @@ import { TabView, TabBar } from 'react-native-tab-view';
 
 import { useSearch } from '@hooks';
 import { usePlugins } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 
 import { EmptyView, SafeAreaView, SearchbarV2 } from '@components';

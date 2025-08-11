@@ -11,7 +11,7 @@ import {
   getDownloadedChapters,
 } from '@database/queries/ChapterQueries';
 
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 
 import RemoveDownloadsDialog from './components/RemoveDownloadsDialog';
 import UpdatesSkeletonLoading from '@screens/updates/components/UpdatesSkeletonLoading';

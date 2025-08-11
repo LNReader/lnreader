@@ -33,7 +33,7 @@ import {
   useNovelPages,
   useNovelState,
 } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { NovelStatus, PluginItem } from '@plugins/types';
 import { translateNovelStatus } from '@utils/translateEnum';
 import { getMMKVObject } from '@utils/mmkv/mmkv';

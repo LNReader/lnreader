@@ -4,7 +4,7 @@ import React from 'react';
 import { Button, ColorPreferenceItem, List } from '@components/index';
 
 import { useChapterReaderSettings } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import ReaderTextAlignSelector from '@screens/reader/components/ReaderBottomSheet/ReaderTextAlignSelector';
 import ReaderTextSize from '../ReaderTextSize';

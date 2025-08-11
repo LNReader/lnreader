@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Portal, Text, TextInput } from 'react-native-paper';
 
 import { useUserAgent } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { showToast } from '@utils/showToast';
 
 import { getString } from '@strings/translations';

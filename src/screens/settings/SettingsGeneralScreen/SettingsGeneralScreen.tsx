@@ -9,7 +9,7 @@ import {
   useLastUpdate,
   useLibrarySettings,
 } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import DefaultChapterSortModal from '../components/DefaultChapterSortModal';
 import {
   DisplayModes,

@@ -1,4 +1,4 @@
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import React from 'react';
 import {
   Dimensions,

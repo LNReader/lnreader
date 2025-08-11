@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { getPlugin } from '@plugins/pluginManager';
 import { useBackHandler } from '@hooks';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { WebviewScreenProps } from '@navigators/types';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
 import { resolveUrl } from '@services/plugin/fetch';

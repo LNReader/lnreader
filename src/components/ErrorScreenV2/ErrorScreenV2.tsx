@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { getErrorMessage } from '@utils/error';
 import { MaterialDesignIconName } from '@type/icon';
 

@@ -4,7 +4,7 @@ import { Portal, TextInput, ActivityIndicator } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
 import { useChapterReaderSettings } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { Voice } from 'expo-speech';
 import { FlashList } from '@shopify/flash-list';
 import { Modal } from '@components';

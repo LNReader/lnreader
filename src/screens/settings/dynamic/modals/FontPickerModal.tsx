@@ -4,7 +4,7 @@ import { Portal } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
 import { useChapterReaderSettings } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 
 import { readerFonts } from '@utils/constants/readerConstants';
 import { Modal } from '@components';

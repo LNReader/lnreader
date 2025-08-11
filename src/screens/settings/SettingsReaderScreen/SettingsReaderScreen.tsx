@@ -11,7 +11,7 @@ import {
   useChapterGeneralSettings,
   useChapterReaderSettings,
 } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 
 import GeneralSettings from './Settings/GeneralSettings';

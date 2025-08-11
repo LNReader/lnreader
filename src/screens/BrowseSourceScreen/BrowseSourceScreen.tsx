@@ -8,7 +8,7 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import FilterBottomSheet from './components/FilterBottomSheet';
 
 import { useSearch } from '@hooks';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
 
 import { NovelItem } from '@plugins/types';

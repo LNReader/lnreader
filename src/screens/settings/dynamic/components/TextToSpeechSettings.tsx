@@ -3,7 +3,7 @@ import {
   useChapterGeneralSettings,
   useChapterReaderSettings,
 } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import React, { useEffect, useState } from 'react';
 import VoicePickerModal from '../Modals/VoicePickerModal';
 import { useBoolean } from '@hooks';

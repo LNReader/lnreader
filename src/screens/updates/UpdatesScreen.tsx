@@ -10,7 +10,7 @@ import {
 } from '@components';
 
 import { useSearch } from '@hooks';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import UpdatesSkeletonLoading from './components/UpdatesSkeletonLoading';

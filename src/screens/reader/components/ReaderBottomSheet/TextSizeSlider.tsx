@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
 import { useChapterReaderSettings } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import Slider from '@react-native-community/slider';
 import { getString } from '@strings/translations';
 

@@ -7,7 +7,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { Button, Modal } from '@components/index';
 
 import { showToast } from '@utils/showToast';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 
 interface CustomFileModal {

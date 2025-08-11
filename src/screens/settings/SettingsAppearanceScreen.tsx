@@ -6,7 +6,7 @@ import SettingSwitch from './components/SettingSwitch';
 import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
 
 import { useAppSettings } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import {
   useMMKVBoolean,
   useMMKVObject,

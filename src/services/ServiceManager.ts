@@ -26,7 +26,7 @@ type taskNames =
   | 'MIGRATE_NOVEL'
   | 'DOWNLOAD_CHAPTER';
 
-export type BackgroundTask =
+export type GeneralBackgroundTask =
   | {
       name: 'IMPORT_EPUB';
       data: {
@@ -52,6 +52,11 @@ export type DownloadChapterTask = {
   data: { chapterId: number; novelName: string; chapterName: string };
 };
 
+export type BackgroundTask<T extends taskNames = taskNames> = Extract<
+  GeneralBackgroundTask,
+  { name: T }
+>;
+
 export type BackgroundTaskMetadata = {
   name: string;
   isRunning: boolean;
@@ -59,8 +64,8 @@ export type BackgroundTaskMetadata = {
   progressText: string | undefined;
 };
 
-export type QueuedBackgroundTask = {
-  task: BackgroundTask;
+export type QueuedBackgroundTask<T extends taskNames = taskNames> = {
+  task: BackgroundTask<T>;
   meta: BackgroundTaskMetadata;
   id: string;
 };
@@ -91,10 +96,10 @@ export default class ServiceManager {
     return BackgroundService.isRunning();
   }
 
-  isMultiplicableTask(task: BackgroundTask) {
+  isMultiplicableTask(task: GeneralBackgroundTask) {
     return (
       ['DOWNLOAD_CHAPTER', 'IMPORT_EPUB', 'MIGRATE_NOVEL'] as Array<
-        BackgroundTask['name']
+        GeneralBackgroundTask['name']
       >
     ).includes(task.name);
   }
@@ -243,7 +248,7 @@ export default class ServiceManager {
   static async launch() {
     // retrieve class instance because this is running in different context
     const manager = ServiceManager.manager;
-    const doneTasks: Record<BackgroundTask['name'], number> = {
+    const doneTasks: Record<GeneralBackgroundTask['name'], number> = {
       'IMPORT_EPUB': 0,
       'UPDATE_LIBRARY': 0,
       'DRIVE_BACKUP': 0,
@@ -288,11 +293,11 @@ export default class ServiceManager {
         content: {
           title: 'Background tasks done',
           body: Object.keys(doneTasks)
-            .filter(key => doneTasks[key as BackgroundTask['name']] > 0)
+            .filter(key => doneTasks[key as GeneralBackgroundTask['name']] > 0)
             .map(
               key =>
                 `${getString(`notifications.${key as taskNames}`)}: ${
-                  doneTasks[key as BackgroundTask['name']]
+                  doneTasks[key as GeneralBackgroundTask['name']]
                 }`,
             )
             .join('\n'),
@@ -302,7 +307,7 @@ export default class ServiceManager {
     }
   }
 
-  getTaskName(task: BackgroundTask) {
+  getTaskName(task: GeneralBackgroundTask) {
     switch (task.name) {
       case 'DOWNLOAD_CHAPTER':
         return 'Download ' + task.data.novelName;
@@ -332,7 +337,7 @@ export default class ServiceManager {
     return getMMKVObject<Array<QueuedBackgroundTask>>(this.STORE_KEY) || [];
   }
 
-  addTask(tasks: BackgroundTask | BackgroundTask[]) {
+  addTask(tasks: GeneralBackgroundTask | GeneralBackgroundTask[]) {
     let currentTasks = this.getTaskList();
     // @ts-expect-error Older version can still have tasks with old format
     currentTasks = currentTasks.filter(task => !task?.name);
@@ -362,7 +367,7 @@ export default class ServiceManager {
     }
   }
 
-  removeTasksByName(name: BackgroundTask['name']) {
+  removeTasksByName(name: GeneralBackgroundTask['name']) {
     const taskList = this.getTaskList();
     if (taskList[0]?.task?.name === name) {
       this.pause();

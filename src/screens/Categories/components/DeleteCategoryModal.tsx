@@ -6,7 +6,7 @@ import { Button, Modal } from '@components/index';
 
 import { Category } from '@database/types';
 import { deleteCategoryById } from '@database/queries/CategoryQueries';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 
 import { getString } from '@strings/translations';
 

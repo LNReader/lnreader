@@ -6,7 +6,7 @@ import { EmptyView, SafeAreaView, SearchbarV2 } from '@components/index';
 import GlobalSearchResultsList from './components/GlobalSearchResultsList';
 
 import { useSearch } from '@hooks';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 
 import { getString } from '@strings/translations';
 import { useGlobalSearch } from './hooks/useGlobalSearch';

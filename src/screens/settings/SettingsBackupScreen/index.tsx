@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { Appbar, List, SafeAreaView } from '@components';
 import { useBoolean } from '@hooks';
 import { BackupSettingsScreenProps } from '@navigators/types';

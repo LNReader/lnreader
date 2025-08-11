@@ -8,7 +8,7 @@ import Animated, {
   withTiming,
   useDerivedValue,
 } from 'react-native-reanimated';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 
 interface SwitchProps {
   value: boolean;

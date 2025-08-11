@@ -12,7 +12,7 @@ import {
   setStatusBarColor,
 } from '@theme/utils/setBarColor';
 import { useAppSettings, usePlugins } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
 /**

@@ -5,7 +5,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 import { Button, Modal } from '@components/index';
 
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 
 import { getString } from '@strings/translations';
 import { getCategoriesWithCount } from '@database/queries/CategoryQueries';

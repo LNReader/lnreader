@@ -12,7 +12,7 @@ import { List } from 'react-native-paper';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import ChapterItem from '@screens/novel/components/ChapterItem';
 import { useDownload, useUpdates } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { RootStackParamList } from '@navigators/types';
 import { FlatList } from 'react-native-gesture-handler';
 import { defaultCover } from '@plugins/helpers/constants';

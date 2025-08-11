@@ -7,7 +7,7 @@ import { IconButtonV2 } from '@components';
 
 import { Repository } from '@database/types';
 import { useBoolean } from '@hooks/index';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
 import { Portal } from 'react-native-paper';

@@ -3,7 +3,7 @@ import { Appbar, List } from '@components';
 import { getString } from '@strings/translations';
 import { useBoolean } from '@hooks';
 import { useCategories } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { useNavigation } from '@react-navigation/native';
 import { Portal } from 'react-native-paper';
 import DefaultCategoryDialog from './DefaultCategoryDialog';

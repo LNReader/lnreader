@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, StatusBar } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 
 import { Button, List } from '@components';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ErrorFallbackProps {

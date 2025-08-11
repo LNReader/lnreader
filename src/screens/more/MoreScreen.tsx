@@ -6,17 +6,13 @@ import { List, SafeAreaView } from '@components';
 
 import { MoreHeader } from './components/MoreHeader';
 import { useLibrarySettings } from '@hooks/persisted';
-import { useTheme } from '@providers/ThemeProvider';
+import { useQueue, useTheme } from '@providers/Providers';
 import { MoreStackScreenProps } from '@navigators/types';
 import Switch from '@components/Switch/Switch';
-import { useMMKVObject } from 'react-native-mmkv';
-import ServiceManager, { BackgroundTask } from '@services/ServiceManager';
 
 const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
   const theme = useTheme();
-  const [taskQueue] = useMMKVObject<BackgroundTask[]>(
-    ServiceManager.manager.STORE_KEY,
-  );
+  const { taskQueue } = useQueue();
   const {
     incognitoMode = false,
     downloadedOnlyMode = false,

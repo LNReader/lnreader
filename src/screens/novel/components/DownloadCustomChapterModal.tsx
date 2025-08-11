@@ -5,7 +5,7 @@ import { Button, IconButton, Portal } from 'react-native-paper';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { getString } from '@strings/translations';
 import { Modal } from '@components';
-import { useTheme } from '@providers/ThemeProvider';
+import { useTheme } from '@providers/Providers';
 import { useNovelChapters, useNovelState } from '@hooks/persisted/index';
 
 interface DownloadCustomChapterModalProps {
