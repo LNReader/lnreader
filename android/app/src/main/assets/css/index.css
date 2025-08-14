@@ -42,6 +42,10 @@ a {
   color: var(--theme-primary);
 }
 
+sup {
+  line-height: 0.1em;
+}
+
 img {
   display: block;
   width: auto;
