@@ -28,7 +28,7 @@
     "novelInsertFailed": "roman yüklemesi başarısız",
     "useFAB": "Buton yerine FAB kullan",
     "userAgent": "Kullanıcı aracısı",
-    "recreateDBIndexes": "Recreate DB indexes",
+    "recreateDBIndexes": "Veritabanı indekskerini yenile",
     "recreateDBIndexesToast": "Veritabanı indeksleri yenilendi",
     "recreateDBIndexesDialogTitle": "Tüm veritabanı indeksleri yenilenecek. Bu biraz vakit alabilir.",
     "recreateDBIndexesDesc": "Veritabanı indekslerini yeniler. Yavaş cihazlarda hız artışı sağlayabilir."
@@ -45,15 +45,15 @@
     "novelInfo": "Roman hakkında",
     "pureBlackDarkMode": "Tamamen siyah karanlık tema",
     "showHistoryInTheNav": "Navigasyonda geçmişi göster",
-    "showUpdatesInTheNav": "Show updates in the nav",
+    "showUpdatesInTheNav": "Menüde güncellemeleri göster",
     "theme": {
       "default": "Varsayılan",
       "lavender": "Lavanta",
       "midnightDusk": "Geceyarısı alacakaranlığı",
       "daybreakBloom": "Gündoğumu Tomurcukları",
-      "strawberry": "Strawberry Daiquiri",
+      "strawberry": "Çilekli Daiquiri",
       "tako": "Tako",
-      "teal": "Teal",
+      "teal": "Turkuaz Yeşili",
       "turquoise": "Turkuaz",
       "yotsuba": "Yotsuba"
     }
@@ -61,24 +61,24 @@
   "backupScreen": {
     "backupName": "Yedek ismi",
     "createBackup": "Yedek oluştur",
-    "createBackupDesc": "Can be used to restore current library",
+    "createBackupDesc": "Mevcut kütüphaneyi geri yüklemek için kullanılabilir",
     "createBackupWarning": "Yedek oluşturma Android 9 ve altı cihazlarda çalışmayabilir.",
     "downloadingData": "Veri Yükleniyor",
-    "downloadingDownloadedFiles": "İndirilmiş dosyalar yükleniyor",
+    "downloadingDownloadedFiles": "İndirilen dosyalar yükleniyor",
     "failed": "Yedekleme hatası",
     "drive": {
       "backup": "Bulut Yedeği",
       "backupInterruped": "Bulut Yedeği Yarıda Kesildi",
       "googleDriveBackup": "Google Drive Yedeği",
-      "restore": "Drive Restore",
-      "restoreInterruped": "Drive Restore Interruped"
+      "restore": "Bulut geri yükleme",
+      "restoreInterruped": "Bulut geri yükleme yarıda kaldı"
     },
     "googeDrive": "Google Drive",
     "googeDriveDesc": "Google Drive'a yedekle",
     "invalidBackupFolder": "Geçersiz yedekleme klasörü",
     "legacy": {
       "backupCreated": "Yedek oluşturuldu %{fileName}",
-      "libraryRestored": "Library Restored",
+      "libraryRestored": "Kütüphane Geri Yüklendi",
       "noAvailableBackup": "Geçerli yedek yok",
       "novelsRestored": "%{num} roman geri yüklendi"
     },
@@ -86,29 +86,29 @@
     "noBackupFound": "Yedek bulunamadı",
     "preparingData": "Veri hazırlanıyor",
     "remote": {
-      "backup": "Self Host Backup",
-      "host": "Host",
-      "unknownHost": "Unknown host"
+      "backup": "Yerel Sunucuya Yedekle",
+      "host": "Sunucu",
+      "unknownHost": "Bilinmeyen sunucu"
     },
-    "remoteBackup": "Remote Backup",
+    "remoteBackup": "Uzak Sunucuya Yedekle",
     "restoreBackup": "Yedeği geri yükle",
-    "restoreBackupDesc": "Restore library from backup file",
+    "restoreBackupDesc": "Yedek dosyasından kütüphaneyi geri yükleyin",
     "restoreLargeBackupsWarning": "Büyük boyutlu yedekleri geri yüklemek uygulamanın yedeğin geri yüklenmesi bitene kadar donmasına neden olabilir",
     "restorinBackup": "Yedek geri yükleniyor",
     "restoringData": "Veri geri yükleniyor",
-    "selfHost": "Self Host",
-    "selfHostDesc": "Sunucuya yedekle",
+    "selfHost": "Yerel Sunucu",
+    "selfHostDesc": "Sunucunuza yedekleyin",
     "uploadingData": "Veri yükleniyor",
-    "uploadingDownloadedFiles": "Uploading Downloaded files"
+    "uploadingDownloadedFiles": "İndirilen dosyalar yükleniyor"
   },
   "browse": "Göz at",
   "browseScreen": {
     "addedToLibrary": "Kitaplığa eklendi",
-    "available": "Available",
+    "available": "Uzantılar",
     "discover": "Keşfet",
     "globalSearch": "Genel arama",
     "installFailed": "Yükleme hatası: %{name}",
-    "installed": "Yüklendi",
+    "installed": "Yüklü",
     "installedPlugin": "%{name} yüklendi",
     "installedPlugins": "Yüklü uzantılar",
     "lastUsed": "Son kullanılan",
@@ -129,7 +129,7 @@
     "updatedTo": "%{version}' güncellendi",
     "settings": {
       "title": "Uzantı Ayarları",
-      "description": "Fill in the plugin settings. Restart app to apply the settings."
+      "description": "Uzantı ayarlarını yapılandırın. Ayarları uygulamak için uygulamayı yeniden başlatın."
     }
   },
   "browseSettings": "Göz Atma Seçenekleri",
@@ -223,7 +223,7 @@
   "downloadScreen": {
     "cancelDownloads": "İndirmeleri iptal et",
     "cancelled": "İndirmeler iptal edildi.",
-    "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
+    "chapterEmptyOrScrapeError": "Bölüm boş veya uygulama veriyi alamadı",
     "chapterName": "Bölüm: %{name}",
     "completed": "İndirme tamamlandı",
     "dbInfo": "İndirilenler bir SQLite Veritabanında kaydedilmektedir.",
@@ -251,7 +251,7 @@
     "epubLocation": "EPUB Konumu",
     "epubLocationDescription": "EPUB dosyalarınızı açıp, dışa aktardığınız yer.",
     "globalUpdate": "Global güncelleme",
-    "gridSize": "Grid size",
+    "gridSize": "Izgara boyutu",
     "gridSizeDesc": "Her bir satırda %{num}",
     "itemsPerRow": "Satır başına düşen öge",
     "itemsPerRowLibrary": "Kitaplıkta satır başına düşen öge",
@@ -325,7 +325,7 @@
   "more": "Daha fazla",
   "moreScreen": {
     "downloadOnly": "Yalnızca indirilenler",
-    "downloadOnlyDesc": "Filters all novels in your library",
+    "downloadOnlyDesc": "Kütüphanedeki tüm romanları filtreler",
     "downloadQueue": "İndirme sırası",
     "incognitoMode": "Gizli mod",
     "incognitoModeDesc": "Okuma geçmişini duraklatır"
@@ -361,13 +361,13 @@
     },
     "coverSaved": "Kapak kaydedildi",
     "coverNotSaved": "Kapak kaydedilemedi",
-    "deleteChapterError": "Cant delete chapter chapter folder",
+    "deleteChapterError": "Bölüm klasörü silinemedi",
     "deleteMessage": "Bütün indirilmiş bölümler silinecek?",
     "deletedAllDownloads": "Bütün indirilenleri sil",
     "download": {
-      "custom": "Custom",
+      "custom": "Özel",
       "customAmount": "İstediğiniz sayıda indirin",
-      "delete": "Delete downloads",
+      "delete": "İndirilenleri sil",
       "next": "Sonraki bölüm",
       "next10": "Sonraki 10 bölüm",
       "next5": "Sonraki 5 bölüm",
@@ -379,7 +379,7 @@
       "cover": "Kapağı değiştir",
       "info": "Ayrıntıları düzenle",
       "status": "Durum:",
-      "summary": "Description: %{summary}...",
+      "summary": "Açıklama: %{summary}...",
       "title": "Başlık: %{title}"
     },
     "inLibaray": "Kitaplıkta",
@@ -418,7 +418,7 @@
       "allowTextSelection": "Yazı seçmeye izin ver",
       "autoscroll": "Otomatik Kaydırma",
       "bionicReading": "Biyonik Okuma",
-      "tapToScroll": "Tap to scroll",
+      "tapToScroll": "Kaydırmak için tıkla",
       "color": "Renk",
       "fontStyle": "Yazı tipi",
       "fullscreen": "Tam ekran",
@@ -488,7 +488,7 @@
   "tracking": "İzleme",
   "trackingScreen": {
     "logOutMessage": "%{name}'tan çıkış yap?",
-    "revalidate": "Revalidate",
+    "revalidate": "Yenşden doğrula",
     "services": "Servisler"
   },
   "updates": "Güncellemeler",
