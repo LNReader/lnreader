@@ -23,7 +23,7 @@ export const createBackup = async () => {
       await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
 
     if (!permissions.granted) {
-      showToast(getString('backupScreen.legacy.permissionDenied'));
+      showToast(getString('backupScreen.failed'));
       return;
     }
     const directoryUri = permissions.directoryUri;
@@ -40,7 +40,7 @@ export const createBackup = async () => {
       })
       .catch(error => {
         showToast(
-          getString('backupScreen.legacy.failedToSave', {
+          getString('backupScreen.failed', {
             message: error.message,
           }),
         );

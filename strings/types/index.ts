@@ -60,6 +60,7 @@ export interface StringMap {
   'backupScreen.createBackupWarning': 'string';
   'backupScreen.downloadingData': 'string';
   'backupScreen.downloadingDownloadedFiles': 'string';
+  'backupScreen.failed': 'string';
   'backupScreen.drive.backup': 'string';
   'backupScreen.drive.backupInterruped': 'string';
   'backupScreen.drive.googleDriveBackup': 'string';
@@ -291,6 +292,8 @@ export interface StringMap {
   'novelScreen.convertToEpubModal.useCustomJS': 'string';
   'novelScreen.convertToEpubModal.useCustomJSWarning': 'string';
   'novelScreen.convertToEpubModal.useReaderTheme': 'string';
+  'novelScreen.coverSaved': 'string';
+  'novelScreen.coverNotSaved': 'string';
   'novelScreen.deleteChapterError': 'string';
   'novelScreen.deleteMessage': 'string';
   'novelScreen.deletedAllDownloads': 'string';
@@ -317,6 +320,7 @@ export interface StringMap {
   'novelScreen.jumpToChapterModal.openChapter': 'string';
   'novelScreen.migrate': 'string';
   'novelScreen.noSummary': 'string';
+  'novelScreen.noCoverFound': 'string';
   'novelScreen.progress': 'string';
   'novelScreen.readChaptersDeleted': 'string';
   'novelScreen.startReadingChapters': 'string';

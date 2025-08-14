@@ -28,21 +28,9 @@ body {
   font-family: var(--readerSettings-fontFamily);
 }
 
-body.page-reader { 
-  overflow: hidden;
-  padding-bottom: unset;
-}
-
 #LNReader-chapter {
   padding-left: var(--readerSettings-padding);
   padding-right: var(--readerSettings-padding);
-}
-
-body.page-reader > #LNReader-chapter{
-  height: calc(90vh);
-  column-width: calc(100vw - var(--readerSettings-padding) * 2);
-  column-gap: calc(var(--readerSettings-padding) * 2);
-  transition: 200ms;
 }
 
 hr {
@@ -123,160 +111,12 @@ td {
   display: none;
 }
 
-#ToolWrapper {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 5vw;
-}
-
-#ToolWrapper.horizontal {
-  top: unset;
-  right: unset;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 120px;
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-}
-
-@media only screen and (min-width: 500px) {
-  #ToolWrapper.horizontal {
-    bottom: 80px;
-  }
-}
-
-#ToolWrapper.hidden {
-  opacity: 0;
-  right: 0;
-}
-
-#ToolWrapper.hidden.horizontal {
-  opacity: 0;
-  bottom: 0;
-  right: unset;
-}
-
-#ToolWrapper > #ScrollBar {
-  margin-top: 8px;
-  width: 2.4rem;
-  height: 50vh;
-  min-height: 200px;
-  border-radius: 1.2rem;
-  background-color: var(--theme-surface-0-9);
-  touch-action: none;
-  font-size: 14px;
-  user-select: none;
-}
-
-#ScrollBar > .scrollbar-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--theme-onSurface);
-}
-
-#ScrollBar > .scrollbar-item.scrollbar-text {
-  height: 12.5%;
-}
-
-#ScrollBar > .scrollbar-item#scrollbar-slider {
-  height: 75%;
-  align-items: unset;
-}
-
-#ScrollBar #scrollbar-track {
-  width: 0.1rem;
-  height: 100%;
-  background-color: var(--theme-outline);
-}
-
-#ScrollBar #scrollbar-progress {
-  width: 100%;
-  height: 0;
-  background-color: var(--theme-primary);
-}
-
-#ScrollBar #scrollbar-thumb-wrapper {
-  position: relative;
-  top: 100%;
-  height: 2rem;
-  width: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translate(-0.95rem, -1rem);
-}
-
-#ScrollBar #scrollbar-thumb {
-  top: 100%;
-  height: 1rem;
-  width: 1rem;
-  border-radius: 100%;
-  background-color: var(--theme-primary);
-}
-
-#ToolWrapper.horizontal > #ScrollBar {
-  display: flex;
-  width: 95.5vw;
-  height: 2.4rem;
-  min-height: unset;
-  align-items: center;
-  margin-top: unset;
-}
-
-#ToolWrapper.horizontal > #ScrollBar > .scrollbar-item {
-  display: flex;
-  justify-content: center;
-  color: var(--theme-onSurface);
-}
-
-#ToolWrapper.horizontal > #ScrollBar > .scrollbar-item.scrollbar-text {
-  width: 12.5%;
-}
-
-#ToolWrapper.horizontal > #ScrollBar > .scrollbar-item#scrollbar-slider {
-  width: 75%;
-  align-items: center;
-}
-
-#ToolWrapper.horizontal > #ScrollBar #scrollbar-track {
-  height: 0.1rem;
-  width: 100%;
-  background-color: var(--theme-outline);
-}
-
-#ToolWrapper.horizontal > #ScrollBar #scrollbar-progress {
-  height: 100%;
-  width: 0;
-  background-color: var(--theme-primary);
-}
-
-#ToolWrapper.horizontal > #ScrollBar #scrollbar-thumb-wrapper {
-  position: relative;
-  left: 100%;
-  height: 2rem;
-  width: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translate(-0.95rem, -1rem);
-}
-
-#ToolWrapper.horizontal > #ScrollBar #scrollbar-thumb {
-  top: 100%;
-  height: 1rem;
-  width: 1rem;
-  border-radius: 100%;
-  background-color: var(--theme-primary);
-}
-
 #reader-footer-wrapper {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
+  z-index: 9999999;
 }
 
 #reader-footer {
@@ -302,7 +142,8 @@ td {
   text-align: right;
 }
 
-.highlight, .highlight *{
+.highlight,
+.highlight * {
   color: var(--theme-onSecondary) !important;
   background-color: var(--theme-secondary);
 }
@@ -327,42 +168,4 @@ td {
 #Image img {
   display: block;
   width: 100%;
-}
-
-#TTS-Controller {
-  position: fixed;
-  top: 50%;
-  left: 20px;
-  opacity: 0.5;
-}
-
-#TTS-Controller button {
-  background: var(--theme-surface-0-9);
-  outline: none;
-  border-width: 0;
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  padding: 4px;
-  border-radius: 100%;
-  transition: .5s;
-}
-
-#TTS-Controller.active{
-  opacity: 1;
-}
-
-#TTS-Controller.active button {
-  padding: 16px;
-}
-
-#TTS-Controller svg {
-  fill: var(--theme-onSurface);
-  width: 20px;
-  height: 20px;
-}
-
-#TTS-Controller.active svg {
-  width: 24px;
-  height: 24px;
 }

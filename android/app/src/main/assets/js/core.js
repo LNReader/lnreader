@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 window.reader = new (function () {
   const {
     readerSettings,
@@ -5,6 +6,7 @@ window.reader = new (function () {
     novel,
     chapter,
     nextChapter,
+    prevChapter,
     batteryLevel,
     autoSaveInterval,
     DEBUG,
@@ -24,6 +26,7 @@ window.reader = new (function () {
   this.novel = novel;
   this.chapter = chapter;
   this.nextChapter = nextChapter;
+  this.prevChapter = prevChapter;
   this.strings = strings;
   this.autoSaveInterval = autoSaveInterval;
   this.rawHTML = this.chapterElement.innerHTML;
@@ -38,6 +41,9 @@ window.reader = new (function () {
   this.chapterHeight = this.chapterElement.scrollHeight + this.paddingTop;
   this.layoutHeight = window.screen.height;
   this.layoutWidth = window.screen.width;
+
+  this.layoutEvent = undefined;
+  this.chapterEndingVisible = van.state(false);
 
   this.post = obj => window.ReactNativeWebView.postMessage(JSON.stringify(obj));
   this.refresh = () => {
@@ -93,7 +99,7 @@ window.reader = new (function () {
     }
   });
 
-  setInterval(() => {
+  document.onscrollend = () => {
     if (!this.generalSettings.val.pageReader) {
       this.post({
         type: 'save',
@@ -102,17 +108,11 @@ window.reader = new (function () {
           10,
         ),
       });
-    } else {
-      this.post({
-        type: 'save',
-        data: parseInt(
-          ((pageReader.page.val + 1) / pageReader.totalPages.val) * 100,
-        ),
-      });
     }
-  }, this.autoSaveInterval);
+  };
 
   if (DEBUG) {
+    // eslint-disable-next-line no-global-assign, no-new-object
     console = new Object();
     console.log = function (...data) {
       reader.post({ 'type': 'console', 'msg': data?.join(' ') });
@@ -261,18 +261,83 @@ window.tts = new (function () {
 window.pageReader = new (function () {
   this.page = van.state(0);
   this.totalPages = van.state(0);
+  this.chapterEndingVisible = van.state(
+    initialPageReaderConfig.nextChapterScreenVisible,
+  );
+  this.chapterEnding = document.getElementsByClassName('transition-chapter')[0];
+
+  this.showChapterEnding = (bool, instant, left) => {
+    if (!this.chapterEnding) {
+      this.chapterEnding =
+        document.getElementsByClassName('transition-chapter')[0];
+      if (!this.chapterEnding) return;
+    }
+    this.chapterEnding.style.transition = 'unset';
+    if (bool) {
+      this.chapterEnding.style.transform = `translateX(${left ? -200 : 0}vw)`;
+      requestAnimationFrame(() => {
+        if (!instant) this.chapterEnding.style.transition = '200ms';
+        this.chapterEnding.style.transform = 'translateX(-100vw)';
+      });
+      this.chapterEndingVisible.val = true;
+    } else {
+      if (!instant) this.chapterEnding.style.transition = '200ms';
+      this.chapterEnding.style.transform = `translateX(${left ? -200 : 0}vw)`;
+      this.chapterEndingVisible.val = false;
+    }
+  };
 
   this.movePage = destPage => {
-    destPage = parseInt(destPage);
+    if (this.chapterEndingVisible.val) {
+      if (destPage < 0) {
+        this.showChapterEnding(false);
+        return;
+      }
+      if (destPage < this.totalPages.val) {
+        this.showChapterEnding(false, false, true);
+        return;
+      }
+      if (destPage >= this.totalPages.val) {
+        return reader.post({ type: 'next' });
+      }
+    }
+    destPage = parseInt(destPage, 10);
     if (destPage < 0) {
-      return reader.post({ type: 'prev' });
+      document.getElementsByClassName('transition-chapter')[0].innerText =
+        reader.prevChapter.name;
+      this.showChapterEnding(true, false, true);
+      setTimeout(() => {
+        reader.post({ type: 'prev' });
+      }, 200);
+      return;
     }
     if (destPage >= this.totalPages.val) {
-      return reader.post({ type: 'next' });
+      document.getElementsByClassName('transition-chapter')[0].innerText =
+        reader.nextChapter.name;
+      this.showChapterEnding(true);
+      setTimeout(() => {
+        reader.post({ type: 'next' });
+      }, 200);
+      return;
     }
     this.page.val = destPage;
     reader.chapterElement.style.transform =
       'translateX(-' + destPage * 100 + '%)';
+
+    const newProgress = parseInt(
+      ((pageReader.page.val + 1) / pageReader.totalPages.val) * 100,
+      10,
+    );
+
+    if (newProgress > reader.chapter.progress) {
+      reader.post({
+        type: 'save',
+        data: parseInt(
+          ((pageReader.page.val + 1) / pageReader.totalPages.val) * 100,
+          10,
+        ),
+      });
+    }
   };
 
   van.derive(() => {
@@ -294,6 +359,7 @@ window.pageReader = new (function () {
         this.totalPages.val = parseInt(
           (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
             reader.layoutWidth,
+          10,
         );
         this.movePage(this.totalPages.val * ratio);
       }, 100);
@@ -313,30 +379,54 @@ window.pageReader = new (function () {
   });
 })();
 
-window.addEventListener('DOMContentLoaded', async () => {
-  // wait for content is rendered
-  setTimeout(() => {
-    reader.refresh();
-    if (reader.generalSettings.val.pageReader) {
-      pageReader.totalPages.val = parseInt(
-        (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
-          reader.layoutWidth,
-      );
-      pageReader.movePage(
-        parseInt(
-          pageReader.totalPages.val *
-            Math.min(0.99, reader.chapter.progress / 100),
-        ),
-      );
-    } else {
-      window.scrollTo({
-        top:
-          (reader.chapterHeight * reader.chapter.progress) / 100 -
-          reader.layoutHeight,
-        behavior: 'smooth',
-      });
-    }
-  }, 100);
+document.addEventListener('DOMContentLoaded', () => {
+  if (pageReader.chapterEndingVisible.val) {
+    pageReader.showChapterEnding(true, true);
+  }
+});
+
+function calculatePages() {
+  reader.refresh();
+
+  if (reader.generalSettings.val.pageReader) {
+    pageReader.totalPages.val = parseInt(
+      (reader.chapterWidth + reader.readerSettings.val.padding * 2) /
+        reader.layoutWidth,
+      10,
+    );
+
+    if (initialPageReaderConfig.nextChapterScreenVisible) return;
+
+    pageReader.movePage(
+      Math.max(
+        0,
+        Math.round(
+          (pageReader.totalPages.val * reader.chapter.progress) / 100,
+        ) - 1,
+      ),
+    );
+  } else {
+    window.scrollTo({
+      top:
+        (reader.chapterHeight * reader.chapter.progress) / 100 -
+        reader.layoutHeight,
+      behavior: 'smooth',
+    });
+  }
+}
+
+const ro = new ResizeObserver(() => {
+  if (pageReader.totalPages.val) {
+    calculatePages();
+  }
+});
+ro.observe(reader.chapterElement);
+
+// Also call once on load
+window.addEventListener('load', () => {
+  document.fonts.ready.then(() => {
+    requestAnimationFrame(() => setTimeout(calculatePages, 0));
+  });
 });
 
 // click handler
@@ -365,6 +455,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       x: clientX / reader.layoutWidth,
       y: clientY / reader.layoutHeight,
     };
+
     if (reader.generalSettings.val.pageReader) {
       const position = detectTapPosition(x, y, true);
       if (position === 'left') {

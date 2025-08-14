@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import * as Linking from 'expo-linking';
 
@@ -37,7 +37,7 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
         theme={theme}
         goBack={true}
       />
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={styles.flex}>
         <List.Section>
           <List.Item
             title={getString('aboutScreen.version')}
@@ -100,3 +100,7 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
 };
 
 export default AboutScreen;
+
+const styles = StyleSheet.create({
+  flex: { flex: 1 },
+});

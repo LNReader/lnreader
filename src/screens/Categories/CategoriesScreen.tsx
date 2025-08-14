@@ -1,31 +1,28 @@
 import { FlatList, StyleSheet } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
 import { Appbar, EmptyView, SafeAreaView } from '@components/index';
 import AddCategoryModal from './components/AddCategoryModal';
 
-import {
-  getCategoriesFromDb,
-  updateCategoryOrderInDb,
-} from '@database/queries/CategoryQueries';
+import { updateCategoryOrderInDb } from '@database/queries/CategoryQueries';
 import { useBoolean } from '@hooks';
 import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 
-import { Category } from '@database/types';
 import CategoryCard from './components/CategoryCard';
 import { orderBy } from 'lodash-es';
 import CategorySkeletonLoading from './components/CategorySkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLibraryContext } from '@components/Context/LibraryContext';
 
 const CategoriesScreen = () => {
+  const { categories, setCategories, refreshCategories, isLoading } =
+    useLibraryContext();
   const theme = useTheme();
   const { goBack } = useNavigation();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [categories, setCategories] = useState<Category[]>();
   const { bottom, right } = useSafeAreaInsets();
 
   const {
@@ -34,27 +31,17 @@ const CategoriesScreen = () => {
     setFalse: closeCategoryModal,
   } = useBoolean();
 
-  const getCategories = async () => {
-    try {
-      const res = getCategoriesFromDb();
-      setCategories(res);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    getCategories();
-  }, []);
+    refreshCategories();
+  }, [refreshCategories]);
+
   const updateCategorySort = (currentIndex: number, newIndex: number) => {
     // Do not set local as default one
     if (
       (newIndex === 0 &&
-        currentIndex == 1 &&
+        currentIndex === 1 &&
         categories?.[currentIndex].id === 2) ||
-      (newIndex === 1 && currentIndex == 0 && categories?.[newIndex].id === 2)
+      (newIndex === 1 && currentIndex === 0 && categories?.[newIndex].id === 2)
     ) {
       return;
     }
@@ -93,7 +80,7 @@ const CategoriesScreen = () => {
           renderItem={({ item, index }) => (
             <CategoryCard
               category={item}
-              getCategories={getCategories}
+              getCategories={refreshCategories}
               categoryIndex={index}
               updateCategorySort={updateCategorySort}
               totalCategories={categories?.length || 0}
@@ -120,7 +107,7 @@ const CategoriesScreen = () => {
       <AddCategoryModal
         visible={categoryModalVisible}
         closeModal={closeCategoryModal}
-        onSuccess={getCategories}
+        onSuccess={refreshCategories}
       />
     </SafeAreaView>
   );

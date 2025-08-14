@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import DisplayModeModal from './modals/DisplayModeModal';
 import GridSizeModal from './modals/GridSizeModal';
@@ -108,7 +108,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
         handleGoBack={navigation.goBack}
         theme={theme}
       />
-      <ScrollView contentContainerStyle={{ paddingBottom: 32 }}>
+      <ScrollView contentContainerStyle={styles.paddingBottom}>
         <List.Section>
           <List.SubHeader theme={theme}>
             {getString('common.display')}
@@ -285,3 +285,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
 };
 
 export default GenralSettings;
+
+const styles = StyleSheet.create({
+  paddingBottom: { paddingBottom: 32 },
+});

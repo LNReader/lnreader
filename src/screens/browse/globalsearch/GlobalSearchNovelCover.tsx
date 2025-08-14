@@ -23,6 +23,8 @@ const GlobalSearchNovelCover = ({
 
   const uri = cover;
 
+  const opacity = inLibrary ? 0.5 : 1;
+
   return (
     <View style={styles.container}>
       <Pressable
@@ -33,7 +35,7 @@ const GlobalSearchNovelCover = ({
       >
         <Image
           source={{ uri }}
-          style={[styles.novelCover, inLibrary && { opacity: 0.5 }]}
+          style={[styles.novelCover, { opacity }]}
           progressiveRenderingEnabled={true}
         />
         <Text

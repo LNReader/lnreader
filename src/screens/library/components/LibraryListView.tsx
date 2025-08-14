@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RefreshControl, View } from 'react-native';
+import { RefreshControl, StyleSheet, View } from 'react-native';
 import { xor } from 'lodash-es';
 
 import { EmptyView } from '@components/index';
@@ -26,33 +26,37 @@ interface Props {
 export const LibraryView: React.FC<Props> = ({
   categoryId,
   categoryName,
-  novels,
   selectedNovelIds,
   setSelectedNovelIds,
   pickAndImport,
   navigation,
+  novels,
 }) => {
   const theme = useTheme();
-  const renderItem = ({ item }: { item: NovelInfo }) => (
-    <NovelCover
-      item={item}
-      theme={theme}
-      isSelected={selectedNovelIds.includes(item.id)}
-      onLongPress={() => setSelectedNovelIds(xor(selectedNovelIds, [item.id]))}
-      onPress={() => {
-        if (selectedNovelIds.length) {
-          setSelectedNovelIds(xor(selectedNovelIds, [item.id]));
-        } else {
-          navigation.navigate('ReaderStack', {
-            screen: 'Novel',
-            params: item,
-          });
+  const renderItem = ({ item }: { item: NovelInfo }) => {
+    return (
+      <NovelCover
+        item={item}
+        theme={theme}
+        isSelected={selectedNovelIds.includes(item.id)}
+        onLongPress={() =>
+          setSelectedNovelIds(xor(selectedNovelIds, [item.id]))
         }
-      }}
-      libraryStatus={false} // yes but actually no :D
-      selectedNovelIds={selectedNovelIds}
-    />
-  );
+        onPress={() => {
+          if (selectedNovelIds.length) {
+            setSelectedNovelIds(xor(selectedNovelIds, [item.id]));
+          } else {
+            navigation.navigate('ReaderStack', {
+              screen: 'Novel',
+              params: item,
+            });
+          }
+        }}
+        libraryStatus={false} // yes but actually no :D
+        selectedNovelIds={selectedNovelIds}
+      />
+    );
+  };
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -73,7 +77,7 @@ export const LibraryView: React.FC<Props> = ({
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.flex}>
       <NovelList
         data={novels}
         extraData={[selectedNovelIds]}
@@ -110,3 +114,7 @@ export const LibraryView: React.FC<Props> = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  flex: { flex: 1 },
+});

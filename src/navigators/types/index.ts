@@ -84,9 +84,12 @@ export type SettingsStackParamList = {
   RespositorySettings: { url?: string } | undefined;
 };
 
-export type NovelScreenProps = StackScreenProps<ReaderStackParamList, 'Novel'>;
+export type NovelScreenProps = StackScreenProps<
+  ReaderStackParamList & RootStackParamList,
+  'Novel'
+>;
 export type ChapterScreenProps = StackScreenProps<
-  ReaderStackParamList,
+  ReaderStackParamList & RootStackParamList,
   'Chapter'
 >;
 export type ReaderStackParamList = {
@@ -177,9 +180,7 @@ export type RespositorySettingsScreenProps = CompositeScreenProps<
 >;
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace ReactNavigation {
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface RootParamList extends RootStackParamList {}
   }
 }

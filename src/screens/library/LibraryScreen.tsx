@@ -38,7 +38,6 @@ import {
 } from '@database/queries/ChapterQueries';
 import { removeNovelsFromLibrary } from '@database/queries/NovelQueries';
 import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
-import { debounce } from 'lodash-es';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { Row } from '@components/Common';
@@ -72,10 +71,10 @@ type TabViewLabelProps = {
 };
 
 const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
+  const { searchText, setSearchText, clearSearchbar } = useSearch();
   const theme = useTheme();
   const styles = createStyles(theme);
   const { left: leftInset, right: rightInset } = useSafeAreaInsets();
-  const { searchText, setSearchText, clearSearchbar } = useSearch();
   const {
     library,
     categories,
@@ -84,17 +83,12 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     settings: { showNumberOfNovels, downloadedOnlyMode, incognitoMode },
   } = useLibraryContext();
 
+  const { importNovel } = useImport();
   const { useLibraryFAB = false } = useAppSettings();
 
   const { isLoading: isHistoryLoading, history, error } = useHistory();
 
-  const { importNovel } = useImport();
-
   const layout = useWindowDimensions();
-
-  const onChangeText = debounce((text: string) => {
-    setSearchText(text);
-  }, 100);
 
   const bottomSheetRef = useRef<BottomSheetModal | null>(null);
 
@@ -214,7 +208,13 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
       };
     }) => {
       const ids = route.novelIds;
-      const novels = library.filter(l => ids.includes(l.id));
+      const unfilteredNovels = library.filter(l => ids.includes(l.id));
+
+      const novels = unfilteredNovels.filter(
+        n =>
+          n.name.toLowerCase().includes(searchText.toLowerCase()) ||
+          (n.author?.toLowerCase().includes(searchText.toLowerCase()) ?? false),
+      );
 
       return isLoading ? (
         <SourceScreenSkeletonLoading theme={theme} />
@@ -289,6 +289,18 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     ],
   );
 
+  const navigationState = useMemo(
+    () => ({
+      index,
+      routes: categories.map(category => ({
+        key: String(category.id),
+        title: category.name,
+        ...category,
+      })),
+    }),
+    [categories, index],
+  );
+
   return (
     <SafeAreaView excludeBottom>
       <SearchbarV2
@@ -300,7 +312,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
             setSelectedNovelIds([]);
           }
         }}
-        onChangeText={onChangeText}
+        onChangeText={setSearchText}
         leftIcon={selectedNovelIds.length ? 'close' : 'magnify'}
         rightIcons={
           selectedNovelIds.length
@@ -372,14 +384,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
           label: renderLabel,
         }}
         lazy
-        navigationState={{
-          index,
-          routes: categories.map(category => ({
-            key: String(category.id),
-            title: category.name,
-            ...category,
-          })),
-        }}
+        navigationState={navigationState}
         renderTabBar={renderTabBar}
         renderScene={renderScene}
         onIndexChange={setIndex}

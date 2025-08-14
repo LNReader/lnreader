@@ -61,9 +61,13 @@ async function defaultQueryAsync<T = unknown, Array extends boolean = false>(
 }
 
 export async function runAsync(queryObjects: QueryObject<SQLiteRunResult>[]) {
+  const promises = [];
   for (const queryObject of queryObjects) {
-    defaultQueryAsync<SQLiteRunResult, false>('runAsync', queryObject, null);
+    promises.push(
+      defaultQueryAsync<SQLiteRunResult, false>('runAsync', queryObject, null),
+    );
   }
+  await Promise.all(promises);
 }
 
 export function runSync(queryObjects: QueryObject<SQLiteRunResult>[]) {
@@ -86,7 +90,8 @@ export function getFirstSync<T = unknown>(queryObject: QueryObject<T>) {
   return defaultQuerySync<T, false>('getFirstSync', queryObject, null);
 }
 
-type TransactionObject = [query, ...params: SQLiteBindValue[]];
+type params = SQLiteBindValue[];
+type TransactionObject = [query, ...params];
 
 export async function transactionAsync(transactionObject: TransactionObject[]) {
   await db.withTransactionAsync(async () => {

@@ -39,15 +39,10 @@ export const createTables = () => {
     db.getFirstSync<{ user_version: number }>('PRAGMA user_version')
       ?.user_version ?? 0;
 
-  if (userVersion < 1) {
-    updateToDBVersion1();
-  }
-
   if (!isOnBoard) {
     db.execSync('PRAGMA journal_mode = WAL');
     db.execSync('PRAGMA synchronous = NORMAL');
     db.execSync('PRAGMA temp_store = MEMORY');
-
     db.withTransactionSync(() => {
       db.runSync(createNovelTableQuery);
       db.runSync(createNovelIndexQuery);
@@ -63,6 +58,10 @@ export const createTables = () => {
       db.runSync(createNovelTriggerQueryDelete);
       db.execSync('PRAGMA user_version = 1');
     });
+  } else {
+    if (userVersion < 1) {
+      updateToDBVersion1();
+    }
   }
 };
 

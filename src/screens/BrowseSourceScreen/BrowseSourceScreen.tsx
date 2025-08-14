@@ -14,12 +14,11 @@ import { useBrowseSource, useSearchSource } from './useBrowseSource';
 import { NovelItem } from '@plugins/types';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
-import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
-import { switchNovelToLibrary } from '@database/queries/NovelQueries';
-import { LibraryNovelInfo, NovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BrowseSourceScreenProps } from '@navigators/types';
+import { useLibraryContext } from '@components/Context/LibraryContext';
 
 const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
   const theme = useTheme();
@@ -67,38 +66,11 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     });
   };
 
-  const { library, setLibrary } = useLibraryNovels();
+  const { novelInLibrary, switchNovelToLibrary } = useLibraryContext();
   const [inActivity, setInActivity] = useState<Record<string, boolean>>({});
 
-  const switchLibraryState = (
-    prevValues: NovelInfo[],
-    item: NovelItem | NovelInfo,
-  ) => {
-    const inLibrary = prevValues.some(
-      novel => novel.path === item.path && novel.pluginId === pluginId,
-    );
-    if (inLibrary) {
-      return [...prevValues.filter(novel => novel.path !== item.path)];
-    } else {
-      return [
-        ...prevValues,
-        {
-          ...item,
-          pluginId: pluginId,
-          inLibrary: true,
-          isLocal: false,
-        } as NovelInfo,
-      ];
-    }
-  };
-
-  const novelInLibrary = (novelPath: string) =>
-    library?.some(
-      novel => novel.pluginId === pluginId && novel.path === novelPath,
-    );
-
   const navigateToNovel = useCallback(
-    (item: NovelItem | LibraryNovelInfo) =>
+    (item: NovelItem | NovelInfo) =>
       navigation.navigate('ReaderStack', {
         screen: 'Novel',
         params: {
@@ -148,7 +120,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
           data={novelList}
           inSource
           renderItem={({ item }) => {
-            const inLibrary = novelInLibrary(item.path);
+            const inLibrary = novelInLibrary(pluginId, item.path);
 
             return (
               <NovelCover
@@ -167,9 +139,6 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
 
                   await switchNovelToLibrary(item.path, pluginId);
 
-                  setLibrary(prevValues =>
-                    switchLibraryState(prevValues, item),
-                  );
                   setInActivity(prev => ({ ...prev, [item.path]: false }));
                 }}
                 selectedNovelIds={[]}

@@ -28,8 +28,8 @@ import { MaterialDesignIconName } from '@type/icon';
 import NovelScreenList from './components/NovelScreenList';
 import { ThemeColors } from '@theme/types';
 import { SafeAreaView } from '@components';
-import { LegendListRef } from '@legendapp/list';
 import { useNovelContext } from './NovelContext';
+import { FlashList } from '@shopify/flash-list';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const {
@@ -57,7 +57,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const [selected, setSelected] = useState<ChapterInfo[]>([]);
   const [editInfoModal, showEditInfoModal] = useState(false);
 
-  const chapterListRef = useRef<LegendListRef>(null);
+  const chapterListRef = useRef<FlashList<ChapterInfo> | null>(null);
 
   const deleteDownloadsSnackbar = useBoolean();
 
@@ -231,7 +231,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       swipeMinVelocity={1000}
       drawerStyle={styles.drawer}
       renderDrawerContent={() =>
-        (novel?.totalPages ?? 0) > 1 ? (
+        (novel?.totalPages ?? 0) > 1 || pages.length > 1 ? (
           <NovelDrawer
             theme={theme}
             pages={pages}

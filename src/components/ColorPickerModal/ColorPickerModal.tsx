@@ -79,24 +79,14 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
         </Text>
         {showAccentColors ? (
           <FlatList
-            contentContainerStyle={{ marginBottom: 8 }}
+            contentContainerStyle={styles.marginBottom}
             data={accentColors}
             numColumns={4}
             keyExtractor={item => item}
             renderItem={({ item }) => (
-              <View
-                style={{
-                  borderRadius: 4,
-                  overflow: 'hidden',
-                  backgroundColor: item,
-                  flex: 1 / 4,
-                  height: 40,
-                  marginHorizontal: 4,
-                  marginVertical: 4,
-                }}
-              >
+              <View style={[styles.item, { backgroundColor: item }]}>
                 <Pressable
-                  style={{ flex: 1 }}
+                  style={styles.flex}
                   android_ripple={{
                     color: 'rgba(0,0,0,0.12)',
                   }}
@@ -138,4 +128,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 16,
   },
+  item: {
+    borderRadius: 4,
+    overflow: 'hidden',
+
+    flex: 1 / 4,
+    height: 40,
+    marginHorizontal: 4,
+    marginVertical: 4,
+  },
+  flex: { flex: 1 },
+  marginBottom: { marginBottom: 8 },
 });

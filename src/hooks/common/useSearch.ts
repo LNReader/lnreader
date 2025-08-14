@@ -1,5 +1,5 @@
 import { useIsFocused } from '@react-navigation/native';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const useSearch = (defaultSearchText?: string, clearSearchOnUnfocus = true) => {
   const isFocused = useIsFocused();
@@ -14,9 +14,12 @@ const useSearch = (defaultSearchText?: string, clearSearchOnUnfocus = true) => {
         clearSearchbar();
       }
     }
-  }, [isFocused, clearSearchbar]);
+  }, [clearSearchbar, clearSearchOnUnfocus, isFocused]);
 
-  return { searchText, setSearchText, clearSearchbar };
+  return useMemo(
+    () => ({ searchText, setSearchText, clearSearchbar }),
+    [searchText, setSearchText, clearSearchbar],
+  );
 };
 
 export default useSearch;

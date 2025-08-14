@@ -73,7 +73,7 @@ export const myAnimeListTracker: Tracker = {
       },
       body: new URLSearchParams({
         grant_type: 'refresh_token',
-        refresh_token: auth.refreshToken,
+        refresh_token: auth.refreshToken!,
       }).toString(),
     });
 
@@ -128,11 +128,11 @@ export const myAnimeListTracker: Tracker = {
     let status = payload.status
       ? normalizedToMal[payload.status]
       : normalizedToMal.CURRENT;
-    let repeating = false;
+    let repeating = 'false';
     if (status.includes(';')) {
       const split = status.split(';');
       status = split[0];
-      repeating = Boolean(split[1]);
+      repeating = split[1];
     }
 
     const url = `${baseApiUrl}/manga/${id}/my_list_status`;
@@ -145,8 +145,8 @@ export const myAnimeListTracker: Tracker = {
       body: new URLSearchParams({
         status,
         is_rereading: repeating,
-        num_chapters_read: payload.progress,
-        score: payload.score,
+        num_chapters_read: '' + payload.progress!,
+        score: '' + payload.score!,
       }).toString(),
     });
 

@@ -1,7 +1,7 @@
 import { Modal } from '@components';
 import React, { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import {  TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 
 const SetTrackChaptersDialog = ({
   trackItem,

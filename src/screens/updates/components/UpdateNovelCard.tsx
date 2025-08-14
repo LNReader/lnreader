@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-unused-styles */
 import { Pressable, StyleSheet, View, Image } from 'react-native';
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -54,7 +53,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
 
   const theme = useTheme();
 
-  const updateList = async () => {
+  const updateList = useCallback(async () => {
     getDetailedUpdates(chapterListInfo.novelId, onlyDownloadedChapters).then(
       res => {
         if (res.length) {
@@ -62,10 +61,10 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         }
       },
     );
-  };
+  }, [chapterListInfo.novelId, getDetailedUpdates, onlyDownloadedChapters]);
   useEffect(() => {
     updateList();
-  }, []);
+  }, [updateList]);
 
   const handleDownloadChapter = (chapter: Update | DownloadedChapter) => {
     if (chapterListInfo.updatesPerDay) {
@@ -142,7 +141,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         description={`${chapterListInfo.updatesPerDay} ${descriptionText}`}
         onPress={updateList}
       >
-        {chapterList.length > 0 ? ( //@ts-expect-error
+        {chapterList.length > 0 ? (
           <FlatList
             data={chapterList}
             keyExtractor={it => 'update' + it.id}

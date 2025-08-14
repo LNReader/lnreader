@@ -153,7 +153,7 @@ const BrowseMalScreen = ({ navigation }: BrowseMalScreenProps) => {
           }}
           ListFooterComponent={
             !searchText ? (
-              <View style={{ paddingVertical: 16 }}>
+              <View style={styles.paddingVertical}>
                 <ActivityIndicator color={theme.primary} />
               </View>
             ) : null
@@ -175,4 +175,5 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     paddingHorizontal: 4,
   },
+  paddingVertical: { paddingVertical: 16 },
 });

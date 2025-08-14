@@ -9,7 +9,10 @@ const ChapterEnding = () => {
             ? button(
                 {
                   class: 'next-button',
-                  onclick: () => reader.post({ type: 'next' }),
+                  onclick: e => {
+                    e.stopPropagation();
+                    reader.post({ type: 'next' });
+                  },
                 },
                 reader.strings.nextChapter,
               )

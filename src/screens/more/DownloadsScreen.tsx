@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
 import { Appbar as MaterialAppbar } from 'react-native-paper';
@@ -30,9 +30,9 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
   const [loading, setLoading] = useState(true);
   const [chapters, setChapters] = useState<DownloadedChapter[]>([]);
   const groupUpdatesByDate = (
-    chapters: DownloadedChapter[],
+    localChapters: DownloadedChapter[],
   ): DownloadedChapter[][] => {
-    const dateGroups = chapters.reduce((groups, item) => {
+    const dateGroups = localChapters.reduce((groups, item) => {
       const novelId = item.novelId;
       if (!groups[novelId]) {
         groups[novelId] = [];
@@ -70,13 +70,16 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
     );
   };
 
-  const ListEmptyComponent = () =>
-    !loading ? (
-      <EmptyView
-        icon="(˘･_･˘)"
-        description={getString('downloadScreen.noDownloads')}
-      />
-    ) : null;
+  const ListEmptyComponent = useCallback(
+    () =>
+      !loading ? (
+        <EmptyView
+          icon="(˘･_･˘)"
+          description={getString('downloadScreen.noDownloads')}
+        />
+      ) : null,
+    [loading],
+  );
 
   useEffect(() => {
     getChapters().finally(() => setLoading(false));

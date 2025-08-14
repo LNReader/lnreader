@@ -1,11 +1,9 @@
 import React from 'react';
-import { View, Pressable, TextStyle } from 'react-native';
+import { View, Pressable, TextStyle, StyleProp, ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import color from 'color';
 import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
-import { StyleProp } from 'react-native';
-import { ViewStyle } from 'react-native';
 
 type Styles = {
   chapterCtn: StyleProp<ViewStyle>;

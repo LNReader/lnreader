@@ -38,7 +38,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-project.xcworkspace
+**/.xcode.env.local
 
 # Android/IntelliJ
 #
@@ -70,6 +70,7 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+Gemfile.lock
 
 # Expo
 .expo/

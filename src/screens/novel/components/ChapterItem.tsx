@@ -111,8 +111,10 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                     : bookmark
                     ? theme.primary
                     : theme.onSurface,
+                  flex: 1,
                 }}
                 numberOfLines={1}
+                ellipsizeMode="tail"
               >
                 {showChapterTitles
                   ? name
@@ -189,7 +191,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
   },
-  row: { alignItems: 'center', flex: 1, flexDirection: 'row' },
+  row: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+  },
   text: {
     fontSize: 12,
   },

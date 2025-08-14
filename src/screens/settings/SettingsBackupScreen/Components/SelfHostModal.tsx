@@ -5,10 +5,10 @@ import ServiceManager from '@services/ServiceManager';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import { fetchTimeout } from '@utils/fetch/fetch';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { TextInput } from 'react-native-paper';
+import { Portal, TextInput } from 'react-native-paper';
 
 enum BackupModal {
   SET_HOST,
@@ -87,7 +87,16 @@ function RestoreBackup({
     list(host).then(items =>
       setBackupList(items.filter(item => item.endsWith('.backup'))),
     );
-  }, []);
+  }, [host]);
+
+  const emptyComponent = useCallback(() => {
+    return (
+      <EmptyView
+        description={getString('backupScreen.noBackupFound')}
+        theme={theme}
+      />
+    );
+  }, [theme]);
 
   return (
     <>
@@ -115,12 +124,7 @@ function RestoreBackup({
             </Text>
           </Button>
         )}
-        ListEmptyComponent={() => (
-          <EmptyView
-            description={getString('backupScreen.noBackupFound')}
-            theme={theme}
-          />
-        )}
+        ListEmptyComponent={emptyComponent}
       />
       <View style={styles.footerContainer}>
         <Button
@@ -181,8 +185,8 @@ function SetHost({
                   throw new Error(getString('backupScreen.remote.unknownHost'));
                 }
               })
-              .catch((error: any) => {
-                setError(error.message);
+              .catch((e: any) => {
+                setError(e.message);
               })
               .finally(() => {
                 setFetching(false);
@@ -265,16 +269,18 @@ export default function SelfHostModal({
   };
 
   return (
-    <Modal visible={visible} onDismiss={closeModal}>
-      <>
-        <View style={styles.titleContainer}>
-          <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-            {getString('backupScreen.remote.backup')}
-          </Text>
-        </View>
-        {renderModal()}
-      </>
-    </Modal>
+    <Portal>
+      <Modal visible={visible} onDismiss={closeModal}>
+        <>
+          <View style={styles.titleContainer}>
+            <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
+              {getString('backupScreen.remote.backup')}
+            </Text>
+          </View>
+          {renderModal()}
+        </>
+      </Modal>
+    </Portal>
   );
 }
 

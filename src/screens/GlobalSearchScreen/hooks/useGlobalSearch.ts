@@ -41,113 +41,117 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
 
   const { globalSearchConcurrency = 1 } = useBrowseSettings();
 
-  const globalSearch = (searchText: string) => {
-    if (lastSearch.current === searchText) {
-      return;
-    }
-    lastSearch.current = searchText;
-    const defaultResult: GlobalSearchResult[] = filteredInstalledPlugins.map(
-      plugin => ({
-        isLoading: true,
-        plugin,
-        novels: [],
-        error: null,
-      }),
-    );
-
-    setSearchResults(defaultResult.sort(novelResultSorter));
-    setProgress(0);
-
-    let running = 0;
-
-    async function searchInPlugin(_plugin: PluginItem) {
-      try {
-        const plugin = getPlugin(_plugin.id);
-        if (!plugin) {
-          throw new Error(`Unknown plugin: ${_plugin.id}`);
-        }
-        const res = await plugin.searchNovels(searchText, 1);
-
-        setSearchResults(prevState =>
-          prevState
-            .map(prevResult =>
-              prevResult.plugin.id === plugin.id
-                ? { ...prevResult, novels: res, isLoading: false }
-                : { ...prevResult },
-            )
-            .sort(novelResultSorter),
-        );
-      } catch (error: any) {
-        const errorMessage = error?.message || String(error);
-        setSearchResults(prevState =>
-          prevState
-            .map(prevResult =>
-              prevResult.plugin.id === _plugin.id
-                ? {
-                    ...prevResult,
-                    novels: [],
-                    isLoading: false,
-                    error: errorMessage,
-                  }
-                : { ...prevResult },
-            )
-            .sort(novelResultSorter),
-        );
+  const globalSearch = useCallback(
+    (searchText: string) => {
+      if (lastSearch.current === searchText) {
+        return;
       }
-    }
+      lastSearch.current = searchText;
+      const defaultResult: GlobalSearchResult[] = filteredInstalledPlugins.map(
+        plugin => ({
+          isLoading: true,
+          plugin,
+          novels: [],
+          error: null,
+        }),
+      );
 
-    //Sort so we load the plugins results in the same order as they show on the list
-    const filteredSortedInstalledPlugins = [...filteredInstalledPlugins].sort(
-      (a, b) => a.name.localeCompare(b.name),
-    );
+      setSearchResults(defaultResult.sort(novelResultSorter));
+      setProgress(0);
 
-    (async () => {
-      if (globalSearchConcurrency > 1) {
-        for (const _plugin of filteredSortedInstalledPlugins) {
-          while (running >= globalSearchConcurrency || !isFocused.current) {
-            await new Promise(resolve => setTimeout(resolve, 100));
+      let running = 0;
+
+      async function searchInPlugin(_plugin: PluginItem) {
+        try {
+          const plugin = getPlugin(_plugin.id);
+          if (!plugin) {
+            throw new Error(`Unknown plugin: ${_plugin.id}`);
           }
-          if (!isMounted.current || lastSearch.current !== searchText) {
-            break;
-          }
-          running++;
-          searchInPlugin(_plugin)
-            .then(() => {
-              running--;
-              if (lastSearch.current === searchText) {
-                setProgress(
-                  prevState => prevState + 1 / filteredInstalledPlugins.length,
-                );
-              }
-            })
-            .catch(() => {
-              running--;
-            });
-        }
-      } else {
-        for (const _plugin of filteredSortedInstalledPlugins) {
-          if (!isMounted.current || lastSearch.current !== searchText) {
-            break;
-          }
-          while (!isFocused.current) {
-            await new Promise(resolve => setTimeout(resolve, 100));
-          }
-          await searchInPlugin(_plugin);
-          if (lastSearch.current === searchText) {
-            setProgress(
-              prevState => prevState + 1 / filteredInstalledPlugins.length,
-            );
-          }
+          const res = await plugin.searchNovels(searchText, 1);
+
+          setSearchResults(prevState =>
+            prevState
+              .map(prevResult =>
+                prevResult.plugin.id === plugin.id
+                  ? { ...prevResult, novels: res, isLoading: false }
+                  : { ...prevResult },
+              )
+              .sort(novelResultSorter),
+          );
+        } catch (error: any) {
+          const errorMessage = error?.message || String(error);
+          setSearchResults(prevState =>
+            prevState
+              .map(prevResult =>
+                prevResult.plugin.id === _plugin.id
+                  ? {
+                      ...prevResult,
+                      novels: [],
+                      isLoading: false,
+                      error: errorMessage,
+                    }
+                  : { ...prevResult },
+              )
+              .sort(novelResultSorter),
+          );
         }
       }
-    })();
-  };
+
+      //Sort so we load the plugins results in the same order as they show on the list
+      const filteredSortedInstalledPlugins = [...filteredInstalledPlugins].sort(
+        (a, b) => a.name.localeCompare(b.name),
+      );
+
+      (async () => {
+        if (globalSearchConcurrency > 1) {
+          for (const _plugin of filteredSortedInstalledPlugins) {
+            while (running >= globalSearchConcurrency || !isFocused.current) {
+              await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            if (!isMounted.current || lastSearch.current !== searchText) {
+              break;
+            }
+            running++;
+            searchInPlugin(_plugin)
+              .then(() => {
+                running--;
+                if (lastSearch.current === searchText) {
+                  setProgress(
+                    prevState =>
+                      prevState + 1 / filteredInstalledPlugins.length,
+                  );
+                }
+              })
+              .catch(() => {
+                running--;
+              });
+          }
+        } else {
+          for (const _plugin of filteredSortedInstalledPlugins) {
+            if (!isMounted.current || lastSearch.current !== searchText) {
+              break;
+            }
+            while (!isFocused.current) {
+              await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            await searchInPlugin(_plugin);
+            if (lastSearch.current === searchText) {
+              setProgress(
+                prevState => prevState + 1 / filteredInstalledPlugins.length,
+              );
+            }
+          }
+        }
+      })();
+    },
+    [filteredInstalledPlugins, globalSearchConcurrency],
+  );
 
   useEffect(() => {
     if (defaultSearchText) {
       globalSearch(defaultSearchText);
     }
-  }, []);
+  }, [defaultSearchText, globalSearch]);
 
   return { searchResults, globalSearch, progress };
 };

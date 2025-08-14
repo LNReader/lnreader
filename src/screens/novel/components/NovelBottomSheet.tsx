@@ -46,7 +46,7 @@ const ChaptersSettingsSheet = ({
 
   const FirstRoute = useCallback(
     () => (
-      <View style={{ flex: 1 }}>
+      <View style={styles.flex}>
         <Checkbox
           theme={theme}
           label={getString('novelScreen.bottomSheet.filters.downloaded')}
@@ -110,7 +110,7 @@ const ChaptersSettingsSheet = ({
 
   const SecondRoute = useCallback(
     () => (
-      <View style={{ flex: 1 }}>
+      <View style={styles.flex}>
         <SortItem
           label={getString('novelScreen.bottomSheet.order.bySource')}
           status={
@@ -150,7 +150,7 @@ const ChaptersSettingsSheet = ({
 
   const ThirdRoute = useCallback(
     () => (
-      <View style={{ flex: 1 }}>
+      <View style={styles.flex}>
         <Checkbox
           status={showChapterTitles}
           label={getString('novelScreen.bottomSheet.displays.sourceTitle')}
@@ -187,18 +187,25 @@ const ChaptersSettingsSheet = ({
     <TabBar
       {...props}
       indicatorStyle={{ backgroundColor: theme.primary }}
-      style={{
-        backgroundColor: overlay(2, theme.surface),
-        borderBottomWidth: 1,
-        borderBottomColor: theme.outline,
-        elevation: 0,
-      }}
+      style={[
+        {
+          backgroundColor: overlay(2, theme.surface),
+          borderBottomColor: theme.outline,
+        },
+        styles.tabBar,
+      ]}
       inactiveColor={theme.onSurfaceVariant}
       activeColor={theme.primary}
       pressColor={color(theme.primary).alpha(0.12).string()}
     />
   );
 
+  const renderLabel = useCallback(
+    ({ route, color: localColor }: { route: any; color: string }) => {
+      return <Text style={{ color: localColor }}>{route.title}</Text>;
+    },
+    [],
+  );
   return (
     <BottomSheet
       snapPoints={[240]}
@@ -217,9 +224,7 @@ const ChaptersSettingsSheet = ({
       >
         <TabView
           commonOptions={{
-            label: ({ route, color }) => (
-              <Text style={{ color }}>{route.title}</Text>
-            ),
+            label: renderLabel,
           }}
           navigationState={{ index, routes }}
           renderTabBar={renderTabBar}
@@ -248,4 +253,6 @@ const styles = StyleSheet.create({
   transparent: {
     backgroundColor: 'transparent',
   },
+  flex: { flex: 1 },
+  tabBar: { borderBottomWidth: 1, elevation: 0 },
 });

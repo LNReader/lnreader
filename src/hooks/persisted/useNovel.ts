@@ -9,7 +9,6 @@ import {
   deleteCachedNovels as _deleteCachedNovels,
   getCachedNovels as _getCachedNovels,
   insertNovelAndChapters,
-  switchNovelToLibrary,
 } from '@database/queries/NovelQueries';
 import {
   bookmarkChapter as _bookmarkChapter,
@@ -25,16 +24,18 @@ import {
   getCustomPages,
   getChapterCount,
   getPageChaptersBatched,
+  updateChapterProgress as _updateChapterProgress,
 } from '@database/queries/ChapterQueries';
 import { fetchNovel, fetchPage } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getString } from '@strings/translations';
 import dayjs from 'dayjs';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { useAppSettings } from './useSettings';
 import NativeFile from '@specs/NativeFile';
+import { useLibraryContext } from '@components/Context/LibraryContext';
 
 // #region constants
 
@@ -69,6 +70,19 @@ export interface NovelSettings {
 export const useTrackedNovel = (novelId: number | 'NO_ID') => {
   const [trackedNovel, setValue] = useMMKVObject<TrackedNovel>(
     `${TRACKED_NOVEL_PREFIX}_${novelId}`,
+  );
+  const updateNovelProgess = useCallback(
+    (tracker: TrackerMetadata, chaptersRead: number) => {
+      if (!trackedNovel || novelId === 'NO_ID') {
+        return;
+      }
+      return getTracker(tracker.name).updateUserListEntry(
+        trackedNovel.id,
+        { progress: chaptersRead },
+        tracker.auth,
+      );
+    },
+    [novelId, trackedNovel],
   );
   if (novelId === 'NO_ID') {
     return {
@@ -110,20 +124,6 @@ export const useTrackedNovel = (novelId: number | 'NO_ID') => {
     );
   };
 
-  const updateNovelProgess = (
-    tracker: TrackerMetadata,
-    chaptersRead: number,
-  ) => {
-    if (!trackedNovel) {
-      return;
-    }
-    return getTracker(tracker.name).updateUserListEntry(
-      trackedNovel.id,
-      { progress: chaptersRead },
-      tracker.auth,
-    );
-  };
-
   return {
     trackedNovel,
     trackNovel,
@@ -137,6 +137,7 @@ export const useTrackedNovel = (novelId: number | 'NO_ID') => {
 // #region definition useNovel
 
 export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
+  const { switchNovelToLibrary } = useLibraryContext();
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(true);
   const [novel, setNovel] = useState<NovelInfo | undefined>(
@@ -259,21 +260,27 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
     [transformChapters],
   );
 
-  const sortAndFilterChapters = async (sort?: string, filter?: string) => {
-    if (novel) {
-      setNovelSettings({
-        showChapterTitles: novelSettings?.showChapterTitles,
-        sort,
-        filter,
-      });
-    }
-  };
+  const sortAndFilterChapters = useCallback(
+    async (sort?: string, filter?: string) => {
+      if (novel) {
+        setNovelSettings({
+          showChapterTitles: novelSettings?.showChapterTitles,
+          sort,
+          filter,
+        });
+      }
+    },
+    [novel, novelSettings?.showChapterTitles, setNovelSettings],
+  );
 
-  const setShowChapterTitles = (v: boolean) => {
-    setNovelSettings({ ...novelSettings, showChapterTitles: v });
-  };
+  const setShowChapterTitles = useCallback(
+    (v: boolean) => {
+      setNovelSettings({ ...novelSettings, showChapterTitles: v });
+    },
+    [novelSettings, setNovelSettings],
+  );
 
-  const followNovel = () => {
+  const followNovel = useCallback(() => {
     switchNovelToLibrary(novelPath, pluginId).then(() => {
       if (novel) {
         setNovel({
@@ -282,7 +289,7 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
         });
       }
     });
-  };
+  }, [novel, novelPath, pluginId, switchNovelToLibrary]);
 
   // #endregion
   // #region getters
@@ -395,116 +402,156 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
   // #endregion
   // #region Mark chapters
 
-  const bookmarkChapters = (_chapters: ChapterInfo[]) => {
-    _chapters.map(_chapter => {
-      _bookmarkChapter(_chapter.id);
-    });
-    mutateChapters(chs =>
-      chs.map(chapter => {
-        if (_chapters.some(_c => _c.id === chapter.id)) {
-          return {
-            ...chapter,
-            bookmark: !chapter.bookmark,
-          };
-        }
-        return chapter;
-      }),
-    );
-  };
-
-  const markPreviouschaptersRead = (chapterId: number) => {
-    if (novel) {
-      _markPreviuschaptersRead(chapterId, novel.id);
+  const bookmarkChapters = useCallback(
+    (_chapters: ChapterInfo[]) => {
+      _chapters.map(_chapter => {
+        _bookmarkChapter(_chapter.id);
+      });
       mutateChapters(chs =>
-        chs.map(chapter =>
-          chapter.id <= chapterId ? { ...chapter, unread: false } : chapter,
-        ),
+        chs.map(chapter => {
+          if (_chapters.some(_c => _c.id === chapter.id)) {
+            return {
+              ...chapter,
+              bookmark: !chapter.bookmark,
+            };
+          }
+          return chapter;
+        }),
       );
-    }
-  };
+    },
+    [mutateChapters],
+  );
 
-  const markChapterRead = (chapterId: number) => {
-    _markChapterRead(chapterId);
+  const markPreviouschaptersRead = useCallback(
+    (chapterId: number) => {
+      if (novel) {
+        _markPreviuschaptersRead(chapterId, novel.id);
+        mutateChapters(chs =>
+          chs.map(chapter =>
+            chapter.id <= chapterId ? { ...chapter, unread: false } : chapter,
+          ),
+        );
+      }
+    },
+    [mutateChapters, novel],
+  );
 
-    mutateChapters(chs =>
-      chs.map(c => {
-        if (c.id !== chapterId) {
-          return c;
-        }
-        return {
-          ...c,
-          unread: false,
-        };
-      }),
-    );
-  };
+  const markChapterRead = useCallback(
+    (chapterId: number) => {
+      _markChapterRead(chapterId);
 
-  const markChaptersRead = (_chapters: ChapterInfo[]) => {
-    const chapterIds = _chapters.map(chapter => chapter.id);
-    _markChaptersRead(chapterIds);
-
-    mutateChapters(chs =>
-      chs.map(chapter => {
-        if (chapterIds.includes(chapter.id)) {
+      mutateChapters(chs =>
+        chs.map(c => {
+          if (c.id !== chapterId) {
+            return c;
+          }
           return {
-            ...chapter,
+            ...c,
             unread: false,
           };
-        }
-        return chapter;
-      }),
-    );
-  };
-
-  const markPreviousChaptersUnread = (chapterId: number) => {
-    if (novel) {
-      _markPreviousChaptersUnread(chapterId, novel.id);
-      mutateChapters(chs =>
-        chs.map(chapter =>
-          chapter.id <= chapterId ? { ...chapter, unread: true } : chapter,
-        ),
+        }),
       );
-    }
-  };
+    },
+    [mutateChapters],
+  );
 
-  const markChaptersUnread = (_chapters: ChapterInfo[]) => {
-    const chapterIds = _chapters.map(chapter => chapter.id);
-    _markChaptersUnread(chapterIds);
+  const updateChapterProgress = useCallback(
+    (chapterId: number, progress: number) => {
+      _updateChapterProgress(chapterId, Math.min(progress, 100));
 
-    mutateChapters(chs =>
-      chs.map(chapter => {
-        if (chapterIds.includes(chapter.id)) {
+      mutateChapters(chs =>
+        chs.map(c => {
+          if (c.id !== chapterId) {
+            return c;
+          }
           return {
-            ...chapter,
-            unread: true,
+            ...c,
+            progress,
           };
-        }
-        return chapter;
-      }),
-    );
-  };
+        }),
+      );
+    },
+    [mutateChapters],
+  );
+
+  const markChaptersRead = useCallback(
+    (_chapters: ChapterInfo[]) => {
+      const chapterIds = _chapters.map(chapter => chapter.id);
+      _markChaptersRead(chapterIds);
+
+      mutateChapters(chs =>
+        chs.map(chapter => {
+          if (chapterIds.includes(chapter.id)) {
+            return {
+              ...chapter,
+              unread: false,
+            };
+          }
+          return chapter;
+        }),
+      );
+    },
+    [mutateChapters],
+  );
+
+  const markPreviousChaptersUnread = useCallback(
+    (chapterId: number) => {
+      if (novel) {
+        _markPreviousChaptersUnread(chapterId, novel.id);
+        mutateChapters(chs =>
+          chs.map(chapter =>
+            chapter.id <= chapterId ? { ...chapter, unread: true } : chapter,
+          ),
+        );
+      }
+    },
+    [mutateChapters, novel],
+  );
+
+  const markChaptersUnread = useCallback(
+    (_chapters: ChapterInfo[]) => {
+      const chapterIds = _chapters.map(chapter => chapter.id);
+      _markChaptersUnread(chapterIds);
+
+      mutateChapters(chs =>
+        chs.map(chapter => {
+          if (chapterIds.includes(chapter.id)) {
+            return {
+              ...chapter,
+              unread: true,
+            };
+          }
+          return chapter;
+        }),
+      );
+    },
+    [mutateChapters],
+  );
 
   // #endregion
   // #region refresh and delete
 
-  const deleteChapter = (_chapter: ChapterInfo) => {
-    if (novel) {
-      _deleteChapter(novel.pluginId, novel.id, _chapter.id).then(() => {
-        mutateChapters(chs =>
-          chs.map(chapter => {
-            if (chapter.id !== _chapter.id) {
-              return chapter;
-            }
-            return {
-              ...chapter,
-              isDownloaded: false,
-            };
-          }),
-        );
-        showToast(getString('common.deleted', { name: _chapter.name }));
-      });
-    }
-  };
+  const deleteChapter = useCallback(
+    (_chapter: ChapterInfo) => {
+      if (novel) {
+        _deleteChapter(novel.pluginId, novel.id, _chapter.id).then(() => {
+          mutateChapters(chs =>
+            chs.map(chapter => {
+              if (chapter.id !== _chapter.id) {
+                return chapter;
+              }
+              return {
+                ...chapter,
+                isDownloaded: false,
+              };
+            }),
+          );
+          showToast(getString('common.deleted', { name: _chapter.name }));
+        });
+      }
+    },
+    [mutateChapters, novel],
+  );
 
   const deleteChapters = useCallback(
     (_chaters: ChapterInfo[]) => {
@@ -584,36 +631,69 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
 
   // #endregion
 
-  return {
-    loading,
-    fetching,
-    pageIndex,
-    pages,
-    novel,
-    lastRead,
-    chapters,
-    novelSettings,
-    batchInformation,
-    getNextChapterBatch,
-    getNovel,
-    setPageIndex,
-    openPage,
-    setNovel,
-    setLastRead,
-    sortAndFilterChapters,
-    followNovel,
-    bookmarkChapters,
-    markPreviouschaptersRead,
-    markChaptersRead,
-    markPreviousChaptersUnread,
-    markChaptersUnread,
-    setShowChapterTitles,
-    markChapterRead,
-    refreshChapters,
-    updateChapter,
-    deleteChapter,
-    deleteChapters,
-  };
+  return useMemo(
+    () => ({
+      loading,
+      fetching,
+      pageIndex,
+      pages,
+      novel,
+      lastRead,
+      chapters,
+      novelSettings,
+      batchInformation,
+      getNextChapterBatch,
+      getNovel,
+      setPageIndex,
+      openPage,
+      setNovel,
+      setLastRead,
+      sortAndFilterChapters,
+      followNovel,
+      bookmarkChapters,
+      markPreviouschaptersRead,
+      markChapterRead,
+      markChaptersRead,
+      markPreviousChaptersUnread,
+      markChaptersUnread,
+      setShowChapterTitles,
+      refreshChapters,
+      updateChapter,
+      updateChapterProgress,
+      deleteChapter,
+      deleteChapters,
+    }),
+    [
+      loading,
+      fetching,
+      pageIndex,
+      pages,
+      novel,
+      lastRead,
+      chapters,
+      novelSettings,
+      batchInformation,
+      getNextChapterBatch,
+      getNovel,
+      setPageIndex,
+      openPage,
+      setLastRead,
+      sortAndFilterChapters,
+      followNovel,
+      bookmarkChapters,
+      markPreviouschaptersRead,
+      markChapterRead,
+      markChaptersRead,
+      markPreviousChaptersUnread,
+      markChaptersUnread,
+      setShowChapterTitles,
+      refreshChapters,
+      updateChapter,
+      updateChapterProgress,
+      deleteChapter,
+      deleteChapters,
+    ],
+  );
 };
 
 // #region DeleteCachedNovels

@@ -1,5 +1,6 @@
 import { SwitchItem } from '@components';
 import { ThemeColors } from '@theme/types';
+import { StyleSheet } from 'react-native';
 
 interface SettingSwitchProps {
   value: boolean;
@@ -23,7 +24,11 @@ export default function SettingSwitch({
       description={description}
       onPress={onPress}
       theme={theme}
-      style={{ paddingHorizontal: 16 }}
+      style={styles.paddingHorizontal}
     />
   );
 }
+
+const styles = StyleSheet.create({
+  paddingHorizontal: { paddingHorizontal: 16 },
+});

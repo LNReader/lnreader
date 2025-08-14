@@ -1,10 +1,9 @@
-import React, { memo, useEffect, useMemo } from 'react';
+import React, { memo, useEffect, useMemo, useRef } from 'react';
 import { NativeEventEmitter, NativeModules, StatusBar } from 'react-native';
 import WebView from 'react-native-webview';
 import color from 'color';
 
 import { useTheme } from '@hooks/persisted';
-import { ChapterInfo } from '@database/types';
 import { getString } from '@strings/translations';
 
 import { getPlugin } from '@plugins/pluginManager';
@@ -28,23 +27,14 @@ type WebViewPostEvent = {
 };
 
 type WebViewReaderProps = {
-  html: string;
-  nextChapter?: ChapterInfo;
-  webViewRef: React.RefObject<WebView | null>;
-  saveProgress(percentage: number): void;
   onPress(): void;
-  navigateChapter(position: 'NEXT' | 'PREV'): void;
 };
 
 const onLogMessage = (payload: { nativeEvent: { data: string } }) => {
-  let dataPayload;
-  try {
-    dataPayload = JSON.parse(payload.nativeEvent.data);
-  } catch (e) {
-    console.error(e);
-  }
+  const dataPayload = JSON.parse(payload.nativeEvent.data);
   if (dataPayload) {
     if (dataPayload.type === 'console') {
+      /* eslint-disable no-console */
       console.info(`[Console] ${JSON.stringify(dataPayload.msg, null, 2)}`);
     }
   }
@@ -57,32 +47,39 @@ const assetsUriPrefix = __DEV__
   ? 'http://localhost:8081/assets'
   : 'file:///android_asset';
 
-const WebViewReader: React.FC<WebViewReaderProps> = ({
-  html,
-  webViewRef,
-  nextChapter,
-  saveProgress,
-  onPress,
-  navigateChapter,
-}) => {
-  const { novel, chapter } = useChapterContext();
+const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
+  const {
+    novel,
+    chapter,
+    chapterText: html,
+    navigateChapter,
+    saveProgress,
+    nextChapter,
+    prevChapter,
+    webViewRef,
+  } = useChapterContext();
   const theme = useTheme();
   const readerSettings = useMemo(
     () =>
       getMMKVObject<ChapterReaderSettings>(CHAPTER_READER_SETTINGS) ||
       initialChapterReaderSettings,
-    [],
+    // needed to preserve settings during chapter change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [chapter.id],
   );
   const chapterGeneralSettings = useMemo(
     () =>
       getMMKVObject<ChapterGeneralSettings>(CHAPTER_GENERAL_SETTINGS) ||
       initialChapterGeneralSettings,
-    [],
+    // needed to preserve settings during chapter change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [chapter.id],
   );
   const batteryLevel = useMemo(() => getBatteryLevelSync(), []);
   const plugin = getPlugin(novel?.pluginId);
   const pluginCustomJS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.js`;
   const pluginCustomCSS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.css`;
+  const nextChapterScreenVisible = useRef<boolean>(false);
 
   useEffect(() => {
     const mmkvListener = MMKVStorage.addOnValueChangedListener(key => {
@@ -112,13 +109,11 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
         );
       },
     );
-
     return () => {
       subscription.remove();
       mmkvListener.remove();
     };
-  }, []);
-
+  }, [webViewRef]);
   return (
     <WebView
       ref={webViewRef}
@@ -129,7 +124,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
       showsVerticalScrollIndicator={false}
       javaScriptEnabled={true}
       onMessage={(ev: { nativeEvent: { data: string } }) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         __DEV__ && onLogMessage(ev);
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
         switch (event.type) {
@@ -137,6 +131,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
             onPress();
             break;
           case 'next':
+            nextChapterScreenVisible.current = true;
             navigateChapter('NEXT');
             break;
           case 'prev':
@@ -177,6 +172,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
             <head>
               <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
               <link rel="stylesheet" href="${assetsUriPrefix}/css/index.css">
+              <link rel="stylesheet" href="${assetsUriPrefix}/css/pageReader.css">
+              <link rel="stylesheet" href="${assetsUriPrefix}/css/toolWrapper.css">
+              <link rel="stylesheet" href="${assetsUriPrefix}/css/tts.css">
               <style>
               :root {
                 --StatusBar-currentHeight: ${StatusBar.currentHeight}px;
@@ -218,18 +216,31 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({
             <body class="${
               chapterGeneralSettings.pageReader ? 'page-reader' : ''
             }">
+              <div class="transition-chapter" style="transform: ${
+                nextChapterScreenVisible.current
+                  ? 'translateX(-100%)'
+                  : 'translateX(0%)'
+              };
+              ${chapterGeneralSettings.pageReader ? '' : 'display: none'}"
+              ">${chapter.name}</div>
               <div id="LNReader-chapter">
                 ${html}  
               </div>
               <div id="reader-ui"></div>
               </body>
               <script>
+                var initialPageReaderConfig = ${JSON.stringify({
+                  nextChapterScreenVisible: nextChapterScreenVisible.current,
+                })};
+
+
                 var initialReaderConfig = ${JSON.stringify({
                   readerSettings,
                   chapterGeneralSettings,
                   novel,
                   chapter,
                   nextChapter,
+                  prevChapter,
                   batteryLevel,
                   autoSaveInterval: 2222,
                   DEBUG: __DEV__,

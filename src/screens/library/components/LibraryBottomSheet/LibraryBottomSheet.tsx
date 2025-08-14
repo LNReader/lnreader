@@ -1,4 +1,4 @@
-import React, { RefObject, useMemo, useState } from 'react';
+import React, { RefObject, useCallback, useMemo, useState } from 'react';
 import {
   StyleProp,
   StyleSheet,
@@ -7,7 +7,12 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
+import {
+  SceneMap,
+  TabBar,
+  TabDescriptor,
+  TabView,
+} from 'react-native-tab-view';
 import color from 'color';
 
 import { useLibrarySettings, useTheme } from '@hooks/persisted';
@@ -21,12 +26,12 @@ import {
   LibrarySortOrder,
   librarySortOrderList,
 } from '@screens/library/constants/constants';
-import { LegendList } from '@legendapp/list';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 import { overlay } from 'react-native-paper';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { FlashList } from '@shopify/flash-list';
 
 interface LibraryBottomSheetProps {
   bottomSheetRef: RefObject<BottomSheetModalMethods | null>;
@@ -42,8 +47,8 @@ const FirstRoute = () => {
   } = useLibrarySettings();
 
   return (
-    <View style={{ flex: 1 }}>
-      <LegendList
+    <View style={styles.flex}>
+      <FlashList
         estimatedItemSize={4}
         extraData={[filter]}
         data={libraryFilterList}
@@ -73,8 +78,8 @@ const SecondRoute = () => {
     useLibrarySettings();
 
   return (
-    <View style={{ flex: 1 }}>
-      <LegendList
+    <View style={styles.flex}>
+      <FlashList
         data={librarySortOrderList}
         extraData={[sortOrder]}
         estimatedItemSize={5}
@@ -112,7 +117,7 @@ const ThirdRoute = () => {
   } = useLibrarySettings();
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.flex}>
       <Text style={[styles.sectionHeader, { color: theme.onSurfaceVariant }]}>
         {getString('libraryScreen.bottomSheet.display.badges')}
       </Text>
@@ -149,7 +154,7 @@ const ThirdRoute = () => {
       <Text style={[styles.sectionHeader, { color: theme.onSurfaceVariant }]}>
         {getString('libraryScreen.bottomSheet.display.displayMode')}
       </Text>
-      <LegendList
+      <FlashList
         estimatedItemSize={4}
         data={displayModesList}
         extraData={[displayMode]}
@@ -210,6 +215,22 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
     third: ThirdRoute,
   });
 
+  const renderCommonOptions = useCallback(
+    ({ route, color: col }: { route: any; color: string }) => (
+      <Text style={{ color: col }}>{route.title}</Text>
+    ),
+    [],
+  );
+
+  const commonOptions: TabDescriptor<{
+    key: string;
+    title: string;
+  }> = useMemo(() => {
+    return {
+      label: renderCommonOptions,
+    };
+  }, [renderCommonOptions]);
+
   return (
     <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={[520]}>
       <BottomSheetView
@@ -219,11 +240,7 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
         ]}
       >
         <TabView
-          commonOptions={{
-            label: ({ route, color }) => (
-              <Text style={{ color }}>{route.title}</Text>
-            ),
-          }}
+          commonOptions={commonOptions}
           navigationState={{ index, routes }}
           renderTabBar={renderTabBar}
           renderScene={renderScene}
@@ -256,4 +273,5 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
   },
+  flex: { flex: 1 },
 });

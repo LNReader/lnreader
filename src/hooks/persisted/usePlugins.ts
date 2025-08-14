@@ -37,28 +37,31 @@ export default function usePlugins() {
    * We cant use the languagesFilter directly because it is updated only after component's lifecycle end.
    * And toggleLanguagFilter triggers filterPlugins before lifecycle end.
    */
-  const filterPlugins = useCallback((filter: string[]) => {
-    const installedPlugins =
-      getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
-    const availablePlugins =
-      getMMKVObject<PluginItem[]>(AVAILABLE_PLUGINS) || [];
-    setFilteredInstalledPlugins(
-      installedPlugins.filter(plg => filter.includes(plg.lang)),
-    );
-    setFilteredAvailablePlugins(
-      orderBy(
-        availablePlugins
-          .filter(
-            avalilablePlugin =>
-              !installedPlugins.some(
-                installedPlugin => installedPlugin.id === avalilablePlugin.id,
-              ),
-          )
-          .filter(plg => filter.includes(plg.lang)),
-        'name',
-      ),
-    );
-  }, []);
+  const filterPlugins = useCallback(
+    (filter: string[]) => {
+      const installedPlugins =
+        getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
+      const availablePlugins =
+        getMMKVObject<PluginItem[]>(AVAILABLE_PLUGINS) || [];
+      setFilteredInstalledPlugins(
+        installedPlugins.filter(plg => filter.includes(plg.lang)),
+      );
+      setFilteredAvailablePlugins(
+        orderBy(
+          availablePlugins
+            .filter(
+              avalilablePlugin =>
+                !installedPlugins.some(
+                  installedPlugin => installedPlugin.id === avalilablePlugin.id,
+                ),
+            )
+            .filter(plg => filter.includes(plg.lang)),
+          'name',
+        ),
+      );
+    },
+    [setFilteredAvailablePlugins, setFilteredInstalledPlugins],
+  );
 
   const refreshPlugins = useCallback(() => {
     const installedPlugins =
@@ -83,7 +86,7 @@ export default function usePlugins() {
       setMMKVObject(AVAILABLE_PLUGINS, fetchedPlugins);
       filterPlugins(languagesFilter);
     });
-  }, [languagesFilter]);
+  }, [filterPlugins, languagesFilter, lastUsedPlugin?.id, setLastUsedPlugin]);
 
   const toggleLanguageFilter = (lang: string) => {
     const newFilter = languagesFilter.includes(lang)

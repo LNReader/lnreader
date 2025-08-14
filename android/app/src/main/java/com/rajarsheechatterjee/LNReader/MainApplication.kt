@@ -12,7 +12,6 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
-import com.rajarsheechatterjee.NativeEpubUtil.NativeEpubUtilPackage
 import com.rajarsheechatterjee.NativeFile.NativePackage
 import com.rajarsheechatterjee.NativeVolumeButtonListener.NativeVolumeButtonListenerPackage
 import com.rajarsheechatterjee.NativeZipArchive.NativeZipArchivePackage
@@ -23,7 +22,6 @@ class MainApplication : Application(), ReactApplication {
         object : DefaultReactNativeHost(this) {
             override fun getPackages(): List<ReactPackage> =
                 PackageList(this).packages.apply {
-                    add(NativeEpubUtilPackage())
                     add(NativePackage())
                     add(NativeVolumeButtonListenerPackage())
                     add(NativeZipArchivePackage())

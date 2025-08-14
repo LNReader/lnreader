@@ -8,11 +8,24 @@ import { Category, NovelInfo } from '@database/types';
 
 import { useLibrarySettings } from '@hooks/persisted';
 import { LibrarySortOrder } from '../constants/constants';
+import { switchNovelToLibraryQuery } from '@database/queries/NovelQueries';
 
 // type Library = Category & { novels: LibraryNovelInfo[] };
 export type ExtendedCategory = Category & { novelIds: number[] };
+export type UseLibraryReturnType = {
+  library: NovelInfo[];
+  categories: ExtendedCategory[];
+  isLoading: boolean;
+  setCategories: React.Dispatch<React.SetStateAction<ExtendedCategory[]>>;
+  refreshCategories: () => Promise<void>;
+  setLibrary: React.Dispatch<React.SetStateAction<NovelInfo[]>>;
+  novelInLibrary: (pluginId: string, novelPath: string) => boolean;
+  switchNovelToLibrary: (novelPath: string, pluginId: string) => Promise<void>;
+  refetchLibrary: () => void;
+  setLibrarySearchText: (text: string) => void;
+};
 
-export const useLibrary = () => {
+export const useLibrary = (): UseLibraryReturnType => {
   const {
     filter,
     sortOrder = LibrarySortOrder.DateAdded_DESC,
@@ -24,26 +37,57 @@ export const useLibrary = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
 
-  const getLibrary = useCallback(async () => {
-    if (searchText) {
-      setIsLoading(true);
-    }
+  const refreshCategories = useCallback(async () => {
+    const dbCategories = getCategoriesFromDb();
 
-    const [categories, novels] = await Promise.all([
-      getCategoriesFromDb(),
-      getLibraryNovelsFromDb(sortOrder, filter, searchText, downloadedOnlyMode),
-      // getLibraryNovelsFromDb(),
-    ]);
-
-    const res = categories.map(c => ({
+    const res = dbCategories.map(c => ({
       ...c,
       novelIds: (c.novelIds ?? '').split(',').map(Number),
     }));
 
     setCategories(res);
+  }, []);
+
+  const getLibrary = useCallback(async () => {
+    if (searchText) {
+      setIsLoading(true);
+    }
+
+    const [_, novels] = await Promise.all([
+      refreshCategories(),
+      getLibraryNovelsFromDb(sortOrder, filter, searchText, downloadedOnlyMode),
+    ]);
+
     setLibrary(novels);
     setIsLoading(false);
-  }, [downloadedOnlyMode, filter, searchText, sortOrder]);
+  }, [downloadedOnlyMode, filter, refreshCategories, searchText, sortOrder]);
+
+  const novelInLibrary = useCallback(
+    (pluginId: string, novelPath: string) =>
+      library?.some(
+        novel => novel.pluginId === pluginId && novel.path === novelPath,
+      ),
+    [library],
+  );
+
+  const switchNovelToLibrary = useCallback(
+    async (novelPath: string, pluginId: string) => {
+      await switchNovelToLibraryQuery(novelPath, pluginId);
+
+      // Important to get correct chapters count
+      // Count is set by sql trigger
+      refreshCategories();
+      const novels = getLibraryNovelsFromDb(
+        sortOrder,
+        filter,
+        searchText,
+        downloadedOnlyMode,
+      );
+
+      setLibrary(novels);
+    },
+    [downloadedOnlyMode, filter, refreshCategories, searchText, sortOrder],
+  );
 
   useFocusEffect(() => {
     getLibrary();
@@ -53,6 +97,11 @@ export const useLibrary = () => {
     library,
     categories,
     isLoading,
+    setLibrary,
+    setCategories,
+    refreshCategories,
+    novelInLibrary,
+    switchNovelToLibrary,
     refetchLibrary: getLibrary,
     setLibrarySearchText: setSearchText,
   };

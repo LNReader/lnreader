@@ -78,21 +78,24 @@ export const getNovelById = async (novelId: number) => {
 export const getNovelByPath = (
   novelPath: string,
   pluginId: string,
-): NovelInfo | null => {
+): NovelInfo | undefined => {
   const res = getFirstSync<NovelInfo>([
     'SELECT * FROM Novel WHERE path = ? AND pluginId = ?',
     [novelPath, pluginId],
   ]);
+  if (!res) {
+    return undefined;
+  }
   return res;
 };
 
 // if query is insert novel || add to library => add default category name for it
 // else remove all it's categories
 
-export const switchNovelToLibrary = async (
+export const switchNovelToLibraryQuery = async (
   novelPath: string,
   pluginId: string,
-) => {
+): Promise<NovelInfo | undefined> => {
   const novel = await getNovelByPath(novelPath, pluginId);
   if (novel) {
     const queries: QueryObject[] = [
@@ -118,12 +121,13 @@ export const switchNovelToLibrary = async (
         [novel.id],
       ]);
     }
-    runAsync(queries);
+    await runAsync(queries);
+    return { ...novel, inLibrary: !novel.inLibrary };
   } else {
     const sourceNovel = await fetchNovel(pluginId, novelPath);
     const novelId = await insertNovelAndChapters(pluginId, sourceNovel);
     if (novelId) {
-      runAsync([
+      await runAsync([
         [
           'UPDATE Novel SET inLibrary = 1 WHERE id = ?',
           [novelId],

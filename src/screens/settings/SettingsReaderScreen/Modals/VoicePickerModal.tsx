@@ -52,7 +52,7 @@ const VoicePickerModal: React.FC<VoicePickerModalProps> = ({
               placeholder="Search voice"
             />
           }
-          ListHeaderComponentStyle={{ paddingHorizontal: 12 }}
+          ListHeaderComponentStyle={styles.paddingHorizontal}
           data={searchText ? searchedVoices : voices}
           extraData={tts?.voice}
           renderItem={({ item }) => (
@@ -73,7 +73,7 @@ const VoicePickerModal: React.FC<VoicePickerModalProps> = ({
           ListEmptyComponent={
             <ActivityIndicator
               size={24}
-              style={{ marginTop: 16 }}
+              style={styles.marginTop}
               color={theme.primary}
             />
           }
@@ -89,4 +89,6 @@ const styles = StyleSheet.create({
   containerStyle: {
     flex: 1,
   },
+  paddingHorizontal: { paddingHorizontal: 12 },
+  marginTop: { marginTop: 16 },
 });

@@ -57,23 +57,19 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
         <List.Section>
           <Pressable
             android_ripple={{ color: theme.rippleColor }}
-            style={{
-              paddingHorizontal: 16,
-              paddingVertical: 14,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
+            style={styles.pressable}
             onPress={enableDownloadedOnlyMode}
           >
-            <View style={{ flexDirection: 'row' }}>
+            <View style={styles.row}>
               <List.Icon theme={theme} icon="cloud-off-outline" />
-              <View style={{ marginLeft: 16 }}>
+              <View style={styles.marginLeft16}>
                 <Text
-                  style={{
-                    color: theme.onSurface,
-                    fontSize: 16,
-                  }}
+                  style={[
+                    {
+                      color: theme.onSurface,
+                    },
+                    styles.fontSize16,
+                  ]}
                 >
                   {getString('moreScreen.downloadOnly')}
                 </Text>
@@ -88,7 +84,6 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
               </View>
             </View>
             <Switch
-              theme={theme}
               value={downloadedOnlyMode}
               onValueChange={enableDownloadedOnlyMode}
               size={24}
@@ -96,23 +91,19 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
           </Pressable>
           <Pressable
             android_ripple={{ color: theme.rippleColor }}
-            style={{
-              paddingHorizontal: 16,
-              paddingVertical: 14,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
+            style={styles.pressable}
             onPress={enableIncognitoMode}
           >
-            <View style={{ flexDirection: 'row' }}>
+            <View style={styles.row}>
               <List.Icon theme={theme} icon="glasses" />
-              <View style={{ marginLeft: 16 }}>
+              <View style={styles.marginLeft16}>
                 <Text
-                  style={{
-                    color: theme.onSurface,
-                    fontSize: 16,
-                  }}
+                  style={[
+                    {
+                      color: theme.onSurface,
+                    },
+                    styles.fontSize16,
+                  ]}
                 >
                   {getString('moreScreen.incognitoMode')}
                 </Text>
@@ -127,7 +118,6 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
               </View>
             </View>
             <Switch
-              theme={theme}
               value={incognitoMode}
               onValueChange={enableIncognitoMode}
               size={24}
@@ -216,4 +206,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 20,
   },
+  pressable: {
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  row: { flexDirection: 'row' },
+  fontSize16: { fontSize: 16 },
+  marginLeft16: { marginLeft: 16 },
 });

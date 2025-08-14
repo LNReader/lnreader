@@ -78,11 +78,12 @@ const MigrationNovelList = ({
         renderItem={renderItem}
         ListEmptyComponent={
           <Text
-            style={{
-              color: theme.onSurfaceVariant,
-              padding: 8,
-              paddingVertical: 4,
-            }}
+            style={[
+              {
+                color: theme.onSurfaceVariant,
+              },
+              styles.padding,
+            ]}
           >
             {getString('sourceScreen.noResultsFound')}
           </Text>
@@ -91,22 +92,18 @@ const MigrationNovelList = ({
       <Portal>
         <Modal visible={migrateNovelDialog} onDismiss={hideMigrateNovelDialog}>
           <Text
-            style={{
-              color: theme.onSurface,
-              fontSize: 18,
-              marginBottom: 16,
-            }}
+            style={[
+              {
+                color: theme.onSurface,
+              },
+              styles.text,
+            ]}
           >
             {getString('browseScreen.migration.dialogMessage', {
               url: selectedNovel.name,
             })}
           </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-            }}
-          >
+          <View style={styles.row}>
             <Button
               onPress={hideMigrateNovelDialog}
               title={getString('common.cancel')}
@@ -140,4 +137,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     paddingVertical: 8,
   },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  text: {
+    fontSize: 18,
+    marginBottom: 16,
+  },
+  padding: { padding: 8, paddingVertical: 4 },
 });

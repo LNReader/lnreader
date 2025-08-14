@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTheme } from '@hooks/persisted';
 import { Appbar, List, SafeAreaView } from '@components';
-import { Portal } from 'react-native-paper';
 import { useBoolean } from '@hooks';
 import { BackupSettingsScreenProps } from '@navigators/types';
 import GoogleDriveModal from './Components/GoogleDriveModal';
@@ -12,6 +11,7 @@ import {
 } from '@services/backup/legacy';
 import { ScrollView } from 'react-native-gesture-handler';
 import { getString } from '@strings/translations';
+import { StyleSheet } from 'react-native';
 
 const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
   const theme = useTheme();
@@ -34,7 +34,7 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
         handleGoBack={() => navigation.goBack()}
         theme={theme}
       />
-      <ScrollView style={{ paddingBottom: 40 }}>
+      <ScrollView style={styles.paddingBottom}>
         <List.Section>
           <List.SubHeader theme={theme}>
             {getString('backupScreen.remoteBackup')}
@@ -73,30 +73,30 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
           />
           <List.InfoItem
             title={getString('backupScreen.restoreLargeBackupsWarning')}
-            icon="information-outline"
             theme={theme}
           />
           <List.InfoItem
             title={getString('backupScreen.createBackupWarning')}
-            icon="information-outline"
             theme={theme}
           />
         </List.Section>
       </ScrollView>
-      <Portal>
-        <GoogleDriveModal
-          visible={googleDriveModalVisible}
-          theme={theme}
-          closeModal={closeGoogleDriveModal}
-        />
-        <SelfHostModal
-          theme={theme}
-          visible={selfHostModalVisible}
-          closeModal={closeSelfHostModal}
-        />
-      </Portal>
+      <GoogleDriveModal
+        visible={googleDriveModalVisible}
+        theme={theme}
+        closeModal={closeGoogleDriveModal}
+      />
+      <SelfHostModal
+        theme={theme}
+        visible={selfHostModalVisible}
+        closeModal={closeSelfHostModal}
+      />
     </SafeAreaView>
   );
 };
 
 export default BackupSettings;
+
+const styles = StyleSheet.create({
+  paddingBottom: { paddingBottom: 40 },
+});

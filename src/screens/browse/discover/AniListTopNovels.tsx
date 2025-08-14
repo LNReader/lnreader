@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -90,50 +90,53 @@ const BrowseALScreen = ({ navigation }: BrowseALScreenProps) => {
   const anilistUrl =
     'https://anilist.co/search/manga?format=NOVEL&sort=POPULARITY_DESC';
 
-  const searchAniList = async (onlyTop: boolean, page = 1) => {
-    try {
-      if (!tracker) {
+  const searchAniList = useCallback(
+    async (onlyTop: boolean, page = 1) => {
+      try {
+        if (!tracker) {
+          setLoading(false);
+          setError('Please login!');
+          return;
+        }
+        const { data } = await queryAniList(
+          anilistSearchQuery,
+          {
+            search: onlyTop ? undefined : searchText,
+            page,
+          },
+          tracker.auth,
+        );
+
+        const results = data.Page.media.map((m: any) => {
+          return {
+            id: m.id,
+            novelName: m.title.userPreferred,
+            novelCover: m.coverImage.extraLarge,
+            score: `${m.averageScore}%`,
+            info: [
+              '', // MAL returns an item we don't care about first, so the component ignores the first element
+              `Light Novel (${m.volumes || '?'} Vols)`,
+              `${formatDate(m.startDate)}${
+                datesEqual(m.startDate, m.endDate)
+                  ? ''
+                  : `- ${formatDate(m.endDate)}`
+              }`,
+            ],
+          };
+        });
+
+        setHasNextPage(data.Page.pageInfo.hasNextPage);
+        setNovels(onlyTop ? before => before.concat(results) : results);
         setLoading(false);
-        setError('Please login!');
-        return;
+      } catch (err: any) {
+        setError(err.message);
+        setNovels([]);
+        setLoading(false);
+        showToast(err.message);
       }
-      const { data } = await queryAniList(
-        anilistSearchQuery,
-        {
-          search: onlyTop ? undefined : searchText,
-          page,
-        },
-        tracker.auth,
-      );
-
-      const results = data.Page.media.map((m: any) => {
-        return {
-          id: m.id,
-          novelName: m.title.userPreferred,
-          novelCover: m.coverImage.extraLarge,
-          score: `${m.averageScore}%`,
-          info: [
-            '', // MAL returns an item we don't care about first, so the component ignores the first element
-            `Light Novel (${m.volumes || '?'} Vols)`,
-            `${formatDate(m.startDate)}${
-              datesEqual(m.startDate, m.endDate)
-                ? ''
-                : `- ${formatDate(m.endDate)}`
-            }`,
-          ],
-        };
-      });
-
-      setHasNextPage(data.Page.pageInfo.hasNextPage);
-      setNovels(onlyTop ? before => before.concat(results) : results);
-      setLoading(false);
-    } catch (err: any) {
-      setError(err.message);
-      setNovels([]);
-      setLoading(false);
-      showToast(err.message);
-    }
-  };
+    },
+    [anilistSearchQuery, searchText, tracker],
+  );
 
   const clearSearchbar = () => {
     setNovels([]);
@@ -145,7 +148,7 @@ const BrowseALScreen = ({ navigation }: BrowseALScreenProps) => {
 
   useEffect(() => {
     searchAniList(true);
-  }, []);
+  }, [searchAniList]);
 
   const renderItem: ListRenderItem<ALNovel> = ({ item }) => (
     <TrackerNovelCard
@@ -159,22 +162,25 @@ const BrowseALScreen = ({ navigation }: BrowseALScreenProps) => {
     />
   );
 
-  const ListEmptyComponent = () => (
-    <ErrorView
-      errorName={error || 'No results found'}
-      actions={[
-        {
-          name: 'Retry',
-          onPress: () => {
-            setLoading(true);
-            setError(undefined);
-            searchAniList(true);
+  const ListEmptyComponent = useCallback(
+    () => (
+      <ErrorView
+        errorName={error || 'No results found'}
+        actions={[
+          {
+            name: 'Retry',
+            onPress: () => {
+              setLoading(true);
+              setError(undefined);
+              searchAniList(true);
+            },
+            icon: 'reload',
           },
-          icon: 'reload',
-        },
-      ]}
-      theme={theme}
-    />
+        ]}
+        theme={theme}
+      />
+    ),
+    [error, searchAniList, theme],
   );
 
   return (
@@ -213,7 +219,7 @@ const BrowseALScreen = ({ navigation }: BrowseALScreenProps) => {
           }}
           ListFooterComponent={
             !searchText ? (
-              <View style={{ paddingVertical: 16 }}>
+              <View style={styles.paddingVertical}>
                 <ActivityIndicator color={theme.primary} />
               </View>
             ) : null
@@ -235,4 +241,5 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     paddingHorizontal: 4,
   },
+  paddingVertical: { paddingVertical: 16 },
 });

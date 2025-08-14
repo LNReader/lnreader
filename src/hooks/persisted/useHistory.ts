@@ -20,16 +20,16 @@ const useHistory = () => {
     getHistoryFromDb()
       .then(res =>
         setHistory(
-          res.map(history => {
-            const parsedTime = dayjs(history.releaseTime);
+          res.map(localHistory => {
+            const parsedTime = dayjs(localHistory.releaseTime);
             return {
-              ...history,
+              ...localHistory,
               releaseTime: parsedTime.isValid()
                 ? parsedTime.format('LL')
-                : history.releaseTime,
-              chapterNumber: history.chapterNumber
-                ? history.chapterNumber
-                : parseChapterNumber(history.novelName, history.name),
+                : localHistory.releaseTime,
+              chapterNumber: localHistory.chapterNumber
+                ? localHistory.chapterNumber
+                : parseChapterNumber(localHistory.novelName, localHistory.name),
             };
           }),
         ),

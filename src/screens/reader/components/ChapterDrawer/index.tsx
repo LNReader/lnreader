@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useAppSettings, useTheme } from '@hooks/persisted';
@@ -8,8 +14,9 @@ import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import renderListChapter from './RenderListChapter';
 import { useChapterContext } from '@screens/reader/ChapterContext';
-import { LegendList, LegendListRef, ViewToken } from '@legendapp/list';
 import { useNovelContext } from '@screens/novel/NovelContext';
+import { FlashList, ViewToken } from '@shopify/flash-list';
+import { ChapterInfo } from '@database/types';
 
 type ButtonProperties = {
   text: string;
@@ -22,28 +29,31 @@ type ButtonsProperties = {
 };
 
 const ChapterDrawer = () => {
-  const { chapter, setChapter, setLoading } = useChapterContext();
+  const { chapter, getChapter, setLoading } = useChapterContext();
   const { chapters, novelSettings, pages, setPageIndex } = useNovelContext();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { defaultChapterSort } = useAppSettings();
-  const listRef = useRef<LegendListRef>(null);
+  const listRef = useRef<FlashList<ChapterInfo> | null>(null);
 
   const styles = createStylesheet(theme, insets);
 
   const { sort = defaultChapterSort } = novelSettings;
   const listAscending = sort === 'ORDER BY position ASC';
 
-  const defaultButtonLayout: ButtonsProperties = {
-    up: {
-      text: getString('readerScreen.drawer.scrollToTop'),
-      index: 0,
-    },
-    down: {
-      text: getString('readerScreen.drawer.scrollToBottom'),
-      index: undefined,
-    },
-  };
+  const defaultButtonLayout: ButtonsProperties = useMemo(
+    () => ({
+      up: {
+        text: getString('readerScreen.drawer.scrollToTop'),
+        index: 0,
+      },
+      down: {
+        text: getString('readerScreen.drawer.scrollToBottom'),
+        index: undefined,
+      },
+    }),
+    [],
+  );
 
   useEffect(() => {
     let pageIndex = pages.indexOf(chapter.page);
@@ -67,15 +77,6 @@ const ChapterDrawer = () => {
   }, [chapters, chapter.id]);
 
   const scrollToIndex = useRef<number | undefined>(calculateScrollToIndex());
-  useEffect(() => {
-    const next = calculateScrollToIndex();
-    if (next !== undefined) {
-      if (scrollToIndex.current === undefined) {
-        scroll(next);
-      }
-      scrollToIndex.current = next;
-    }
-  }, [chapters, chapter.id]);
 
   const [footerBtnProps, setButtonProperties] =
     useState<ButtonsProperties>(defaultButtonLayout);
@@ -89,7 +90,7 @@ const ChapterDrawer = () => {
 
       if (viewableItems.length === 0) return;
       const cKey = (scrollToIndex.current ?? 0) + 2;
-      const vKey = parseInt(viewableItems[0].key);
+      const vKey = parseInt(viewableItems[0].key, 10);
       const visible = vKey <= cKey && cKey <= vKey + viewableItems.length - 1;
 
       if (!visible && scrollToIndex.current !== undefined) {
@@ -117,7 +118,7 @@ const ChapterDrawer = () => {
       }
       setButtonProperties(newBtnLayout);
     },
-    [chapter, chapters, scrollToIndex.current],
+    [defaultButtonLayout, listAscending],
   );
   const scroll = useCallback((index?: number) => {
     if (index !== undefined) {
@@ -132,13 +133,23 @@ const ChapterDrawer = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const next = calculateScrollToIndex();
+    if (next !== undefined) {
+      if (scrollToIndex.current === undefined) {
+        scroll(next);
+      }
+      scrollToIndex.current = next;
+    }
+  }, [chapters, chapter.id, calculateScrollToIndex, scroll]);
+
   return (
     <View style={styles.drawer}>
       <Text style={styles.headerCtn}>{getString('common.chapters')}</Text>
       {scrollToIndex === undefined ? (
         <LoadingScreenV2 theme={theme} />
       ) : (
-        <LegendList
+        <FlashList
           ref={listRef}
           viewabilityConfig={{
             minimumViewTime: 100,
@@ -156,7 +167,7 @@ const ChapterDrawer = () => {
               chapterId: chapter.id,
               onPress: () => {
                 setLoading(true);
-                setChapter(val.item);
+                getChapter(val.item);
               },
             })
           }

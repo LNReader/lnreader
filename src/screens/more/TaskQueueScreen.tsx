@@ -71,11 +71,11 @@ const DownloadQueue = ({ navigation }: TaskQueueScreenProps) => {
       </Appbar>
 
       <FlatList
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
+        contentContainerStyle={styles.paddingBottom}
         keyExtractor={(item, index) => 'task_' + index}
         data={taskQueue || []}
         renderItem={({ item }) => (
-          <View style={{ padding: 16 }}>
+          <View style={styles.padding}>
             <Text style={{ color: theme.onSurface }}>{item.meta.name}</Text>
             {item.meta.progressText ? (
               <Text style={{ color: theme.onSurfaceVariant }}>
@@ -88,7 +88,7 @@ const DownloadQueue = ({ navigation }: TaskQueueScreenProps) => {
               }
               progress={item.meta.progress}
               color={theme.primary}
-              style={{ marginTop: 8, backgroundColor: theme.surface2 }}
+              style={[{ backgroundColor: theme.surface2 }, styles.marginTop]}
             />
           </View>
         )}
@@ -136,4 +136,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
   },
+  marginTop: { marginTop: 8 },
+  paddingBottom: { paddingBottom: 100, flexGrow: 1 },
+  padding: { padding: 16 },
 });

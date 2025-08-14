@@ -27,6 +27,7 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
 
   const bottom = expanded ? 0 : 4;
   const containerBottomPadding = expanded ? 24 : 8;
+  const opacity = expanded ? 1 : 0.7;
 
   return (
     <Pressable
@@ -49,7 +50,7 @@ const NovelSummary: React.FC<NovelSummaryProps> = ({
             {
               backgroundColor: theme.background,
               bottom,
-              opacity: expanded ? 1 : 0.7,
+              opacity,
             },
           ]}
         >

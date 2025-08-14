@@ -15,9 +15,9 @@ export const createNovelTableQuery = `
     totalPages INTEGER DEFAULT 0,
     chaptersDownloaded INTEGER DEFAULT 0,
     chaptersUnread INTEGER DEFAULT 0,
-    totalChapters INTEGER DEFAULT 0
+    totalChapters INTEGER DEFAULT 0,
     lastReadAt TEXT,
-    lastUpdatedAt TEXT
+    lastUpdatedAt TEXT,
     UNIQUE(path, pluginId)
   );
 `;
@@ -38,6 +38,7 @@ BEGIN
     UPDATE Novel
     SET 
         totalChapters = (SELECT COUNT(*) FROM Chapter WHERE Chapter.novelId = Novel.id),
+        chaptersUnread = (SELECT COUNT(*) FROM Chapter WHERE Chapter.novelId = Novel.id AND Chapter.unread = 1),
         lastUpdatedAt = (SELECT MAX(updatedTime) FROM Chapter WHERE Chapter.novelId = Novel.id)
     WHERE id = NEW.novelId;
 END;

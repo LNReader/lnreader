@@ -1,8 +1,12 @@
 import { showToast } from '@utils/showToast';
-import { ChapterInfo, DownloadedChapter, UpdateOverview } from '../types';
+import {
+  ChapterInfo,
+  DownloadedChapter,
+  UpdateOverview,
+  Update,
+} from '../types';
 import { ChapterItem } from '@plugins/types';
 
-import { Update } from '../types';
 import { getString } from '@strings/translations';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { db } from '@database/db';
@@ -20,38 +24,32 @@ export const insertChapters = async (
 
   await db
     .withTransactionAsync(async () => {
-      // 2604.029053 ms AllNovelFull Martial God Asura | 6192chs | synchronous = NORMAL
-      // 1261.847900 ms AllNovelFull Martial God Asura | 6192chs | synchronous = OFF
-      // 1008.902832 ms AllNovelFull Martial God Asura | 6192chs | synchronous = OFF & UPSERT syntax
-
-      const statement = await db.prepareAsync(` 
+      const statement = db.prepareSync(` 
         INSERT INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ${novelId}, ?, ?, ?)
         ON CONFLICT(path, novelId) DO UPDATE SET
-          page = excluded.page,
-          position = excluded.position,
-          name = excluded.name,
-          releaseTime = excluded.releaseTime,
-          chapterNumber = excluded.chapterNumber;
-      `);
-      const promises = chapters.map((chapter, index) =>
-        statement.executeAsync(
-          chapter.path,
-          chapter.name,
-          chapter.releaseTime || '',
-          novelId,
-          chapter.chapterNumber || null,
-          chapter.page || '1',
-          index,
-        ),
-      );
-      await Promise.all(promises);
-      await statement.finalizeAsync();
+        page = excluded.page,
+        position = excluded.position,
+        name = excluded.name,
+        releaseTime = excluded.releaseTime,
+        chapterNumber = excluded.chapterNumber;
+        `);
+      try {
+        chapters.map((chapter, index) =>
+          statement.executeSync(
+            chapter.path,
+            chapter.name ?? 'Chapter ' + (index + 1),
+            chapter.releaseTime || '',
+            chapter.chapterNumber || null,
+            chapter.page || '1',
+            index,
+          ),
+        );
+      } finally {
+        statement.finalizeSync();
+      }
     })
-    .catch(e => {
-      console.error(e);
-    });
-  return;
+    .catch();
 };
 
 export const markChapterRead = (chapterId: number) =>

@@ -2,10 +2,9 @@ import {
   getChapter as getDbChapter,
   getNextChapter,
   getPrevChapter,
-  updateChapterProgress,
 } from '@database/queries/ChapterQueries';
 import { insertHistory } from '@database/queries/HistoryQueries';
-import { ChapterInfo } from '@database/types';
+import { ChapterInfo, NovelInfo } from '@database/types';
 import {
   useChapterGeneralSettings,
   useLibrarySettings,
@@ -14,7 +13,14 @@ import {
 } from '@hooks/persisted';
 import { fetchChapter } from '@services/plugin/fetch';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { sanitizeChapterText } from '../utils/sanitizeChapterText';
 import { parseChapterNumber } from '@utils/parseChapterNumber';
 import WebView from 'react-native-webview';
@@ -22,7 +28,6 @@ import { useFullscreenMode } from '@hooks';
 import { Dimensions, NativeEventEmitter } from 'react-native';
 import * as Speech from 'expo-speech';
 import { defaultTo } from 'lodash-es';
-import { useChapterContext } from '../ChapterContext';
 import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
 import NativeVolumeButtonListener from '@specs/NativeVolumeButtonListener';
@@ -31,14 +36,24 @@ import { useNovelContext } from '@screens/novel/NovelContext';
 
 const emmiter = new NativeEventEmitter(NativeVolumeButtonListener);
 
-export default function useChapter(webViewRef: RefObject<WebView | null>) {
-  const { novel, chapter, setChapter, loading, setLoading } =
-    useChapterContext();
-  const { setLastRead, markChapterRead } = useNovelContext();
+export default function useChapter(
+  webViewRef: RefObject<WebView | null>,
+  initialChapter: ChapterInfo,
+  novel: NovelInfo,
+) {
+  const {
+    setLastRead,
+    markChapterRead,
+    updateChapterProgress,
+    chapterTextCache,
+  } = useNovelContext();
   const [hidden, setHidden] = useState(true);
+  const [chapter, setChapter] = useState(initialChapter);
+  const [loading, setLoading] = useState(true);
   const [chapterText, setChapterText] = useState('');
+
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
-    ChapterInfo[]
+    ChapterInfo[] | undefined[]
   >([]);
   const { autoScroll, autoScrollInterval, autoScrollOffset, useVolumeButtons } =
     useChapterGeneralSettings();
@@ -81,44 +96,71 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
     };
   }, [useVolumeButtons, chapter, connectVolumeButton]);
 
-  const getChapter = useCallback(async () => {
-    try {
-      const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${chapter.id}/index.html`;
+  const loadChapterText = useCallback(
+    async (id: number, path: string) => {
+      const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${chapter.novelId}/${id}/index.html`;
       let text = '';
       if (NativeFile.exists(filePath)) {
         text = NativeFile.readFile(filePath);
       } else {
-        await fetchChapter(novel.pluginId, chapter.path)
+        await fetchChapter(novel.pluginId, path)
           .then(res => {
             text = res;
           })
           .catch(e => setError(e.message));
       }
-      setChapterText(
-        sanitizeChapterText(novel.pluginId, novel.name, chapter.name, text),
-      );
+      return text;
+    },
+    [chapter.novelId, novel.pluginId],
+  );
 
-      const [nextChap, prevChap] = await Promise.all([
-        getNextChapter(chapter.novelId, chapter.position!, chapter.page),
-        getPrevChapter(chapter.novelId, chapter.position!, chapter.page),
-      ]);
-      setAdjacentChapter([nextChap!, prevChap!]);
-    } catch (e: any) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [
-    chapter.id,
-    chapter.name,
-    chapter.novelId,
-    chapter.page,
-    chapter.path,
-    chapter.position,
-    novel.name,
-    novel.pluginId,
-    setLoading,
-  ]);
+  const getChapter = useCallback(
+    async (navChapter?: ChapterInfo) => {
+      try {
+        const chap = navChapter ?? chapter;
+        const cachedText = chapterTextCache.get(chap.id);
+        const text = cachedText ?? loadChapterText(chap.id, chap.path);
+        const [nextChap, prevChap, awaitedText] = await Promise.all([
+          getNextChapter(chap.novelId, chap.position!, chap.page),
+          getPrevChapter(chap.novelId, chap.position!, chap.page),
+          text,
+        ]);
+        if (nextChap && !chapterTextCache.get(nextChap.id)) {
+          chapterTextCache.set(
+            nextChap.id,
+            loadChapterText(nextChap.id, nextChap.path),
+          );
+        }
+        if (!cachedText) {
+          chapterTextCache.set(chap.id, text);
+        }
+        setChapter(chap);
+        setChapterText(
+          sanitizeChapterText(
+            novel.pluginId,
+            novel.name,
+            chap.name,
+            awaitedText,
+          ),
+        );
+        setAdjacentChapter([nextChap!, prevChap!]);
+      } catch (e: any) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [
+      chapter,
+      chapterTextCache,
+      loadChapterText,
+      setChapter,
+      setChapterText,
+      novel.pluginId,
+      novel.name,
+      setLoading,
+    ],
+  );
 
   const scrollInterval = useRef<NodeJS.Timeout>(null);
   useEffect(() => {
@@ -155,18 +197,24 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
     (percentage: number) => {
       if (!incognitoMode) {
         updateChapterProgress(chapter.id, percentage > 100 ? 100 : percentage);
-      }
 
-      if (!incognitoMode && percentage >= 97) {
-        // a relative number
-        markChapterRead(chapter.id);
-        updateTracker();
+        if (percentage >= 97) {
+          // a relative number
+          markChapterRead(chapter.id);
+          updateTracker();
+        }
       }
     },
-    [chapter.id, incognitoMode, updateTracker],
+    [
+      chapter.id,
+      incognitoMode,
+      markChapterRead,
+      updateChapterProgress,
+      updateTracker,
+    ],
   );
 
-  const hideHeader = () => {
+  const hideHeader = useCallback(() => {
     if (!hidden) {
       webViewRef.current?.injectJavaScript('reader.hidden.val = true');
       setImmersiveMode();
@@ -175,22 +223,22 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
       showStatusAndNavBar();
     }
     setHidden(!hidden);
-  };
+  }, [hidden, setImmersiveMode, showStatusAndNavBar, webViewRef]);
 
   const navigateChapter = useCallback(
     (position: 'NEXT' | 'PREV') => {
-      let navChapter;
+      let nextNavChapter;
       if (position === 'NEXT') {
-        navChapter = nextChapter;
+        nextNavChapter = nextChapter;
       } else if (position === 'PREV') {
-        navChapter = prevChapter;
+        nextNavChapter = prevChapter;
       } else {
         return;
       }
+      if (nextNavChapter) {
+        // setLoading(true);
 
-      if (navChapter) {
-        setLoading(true);
-        setChapter(navChapter);
+        getChapter(nextNavChapter);
       } else {
         showToast(
           position === 'NEXT'
@@ -199,13 +247,10 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
         );
       }
     },
-    [nextChapter, prevChapter, setChapter, setLoading],
+    [getChapter, nextChapter, prevChapter],
   );
 
   useEffect(() => {
-    setLoading(true);
-    getChapter().finally(() => setLoading(false));
-
     if (!incognitoMode) {
       insertHistory(chapter.id);
       getDbChapter(chapter.id).then(result => result && setLastRead(result));
@@ -216,26 +261,54 @@ export default function useChapter(webViewRef: RefObject<WebView | null>) {
         getDbChapter(chapter.id).then(result => result && setLastRead(result));
       }
     };
-  }, [chapter, getChapter, incognitoMode, setLastRead, setLoading]);
+  }, [incognitoMode, setLastRead, setLoading, chapter.id]);
 
-  const refetch = () => {
+  useEffect(() => {
+    if (!chapter || !chapterText) {
+      getChapter();
+    }
+  }, [chapter, chapterText, getChapter]);
+
+  const refetch = useCallback(() => {
     setLoading(true);
     setError('');
-    getChapter().finally(() => setLoading(false));
-  };
+    getChapter();
+  }, [getChapter]);
 
-  return {
-    hidden,
-    chapter,
-    nextChapter,
-    prevChapter,
-    error,
-    loading,
-    chapterText,
-    setHidden,
-    saveProgress,
-    hideHeader,
-    navigateChapter,
-    refetch,
-  };
+  return useMemo(
+    () => ({
+      hidden,
+      chapter,
+      nextChapter,
+      prevChapter,
+      error,
+      loading,
+      chapterText,
+      setHidden,
+      saveProgress,
+      hideHeader,
+      navigateChapter,
+      refetch,
+      setChapter,
+      setLoading,
+      getChapter,
+    }),
+    [
+      hidden,
+      chapter,
+      nextChapter,
+      prevChapter,
+      error,
+      loading,
+      chapterText,
+      setHidden,
+      saveProgress,
+      hideHeader,
+      navigateChapter,
+      refetch,
+      setChapter,
+      setLoading,
+      getChapter,
+    ],
+  );
 }
