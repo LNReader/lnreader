@@ -18,6 +18,10 @@ import {
 } from 'react';
 import { NovelStateContext } from './NovelStateContext';
 import { getString } from '@strings/translations';
+import ServiceManager, {
+  DownloadChapterTask,
+  QueuedBackgroundTask,
+} from '@services/ServiceManager';
 
 interface BatchInfo {
   batch: number;
@@ -89,6 +93,8 @@ interface ChapterContextValue extends ChapterState {
 export const NovelChaptersContext = createContext<ChapterContextValue | null>(
   null,
 );
+
+const serviceManager = ServiceManager.manager;
 
 // #endregion
 // #region provider
@@ -207,6 +213,29 @@ export function NovelChaptersContextProvider({
       path,
     ],
   );
+
+  useEffect(() => {
+    const handleTaskCompletion = (task: QueuedBackgroundTask) => {
+      if (task.task.name === 'DOWNLOAD_CHAPTER') {
+        const chapterId = (task.task as DownloadChapterTask).data.chapterId;
+        if (task.meta.finalStatus === 'completed') {
+          mutateChapters(chs => {
+            const chIndex = chs.findIndex(ch => ch.id === chapterId);
+            if (chIndex !== -1) {
+              chs[chIndex].isDownloaded = true;
+            }
+            return chs;
+          });
+        }
+      }
+    };
+
+    serviceManager.addCompletionListener(handleTaskCompletion);
+
+    return () => {
+      serviceManager.removeCompletionListener(handleTaskCompletion);
+    };
+  }, [mutateChapters]);
 
   useEffect(() => {
     let cancelled = false;

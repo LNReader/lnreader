@@ -158,7 +158,6 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                   isUpdateCard
                   novelName={chapterListInfo.novelName}
                   chapter={item}
-                  theme={theme}
                   showChapterTitles={false}
                   downloadChapter={() => handleDownloadChapter(item)}
                   deleteChapter={() => deleteChapter(item)}
@@ -182,13 +181,12 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     return (
       <ChapterItem
         isLocal={false}
+        isUpdateCard
         isDownloading={downloadQueue.some(
           c => c.task.data.chapterId === chapterList[0]?.id,
         )}
-        isUpdateCard
         novelName={chapterListInfo.novelName}
         chapter={chapterList[0]}
-        theme={theme}
         showChapterTitles={false}
         downloadChapter={() => handleDownloadChapter(chapterList[0])}
         deleteChapter={() => deleteChapter(chapterList[0])}

@@ -47,6 +47,7 @@ export type GeneralBackgroundTask =
   | { name: 'SELF_HOST_RESTORE'; data: SelfHostData }
   | { name: 'MIGRATE_NOVEL'; data: MigrateNovelData }
   | DownloadChapterTask;
+
 export type DownloadChapterTask = {
   name: 'DOWNLOAD_CHAPTER';
   data: { chapterId: number; novelName: string; chapterName: string };
@@ -62,6 +63,7 @@ export type BackgroundTaskMetadata = {
   isRunning: boolean;
   progress: number | undefined;
   progressText: string | undefined;
+  finalStatus?: 'completed' | 'failed'; // NEW: Outcome for UI
 };
 
 export type QueuedBackgroundTask<T extends taskNames = taskNames> = {
@@ -83,6 +85,10 @@ export default class ServiceManager {
   currentPendingUpdate = 0;
   private static instance?: ServiceManager;
 
+  // NEW: Listeners for task completion/failure
+  private taskCompletionListeners: Set<(task: QueuedBackgroundTask) => void> =
+    new Set();
+
   private constructor() {}
 
   static get manager() {
@@ -102,6 +108,16 @@ export default class ServiceManager {
         GeneralBackgroundTask['name']
       >
     ).includes(task.name);
+  }
+
+  public addCompletionListener(listener: (task: QueuedBackgroundTask) => void) {
+    this.taskCompletionListeners.add(listener);
+  }
+
+  public removeCompletionListener(
+    listener: (task: QueuedBackgroundTask) => void,
+  ) {
+    this.taskCompletionListeners.delete(listener);
   }
 
   async start() {
@@ -132,18 +148,21 @@ export default class ServiceManager {
     transformer: (meta: BackgroundTaskMetadata) => BackgroundTaskMetadata,
   ) {
     const taskList = [...this.getTaskList()];
+    // Ensure taskList[0] exists before proceeding
+    if (!taskList[0]) {
+      return;
+    }
+
+    const updatedMeta = transformer(taskList[0].meta);
     taskList[0] = {
       ...taskList[0],
-      meta: transformer(taskList[0].meta),
+      meta: updatedMeta,
     };
 
-    if (
-      taskList[0].meta.isRunning &&
-      taskList[0].task.name !== 'DOWNLOAD_CHAPTER'
-    ) {
+    if (updatedMeta.isRunning && taskList[0].task.name !== 'DOWNLOAD_CHAPTER') {
       const now = Date.now();
       if (now - this.lastNotifUpdate > 1000) {
-        const delay = 1000 - now - this.lastNotifUpdate;
+        const delay = Math.max(0, 1000 - (now - this.lastNotifUpdate)); // Ensure positive delay
         const id = ++this.currentPendingUpdate;
         setTimeout(() => {
           if (this.currentPendingUpdate !== id) {
@@ -213,35 +232,73 @@ export default class ServiceManager {
       task.task.name === 'DOWNLOAD_CHAPTER'
         ? this.getProgressForNotification(task, startingTasks)
         : null;
+
+    // Set task to running and update notification before executing
+    this.setMeta(prevMeta => ({ ...prevMeta, isRunning: true }));
     await BackgroundService.updateNotification({
       taskTitle: task.meta.name,
       taskDesc: task.meta.progressText ?? '',
       progressBar: {
         indeterminate: progress === null,
         max: 100,
-        value: progress == null ? 0 : progress,
+        value: progress === null ? 0 : progress,
       },
     });
     this.lastNotifUpdate = Date.now();
     this.currentPendingUpdate = 0;
 
-    switch (task.task.name) {
-      case 'IMPORT_EPUB':
-        return importEpub(task.task.data, this.setMeta.bind(this));
-      case 'UPDATE_LIBRARY':
-        return updateLibrary(task.task.data || {}, this.setMeta.bind(this));
-      case 'DRIVE_BACKUP':
-        return createDriveBackup(task.task.data, this.setMeta.bind(this));
-      case 'DRIVE_RESTORE':
-        return driveRestore(task.task.data, this.setMeta.bind(this));
-      case 'SELF_HOST_BACKUP':
-        return createSelfHostBackup(task.task.data, this.setMeta.bind(this));
-      case 'SELF_HOST_RESTORE':
-        return selfHostRestore(task.task.data, this.setMeta.bind(this));
-      case 'MIGRATE_NOVEL':
-        return migrateNovel(task.task.data, this.setMeta.bind(this));
-      case 'DOWNLOAD_CHAPTER':
-        return downloadChapter(task.task.data, this.setMeta.bind(this));
+    let success = false;
+    try {
+      switch (task.task.name) {
+        case 'IMPORT_EPUB':
+          await importEpub(task.task.data, this.setMeta.bind(this));
+          break;
+        case 'UPDATE_LIBRARY':
+          await updateLibrary(task.task.data || {}, this.setMeta.bind(this));
+          break;
+        case 'DRIVE_BACKUP':
+          await createDriveBackup(task.task.data, this.setMeta.bind(this));
+          break;
+        case 'DRIVE_RESTORE':
+          await driveRestore(task.task.data, this.setMeta.bind(this));
+          break;
+        case 'SELF_HOST_BACKUP':
+          await createSelfHostBackup(task.task.data, this.setMeta.bind(this));
+          break;
+        case 'SELF_HOST_RESTORE':
+          await selfHostRestore(task.task.data, this.setMeta.bind(this));
+          break;
+        case 'MIGRATE_NOVEL':
+          await migrateNovel(task.task.data, this.setMeta.bind(this));
+          break;
+        case 'DOWNLOAD_CHAPTER':
+          await downloadChapter(task.task.data, this.setMeta.bind(this));
+          break;
+      }
+      success = true;
+    } catch (error: any) {
+      // eslint-disable-next-line no-console
+      console.error(`Task ${task.task.name} (ID: ${task.id}) failed:`, error);
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: `Failed: ${task.meta.name}`,
+          body: error?.message || String(error),
+        },
+        trigger: null,
+      });
+    } finally {
+      //? Notify listeners about task completion/failure
+      const finalTask: QueuedBackgroundTask = {
+        ...task,
+        meta: {
+          ...task.meta,
+          isRunning: false,
+          finalStatus: success ? 'completed' : 'failed',
+          progress: success ? 100 : undefined,
+          progressText: success ? getString('common.done') : 'Failed',
+        },
+      };
+      this.taskCompletionListeners.forEach(listener => listener(finalTask));
     }
   }
 
@@ -259,35 +316,23 @@ export default class ServiceManager {
       'DOWNLOAD_CHAPTER': 0,
     };
     const startingTasks = manager.getTaskList();
-    const tasksSet = new Set(startingTasks.map(t => t.id));
+
     while (BackgroundService.isRunning()) {
       const currentTasks = manager.getTaskList();
       const currentTask = currentTasks[0];
+
       if (!currentTask) {
         break;
       }
 
-      //Add any newly queued tasks to the starting tasks list
-      const newtasks = currentTasks.filter(t => !tasksSet.has(t.id));
-      startingTasks.push(...newtasks);
-      newtasks.forEach(t => tasksSet.add(t.id));
+      await manager.executeTask(currentTask, startingTasks);
 
-      try {
-        await manager.executeTask(currentTask, startingTasks);
-        doneTasks[currentTask.task.name] += 1;
-      } catch (error: any) {
-        await Notifications.scheduleNotificationAsync({
-          content: {
-            title: currentTask.meta.name,
-            body: error?.message || String(error),
-          },
-          trigger: null,
-        });
-      } finally {
-        setMMKVObject(manager.STORE_KEY, manager.getTaskList().slice(1));
-      }
+      // After execution, remove the current task from the queue
+      setMMKVObject(manager.STORE_KEY, currentTasks.slice(1));
+      doneTasks[currentTask.task.name] += 1;
     }
 
+    // Final notification when all tasks are done
     if (manager.getTaskList().length === 0) {
       await Notifications.scheduleNotificationAsync({
         content: {
@@ -349,7 +394,7 @@ export default class ServiceManager {
     );
     if (addableTasks.length) {
       const newTasks: QueuedBackgroundTask[] = addableTasks.map(task => ({
-        task,
+        task: task as BackgroundTask<typeof task.name>,
         meta: {
           name: this.getTaskName(task),
           isRunning: false,
@@ -358,6 +403,7 @@ export default class ServiceManager {
             task.name === 'DOWNLOAD_CHAPTER'
               ? task.data.chapterName
               : undefined,
+          finalStatus: undefined, // Initialize finalStatus
         },
         id: makeId(),
       }));

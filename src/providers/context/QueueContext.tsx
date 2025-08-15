@@ -40,8 +40,7 @@ export function QueueContextProvider({
       importQueue,
       downloadQueue,
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [taskQueue.length]);
+  }, [taskQueue]);
 
   return (
     <QueueContext.Provider value={contextValue}>

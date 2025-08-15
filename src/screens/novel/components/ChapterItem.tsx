@@ -1,13 +1,10 @@
 import React, { memo, ReactNode, useCallback, useMemo } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import {
-  ChapterBookmarkButton,
-  DownloadButton,
-} from './Chapter/ChapterDownloadButtons';
+import { DownloadButton } from './Chapter/ChapterDownloadButtons';
 import { ChapterInfo } from '@database/types';
 import { getString } from '@strings/translations';
 import { useTheme } from '@providers/Providers';
-import { isChapterDownloaded } from '@database/queries/ChapterQueries';
+import { ChapterBookmarkButton } from './Chapter/ChapterBookmark';
 
 interface ChapterItemProps {
   isDownloading?: boolean;
@@ -20,7 +17,6 @@ interface ChapterItemProps {
   onSelectPress?: (chapter: ChapterInfo) => void;
   onSelectLongPress?: (chapter: ChapterInfo) => void;
   navigateToChapter: (chapter: ChapterInfo) => void;
-  setChapterDownloaded?: (value: boolean) => void;
   left?: ReactNode;
   isLocal: boolean;
   isUpdateCard?: boolean;
@@ -28,7 +24,7 @@ interface ChapterItemProps {
 }
 
 const ChapterItem: React.FC<ChapterItemProps> = ({
-  isDownloading: isDownloadingProp,
+  isDownloading,
   isBookmarked,
   chapter,
   showChapterTitles,
@@ -38,37 +34,29 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
   onSelectPress,
   onSelectLongPress,
   navigateToChapter,
-  setChapterDownloaded,
   isLocal,
   left,
   isUpdateCard,
   novelName,
 }) => {
+  const theme = useTheme();
   const {
-    id,
     name,
     unread,
     releaseTime,
     bookmark,
     chapterNumber,
     progress,
-    isDownloaded: isDownloadedProp,
+    isDownloaded,
   } = chapter;
-  chapter;
-  if (name === 'Chapter 2: Rice Farming 101') {
-    console.log(name, isDownloadedProp);
-  }
+
+  const downloadStatus = useMemo(() => {
+    if (isDownloading) return 'downloading';
+    if (isDownloaded) return 'downloaded';
+    return 'idle';
+  }, [isDownloaded, isDownloading]);
 
   const isBookmarkedLocal = isBookmarked ?? bookmark;
-
-  const theme = useTheme();
-
-  const isDownloaded = useMemo(() => {
-    if (!isDownloadingProp) {
-      return isChapterDownloaded(id) ?? false;
-    }
-    return isDownloadedProp;
-  }, [id, isDownloadedProp, isDownloadingProp]);
 
   const highlight = useMemo(
     () => ({ backgroundColor: theme.rippleColor }),
@@ -211,13 +199,10 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
 
       {!isLocal && (
         <DownloadButton
-          isDownloading={isDownloadingProp}
-          isDownloaded={isDownloaded}
-          chapterId={id}
+          status={downloadStatus}
           theme={theme}
-          setChapterDownloaded={setChapterDownloaded}
-          deleteChapter={deleteChapter}
-          downloadChapter={downloadChapter}
+          onDelete={deleteChapter}
+          onDownload={downloadChapter}
         />
       )}
     </Pressable>
@@ -249,7 +234,6 @@ function areEqual(prev: ChapterItemProps, next: ChapterItemProps) {
     prev.left === next.left &&
     prev.downloadChapter === next.downloadChapter &&
     prev.deleteChapter === next.deleteChapter &&
-    prev.setChapterDownloaded === next.setChapterDownloaded &&
     prev.onSelectPress === next.onSelectPress &&
     prev.onSelectLongPress === next.onSelectLongPress &&
     prev.navigateToChapter === next.navigateToChapter

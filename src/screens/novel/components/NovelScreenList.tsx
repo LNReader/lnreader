@@ -68,7 +68,7 @@ const NovelScreenList = ({
   getNextChapterBatch,
 }: NovelScreenListProps) => {
   const { getNovel, novel, loading } = useNovelState();
-  const { chapters, deleteChapter, fetching, batchInformation, updateChapter } =
+  const { chapters, deleteChapter, fetching, batchInformation } =
     useNovelChapters();
   const { novelSettings, sortAndFilterChapters, setShowChapterTitles } =
     useNovelSettings();
@@ -261,7 +261,7 @@ const NovelScreenList = ({
   );
 
   const renderItem = useCallback(
-    ({ item, index }: { item: ChapterInfo; index: number }) => {
+    ({ item }: { item: ChapterInfo }) => {
       if (novel.id === 'NO_ID') {
         return null;
       }
@@ -279,9 +279,6 @@ const NovelScreenList = ({
           onSelectLongPress={onSelectLongPress}
           navigateToChapter={navigateToChapter}
           novelName={novel.name}
-          setChapterDownloaded={(value: boolean) =>
-            updateChapter?.(index, { isDownloaded: value })
-          }
         />
       );
     },
@@ -295,7 +292,6 @@ const NovelScreenList = ({
       navigateToChapter,
       deleteChapter,
       downloadChapter,
-      updateChapter,
     ],
   );
 

@@ -274,6 +274,7 @@ const useNovelChapters = () => {
     novelSettings.filter,
     currentPage,
     setChapters,
+    batchInformation,
   ]);
 
   // #endregion
