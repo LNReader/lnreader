@@ -50,7 +50,12 @@ export type GeneralBackgroundTask =
 
 export type DownloadChapterTask = {
   name: 'DOWNLOAD_CHAPTER';
-  data: { chapterId: number; novelName: string; chapterName: string };
+  data: {
+    chapterId: number;
+    novelName: string;
+    novelId: number;
+    chapterName: string;
+  };
 };
 
 export type BackgroundTask<T extends taskNames = taskNames> = Extract<
