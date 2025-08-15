@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Text, StatusBar } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import ErrorBoundary from 'react-native-error-boundary';
+import { SystemBars } from 'react-native-edge-to-edge';
 
 import { Button, List } from '@components';
 import { useTheme } from '@hooks/persisted';
@@ -21,7 +22,7 @@ export const ErrorFallback: React.FC<ErrorFallbackProps> = ({
     <SafeAreaView
       style={[styles.mainCtn, { backgroundColor: theme.background }]}
     >
-      <StatusBar translucent={true} backgroundColor="transparent" />
+      <SystemBars style="light" />
       <View style={styles.errorInfoCtn}>
         <Text style={[styles.errorTitle, { color: theme.onSurface }]}>
           An Unexpected Error Ocurred
