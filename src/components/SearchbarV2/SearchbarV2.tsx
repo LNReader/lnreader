@@ -6,7 +6,7 @@ import { ThemeColors } from '../../theme/types';
 import { Menu } from 'react-native-paper';
 import { MaterialDesignIconName } from '@type/icon';
 
-interface RightIcon {
+export interface RightIcon {
   iconName: MaterialDesignIconName;
   color?: string;
   onPress: () => void;

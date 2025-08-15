@@ -168,13 +168,12 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
             {novelName}
           </Text>
         )}
-
         <View style={styles.rowCenter}>
-          {unread && (
+          {unread ? (
             <View
               style={[styles.unreadDot, { backgroundColor: theme.primary }]}
             />
-          )}
+          ) : null}
 
           <Text style={titleStyle} numberOfLines={1} ellipsizeMode="tail">
             {titleText}
@@ -182,18 +181,18 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
         </View>
 
         <View style={styles.rowCenter}>
-          {releaseTime && !isUpdateCard && (
+          {releaseTime && !isUpdateCard ? (
             <Text style={metaStyle} numberOfLines={1}>
               {releaseTime}
             </Text>
-          )}
+          ) : null}
 
-          {!isUpdateCard && (progress ?? 0) > 0 && unread && (
+          {!isUpdateCard && (progress ?? 0) > 0 && unread ? (
             <Text style={progressStyle} numberOfLines={1}>
               {releaseTime ? '•  ' : ''}
               {progressText}
             </Text>
-          )}
+          ) : null}
         </View>
       </View>
 

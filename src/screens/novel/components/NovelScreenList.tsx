@@ -54,9 +54,6 @@ type NovelScreenListProps = {
 // Memoized empty component
 const ListEmptyComponent = React.memo(() => <ChapterListSkeleton />);
 
-// Memoized header component
-const MemoizedNovelInfoHeader = React.memo(NovelInfoHeader);
-
 const NovelScreenList = ({
   headerOpacity,
   listRef,
@@ -333,7 +330,7 @@ const NovelScreenList = ({
       totalChapters: batchInformation.totalChapters,
       trackerSheetRef,
     };
-    return <MemoizedNovelInfoHeader {...props} />;
+    return <NovelInfoHeader {...props} />;
   }, [
     deleteDownloadsSnackbar,
     filter,

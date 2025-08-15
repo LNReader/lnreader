@@ -258,8 +258,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
             )}
           </Portal>
           <SafeAreaView excludeTop>
-            {/* <Suspense fallback={<NovelScreenLoading theme={theme} />}> */}
-            <Suspense fallback={<></>}>
+            <Suspense fallback={<NovelScreenLoading theme={theme} />}>
               <NovelScreenList
                 headerOpacity={headerOpacity}
                 listRef={chapterListRef}

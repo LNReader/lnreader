@@ -12,12 +12,12 @@ import MaterialCommunityIcons from '@react-native-vector-icons/material-design-i
 import { MaterialDesignIconName } from '@type/icon';
 import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 
-type Action = {
+export type Action = {
   icon: MaterialDesignIconName;
   onPress: () => void;
 };
 
-interface ActionbarProps {
+export interface ActionbarProps {
   active: boolean;
   actions: Action[];
   viewStyle?: StyleProp<ViewStyle>;

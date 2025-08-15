@@ -11,8 +11,6 @@ export interface DownloadButtonProps {
   theme: MD3ThemeType;
   onDelete: () => void;
   onDownload: () => void;
-  // Optional: Add progress for a progress bar if desired
-  // progress?: number; // 0-100
 }
 
 const _DownloadButton: React.FC<DownloadButtonProps> = ({
@@ -20,7 +18,6 @@ const _DownloadButton: React.FC<DownloadButtonProps> = ({
   theme,
   onDelete,
   onDownload,
-  // progress,
 }) => {
   const [menuVisible, setMenuVisible] = useState(false);
 
@@ -80,7 +77,7 @@ const _DownloadButton: React.FC<DownloadButtonProps> = ({
     );
   }
 
-  // status === 'idle' or 'error'
+  // status === 'idle'
   return (
     <View style={styles.container}>
       <Pressable
@@ -104,11 +101,10 @@ function areEqualDownloadButton(
 ) {
   return (
     prev.status === next.status &&
-    // prev.progress === next.progress && // if you add progress prop
     prev.theme.primary === next.theme.primary &&
     prev.theme.onSurface === next.theme.onSurface &&
     prev.theme.outline === next.theme.outline &&
-    prev.theme.surface === next.theme.surface && // for menu overlay
+    prev.theme.surface === next.theme.surface &&
     prev.onDelete === next.onDelete &&
     prev.onDownload === next.onDownload
   );

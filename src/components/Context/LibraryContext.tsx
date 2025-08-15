@@ -27,6 +27,8 @@ type LibraryContextType = {
   categories: ExtendedCategory[];
   isLoading: boolean;
   settings: LibrarySettings;
+  searchText: string;
+  setSearchText: React.Dispatch<React.SetStateAction<string>>;
   refetchLibrary: () => void;
   novelInLibrary: (pluginId: string, novelPath: string) => boolean;
   switchNovelToLibrary: (novelPath: string, pluginId: string) => Promise<void>;
@@ -93,6 +95,7 @@ export function LibraryContextProvider({
       categories,
       isLoading,
       settings,
+      searchText,
       refetchLibrary,
       novelInLibrary,
       switchNovelToLibrary,
@@ -103,6 +106,7 @@ export function LibraryContextProvider({
       categories,
       isLoading,
       settings,
+      searchText,
       refetchLibrary,
       novelInLibrary,
       switchNovelToLibrary,
