@@ -135,7 +135,7 @@ const LibraryTabs: React.FC<LibraryTabsProps> = ({
           (n.author?.toLowerCase().includes(searchText.toLowerCase()) ?? false),
       );
 
-      return isLoading ? (
+      return isLoading && novels.length === 0 ? (
         <SourceScreenSkeletonLoading theme={theme} />
       ) : (
         <>

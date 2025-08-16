@@ -49,17 +49,12 @@ export const useLibraryNovels = ({
         filter: `id = ${novelId}`,
       });
       setNovels(prevNovels => {
-        const novelIndex = fetchedNovels.findIndex(
-          novel => novel.id === novelId,
-        );
+        const novelIndex = prevNovels.findIndex(novel => novel?.id === novelId);
+
         if (novelIndex !== -1) {
-          return [
-            ...prevNovels.slice(0, novelIndex),
-            fetchedNovels[novelIndex],
-            ...prevNovels.slice(novelIndex + 1),
-          ];
+          prevNovels[novelIndex] = fetchedNovels[0];
         }
-        return [...prevNovels, fetchedNovels[0]];
+        return prevNovels;
       });
     } catch (error) {
       // eslint-disable-next-line no-console

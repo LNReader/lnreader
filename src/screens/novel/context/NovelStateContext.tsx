@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   getNovelByPath,
   insertNovelAndChapters,
@@ -51,8 +50,6 @@ export function NovelStateContextProvider({
   children: React.JSX.Element;
   novelParams: Route['params'];
 }) {
-  const t = Date.now() - 1754470000000;
-  console.time('NovelStateContextProvider ' + t);
   const { calculatePages } = useNovelPages();
   const routeNovel: RouteNovel = useMemo(
     () => ({
@@ -71,8 +68,6 @@ export function NovelStateContextProvider({
   const pluginId = routeNovel.pluginId;
 
   const getNovel = useCallback(async () => {
-    const t = Date.now() - 1754470000000;
-    console.time('getNovel ' + t);
     let tmpNovel = getNovelByPath(path, pluginId);
     if (!tmpNovel) {
       const sourceNovel = await fetchNovel(pluginId, path).catch(() => {
@@ -90,7 +85,6 @@ export function NovelStateContextProvider({
 
     setNovel(tmpNovel);
     setLoading(false);
-    console.timeEnd('getNovel ' + t);
     return tmpNovel;
   }, [calculatePages, path, pluginId]);
 
@@ -107,7 +101,6 @@ export function NovelStateContextProvider({
       } as (NovelState & NovelActions) | (NovelStateLoading & NovelActions)),
     [getNovel, loading, novel, novelParams.path, novelParams.pluginId],
   );
-  console.timeEnd('NovelStateContextProvider ' + t);
   return (
     <NovelStateContext.Provider value={contextValue}>
       {children}

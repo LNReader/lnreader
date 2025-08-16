@@ -5,16 +5,16 @@ import MigrationSourceItem from './MigrationSourceItem';
 
 import { usePlugins } from '@hooks/persisted';
 import { useTheme } from '@providers/Providers';
-import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar } from '@components';
 import { MigrationScreenProps } from '@navigators/types';
 import { PluginItem } from '@plugins/types';
 import { getString } from '@strings/translations';
+import { useLibraryContext } from '@components/Context/LibraryContext';
 
 const Migration = ({ navigation }: MigrationScreenProps) => {
   const theme = useTheme();
 
-  const { library } = useLibraryNovels();
+  const { library } = useLibraryContext();
   const { filteredInstalledPlugins } = usePlugins();
 
   const novelsPerSource = (pluginId: string) =>
