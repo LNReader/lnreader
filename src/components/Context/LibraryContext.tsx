@@ -32,6 +32,8 @@ type LibraryContextType = {
   refetchLibrary: () => void;
   novelInLibrary: (pluginId: string, novelPath: string) => boolean;
   switchNovelToLibrary: (novelPath: string, pluginId: string) => Promise<void>;
+  refreshCategories: () => Promise<void>;
+  setCategories: React.Dispatch<React.SetStateAction<ExtendedCategory[]>>;
 };
 
 const defaultValue = {} as LibraryContextType;
@@ -47,7 +49,7 @@ export function LibraryContextProvider({
   const [searchText, setSearchText] = useState('');
   const settings = useLibrarySettings();
 
-  const { categories, categoriesLoading, refreshCategories } =
+  const { categories, categoriesLoading, refreshCategories, setCategories } =
     useFetchCategories();
   const { novels, novelsLoading, refetchNovels, refetchNovel } =
     useLibraryNovels({
@@ -100,6 +102,8 @@ export function LibraryContextProvider({
       novelInLibrary,
       switchNovelToLibrary,
       setSearchText,
+      refreshCategories,
+      setCategories,
     }),
     [
       novels,
@@ -110,6 +114,8 @@ export function LibraryContextProvider({
       refetchLibrary,
       novelInLibrary,
       switchNovelToLibrary,
+      refreshCategories,
+      setCategories,
     ],
   );
 

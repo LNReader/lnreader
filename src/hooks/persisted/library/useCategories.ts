@@ -34,5 +34,6 @@ export const useFetchCategories = () => {
     categories,
     categoriesLoading,
     refreshCategories: fetchCategories,
+    setCategories,
   };
 };
