@@ -14,7 +14,9 @@
     "open": "open ./android/app/build/outputs/apk/release/",
     "strings": "node scripts/stringTypes.cjs",
     "prepare": "husky install",
-    "rebuild": "rm -rf node_modules/ ./android/build/ ./android/app/build/ ./android/app/.cxx && npm i && cd android/ && ./gradlew clean && cd .. && npm start -- --reset-cache"
+    "rebuild": "rm -rf node_modules/ ./android/build/ ./android/app/build/ ./android/app/.cxx && npm i && cd android/ && ./gradlew clean && cd .. && npm start -- --reset-cache",
+    "nix": "nix develop --extra-experimental-features nix-command --extra-experimental-features flakes",
+    "nix-emulator": "nix develop .#emulator --extra-experimental-features nix-command --extra-experimental-features flakes"
   },
   "codegenConfig": {
     "name": "LNReaderSpec",

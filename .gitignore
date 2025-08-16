@@ -81,4 +81,6 @@ web-build/
 .vscode/
 src/sources/en/generators/
 *.lockb
+*.lock
 .tool-versions
+flake.lock
