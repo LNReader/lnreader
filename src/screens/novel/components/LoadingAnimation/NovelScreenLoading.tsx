@@ -4,8 +4,9 @@ import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeColors } from '@theme/types';
 import useLoadingColors from '@utils/useLoadingColors';
-import { useAppSettings, useTheme } from '@hooks/persisted/index';
+import { useAppSettings } from '@hooks/persisted/index';
 import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
+import { useTheme } from '@providers/Providers';
 
 interface Props {
   theme: ThemeColors;

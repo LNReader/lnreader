@@ -4,7 +4,8 @@ import color from 'color';
 
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 import { getString } from '@strings/translations';
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { useChapterReaderSettings } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 
 import { Font, readerFonts } from '@utils/constants/readerConstants';
 import { FlatList } from 'react-native-gesture-handler';

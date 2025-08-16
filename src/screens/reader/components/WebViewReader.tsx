@@ -3,7 +3,7 @@ import { NativeEventEmitter, NativeModules, StatusBar } from 'react-native';
 import WebView from 'react-native-webview';
 import color from 'color';
 
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 
 import { getPlugin } from '@plugins/pluginManager';

@@ -5,7 +5,6 @@ import { StatusBar, StyleProp, ViewStyle } from 'react-native';
 import { ThemeColors } from '@theme/types';
 
 import EpubBuilder from '@cd-z/react-native-epub-creator';
-import { ChapterInfo, NovelInfo } from '@database/types';
 
 import { useChapterReaderSettings } from '@hooks/persisted';
 import { useBoolean } from '@hooks/index';
@@ -13,11 +12,11 @@ import { showToast } from '@utils/showToast';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import NativeFile from '@specs/NativeFile';
 import { MaterialDesignIconName } from '@type/icon';
+import useNovelState from '@hooks/persisted/novel/useNovelState';
+import useNovelChapters from '@hooks/persisted/novel/useNovelChapters';
 
 interface EpubIconButtonProps {
   theme: ThemeColors;
-  novel?: NovelInfo;
-  chapters: ChapterInfo[];
   anchor: (props: {
     icon: MaterialDesignIconName;
     onPress: () => void;
@@ -28,10 +27,10 @@ interface EpubIconButtonProps {
 
 const EpubIconButton: React.FC<EpubIconButtonProps> = ({
   theme,
-  novel,
-  chapters,
   anchor: Anchor,
 }) => {
+  const { novel, loading } = useNovelState();
+  const { chapters } = useNovelChapters();
   const {
     value: isVisible,
     setTrue: showModal,
@@ -127,7 +126,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
   );
 
   const createEpub = async (uri: string) => {
-    if (!novel) {
+    if (!novel || loading) {
       return;
     }
     const epub = new EpubBuilder(

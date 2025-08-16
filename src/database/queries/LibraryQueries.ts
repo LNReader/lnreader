@@ -2,12 +2,17 @@ import { LibraryFilter } from '@screens/library/constants/constants';
 import { LibraryNovelInfo, NovelInfo } from '../types';
 import { getAllSync } from '../utils/helpers';
 
-export const getLibraryNovelsFromDb = (
-  sortOrder?: string,
-  filter?: string,
-  searchText?: string,
-  downloadedOnlyMode?: boolean,
-): NovelInfo[] => {
+export const getLibraryNovelsFromDb = ({
+  sortOrder,
+  filter,
+  searchText,
+  downloadedOnlyMode,
+}: {
+  sortOrder?: string;
+  filter?: string;
+  searchText?: string;
+  downloadedOnlyMode?: boolean;
+}): NovelInfo[] => {
   let query = 'SELECT * FROM Novel WHERE inLibrary = 1';
 
   if (filter) {

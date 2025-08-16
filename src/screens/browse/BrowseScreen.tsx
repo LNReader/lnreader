@@ -3,7 +3,8 @@ import React, { useEffect, useMemo } from 'react';
 import { TabView, TabBar } from 'react-native-tab-view';
 
 import { useSearch } from '@hooks';
-import { usePlugins, useTheme } from '@hooks/persisted';
+import { usePlugins } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 
 import { EmptyView, SafeAreaView, SearchbarV2 } from '@components';

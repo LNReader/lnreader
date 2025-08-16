@@ -2,11 +2,8 @@ import { FlatList, StyleSheet } from 'react-native';
 import React from 'react';
 import { Appbar, List, SwitchItem } from '@components';
 
-import {
-  useBrowseSettings,
-  usePlugins,
-  useTheme,
-} from '@hooks/persisted/index';
+import { useBrowseSettings, usePlugins } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import { getLocaleLanguageName, languages } from '@utils/constants/languages';
 import { BrowseSettingsScreenProp } from '@navigators/types/index';

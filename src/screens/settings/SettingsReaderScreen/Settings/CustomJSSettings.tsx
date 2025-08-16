@@ -5,7 +5,8 @@ import { Portal } from 'react-native-paper';
 import { Button, List, ConfirmationDialog } from '@components/index';
 
 import { useBoolean } from '@hooks';
-import { useTheme, useChapterReaderSettings } from '@hooks/persisted';
+import { useChapterReaderSettings } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 
 import CustomFileModal from '../Modals/CustomFileModal';

@@ -1,5 +1,6 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
-import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
+import { useChapterGeneralSettings } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 
 import ReaderAppbar from './components/ReaderAppbar';
 import ReaderFooter from './components/ReaderFooter';

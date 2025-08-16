@@ -1,58 +1,55 @@
 import { ChapterInfo, NovelInfo } from '@database/types';
-import ServiceManager, {
-  BackgroundTaskMetadata,
-  DownloadChapterTask,
-  QueuedBackgroundTask,
-} from '@services/ServiceManager';
-import { useMemo } from 'react';
-import { useMMKVObject } from 'react-native-mmkv';
+import { useQueue } from '@providers/Providers';
+import ServiceManager from '@services/ServiceManager';
+import { useCallback, useMemo } from 'react';
 
 export const DOWNLOAD_QUEUE = 'DOWNLOAD';
 export const CHAPTER_DOWNLOADING = 'CHAPTER_DOWNLOADING';
 
 export default function useDownload() {
-  const [queue] = useMMKVObject<QueuedBackgroundTask[]>(
-    ServiceManager.manager.STORE_KEY,
-  );
+  const { downloadQueue } = useQueue();
 
-  const downloadQueue = useMemo(
-    () => queue?.filter(t => t.task?.name === 'DOWNLOAD_CHAPTER') || [],
-    [queue],
-  ) as { task: DownloadChapterTask; meta: BackgroundTaskMetadata }[];
-
-  const downloadChapter = (novel: NovelInfo, chapter: ChapterInfo) =>
-    ServiceManager.manager.addTask({
-      name: 'DOWNLOAD_CHAPTER',
-      data: {
-        chapterId: chapter.id,
-        novelName: novel.name,
-        chapterName: chapter.name,
-      },
-    });
-  const downloadChapters = (novel: NovelInfo, chapters: ChapterInfo[]) =>
-    ServiceManager.manager.addTask(
-      chapters.map(chapter => ({
+  const downloadChapter = useCallback(
+    (novel: NovelInfo, chapter: ChapterInfo) =>
+      ServiceManager.manager.addTask({
         name: 'DOWNLOAD_CHAPTER',
         data: {
           chapterId: chapter.id,
           novelName: novel.name,
+          novelId: novel.id,
           chapterName: chapter.name,
         },
-      })),
-    );
-  const resumeDowndload = () => ServiceManager.manager.resume();
+      }),
+    [],
+  );
+  const downloadChapters = useCallback(
+    (novel: NovelInfo, chapters: ChapterInfo[]) =>
+      ServiceManager.manager.addTask(
+        chapters.map(chapter => ({
+          name: 'DOWNLOAD_CHAPTER',
+          data: {
+            chapterId: chapter.id,
+            novelName: novel.name,
+            novelId: novel.id,
+            chapterName: chapter.name,
+          },
+        })),
+      ),
+    [],
+  );
 
-  const pauseDownload = () => ServiceManager.manager.pause();
+  const hookContent = useMemo(
+    () => ({
+      downloadQueue,
+      downloadChapter,
+      downloadChapters,
+      resumeDowndload: () => ServiceManager.manager.resume(),
+      pauseDownload: () => ServiceManager.manager.pause(),
+      cancelDownload: () =>
+        ServiceManager.manager.removeTasksByName('DOWNLOAD_CHAPTER'),
+    }),
+    [downloadChapter, downloadChapters, downloadQueue],
+  );
 
-  const cancelDownload = () =>
-    ServiceManager.manager.removeTasksByName('DOWNLOAD_CHAPTER');
-
-  return {
-    downloadQueue,
-    resumeDowndload,
-    downloadChapter,
-    downloadChapters,
-    pauseDownload,
-    cancelDownload,
-  };
+  return hookContent;
 }

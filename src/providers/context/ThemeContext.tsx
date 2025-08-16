@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import { Appearance } from 'react-native';
 import {
   useMMKVBoolean,
@@ -18,7 +18,13 @@ const getElevationColor = (colors: ThemeColors, elevation: number) => {
     .string();
 };
 
-export const useTheme = (): ThemeColors => {
+const ThemeContext = createContext<ThemeColors | null>(null);
+
+export function ThemeContextProvider({
+  children,
+}: {
+  children: React.JSX.Element;
+}) {
   const [appTheme] = useMMKVObject<ThemeColors>('APP_THEME');
   const [isAmoledBlack] = useMMKVBoolean('AMOLED_BLACK');
   const [customAccent] = useMMKVString('CUSTOM_ACCENT_COLOR');
@@ -57,5 +63,11 @@ export const useTheme = (): ThemeColors => {
     return colors;
   }, [appTheme, isAmoledBlack, customAccent]);
 
-  return theme;
+  return (
+    <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
+  );
+}
+
+export const useTheme = () => {
+  return useContext(ThemeContext)!;
 };

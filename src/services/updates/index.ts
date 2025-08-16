@@ -44,10 +44,9 @@ const updateLibrary = async (
         (onlyUpdateOngoingNovels ? " AND status = 'Ongoing'" : ''),
     });
   } else {
-    libraryNovels = getLibraryNovelsFromDb(
-      '',
-      onlyUpdateOngoingNovels ? "status = 'Ongoing'" : '',
-    ) as LibraryNovelInfo[];
+    libraryNovels = getLibraryNovelsFromDb({
+      filter: onlyUpdateOngoingNovels ? "status = 'Ongoing'" : '',
+    }) as LibraryNovelInfo[];
   }
 
   if (libraryNovels.length > 0) {

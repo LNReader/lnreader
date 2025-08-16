@@ -4,8 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import {
   useChapterGeneralSettings,
   useChapterReaderSettings,
-  useTheme,
 } from '../persisted';
+import { useTheme } from '@providers/Providers';
 import Color from 'color';
 import * as NavigationBar from 'expo-navigation-bar';
 import {

@@ -7,7 +7,8 @@ import { Button, List, Modal, SwitchItem } from '@components';
 
 import { useBoolean } from '@hooks';
 import { getString } from '@strings/translations';
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { useChapterReaderSettings } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { showToast } from '@utils/showToast';
 
 interface ChooseEpubLocationModalProps {
