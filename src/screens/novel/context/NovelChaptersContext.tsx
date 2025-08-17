@@ -116,7 +116,7 @@ export function NovelChaptersContextProvider({
 
   const [state, dispatch] = useReducer(reducer, {
     chapters: [],
-    fetching: false,
+    fetching: true,
     batchInformation: { batch: 0, total: 0 },
   });
 

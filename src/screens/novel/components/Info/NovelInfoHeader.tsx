@@ -107,6 +107,13 @@ const NovelInfoHeader = ({
     showToast('Not available while loading');
   };
 
+  let chapterText = '';
+  if (!fetching || totalChapters !== undefined) {
+    chapterText = `${totalChapters ?? 0} ${getString('novelScreen.chapters')}`;
+  } else {
+    chapterText = getString('common.loading');
+  }
+
   return (
     <>
       <CoverImage
@@ -248,9 +255,7 @@ const NovelInfoHeader = ({
               ) : null}
 
               <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-                {!fetching || totalChapters !== undefined
-                  ? `${totalChapters} ${getString('novelScreen.chapters')}`
-                  : getString('common.loading')}
+                {chapterText}
               </Text>
             </View>
             {page && Number(page) ? (
