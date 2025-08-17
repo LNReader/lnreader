@@ -5,7 +5,7 @@ import { getAllSync } from '../utils/helpers';
 export const getLibraryNovelsFromDb = ({
   sortOrder,
   filter,
-  searchText,
+  searchText = '',
   downloadedOnlyMode,
 }: {
   sortOrder?: string;
@@ -23,13 +23,16 @@ export const getLibraryNovelsFromDb = ({
   }
 
   if (searchText) {
+    if (!searchText.startsWith('%')) searchText = `%${searchText}`;
+    if (!searchText.endsWith('%')) searchText = `${searchText}%`;
     query += ' AND name LIKE ? ';
   }
 
   if (sortOrder) {
     query += ` ORDER BY ${sortOrder} `;
   }
-  return getAllSync<NovelInfo>([query, [searchText ?? '']]);
+
+  return getAllSync<NovelInfo>([query, [searchText]]);
 };
 
 const getLibraryWithCategoryQuery = 'SELECT * FROM Novel WHERE inLibrary = 1';

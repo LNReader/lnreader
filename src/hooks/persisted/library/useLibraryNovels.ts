@@ -1,5 +1,5 @@
 // src/hooks/library/useLibraryNovels.ts
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { getLibraryNovelsFromDb } from '@database/queries/LibraryQueries';
 import { NovelInfo } from '@database/types';
@@ -7,22 +7,22 @@ import {
   LibraryFilter,
   LibrarySortOrder,
 } from '../../../screens/library/constants/constants';
+import { useSearch } from '@hooks';
 
 interface UseLibraryNovelsOptions {
   sortOrder?: LibrarySortOrder;
   filter?: LibraryFilter;
-  searchText: string;
   downloadedOnlyMode?: boolean;
 }
 
 export const useLibraryNovels = ({
   sortOrder,
   filter,
-  searchText,
   downloadedOnlyMode = false,
 }: UseLibraryNovelsOptions) => {
   const [novels, setNovels] = useState<NovelInfo[]>([]);
   const [novelsLoading, setNovelsLoading] = useState(true);
+  const { searchText, setSearchText, clearSearchbar } = useSearch();
 
   const fetchNovels = useCallback(async () => {
     setNovelsLoading(true);
@@ -70,10 +70,24 @@ export const useLibraryNovels = ({
     }, [fetchNovels]),
   );
 
-  return {
-    novels,
-    novelsLoading,
-    refetchNovels: fetchNovels,
-    refetchNovel: fetchNovel,
-  };
+  return useMemo(
+    () => ({
+      novels,
+      novelsLoading,
+      refetchNovels: fetchNovels,
+      refetchNovel: fetchNovel,
+      searchText,
+      setSearchText,
+      clearSearchbar,
+    }),
+    [
+      novels,
+      novelsLoading,
+      fetchNovels,
+      fetchNovel,
+      searchText,
+      setSearchText,
+      clearSearchbar,
+    ],
+  );
 };
