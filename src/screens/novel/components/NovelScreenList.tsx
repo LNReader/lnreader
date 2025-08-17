@@ -298,9 +298,17 @@ const NovelScreenList = ({
       selectedLength: selected.length,
       novelId: novel.id,
       loading,
+      showChapterTitles,
       downloadingIds: Array.from(downloadingIds).sort().join(','), // Convert to string for stable comparison
     }),
-    [chapters, selected.length, novel.id, loading, downloadingIds],
+    [
+      chapters,
+      selected.length,
+      novel.id,
+      loading,
+      showChapterTitles,
+      downloadingIds,
+    ],
   );
 
   const keyExtractor = useCallback((item: ChapterInfo) => 'c' + item.id, []);

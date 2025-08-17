@@ -165,7 +165,11 @@ export function NovelChaptersContextProvider({
           state.batchInformation.batch,
         ] as const;
 
-        let chapterCount = getChapterCount(novelId, currentPage);
+        let chapterCount = getChapterCount(
+          novelId,
+          currentPage,
+          novelSettings.filter,
+        );
 
         if (chapterCount) {
           try {
@@ -186,7 +190,11 @@ export function NovelChaptersContextProvider({
           });
           await insertChapters(novelId, sourceChapters);
           newChapters = await _getPageChapters(...config);
-          chapterCount = getChapterCount(novelId, currentPage);
+          chapterCount = getChapterCount(
+            novelId,
+            currentPage,
+            novelSettings.filter,
+          );
         }
 
         const batchInformation = {
@@ -259,7 +267,7 @@ export function NovelChaptersContextProvider({
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [novelSettings.filter, novelSettings.sort]);
 
   const contextValue = useMemo(
     () => ({

@@ -248,9 +248,13 @@ export const getPageChapters = (
   );
 };
 
-export const getChapterCount = (novelId: number, page: string = '1') =>
+export const getChapterCount = (
+  novelId: number,
+  page: string = '1',
+  filter: string = '',
+) =>
   db.getFirstSync<{ 'COUNT(*)': number }>(
-    'SELECT COUNT(*) FROM Chapter WHERE novelId = ? AND page = ?',
+    `SELECT COUNT(*) FROM Chapter WHERE novelId = ? AND page = ? ${filter}`,
     novelId,
     page,
   )?.['COUNT(*)'] ?? 0;
