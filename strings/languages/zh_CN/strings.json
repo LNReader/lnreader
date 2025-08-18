@@ -1,6 +1,6 @@
 {
   "aboutScreen": {
-    "website": "Website",
+    "website": "网站",
     "discord": "Discord",
     "github": "Github",
     "helpTranslate": "协助翻译",
@@ -14,20 +14,24 @@
     "chapterInsertFailed": "章节插入失败",
     "clearCachedNovels": "清除缓存的小说",
     "clearCachedNovelsDesc": "删除不在您的书库中的缓存小说",
-    "clearDatabaseWarning": "您确定吗？非书库小说的阅读，已下载章节和进度将会丢失。",
+    "clearDatabaseWarning": "非书库小说的阅读，已下载章节和进度将会丢失。",
     "clearUpdatesMessage": "更新页面已清除。",
     "clearUpdatesTab": "清除更新页面",
-    "clearUpdatesWarning": "您确定吗？更新页面将被清除。",
+    "clearUpdatesWarning": "更新页面将被清除。",
     "clearupdatesTabDesc": "清除更新页面中的章节",
     "dataManagement": "数据",
     "deleteReadChapters": "删除已读章节",
-    "deleteReadChaptersDialogTitle": "您确定吗？所有标记为已读的章节都将被删除。",
+    "deleteReadChaptersDialogTitle": "所有标记为已读的章节将被删除。",
     "importEpub": "导入 EPUB",
     "importNovel": "导入小说",
     "importStaticFiles": "导入静态文件",
     "novelInsertFailed": "小说插入失败",
     "useFAB": "使用浮动操作按钮",
-    "userAgent": "用户代理"
+    "userAgent": "用户代理",
+    "recreateDBIndexes": "重建数据库索引",
+    "recreateDBIndexesToast": "数据库索引已重建",
+    "recreateDBIndexesDialogTitle": "所有数据库索引将被重建。\n此操作可能需要一些时间。",
+    "recreateDBIndexesDesc": "重建数据库索引，可提升低性能设备运行效率。"
   },
   "appearance": "外观",
   "appearanceScreen": {
@@ -46,12 +50,13 @@
       "default": "默认",
       "lavender": "薰衣草",
       "midnightDusk": "午夜黄昏",
-      "daybreakBloom": "Daybreak Bloom",
+      "daybreakBloom": "黎明绽放",
       "strawberry": "草莓黛绮丽",
       "tako": "Tako",
       "teal": "青色",
       "turquoise": "绿松石",
-      "yotsuba": "四叶草"
+      "yotsuba": "四叶草",
+      "catppuccin": "Catppuccin"
     }
   },
   "backupScreen": {
@@ -61,6 +66,7 @@
     "createBackupWarning": "创建备份可能无法在 Android 9 或更低版本的设备上运行。",
     "downloadingData": "下载数据",
     "downloadingDownloadedFiles": "下载已下载文件",
+    "failed": "备份失败",
     "drive": {
       "backup": "云端硬盘备份",
       "backupInterruped": "云端硬盘备份中断",
@@ -123,14 +129,14 @@
     "updateFailed": "更新失败",
     "updatedTo": "已更新至 %{version}",
     "settings": {
-      "title": "Plugin Settings",
-      "description": "Fill in the plugin settings. Restart app to apply the settings."
+      "title": "插件设置",
+      "description": "填写插件设置。重启app以应用设置。"
     }
   },
   "browseSettings": "浏览设置",
   "browseSettingsScreen": {
-    "concurrentSearches": "Concurrent Source Searches",
-    "multi": "Multi",
+    "concurrentSearches": "多源并行搜索",
+    "multi": "多语言",
     "languages": "语言"
   },
   "categories": {
@@ -151,7 +157,7 @@
     "setModalEmptyMsg": "您目前还没有分类。点击编辑按钮来创建一个分类以组织您的书库"
   },
   "repositories": {
-    "emptyMsg": "You have no repositories. Add your first plugin repository to get started."
+    "emptyMsg": "你还没有插件仓库，添加一个以开始使用。"
   },
   "common": {
     "about": "关于",
@@ -194,16 +200,18 @@
     "signIn": "登录",
     "signOut": "登出",
     "sort": "排序",
-    "submit": "确定"
+    "submit": "确定",
+    "loading": "正在加载...",
+    "warning": "警告"
   },
   "webview": {
-    "refresh": "Refresh",
-    "share": "Share",
-    "openInBrowser": "Open in browser",
-    "clearCookies": "Clear cookies",
-    "cookiesCleared": "Cookies cleared",
-    "clearData": "Clear WebView data",
-    "dataDeleted": "WebView data cleared"
+    "refresh": "刷新",
+    "share": "分享",
+    "openInBrowser": "在浏览器中打开",
+    "clearCookies": "清除Cookie",
+    "cookiesCleared": "Cookie已清除",
+    "clearData": "清除Webview数据",
+    "dataDeleted": "Webview数据已清除"
   },
   "date": {
     "calendar": {
@@ -234,10 +242,10 @@
     "bySource": "按源",
     "chapterSort": "默认章节排序",
     "desc": "(递减)",
-    "disableLoadingAnimations": "Disable loading animations",
-    "disableLoadingAnimationsDesc": "May improve performance on slower devices",
+    "disableLoadingAnimations": "关闭加载动画",
+    "disableLoadingAnimationsDesc": "可能会在运行缓慢的设备上提高性能",
     "disableHapticFeedback": "禁用振动反馈",
-    "disableHapticFeedbackDescription": "Turn off vibrations for touch interactions.",
+    "disableHapticFeedbackDescription": "关闭交互时产生的振动。",
     "displayMode": "显示模式",
     "downloadNewChapters": "下载新章节",
     "epub": "EPUB",
@@ -308,10 +316,10 @@
     },
     "empty": "您的书库是空的。请从浏览将小说添加到您的书库中。",
     "extraMenu": {
-      "importEpub": "Import Epub",
-      "openRandom": "Open Random Entry",
-      "updateCategory": "Update Category",
-      "updateLibrary": "Update Library"
+      "importEpub": "导入Epub",
+      "openRandom": "随机打开",
+      "updateCategory": "更新目录",
+      "updateLibrary": "更新书库"
     },
     "searchbar": "搜索书库"
   },
@@ -352,6 +360,8 @@
       "useCustomJSWarning": "在部分 EPUB 阅读器中可能不被支持",
       "useReaderTheme": "使用阅读器主题"
     },
+    "coverSaved": "封面保存成功",
+    "coverNotSaved": "封面未保存",
     "deleteChapterError": "无法删除章节文件夹",
     "deleteMessage": "删除下载的章节？",
     "deletedAllDownloads": "所有下载已删除",
@@ -386,6 +396,7 @@
     },
     "migrate": "迁移",
     "noSummary": "无简介",
+    "noCoverFound": "未发现封面",
     "progress": "进度 %{progress} %",
     "readChaptersDeleted": "阅读章节已删除",
     "startReadingChapters": "开始阅读 %{name}",
@@ -408,12 +419,12 @@
       "allowTextSelection": "允许选择文本",
       "autoscroll": "自动滚动",
       "bionicReading": "仿真阅读",
-      "tapToScroll": "Tap to scroll",
+      "tapToScroll": "点击翻页",
       "color": "颜色",
       "fontStyle": "字体样式",
       "fullscreen": "全屏",
       "lineHeight": "行高",
-      "padding": "Padding",
+      "padding": "填充",
       "pageReader": "阅读器中单击左右以导航页面 (实验性)",
       "removeExtraSpacing": "移除多余段落空格",
       "scrollAmount": "滚动长度 (默认屏幕高度)",
@@ -424,7 +435,7 @@
       "textSize": "文本大小",
       "useChapterDrawerSwipeNavigation": "向右滑动以打开抽屉栏",
       "verticalSeekbar": "垂直进度条",
-      "keepScreenOn": "Keep screen on",
+      "keepScreenOn": "保持屏幕开启",
       "volumeButtonsScroll": "音量按键滚动"
     },
     "drawer": {
@@ -432,7 +443,7 @@
       "scrollToCurrentChapter": "滚动到当前章节",
       "scrollToTop": "滚动到顶部"
     },
-    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
+    "emptyChapterMessage": "<p>章节为空。</p><p>如果在Webview中不可访问请在 <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> 上报告。</p><p>插件名: %{pluginId}</p><p>小说名: %{novelName}</p><p>章节编号: %{chapterName}</p>",
     "finished": "已完成",
     "nextChapter": "下一章: %{name}",
     "noNextChapter": "没有下一章节",
@@ -495,10 +506,20 @@
     "updatingLibrary": "更新书库"
   },
   "onboardingScreen": {
-    "welcome": "Welcome",
-    "pickATheme": "Pick a theme",
-    "light": "Light",
-    "dark": "Dark",
-    "complete": "Complete"
+    "welcome": "欢迎",
+    "pickATheme": "选择一个主题",
+    "light": "明亮",
+    "dark": "黑暗",
+    "complete": "完成"
+  },
+  "notifications": {
+    "IMPORT_EPUB": "Epub已导入",
+    "UPDATE_LIBRARY": "书库已更新",
+    "DRIVE_BACKUP": "云端硬盘备份",
+    "DRIVE_RESTORE": "云端硬盘恢复",
+    "SELF_HOST_BACKUP": "自托管备份",
+    "SELF_HOST_RESTORE": "自托管恢复",
+    "MIGRATE_NOVEL": "小说已迁移",
+    "DOWNLOAD_CHAPTER": "章节已下载"
   }
 }
