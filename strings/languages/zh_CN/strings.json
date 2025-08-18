@@ -14,24 +14,24 @@
     "chapterInsertFailed": "章节插入失败",
     "clearCachedNovels": "清除缓存的小说",
     "clearCachedNovelsDesc": "删除不在您的书库中的缓存小说",
-    "clearDatabaseWarning": "Read and Downloaded chapters and progress of non-library novels will be lost.",
+    "clearDatabaseWarning": "非书库小说的阅读，已下载章节和进度将会丢失。",
     "clearUpdatesMessage": "更新页面已清除。",
     "clearUpdatesTab": "清除更新页面",
-    "clearUpdatesWarning": "Updates tab will be cleared.",
+    "clearUpdatesWarning": "更新页面将被清除。",
     "clearupdatesTabDesc": "清除更新页面中的章节",
     "dataManagement": "数据",
     "deleteReadChapters": "删除已读章节",
-    "deleteReadChaptersDialogTitle": "All chapters marked as read will be deleted.",
+    "deleteReadChaptersDialogTitle": "所有标记为已读的章节将被删除。",
     "importEpub": "导入 EPUB",
     "importNovel": "导入小说",
     "importStaticFiles": "导入静态文件",
     "novelInsertFailed": "小说插入失败",
     "useFAB": "使用浮动操作按钮",
     "userAgent": "用户代理",
-    "recreateDBIndexes": "Recreate DB indexes",
-    "recreateDBIndexesToast": "Recreated DB indexes",
-    "recreateDBIndexesDialogTitle": "All DB indexes will be recreated.\nThis may take a while.",
-    "recreateDBIndexesDesc": "Recreates DB indexes. This may improve performance on slower devices."
+    "recreateDBIndexes": "重建数据库索引",
+    "recreateDBIndexesToast": "数据库索引已重建",
+    "recreateDBIndexesDialogTitle": "所有数据库索引将被重建。\n此操作可能需要一些时间。",
+    "recreateDBIndexesDesc": "重建数据库索引，可提升低性能设备运行效率。"
   },
   "appearance": "外观",
   "appearanceScreen": {
@@ -66,7 +66,7 @@
     "createBackupWarning": "创建备份可能无法在 Android 9 或更低版本的设备上运行。",
     "downloadingData": "下载数据",
     "downloadingDownloadedFiles": "下载已下载文件",
-    "failed": "Backup failed",
+    "failed": "备份失败",
     "drive": {
       "backup": "云端硬盘备份",
       "backupInterruped": "云端硬盘备份中断",
@@ -201,8 +201,8 @@
     "signOut": "登出",
     "sort": "排序",
     "submit": "确定",
-    "loading": "Loading ...",
-    "warning": "Warning"
+    "loading": "正在加载...",
+    "warning": "警告"
   },
   "webview": {
     "refresh": "刷新",
@@ -360,8 +360,8 @@
       "useCustomJSWarning": "在部分 EPUB 阅读器中可能不被支持",
       "useReaderTheme": "使用阅读器主题"
     },
-    "coverSaved": "Cover saved",
-    "coverNotSaved": "Cover not saved",
+    "coverSaved": "封面保存成功",
+    "coverNotSaved": "封面未保存",
     "deleteChapterError": "无法删除章节文件夹",
     "deleteMessage": "删除下载的章节？",
     "deletedAllDownloads": "所有下载已删除",
@@ -396,7 +396,7 @@
     },
     "migrate": "迁移",
     "noSummary": "无简介",
-    "noCoverFound": "No cover found",
+    "noCoverFound": "未发现封面",
     "progress": "进度 %{progress} %",
     "readChaptersDeleted": "阅读章节已删除",
     "startReadingChapters": "开始阅读 %{name}",
@@ -513,13 +513,13 @@
     "complete": "完成"
   },
   "notifications": {
-    "IMPORT_EPUB": "Imported epub",
-    "UPDATE_LIBRARY": "Updated library",
-    "DRIVE_BACKUP": "Drive backup",
-    "DRIVE_RESTORE": "Drive restore",
-    "SELF_HOST_BACKUP": "Self host backup",
-    "SELF_HOST_RESTORE": "Self host restore",
-    "MIGRATE_NOVEL": "Migrated novel",
-    "DOWNLOAD_CHAPTER": "Downloaded chapter"
+    "IMPORT_EPUB": "Epub已导入",
+    "UPDATE_LIBRARY": "书库已更新",
+    "DRIVE_BACKUP": "云端硬盘备份",
+    "DRIVE_RESTORE": "云端硬盘恢复",
+    "SELF_HOST_BACKUP": "自托管备份",
+    "SELF_HOST_RESTORE": "自托管恢复",
+    "MIGRATE_NOVEL": "小说已迁移",
+    "DOWNLOAD_CHAPTER": "章节已下载"
   }
 }
