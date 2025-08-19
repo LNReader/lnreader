@@ -11,23 +11,21 @@ import Browse from '../screens/browse/BrowseScreen';
 import More from '../screens/more/MoreScreen';
 
 import { getString } from '@strings/translations';
-import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
+import { usePlugins, useTheme } from '@hooks/persisted';
 import { BottomNavigatorParamList } from './types';
 import Icon from '@react-native-vector-icons/material-design-icons';
 import { MaterialDesignIconName } from '@type/icon';
 import { CommonActions } from '@react-navigation/native';
 import { BottomNavigation } from 'react-native-paper';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 const Tab = createBottomTabNavigator<BottomNavigatorParamList>();
 
 const BottomNavigator = () => {
   const theme = useTheme();
 
-  const {
-    showHistoryTab = true,
-    showUpdatesTab = true,
-    showLabelsInNav = false,
-  } = useAppSettings();
+  const { showHistoryTab, showUpdatesTab, showLabelsInNav } =
+    useSettingsContext();
 
   const { filteredInstalledPlugins } = usePlugins();
   const pluginsWithUpdate = useMemo(

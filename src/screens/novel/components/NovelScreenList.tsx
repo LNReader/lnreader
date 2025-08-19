@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import { pickCustomNovelCover } from '@database/queries/NovelQueries';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { useBoolean } from '@hooks/index';
-import { useAppSettings, useDownload, useTheme } from '@hooks/persisted';
+import { useDownload, useTheme } from '@hooks/persisted';
 import {
   updateNovel,
   updateNovelPage,
@@ -31,6 +31,7 @@ import { FlashList } from '@shopify/flash-list';
 import FileManager from '@specs/NativeFile';
 import { downloadFile } from '@plugins/helpers/fetch';
 import { StorageAccessFramework } from 'expo-file-system';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 type NovelScreenListProps = {
   headerOpacity: SharedValue<number>;
@@ -94,7 +95,7 @@ const NovelScreenList = ({
     disableHapticFeedback,
     downloadNewChapters,
     refreshNovelMetadata,
-  } = useAppSettings();
+  } = useSettingsContext();
 
   const {
     sort = defaultChapterSort,
