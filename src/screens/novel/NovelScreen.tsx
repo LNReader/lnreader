@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, StatusBar, Text, Share } from 'react-native';
+import { StyleSheet, View, Text, Share } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
 import Animated, {
   SlideInUp,
@@ -30,6 +30,7 @@ import { ThemeColors } from '@theme/types';
 import { SafeAreaView } from '@components';
 import { useNovelContext } from './NovelContext';
 import { FlashList } from '@shopify/flash-list';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const {
@@ -53,6 +54,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   const theme = useTheme();
   const { downloadChapters } = useDownload();
+  const insets = useSafeAreaInsets();
 
   const [selected, setSelected] = useState<ChapterInfo[]>([]);
   const [editInfoModal, showEditInfoModal] = useState(false);
@@ -219,7 +221,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       });
     }
   };
-  const styles = useMemo(() => createStyles(theme), [theme]);
+  const styles = useMemo(() => createStyles(theme, insets), [theme, insets]);
 
   return (
     <Drawer
@@ -363,7 +365,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
 export default Novel;
 
-function createStyles(theme: ThemeColors) {
+function createStyles(theme: ThemeColors, insets: { top: number }) {
   return StyleSheet.create({
     appbar: {
       alignItems: 'center',
@@ -371,7 +373,7 @@ function createStyles(theme: ThemeColors) {
       boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
       flexDirection: 'row',
       paddingBottom: 8,
-      paddingTop: StatusBar.currentHeight || 0,
+      paddingTop: insets.top,
       position: 'absolute',
       width: '100%',
     },
