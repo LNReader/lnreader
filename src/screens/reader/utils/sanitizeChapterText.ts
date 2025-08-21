@@ -26,8 +26,8 @@ export const sanitizeChapterText = (
       div: ['class', 'id'],
       img: ['src', 'class', 'id'],
       ol: ['reversed', 'start', 'type'],
-      p: ['class', 'id'],
-      span: ['class', 'id'],
+      p: ['class', 'id', 'style'],
+      span: ['class', 'id', 'style'],
     },
     allowedSchemes: ['data', 'http', 'https', 'file'],
   });
