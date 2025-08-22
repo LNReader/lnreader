@@ -468,7 +468,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         .replace(/(?:&nbsp;\s*|[\u200b]\s*)+(?=<\/?p[> ])/g, '')
         .replace(/<br>\s*<br>\s*(?:<br>\s*)+/g, '<br><br>') //force max 2 consecutive <br>, chaining regex
         .replace(
-          /^[^]+$/,
+          /[^]+/,
           _ => `${/\/p>/.test(_) ? _ : _.replace(/<br>\s*<br>\s*/g, '')}`,
         ) //if p exists in the html, delete double br
         .replace(/<br>(?:(?=\s*<\/?p[> ])|(?<=<\/?p>\s*<br>))\s*/g, '');
