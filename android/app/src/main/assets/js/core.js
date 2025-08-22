@@ -469,8 +469,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         .replace(/<br>\s*<br>\s*(?:<br>\s*)+/g, '<br><br>') //force max 2 consecutive <br>, chaining regex
         .replace(
           /[^]+/,
-          _ => `${/\/p>/.test(_) ? _ : _.replace(/<br>\s*<br>\s*/g, '')}`,
-        ) //if p exists in the html, delete double br
+          _ => `${/\/p>/.test(_) ? _.replace(/<br>\s*<br>\s*/g, '') : _}`,
+        ) //if p exist in the html, delete double br
         .replace(/<br>(?:(?=\s*<\/?p[> ])|(?<=<\/?p>\s*<br>))\s*/g, '');
     }
     reader.chapterElement.innerHTML = html;
