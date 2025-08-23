@@ -2,7 +2,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { getLibraryNovelsFromDb } from '@database/queries/LibraryQueries';
-import { NovelInfo } from '@database/types';
+import { DBNovelInfo, NovelInfo } from '@database/types';
 import {
   LibraryFilter,
   LibrarySortOrder,
@@ -20,7 +20,7 @@ export const useLibraryNovels = ({
   filter,
   downloadedOnlyMode = false,
 }: UseLibraryNovelsOptions) => {
-  const [novels, setNovels] = useState<NovelInfo[]>([]);
+  const [novels, setNovels] = useState<DBNovelInfo[]>([]);
   const [novelsLoading, setNovelsLoading] = useState(true);
   const { searchText, setSearchText, clearSearchbar } = useSearch();
 
@@ -48,13 +48,16 @@ export const useLibraryNovels = ({
       const fetchedNovels = await getLibraryNovelsFromDb({
         filter: `id = ${novelId}`,
       });
+
       setNovels(prevNovels => {
         const novelIndex = prevNovels.findIndex(novel => novel?.id === novelId);
 
         if (novelIndex !== -1) {
           prevNovels[novelIndex] = fetchedNovels[0];
         }
-        return prevNovels;
+
+        // create a new array, so the state is updated
+        return [...prevNovels];
       });
     } catch (error) {
       // eslint-disable-next-line no-console

@@ -70,8 +70,7 @@ const LibraryTabs: React.FC<LibraryTabsProps> = ({
   theme,
 }) => {
   const layout = useWindowDimensions();
-  const styles = useMemo(() => createTabStyles(theme), [theme]); // Memoize styles
-
+  const styles = useMemo(() => createTabStyles(theme), [theme]);
   const renderTabBar = useCallback(
     (
       props: SceneRendererProps & {
@@ -172,7 +171,7 @@ const LibraryTabs: React.FC<LibraryTabsProps> = ({
       searchText,
       selectedNovelIds,
       setSelectedNovelIds,
-      styles.globalSearchBtn, // Needs to be passed down if this component doesn't create it
+      styles.globalSearchBtn,
       theme,
     ],
   );

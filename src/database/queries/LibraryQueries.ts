@@ -1,5 +1,5 @@
 import { LibraryFilter } from '@screens/library/constants/constants';
-import { LibraryNovelInfo, NovelInfo } from '../types';
+import { DBNovelInfo, LibraryNovelInfo, NovelInfo } from '../types';
 import { getAllSync } from '../utils/helpers';
 
 export const getLibraryNovelsFromDb = ({
@@ -12,7 +12,7 @@ export const getLibraryNovelsFromDb = ({
   filter?: string;
   searchText?: string;
   downloadedOnlyMode?: boolean;
-}): NovelInfo[] => {
+}): DBNovelInfo[] => {
   let query = 'SELECT * FROM Novel WHERE inLibrary = 1';
 
   if (filter) {

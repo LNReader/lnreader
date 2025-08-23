@@ -331,9 +331,10 @@ export default class ServiceManager {
       }
 
       await manager.executeTask(currentTask, startingTasks);
-
+      // Get the new taskList to preserve tasks that were added while executing
+      const newTasks = manager.getTaskList().slice(1);
       // After execution, remove the current task from the queue
-      setMMKVObject(manager.STORE_KEY, currentTasks.slice(1));
+      setMMKVObject(manager.STORE_KEY, newTasks);
       doneTasks[currentTask.task.name] += 1;
     }
 

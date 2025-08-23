@@ -1,12 +1,17 @@
-// src/components/Context/LibraryContext.tsx
-import React, { createContext, useContext, useMemo, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useMemo,
+  useCallback,
+  useEffect,
+} from 'react';
 
 // Import existing settings hook
 import {
   useLibrarySettings,
   LibrarySettings,
 } from '@hooks/persisted/useSettings';
-import { NovelInfo } from '@database/types';
+import { DBNovelInfo } from '@database/types';
 import {
   ExtendedCategory,
   useFetchCategories,
@@ -16,7 +21,7 @@ import { useLibraryActions } from '@hooks/persisted/library/useLibraryActions';
 import ServiceManager, { QueuedBackgroundTask } from '@services/ServiceManager';
 
 type LibraryContextType = {
-  library: NovelInfo[];
+  library: DBNovelInfo[];
   categories: ExtendedCategory[];
   isLoading: boolean;
   settings: LibrarySettings;
@@ -29,8 +34,7 @@ type LibraryContextType = {
   setCategories: React.Dispatch<React.SetStateAction<ExtendedCategory[]>>;
 };
 
-const defaultValue = {} as LibraryContextType;
-const LibraryContext = createContext<LibraryContextType>(defaultValue);
+const LibraryContext = createContext<LibraryContextType | null>(null);
 
 interface LibraryContextProviderProps {
   children: React.ReactNode;
@@ -87,7 +91,12 @@ export function LibraryContextProvider({
     },
     [refetchLibrary, refetchNovel],
   );
-  ServiceManager.manager.addCompletionListener(handleQueueChange);
+  useEffect(() => {
+    ServiceManager.manager.addCompletionListener(handleQueueChange);
+    return () => {
+      ServiceManager.manager.removeCompletionListener(handleQueueChange);
+    };
+  }, [handleQueueChange]);
 
   const contextValue = useMemo(
     () => ({
@@ -129,7 +138,7 @@ export function LibraryContextProvider({
 
 export const useLibraryContext = (): LibraryContextType => {
   const context = useContext(LibraryContext);
-  if (context === defaultValue) {
+  if (context === null) {
     throw new Error(
       'useLibraryContext must be used within a LibraryContextProvider',
     );
