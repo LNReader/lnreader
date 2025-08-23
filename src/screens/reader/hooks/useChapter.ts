@@ -102,12 +102,11 @@ export default function useChapter(
       if (NativeFile.exists(filePath)) {
         text = NativeFile.readFile(filePath);
       } else {
-        await fetchChapter(novel.pluginId, path)
-          .then(res => {
-            text = res;
-          })
-          .catch(e => setError(e.message));
+        await fetchChapter(novel.pluginId, path).then(res => {
+          text = res;
+        });
       }
+
       return text;
     },
     [chapter.novelId, novel.pluginId],
@@ -125,10 +124,17 @@ export default function useChapter(
           text,
         ]);
         if (nextChap && !chapterTextCache.get(nextChap.id)) {
-          chapterTextCache.set(
-            nextChap.id,
-            loadChapterText(nextChap.id, nextChap.path),
-          );
+          try {
+            const nextText = await loadChapterText(nextChap.id, nextChap.path);
+            chapterTextCache.set(nextChap.id, nextText);
+          } catch (e: any) {
+            if (
+              'message' in e &&
+              !e.message.includes('Network request failed')
+            ) {
+              setError(e.message);
+            }
+          }
         }
         if (!cachedText) {
           chapterTextCache.set(chap.id, text);
