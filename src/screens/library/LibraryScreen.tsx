@@ -62,6 +62,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
 
   const currentNovels = useMemo(() => {
     if (!categories.length) return [];
+    if (!categories[index]) return [];
     const ids = categories[index].novelIds;
     return library.filter(l => ids.includes(l.id));
   }, [categories, index, library]);
@@ -138,6 +139,9 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     }
   }, [currentNovels, navigation]);
 
+  // If there are categories but the current index is out of bounds, set it to 0
+  if (categories.length && !categories[index]) setIndex(0);
+
   return (
     <SafeAreaView excludeBottom>
       <LibraryHeader
@@ -162,20 +166,22 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
         theme={theme}
       />
 
-      <LibraryTabs
-        categories={categories}
-        index={index}
-        setIndex={setIndex}
-        showNumberOfNovels={showNumberOfNovels}
-        library={library}
-        searchText={searchText}
-        isLoading={isLoading}
-        selectedNovelIds={selectedNovelIds}
-        setSelectedNovelIds={setSelectedNovelIds}
-        pickAndImport={pickAndImportCallback}
-        navigation={navigation}
-        theme={theme}
-      />
+      {categories.length && categories[index] ? (
+        <LibraryTabs
+          categories={categories}
+          index={index}
+          setIndex={setIndex}
+          showNumberOfNovels={showNumberOfNovels}
+          library={library}
+          searchText={searchText}
+          isLoading={isLoading}
+          selectedNovelIds={selectedNovelIds}
+          setSelectedNovelIds={setSelectedNovelIds}
+          pickAndImport={pickAndImportCallback}
+          navigation={navigation}
+          theme={theme}
+        />
+      ) : null}
 
       <SetCategoryModal
         novelIds={selectedNovelIds}

@@ -1,5 +1,5 @@
 import { LibraryFilter } from '@screens/library/constants/constants';
-import { DBNovelInfo, LibraryNovelInfo, NovelInfo } from '../types';
+import { DBNovelInfo, LibraryNovelInfo } from '../types';
 import { getAllSync } from '../utils/helpers';
 
 export const getLibraryNovelsFromDb = ({
@@ -32,7 +32,7 @@ export const getLibraryNovelsFromDb = ({
     query += ` ORDER BY ${sortOrder} `;
   }
 
-  return getAllSync<NovelInfo>([query, [searchText]]);
+  return getAllSync<DBNovelInfo>([query, [searchText]]);
 };
 
 const getLibraryWithCategoryQuery = 'SELECT * FROM Novel WHERE inLibrary = 1';
