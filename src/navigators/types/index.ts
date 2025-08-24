@@ -94,13 +94,8 @@ export type ChapterScreenProps = StackScreenProps<
 >;
 export type ReaderStackParamList = {
   Novel:
-    | {
-        name: string;
-        path: string;
-        pluginId: string;
-        cover?: string;
-        isLocal?: boolean;
-      }
+    | (Pick<NovelInfo, 'name' | 'path' | 'pluginId'> &
+        Partial<Pick<NovelInfo, 'cover' | 'isLocal'>>)
     | NovelInfo;
   Chapter: {
     novel: NovelInfo;

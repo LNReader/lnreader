@@ -16,6 +16,7 @@ import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
 
 import Main from './src/navigators/Main';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { Providers } from './src/providers/Providers';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {
@@ -33,16 +34,18 @@ LottieSplashScreen.hide();
 const App = () => {
   return (
     <GestureHandlerRootView style={styles.flex}>
-      <AppErrorBoundary>
-        <SafeAreaProvider>
-          <PaperProvider>
-            <BottomSheetModalProvider>
-              <StatusBar translucent={true} backgroundColor="transparent" />
-              <Main />
-            </BottomSheetModalProvider>
-          </PaperProvider>
-        </SafeAreaProvider>
-      </AppErrorBoundary>
+      <Providers>
+        <AppErrorBoundary>
+          <SafeAreaProvider>
+            <PaperProvider>
+              <BottomSheetModalProvider>
+                <StatusBar translucent={true} backgroundColor="transparent" />
+                <Main />
+              </BottomSheetModalProvider>
+            </PaperProvider>
+          </SafeAreaProvider>
+        </AppErrorBoundary>
+      </Providers>
     </GestureHandlerRootView>
   );
 };

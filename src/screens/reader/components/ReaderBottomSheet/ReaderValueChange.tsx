@@ -1,7 +1,8 @@
 import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { useChapterReaderSettings } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { IconButtonV2 } from '@components';
 import { ChapterReaderSettings } from '@hooks/persisted/useSettings';
 

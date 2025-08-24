@@ -102,6 +102,7 @@ const updateNovelChapters = (
               chapterId: insertId,
               novelName: novelName,
               chapterName: name,
+              novelId: novelId,
             },
           });
         }

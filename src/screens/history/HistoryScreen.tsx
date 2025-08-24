@@ -12,7 +12,8 @@ import {
 import HistoryCard from './components/HistoryCard/HistoryCard';
 
 import { useSearch, useBoolean } from '@hooks';
-import { useTheme, useHistory } from '@hooks/persisted';
+import { useHistory } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 
 import { convertDateToISOString } from '@database/utils/convertDateToISOString';
 

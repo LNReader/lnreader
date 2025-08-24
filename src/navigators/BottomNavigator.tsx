@@ -11,7 +11,8 @@ import Browse from '../screens/browse/BrowseScreen';
 import More from '../screens/more/MoreScreen';
 
 import { getString } from '@strings/translations';
-import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
+import { useAppSettings, usePlugins } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { BottomNavigatorParamList } from './types';
 import Icon from '@react-native-vector-icons/material-design-icons';
 import { MaterialDesignIconName } from '@type/icon';

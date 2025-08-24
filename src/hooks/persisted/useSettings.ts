@@ -5,6 +5,7 @@ import {
 } from '@screens/library/constants/constants';
 import { useMMKVObject } from 'react-native-mmkv';
 import { Voice } from 'expo-speech';
+import { useCallback, useMemo } from 'react';
 
 export const APP_SETTINGS = 'APP_SETTINGS';
 export const BROWSE_SETTINGS = 'BROWSE_SETTINGS';
@@ -245,13 +246,18 @@ export const useLibrarySettings = () => {
   const [librarySettings, setSettings] =
     useMMKVObject<LibrarySettings>(LIBRARY_SETTINGS);
 
-  const setLibrarySettings = (value: Partial<LibrarySettings>) =>
-    setSettings({ ...librarySettings, ...value });
+  const setLibrarySettings = useCallback(
+    (value: Partial<LibrarySettings>) =>
+      setSettings({ ...librarySettings, ...value }),
+    [librarySettings, setSettings],
+  );
 
-  return {
-    ...{ ...defaultLibrarySettings, ...librarySettings },
-    setLibrarySettings,
-  };
+  return useMemo(() => {
+    return {
+      ...{ ...defaultLibrarySettings, ...librarySettings },
+      setLibrarySettings,
+    };
+  }, [librarySettings, setLibrarySettings]);
 };
 
 export const useChapterGeneralSettings = () => {

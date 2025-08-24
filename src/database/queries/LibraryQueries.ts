@@ -1,13 +1,18 @@
 import { LibraryFilter } from '@screens/library/constants/constants';
-import { LibraryNovelInfo, NovelInfo } from '../types';
+import { DBNovelInfo, LibraryNovelInfo, NovelInfo } from '../types';
 import { getAllSync } from '../utils/helpers';
 
-export const getLibraryNovelsFromDb = (
-  sortOrder?: string,
-  filter?: string,
-  searchText?: string,
-  downloadedOnlyMode?: boolean,
-): NovelInfo[] => {
+export const getLibraryNovelsFromDb = ({
+  sortOrder,
+  filter,
+  searchText = '',
+  downloadedOnlyMode,
+}: {
+  sortOrder?: string;
+  filter?: string;
+  searchText?: string;
+  downloadedOnlyMode?: boolean;
+}): DBNovelInfo[] => {
   let query = 'SELECT * FROM Novel WHERE inLibrary = 1';
 
   if (filter) {
@@ -18,13 +23,16 @@ export const getLibraryNovelsFromDb = (
   }
 
   if (searchText) {
+    if (!searchText.startsWith('%')) searchText = `%${searchText}`;
+    if (!searchText.endsWith('%')) searchText = `${searchText}%`;
     query += ' AND name LIKE ? ';
   }
 
   if (sortOrder) {
     query += ` ORDER BY ${sortOrder} `;
   }
-  return getAllSync<NovelInfo>([query, [searchText ?? '']]);
+
+  return getAllSync<NovelInfo>([query, [searchText]]);
 };
 
 const getLibraryWithCategoryQuery = 'SELECT * FROM Novel WHERE inLibrary = 1';

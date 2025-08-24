@@ -5,7 +5,8 @@ import { ThemePicker } from '@components/ThemePicker/ThemePicker';
 import SettingSwitch from './components/SettingSwitch';
 import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
 
-import { useAppSettings, useTheme } from '@hooks/persisted';
+import { useAppSettings } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import {
   useMMKVBoolean,
   useMMKVObject,

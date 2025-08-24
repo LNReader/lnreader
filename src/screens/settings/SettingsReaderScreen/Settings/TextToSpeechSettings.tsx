@@ -2,8 +2,8 @@ import { IconButtonV2, List } from '@components';
 import {
   useChapterGeneralSettings,
   useChapterReaderSettings,
-  useTheme,
 } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import React, { useEffect, useState } from 'react';
 import VoicePickerModal from '../Modals/VoicePickerModal';
 import { useBoolean } from '@hooks';
