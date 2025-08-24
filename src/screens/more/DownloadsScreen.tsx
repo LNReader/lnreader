@@ -20,8 +20,6 @@ import { getString } from '@strings/translations';
 import { DownloadsScreenProps } from '@navigators/types';
 import { DownloadedChapter } from '@database/types';
 import { showToast } from '@utils/showToast';
-import dayjs from 'dayjs';
-import { parseChapterNumber } from '@utils/parseChapterNumber';
 
 type DownloadGroup = Record<number, DownloadedChapter[]>;
 
@@ -29,21 +27,22 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
   const theme = useTheme();
   const [loading, setLoading] = useState(true);
   const [chapters, setChapters] = useState<DownloadedChapter[]>([]);
-  const groupUpdatesByDate = (
-    localChapters: DownloadedChapter[],
-  ): DownloadedChapter[][] => {
-    const dateGroups = localChapters.reduce((groups, item) => {
-      const novelId = item.novelId;
-      if (!groups[novelId]) {
-        groups[novelId] = [];
-      }
+  const groupDownloadsByDate = useCallback(
+    (localChapters: DownloadedChapter[]): DownloadedChapter[][] => {
+      const dateGroups = localChapters.reduce((groups, item) => {
+        const novelId = item.novelId;
+        if (!groups[novelId]) {
+          groups[novelId] = [];
+        }
 
-      groups[novelId].push(item);
+        groups[novelId].push(item);
 
-      return groups;
-    }, {} as DownloadGroup);
-    return Object.values(dateGroups);
-  };
+        return groups;
+      }, {} as DownloadGroup);
+      return Object.values(dateGroups);
+    },
+    [],
+  );
 
   /**
    * Confirm Clear downloads Dialog
@@ -54,20 +53,7 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
 
   const getChapters = async () => {
     const res = await getDownloadedChapters();
-    setChapters(
-      res.map(download => {
-        const parsedTime = dayjs(download.releaseTime);
-        return {
-          ...download,
-          releaseTime: parsedTime.isValid()
-            ? parsedTime.format('LL')
-            : download.releaseTime,
-          chapterNumber: download.chapterNumber
-            ? download.chapterNumber
-            : parseChapterNumber(download.novelName, download.name),
-        };
-      }),
-    );
+    setChapters(res);
   };
 
   const ListEmptyComponent = useCallback(
@@ -84,6 +70,8 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
   useEffect(() => {
     getChapters().finally(() => setLoading(false));
   }, []);
+
+  const groupedChapters = groupDownloadsByDate(chapters);
 
   return (
     <SafeAreaView excludeTop>
@@ -107,7 +95,7 @@ const Downloads = ({ navigation }: DownloadsScreenProps) => {
       ) : (
         <FlatList
           contentContainerStyle={styles.flatList}
-          data={groupUpdatesByDate(chapters)}
+          data={groupedChapters}
           keyExtractor={(item, index) => 'downloadGroup' + index}
           renderItem={({ item }) => {
             return (

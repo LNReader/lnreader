@@ -80,6 +80,16 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     }
   };
 
+  const handleDeleteChapter = useCallback(
+    (chapter: Update | DownloadedChapter) => {
+      deleteChapter(chapter);
+      if (onlyDownloadedChapters) {
+        setChapterList(chapterList.filter(c => c.id !== chapter.id));
+      }
+    },
+    [chapterList, deleteChapter, onlyDownloadedChapters],
+  );
+
   const navigateToChapter = useCallback(
     (chapter: ChapterInfo) => {
       const { novelPath, pluginId, novelName } = chapter as
@@ -160,7 +170,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                   chapter={item}
                   showChapterTitles={false}
                   downloadChapter={() => handleDownloadChapter(item)}
-                  deleteChapter={() => deleteChapter(item)}
+                  deleteChapter={() => handleDeleteChapter(item)}
                   navigateToChapter={navigateToChapter}
                   left={
                     <View style={styles.novelCover}>
