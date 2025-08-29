@@ -37,9 +37,9 @@ const useHistory = () => {
       .catch((err: Error) => setError(err.message))
       .finally(() => setIsLoading(false));
 
-  const clearAllHistory = () => {
-    deleteAllHistory();
-    getHistory();
+  const clearAllHistory = async () => {
+    setHistory([]);
+    await deleteAllHistory();
   };
 
   const removeChapterFromHistory = async (chapterId: number) => {
