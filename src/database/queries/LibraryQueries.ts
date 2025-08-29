@@ -35,34 +35,8 @@ export const getLibraryNovelsFromDb = ({
   return getAllSync<DBNovelInfo>([query, [searchText]]);
 };
 
-const getLibraryWithCategoryQuery = 'SELECT * FROM Novel WHERE inLibrary = 1';
-// `
-//   SELECT *
-//   FROM
-//   (
-//     SELECT NIL.*, chaptersUnread, chaptersDownloaded, lastReadAt, lastUpdatedAt
-//     FROM
-//     (
-//       SELECT
-//         Novel.*,
-//         category,
-//         categoryId
-//       FROM
-//       Novel LEFT JOIN (
-//         SELECT NovelId, name as category, categoryId FROM (NovelCategory JOIN Category ON NovelCategory.categoryId = Category.id)
-//       ) as NC ON Novel.id = NC.novelId
-//       WHERE inLibrary = 1
-//     ) as NIL
-//     LEFT JOIN
-//     (
-//       SELECT
-//         SUM(unread) as chaptersUnread, SUM(isDownloaded) as chaptersDownloaded,
-//         novelId, MAX(readTime) as lastReadAt, MAX(updatedTime) as lastUpdatedAt
-//       FROM Chapter
-//       GROUP BY novelId
-//     ) as C ON NIL.id = C.novelId
-//   ) WHERE 1 = 1
-// `;
+const getLibraryWithCategoryQuery =
+  'SELECT * FROM NovelCategory NC JOIN Novel N on N.id = NC.novelId WHERE 1=1';
 
 export const getLibraryWithCategory = ({
   filter,
@@ -79,7 +53,7 @@ export const getLibraryWithCategory = ({
   const preparedArgument: (string | number | null)[] = [];
 
   if (filter) {
-    // query += ` AND ${filter} `;
+    query += ` AND ${filter} `;
   }
   if (downloadedOnlyMode) {
     query += ' ' + LibraryFilter.DownloadedOnly;
