@@ -207,7 +207,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     openPage,
     closeDrawer,
   ]);
-
   return (
     <Drawer
       open={drawerOpen}
@@ -260,6 +259,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           <SafeAreaView excludeTop>
             <Suspense fallback={<NovelScreenLoading theme={theme} />}>
               <NovelScreenList
+                deleteDownloadsSnackbar={deleteDownloadsSnackbar}
                 headerOpacity={headerOpacity}
                 listRef={chapterListRef}
                 navigation={navigation}
@@ -287,7 +287,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   deleteChapters(chapters.filter(c => c.isDownloaded));
                 },
               }}
-              theme={{ colors: { primary: theme.primary } }}
+              theme={{ colors: theme }}
               style={styles.snackbar}
             >
               <Text style={{ color: theme.onSurface }}>
