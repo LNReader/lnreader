@@ -140,7 +140,10 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
   }, [currentNovels, navigation]);
 
   // If there are categories but the current index is out of bounds, set it to 0
-  if (categories.length && !categories[index]) setIndex(0);
+  if (categories.length && !categories[index]) {
+    setIndex(0);
+    return null;
+  }
 
   return (
     <SafeAreaView excludeBottom>
@@ -166,7 +169,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
         theme={theme}
       />
 
-      {categories.length && categories[index] ? (
+      {categories.length ? (
         <LibraryTabs
           categories={categories}
           index={index}
