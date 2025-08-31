@@ -1,4 +1,12 @@
 {
+  "extends": "@react-native/typescript-config",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": [
+    "**/node_modules",
+    "**/Pods",
+    "babel.config.js",
+    "metro.config.js"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "noUnusedLocals": true,
@@ -54,11 +62,5 @@
       ],
     },
     "types": ["react-native"]
-  },
-  "exclude": [
-    "node_modules",
-    "babel.config.js",
-    "metro.config.js"
-  ],
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  }
 }
