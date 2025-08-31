@@ -57,6 +57,7 @@
             pkgs.mkShell {
               buildInputs = with pkgs; [
                 nodejs_20
+                nodePackages.pnpm
                 openjdk17
                 androidSdk
                 gradle
@@ -125,6 +126,7 @@
             pkgs.mkShell {
               buildInputs = with pkgs; [
                 nodejs_20
+                nodePackages.pnpm
                 openjdk17
                 androidSdk
                 gradle
@@ -172,9 +174,7 @@
                 echo "  npm start"
                 echo "--------------------------"
               '';
-            };
-            
-           
+            };            
         };
       });
 }
