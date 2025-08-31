@@ -1,4 +1,4 @@
-import { locale } from 'expo-localization';
+import { getLocales } from 'expo-localization';
 import { languagesMapping } from '@utils/constants/languages';
 import { orderBy } from 'lodash-es';
 import { useMMKVObject } from 'react-native-mmkv';
@@ -11,7 +11,7 @@ import {
 } from '@plugins/pluginManager';
 import { newer } from '@utils/compareVersion';
 import { MMKVStorage, getMMKVObject, setMMKVObject } from '@utils/mmkv/mmkv';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { getString } from '@strings/translations';
 
 export const AVAILABLE_PLUGINS = 'AVAILABLE_PLUGINS';
@@ -21,9 +21,12 @@ export const LAST_USED_PLUGIN = 'LAST_USED_PLUGIN';
 export const FILTERED_AVAILABLE_PLUGINS = 'FILTERED_AVAILABLE_PLUGINS';
 export const FILTERED_INSTALLED_PLUGINS = 'FILTERED_INSTALLED_PLUGINS';
 
-const defaultLang = languagesMapping[locale.split('-')[0]] || 'English';
-
 export default function usePlugins() {
+  const defaultLang = useMemo(
+    () => [languagesMapping[getLocales()[0].languageCode ?? 'en'] || 'English'],
+    [],
+  );
+
   const [lastUsedPlugin, setLastUsedPlugin] =
     useMMKVObject<PluginItem>(LAST_USED_PLUGIN);
   const [languagesFilter = [defaultLang], setLanguagesFilter] =
