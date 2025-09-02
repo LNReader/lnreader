@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <resources>
   <string name="app_name">LNReader</string>
+  
+  <!-- S Pen actions -->
+  <string name="spen_next_page">Next page</string>
+  <string name="spen_previous_page">Previous page</string>
+  <string name="spen_back">Back</string>
+  <string name="spen_next_chapter">Next chapter</string>
+  <string name="spen_previous_chapter">Previous chapter</string>
+  <string name="spen_toggle_menu">Toggle menu</string>
 </resources>

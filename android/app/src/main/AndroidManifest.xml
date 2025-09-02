@@ -60,6 +60,13 @@
 				<category android:name="android.intent.category.BROWSABLE" />
 				<data android:scheme="lnreader" />
 			</intent-filter>
+
+			<intent-filter>
+				<action android:name="com.samsung.android.support.REMOTE_ACTION" />
+			</intent-filter>
+
+			<meta-data android:name="com.samsung.android.support.REMOTE_ACTION"
+				android:resource="@xml/s_pen_actions"/>
 		</activity>
 
 		<activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
