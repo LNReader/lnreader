@@ -10,8 +10,8 @@ import { Appbar, List, SafeAreaView } from '@components/index';
 import {
   useChapterGeneralSettings,
   useChapterReaderSettings,
-  useTheme,
 } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 
 import GeneralSettings from './Settings/GeneralSettings';

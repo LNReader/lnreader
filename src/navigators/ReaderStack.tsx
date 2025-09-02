@@ -11,7 +11,7 @@ import {
   NovelScreenProps,
   ReaderStackParamList,
 } from './types';
-import { NovelContextProvider } from '@screens/novel/NovelContext';
+import { NovelProvider } from '@screens/novel/NovelProvider';
 
 const Stack = createNativeStackNavigator<ReaderStackParamList>();
 
@@ -22,7 +22,7 @@ const ReaderStack = ({ route }) => {
   const params = useRef(route?.params);
 
   return (
-    <NovelContextProvider
+    <NovelProvider
       route={
         (route?.params ?? params.current) as
           | NovelScreenProps['route']
@@ -33,7 +33,7 @@ const ReaderStack = ({ route }) => {
         <Stack.Screen name="Novel" component={Novel} />
         <Stack.Screen name="Chapter" component={Reader} />
       </Stack.Navigator>
-    </NovelContextProvider>
+    </NovelProvider>
   );
 };
 

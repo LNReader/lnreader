@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -7,7 +7,8 @@ import {
   changeNavigationBarColor,
   setStatusBarColor,
 } from '@theme/utils/setBarColor';
-import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
+import { useAppSettings, usePlugins } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
 /**
@@ -42,9 +43,9 @@ import { UpdateContextProvider } from '@components/Context/UpdateContext';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const MainNavigator = () => {
-  const theme = useTheme();
-  const { updateLibraryOnLaunch } = useAppSettings();
   const { refreshPlugins } = usePlugins();
+  const { updateLibraryOnLaunch } = useAppSettings();
+  const theme = useTheme();
   const [isOnboarded] = useMMKVBoolean('IS_ONBOARDED');
 
   useEffect(() => {
@@ -70,24 +71,29 @@ const MainNavigator = () => {
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
 
+  const NavTheme = useMemo(
+    () => ({
+      colors: {
+        ...DefaultTheme.colors,
+        primary: theme.primary,
+        background: theme.background,
+        card: theme.surface,
+        text: theme.onSurface,
+        border: theme.outline,
+      },
+      dark: theme.isDark,
+      fonts: DefaultTheme.fonts,
+    }),
+    [theme],
+  );
+
   if (!isOnboarded) {
     return <OnboardingScreen />;
   }
 
   return (
     <NavigationContainer<RootStackParamList>
-      theme={{
-        colors: {
-          ...DefaultTheme.colors,
-          primary: theme.primary,
-          background: theme.background,
-          card: theme.surface,
-          text: theme.onSurface,
-          border: theme.outline,
-        },
-        dark: theme.isDark,
-        fonts: DefaultTheme.fonts,
-      }}
+      theme={NavTheme}
       linking={{
         prefixes: ['lnreader://'],
         config: {

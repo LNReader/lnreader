@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { Portal, TextInput, ActivityIndicator } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { useChapterReaderSettings } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { Voice } from 'expo-speech';
 import { FlashList } from '@shopify/flash-list';
 import { Modal } from '@components';

@@ -15,7 +15,8 @@ import {
 } from 'react-native-tab-view';
 import color from 'color';
 
-import { useLibrarySettings, useTheme } from '@hooks/persisted';
+import { useLibrarySettings } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import { Checkbox, SortItem } from '@components/Checkbox/Checkbox';
 import {

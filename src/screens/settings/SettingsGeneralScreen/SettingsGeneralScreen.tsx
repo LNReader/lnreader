@@ -8,8 +8,8 @@ import {
   useAppSettings,
   useLastUpdate,
   useLibrarySettings,
-  useTheme,
 } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import DefaultChapterSortModal from '../components/DefaultChapterSortModal';
 import {
   DisplayModes,

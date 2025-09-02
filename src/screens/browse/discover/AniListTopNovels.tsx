@@ -14,7 +14,8 @@ import { SafeAreaView, SearchbarV2 } from '@components';
 
 import { showToast } from '@utils/showToast';
 import TrackerNovelCard from './TrackerNovelCard';
-import { useTheme, useTracker } from '@hooks/persisted';
+import { useTracker } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import TrackerLoading from '../loadingAnimation/TrackerLoading';
 import { queryAniList } from '@services/Trackers/aniList';
 import localeData from 'dayjs/plugin/localeData';

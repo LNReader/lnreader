@@ -1,4 +1,4 @@
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 

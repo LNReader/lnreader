@@ -3,7 +3,7 @@ import { View, Text, Pressable, StyleSheet, FlatList } from 'react-native';
 import { ThemePicker } from '@components/ThemePicker/ThemePicker';
 import { ThemeColors } from '@theme/types';
 import { useMMKVObject } from 'react-native-mmkv';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { darkThemes, lightThemes } from '@theme/md3';
 import { getString } from '@strings/translations';
 

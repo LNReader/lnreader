@@ -2,28 +2,27 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 
 import { Button, IconButton, Portal } from 'react-native-paper';
-import { ThemeColors } from '@theme/types';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { getString } from '@strings/translations';
 import { Modal } from '@components';
+import { useTheme } from '@providers/Providers';
+import { useNovelChapters, useNovelState } from '@hooks/persisted/index';
 
 interface DownloadCustomChapterModalProps {
-  theme: ThemeColors;
   hideModal: () => void;
   modalVisible: boolean;
-  novel: NovelInfo;
-  chapters: ChapterInfo[];
   downloadChapters: (novel: NovelInfo, chapters: ChapterInfo[]) => void;
 }
 
 const DownloadCustomChapterModal = ({
-  theme,
   hideModal,
   modalVisible,
-  novel,
-  chapters,
   downloadChapters,
 }: DownloadCustomChapterModalProps) => {
+  const theme = useTheme();
+  const { novel, loading } = useNovelState();
+  const { chapters } = useNovelChapters();
+
   const [text, setText] = useState(0);
 
   const onDismiss = () => {
@@ -33,6 +32,7 @@ const DownloadCustomChapterModal = ({
 
   const onSubmit = () => {
     hideModal();
+    if (loading) return;
     downloadChapters(
       novel,
       chapters
