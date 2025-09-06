@@ -561,8 +561,8 @@ window.addEventListener('load', () => {
         .replace(
           /<br>\s*<br>[^]+/,
           _ =>
-            `${/\/p>/.test(_) ? _.replace(/<br>\s*<br>(?:(?<=<\/?p\b[^>]*><br>\s*<br>)(?=\s*<\/?p[> ]))/g, '') : _}`,
-        ) //if p exists, delete all double br near p
+            `${/\/p>/.test(_) ? _.replace(/<br>\s*<br>(?:(?<=<\/?p\b[^>]*><br>\s*<br>)|(?=\s*<\/?p[> ]))/g, '') : _}`,
+        ) //if p found, delete all double br near p
         .replace(/<br>(?:(?=\s*<\/?p[> ])|(?<=<\/?p>\s*<br>))\s*/g, '');
     }
     reader.chapterElement.innerHTML = html;
