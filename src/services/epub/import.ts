@@ -90,7 +90,6 @@ const insertLocalChapter = async (
     }
     const novelDir = NOVEL_STORAGE + '/local/' + novelId;
     chapterText = chapterText.replace(
-
       /=(?<= href=| src=)(["'])([^]*?)\1/g,
       (_, __, $2: string) => {
         return `="file://${novelDir}/${$2.split(/[/\\]/).pop()}"`;
