@@ -171,9 +171,9 @@
     "copiedToClipboard": "Panoya kopyalandı: %{name}",
     "delete": "Sil",
     "deleted": "%{name} silindi",
-    "deprecated": "Deprecated",
+    "deprecated": "Kullanımdan kaldırıldı",
     "display": "Görünüm",
-    "done": "Done",
+    "done": "Bitti",
     "downloads": "İndirilenler",
     "edit": "Düzenle",
     "example": "Örnek",
@@ -409,7 +409,7 @@
       "publishingFinished": "Yayınlama Bitti",
       "unknown": "Bilinmiyor"
     },
-    "tracked": "Tracked",
+    "tracked": "İzlendi",
     "tracking": "Tracking",
     "unknownStatus": "Bilinmiyor",
     "updatedToast": "%{name} güncellendi"
@@ -510,13 +510,13 @@
     "pickATheme": "Tema seç",
     "light": "Açık",
     "dark": "Koyu",
-    "complete": "Complete"
+    "complete": "Tamamla"
   },
   "notifications": {
     "IMPORT_EPUB": "EPUB içe aktarıldı",
     "UPDATE_LIBRARY": "Kütüphane güncellendi",
-    "DRIVE_BACKUP": "Drive backup",
-    "DRIVE_RESTORE": "Drive restore",
+    "DRIVE_BACKUP": "Bulut yedeği",
+    "DRIVE_RESTORE": "Buluttan geri yükle",
     "SELF_HOST_BACKUP": "Self host backup",
     "SELF_HOST_RESTORE": "Self host restore",
     "MIGRATE_NOVEL": "Roman taşındı",
