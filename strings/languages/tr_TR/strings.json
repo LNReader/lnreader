@@ -83,7 +83,7 @@
       "noAvailableBackup": "Geçerli yedek yok",
       "novelsRestored": "%{num} roman geri yüklendi"
     },
-    "legacyBackup": "Legacy Backup",
+    "legacyBackup": "Eski yedekleme",
     "noBackupFound": "Yedek bulunamadı",
     "preparingData": "Veri hazırlanıyor",
     "remote": {
@@ -116,7 +116,7 @@
     "latest": "En son",
     "listEmpty": "Ayarlardan dilleri etkinleştirin",
     "migration": {
-      "dialogMessage": "Migrate %{url}?",
+      "dialogMessage": "%{url} birleştirilsin mi?",
       "novelAlreadyInLibrary": "Roman kütüphanede mevcut",
       "selectSource": "Kaynak Seç",
       "selectSourceDesc": "Taşıyacağınız Kaynağı Seçin"
@@ -410,7 +410,7 @@
       "unknown": "Bilinmiyor"
     },
     "tracked": "İzlendi",
-    "tracking": "Tracking",
+    "tracking": "İzleme",
     "unknownStatus": "Bilinmiyor",
     "updatedToast": "%{name} güncellendi"
   },
@@ -517,8 +517,8 @@
     "UPDATE_LIBRARY": "Kütüphane güncellendi",
     "DRIVE_BACKUP": "Bulut yedeği",
     "DRIVE_RESTORE": "Buluttan geri yükle",
-    "SELF_HOST_BACKUP": "Self host backup",
-    "SELF_HOST_RESTORE": "Self host restore",
+    "SELF_HOST_BACKUP": "Yerel Sunucuya Yedekleme",
+    "SELF_HOST_RESTORE": "Yerel sunucudan geri yükleme",
     "MIGRATE_NOVEL": "Roman taşındı",
     "DOWNLOAD_CHAPTER": "İndirilmiş bölüm"
   }
