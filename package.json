@@ -25,7 +25,7 @@
     "android": {
       "javaPackageName": "com.lnreader.spec"
     },
-    "ios": { 
+    "ios": {
       "modulesProvider": {
         "NativeEpubUtil": "RCTNativeEpubUtil",
         "NativeFile": "RCTNativeFile",
