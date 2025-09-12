@@ -16,19 +16,24 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Cache npm & node modules
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Cache pnpm & node modules
         uses: actions/cache@v4
         with:
           path: |
-            ~/.npm
+            ~/.pnpm-store
             node_modules
-          key: ${{ runner.os }}-cache-npm-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-cache-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-cache-npm-
+            ${{ runner.os }}-cache-pnpm-
 
       - name: Install Dependencies
         run: |
-          npm install
+          pnpm install
 
       - name: Create .env
         run: |
@@ -62,7 +67,7 @@ jobs:
             android/app/build/intermediates
             android/app/build/tmp
             android/.gradle
-          key: ${{ runner.os }}-build-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Make Gradlew Executable
         run: cd android && chmod +x ./gradlew
