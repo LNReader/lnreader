@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import {
+  DefaultTheme,
+  NavigationContainer,
+  NavigationContainerRef,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {
@@ -41,7 +45,11 @@ import { LibraryContextProvider } from '@components/Context/LibraryContext';
 import { UpdateContextProvider } from '@components/Context/UpdateContext';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const MainNavigator = () => {
+const MainNavigator = ({
+  ref,
+}: {
+  ref: React.Ref<NavigationContainerRef<RootStackParamList> | null>;
+}) => {
   const theme = useTheme();
   const { updateLibraryOnLaunch } = useAppSettings();
   const { refreshPlugins } = usePlugins();
@@ -76,6 +84,7 @@ const MainNavigator = () => {
 
   return (
     <NavigationContainer<RootStackParamList>
+      ref={ref}
       theme={{
         colors: {
           ...DefaultTheme.colors,

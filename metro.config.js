@@ -7,6 +7,7 @@
  * @type {import('@react-native/metro-config').MetroConfig}
  */
 
+const { withRozenite } = require('@rozenite/metro');
 const path = require('path');
 const fs = require('fs');
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
@@ -51,4 +52,4 @@ const customConfig = {
     },
   },
 };
-module.exports = mergeConfig(defaultConfig, customConfig);
+module.exports = withRozenite(mergeConfig(defaultConfig, customConfig));
