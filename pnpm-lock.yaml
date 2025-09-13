@@ -204,15 +204,6 @@ importers:
       '@babel/runtime':
         specifier: ^7.28.4
         version: 7.28.4
-      '@react-native-community/cli':
-        specifier: ^20.0.2
-        version: 20.0.2(typescript@5.9.2)
-      '@react-native-community/cli-platform-android':
-        specifier: ^20.0.2
-        version: 20.0.2
-      '@react-native-community/cli-platform-ios':
-        specifier: ^20.0.2
-        version: 20.0.2
       '@react-native/babel-preset':
         specifier: ^0.81.1
         version: 0.81.1(@babel/core@7.28.4)
@@ -225,6 +216,15 @@ importers:
       '@react-native/typescript-config':
         specifier: ^0.81.1
         version: 0.81.1
+      '@rock-js/platform-android':
+        specifier: ^0.11.1
+        version: 0.11.1
+      '@rock-js/platform-ios':
+        specifier: ^0.11.1
+        version: 0.11.1(typescript@5.9.2)
+      '@rock-js/plugin-metro':
+        specifier: ^0.11.1
+        version: 0.11.1
       '@types/color':
         specifier: ^4.2.0
         version: 4.2.0
@@ -258,6 +258,9 @@ importers:
       react-native-dotenv:
         specifier: ^3.4.11
         version: 3.4.11(@babel/runtime@7.28.4)
+      rock:
+        specifier: ^0.11.1
+        version: 0.11.1(typescript@5.9.2)
       typescript:
         specifier: ~5.9.2
         version: 5.9.2
@@ -981,6 +984,12 @@ packages:
       react: '*'
       react-native: '*'
 
+  '@clack/core@0.5.0':
+    resolution: {integrity: sha512-p3y0FIOwaYRUPRcMO7+dlmLh8PSRcrjuTndsiA0WAFbWES0mLZlrjVoBRZ9DzkPFJZG6KGkJmoEAY0ZcVWTkow==}
+
+  '@clack/prompts@0.11.0':
+    resolution: {integrity: sha512-pMN5FcrEw9hUkZA4f+zLlzivQSeQf5dRGJjSUbvVYDLvpKCdQx5OaknvKzgbtXOizhP+SJJJjqEbOe55uKKfAw==}
+
   '@egjs/hammerjs@2.0.17':
     resolution: {integrity: sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==}
     engines: {node: '>=0.8.0'}
@@ -1506,6 +1515,27 @@ packages:
       react-native-safe-area-context: '>= 4.0.0'
       react-native-screens: '>= 4.0.0'
 
+  '@rock-js/config@0.11.1':
+    resolution: {integrity: sha512-BFAxWChmLyxwdWB/nL9oMihnTHIBxYR15V+/MhU0rf9p1KCeU6wh0pP2LNi7eB9zTwDiLUEGveSwjTVeygM32g==}
+
+  '@rock-js/platform-android@0.11.1':
+    resolution: {integrity: sha512-5m9LSwefgGGfdqNIMkEd89rClf/eMXaBY7TlLvDmwGxkLReG09ihZEnqGaYlsM4qc21PSJxh0X8C7feYme0YXA==}
+
+  '@rock-js/platform-apple-helpers@0.11.1':
+    resolution: {integrity: sha512-CDydMZfJL+wBbjXDN72gvhY/CX0EB8Y5t+0aj/QYPWefgIjQ/BZw1STx4pY6PWAGSn6bnnwroVzhZLInkwZdMQ==}
+
+  '@rock-js/platform-ios@0.11.1':
+    resolution: {integrity: sha512-H0ME56P1mg7+iNov4STwEoHVRQVmtEhLwGbgOOgPkYZ8n3RdT7NoNotUKqgNKUUYG4bkCu3YYdPBJteNIRPGoQ==}
+
+  '@rock-js/plugin-metro@0.11.1':
+    resolution: {integrity: sha512-apYJi0VHyTm/iFg08YzTi2Imdx5O++h/+zEoPlbRTKMj/R1wOe2FzyPVJqbRYE+6llMGm+97H4e9Y9aBeKuoXw==}
+
+  '@rock-js/provider-github@0.11.1':
+    resolution: {integrity: sha512-rNy80Z9jE/y30H+p6gN0IlP7M+nYFiV2ovtGnYxDCy9BYINXOPjjW9Eg0khc9PBXzt3czHaDBvYm/AUeFj98sw==}
+
+  '@rock-js/tools@0.11.1':
+    resolution: {integrity: sha512-Hvp30ZCTLG1oaD74kpBJWiTNsFxqQdi8wDjOmZWVGsVl+g5aa8BMYO5rQ3DqiTlPYhfli//RjkfP+MHzP+Nj9A==}
+
   '@shopify/flash-list@2.0.2':
     resolution: {integrity: sha512-zhlrhA9eiuEzja4wxVvotgXHtqd3qsYbXkQ3rsBfOgbFA9BVeErpDE/yEwtlIviRGEqpuFj/oU5owD6ByaNX+w==}
     peerDependencies:
@@ -1530,6 +1560,9 @@ packages:
 
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
+
+  '@types/adm-zip@0.5.7':
+    resolution: {integrity: sha512-DNEs/QvmyRLurdQPChqq0Md4zGvPwHerAJYWk9l2jCbD1VPpnzRJorOdiq4zsw09NFbYnhfsoEhWtxIzXpn2yw==}
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -1717,6 +1750,10 @@ packages:
     resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+
+  adm-zip@0.5.16:
+    resolution: {integrity: sha512-TGw5yVi4saajsSEgz25grObGHEUaDrniwvA2qwSC060KfqGPdglhvPMA2lPIoxs3PQIItj2iag35fONcQqgUaQ==}
+    engines: {node: '>=12.0'}
 
   agent-base@7.1.4:
     resolution: {integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==}
@@ -2802,6 +2839,10 @@ packages:
     resolution: {integrity: sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==}
     engines: {node: '>=6 <7 || >=8'}
 
+  fs-fingerprint@0.7.0:
+    resolution: {integrity: sha512-bEfz/cgk+gU9m9HvgV4oySvUrxgR91/UHNKvSY9rfXy64P4cq6SzS1LibaPySyqaygrdKGHxPn0AvUaTjWZkaA==}
+    engines: {node: '>=20.0.0'}
+
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
@@ -2989,6 +3030,10 @@ packages:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
 
+  ignore@7.0.5:
+    resolution: {integrity: sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==}
+    engines: {node: '>= 4'}
+
   image-size@1.2.1:
     resolution: {integrity: sha512-rH+46sQJ2dlwfjfhCyNx5thzrv+dtmBIhPHk0zgRUukHzZ/kRueTJXoYYsclBaKcSMBWuGbOFXtioLpzTb5euw==}
     engines: {node: '>=16.x'}
@@ -3169,6 +3214,10 @@ packages:
   is-unicode-supported@0.1.0:
     resolution: {integrity: sha512-knxG2q4UC3u8stRGyAVJCOdxFmv5DZiRcdlIaAQXAbSfJya+OhopNotLQrstBhququ4ZpuKbDc/8S6mgXgPFPw==}
     engines: {node: '>=10'}
+
+  is-unicode-supported@2.1.0:
+    resolution: {integrity: sha512-mE00Gnza5EEB3Ds0HfMyllZzbBrmLOX3vfWoj9A9PEnTfratQ/BcaJOuMhnkhjXvb2+FkY3VuHqtAGpTPmglFQ==}
+    engines: {node: '>=18'}
 
   is-weakmap@2.0.2:
     resolution: {integrity: sha512-K5pXYOm9wqY1RgjpL3YTkF39tni1XajUIkawTLUo9EZEVUFga5gSQJF8nNS7ZwJQ02y+1YCNYcMh+HIf1ZqE+w==}
@@ -3655,6 +3704,10 @@ packages:
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
 
+  nano-spawn@0.2.1:
+    resolution: {integrity: sha512-/pULofvsF8mOVcl/nUeVXL/GYOEvc7eJWSIxa+K4OYUolvXa5zwSgevsn4eoHs1xvh/BO3vx/PZiD9+Ow2ZVuw==}
+    engines: {node: '>=18.19'}
+
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -3809,6 +3862,10 @@ packages:
     resolution: {integrity: sha512-5b0R4txpzjPWVw/cXXUResoD4hb6U/x9BH08L7nw+GN1sezDzPdxeRvpc9c433fZhBan/wusjbCsqwqm4EIBIQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
+  p-limit@7.1.1:
+    resolution: {integrity: sha512-i8PyM2JnsNChVSYWLr2BAjNoLi0BAYC+wecOnZnVV+YSNJkzP7cWmvI34dk0WArWfH9KwBHNoZI3P3MppImlIA==}
+    engines: {node: '>=20'}
+
   p-locate@3.0.0:
     resolution: {integrity: sha512-x+12w/To+4GFfgJhBEpiDcLozRJGegY+Ei7/z0tSLkMmxGZNybVMSfWj9aJn8Z5Fc7dBUNJOOVgPv2H7IwulSQ==}
     engines: {node: '>=6'}
@@ -3906,6 +3963,10 @@ packages:
   picomatch@3.0.1:
     resolution: {integrity: sha512-I3EurrIQMlRc9IaAZnqRR044Phh2DXY+55o7uJ0V+hYZAcQYSuFWsc9q5PvyDHUSCe1Qxn/iBz+78s86zWnGag==}
     engines: {node: '>=10'}
+
+  picomatch@4.0.3:
+    resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
+    engines: {node: '>=12'}
 
   pidtree@0.5.0:
     resolution: {integrity: sha512-9nxspIM7OpZuhBxPg73Zvyq7j1QMPMPsGKTqRc2XOaFQauDvoNz9fM1Wdkjmeo7l9GXOZiRs97sPkuayl39wjA==}
@@ -4317,6 +4378,10 @@ packages:
     deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
+  rock@0.11.1:
+    resolution: {integrity: sha512-14uaV6ERRPbPo9yyP5gwE54WDQt7KmrXDj5wuBeNSeaU9gdhG+/hW92aXGohlGbFCQJESOzqdfpF6NvGZukVOA==}
+    hasBin: true
+
   rtl-detect@1.1.2:
     resolution: {integrity: sha512-PGMBq03+TTG/p/cRB7HCLKJ1MgDIi07+QU1faSjiYRfmY5UsAttV9Hs08jDAHVwcOwmVLcSJkpwyfXszVjWfIQ==}
 
@@ -4669,6 +4734,10 @@ packages:
 
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+
+  ts-regex-builder@1.8.2:
+    resolution: {integrity: sha512-Y8HovHFheDKm/jgLIWSO8o81xA/I9O5AGc3/vNG1sVSskatOifr3SQzAsatBXGLjL3nYhQif1MpwQRS5GF8ADg==}
+    engines: {node: '>= 18.0.0'}
 
   tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
@@ -5886,6 +5955,17 @@ snapshots:
       react-native-saf-x: 2.2.3(react-native@0.81.4(@babel/core@7.28.4)(@react-native-community/cli@20.0.2(typescript@5.9.2))(@react-native/metro-config@0.81.1(@babel/core@7.28.4))(@types/react@19.1.12)(react@19.1.0))(react@19.1.0)
       react-native-zip-archive: 6.1.2(react-native@0.81.4(@babel/core@7.28.4)(@react-native-community/cli@20.0.2(typescript@5.9.2))(@react-native/metro-config@0.81.1(@babel/core@7.28.4))(@types/react@19.1.12)(react@19.1.0))(react@19.1.0)
 
+  '@clack/core@0.5.0':
+    dependencies:
+      picocolors: 1.1.1
+      sisteransi: 1.0.5
+
+  '@clack/prompts@0.11.0':
+    dependencies:
+      '@clack/core': 0.5.0
+      picocolors: 1.1.1
+      sisteransi: 1.0.5
+
   '@egjs/hammerjs@2.0.17':
     dependencies:
       '@types/hammerjs': 2.0.46
@@ -6394,6 +6474,7 @@ snapshots:
       chalk: 4.1.2
       execa: 5.1.1
       fast-glob: 3.3.3
+    optional: true
 
   '@react-native-community/cli-config-android@20.0.2':
     dependencies:
@@ -6439,6 +6520,7 @@ snapshots:
       yaml: 2.8.1
     transitivePeerDependencies:
       - typescript
+    optional: true
 
   '@react-native-community/cli-platform-android@20.0.2':
     dependencies:
@@ -6447,6 +6529,7 @@ snapshots:
       chalk: 4.1.2
       execa: 5.1.1
       logkitty: 0.7.1
+    optional: true
 
   '@react-native-community/cli-platform-apple@20.0.2':
     dependencies:
@@ -6455,10 +6538,12 @@ snapshots:
       chalk: 4.1.2
       execa: 5.1.1
       fast-xml-parser: 4.5.3
+    optional: true
 
   '@react-native-community/cli-platform-ios@20.0.2':
     dependencies:
       '@react-native-community/cli-platform-apple': 20.0.2
+    optional: true
 
   '@react-native-community/cli-server-api@20.0.2':
     dependencies:
@@ -6516,6 +6601,7 @@ snapshots:
       - supports-color
       - typescript
       - utf-8-validate
+    optional: true
 
   '@react-native-community/slider@5.0.1': {}
 
@@ -6859,6 +6945,79 @@ snapshots:
     transitivePeerDependencies:
       - '@react-native-masked-view/masked-view'
 
+  '@rock-js/config@0.11.1':
+    dependencies:
+      '@babel/code-frame': 7.27.1
+      '@rock-js/provider-github': 0.11.1
+      '@rock-js/tools': 0.11.1
+      joi: 17.13.3
+      tslib: 2.8.1
+
+  '@rock-js/platform-android@0.11.1':
+    dependencies:
+      '@react-native-community/cli-config-android': 20.0.2
+      '@rock-js/tools': 0.11.1
+      adm-zip: 0.5.16
+      tslib: 2.8.1
+
+  '@rock-js/platform-apple-helpers@0.11.1(typescript@5.9.2)':
+    dependencies:
+      '@react-native-community/cli-config': 20.0.2(typescript@5.9.2)
+      '@react-native-community/cli-config-apple': 20.0.2
+      '@rock-js/tools': 0.11.1
+      '@types/adm-zip': 0.5.7
+      adm-zip: 0.5.16
+      fast-glob: 3.3.3
+      fast-xml-parser: 4.5.3
+      tslib: 2.8.1
+    transitivePeerDependencies:
+      - typescript
+
+  '@rock-js/platform-ios@0.11.1(typescript@5.9.2)':
+    dependencies:
+      '@react-native-community/cli-config-apple': 20.0.2
+      '@react-native-community/cli-types': 20.0.2
+      '@rock-js/platform-apple-helpers': 0.11.1(typescript@5.9.2)
+      '@rock-js/tools': 0.11.1
+      tslib: 2.8.1
+    transitivePeerDependencies:
+      - typescript
+
+  '@rock-js/plugin-metro@0.11.1':
+    dependencies:
+      '@react-native-community/cli-server-api': 20.0.2
+      '@rock-js/tools': 0.11.1
+      metro: 0.83.1
+      metro-config: 0.83.1
+      metro-core: 0.83.1
+      metro-resolver: 0.83.1
+      tslib: 2.8.1
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
+  '@rock-js/provider-github@0.11.1':
+    dependencies:
+      '@rock-js/tools': 0.11.1
+      ts-regex-builder: 1.8.2
+      tslib: 2.8.1
+
+  '@rock-js/tools@0.11.1':
+    dependencies:
+      '@clack/prompts': 0.11.0
+      '@types/adm-zip': 0.5.7
+      adm-zip: 0.5.16
+      appdirsjs: 1.2.7
+      fast-glob: 3.3.3
+      fs-fingerprint: 0.7.0
+      is-unicode-supported: 2.1.0
+      nano-spawn: 0.2.1
+      picocolors: 1.1.1
+      string-argv: 0.3.2
+      tar: 7.4.3
+      tslib: 2.8.1
+
   '@shopify/flash-list@2.0.2(@babel/runtime@7.28.4)(react-native@0.81.4(@babel/core@7.28.4)(@react-native-community/cli@20.0.2(typescript@5.9.2))(@react-native/metro-config@0.81.1(@babel/core@7.28.4))(@types/react@19.1.12)(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@babel/runtime': 7.28.4
@@ -6883,6 +7042,10 @@ snapshots:
   '@sinonjs/fake-timers@10.3.0':
     dependencies:
       '@sinonjs/commons': 3.0.1
+
+  '@types/adm-zip@0.5.7':
+    dependencies:
+      '@types/node': 24.3.1
 
   '@types/babel__core@7.20.5':
     dependencies:
@@ -7116,6 +7279,8 @@ snapshots:
 
   acorn@8.15.0: {}
 
+  adm-zip@0.5.16: {}
+
   agent-base@7.1.4: {}
 
   aggregate-error@3.1.0:
@@ -7141,6 +7306,7 @@ snapshots:
       colorette: 1.4.0
       slice-ansi: 2.1.0
       strip-ansi: 5.2.0
+    optional: true
 
   ansi-regex@4.1.1: {}
 
@@ -7246,7 +7412,8 @@ snapshots:
       object.assign: 4.1.7
       util: 0.12.5
 
-  astral-regex@1.0.0: {}
+  astral-regex@1.0.0:
+    optional: true
 
   astral-regex@2.0.0: {}
 
@@ -7601,6 +7768,7 @@ snapshots:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wrap-ansi: 6.2.0
+    optional: true
 
   cliui@8.0.1:
     dependencies:
@@ -7652,11 +7820,13 @@ snapshots:
       color-convert: 3.1.0
       color-string: 2.1.0
 
-  colorette@1.4.0: {}
+  colorette@1.4.0:
+    optional: true
 
   colorette@2.0.20: {}
 
-  command-exists@1.2.9: {}
+  command-exists@1.2.9:
+    optional: true
 
   commander@12.1.0: {}
 
@@ -7773,7 +7943,8 @@ snapshots:
     optionalDependencies:
       supports-color: 9.4.0
 
-  decamelize@1.2.0: {}
+  decamelize@1.2.0:
+    optional: true
 
   decode-uri-component@0.2.2: {}
 
@@ -7877,7 +8048,8 @@ snapshots:
 
   env-paths@2.2.1: {}
 
-  envinfo@7.14.0: {}
+  envinfo@7.14.0:
+    optional: true
 
   error-ex@1.3.2:
     dependencies:
@@ -8434,6 +8606,13 @@ snapshots:
       graceful-fs: 4.2.11
       jsonfile: 4.0.0
       universalify: 0.1.2
+    optional: true
+
+  fs-fingerprint@0.7.0:
+    dependencies:
+      ignore: 7.0.5
+      p-limit: 7.1.1
+      picomatch: 4.0.3
 
   fs.realpath@1.0.0: {}
 
@@ -8643,6 +8822,8 @@ snapshots:
 
   ignore@5.3.2: {}
 
+  ignore@7.0.5: {}
+
   image-size@1.2.1:
     dependencies:
       queue: 6.0.2
@@ -8739,7 +8920,8 @@ snapshots:
     dependencies:
       call-bound: 1.0.4
 
-  is-fullwidth-code-point@2.0.0: {}
+  is-fullwidth-code-point@2.0.0:
+    optional: true
 
   is-fullwidth-code-point@3.0.0: {}
 
@@ -8809,6 +8991,8 @@ snapshots:
       which-typed-array: 1.1.19
 
   is-unicode-supported@0.1.0: {}
+
+  is-unicode-supported@2.1.0: {}
 
   is-weakmap@2.0.2: {}
 
@@ -8972,6 +9156,7 @@ snapshots:
   jsonfile@4.0.0:
     optionalDependencies:
       graceful-fs: 4.2.11
+    optional: true
 
   jsx-ast-utils@3.3.5:
     dependencies:
@@ -9134,6 +9319,7 @@ snapshots:
       ansi-fragments: 0.2.1
       dayjs: 1.11.18
       yargs: 15.4.1
+    optional: true
 
   long@5.3.2: {}
 
@@ -9409,6 +9595,8 @@ snapshots:
       object-assign: 4.1.1
       thenify-all: 1.6.0
 
+  nano-spawn@0.2.1: {}
+
   nanoid@3.3.11: {}
 
   natural-compare@1.4.0: {}
@@ -9427,7 +9615,8 @@ snapshots:
 
   node-releases@2.0.21: {}
 
-  node-stream-zip@1.15.0: {}
+  node-stream-zip@1.15.0:
+    optional: true
 
   normalize-path@3.0.0: {}
 
@@ -9578,6 +9767,10 @@ snapshots:
     dependencies:
       yocto-queue: 1.2.1
 
+  p-limit@7.1.1:
+    dependencies:
+      yocto-queue: 1.2.1
+
   p-locate@3.0.0:
     dependencies:
       p-limit: 2.3.0
@@ -9659,6 +9852,8 @@ snapshots:
   picomatch@2.3.1: {}
 
   picomatch@3.0.1: {}
+
+  picomatch@4.0.3: {}
 
   pidtree@0.5.0: {}
 
@@ -10063,7 +10258,8 @@ snapshots:
 
   require-from-string@2.0.2: {}
 
-  require-main-filename@2.0.0: {}
+  require-main-filename@2.0.0:
+    optional: true
 
   requireg@0.2.2:
     dependencies:
@@ -10120,6 +10316,18 @@ snapshots:
   rimraf@3.0.2:
     dependencies:
       glob: 7.2.3
+
+  rock@0.11.1(typescript@5.9.2):
+    dependencies:
+      '@react-native-community/cli-config': 20.0.2(typescript@5.9.2)
+      '@rock-js/config': 0.11.1
+      '@rock-js/tools': 0.11.1
+      adm-zip: 0.5.16
+      commander: 12.1.0
+      tar: 7.4.3
+      tslib: 2.8.1
+    transitivePeerDependencies:
+      - typescript
 
   rtl-detect@1.1.2: {}
 
@@ -10218,7 +10426,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  set-blocking@2.0.0: {}
+  set-blocking@2.0.0:
+    optional: true
 
   set-function-length@1.2.2:
     dependencies:
@@ -10303,6 +10512,7 @@ snapshots:
       ansi-styles: 3.2.1
       astral-regex: 1.0.0
       is-fullwidth-code-point: 2.0.0
+    optional: true
 
   slice-ansi@3.0.0:
     dependencies:
@@ -10535,6 +10745,8 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
+  ts-regex-builder@1.8.2: {}
+
   tslib@1.14.1: {}
 
   tslib@2.8.1: {}
@@ -10624,7 +10836,8 @@ snapshots:
     dependencies:
       crypto-random-string: 2.0.0
 
-  universalify@0.1.2: {}
+  universalify@0.1.2:
+    optional: true
 
   unpipe@1.0.0: {}
 
@@ -10721,7 +10934,8 @@ snapshots:
       is-weakmap: 2.0.2
       is-weakset: 2.0.4
 
-  which-module@2.0.1: {}
+  which-module@2.0.1:
+    optional: true
 
   which-typed-array@1.1.19:
     dependencies:
@@ -10788,7 +11002,8 @@ snapshots:
 
   xmlbuilder@15.1.1: {}
 
-  y18n@4.0.3: {}
+  y18n@4.0.3:
+    optional: true
 
   y18n@5.0.8: {}
 
@@ -10798,12 +11013,14 @@ snapshots:
 
   yaml@1.10.2: {}
 
-  yaml@2.8.1: {}
+  yaml@2.8.1:
+    optional: true
 
   yargs-parser@18.1.3:
     dependencies:
       camelcase: 5.3.1
       decamelize: 1.2.0
+    optional: true
 
   yargs-parser@21.1.1: {}
 
@@ -10820,6 +11037,7 @@ snapshots:
       which-module: 2.0.1
       y18n: 4.0.3
       yargs-parser: 18.1.3
+    optional: true
 
   yargs@17.7.2:
     dependencies:

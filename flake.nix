@@ -67,6 +67,7 @@
                 which
                 rsync
                 scrcpy
+                
               ]
               ++ pkgs.lib.optionals enableEmulator [
                 libglvnd
@@ -108,10 +109,10 @@
                 echo "Emulator Enabled: Yes"
                 echo ""
                 echo "--- Available Commands ---"
-                echo "  npx react-native run-android"
+                echo "  pnpm android"
+                echo "  pnpm start"
                 echo "  adb devices"
                 echo "  scrcpy"
-                echo "  pnpm start"
                 echo "--------------------------"
               '';
             };
@@ -168,10 +169,10 @@
                 echo "Emulator Enabled: No"
                 echo ""
                 echo "--- Available Commands ---"
-                echo "  npx react-native run-android"
+                echo "  pnpm android"
+                echo "  pnpm start"
                 echo "  adb devices"
                 echo "  scrcpy"
-                echo "  pnpm start"
                 echo "--------------------------"
               '';
             };            
