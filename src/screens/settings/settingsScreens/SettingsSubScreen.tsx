@@ -3,12 +3,11 @@ import { ScrollView, StyleSheet } from 'react-native';
 
 import { useTheme } from '@hooks/persisted';
 import { Appbar, List } from '@components';
-import S from '../Settings';
+import S, { Settings as SettingsType } from '../Settings';
 import RenderSettings from '../dynamic/RenderSettingsGroup';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SettingsStackParamList } from '@navigators/types';
-import { Settings as SettingsType } from '../Settings';
 
 type Props = NativeStackScreenProps<
   SettingsStackParamList,

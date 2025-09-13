@@ -30,7 +30,7 @@ import { useNovelContext } from '../NovelContext';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
 import FileManager from '@specs/NativeFile';
 import { downloadFile } from '@plugins/helpers/fetch';
-import { StorageAccessFramework } from 'expo-file-system';
+import { StorageAccessFramework } from 'expo-file-system/legacy';
 import { useSettingsContext } from '@components/Context/SettingsContext';
 
 type NovelScreenListProps = {

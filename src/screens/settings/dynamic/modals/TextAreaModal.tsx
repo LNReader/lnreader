@@ -12,7 +12,7 @@ import {
   BaseSetting,
   SettingOrigin,
   TextAreaSetting,
-} from '@type/Settings';
+} from '@screens/settings/Settings';
 import { ThemeColors } from '@theme/types';
 import { useSettingsContext } from '@components/Context/SettingsContext';
 import { FilteredSettings } from '@screens/settings/constants/defaultValues';
@@ -27,7 +27,7 @@ const TextAreaModal = ({
   const showModal = useBoolean();
   const clearModal = useBoolean();
 
-  const settings = useSettingsContext();
+  const { setSettings, ...settings } = useSettingsContext();
 
   const currentValue = useMemo(() => {
     return settings[setting.valueKey];
@@ -41,7 +41,7 @@ const TextAreaModal = ({
     if (origin) {
       throw new Error(`origin: ${origin}. Is not implemented`);
     }
-    settings.setSettings({
+    setSettings({
       [key]: value,
     });
   };
@@ -78,14 +78,14 @@ const TextAreaModal = ({
           placeholder={`${getString('common.example')}: ${setting.placeholder}`}
           openFileLabel={setting.openFileLabel}
           onSave={text => {
-            update(text, setting.valueKey, setting.settingsOrigin);
+            update(text, setting.valueKey);
           }}
         />
         <ConfirmationDialog
           title={setting.clearDialog}
           visible={clearModal.value}
           onSubmit={() => {
-            update('', setting.valueKey, setting.settingsOrigin);
+            update('', setting.valueKey);
           }}
           onDismiss={clearModal.setFalse}
           theme={theme}

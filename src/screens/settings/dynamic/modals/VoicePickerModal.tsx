@@ -77,7 +77,6 @@ const VoicePickerModal: React.FC<VoicePickerModalProps> = ({
             />
           )}
           keyExtractor={item => item.identifier || 'system'}
-          estimatedItemSize={64}
           removeClippedSubviews={true}
           ListEmptyComponent={
             <ActivityIndicator

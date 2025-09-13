@@ -18,7 +18,7 @@ import { Portal } from 'react-native-paper';
 import FontPickerModal from '../modals/FontPickerModal';
 import ReaderFontPicker from '@screens/reader/components/ReaderBottomSheet/ReaderFontPicker';
 import ColorPickerModal from '../modals/ColorPickerModal';
-import { BaseSetting, ColorPickerSetting } from '@type/Settings';
+import { BaseSetting, ColorPickerSetting } from '@screens/settings/Settings';
 import { useSettingsContext } from '@components/Context/SettingsContext';
 
 const ReaderThemeSettings = ({

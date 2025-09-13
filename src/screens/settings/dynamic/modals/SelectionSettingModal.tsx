@@ -7,7 +7,7 @@ import { RadioButton } from '@components/RadioButton/RadioButton';
 import { ThemeColors } from '@theme/types';
 import { Checkbox, List } from '@components';
 import { useBoolean } from '@hooks/index';
-import { BaseSetting, ModalSetting } from '@type/Settings';
+import { BaseSetting, ModalSetting } from '@screens/settings/Settings';
 import { SortItem } from '@components/Checkbox/Checkbox';
 import { useSettingsContext } from '@components/Context/SettingsContext';
 import { FilteredSettings } from '@screens/settings/constants/defaultValues';
@@ -28,22 +28,13 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
   const { setSettings, ...settings } = useSettingsContext();
 
   const currentValue = useMemo(() => {
-    if (setting.settingsOrigin) {
-      throw new Error('settingsOrigin is not implemented');
-    }
     if (setting.mode === 'multiple') {
-      return setting.options.map(k => {
-        return settings[k.key];
+      return setting.options.map((k: any) => {
+        return (settings as any)[k.key];
       }) as Array<boolean>;
     }
     return settings[setting.valueKey];
-  }, [
-    setting.mode,
-    setting.options,
-    setting.settingsOrigin,
-    setting.valueKey,
-    settings,
-  ]);
+  }, [setting.mode, setting.options, setting.valueKey, settings]);
 
   function update<T extends string | number | boolean>(
     value: T,
@@ -56,10 +47,11 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
 
   function generateDescription() {
     if (!setting.description || quickSettings) {
-      return;
+      return undefined;
     }
-    //@ts-expect-error
-    return setting.description(currentValue);
+    return typeof setting.description === 'string'
+      ? setting.description
+      : undefined;
   }
 
   return (
@@ -83,7 +75,7 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
             {setting.title}
           </Text>
           {setting.mode === 'single'
-            ? setting.options.map(m => (
+            ? setting.options.map((m: any) => (
                 <RadioButton
                   key={m.value}
                   status={currentValue === m.value}
@@ -93,7 +85,7 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
                 />
               ))
             : setting.mode === 'multiple'
-            ? setting.options.map((m, i) => {
+            ? setting.options.map((m: any, i: number) => {
                 const value = (currentValue as Array<boolean>)[i];
                 return (
                   <Checkbox
@@ -106,7 +98,7 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
                 );
               })
             : setting.mode === 'order'
-            ? setting.options.map(m => {
+            ? setting.options.map((m: any) => {
                 return (
                   <SortItem
                     key={m.label}

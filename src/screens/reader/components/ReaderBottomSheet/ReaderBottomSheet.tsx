@@ -24,7 +24,6 @@ import { getString } from '@strings/translations';
 import { overlay } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { StringMap } from '@strings/types';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import RenderSettings from '@screens/settings/dynamic/RenderSettings';
 import ReaderSettings from '@screens/settings/settingsGroups/readerSettingsGroup';
@@ -84,7 +83,7 @@ const GeneralTab: React.FC = React.memo(() => {
     <BottomSheetFlashList
       data={quickSettings}
       extraData={[settings]}
-      keyExtractor={(_, i) => `general${i}`}
+      keyExtractor={(_: any, i: number) => `general${i}`}
       renderItem={renderItem}
       estimatedItemSize={60}
     />

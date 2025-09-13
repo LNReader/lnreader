@@ -35,7 +35,7 @@ const ChapterDrawer = () => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { defaultChapterSort } = useSettingsContext();
-  const listRef = useRef<FlashList<ChapterInfo> | null>(null);
+  const listRef = useRef<FlashListRef<ChapterInfo> | null>(null);
 
   const styles = createStylesheet(theme, insets);
 

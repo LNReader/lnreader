@@ -5,7 +5,7 @@ import { Modal, overlay, Portal } from 'react-native-paper';
 import { Button, List } from '@components';
 import { ThemeColors } from '@theme/types';
 import { useBoolean } from '@hooks/index';
-import { BaseSetting, ColorPickerSetting } from '@type/Settings';
+import { BaseSetting, ColorPickerSetting } from '@screens/settings/Settings';
 import { useMMKVString } from 'react-native-mmkv';
 import { useKeyboardHeight } from '@hooks/common/useKeyboardHeight';
 import TextInput from '@components/TextInput/TextInput';
@@ -58,15 +58,7 @@ const ColorPickerModal: React.FC<ColorPickerModalProps> = ({
   const currentValue =
     settings.settingsOrigin === 'MMKV'
       ? rgbToHex(theme.primary)
-      : !settings.settingsOrigin
-      ? currentSettings[settings.valueKey!]
-      : (() => {
-          throw new Error(
-            `settings.settingsOrigin in setting:
-          ${JSON.stringify(settings, null, 2)}
-         is not defined`,
-          );
-        })();
+      : currentSettings[settings.valueKey!];
 
   const [text, setText] = useState<string>(currentValue);
 

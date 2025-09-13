@@ -18,11 +18,8 @@ export default function SettingTextInput({
   const { setSettings, ...settings } = useSettingsContext();
 
   const currentValue = useMemo(() => {
-    if (setting.settingsOrigin) {
-      throw new Error('settingsOrigin is not implemented');
-    }
     return settings[setting.valueKey];
-  }, [setting.settingsOrigin, setting.valueKey, settings]);
+  }, [setting.valueKey, settings]);
   const labelStyle = [styles.fontSizeL, { color: theme.onSurface }];
 
   const update = (value: string, key: FilteredSettings<number>) => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { Modal, overlay, TextInput } from 'react-native-paper';
-import { StorageAccessFramework } from 'expo-file-system';
+import { StorageAccessFramework } from 'expo-file-system/legacy';
 import * as DocumentPicker from 'expo-document-picker';
 
 import { Button } from '@components/index';
