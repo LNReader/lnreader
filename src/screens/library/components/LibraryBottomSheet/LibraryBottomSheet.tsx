@@ -32,6 +32,7 @@ import { BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { FlashList } from '@shopify/flash-list';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 interface LibraryBottomSheetProps {
   bottomSheetRef: RefObject<BottomSheetModalMethods | null>;
@@ -49,7 +50,6 @@ const FirstRoute = () => {
   return (
     <View style={styles.flex}>
       <FlashList
-        estimatedItemSize={4}
         extraData={[filter]}
         data={libraryFilterList}
         renderItem={({ item }) => (
@@ -82,7 +82,6 @@ const SecondRoute = () => {
       <FlashList
         data={librarySortOrderList}
         extraData={[sortOrder]}
-        estimatedItemSize={5}
         renderItem={({ item }) => (
           <SortItem
             label={item.label}
@@ -155,7 +154,6 @@ const ThirdRoute = () => {
         {getString('libraryScreen.bottomSheet.display.displayMode')}
       </Text>
       <FlashList
-        estimatedItemSize={4}
         data={displayModesList}
         extraData={[displayMode]}
         renderItem={({ item }) => (
@@ -239,15 +237,17 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
           { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
-        <TabView
-          commonOptions={commonOptions}
-          navigationState={{ index, routes }}
-          renderTabBar={renderTabBar}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          style={styles.tabView}
-        />
+        <GestureHandlerRootView style={styles.gestureHandler}>
+          <TabView
+            commonOptions={commonOptions}
+            navigationState={{ index, routes }}
+            renderTabBar={renderTabBar}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={{ width: layout.width }}
+            style={styles.tabView}
+          />
+        </GestureHandlerRootView>
       </BottomSheetView>
     </BottomSheet>
   );
@@ -272,6 +272,10 @@ const styles = StyleSheet.create({
   tabView: {
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
+    height: 480, // Explicit height instead of flex
+  },
+  gestureHandler: {
+    flex: 1,
   },
   flex: { flex: 1 },
 });

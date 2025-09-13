@@ -13,6 +13,7 @@ import { overlay } from 'react-native-paper';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { ThemeColors } from '@theme/types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 interface ChaptersSettingsSheetProps {
   bottomSheetRef: React.RefObject<BottomSheetModalMethods | null>;
@@ -222,17 +223,19 @@ const ChaptersSettingsSheet = ({
           },
         ]}
       >
-        <TabView
-          commonOptions={{
-            label: renderLabel,
-          }}
-          navigationState={{ index, routes }}
-          renderTabBar={renderTabBar}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          style={styles.radius}
-        />
+        <GestureHandlerRootView style={styles.flex}>
+          <TabView
+            commonOptions={{
+              label: renderLabel,
+            }}
+            navigationState={{ index, routes }}
+            renderTabBar={renderTabBar}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={{ width: layout.width }}
+            style={styles.tabView}
+          />
+        </GestureHandlerRootView>
       </BottomSheetView>
     </BottomSheet>
   );
@@ -246,9 +249,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     flex: 1,
   },
-  radius: {
+  tabView: {
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
+    height: 240,
   },
   transparent: {
     backgroundColor: 'transparent',

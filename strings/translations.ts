@@ -63,10 +63,26 @@ const i18n = new I18n({
 });
 i18n.defaultLocale = 'en';
 i18n.enableFallback = true;
-i18n.locale = Localization.locale;
-dayjs.locale(Localization.locale);
 
-export const localization = Localization.locale;
+const detectedLocale = Localization.getLocales()[0].languageTag;
+
+console.log('--- i18n DEBUG START ---');
+console.log('Raw Localization.locale:', detectedLocale);
+
+// Safely provide a fallback if detectedLocale
+// Else it will lead to a crash
+const activeLocale =
+  detectedLocale && detectedLocale.length > 0
+    ? detectedLocale
+    : i18n.defaultLocale; // Fallback to 'en' if detection fails
+
+console.log('Resolved activeLocale for i18n/dayjs:', activeLocale);
+console.log('--- i18n DEBUG END ---');
+
+i18n.locale = activeLocale;
+dayjs.locale(activeLocale);
+
+export const localization = activeLocale;
 export const getString = (
   stringKey: keyof StringMap,
   options?: TranslateOptions,

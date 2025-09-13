@@ -29,7 +29,7 @@ import NovelScreenList from './components/NovelScreenList';
 import { ThemeColors } from '@theme/types';
 import { SafeAreaView } from '@components';
 import { useNovelContext } from './NovelContext';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
   const {
@@ -57,7 +57,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const [selected, setSelected] = useState<ChapterInfo[]>([]);
   const [editInfoModal, showEditInfoModal] = useState(false);
 
-  const chapterListRef = useRef<FlashList<ChapterInfo> | null>(null);
+  const chapterListRef = useRef<FlashListRef<ChapterInfo> | null>(null);
 
   const deleteDownloadsSnackbar = useBoolean();
 

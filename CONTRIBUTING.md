@@ -24,10 +24,10 @@ git clone https://github.com/<your-account-name>/lnreader.git
 cd lnreader
 
 # install dependencies
-npm install
+pnpm install
 
 # build the apk (the built apk will be found in ~/lnreader/android/app/build/outputs/apk/release/)
-npm run buildRelease
+pnpm buildRelease
 ```
 
 ### Developing on Android
@@ -43,10 +43,10 @@ IDE
 adb devices
 
 # run metro for development
-npm start
+pnpm start
 
 # then to view on your android device (new terminal)
-npm run android
+pnpm android
 ```
 
 ### Style & Linting
@@ -57,5 +57,5 @@ It is recommended that you install an eslint plugin for your editor of choice wh
 codebase, however you can always check to see if the source code is compliant by running:
 
 ```bash
-npm run lint
+pnpm lint
 ```
