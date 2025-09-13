@@ -10,6 +10,8 @@ import { useBackHandler } from '@hooks/index';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import BottomSheetBackdrop from './BottomSheetBackdrop';
 import { useWindowDimensions } from 'react-native';
+import { useTheme } from '@hooks/persisted';
+import { overlay } from 'react-native-paper';
 
 interface BottomSheetProps
   extends Omit<BottomSheetModalProps, 'ref' | 'onChange' | 'snapPoints'> {
@@ -29,6 +31,10 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
   const indexRef = useRef<number>(null);
   const { bottom, top } = useSafeAreaInsets();
   const { height } = useWindowDimensions();
+  const theme = useTheme();
+
+  const backgroundColor = overlay(2, theme.surface);
+
   const renderBackdrop = useCallback(
     (backdropProps: BottomSheetBackdropProps) => (
       <BottomSheetBackdrop {...backdropProps} />
@@ -60,6 +66,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     <BottomSheetModal
       ref={bottomSheetRef}
       backdropComponent={renderBackdrop}
+      backgroundStyle={{ backgroundColor }}
       handleComponent={null}
       containerStyle={[{ paddingBottom: bottom }, containerStyle]}
       onChange={index => {
