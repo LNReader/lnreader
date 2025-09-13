@@ -4,7 +4,8 @@ import { useTheme } from '@hooks/persisted';
 import RenderSettings from './RenderSettings';
 import { RouteProp } from '@react-navigation/native';
 import { SettingsStackParamList } from '@navigators/types';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
+import { sharedStyles } from './utils/sharedStyles';
 
 export default function ({
   setting,
@@ -21,7 +22,7 @@ export default function ({
   const theme = useTheme();
 
   return (
-    <View style={styles.flex}>
+    <View style={sharedStyles.flex}>
       {index === 0 ? null : <List.Divider theme={theme} />}
       <List.SubHeader key={'subHeader' + index} theme={theme}>
         {setting.subGroupTitle}
@@ -39,8 +40,4 @@ export default function ({
   );
 }
 
-const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
-});
+// Using shared styles instead of local styles

@@ -10,9 +10,9 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { StyleSheet } from 'react-native';
 import { useSettingsContext } from '@components/Context/SettingsContext';
 import { FilteredSettings } from '@screens/settings/constants/defaultValues';
+import { sharedStyles } from '../utils/sharedStyles';
 
 interface SettingSwitchProps {
   setting: SwitchSetting & BaseSetting;
@@ -36,7 +36,8 @@ const SettingSwitchV2 = ({
   }, [setting.settingsOrigin, setting.valueKey, settings, showLastUpdateTime]);
 
   const dependents = useMemo(() => {
-    return setting.dependents?.filter(d =>
+    if (!setting.dependents) return undefined;
+    return setting.dependents.filter(d =>
       quickSettings ? d.quickSettings : true,
     );
   }, [quickSettings, setting.dependents]);
@@ -81,7 +82,7 @@ const SettingSwitchV2 = ({
           update(!currentValue, setting.valueKey, setting.settingsOrigin)
         }
         theme={theme}
-        style={styles.paddingHorizontal}
+        style={sharedStyles.paddingHorizontal}
         endOfLine={endOfLine}
         quickSettingsItem={quickSettings}
       />
@@ -103,6 +104,4 @@ const SettingSwitchV2 = ({
 };
 export default React.memo(SettingSwitchV2);
 
-const styles = StyleSheet.create({
-  paddingHorizontal: { paddingHorizontal: 16 },
-});
+// Using shared styles instead of local styles

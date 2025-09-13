@@ -11,6 +11,7 @@ import { BaseSetting, ModalSetting } from '@screens/settings/Settings';
 import { SortItem } from '@components/Checkbox/Checkbox';
 import { useSettingsContext } from '@components/Context/SettingsContext';
 import { FilteredSettings } from '@screens/settings/constants/defaultValues';
+import { sharedStyles } from '../utils/sharedStyles';
 
 interface DisplayModeModalProps {
   setting: ModalSetting & BaseSetting;
@@ -29,8 +30,8 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
 
   const currentValue = useMemo(() => {
     if (setting.mode === 'multiple') {
-      return setting.options.map((k: any) => {
-        return (settings as any)[k.key];
+      return setting.options.map((option: any) => {
+        return (settings as any)[option.key];
       }) as Array<boolean>;
     }
     return settings[setting.valueKey];
@@ -67,53 +68,53 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
           visible={modalRef.value}
           onDismiss={modalRef.setFalse}
           contentContainerStyle={[
-            styles.containerStyle,
+            sharedStyles.modalContainer,
             { backgroundColor: overlay(2, theme.surface) },
           ]}
         >
-          <Text style={[styles.modalHeader, { color: theme.onSurface }]}>
+          <Text style={[sharedStyles.modalHeader, { color: theme.onSurface }]}>
             {setting.title}
           </Text>
           {setting.mode === 'single'
-            ? setting.options.map((m: any) => (
+            ? setting.options.map((option: any) => (
                 <RadioButton
-                  key={m.value}
-                  status={currentValue === m.value}
-                  onPress={() => update(m.value, setting.valueKey)}
-                  label={m.label}
+                  key={option.value}
+                  status={currentValue === option.value}
+                  onPress={() => update(option.value, setting.valueKey)}
+                  label={option.label}
                   theme={theme}
                 />
               ))
             : setting.mode === 'multiple'
-            ? setting.options.map((m: any, i: number) => {
+            ? setting.options.map((option: any, i: number) => {
                 const value = (currentValue as Array<boolean>)[i];
                 return (
                   <Checkbox
-                    key={m.label}
-                    label={m.label}
+                    key={option.label}
+                    label={option.label}
                     status={value}
-                    onPress={() => update(!value, m.key)}
+                    onPress={() => update(!value, option.key)}
                     theme={theme}
                   />
                 );
               })
             : setting.mode === 'order'
-            ? setting.options.map((m: any) => {
+            ? setting.options.map((option: any) => {
                 return (
                   <SortItem
-                    key={m.label}
-                    label={m.label}
+                    key={option.label}
+                    label={option.label}
                     theme={theme}
                     status={
-                      currentValue === m.ASC
+                      currentValue === option.ASC
                         ? 'asc'
-                        : currentValue === m.DESC
+                        : currentValue === option.DESC
                         ? 'desc'
                         : undefined
                     }
                     onPress={() =>
                       update(
-                        currentValue === m.ASC ? m.DESC : m.ASC,
+                        currentValue === option.ASC ? option.DESC : option.ASC,
                         setting.valueKey,
                       )
                     }
@@ -129,15 +130,4 @@ const SelectionSettingModal: React.FC<DisplayModeModalProps> = ({
 
 export default React.memo(SelectionSettingModal);
 
-const styles = StyleSheet.create({
-  containerStyle: {
-    paddingVertical: 20,
-    margin: 20,
-    borderRadius: 28,
-  },
-  modalHeader: {
-    paddingHorizontal: 24,
-    fontSize: 24,
-    marginBottom: 10,
-  },
-});
+// Using shared styles instead of local styles

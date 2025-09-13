@@ -1,10 +1,11 @@
-import { StyleSheet, TextInput, View, Text } from 'react-native';
+import { TextInput, View, Text } from 'react-native';
 import { ThemeColors } from '@theme/types';
 import { BaseSetting, NumberInputSetting } from '../../Settings';
 import { useMemo } from 'react';
 import { defaultTo } from 'lodash-es';
 import { useSettingsContext } from '@components/Context/SettingsContext';
 import { FilteredSettings } from '@screens/settings/constants/defaultValues';
+import { sharedStyles } from '../utils/sharedStyles';
 
 interface SettingSwitchProps {
   setting: NumberInputSetting & BaseSetting;
@@ -20,7 +21,11 @@ export default function SettingTextInput({
   const currentValue = useMemo(() => {
     return settings[setting.valueKey];
   }, [setting.valueKey, settings]);
-  const labelStyle = [styles.fontSizeL, { color: theme.onSurface }];
+  const labelStyle = [
+    sharedStyles.fontSize16,
+    sharedStyles.input,
+    { color: theme.onSurface },
+  ];
 
   const update = (value: string, key: FilteredSettings<number>) => {
     setSettings({
@@ -29,8 +34,21 @@ export default function SettingTextInput({
   };
 
   return (
-    <View style={styles.autoScrollInterval}>
-      <Text style={[labelStyle, styles.paddingRightM]} numberOfLines={2}>
+    <View
+      style={[
+        sharedStyles.paddingHorizontal,
+        sharedStyles.flexRow,
+        {
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          overflow: 'scroll',
+        },
+      ]}
+    >
+      <Text
+        style={[labelStyle, sharedStyles.paddingVertical, sharedStyles.flex]}
+        numberOfLines={2}
+      >
         {setting.title}
       </Text>
       <TextInput
@@ -46,23 +64,3 @@ export default function SettingTextInput({
     </View>
   );
 }
-const styles = StyleSheet.create({
-  fontSizeL: {
-    fontSize: 16,
-    width: 50,
-    height: 46,
-    textAlignVertical: 'center',
-  },
-  autoScrollInterval: {
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    //? overflow scroll because the animation looks better
-    overflow: 'scroll',
-  },
-  paddingRightM: {
-    paddingVertical: 12,
-    flex: 1,
-  },
-});

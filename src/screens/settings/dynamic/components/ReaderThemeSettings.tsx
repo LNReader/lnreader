@@ -9,10 +9,7 @@ import ReaderTextAlignSelector from '@screens/reader/components/ReaderBottomShee
 import ReaderTextSize from './ReaderTextSize';
 import ReaderValueChange from '@screens/reader/components/ReaderBottomSheet/ReaderValueChange';
 import ReaderThemeSelector from '@screens/reader/components/ReaderBottomSheet/ReaderThemeSelector';
-import {
-  presetReaderThemes,
-  readerFonts,
-} from '@utils/constants/readerConstants';
+import { readerFonts } from '@utils/constants/readerConstants';
 import { useBoolean } from '@hooks';
 import { Portal } from 'react-native-paper';
 import FontPickerModal from '../modals/FontPickerModal';
@@ -20,6 +17,11 @@ import ReaderFontPicker from '@screens/reader/components/ReaderBottomSheet/Reade
 import ColorPickerModal from '../modals/ColorPickerModal';
 import { BaseSetting, ColorPickerSetting } from '@screens/settings/Settings';
 import { useSettingsContext } from '@components/Context/SettingsContext';
+import {
+  isCurrentThemeCustom,
+  isCurrentThemePreset,
+} from '../utils/themeUtils';
+import { sharedStyles } from '../utils/sharedStyles';
 
 const ReaderThemeSettings = ({
   quickSettings,
@@ -37,16 +39,22 @@ const ReaderThemeSettings = ({
   ];
   const readerFontPickerModal = useBoolean();
 
-  const isCurrentThemeCustom = readerSettings.customThemes.some(
-    item =>
-      item.backgroundColor === readerSettings.backgroundColor &&
-      item.textColor === readerSettings.textColor,
+  const currentTheme = useMemo(
+    () => ({
+      backgroundColor: readerSettings.backgroundColor,
+      textColor: readerSettings.textColor,
+    }),
+    [readerSettings.backgroundColor, readerSettings.textColor],
   );
 
-  const isCurrentThemePreset = presetReaderThemes.some(
-    item =>
-      item.backgroundColor === readerSettings.backgroundColor &&
-      item.textColor === readerSettings.textColor,
+  const isCustomTheme = useMemo(
+    () => isCurrentThemeCustom(currentTheme, readerSettings.customThemes),
+    [currentTheme, readerSettings.customThemes],
+  );
+
+  const isPresetTheme = useMemo(
+    () => isCurrentThemePreset(currentTheme),
+    [currentTheme],
   );
 
   const currentFontName = readerFonts.find(
@@ -85,30 +93,32 @@ const ReaderThemeSettings = ({
           <ColorPickerModal settings={textColorSetting} theme={theme} />
         </>
       ) : null}
-      {isCurrentThemeCustom ? (
-        <View style={styles.customCSSButtons}>
+      {isCustomTheme ? (
+        <View
+          style={[
+            sharedStyles.marginVertical,
+            sharedStyles.flex,
+            sharedStyles.flexRowReverse,
+          ]}
+        >
           <Button
-            style={styles.customThemeButton}
+            style={sharedStyles.button}
             title={getString('readerSettings.deleteCustomTheme')}
-            onPress={() =>
-              readerSettings.deleteCustomReaderTheme({
-                backgroundColor: readerSettings.backgroundColor,
-                textColor: readerSettings.textColor,
-              })
-            }
+            onPress={() => readerSettings.deleteCustomReaderTheme(currentTheme)}
           />
         </View>
-      ) : !isCurrentThemePreset ? (
-        <View style={styles.customCSSButtons}>
+      ) : !isPresetTheme ? (
+        <View
+          style={[
+            sharedStyles.marginVertical,
+            sharedStyles.flex,
+            sharedStyles.flexRowReverse,
+          ]}
+        >
           <Button
-            style={styles.customThemeButton}
+            style={sharedStyles.button}
             title={getString('readerSettings.saveCustomTheme')}
-            onPress={() =>
-              readerSettings.saveCustomReaderTheme({
-                backgroundColor: readerSettings.backgroundColor,
-                textColor: readerSettings.textColor,
-              })
-            }
+            onPress={() => readerSettings.saveCustomReaderTheme(currentTheme)}
           />
         </View>
       ) : null}
@@ -154,27 +164,4 @@ const ReaderThemeSettings = ({
 };
 export default ReaderThemeSettings;
 
-const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
-  bottomInset: {
-    paddingBottom: 40,
-  },
-  customCSSContainer: {
-    marginHorizontal: 16,
-    marginBottom: 8,
-  },
-  buttons: {
-    flex: 1,
-  },
-  customCSSButtons: {
-    marginVertical: 8,
-    flex: 1,
-    flexDirection: 'row-reverse',
-  },
-  customThemeButton: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-  },
-});
+// Using shared styles instead of local styles

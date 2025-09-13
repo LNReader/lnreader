@@ -79,4 +79,11 @@ const RenderSettings = ({
       return <InfoItem title={setting.title} />;
   }
 };
-export default memo(RenderSettings, () => true);
+export default memo(RenderSettings, (prevProps, nextProps) => {
+  // Only re-render if the setting object reference changes or quickSettings changes
+  return (
+    prevProps.setting === nextProps.setting &&
+    prevProps.quickSettings === nextProps.quickSettings &&
+    prevProps.route === nextProps.route
+  );
+});

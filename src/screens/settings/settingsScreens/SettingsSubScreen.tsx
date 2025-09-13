@@ -8,6 +8,7 @@ import RenderSettings from '../dynamic/RenderSettingsGroup';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SettingsStackParamList } from '@navigators/types';
+import { sharedStyles } from '../dynamic/utils/sharedStyles';
 
 type Props = NativeStackScreenProps<
   SettingsStackParamList,
@@ -30,8 +31,8 @@ const SettingsSubScreen = ({ navigation, route, disableAppbar }: Props) => {
 
   return (
     <ScrollView
-      style={[styles.scrollView, padding]}
-      contentContainerStyle={styles.contentContainer}
+      style={[sharedStyles.container, padding]}
+      contentContainerStyle={sharedStyles.contentContainer}
     >
       {disableAppbar ? null : (
         <Appbar
@@ -40,7 +41,7 @@ const SettingsSubScreen = ({ navigation, route, disableAppbar }: Props) => {
           theme={theme}
         />
       )}
-      <List.Section style={styles.view}>
+      <List.Section style={[sharedStyles.flex, { paddingBottom: 35 }]}>
         {Settings.subGroup.map((val, i) => (
           <RenderSettings
             setting={val}
@@ -56,16 +57,4 @@ const SettingsSubScreen = ({ navigation, route, disableAppbar }: Props) => {
 
 export default React.memo(SettingsSubScreen);
 
-const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-    position: 'relative',
-  },
-  contentContainer: {
-    flexGrow: 1,
-  },
-  view: {
-    flex: 1,
-    paddingBottom: 35,
-  },
-});
+// Using shared styles instead of local styles
