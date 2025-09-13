@@ -15,7 +15,7 @@ import { ThemeColors } from '@theme/types';
 import renderListChapter from './RenderListChapter';
 import { useChapterContext } from '@screens/reader/ChapterContext';
 import { useNovelContext } from '@screens/novel/NovelContext';
-import { FlashList, ViewToken } from '@shopify/flash-list';
+import { FlashList, FlashListRef, ViewToken } from '@shopify/flash-list';
 import { ChapterInfo } from '@database/types';
 
 type ButtonProperties = {
@@ -34,7 +34,7 @@ const ChapterDrawer = () => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { defaultChapterSort } = useAppSettings();
-  const listRef = useRef<FlashList<ChapterInfo> | null>(null);
+  const listRef = useRef<FlashListRef<ChapterInfo> | null>(null);
 
   const styles = createStylesheet(theme, insets);
 
@@ -82,7 +82,7 @@ const ChapterDrawer = () => {
     useState<ButtonsProperties>(defaultButtonLayout);
 
   const checkViewableItems = useCallback(
-    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    ({ viewableItems }: { viewableItems: ViewToken<ChapterInfo>[] }) => {
       const curChapter = getString(
         'readerScreen.drawer.scrollToCurrentChapter',
       );
@@ -171,7 +171,6 @@ const ChapterDrawer = () => {
               },
             })
           }
-          estimatedItemSize={60}
           initialScrollIndex={scrollToIndex.current}
         />
       )}

@@ -49,7 +49,6 @@ const FirstRoute = () => {
   return (
     <View style={styles.flex}>
       <FlashList
-        estimatedItemSize={4}
         extraData={[filter]}
         data={libraryFilterList}
         renderItem={({ item }) => (
@@ -82,7 +81,6 @@ const SecondRoute = () => {
       <FlashList
         data={librarySortOrderList}
         extraData={[sortOrder]}
-        estimatedItemSize={5}
         renderItem={({ item }) => (
           <SortItem
             label={item.label}
@@ -155,7 +153,6 @@ const ThirdRoute = () => {
         {getString('libraryScreen.bottomSheet.display.displayMode')}
       </Text>
       <FlashList
-        estimatedItemSize={4}
         data={displayModesList}
         extraData={[displayMode]}
         renderItem={({ item }) => (

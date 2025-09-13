@@ -58,12 +58,7 @@ export default function NovelDrawer({
       >
         Novel pages
       </Text>
-      <FlashList
-        data={pages}
-        extraData={pageIndex}
-        renderItem={renderItem}
-        estimatedItemSize={60}
-      />
+      <FlashList data={pages} extraData={pageIndex} renderItem={renderItem} />
     </View>
   );
 }

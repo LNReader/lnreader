@@ -29,7 +29,7 @@ export default function usePlugins() {
 
   const [lastUsedPlugin, setLastUsedPlugin] =
     useMMKVObject<PluginItem>(LAST_USED_PLUGIN);
-  const [languagesFilter = [defaultLang], setLanguagesFilter] =
+  const [languagesFilter = defaultLang, setLanguagesFilter] =
     useMMKVObject<string[]>(LANGUAGES_FILTER);
   const [filteredAvailablePlugins = [], setFilteredAvailablePlugins] =
     useMMKVObject<PluginItem[]>(FILTERED_AVAILABLE_PLUGINS);
