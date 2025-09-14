@@ -2,7 +2,7 @@ import { SwitchItem } from '@components';
 import { ThemeColors } from '@theme/types';
 import { BaseSetting, SettingOrigin, SwitchSetting } from '../../Settings';
 import { useLastUpdate } from '@hooks/persisted';
-import React, { useMemo } from 'react';
+import React, { useMemo, startTransition } from 'react';
 import RenderSettings from '../RenderSettings';
 import Animated, {
   Easing,
@@ -55,10 +55,12 @@ const SettingSwitchV2 = ({
     opacity.value = value ? 1 : 0;
 
     if (origin === 'lastUpdateTime' || !key) {
-      return setShowLastUpdateTime(value);
+      return startTransition(() => setShowLastUpdateTime(value));
     }
-    settings.setSettings({
-      [key]: value,
+    startTransition(() => {
+      settings.setSettings({
+        [key]: value,
+      });
     });
   };
   const duration = 250;

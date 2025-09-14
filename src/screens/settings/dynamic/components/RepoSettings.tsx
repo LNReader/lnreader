@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { InteractionManager } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 
 import { EmptyView } from '@components';
@@ -44,7 +45,14 @@ const RepoSettings = ({
   };
 
   useEffect(() => {
-    getRepositories();
+    let cancelled = false;
+    const task = InteractionManager.runAfterInteractions(() => {
+      if (!cancelled) getRepositories();
+    });
+    return () => {
+      cancelled = true;
+      task.cancel?.();
+    };
   }, [isFocused]);
 
   const {
@@ -103,16 +111,22 @@ const RepoSettings = ({
             theme={theme}
           />
         ) : (
-          repositories.map(item => {
-            return (
+          <FlatList
+            data={repositories}
+            keyExtractor={item => String(item.id)}
+            renderItem={({ item }) => (
               <RepositoryCard
-                key={item.id}
                 repository={item}
                 refetchRepositories={getRepositories}
                 upsertRepository={upsertRepository}
               />
-            );
-          })
+            )}
+            ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+            contentContainerStyle={styles.contentCtn}
+            initialNumToRender={8}
+            windowSize={5}
+            removeClippedSubviews
+          />
         )}
 
         <Portal>

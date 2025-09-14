@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import { useTheme } from '@hooks/persisted';
 import { Appbar, List } from '@components';
@@ -41,7 +41,7 @@ const SettingsSubScreen = ({ navigation, route, disableAppbar }: Props) => {
           theme={theme}
         />
       )}
-      <List.Section style={[sharedStyles.flex, { paddingBottom: 35 }]}>
+      <List.Section style={{ paddingBottom: 35 }}>
         {Settings.subGroup.map((val, i) => (
           <RenderSettings
             setting={val}

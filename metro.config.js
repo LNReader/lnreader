@@ -26,6 +26,14 @@ const customConfig = {
   resolver: {
     unstable_enableSymlinks: true, // For pnpm symlinks
   },
+  transformer: {
+    getTransformOptions: async () => ({
+      transform: {
+        experimentalImportSupport: false,
+        inlineRequires: false, // temporarily disable to rule out bundle fetch issue
+      },
+    }),
+  },
   server: {
     port: 8081,
     enhanceMiddleware: (metroMiddleware, metroServer) => {

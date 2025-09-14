@@ -1,5 +1,5 @@
-import { StyleSheet, View } from 'react-native';
-import React, { useMemo } from 'react';
+import { View } from 'react-native';
+import React, { useMemo, lazy, Suspense } from 'react';
 
 import { Button, List } from '@components/index';
 
@@ -12,7 +12,7 @@ import ReaderThemeSelector from '@screens/reader/components/ReaderBottomSheet/Re
 import { readerFonts } from '@utils/constants/readerConstants';
 import { useBoolean } from '@hooks';
 import { Portal } from 'react-native-paper';
-import FontPickerModal from '../modals/FontPickerModal';
+const FontPickerModalLazy = lazy(() => import('../modals/FontPickerModal'));
 import ReaderFontPicker from '@screens/reader/components/ReaderBottomSheet/ReaderFontPicker';
 import ColorPickerModal from '../modals/ColorPickerModal';
 import { BaseSetting, ColorPickerSetting } from '@screens/settings/Settings';
@@ -152,13 +152,17 @@ const ReaderThemeSettings = ({
       {/*
             Modals
         */}
-      <Portal>
-        <FontPickerModal
-          currentFont={readerSettings.fontFamily}
-          visible={readerFontPickerModal.value}
-          onDismiss={readerFontPickerModal.setFalse}
-        />
-      </Portal>
+      {readerFontPickerModal.value ? (
+        <Portal>
+          <Suspense fallback={null}>
+            <FontPickerModalLazy
+              currentFont={readerSettings.fontFamily}
+              visible={readerFontPickerModal.value}
+              onDismiss={readerFontPickerModal.setFalse}
+            />
+          </Suspense>
+        </Portal>
+      ) : null}
     </>
   );
 };

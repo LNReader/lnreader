@@ -1,3 +1,4 @@
+import React, { memo, lazy, Suspense } from 'react';
 import { SettingsItem } from '../Settings';
 import SettingSwitchV2 from './components/SettingSwitchV2';
 import { useTheme } from '@hooks/persisted';
@@ -11,7 +12,7 @@ import TextToSpeechSettings from './components/TextToSpeechSettings';
 import RepoSettings from './components/RepoSettings';
 import TrackerButton from './components/TrackerButton';
 import InfoItem from './components/InfoItem';
-import { memo } from 'react';
+
 import { SettingsStackParamList } from '@navigators/types';
 import { RouteProp } from '@react-navigation/native';
 
@@ -32,11 +33,13 @@ const RenderSettings = ({
   switch (setting.type) {
     case 'Modal':
       return (
-        <SelectionSettingModal
-          setting={setting}
-          theme={theme}
-          quickSettings={quickSettings}
-        />
+        <Suspense fallback={null}>
+          <SelectionSettingModal
+            setting={setting}
+            theme={theme}
+            quickSettings={quickSettings}
+          />
+        </Suspense>
       );
     case 'Switch':
       return (
@@ -49,32 +52,56 @@ const RenderSettings = ({
     case 'ThemePicker':
       return <SettingsThemePicker settings={setting} theme={theme} />;
     case 'NumberInput':
-      return <SettingTextInput setting={setting} theme={theme} />;
+      return (
+        <Suspense fallback={null}>
+          <SettingTextInput setting={setting} theme={theme} />
+        </Suspense>
+      );
     case 'ColorPicker':
       return (
-        <ColorPickerModal
-          settings={setting}
-          theme={theme}
-          showAccentColors
-          quickSettings={quickSettings}
-        />
+        <Suspense fallback={null}>
+          <ColorPickerModal
+            settings={setting}
+            theme={theme}
+            showAccentColors
+            quickSettings={quickSettings}
+          />
+        </Suspense>
       );
     case 'TextArea':
-      return <TextAreaModal setting={setting} theme={theme} />;
+      return (
+        <Suspense fallback={null}>
+          <TextAreaModal setting={setting} theme={theme} />
+        </Suspense>
+      );
     case 'ReaderTheme':
-      return <ReaderThemeSettings quickSettings={quickSettings} />;
+      return (
+        <Suspense fallback={null}>
+          <ReaderThemeSettings quickSettings={quickSettings} />
+        </Suspense>
+      );
     case 'TTS':
-      return <TextToSpeechSettings />;
+      return (
+        <Suspense fallback={null}>
+          <TextToSpeechSettings />
+        </Suspense>
+      );
     case 'Repo':
       return (
-        <RepoSettings
-          route={
-            route as RouteProp<SettingsStackParamList, 'RespositorySettings'>
-          }
-        />
+        <Suspense fallback={null}>
+          <RepoSettings
+            route={
+              route as RouteProp<SettingsStackParamList, 'RespositorySettings'>
+            }
+          />
+        </Suspense>
       );
     case 'Tracker':
-      return <TrackerButton trackerName={setting.trackerName} />;
+      return (
+        <Suspense fallback={null}>
+          <TrackerButton trackerName={setting.trackerName} />
+        </Suspense>
+      );
     case 'InfoItem':
       return <InfoItem title={setting.title} />;
   }

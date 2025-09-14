@@ -22,10 +22,18 @@ const SettingsScreen = ({}: SettingsScreenProps) => {
 
   useEffect(() => {
     if (!isFocused) return;
-    // current bug in react-navigation lets preloaded screen slide in from the left
-    setTimeout(() => {
-      navigation.dispatch(CommonActions.preload('ReaderSettings'));
-    }, 0);
+
+    const timeout = setTimeout(() => {
+      try {
+        navigation.dispatch(CommonActions.preload('ReaderSettings'));
+      } catch {}
+      try {
+        navigation.dispatch(
+          CommonActions.preload('SubScreen', { settingsSource: 'appearance' }),
+        );
+      } catch {}
+    }, 50);
+    return () => clearTimeout(timeout);
   }, [navigation, isFocused]);
 
   return (
