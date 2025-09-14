@@ -148,6 +148,8 @@ export interface StringMap {
   'common.display': 'string';
   'common.done': 'string';
   'common.downloads': 'string';
+  'common.error': 'string';
+  'common.open': 'string';
   'common.edit': 'string';
   'common.example': 'string';
   'common.filter': 'string';
@@ -387,6 +389,10 @@ export interface StringMap {
   'readerSettings.title': 'string';
   'readerSettings.verticalSeekbarDesc': 'string';
   'sourceScreen.noResultsFound': 'string';
+  'browseSourceScreen.directOpen.title': 'string';
+  'browseSourceScreen.directOpen.message': 'string';
+  'browseSourceScreen.directOpen.invalidUrl': 'string';
+  'browseSourceScreen.directOpen.failed': 'string';
   'statsScreen.downloadedChapters': 'string';
   'statsScreen.genreDistribution': 'string';
   'statsScreen.readChapters': 'string';

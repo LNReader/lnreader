@@ -175,6 +175,8 @@
     "display": "Display",
     "done": "Done",
     "downloads": "Downloads",
+    "error": "Error",
+    "open": "Open",
     "edit": "Edit",
     "example": "Example",
     "filter": "Filter",
@@ -474,6 +476,14 @@
   },
   "sourceScreen": {
     "noResultsFound": "No results found"
+  },
+  "browseSourceScreen": {
+    "directOpen": {
+      "title": "Open Novel Directly",
+      "message": "Enter the novel URL or path from this source",
+      "invalidUrl": "Invalid URL. Please use a URL from this source or a relative path.",
+      "failed": "Failed to open novel:"
+    }
   },
   "statsScreen": {
     "downloadedChapters": "Downloaded chapters",
