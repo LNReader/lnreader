@@ -73,7 +73,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
         const regex = new RegExp(m[1], m[2] ?? '');
         chText = chText.replace(regex, '');
       } else {
-        chText = chText.replaceAll(text, '');
+        chText = chText.split(text).join('');
       }
     });
     Object.entries(settings.replaceText).forEach(([text, replacement]) => {
@@ -82,7 +82,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
         const regex = new RegExp(m[1], m[2] ?? '');
         chText = chText.replace(regex, replacement);
       } else {
-        chText = chText.replaceAll(text, replacement);
+        chText = chText.split(text).join(replacement);
       }
     });
     return chText;

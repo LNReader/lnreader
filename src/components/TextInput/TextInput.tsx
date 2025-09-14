@@ -1,10 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
-  NativeSyntheticEvent,
-  TextInputFocusEventData,
 } from 'react-native';
 
 import { useTheme } from '@hooks/persisted';
@@ -25,11 +23,11 @@ const TextInput = ({
 
   const [inputFocused, setInputFocused] = useState(false);
 
-  const _onFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+  const _onFocus: RNTextInputProps['onFocus'] = e => {
     setInputFocused(true);
     onFocus?.(e);
   };
-  const _onBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+  const _onBlur: RNTextInputProps['onBlur'] = e => {
     setInputFocused(false);
     onBlur?.(e);
   };

@@ -2,8 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "noUnusedLocals": true,
-    "module": "ES2022",
-    "lib": ["ES2024"],
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "target": "ES2020",
     "paths": {
       "@components": ["src/components/index"],
       "@components/*": ["src/components/*"],

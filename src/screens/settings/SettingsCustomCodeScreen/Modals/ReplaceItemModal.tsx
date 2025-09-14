@@ -184,7 +184,6 @@ const ReplaceItemModal = ({
         )}
         {showReplace ? (
           <FlashList
-            estimatedItemSize={46}
             data={replaceArray}
             renderItem={({ item }) => (
               <ReplaceItem
@@ -196,7 +195,6 @@ const ReplaceItemModal = ({
           />
         ) : (
           <FlashList
-            estimatedItemSize={46}
             data={removeText}
             renderItem={({ item, index }) => (
               <RemoveItem

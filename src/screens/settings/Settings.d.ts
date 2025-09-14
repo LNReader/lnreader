@@ -1,5 +1,6 @@
 import type { FilteredSettings, ReaderTheme } from './constants/defaultValues';
 import type { ThemeColors } from '@theme/types';
+import type { MaterialDesignIconName } from '@type/icon';
 import InfoItem from './dynamic/components/InfoItem';
 
 type settingsGroupTypes =
@@ -126,7 +127,7 @@ export type SettingsItem = BaseSetting &
     | InfoItem
   );
 
-  export type QuickSettingsItem = { quickSettings: true } & SettingsItem;
+export type QuickSettingsItem = { quickSettings: true } & SettingsItem;
 
 export interface SettingSubGroup<T extends string> {
   subGroupTitle: string;
@@ -136,7 +137,7 @@ export interface SettingSubGroup<T extends string> {
 
 export interface SettingsGroup<T extends string> {
   groupTitle: string;
-  icon: string;
+  icon: MaterialDesignIconName;
   navigateParam: settingsGroupTypes;
   subGroup: SettingSubGroup<T>[];
 }

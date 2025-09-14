@@ -87,7 +87,16 @@ const CodeRoute = ({
     // TODO: Change placeholder
     showToast(getString('novelScreen.coverSaved'));
     jumpTo('second');
-  }, [dLang, language, snippetIndex, snippets, title, code, setSettings]);
+  }, [
+    dLang,
+    language,
+    snippetIndex,
+    snippets,
+    title,
+    code,
+    setSettings,
+    jumpTo,
+  ]);
 
   return (
     <AnimatedScrollView
