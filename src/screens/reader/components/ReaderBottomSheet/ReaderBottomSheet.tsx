@@ -17,20 +17,21 @@ import Color from 'color';
 
 import { BottomSheetFlashList, BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
-import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '@strings/translations';
 
-import ReaderSheetPreferenceItem from './ReaderSheetPreferenceItem';
-import TextSizeSlider from './TextSizeSlider';
-import ReaderThemeSelector from './ReaderThemeSelector';
-import ReaderTextAlignSelector from './ReaderTextAlignSelector';
-import ReaderValueChange from './ReaderValueChange';
-import ReaderFontPicker from './ReaderFontPicker';
 import { overlay } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { StringMap } from '@strings/types';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import RenderSettings from '@screens/settings/dynamic/RenderSettings';
+import ReaderSettings from '@screens/settings/settingsGroups/readerSettingsGroup';
+import { useSettingsContext } from '@components/Context/SettingsContext';
+import SETTINGS, {
+  QuickSettingsItem,
+  readerIds,
+} from '@screens/settings/Settings';
 
 type TabViewLabelProps = {
   route: {
@@ -44,86 +45,45 @@ type TabViewLabelProps = {
   style?: StyleProp<TextStyle | null>;
 };
 
-const ReaderTab: React.FC = React.memo(() => (
-  <Suspense fallback={<></>}>
-    <View style={styles.readerTab}>
-      <TextSizeSlider />
-      <ReaderThemeSelector />
-      <ReaderTextAlignSelector />
-      <ReaderValueChange
-        label={getString('readerScreen.bottomSheet.lineHeight')}
-        valueKey="lineHeight"
-      />
-      <ReaderValueChange
-        label={getString('readerScreen.bottomSheet.padding')}
-        valueKey="padding"
-        valueChange={2}
-        min={0}
-        max={50}
-        decimals={0}
-        unit="px"
-      />
-      <ReaderFontPicker />
-    </View>
-  </Suspense>
-));
+const ReaderTab: React.FC = React.memo(() => {
+  const settings = ReaderSettings.subGroup.filter(
+    v => v.id === 'readerTheme',
+  )[0].settings;
+  return (
+    <Suspense fallback={<></>}>
+      <View style={styles.readerTab}>
+        {settings.map((v, i) => (
+          <RenderSettings key={i} setting={v} />
+        ))}
+      </View>
+    </Suspense>
+  );
+});
 
 const GeneralTab: React.FC = React.memo(() => {
-  const theme = useTheme();
-  const { setChapterGeneralSettings, ...settings } =
-    useChapterGeneralSettings();
+  const settings = useSettingsContext();
 
-  const toggleSetting = useCallback(
-    (key: keyof typeof settings) =>
-      setChapterGeneralSettings({ [key]: !settings[key] }),
-    [setChapterGeneralSettings, settings],
-  );
-
-  const preferences = useMemo(
-    () => [
-      { key: 'fullScreenMode', label: 'fullscreen' },
-      { key: 'autoScroll', label: 'autoscroll' },
-      { key: 'verticalSeekbar', label: 'verticalSeekbar' },
-      { key: 'showBatteryAndTime', label: 'showBatteryAndTime' },
-      { key: 'showScrollPercentage', label: 'showProgressPercentage' },
-      { key: 'swipeGestures', label: 'swipeGestures' },
-      { key: 'pageReader', label: 'pageReader' },
-      { key: 'removeExtraParagraphSpacing', label: 'removeExtraSpacing' },
-      { key: 'useVolumeButtons', label: 'volumeButtonsScroll' },
-      { key: 'bionicReading', label: 'bionicReading' },
-      { key: 'tapToScroll', label: 'tapToScroll' },
-      { key: 'keepScreenOn', label: 'keepScreenOn' },
-    ],
-    [],
-  );
+  const quickSettings = useMemo(() => {
+    const ids: readerIds[] = ['general', 'autoScroll', 'display'];
+    const selectedSettings = SETTINGS.reader.subGroup
+      .filter(sg => ids.includes(sg.id))
+      .flatMap(sg => sg.settings);
+    return (selectedSettings?.filter(s => s.quickSettings) ??
+      []) as Array<QuickSettingsItem>;
+  }, []);
 
   const renderItem = useCallback(
-    ({
-      item,
-    }: {
-      item: {
-        key: string;
-        label: string;
-      };
-    }) => (
-      <ReaderSheetPreferenceItem
-        key={item.key}
-        label={getString(
-          `readerScreen.bottomSheet.${item.label}` as keyof StringMap,
-        )}
-        onPress={() => toggleSetting(item.key as keyof typeof settings)} // @ts-ignore
-        value={settings[item.key]}
-        theme={theme}
-      />
+    ({ item }: { item: QuickSettingsItem }) => (
+      <RenderSettings setting={item} quickSettings />
     ),
-    [settings, theme, toggleSetting],
+    [],
   );
 
   return (
     <BottomSheetFlashList
-      data={preferences}
+      data={quickSettings}
       extraData={[settings]}
-      keyExtractor={item => item.key}
+      keyExtractor={(_: any, i: number) => `general${i}`}
       renderItem={renderItem}
       estimatedItemSize={60}
     />
@@ -186,17 +146,19 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       ]}
     >
       <BottomSheetView style={styles.flex}>
-        <TabView
-          commonOptions={{
-            label: renderLabel,
-          }}
-          navigationState={{ index, routes }}
-          renderTabBar={renderTabBar}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          style={styles.tabView}
-        />
+        <GestureHandlerRootView style={styles.flex}>
+          <TabView
+            commonOptions={{
+              label: renderLabel,
+            }}
+            navigationState={{ index, routes }}
+            renderTabBar={renderTabBar}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={{ width: layout.width, height: 400 }}
+            style={styles.tabView}
+          />
+        </GestureHandlerRootView>
       </BottomSheetView>
     </BottomSheet>
   );
@@ -210,6 +172,7 @@ const styles = StyleSheet.create({
   },
   readerTab: {
     paddingVertical: 8,
+    flex: 1,
   },
   tabBar: {
     borderBottomWidth: 0.5,
@@ -218,6 +181,7 @@ const styles = StyleSheet.create({
   tabView: {
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
+    height: 800,
   },
   flex: { flex: 1 },
 });

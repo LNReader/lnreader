@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import { NovelInfo } from '@database/types';
 import { sleep } from '@utils/sleep';
 import { getString } from '@strings/translations';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 
 export const createBackup = async () => {
   try {

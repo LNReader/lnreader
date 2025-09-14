@@ -10,7 +10,7 @@ import {
   StyleProp,
   TextStyle,
 } from 'react-native';
-import { useBrowseSettings, usePlugins } from '@hooks/persisted';
+import { usePlugins } from '@hooks/persisted';
 import { PluginItem } from '@plugins/types';
 import { coverPlaceholderColor } from '@theme/colors';
 import { ThemeColors } from '@theme/types';
@@ -25,6 +25,7 @@ import { useBoolean, UseBooleanReturnType } from '@hooks';
 import { getPlugin } from '@plugins/pluginManager';
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface InstalledTabProps {
   navigation: BrowseScreenProps['navigation'];
@@ -331,7 +332,7 @@ export const InstalledTab = memo(
   ({ navigation, theme, searchText }: InstalledTabProps) => {
     const { filteredInstalledPlugins, lastUsedPlugin, setLastUsedPlugin } =
       usePlugins();
-    const { showMyAnimeList, showAniList } = useBrowseSettings();
+    const { showMyAnimeList, showAniList } = useSettingsContext();
     const settingsModal = useBoolean();
     const [selectedPluginId, setSelectedPluginId] = useState<string>('');
 
@@ -386,7 +387,6 @@ export const InstalledTab = memo(
 
     return (
       <FlashList
-        estimatedItemSize={64}
         data={searchedPlugins}
         renderItem={renderItem}
         removeClippedSubviews={true}

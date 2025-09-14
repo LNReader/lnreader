@@ -12,7 +12,7 @@ import { Portal, Text } from 'react-native-paper';
 import { useTheme } from '@hooks/persisted';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { NovelScreenProps } from '@navigators/types';
-import { FlashList, ListRenderItem } from '@shopify/flash-list';
+import { FlashList, FlashListRef, ListRenderItem } from '@shopify/flash-list';
 
 interface JumpToChapterModalProps {
   hideModal: () => void;
@@ -20,7 +20,7 @@ interface JumpToChapterModalProps {
   chapters: ChapterInfo[];
   navigation: NovelScreenProps['navigation'];
   novel: NovelInfo;
-  chapterListRef: React.RefObject<FlashList<ChapterInfo> | null>;
+  chapterListRef: React.RefObject<FlashListRef<ChapterInfo> | null>;
 }
 
 const JumpToChapterModal = ({
@@ -217,7 +217,6 @@ const JumpToChapterModal = ({
         {result.length ? (
           <View style={[styles.flashlist, { borderColor: theme.outline }]}>
             <FlashList
-              estimatedItemSize={70}
               data={result}
               extraData={openChapter}
               renderItem={renderItem}
