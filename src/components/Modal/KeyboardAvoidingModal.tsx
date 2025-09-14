@@ -15,6 +15,7 @@ import Animated, {
 import { useKeyboardHeight } from '@hooks/common/useKeyboardHeight';
 import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
 import SafeAreaView from '@components/SafeAreaView/SafeAreaView';
+import { getRuntimeKind } from 'react-native-worklets';
 
 // --- Dynamic style helpers ---
 const getModalTitleColor = (theme: ThemeColors) => ({ color: theme.onSurface });
@@ -70,7 +71,7 @@ const KeyboardAvoidingModal: React.FC<DefaultModalProps> = ({
 
   const AvoidKeyboard = useAnimatedStyle(() => {
     let m: { height: number; pageY: number } | null = null;
-    if (_WORKLET) {
+    if (getRuntimeKind() !== 1 && animatedRef.current) {
       m = measure(animatedRef);
     }
 

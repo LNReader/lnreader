@@ -36,7 +36,6 @@ module.exports = function (api) {
           },
         },
       ],
-      'react-native-worklets/plugin',
       [
         'module:react-native-dotenv',
         {
@@ -45,6 +44,7 @@ module.exports = function (api) {
           path: '.env',
         },
       ],
+      'react-native-worklets/plugin',
     ],
   };
 };

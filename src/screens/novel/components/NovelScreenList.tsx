@@ -7,9 +7,9 @@ import { ChapterInfo, NovelInfo } from '@database/types';
 import { useBoolean } from '@hooks/index';
 import { useDownload, useTheme } from '@hooks/persisted';
 import {
-  updateNovel,
-  updateNovelPage,
-} from '@services/updates/LibraryUpdateQueries';
+  updateNovelWithDownloads,
+  updateNovelPageWithDownloads,
+} from '@services/updates';
 import { getString } from '@strings/translations';
 import { showToast } from '@utils/showToast';
 import {
@@ -128,10 +128,16 @@ const NovelScreenList = ({
   const onRefresh = async () => {
     if (novel.id !== 'NO_ID') {
       setUpdating(true);
-      updateNovel(pluginId, novel.path, novel.id, {
-        downloadNewChapters,
-        refreshNovelMetadata,
-      })
+      updateNovelWithDownloads(
+        pluginId,
+        novel.path,
+        novel.id,
+        {
+          downloadNewChapters,
+          refreshNovelMetadata,
+        },
+        novel.name,
+      )
         .then(() => getNovel())
         .then(() =>
           showToast(
@@ -146,9 +152,16 @@ const NovelScreenList = ({
   const onRefreshPage = async (page: string) => {
     if (novel.id !== 'NO_ID') {
       setUpdating(true);
-      updateNovelPage(pluginId, novel.path, novel.id, page, {
-        downloadNewChapters,
-      })
+      updateNovelPageWithDownloads(
+        pluginId,
+        novel.path,
+        novel.id,
+        page,
+        {
+          downloadNewChapters,
+        },
+        novel.name,
+      )
         .then(() => getNovel())
         .then(() => showToast(`Updated page: ${page}`))
         .catch(e => showToast('Failed updating: ' + e.message))

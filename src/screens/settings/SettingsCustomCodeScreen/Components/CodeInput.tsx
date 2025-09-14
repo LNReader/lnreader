@@ -11,6 +11,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { getRuntimeKind } from 'react-native-worklets';
 
 const FONT_SIZE = 14;
 const LINE_HEIGHT = FONT_SIZE * PixelRatio.getFontScale() * 1.2;
@@ -59,7 +60,7 @@ const CodeInput = ({ language, code, setCode, error }: CodeInputProps) => {
 
   const maxHeight = useAnimatedStyle(() => {
     let m: { height: number; pageY: number } | null = null;
-    if (_WORKLET) {
+    if (getRuntimeKind() !== 1 && TextInputRef.current) {
       m = measure(TextInputRef);
     }
 

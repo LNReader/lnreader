@@ -4,14 +4,20 @@ import {
 } from '../../database/queries/LibraryQueries';
 
 import { showToast } from '../../utils/showToast';
-import { UpdateNovelOptions, updateNovel } from './LibraryUpdateQueries';
+import {
+  UpdateNovelOptions,
+  updateNovel,
+  updateNovelPage,
+} from './LibraryUpdateQueries';
 import { LibraryNovelInfo } from '@database/types';
 import { sleep } from '@utils/sleep';
 import { MMKVStorage, getMMKVObject } from '@utils/mmkv/mmkv';
 import { LAST_UPDATE_TIME } from '@hooks/persisted/useUpdates';
 import dayjs from 'dayjs';
 import { SETTINGS } from '@hooks/persisted/useSettings';
-import { BackgroundTaskMetadata } from '@services/ServiceManager';
+import ServiceManager, {
+  BackgroundTaskMetadata,
+} from '@services/ServiceManager';
 import { DefaultSettings } from '@screens/settings/constants/defaultValues';
 
 const updateLibrary = async (
@@ -61,11 +67,23 @@ const updateLibrary = async (
       }));
 
       try {
+        const addDownloadTask = (chapterId: number, chapterName: string) => {
+          ServiceManager.manager.addTask({
+            name: 'DOWNLOAD_CHAPTER',
+            data: {
+              chapterId,
+              novelName: libraryNovels[i].name,
+              chapterName,
+            },
+          });
+        };
+
         await updateNovel(
           libraryNovels[i].pluginId,
           libraryNovels[i].path,
           libraryNovels[i].id,
           options,
+          addDownloadTask,
         );
         await sleep(1000);
       } catch (error: any) {
@@ -82,6 +100,57 @@ const updateLibrary = async (
     progress: 1,
     isRunning: false,
   }));
+};
+
+// Wrapper functions for UI components that need to update novels
+export const updateNovelWithDownloads = async (
+  pluginId: string,
+  novelPath: string,
+  novelId: number,
+  options: UpdateNovelOptions,
+  novelName: string,
+) => {
+  const addDownloadTask = (chapterId: number, chapterName: string) => {
+    ServiceManager.manager.addTask({
+      name: 'DOWNLOAD_CHAPTER',
+      data: {
+        chapterId,
+        novelName,
+        chapterName,
+      },
+    });
+  };
+
+  return updateNovel(pluginId, novelPath, novelId, options, addDownloadTask);
+};
+
+export const updateNovelPageWithDownloads = async (
+  pluginId: string,
+  novelPath: string,
+  novelId: number,
+  page: string,
+  options: Pick<UpdateNovelOptions, 'downloadNewChapters'>,
+  novelName: string,
+) => {
+  const addDownloadTask = (chapterId: number, chapterName: string) => {
+    ServiceManager.manager.addTask({
+      name: 'DOWNLOAD_CHAPTER',
+      data: {
+        chapterId,
+        novelName,
+        chapterName,
+      },
+    });
+  };
+
+  return updateNovelPage(
+    pluginId,
+    novelPath,
+    novelId,
+    page,
+    options,
+    addDownloadTask,
+  );
 };
 
 export { updateLibrary };
