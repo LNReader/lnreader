@@ -111,6 +111,46 @@ const SettingsWebView = () => {
     };
   }, [webViewRef]);
 
+  const customJS = useMemo(() => {
+    return settings.codeSnippetsJS
+      .map(snippet => {
+        if (!snippet.active) return null;
+        return `
+      try {
+        ${snippet.code}
+      } catch (error) {
+        alert('Error loading executing ${snippet.name}:\n' + error);
+      }
+      `;
+      })
+      .filter(Boolean)
+      .join('\n');
+  }, [settings.codeSnippetsJS]);
+
+  const customCSS = useMemo(() => {
+    return settings.codeSnippetsCSS
+      .map(snippet => {
+        if (!snippet.active) return null;
+        return snippet.code;
+      })
+      .filter(Boolean)
+      .join('\n');
+  }, [settings.codeSnippetsCSS]);
+
+  const preparedDummyHTML = useMemo(() => {
+    let resultHtml = dummyHTML;
+    settings.removeText.forEach(text => {
+      resultHtml = resultHtml.replace(text, '');
+    });
+    Object.entries(settings.replaceText).forEach(([text, replacement]) => {
+      resultHtml = resultHtml.replace(text, replacement);
+    });
+    return resultHtml;
+  }, [dummyHTML]);
+
+  console.log(customJS);
+  console.log(customCSS);
+
   const webViewCSS = useMemo(
     () => `
   <style>
@@ -147,12 +187,12 @@ const SettingsWebView = () => {
     <link rel="stylesheet" href="${assetsUriPrefix}/css/toolWrapper.css">
     <link rel="stylesheet" href="${assetsUriPrefix}/css/tts.css">
     <style>
-    ${settings.customCSS}
+    ${customCSS}
   </style>
   `,
     [
       settings.backgroundColor,
-      settings.customCSS,
+      customCSS,
       settings.fontFamily,
       settings.lineHeight,
       settings.padding,
@@ -202,7 +242,7 @@ const SettingsWebView = () => {
                             ${settings.pageReader ? '' : 'display: none'}"
                             >${chapter.name}</div>
                             <div id="LNReader-chapter">
-                              ${dummyHTML}
+                              ${preparedDummyHTML}
                             </div>
                             <div id="reader-ui"></div>
                             </body>
@@ -244,6 +284,7 @@ const SettingsWebView = () => {
                             <script src="${assetsUriPrefix}/js/core.js"></script>
                             <script src="${assetsUriPrefix}/js/index.js"></script>
                             <script>
+                            ${customJS}
                               async function fn(){
                                   let novelName = "${novel.name}";
                                   let chapterName = "${chapter.name}";
@@ -251,14 +292,13 @@ const SettingsWebView = () => {
                                   let chapterId =${chapter.id};
                                   let novelId =${chapter.novelId};
                                   let html = document.getElementById("LNReader-chapter").innerHTML;
-                                  ${settings.customJS}
                                 }
                                 document.addEventListener("DOMContentLoaded", fn);
                             </script>
             </html>
             `,
     }),
-    [batteryLevel, settings, webViewCSS],
+    [batteryLevel, settings, webViewCSS, customJS, customCSS],
   );
 
   return (

@@ -20,6 +20,11 @@ type CodeRouteProps = {
   language?: 'css' | 'js';
   snippetIndex?: number;
   jumpTo: (key: string) => void;
+  editingSnippet?: {
+    index: number;
+    isJS: boolean;
+  } | null;
+  onSnippetSaved?: () => void;
 };
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
@@ -28,17 +33,42 @@ const CodeRoute = ({
   language: dLang,
   snippetIndex,
   jumpTo,
+  editingSnippet,
+  onSnippetSaved,
 }: CodeRouteProps) => {
   const theme = useTheme();
   const { codeSnippetsJS, codeSnippetsCSS, setSettings } = useSettings();
   const [error, setError] = React.useState({ title: false, code: false });
-  const [language, setLanguage] = React.useState(dLang ?? 'js');
+
+  // Use editingSnippet if provided, otherwise fall back to old props
+  const isEditing = editingSnippet !== null && editingSnippet !== undefined;
+  const editIndex = isEditing ? editingSnippet.index : snippetIndex;
+  const editIsJS = isEditing ? editingSnippet.isJS : dLang === 'js';
+
+  const [language, setLanguage] = React.useState<'js' | 'css'>('js');
+
+  // Update language when editing state changes
+  React.useEffect(() => {
+    if (isEditing) {
+      setLanguage(editIsJS ? 'js' : 'css');
+    } else {
+      setLanguage('js'); // Default to JS for new snippets
+    }
+  }, [isEditing, editIsJS]);
 
   const snippets = language === 'js' ? codeSnippetsJS : codeSnippetsCSS;
-  const snippet = snippetIndex === undefined ? null : snippets[snippetIndex];
+  const snippet =
+    editIndex === undefined || editIndex === -1 ? null : snippets[editIndex];
 
-  const [title, setTitle] = React.useState<string>(snippet?.name ?? '');
-  const [code, setCode] = React.useState<string>(snippet?.code ?? '');
+  const [title, setTitle] = React.useState<string>('');
+  const [code, setCode] = React.useState<string>('');
+
+  // Update title, code, and reset errors when snippet changes
+  React.useEffect(() => {
+    setTitle(snippet?.name ?? '');
+    setCode(snippet?.code ?? '');
+    setError({ title: false, code: false });
+  }, [snippet]);
 
   const { height: keyboardHeight } = useAnimatedKeyboard();
 
@@ -63,18 +93,20 @@ const CodeRoute = ({
       setError({ title: !title.trim(), code: !code.trim() });
       return;
     }
-    if (
-      dLang !== undefined &&
-      dLang === language &&
-      snippetIndex !== undefined
-    ) {
-      snippets[snippetIndex].name = title;
-      snippets[snippetIndex].code = code;
+
+    // Editing existing snippet
+    if (isEditing && editIndex !== undefined && editIndex !== -1) {
+      snippets[editIndex].name = title;
+      snippets[editIndex].code = code;
       setSettings({
-        [dLang === 'js' ? 'codeSnippetsJS' : 'codeSnippetsCSS']: snippets,
+        [language === 'js' ? 'codeSnippetsJS' : 'codeSnippetsCSS']: snippets,
       });
+      showToast('Snippet updated successfully');
+      onSnippetSaved?.();
       return;
     }
+
+    // Creating new snippet
     snippets.push({
       name: title,
       code,
@@ -84,9 +116,8 @@ const CodeRoute = ({
     setSettings({
       [language === 'js' ? 'codeSnippetsJS' : 'codeSnippetsCSS']: snippets,
     });
-    // TODO: Change placeholder
-    showToast(getString('novelScreen.coverSaved'));
-    jumpTo('second');
+    showToast('Snippet saved successfully');
+    jumpTo('first'); // Go back to settings tab
   }, [
     dLang,
     language,
@@ -96,6 +127,9 @@ const CodeRoute = ({
     code,
     setSettings,
     jumpTo,
+    isEditing,
+    editIndex,
+    onSnippetSaved,
   ]);
 
   return (
@@ -112,14 +146,14 @@ const CodeRoute = ({
           icon="language-css3"
           selected={language === 'css'}
           onPress={() => setLanguage('css')}
-          disabled={dLang !== undefined && snippetIndex !== undefined}
+          disabled={isEditing}
         />
         <ToggleButton
           theme={theme}
           icon="language-javascript"
           selected={language === 'js'}
           onPress={() => setLanguage('js')}
-          disabled={dLang !== undefined && snippetIndex !== undefined}
+          disabled={isEditing}
         />
       </Row>
       <TextInput

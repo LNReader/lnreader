@@ -71,8 +71,10 @@ const KeyboardAvoidingModal: React.FC<DefaultModalProps> = ({
 
   const AvoidKeyboard = useAnimatedStyle(() => {
     let m: { height: number; pageY: number } | null = null;
-    if (getRuntimeKind() !== 1 && animatedRef.current) {
-      m = measure(animatedRef);
+    if (getRuntimeKind() !== 1) {
+      try {
+        m = measure(animatedRef);
+      } catch {}
     }
 
     if (!m) {
@@ -86,11 +88,11 @@ const KeyboardAvoidingModal: React.FC<DefaultModalProps> = ({
 
     return {
       maxHeight: withTiming(newWindowHeight, {
-        duration: 250,
+        duration: 150,
       }),
       transform: [
         {
-          translateY: withTiming(dif, { duration: 250 }),
+          translateY: withTiming(dif, { duration: 150 }),
         },
       ],
     };
@@ -129,8 +131,8 @@ const KeyboardAvoidingModal: React.FC<DefaultModalProps> = ({
                 <Button onPress={onReset}>{getString('common.reset')}</Button>
               )}
               <View style={styles.flex} />
-              <Button onPress={save}>{getString('common.save')}</Button>
               <Button onPress={cancel}>{getString('common.cancel')}</Button>
+              <Button onPress={save}>{getString('common.save')}</Button>
             </View>
           </Animated.View>
         </Modal>

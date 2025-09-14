@@ -60,8 +60,10 @@ const CodeInput = ({ language, code, setCode, error }: CodeInputProps) => {
 
   const maxHeight = useAnimatedStyle(() => {
     let m: { height: number; pageY: number } | null = null;
-    if (getRuntimeKind() !== 1 && TextInputRef.current) {
-      m = measure(TextInputRef);
+    if (getRuntimeKind() !== 1) {
+      try {
+        m = measure(TextInputRef);
+      } catch {}
     }
 
     if (!m || !keyboardHeight.value) {

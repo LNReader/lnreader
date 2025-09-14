@@ -1,0 +1,31 @@
+/* Text selection UI styles */
+#text-selection-ui {
+  font-family: var(
+    --readerSettings-fontFamily,
+    system-ui,
+    -apple-system,
+    sans-serif
+  );
+  font-size: 14px;
+  user-select: none;
+  pointer-events: auto;
+  z-index: 100000;
+  max-width: 90vw;
+  white-space: nowrap;
+}
+#text-selection-ui button {
+  transition: all 0.2s ease;
+  min-width: 60px;
+}
+#text-selection-ui button:hover {
+  opacity: 0.8;
+  transform: scale(1.02);
+}
+#text-selection-ui button:active {
+  transform: scale(0.95);
+}
+
+/* Ensure text selection UI stays above other elements */
+body {
+  position: relative;
+}

@@ -16,27 +16,6 @@ import SelfHidingAppBar from './Components/SelfHidingAppbar';
 import { useSharedValue } from 'react-native-reanimated';
 import SettingsWebView from '../settingsScreens/SettingsWebView';
 
-const renderScene = ({
-  route,
-  jumpTo,
-}: SceneRendererProps & {
-  route: {
-    key: string;
-    title: string;
-  };
-}) => {
-  switch (route.key) {
-    case 'first':
-      return <SettingsRoute />;
-    case 'second':
-      return <CodeRoute jumpTo={jumpTo} />;
-    case 'third':
-      return <SettingsWebView />;
-    default:
-      return null;
-  }
-};
-
 const routes = [
   { key: 'first', title: 'Settings' },
   { key: 'second', title: 'Code' },
@@ -56,9 +35,59 @@ const SettingsCustomCode = ({ navigation }: CustomCodeSettingsScreenProps) => {
   // 0 = visible, 1 = hidden. Using a number is flexible.
   const appBarHiddenState = useSharedValue(0);
 
+  // State for editing snippets
+  const [editingSnippet, setEditingSnippet] = React.useState<{
+    index: number;
+    isJS: boolean;
+  } | null>(null);
+
   const handleTabChange = (newIndex: number) => {
     appBarHiddenState.value = newIndex ? 1 : 0;
     setIndex(newIndex);
+    // Clear editing state when manually switching tabs
+    if (newIndex !== 1) {
+      setEditingSnippet(null);
+    }
+  };
+
+  const handleEditSnippet = (snippetIndex: number, isJS: boolean) => {
+    setEditingSnippet({
+      index: snippetIndex,
+      isJS: snippetIndex === -1 ? true : isJS, // Default to JS for new snippets, use passed value for editing
+    });
+    setIndex(1); // Switch to Code tab
+  };
+
+  const handleSnippetSaved = () => {
+    setEditingSnippet(null);
+    setIndex(0); // Switch back to Settings tab
+  };
+
+  const renderScene = ({
+    route,
+    jumpTo,
+  }: SceneRendererProps & {
+    route: {
+      key: string;
+      title: string;
+    };
+  }) => {
+    switch (route.key) {
+      case 'first':
+        return <SettingsRoute onEditSnippet={handleEditSnippet} />;
+      case 'second':
+        return (
+          <CodeRoute
+            jumpTo={jumpTo}
+            editingSnippet={editingSnippet}
+            onSnippetSaved={handleSnippetSaved}
+          />
+        );
+      case 'third':
+        return <SettingsWebView />;
+      default:
+        return null;
+    }
   };
 
   const renderTabBar = React.useCallback(
