@@ -1,4 +1,4 @@
-import { useAppSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@hooks/persisted';
 import * as React from 'react';
 import { StyleProp, ViewStyle, StyleSheet, View } from 'react-native';
 import Animated, {
@@ -10,12 +10,13 @@ import Animated, {
 } from 'react-native-reanimated';
 import useLoadingColors from './useLoadingColors';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 const duration = 1000;
 
 function useSetupLoadingAnimations() {
   const sv = useSharedValue(0);
-  const { disableLoadingAnimations } = useAppSettings();
+  const { disableLoadingAnimations } = useSettingsContext();
   const theme = useTheme();
   const [highlightColor, backgroundColor] = useLoadingColors(theme);
 
@@ -159,7 +160,7 @@ function NovelMetaSkeleton() {
 
 const ChapterListSkeleton = ({ img }: { img?: boolean }) => {
   const sv = useSharedValue(0);
-  const { disableLoadingAnimations } = useAppSettings();
+  const { disableLoadingAnimations } = useSettingsContext();
 
   React.useEffect(() => {
     if (disableLoadingAnimations) return;

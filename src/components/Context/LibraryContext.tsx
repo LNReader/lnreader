@@ -3,14 +3,10 @@ import {
   useLibrary,
   UseLibraryReturnType,
 } from '@screens/library/hooks/useLibrary';
-import { useLibrarySettings } from '@hooks/persisted';
-import { LibrarySettings } from '@hooks/persisted/useSettings';
 
 // type Library = Category & { novels: LibraryNovelInfo[] };
 
-type LibraryContextType = UseLibraryReturnType & {
-  settings: LibrarySettings;
-};
+type LibraryContextType = UseLibraryReturnType;
 
 const defaultValue = {} as LibraryContextType;
 const LibraryContext = createContext<LibraryContextType>(defaultValue);
@@ -21,10 +17,9 @@ export function LibraryContextProvider({
   children: React.ReactNode;
 }) {
   const useLibraryParams = useLibrary();
-  const settings = useLibrarySettings();
 
   return (
-    <LibraryContext.Provider value={{ ...useLibraryParams, settings }}>
+    <LibraryContext.Provider value={useLibraryParams}>
       {children}
     </LibraryContext.Provider>
   );

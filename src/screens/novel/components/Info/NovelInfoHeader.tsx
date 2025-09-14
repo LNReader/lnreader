@@ -28,7 +28,6 @@ import { ThemeColors } from '@theme/types';
 import { GlobalSearchScreenProps } from '@navigators/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { UseBooleanReturnType } from '@hooks';
-import { useAppSettings } from '@hooks/persisted';
 import { NovelStatus, PluginItem } from '@plugins/types';
 import { translateNovelStatus } from '@utils/translateEnum';
 import { getMMKVObject } from '@utils/mmkv/mmkv';
@@ -39,6 +38,7 @@ import {
   VerticalBarSkeleton,
 } from '@components/Skeleton/Skeleton';
 import { useNovelContext } from '@screens/novel/NovelContext';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface NovelInfoHeaderProps {
   chapters: ChapterInfo[];
@@ -91,7 +91,7 @@ const NovelInfoHeader = ({
   totalChapters,
   trackerSheetRef,
 }: NovelInfoHeaderProps) => {
-  const { hideBackdrop = false } = useAppSettings();
+  const { hideBackdrop = false } = useSettingsContext();
   const { followNovel } = useNovelContext();
 
   const pluginName = useMemo(

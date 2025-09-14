@@ -58,7 +58,7 @@ window.reader = new (function () {
     const settings = this.readerSettings.val;
     document.documentElement.style.setProperty(
       '--readerSettings-theme',
-      settings.theme,
+      settings.backgroundColor,
     );
     document.documentElement.style.setProperty(
       '--readerSettings-padding',

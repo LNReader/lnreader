@@ -2,8 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { NovelItem, PluginItem } from '@plugins/types';
 import { getPlugin } from '@plugins/pluginManager';
-import { useBrowseSettings, usePlugins } from '@hooks/persisted';
+import { usePlugins } from '@hooks/persisted';
 import { useFocusEffect } from '@react-navigation/native';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface Props {
   defaultSearchText?: string;
@@ -39,7 +40,7 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
   const [searchResults, setSearchResults] = useState<GlobalSearchResult[]>([]);
   const [progress, setProgress] = useState(0);
 
-  const { globalSearchConcurrency = 1 } = useBrowseSettings();
+  const { globalSearchConcurrency } = useSettingsContext();
 
   const globalSearch = useCallback(
     (searchText: string) => {

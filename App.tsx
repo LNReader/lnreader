@@ -9,13 +9,13 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LottieSplashScreen from 'react-native-lottie-splash-screen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import * as Notifications from 'expo-notifications';
 
 import { createTables } from '@database/db';
 import AppErrorBoundary from '@components/AppErrorBoundary/AppErrorBoundary';
 
 import Main from './src/navigators/Main';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 // Rozenite DevTools
 import { useReactNavigationDevTools } from '@rozenite/react-navigation-plugin';
@@ -25,6 +25,13 @@ import { useMMKVDevTools } from '@rozenite/mmkv-plugin';
 import { store } from '@plugins/helpers/storage';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { NavigationContainerRef } from '@react-navigation/native';
+
+declare global {
+  interface ObjectConstructor {
+    typedKeys<T>(obj: T): Array<keyof T>;
+  }
+}
+Object.typedKeys = Object.keys as any;
 
 Notifications.setNotificationHandler({
   handleNotification: async () => {

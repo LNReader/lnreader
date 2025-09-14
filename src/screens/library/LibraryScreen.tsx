@@ -28,7 +28,7 @@ import LibraryBottomSheet from './components/LibraryBottomSheet/LibraryBottomShe
 import { Banner } from './components/Banner';
 import { Actionbar } from '@components/Actionbar/Actionbar';
 
-import { useAppSettings, useHistory, useTheme } from '@hooks/persisted';
+import { useHistory, useTheme } from '@hooks/persisted';
 import { useSearch, useBackHandler, useBoolean } from '@hooks';
 import { getString } from '@strings/translations';
 import { FAB, Portal } from 'react-native-paper';
@@ -48,6 +48,7 @@ import ServiceManager from '@services/ServiceManager';
 import useImport from '@hooks/persisted/useImport';
 import { ThemeColors } from '@theme/types';
 import { useLibraryContext } from '@components/Context/LibraryContext';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 type State = NavigationState<{
   key: string;
@@ -75,16 +76,13 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
   const theme = useTheme();
   const styles = createStyles(theme);
   const { left: leftInset, right: rightInset } = useSafeAreaInsets();
-  const {
-    library,
-    categories,
-    refetchLibrary,
-    isLoading,
-    settings: { showNumberOfNovels, downloadedOnlyMode, incognitoMode },
-  } = useLibraryContext();
+  const { library, categories, refetchLibrary, isLoading } =
+    useLibraryContext();
+  const { showNumberOfNovels, downloadedOnlyMode, incognitoMode } =
+    useSettingsContext();
 
   const { importNovel } = useImport();
-  const { useLibraryFAB = false } = useAppSettings();
+  const { useLibraryFAB } = useSettingsContext();
 
   const { isLoading: isHistoryLoading, history, error } = useHistory();
 

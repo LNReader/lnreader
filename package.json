@@ -47,7 +47,6 @@
     "@react-navigation/bottom-tabs": "^7.4.7",
     "@react-navigation/native": "^7.1.17",
     "@react-navigation/native-stack": "^7.3.26",
-    "@react-navigation/stack": "^7.4.8",
     "@shopify/flash-list": "2.0.2",
     "cheerio": "1.0.0-rc.12",
     "color": "^5.0.0",
@@ -137,5 +136,8 @@
   },
   "engines": {
     "node": ">=20"
-  }
+  },
+  "trustedDependencies": [
+    "protobufjs"
+  ]
 }

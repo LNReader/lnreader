@@ -1,4 +1,4 @@
-import { ReaderTheme } from '@hooks/persisted/useSettings';
+import { ReaderTheme } from '@screens/settings/constants/defaultValues';
 import { MaterialDesignIconName } from '@type/icon';
 
 export const presetReaderThemes: ReaderTheme[] = [

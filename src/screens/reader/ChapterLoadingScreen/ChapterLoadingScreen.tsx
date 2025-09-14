@@ -3,15 +3,11 @@ import { View } from 'react-native';
 import color from 'color';
 
 import SkeletonLines from '../components/SkeletonLines';
-import { useChapterReaderSettings } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 const ChapterLoadingScreen = () => {
-  const {
-    theme: backgroundColor,
-    padding,
-    textSize,
-    lineHeight,
-  } = useChapterReaderSettings();
+  const { backgroundColor, padding, textSize, lineHeight } =
+    useSettingsContext();
 
   return (
     <View style={{ backgroundColor }}>
