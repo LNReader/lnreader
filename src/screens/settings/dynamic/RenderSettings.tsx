@@ -1,4 +1,4 @@
-import React, { memo, lazy, Suspense } from 'react';
+import React, { memo, Suspense } from 'react';
 import { SettingsItem } from '../Settings';
 import SettingSwitchV2 from './components/SettingSwitchV2';
 import { useTheme } from '@hooks/persisted';

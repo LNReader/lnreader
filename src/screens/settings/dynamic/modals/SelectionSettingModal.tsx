@@ -1,5 +1,5 @@
 import React, { useMemo, startTransition } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text } from 'react-native';
 
 import { Portal, Modal, overlay } from 'react-native-paper';
 

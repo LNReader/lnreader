@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { InteractionManager } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList, StyleSheet, View, InteractionManager } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 
 import { EmptyView } from '@components';
@@ -22,6 +21,8 @@ import RepositoryCard from './RepositoryCard';
 import { RouteProp, useIsFocused } from '@react-navigation/native';
 import { SettingsStackParamList } from '@navigators/types';
 import { showToast } from '@utils/showToast';
+
+const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepoSettings = ({
   route: { params },
@@ -121,7 +122,7 @@ const RepoSettings = ({
                 upsertRepository={upsertRepository}
               />
             )}
-            ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+            ItemSeparatorComponent={ItemSeparator}
             contentContainerStyle={styles.contentCtn}
             initialNumToRender={8}
             windowSize={5}
@@ -157,5 +158,8 @@ const styles = StyleSheet.create({
   },
   full: {
     flexGrow: 1,
+  },
+  separator: {
+    height: 8,
   },
 });

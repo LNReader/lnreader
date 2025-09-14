@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import { useTheme } from '@hooks/persisted';
 import { Appbar, List } from '@components';
@@ -41,7 +41,7 @@ const SettingsSubScreen = ({ navigation, route, disableAppbar }: Props) => {
           theme={theme}
         />
       )}
-      <List.Section style={{ paddingBottom: 35 }}>
+      <List.Section style={styles.section}>
         {Settings.subGroup.map((val, i) => (
           <RenderSettings
             setting={val}
@@ -56,5 +56,11 @@ const SettingsSubScreen = ({ navigation, route, disableAppbar }: Props) => {
 };
 
 export default React.memo(SettingsSubScreen);
+
+const styles = StyleSheet.create({
+  section: {
+    paddingBottom: 35,
+  },
+});
 
 // Using shared styles instead of local styles

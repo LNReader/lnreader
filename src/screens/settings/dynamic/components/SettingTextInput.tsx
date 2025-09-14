@@ -1,4 +1,4 @@
-import { TextInput, View, Text } from 'react-native';
+import { TextInput, View, Text, StyleSheet } from 'react-native';
 import { ThemeColors } from '@theme/types';
 import { BaseSetting, NumberInputSetting } from '../../Settings';
 import { useMemo } from 'react';
@@ -34,17 +34,7 @@ export default function SettingTextInput({
   };
 
   return (
-    <View
-      style={[
-        sharedStyles.paddingHorizontal,
-        sharedStyles.flexRow,
-        {
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          overflow: 'scroll',
-        },
-      ]}
-    >
+    <View style={styles.container}>
       <Text
         style={[labelStyle, sharedStyles.paddingVertical, sharedStyles.flex]}
         numberOfLines={2}
@@ -64,3 +54,13 @@ export default function SettingTextInput({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    ...sharedStyles.paddingHorizontal,
+    ...sharedStyles.flexRow,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    overflow: 'scroll',
+  },
+});
