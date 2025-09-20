@@ -85,7 +85,9 @@ export type SettingsStackParamList = {
   BackupSettings: SettingsProps;
   AdvancedSettings: SettingsProps;
   LibrarySettings: SettingsProps;
-  RespositorySettings: SettingsProps<'repo'> & { url: string };
+  RespositorySettings:
+    | undefined
+    | { url?: string; popToBottomNavigator?: boolean };
   CustomCode: SettingsProps;
 };
 

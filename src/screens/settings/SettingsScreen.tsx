@@ -71,6 +71,16 @@ const SettingsScreen = ({}: SettingsScreenProps) => {
           );
         })}
         <List.Item
+          title="Repositories"
+          icon="github"
+          onPress={() =>
+            navigation.navigate('RespositorySettings', {
+              popToBottomNavigator: false,
+            })
+          }
+          theme={theme}
+        />
+        <List.Item
           title="Custom Code"
           icon="code-braces"
           onPress={() =>

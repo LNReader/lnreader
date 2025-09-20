@@ -8,7 +8,6 @@ import SettingTextInput from './components/SettingTextInput';
 import SelectionSettingModal from './modals/SelectionSettingModal';
 import ReaderThemeSettings from './components/ReaderThemeSettings';
 import TextToSpeechSettings from './components/TextToSpeechSettings';
-import RepoSettings from './components/RepoSettings';
 import TrackerButton from './components/TrackerButton';
 import InfoItem from './components/InfoItem';
 
@@ -77,16 +76,6 @@ const RenderSettings = ({
       return (
         <Suspense fallback={null}>
           <TextToSpeechSettings />
-        </Suspense>
-      );
-    case 'Repo':
-      return (
-        <Suspense fallback={null}>
-          <RepoSettings
-            route={
-              route as RouteProp<SettingsStackParamList, 'RespositorySettings'>
-            }
-          />
         </Suspense>
       );
     case 'Tracker':

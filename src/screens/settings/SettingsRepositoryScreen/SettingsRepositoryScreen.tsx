@@ -69,6 +69,14 @@ const SettingsBrowseScreen = ({
     [refreshPlugins],
   );
 
+  const handleGoBack = useCallback(() => {
+    if (params?.popToBottomNavigator === false) {
+      navigation.goBack();
+    } else {
+      navigation.popTo<keyof RootStackParamList>('BottomNavigator');
+    }
+  }, [params?.popToBottomNavigator, navigation]);
+
   useEffect(() => {
     if (params?.url) {
       upsertRepository(params.url);
@@ -77,7 +85,7 @@ const SettingsBrowseScreen = ({
 
   useBackHandler(() => {
     if (!navigation.canGoBack()) {
-      navigation.popTo<keyof RootStackParamList>('BottomNavigator');
+      handleGoBack();
       return true;
     }
     return false;
@@ -87,12 +95,7 @@ const SettingsBrowseScreen = ({
     <SafeAreaView excludeTop>
       <Appbar
         title={'Repositories'}
-        handleGoBack={() => {
-          if (navigation.canGoBack()) {
-            navigation.goBack();
-          }
-          navigation.popTo<keyof RootStackParamList>('BottomNavigator');
-        }}
+        handleGoBack={handleGoBack}
         theme={theme}
       />
 

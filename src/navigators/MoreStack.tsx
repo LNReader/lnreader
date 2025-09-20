@@ -16,6 +16,7 @@ import StatsScreen from '@screens/StatsScreen/StatsScreen';
 import { MoreStackParamList, SettingsStackParamList } from './types';
 import ReaderSettingsSubScreen from '@screens/settings/settingsScreens/ReaderSettingsSubScreen';
 import SettingsCustomCode from '@screens/settings/SettingsCustomCodeScreen';
+import SettingsRepositoryScreen from '@screens/settings/SettingsRepositoryScreen/SettingsRepositoryScreen';
 
 const Stack = createNativeStackNavigator<
   MoreStackParamList & SettingsStackParamList
@@ -28,6 +29,10 @@ const SettingsStack = () => (
     <Stack.Screen name="Settings" component={Settings} />
     <Stack.Screen name="SubScreen" component={SettingsSubScreen} />
     <Stack.Screen name="ReaderSettings" component={ReaderSettingsSubScreen} />
+    <Stack.Screen
+      name="RespositorySettings"
+      component={SettingsRepositoryScreen}
+    />
     <Stack.Screen name="BackupSettings" component={BackupSettings} />
     <Stack.Screen name="AdvancedSettings" component={AdvancedSettings} />
     <Stack.Screen name="CustomCode" component={SettingsCustomCode} />

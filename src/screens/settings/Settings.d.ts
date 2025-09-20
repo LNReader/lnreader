@@ -12,7 +12,6 @@ type settingsGroupTypes =
   | 'AdvancedSettings'
   | 'LibrarySettings'
   | 'RespositorySettings'
-  | 'RepoSettings'
   | undefined;
 
 export type SettingsTypeModes = 'single' | 'multiple' | 'order';
@@ -101,7 +100,6 @@ export type ColorPickerSetting =
 
 export type ReaderThemeSetting = { type: 'ReaderTheme' };
 export type ReaderTTSSetting = { type: 'TTS' };
-export type RepoSetting = { type: 'Repo' };
 export type TrackerSetting = {
   type: 'Tracker';
   trackerName: 'AniList' | 'MyAnimeList';
@@ -122,7 +120,6 @@ export type SettingsItem = BaseSetting &
     | TextAreaSetting
     | ReaderThemeSetting
     | ReaderTTSSetting
-    | RepoSetting
     | TrackerSetting
     | InfoItem
   );
@@ -157,6 +154,5 @@ export interface Settings {
   general: SettingsGroup<generalIds>;
   appearance: SettingsGroup<appearanceIds>;
   reader: SettingsGroup<readerIds>;
-  repo: SettingsGroup<repoIds>;
   tracker: SettingsGroup<trackerIds>;
 }
