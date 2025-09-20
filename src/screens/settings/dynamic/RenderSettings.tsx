@@ -6,7 +6,6 @@ import SettingsThemePicker from '../components/SettingsThemePicker';
 import ColorPickerModal from './modals/ColorPickerModal';
 import SettingTextInput from './components/SettingTextInput';
 import SelectionSettingModal from './modals/SelectionSettingModal';
-import TextAreaModal from './modals/TextAreaModal';
 import ReaderThemeSettings from './components/ReaderThemeSettings';
 import TextToSpeechSettings from './components/TextToSpeechSettings';
 import RepoSettings from './components/RepoSettings';
@@ -66,12 +65,6 @@ const RenderSettings = ({
             showAccentColors
             quickSettings={quickSettings}
           />
-        </Suspense>
-      );
-    case 'TextArea':
-      return (
-        <Suspense fallback={null}>
-          <TextAreaModal setting={setting} theme={theme} />
         </Suspense>
       );
     case 'ReaderTheme':

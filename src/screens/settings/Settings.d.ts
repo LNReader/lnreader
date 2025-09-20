@@ -150,14 +150,7 @@ type generalIds =
   | 'autoDownload'
   | 'general';
 type appearanceIds = 'appTheme' | 'novelInfo' | 'navbar';
-type readerIds =
-  | 'readerTheme'
-  | 'customCSS'
-  | 'customJS'
-  | 'tts'
-  | 'general'
-  | 'autoScroll'
-  | 'display';
+type readerIds = 'readerTheme' | 'tts' | 'general' | 'autoScroll' | 'display';
 type repoIds = '';
 type trackerIds = 'services';
 export interface Settings {

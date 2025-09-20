@@ -72,36 +72,6 @@ const ReaderSettings: SettingsGroup<readerIds> = {
       ],
     },
     {
-      subGroupTitle: getString('readerSettings.customCSS'),
-      id: 'customCSS',
-      settings: [
-        {
-          title: getString('readerSettings.customCSS'),
-          type: 'TextArea',
-          valueKey: 'customCSS',
-          placeholder: 'body {margin: 10px;}',
-          description: getString('readerSettings.cssHint'),
-          openFileLabel: getString('readerSettings.openCSSFile'),
-          clearDialog: getString('readerSettings.clearCustomCSS'),
-        },
-      ],
-    },
-    {
-      subGroupTitle: getString('readerSettings.customJS'),
-      id: 'customJS',
-      settings: [
-        {
-          title: getString('readerSettings.customJS'),
-          type: 'TextArea',
-          valueKey: 'customJS',
-          placeholder: "document.getElementById('example');",
-          description: getString('readerSettings.jsHint'),
-          openFileLabel: getString('readerSettings.openJSFile'),
-          clearDialog: getString('readerSettings.clearCustomJS'),
-        },
-      ],
-    },
-    {
       subGroupTitle: getString('common.display'),
       id: 'display',
       settings: [

@@ -100,8 +100,6 @@ export interface DefaultSettings extends ReaderTheme {
   padding: number;
   fontFamily: string;
   lineHeight: number;
-  customCSS: string;
-  customJS: string;
   customThemes: ReaderTheme[];
   tts?: {
     voice?: Voice;
@@ -215,8 +213,6 @@ export const defaultSettings: DefaultSettings = {
   padding: 16,
   fontFamily: '',
   lineHeight: 1.5,
-  customCSS: '',
-  customJS: '',
   customThemes: [],
   tts: {
     rate: 1,
