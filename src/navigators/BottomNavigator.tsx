@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import {
-  BottomTabBarProps,
   createBottomTabNavigator,
+  BottomTabBarProps,
 } from '@react-navigation/bottom-tabs';
 
 import Library from '../screens/library/LibraryScreen';
@@ -15,9 +15,9 @@ import { usePlugins, useTheme } from '@hooks/persisted';
 import { BottomNavigatorParamList } from './types';
 import Icon from '@react-native-vector-icons/material-design-icons';
 import { MaterialDesignIconName } from '@type/icon';
-import { CommonActions } from '@react-navigation/native';
-import { BottomNavigation } from 'react-native-paper';
 import { useSettingsContext } from '@components/Context/SettingsContext';
+import { Easing } from 'react-native';
+import { CustomBottomTabBar } from '@components';
 
 const Tab = createBottomTabNavigator<BottomNavigatorParamList>();
 
@@ -63,48 +63,14 @@ const BottomNavigator = () => {
 
   const renderBottomBar = useCallback(
     ({ navigation, state, descriptors, insets }: BottomTabBarProps) => (
-      <BottomNavigation.Bar
-        theme={{ colors: theme }}
-        style={{
-          backgroundColor: theme.surface2,
-        }}
-        navigationState={state}
-        safeAreaInsets={insets}
-        onTabPress={({ route, preventDefault }) => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          if (event.defaultPrevented) {
-            preventDefault();
-          } else {
-            navigation.dispatch({
-              ...CommonActions.navigate(route.name, route.params),
-              target: state.key,
-            });
-          }
-        }}
+      <CustomBottomTabBar
+        navigation={navigation}
+        state={state}
+        descriptors={descriptors}
+        insets={insets}
+        theme={theme}
+        showLabelsInNav={showLabelsInNav}
         renderIcon={renderIcon}
-        getLabelText={({ route }) => {
-          if (
-            !showLabelsInNav &&
-            route.name !== state.routeNames[state.index]
-          ) {
-            return '';
-          }
-
-          const { options } = descriptors[route.key];
-          const label =
-            typeof options.tabBarLabel === 'string'
-              ? options.tabBarLabel
-              : typeof options.title === 'string'
-              ? options.title
-              : route.name;
-
-          return label;
-        }}
       />
     ),
     [renderIcon, showLabelsInNav, theme],
@@ -115,7 +81,11 @@ const BottomNavigator = () => {
       screenOptions={() => ({
         headerShown: false,
         animation: 'shift',
-        lazy: true,
+        transitionSpec: {
+          animation: 'timing',
+          config: { duration: 100, easing: Easing.out(Easing.ease) },
+        },
+        // lazy: true,
       })}
       tabBar={renderBottomBar}
     >
