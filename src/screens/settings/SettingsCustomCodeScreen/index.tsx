@@ -51,6 +51,7 @@ const SettingsCustomCode = ({ navigation }: CustomCodeSettingsScreenProps) => {
   };
 
   const handleEditSnippet = (snippetIndex: number, isJS: boolean) => {
+    appBarHiddenState.value = 1;
     setEditingSnippet({
       index: snippetIndex,
       isJS: snippetIndex === -1 ? true : isJS, // Default to JS for new snippets, use passed value for editing
@@ -112,7 +113,7 @@ const SettingsCustomCode = ({ navigation }: CustomCodeSettingsScreenProps) => {
           gap={8}
           inactiveColor={theme.secondary}
           activeColor={theme.primary}
-          android_ripple={{ color: theme.rippleColor }}
+          android_ripple={{ color: theme.rippleColor, foreground: true }}
         />
       );
     },

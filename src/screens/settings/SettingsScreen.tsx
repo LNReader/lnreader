@@ -17,24 +17,7 @@ import {
 
 const SettingsScreen = ({}: SettingsScreenProps) => {
   const theme = useTheme();
-  const isFocused = useIsFocused();
   const navigation = useNavigation<NavigationProp<SettingsStackParamList>>();
-
-  useEffect(() => {
-    if (!isFocused) return;
-
-    const timeout = setTimeout(() => {
-      try {
-        navigation.dispatch(CommonActions.preload('ReaderSettings'));
-      } catch {}
-      try {
-        navigation.dispatch(
-          CommonActions.preload('SubScreen', { settingsSource: 'appearance' }),
-        );
-      } catch {}
-    }, 50);
-    return () => clearTimeout(timeout);
-  }, [navigation, isFocused]);
 
   return (
     <SafeAreaView excludeTop>
@@ -54,10 +37,7 @@ const SettingsScreen = ({}: SettingsScreenProps) => {
               icon={setting.icon}
               onPress={() =>
                 navigation.dispatch(
-                  StackActions.push(
-                    key === 'reader' ? 'ReaderSettings' : 'SubScreen',
-                    { settingsSource: key },
-                  ),
+                  StackActions.push('SubScreen', { settingsSource: key }),
                 )
               }
               onPressIn={() => {
