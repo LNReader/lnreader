@@ -59,6 +59,7 @@ function CustomBottomTabBar({
       {state.routes.map((route, index) => {
         const label = getLabelText(route);
         const isFocused = state.index === index;
+        const showLabel = (showLabelsInNav || isFocused) && label;
 
         const onPress = () => {
           const event = navigation.emit({
@@ -99,10 +100,10 @@ function CustomBottomTabBar({
             <Animated.View
               style={{
                 transitionProperty: ['width', 'backgroundColor'],
-                transitionDuration: 200,
+                transitionDuration: 250,
                 transitionTimingFunction: 'ease-out',
 
-                marginBottom: showLabelsInNav ? 4 : 0,
+                marginBottom: showLabel ? 4 : 20,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -118,10 +119,11 @@ function CustomBottomTabBar({
             </Animated.View>
 
             {/* Label */}
-            {showLabelsInNav && label ? (
+            {showLabel ? (
               <Text
                 style={{
                   color: theme.onSurfaceVariant,
+                  height: 16,
                   fontSize: 12,
                   textAlign: 'center',
                   fontWeight: isFocused ? '700' : '600',
