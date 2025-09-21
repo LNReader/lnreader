@@ -6,13 +6,12 @@ import {
 import { insertHistory } from '@database/queries/HistoryQueries';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import {
-  useChapterGeneralSettings,
-  useLibrarySettings,
   useNovelChapters,
   useNovelLastRead,
   useTrackedNovel,
   useTracker,
 } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { fetchChapter } from '@services/plugin/fetch';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import {
@@ -54,9 +53,13 @@ export default function useChapter(
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
     ChapterInfo[] | undefined[]
   >([]);
-  const { autoScroll, autoScrollInterval, autoScrollOffset, useVolumeButtons } =
-    useChapterGeneralSettings();
-  const { incognitoMode } = useLibrarySettings();
+  const {
+    autoScroll,
+    autoScrollInterval,
+    autoScrollOffsetPercent,
+    useVolumeButtons,
+    incognitoMode,
+  } = useSettingsContext();
   const [error, setError] = useState<string>();
   const { tracker } = useTracker();
   const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
@@ -173,7 +176,7 @@ export default function useChapter(
       scrollInterval.current = setInterval(() => {
         webViewRef.current?.injectJavaScript(`(()=>{
           window.scrollBy({top:${defaultTo(
-            autoScrollOffset,
+            autoScrollOffsetPercent,
             Dimensions.get('window').height,
           )},behavior:'smooth'})
         })()`);
@@ -189,7 +192,7 @@ export default function useChapter(
         clearInterval(scrollInterval.current);
       }
     };
-  }, [autoScroll, autoScrollInterval, autoScrollOffset, webViewRef]);
+  }, [autoScroll, autoScrollInterval, autoScrollOffsetPercent, webViewRef]);
 
   const updateTracker = useCallback(() => {
     const chapterNumber = parseChapterNumber(novel.name, chapter.name);

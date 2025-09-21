@@ -3,7 +3,7 @@ import React from 'react';
 import { Portal } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
-import { useChapterReaderSettings } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { useTheme } from '@providers/Providers';
 
 import { readerFonts } from '@utils/constants/readerConstants';
@@ -21,7 +21,7 @@ const FontPickerModal: React.FC<FontPickerModalProps> = ({
   visible,
 }) => {
   const theme = useTheme();
-  const { setChapterReaderSettings } = useChapterReaderSettings();
+  const { setSettings } = useSettingsContext();
 
   return (
     <Portal>
@@ -30,9 +30,7 @@ const FontPickerModal: React.FC<FontPickerModalProps> = ({
           <RadioButton
             key={item.fontFamily}
             status={currentFont === item.fontFamily}
-            onPress={() =>
-              setChapterReaderSettings({ fontFamily: item.fontFamily })
-            }
+            onPress={() => setSettings({ fontFamily: item.fontFamily })}
             label={item.name}
             labelStyle={{ fontFamily: item.fontFamily }}
             theme={theme}

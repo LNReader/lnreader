@@ -3,7 +3,7 @@ import { Modal, ModalProps, overlay, Portal } from 'react-native-paper';
 import { StyleSheet, Text, View } from 'react-native';
 import Button from '@components/Button/Button';
 import { ThemeColors } from '@theme/types';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import Animated, {
   measure,

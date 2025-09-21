@@ -1,7 +1,7 @@
 import { View, Dimensions, Text, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import { Appbar } from '@components/index';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import SettingsSubScreen from './SettingsSubScreen';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -19,7 +19,7 @@ export type TextAlignments =
 
 type Props = NativeStackScreenProps<
   SettingsStackParamList,
-  keyof Omit<SettingsStackParamList, 'Settings'>
+  keyof Omit<SettingsStackParamList, 'Settings' | 'RespositorySettings'>
 >;
 
 const ReaderSettingsSubScreen: React.FC<Props> = ({ navigation, route }) => {

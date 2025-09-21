@@ -5,13 +5,13 @@ import { useRef, useState, useCallback, useMemo } from 'react';
 import { ChapterInfo } from '@database/types';
 import { UseBooleanReturnType } from '@hooks/index';
 import {
-  useAppSettings,
   useDownload,
   useNovelChapters,
   useNovelSettings,
   useNovelState,
   useNovelLastRead,
 } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import {
   updateNovel,
   updateNovelPage,
@@ -83,7 +83,7 @@ const NovelScreenList = ({
     disableHapticFeedback,
     downloadNewChapters,
     refreshNovelMetadata,
-  } = useAppSettings();
+  } = useSettingsContext();
 
   const {
     sort = defaultChapterSort,

@@ -4,7 +4,7 @@ import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemeColors } from '@theme/types';
 import useLoadingColors from '@utils/useLoadingColors';
-import { useAppSettings } from '@hooks/persisted/index';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { WINDOW_WIDTH } from '@gorhom/bottom-sheet';
 import { useTheme } from '@providers/Providers';
 
@@ -26,7 +26,7 @@ export const LoadingShimmer = memo(
     width: number | string;
     visible?: boolean;
   }) => {
-    const { disableLoadingAnimations } = useAppSettings();
+    const { disableLoadingAnimations } = useSettingsContext();
     const theme = useTheme();
     const [highlightColor, backgroundColor] = useLoadingColors(theme);
     if (!visible) {

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { Appbar } from '@components';
 import S, { Settings as SettingsType } from '../Settings';
 import RenderSettings from '../dynamic/RenderSettingsGroup';

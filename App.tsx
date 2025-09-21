@@ -20,6 +20,13 @@ import Main from './src/navigators/Main';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Providers } from './src/providers/Providers';
 
+declare global {
+  interface ObjectConstructor {
+    typedKeys<T>(obj: T): Array<keyof T>;
+  }
+}
+Object.typedKeys = Object.keys as any;
+
 Notifications.setNotificationHandler({
   handleNotification: async () => {
     return {
@@ -34,7 +41,8 @@ createTables();
 LottieSplashScreen.hide();
 
 const App = () => {
-  const navigationRef = useRef<NavigationContainerRef<RootStackParamList>>(null);
+  const navigationRef =
+    useRef<NavigationContainerRef<RootStackParamList>>(null);
 
   return (
     <GestureHandlerRootView style={styles.flex}>

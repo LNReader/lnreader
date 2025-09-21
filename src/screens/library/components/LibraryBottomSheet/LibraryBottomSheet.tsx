@@ -15,7 +15,7 @@ import {
 } from 'react-native-tab-view';
 import color from 'color';
 
-import { useLibrarySettings } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import { Checkbox, SortItem } from '@components/Checkbox/Checkbox';
@@ -44,9 +44,9 @@ const FirstRoute = () => {
   const theme = useTheme();
   const {
     filter,
-    setLibrarySettings,
+    setSettings: setLibrarySettings,
     downloadedOnlyMode = false,
-  } = useLibrarySettings();
+  } = useSettingsContext();
 
   return (
     <View style={styles.flex}>
@@ -75,8 +75,10 @@ const FirstRoute = () => {
 
 const SecondRoute = () => {
   const theme = useTheme();
-  const { sortOrder = LibrarySortOrder.DateAdded_DESC, setLibrarySettings } =
-    useLibrarySettings();
+  const {
+    sortOrder = LibrarySortOrder.DateAdded_DESC,
+    setSettings: setLibrarySettings,
+  } = useSettingsContext();
 
   return (
     <View style={styles.flex}>
@@ -113,8 +115,8 @@ const ThirdRoute = () => {
     showNumberOfNovels = false,
     showUnreadBadges = true,
     displayMode = DisplayModes.Comfortable,
-    setLibrarySettings,
-  } = useLibrarySettings();
+    setSettings: setLibrarySettings,
+  } = useSettingsContext();
 
   return (
     <View style={styles.flex}>

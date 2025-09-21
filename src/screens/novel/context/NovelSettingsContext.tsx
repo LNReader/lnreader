@@ -1,4 +1,4 @@
-import { useAppSettings } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { ReaderStackParamList } from '@navigators/types';
 import { RouteProp } from '@react-navigation/native';
 import { NOVEL_SETTINSG_PREFIX } from '@utils/constants/mmkv';
@@ -42,7 +42,7 @@ export function NovelSettingsContextProvider({
   path: Path;
   pluginId: PluginId;
 }) {
-  const { defaultChapterSort } = useAppSettings();
+  const { defaultChapterSort } = useSettingsContext();
 
   const [mmkvNovelSettings = defaultNovelSettings, setNovelSettings] =
     useMMKVObject<NovelSettings>(

@@ -3,7 +3,7 @@ import { useSettingsContext } from '@components/Context/SettingsContext';
 import KeyboardAvoidingModal from '@components/Modal/KeyboardAvoidingModal';
 import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
 import { useBoolean } from '@hooks/index';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { FlashList } from '@shopify/flash-list';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';

@@ -1,10 +1,12 @@
 import { StyleSheet, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 
-import { useChapterReaderSettings } from '@hooks/persisted';
+import {
+  SettingsContextType,
+  useSettingsContext,
+} from '@components/Context/SettingsContext';
 import { useTheme } from '@providers/Providers';
 import { IconButtonV2 } from '@components';
-import { ChapterReaderSettings } from '@hooks/persisted/useSettings';
 
 type ValueKey<T extends object> = Exclude<
   {
@@ -17,7 +19,7 @@ interface ReaderValueChangeProps {
   labelStyle?: TextStyle | TextStyle[];
   valueChange?: number;
   label: string;
-  valueKey: ValueKey<ChapterReaderSettings>;
+  valueKey: ValueKey<SettingsContextType>;
   decimals?: number;
   min?: number;
   max?: number;
@@ -35,7 +37,8 @@ const ReaderValueChange: React.FC<ReaderValueChangeProps> = ({
   unit = '%',
 }) => {
   const theme = useTheme();
-  const { setChapterReaderSettings, ...settings } = useChapterReaderSettings();
+  const { setSettings: setChapterReaderSettings, ...settings } =
+    useSettingsContext();
 
   return (
     <View style={styles.container}>

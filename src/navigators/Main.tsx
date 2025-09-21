@@ -11,7 +11,8 @@ import {
   changeNavigationBarColor,
   setStatusBarColor,
 } from '@theme/utils/setBarColor';
-import { useAppSettings, usePlugins } from '@hooks/persisted';
+import { usePlugins } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { useTheme } from '@providers/Providers';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
@@ -52,7 +53,7 @@ const MainNavigator = ({
   ref: React.Ref<NavigationContainerRef<RootStackParamList> | null>;
 }) => {
   const { refreshPlugins } = usePlugins();
-  const { updateLibraryOnLaunch } = useAppSettings();
+  const { updateLibraryOnLaunch } = useSettingsContext();
   const theme = useTheme();
   const [isOnboarded] = useMMKVBoolean('IS_ONBOARDED');
 

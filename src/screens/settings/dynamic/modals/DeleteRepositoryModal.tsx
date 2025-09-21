@@ -6,7 +6,7 @@ import { Button } from '@components/index';
 
 import { Repository } from '@database/types';
 import { deleteRepositoryById } from '@database/queries/RepositoryQueries';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 
 import { getString } from '@strings/translations';
 

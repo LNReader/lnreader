@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 import { Portal, Text, TextInput } from 'react-native-paper';
 
-import { useTheme, useUserAgent } from '@hooks/persisted';
+import { useUserAgent } from '@hooks/persisted';
 import { showToast } from '@utils/showToast';
 
-import { deleteCachedNovels } from '@hooks/persisted/useNovel';
+import { deleteCachedNovels } from '@utils/mmkv/deleteCachedNovels';
 import { getString } from '@strings/translations';
 import { useBoolean } from '@hooks';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
@@ -22,6 +22,7 @@ import CookieManager from '@react-native-cookies/cookies';
 import { store } from '@plugins/helpers/storage';
 import { recreateDBIndex } from '@database/db';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useTheme } from '@providers/Providers';
 
 const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   const theme = useTheme();

@@ -11,6 +11,7 @@ import {
   TextStyle,
 } from 'react-native';
 import { usePlugins } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { PluginItem } from '@plugins/types';
 import { coverPlaceholderColor } from '@theme/colors';
 import { ThemeColors } from '@theme/types';
@@ -25,7 +26,6 @@ import { useBoolean, UseBooleanReturnType } from '@hooks';
 import { getPlugin } from '@plugins/pluginManager';
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
-import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface InstalledTabProps {
   navigation: BrowseScreenProps['navigation'];

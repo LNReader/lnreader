@@ -72,6 +72,7 @@ const updateLibrary = async (
             data: {
               chapterId,
               novelName: libraryNovels[i].name,
+              novelId: libraryNovels[i].id,
               chapterName,
             },
           });
@@ -115,6 +116,7 @@ export const updateNovelWithDownloads = async (
       data: {
         chapterId,
         novelName,
+        novelId,
         chapterName,
       },
     });
@@ -137,6 +139,7 @@ export const updateNovelPageWithDownloads = async (
       data: {
         chapterId,
         novelName,
+        novelId,
         chapterName,
       },
     });

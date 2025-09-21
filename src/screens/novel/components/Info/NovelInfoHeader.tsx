@@ -28,11 +28,11 @@ import { GlobalSearchScreenProps } from '@navigators/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { UseBooleanReturnType } from '@hooks';
 import {
-  useAppSettings,
   useNovelChapters,
   useNovelPages,
   useNovelState,
 } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { useTheme } from '@providers/Providers';
 import { NovelStatus, PluginItem } from '@plugins/types';
 import { translateNovelStatus } from '@utils/translateEnum';
@@ -83,7 +83,7 @@ const NovelInfoHeader = ({
   totalChapters,
   trackerSheetRef,
 }: NovelInfoHeaderProps) => {
-  const { hideBackdrop = false } = useAppSettings();
+  const { hideBackdrop = false } = useSettingsContext();
   const {
     novel,
     loading: isLoading,

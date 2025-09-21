@@ -8,7 +8,7 @@ import {
 } from '@screens/novel/context/NovelStateContext';
 import { getString } from '@strings/translations';
 import { showToast } from '@utils/showToast';
-import { StorageAccessFramework } from 'expo-file-system';
+import { StorageAccessFramework } from 'expo-file-system/legacy';
 import { useCallback, useContext, useMemo } from 'react';
 import { NovelInfo } from '@database/types';
 

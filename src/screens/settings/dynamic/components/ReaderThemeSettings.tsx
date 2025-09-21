@@ -3,7 +3,7 @@ import React, { useMemo, lazy, Suspense } from 'react';
 
 import { Button, List } from '@components/index';
 
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import ReaderTextAlignSelector from '@screens/reader/components/ReaderBottomSheet/ReaderTextAlignSelector';
 import ReaderTextSize from './ReaderTextSize';

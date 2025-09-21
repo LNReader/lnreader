@@ -5,7 +5,7 @@ import { getString } from '@strings/translations';
 import { List, SafeAreaView } from '@components';
 
 import { MoreHeader } from './components/MoreHeader';
-import { useLibrarySettings } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { useQueue, useTheme } from '@providers/Providers';
 import { MoreStackScreenProps } from '@navigators/types';
 import Switch from '@components/Switch/Switch';
@@ -16,8 +16,8 @@ const MoreScreen = ({ navigation }: MoreStackScreenProps) => {
   const {
     incognitoMode = false,
     downloadedOnlyMode = false,
-    setLibrarySettings,
-  } = useLibrarySettings();
+    setSettings: setLibrarySettings,
+  } = useSettingsContext();
 
   const enableDownloadedOnlyMode = () =>
     setLibrarySettings({ downloadedOnlyMode: !downloadedOnlyMode });

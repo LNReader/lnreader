@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { Appbar, List, SafeAreaView } from '@components';
@@ -11,7 +11,6 @@ import {
   CommonActions,
   NavigationProp,
   StackActions,
-  useIsFocused,
   useNavigation,
 } from '@react-navigation/native';
 

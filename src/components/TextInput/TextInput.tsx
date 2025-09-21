@@ -5,7 +5,7 @@ import {
   TextInputProps as RNTextInputProps,
 } from 'react-native';
 
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 
 interface TextInputProps extends RNTextInputProps {
   error?: boolean;

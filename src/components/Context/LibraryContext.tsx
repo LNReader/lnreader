@@ -7,10 +7,7 @@ import React, {
 } from 'react';
 
 // Import existing settings hook
-import {
-  useLibrarySettings,
-  LibrarySettings,
-} from '@hooks/persisted/useSettings';
+
 import { DBNovelInfo } from '@database/types';
 import {
   ExtendedCategory,
@@ -19,12 +16,13 @@ import {
 import { useLibraryNovels } from '@hooks/persisted/library/useLibraryNovels';
 import { useLibraryActions } from '@hooks/persisted/library/useLibraryActions';
 import ServiceManager, { QueuedBackgroundTask } from '@services/ServiceManager';
+import { SettingsContextType, useSettingsContext } from './SettingsContext';
 
 type LibraryContextType = {
   library: DBNovelInfo[];
   categories: ExtendedCategory[];
   isLoading: boolean;
-  settings: LibrarySettings;
+  settings: SettingsContextType;
   searchText: string;
   setSearchText: React.Dispatch<React.SetStateAction<string>>;
   refetchLibrary: () => void;
@@ -43,7 +41,7 @@ interface LibraryContextProviderProps {
 export function LibraryContextProvider({
   children,
 }: LibraryContextProviderProps) {
-  const settings = useLibrarySettings();
+  const settings = useSettingsContext();
 
   const { categories, categoriesLoading, refreshCategories, setCategories } =
     useFetchCategories();

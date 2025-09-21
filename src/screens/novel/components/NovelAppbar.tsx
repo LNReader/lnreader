@@ -193,7 +193,11 @@ const NovelAppbar = ({
         <Appbar.BackAction onPress={goBack} />
 
         <View style={styles.row}>
-          <EpubIconButton theme={theme} anchor={AppbarAction} />
+          <EpubIconButton
+            theme={theme}
+            anchor={AppbarAction}
+            chapters={chapters}
+          />
 
           <AppbarAction icon="share-variant" onPress={shareNovel} />
           <AppbarAction

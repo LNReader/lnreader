@@ -1,4 +1,4 @@
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { useMemo } from 'react';
 import { PixelRatio, Pressable, StyleSheet, View } from 'react-native';
 import Icon from '@react-native-vector-icons/material-design-icons';

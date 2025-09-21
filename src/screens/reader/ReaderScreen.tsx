@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
-import { useChapterGeneralSettings } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { useTheme } from '@providers/Providers';
 
 import ReaderAppbar from './components/ReaderAppbar';
@@ -68,7 +68,7 @@ export const ChapterContent = ({
   const { novel, chapter } = useChapterContext();
   const readerSheetRef = useRef<BottomSheetModalMethods>(null);
   const theme = useTheme();
-  const { pageReader = false, keepScreenOn } = useChapterGeneralSettings();
+  const { pageReader = false, keepScreenOn } = useSettingsContext();
   const [bookmarked, setBookmarked] = useState(chapter.bookmark);
 
   useEffect(() => {

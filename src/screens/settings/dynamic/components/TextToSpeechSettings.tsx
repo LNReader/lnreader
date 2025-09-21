@@ -1,17 +1,15 @@
 import { IconButtonV2, List } from '@components';
-import {
-  useChapterGeneralSettings,
-  useChapterReaderSettings,
-} from '@hooks/persisted';
+
 import { useTheme } from '@providers/Providers';
 import React, { useEffect, useState } from 'react';
-import VoicePickerModal from '../Modals/VoicePickerModal';
+import VoicePickerModal from '../modals/VoicePickerModal';
 import { useBoolean } from '@hooks';
 import { Portal } from 'react-native-paper';
 import { StyleSheet, View, Text } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { getAvailableVoicesAsync, Voice } from 'expo-speech';
 import Switch from '@components/Switch/Switch';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 export default function TextToSpeechSettings() {
   const theme = useTheme();
@@ -23,9 +21,7 @@ export default function TextToSpeechSettings() {
     });
   }, []);
 
-  const { tts, setChapterReaderSettings } = useChapterReaderSettings();
-  const { TTSEnable = true, setChapterGeneralSettings } =
-    useChapterGeneralSettings();
+  const { tts, TTSEnable = true, setSettings } = useSettingsContext();
   const {
     value: voiceModalVisible,
     setTrue: showVoiceModal,
@@ -39,7 +35,7 @@ export default function TextToSpeechSettings() {
           <Switch
             value={TTSEnable}
             onValueChange={() => {
-              setChapterGeneralSettings({
+              setSettings({
                 TTSEnable: !TTSEnable,
               });
             }}
@@ -49,7 +45,7 @@ export default function TextToSpeechSettings() {
             theme={theme}
             color={theme.primary}
             onPress={() => {
-              setChapterReaderSettings({
+              setSettings({
                 tts: {
                   pitch: 1,
                   rate: 1,
@@ -82,7 +78,7 @@ export default function TextToSpeechSettings() {
               maximumTrackTintColor={theme.surfaceVariant}
               thumbTintColor={theme.primary}
               onSlidingComplete={value =>
-                setChapterReaderSettings({ tts: { ...tts, rate: value } })
+                setSettings({ tts: { ...tts, rate: value } })
               }
             />
             <Text style={[styles.label, { color: theme.onSurface }]}>
@@ -98,7 +94,7 @@ export default function TextToSpeechSettings() {
               maximumTrackTintColor={theme.surfaceVariant}
               thumbTintColor={theme.primary}
               onSlidingComplete={value =>
-                setChapterReaderSettings({ tts: { ...tts, pitch: value } })
+                setSettings({ tts: { ...tts, pitch: value } })
               }
             />
           </List.Section>

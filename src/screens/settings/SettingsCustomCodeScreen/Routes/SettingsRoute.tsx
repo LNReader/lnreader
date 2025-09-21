@@ -2,7 +2,8 @@ import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import ReplaceItemModal from '../Modals/ReplaceItemModal';
 import { List, SwitchItem, IconButtonV2 } from '@components';
-import { useSettings, useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 type SettingsRouteProps = {
   onEditSnippet?: (index: number, isJS: boolean) => void;
@@ -12,7 +13,7 @@ const defaultExtended = [false, false, false, false];
 
 const SettingsRoute: React.FC<SettingsRouteProps> = ({ onEditSnippet }) => {
   const theme = useTheme();
-  const { codeSnippetsJS, codeSnippetsCSS, setSettings } = useSettings();
+  const { codeSnippetsJS, codeSnippetsCSS, setSettings } = useSettingsContext();
   const [extended, setExtended] = React.useState(defaultExtended);
   const toggleExtended = React.useCallback(
     (index: number) => {

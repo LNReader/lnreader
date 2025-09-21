@@ -11,7 +11,7 @@ import { SafeAreaView } from '@components/index';
 import LibraryBottomSheet from '@screens/library/components/LibraryBottomSheet/LibraryBottomSheet';
 import SetCategoryModal from '@screens/novel/components/SetCategoriesModal';
 
-import { useAppSettings } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { useTheme } from '@providers/Providers';
 import { useBackHandler, useBoolean } from '@hooks';
 import { LibraryScreenProps } from '@navigators/types';
@@ -47,7 +47,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
   const clearSearchbar = () => setSearchText('');
 
   const { importNovel } = useImport();
-  const { useLibraryFAB = false } = useAppSettings();
+  const { useLibraryFAB = false } = useSettingsContext();
 
   const bottomSheetRef = useRef<BottomSheetModal | null>(null);
 

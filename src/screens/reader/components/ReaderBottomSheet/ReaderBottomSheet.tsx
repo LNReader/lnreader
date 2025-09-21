@@ -11,7 +11,7 @@ import Color from 'color';
 
 import { BottomSheetFlashList, BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
-import { useChapterGeneralSettings } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { useTheme } from '@providers/Providers';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '@strings/translations';
@@ -66,8 +66,8 @@ const ReaderTab: React.FC = React.memo(() => {
 
 const GeneralTab: React.FC = React.memo(() => {
   const theme = useTheme();
-  const { setChapterGeneralSettings, ...settings } =
-    useChapterGeneralSettings();
+  const { setSettings: setChapterGeneralSettings, ...settings } =
+    useSettingsContext();
 
   const toggleSetting = useCallback(
     (key: keyof typeof settings) =>

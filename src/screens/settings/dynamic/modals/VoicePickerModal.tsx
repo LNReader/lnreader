@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Portal, TextInput, ActivityIndicator } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 
-import { useChapterReaderSettings } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { useTheme } from '@providers/Providers';
 import { Voice } from 'expo-speech';
 import { FlashList } from '@shopify/flash-list';
@@ -24,7 +24,7 @@ const VoicePickerModal: React.FC<VoicePickerModalProps> = ({
   const theme = useTheme();
   const [searchedVoices, setSearchedVoices] = useState<Voice[]>([]);
   const [searchText, setSearchText] = useState('');
-  const { setChapterReaderSettings, tts } = useChapterReaderSettings();
+  const { setSettings, tts } = useSettingsContext();
 
   return (
     <Portal>
@@ -60,9 +60,7 @@ const VoicePickerModal: React.FC<VoicePickerModalProps> = ({
             <RadioButton
               key={item.identifier}
               status={item.identifier === tts?.voice?.identifier}
-              onPress={() =>
-                setChapterReaderSettings({ tts: { ...tts, voice: item } })
-              }
+              onPress={() => setSettings({ tts: { ...tts, voice: item } })}
               label={item.name + ` (${item.language})`}
               labelStyle={{ fontFamily: item.name }}
               theme={theme}

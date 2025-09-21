@@ -8,7 +8,6 @@ import React, {
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import {
-  useAppSettings,
   useNovelChapters,
   useNovelPages,
   useNovelSettings,
@@ -40,7 +39,6 @@ const ChapterDrawer = () => {
   const { novelSettings } = useNovelSettings();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const { defaultChapterSort } = useAppSettings();
   const listRef = useRef<FlashListRef<ChapterInfo> | null>(null);
 
   const styles = createStylesheet(theme, insets);

@@ -11,7 +11,8 @@ import Browse from '../screens/browse/BrowseScreen';
 import More from '../screens/more/MoreScreen';
 
 import { getString } from '@strings/translations';
-import { useAppSettings, usePlugins } from '@hooks/persisted';
+import { usePlugins } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { useTheme } from '@providers/Providers';
 import { BottomNavigatorParamList } from './types';
 import Icon from '@react-native-vector-icons/material-design-icons';
@@ -28,7 +29,7 @@ const BottomNavigator = () => {
     showHistoryTab = true,
     showUpdatesTab = true,
     showLabelsInNav = false,
-  } = useAppSettings();
+  } = useSettingsContext();
 
   const { filteredInstalledPlugins } = usePlugins();
   const pluginsWithUpdate = useMemo(

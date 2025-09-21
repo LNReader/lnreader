@@ -1,6 +1,6 @@
 import { List } from '@components';
 import { SettingSubGroup } from '../Settings';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import RenderSettings from './RenderSettings';
 import { RouteProp } from '@react-navigation/native';
 import { SettingsStackParamList } from '@navigators/types';

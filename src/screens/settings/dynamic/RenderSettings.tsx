@@ -1,7 +1,7 @@
 import React, { memo, Suspense } from 'react';
 import { SettingsItem } from '../Settings';
 import SettingSwitchV2 from './components/SettingSwitchV2';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import SettingsThemePicker from '../components/SettingsThemePicker';
 import ColorPickerModal from './modals/ColorPickerModal';
 import SettingTextInput from './components/SettingTextInput';

@@ -1,5 +1,5 @@
 import { SafeAreaView } from '@components';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { CustomCodeSettingsScreenProps } from '@navigators/types';
 import React from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';

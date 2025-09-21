@@ -3,7 +3,7 @@ import React, { createContext, useContext } from 'react';
 import { useSettings } from '@hooks/persisted/useSettings';
 import { defaultSettings } from '@screens/settings/constants/defaultValues';
 
-type SettingsContextType = ReturnType<typeof useSettings>;
+export type SettingsContextType = ReturnType<typeof useSettings>;
 
 const defaultValue = defaultSettings as any as SettingsContextType;
 const SettingsContext = createContext<SettingsContextType>(defaultValue);

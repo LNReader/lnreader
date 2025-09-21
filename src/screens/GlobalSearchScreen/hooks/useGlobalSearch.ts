@@ -3,8 +3,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { NovelItem, PluginItem } from '@plugins/types';
 import { getPlugin } from '@plugins/pluginManager';
 import { usePlugins } from '@hooks/persisted';
-import { useFocusEffect } from '@react-navigation/native';
 import { useSettingsContext } from '@components/Context/SettingsContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface Props {
   defaultSearchText?: string;

@@ -2,7 +2,8 @@ import React, { memo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Modal, Portal, Text, Button } from 'react-native-paper';
 
-import { getTracker, useTheme, useTracker } from '@hooks/persisted';
+import { getTracker, useTracker } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { List } from '@components';
 import { getString } from '@strings/translations';
 

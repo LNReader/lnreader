@@ -2,7 +2,8 @@ import { FlatList, StyleSheet } from 'react-native';
 import React from 'react';
 import { Appbar, List, SwitchItem } from '@components';
 
-import { useBrowseSettings, usePlugins } from '@hooks/persisted';
+import { usePlugins } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import { getLocaleLanguageName, languages } from '@utils/constants/languages';
@@ -19,8 +20,8 @@ const BrowseSettings = ({ navigation }: BrowseSettingsScreenProp) => {
     showMyAnimeList,
     showAniList,
     globalSearchConcurrency,
-    setBrowseSettings,
-  } = useBrowseSettings();
+    setSettings: setBrowseSettings,
+  } = useSettingsContext();
 
   const globalSearchConcurrencyModal = useBoolean();
 

@@ -3,7 +3,6 @@ import { Row } from '@components/Common';
 import { ToggleButton } from '@components/Common/ToggleButton';
 import TextInput from '@components/TextInput/TextInput';
 import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
-import { useSettings, useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
 import React from 'react';
 import { StyleSheet } from 'react-native';
@@ -15,6 +14,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import CodeInput from '../Components/CodeInput';
 import { showToast } from '@utils/showToast';
+import { useTheme } from '@providers/Providers';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 type CodeRouteProps = {
   language?: 'css' | 'js';
@@ -37,7 +38,7 @@ const CodeRoute = ({
   onSnippetSaved,
 }: CodeRouteProps) => {
   const theme = useTheme();
-  const { codeSnippetsJS, codeSnippetsCSS, setSettings } = useSettings();
+  const { codeSnippetsJS, codeSnippetsCSS, setSettings } = useSettingsContext();
   const [error, setError] = React.useState({ title: false, code: false });
 
   // Use editingSnippet if provided, otherwise fall back to old props

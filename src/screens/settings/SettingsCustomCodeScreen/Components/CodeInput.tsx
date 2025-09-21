@@ -1,6 +1,6 @@
 import TextInput from '@components/TextInput/TextInput';
 import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import React from 'react';
 import { PixelRatio, StyleSheet } from 'react-native';
 import Animated, {

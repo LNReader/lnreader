@@ -10,7 +10,7 @@ import { useBackHandler } from '@hooks/index';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import BottomSheetBackdrop from './BottomSheetBackdrop';
 import { useWindowDimensions } from 'react-native';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { overlay } from 'react-native-paper';
 
 interface BottomSheetProps

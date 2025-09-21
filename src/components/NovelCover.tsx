@@ -12,6 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import ListView from './ListView';
 
 import { useDeviceOrientation } from '@hooks';
+import { useSettingsContext } from './Context/SettingsContext';
 import { coverPlaceholderColor } from '../theme/colors';
 import { DisplayModes } from '@screens/library/constants/constants';
 import { DBNovelInfo, NovelInfo } from '@database/types';
@@ -22,7 +23,6 @@ import { getString } from '@strings/translations';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { defaultCover } from '@plugins/helpers/constants';
 import { ActivityIndicator } from 'react-native-paper';
-import { useSettingsContext } from './Context/SettingsContext';
 
 interface UnreadBadgeProps {
   chaptersDownloaded: number;
@@ -94,7 +94,7 @@ function NovelCover<
   const orientation = useDeviceOrientation();
 
   const numColumns = useMemo(
-    () => (orientation === 'landscape' ? 6 : novelsPerRow),
+    () => (orientation === 'landscape' ? 6 : novelsPerRow ?? 3),
     [orientation, novelsPerRow],
   );
 
@@ -159,7 +159,7 @@ function NovelCover<
           {libraryStatus ? <InLibraryBadge theme={theme} /> : null}
           {isFromDB(item) ? (
             <>
-              {showDownloadBadges && item.chaptersDownloaded > 0 ? (
+              {showUnreadBadges && item.chaptersDownloaded > 0 ? (
                 <DownloadBadge
                   showUnreadBadges={showUnreadBadges}
                   chaptersDownloaded={item.chaptersDownloaded}
@@ -167,7 +167,7 @@ function NovelCover<
                   theme={theme}
                 />
               ) : null}
-              {showUnreadBadges && item.chaptersUnread > 0 ? (
+              {showDownloadBadges && item.chaptersUnread > 0 ? (
                 <UnreadBadge
                   theme={theme}
                   chaptersDownloaded={item.chaptersDownloaded}
@@ -208,7 +208,7 @@ function NovelCover<
     <ListView
       item={item}
       downloadBadge={
-        showDownloadBadges && isFromDB(item) && item.chaptersDownloaded ? (
+        showUnreadBadges && isFromDB(item) && item.chaptersDownloaded ? (
           <DownloadBadge
             theme={theme}
             showUnreadBadges={showUnreadBadges}
@@ -218,7 +218,7 @@ function NovelCover<
         ) : null
       }
       unreadBadge={
-        showUnreadBadges && isFromDB(item) && item.chaptersUnread ? (
+        showDownloadBadges && isFromDB(item) && item.chaptersUnread ? (
           <UnreadBadge
             theme={theme}
             chaptersDownloaded={item.chaptersDownloaded}

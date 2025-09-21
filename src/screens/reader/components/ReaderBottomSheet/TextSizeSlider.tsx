@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
-import { useChapterReaderSettings } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { useTheme } from '@providers/Providers';
 import Slider from '@react-native-community/slider';
 import { getString } from '@strings/translations';
@@ -11,7 +11,8 @@ const TRACK_TINT_COLOR = '#000000';
 const TextSizeSlider: React.FC = () => {
   const theme = useTheme();
 
-  const { textSize, setChapterReaderSettings } = useChapterReaderSettings();
+  const { textSize, setSettings: setChapterReaderSettings } =
+    useSettingsContext();
 
   return (
     <View style={styles.container}>
