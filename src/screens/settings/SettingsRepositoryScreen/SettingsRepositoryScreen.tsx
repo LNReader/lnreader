@@ -12,11 +12,12 @@ import {
 } from '@database/queries/RepositoryQueries';
 import { Repository } from '@database/types';
 import { useBackHandler, useBoolean } from '@hooks/index';
-import { usePlugins, useTheme } from '@hooks/persisted';
+import { usePlugins } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 
-import AddRepositoryModal from './components/AddRepositoryModal';
-import RepositoryCard from './components/RepositoryCard';
+import AddRepositoryModal from '../dynamic/modals/AddRepositoryModal';
+import RepositoryCard from '../dynamic/components/RepositoryCard';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   RespositorySettingsScreenProps,
@@ -35,7 +36,7 @@ const SettingsBrowseScreen = ({
   const [repositories, setRepositories] = useState<Repository[]>(
     getRepositoriesFromDb(),
   );
-  const getRepositories = () => {
+  const getRepositories = async () => {
     setRepositories(getRepositoriesFromDb());
   };
 
@@ -69,6 +70,14 @@ const SettingsBrowseScreen = ({
     [refreshPlugins],
   );
 
+  const handleGoBack = useCallback(() => {
+    if (params?.popToBottomNavigator === false) {
+      navigation.goBack();
+    } else {
+      navigation.popTo<keyof RootStackParamList>('BottomNavigator');
+    }
+  }, [params?.popToBottomNavigator, navigation]);
+
   useEffect(() => {
     if (params?.url) {
       upsertRepository(params.url);
@@ -77,7 +86,7 @@ const SettingsBrowseScreen = ({
 
   useBackHandler(() => {
     if (!navigation.canGoBack()) {
-      navigation.popTo<keyof RootStackParamList>('BottomNavigator');
+      handleGoBack();
       return true;
     }
     return false;
@@ -87,12 +96,7 @@ const SettingsBrowseScreen = ({
     <SafeAreaView excludeTop>
       <Appbar
         title={'Repositories'}
-        handleGoBack={() => {
-          if (navigation.canGoBack()) {
-            navigation.goBack();
-          }
-          navigation.popTo<keyof RootStackParamList>('BottomNavigator');
-        }}
+        handleGoBack={handleGoBack}
         theme={theme}
       />
 

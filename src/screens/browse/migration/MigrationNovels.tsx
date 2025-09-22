@@ -1,17 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, FlatListProps } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
-import { usePlugins, useTheme } from '@hooks/persisted';
+import { usePlugins } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 
 import EmptyView from '@components/EmptyView';
 import MigrationNovelList from './MigrationNovelList';
 
 import { getPlugin } from '@plugins/pluginManager';
-import { useLibraryNovels } from '@screens/library/hooks/useLibrary';
 import { Appbar, SafeAreaView } from '@components';
 import GlobalSearchSkeletonLoading from '../loadingAnimation/GlobalSearchSkeletonLoading';
 import { MigrateNovelScreenProps } from '@navigators/types';
 import { NovelItem } from '@plugins/types';
+import { useLibraryContext } from '@components/Context/LibraryContext';
 
 export interface SourceSearchResult {
   id: string;
@@ -31,7 +32,7 @@ const MigrationNovels = ({ navigation, route }: MigrateNovelScreenProps) => {
   const [progress, setProgress] = useState(0);
   const [searchResults, setSearchResults] = useState<SourceSearchResult[]>([]);
 
-  const { library } = useLibraryNovels();
+  const { library } = useLibraryContext();
 
   const { filteredInstalledPlugins } = usePlugins();
 

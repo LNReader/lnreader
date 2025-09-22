@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View, StatusBar, Text, Share } from 'react-native';
+import { StyleSheet, View, StatusBar, Text } from 'react-native';
 import { Drawer } from 'react-native-drawer-layout';
 import Animated, {
   SlideInUp,
@@ -8,11 +8,11 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Portal, Appbar, Snackbar } from 'react-native-paper';
-import { useDownload, useTheme } from '@hooks/persisted';
+import { useDownload } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import JumpToChapterModal from './components/JumpToChapterModal';
 import { Actionbar } from '../../components/Actionbar/Actionbar';
 import EditInfoModal from './components/EditInfoModal';
-import { pickCustomNovelCover } from '../../database/queries/NovelQueries';
 import DownloadCustomChapterModal from './components/DownloadCustomChapterModal';
 import { useBoolean } from '@hooks';
 import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading';
@@ -20,28 +20,25 @@ import { NovelScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import { getString } from '@strings/translations';
 import NovelDrawer from './components/NovelDrawer';
-import { isNumber, noop } from 'lodash-es';
+import { noop } from 'lodash-es';
 import NovelAppbar from './components/NovelAppbar';
-import { resolveUrl } from '@services/plugin/fetch';
 import { updateChapterProgressByIds } from '@database/queries/ChapterQueries';
 import { MaterialDesignIconName } from '@type/icon';
 import NovelScreenList from './components/NovelScreenList';
 import { ThemeColors } from '@theme/types';
 import { SafeAreaView } from '@components';
-import { useNovelContext } from './NovelContext';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
+import useNovelState from '@hooks/persisted/novel/useNovelState';
+import useNovelChapters from '@hooks/persisted/novel/useNovelChapters';
+import useNovelPages from '@hooks/persisted/novel/useNovelPages';
 
 const Novel = ({ route, navigation }: NovelScreenProps) => {
+  const { novel, loading } = useNovelState();
   const {
-    pageIndex,
-    pages,
-    novel,
     chapters,
     fetching,
     batchInformation,
     getNextChapterBatch,
-    openPage,
-    setNovel,
     bookmarkChapters,
     markChaptersRead,
     markChaptersUnread,
@@ -49,7 +46,8 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     markPreviousChaptersUnread,
     refreshChapters,
     deleteChapters,
-  } = useNovelContext();
+  } = useNovelChapters();
+  const { pageIndex, pages, openPage } = useNovelPages();
 
   const theme = useTheme();
   const { downloadChapters } = useDownload();
@@ -57,7 +55,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const [selected, setSelected] = useState<ChapterInfo[]>([]);
   const [editInfoModal, showEditInfoModal] = useState(false);
 
-  const chapterListRef = useRef<FlashList<ChapterInfo> | null>(null);
+  const chapterListRef = useRef<FlashListRef<ChapterInfo> | null>(null);
 
   const deleteDownloadsSnackbar = useBoolean();
 
@@ -77,36 +75,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   // useFocusEffect(refreshChapters);
 
-  const downloadChs = useCallback(
-    (amount: number | 'all' | 'unread') => {
-      if (!novel) {
-        return;
-      }
-      let filtered = chapters.filter(chapter => !chapter.isDownloaded);
-      if (amount === 'unread') {
-        filtered = filtered.filter(chapter => chapter.unread);
-      }
-      if (isNumber(amount)) {
-        filtered = filtered.slice(0, amount);
-      }
-      if (filtered) {
-        downloadChapters(novel, filtered);
-      }
-    },
-    [chapters, downloadChapters, novel],
-  );
-  const deleteChs = useCallback(() => {
-    deleteChapters(chapters.filter(c => c.isDownloaded));
-  }, [chapters, deleteChapters]);
-  const shareNovel = () => {
-    if (!novel) {
-      return;
-    }
-    Share.share({
-      message: resolveUrl(novel.pluginId, novel.path, true),
-    });
-  };
-
   const [jumpToChapterModal, showJumpToChapterModal] = useState(false);
   const {
     value: dlChapterModalVisible,
@@ -117,7 +85,11 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const actions = useMemo(() => {
     const list: { icon: MaterialDesignIconName; onPress: () => void }[] = [];
 
-    if (!novel?.isLocal && selected.some(obj => !obj.isDownloaded)) {
+    if (
+      !loading &&
+      !novel?.isLocal &&
+      selected.some(obj => !obj.isDownloaded)
+    ) {
       list.push({
         icon: 'download-outline',
         onPress: () => {
@@ -198,6 +170,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     bookmarkChapters,
     deleteChapters,
     downloadChapters,
+    loading,
     markChaptersRead,
     markChaptersUnread,
     markPreviousChaptersUnread,
@@ -207,20 +180,33 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     selected,
   ]);
 
-  const setCustomNovelCover = async () => {
-    if (!novel) {
-      return;
-    }
-    const newCover = await pickCustomNovelCover(novel);
-    if (newCover) {
-      setNovel({
-        ...novel,
-        cover: newCover,
-      });
-    }
-  };
   const styles = useMemo(() => createStyles(theme), [theme]);
 
+  const renderDrawerContent = useCallback(() => {
+    if (loading) {
+      return null;
+    }
+    if ((novel?.totalPages ?? 0) > 1 || pages.length > 1) {
+      return (
+        <NovelDrawer
+          theme={theme}
+          pages={pages}
+          pageIndex={pageIndex}
+          openPage={openPage}
+          closeDrawer={closeDrawer}
+        />
+      );
+    }
+    return null;
+  }, [
+    loading,
+    novel?.totalPages,
+    pages,
+    theme,
+    pageIndex,
+    openPage,
+    closeDrawer,
+  ]);
   return (
     <Drawer
       open={drawerOpen}
@@ -230,34 +216,16 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
       hideStatusBarOnOpen={true}
       swipeMinVelocity={1000}
       drawerStyle={styles.drawer}
-      renderDrawerContent={() =>
-        (novel?.totalPages ?? 0) > 1 || pages.length > 1 ? (
-          <NovelDrawer
-            theme={theme}
-            pages={pages}
-            pageIndex={pageIndex}
-            openPage={openPage}
-            closeDrawer={closeDrawer}
-          />
-        ) : (
-          <></>
-        )
-      }
+      renderDrawerContent={renderDrawerContent}
     >
       <Portal.Host>
         <View style={[styles.container, { backgroundColor: theme.background }]}>
           <Portal>
             {selected.length === 0 ? (
               <NovelAppbar
-                novel={novel}
-                chapters={chapters}
-                deleteChapters={deleteChs}
-                downloadChapters={downloadChs}
                 showEditInfoModal={showEditInfoModal}
-                setCustomNovelCover={setCustomNovelCover}
                 downloadCustomChapterModal={openDlChapterModal}
                 showJumpToChapterModal={showJumpToChapterModal}
-                shareNovel={shareNovel}
                 theme={theme}
                 isLocal={novel?.isLocal ?? route.params?.isLocal}
                 goBack={navigation.goBack}
@@ -291,6 +259,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           <SafeAreaView excludeTop>
             <Suspense fallback={<NovelScreenLoading theme={theme} />}>
               <NovelScreenList
+                deleteDownloadsSnackbar={deleteDownloadsSnackbar}
                 headerOpacity={headerOpacity}
                 listRef={chapterListRef}
                 navigation={navigation}
@@ -318,7 +287,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                   deleteChapters(chapters.filter(c => c.isDownloaded));
                 },
               }}
-              theme={{ colors: { primary: theme.primary } }}
+              theme={{ colors: theme }}
               style={styles.snackbar}
             >
               <Text style={{ color: theme.onSurface }}>
@@ -332,24 +301,17 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                 <JumpToChapterModal
                   modalVisible={jumpToChapterModal}
                   hideModal={() => showJumpToChapterModal(false)}
-                  chapters={chapters}
-                  novel={novel}
                   chapterListRef={chapterListRef}
                   navigation={navigation}
                 />
                 <EditInfoModal
                   modalVisible={editInfoModal}
                   hideModal={() => showEditInfoModal(false)}
-                  novel={novel}
-                  setNovel={setNovel}
                   theme={theme}
                 />
                 <DownloadCustomChapterModal
                   modalVisible={dlChapterModalVisible}
                   hideModal={closeDlChapterModal}
-                  novel={novel}
-                  chapters={chapters}
-                  theme={theme}
                   downloadChapters={downloadChapters}
                 />
               </>

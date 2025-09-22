@@ -26,6 +26,8 @@ export const deleteChapterHistory = (chapterId: number) =>
   db.runAsync('UPDATE Chapter SET readTime = NULL WHERE id = ?', chapterId);
 
 export const deleteAllHistory = async () => {
-  await db.execAsync('UPDATE Chapter SET readTime = NULL');
+  await db.execAsync(
+    'UPDATE Chapter SET readTime = NULL WHERE readTime IS NOT NULL',
+  );
   showToast(getString('historyScreen.deleted'));
 };

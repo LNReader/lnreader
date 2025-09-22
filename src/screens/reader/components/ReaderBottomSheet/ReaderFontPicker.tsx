@@ -4,7 +4,8 @@ import color from 'color';
 
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 import { getString } from '@strings/translations';
-import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
+import { useTheme } from '@providers/Providers';
 
 import { Font, readerFonts } from '@utils/constants/readerConstants';
 import { FlatList } from 'react-native-gesture-handler';
@@ -15,7 +16,8 @@ interface FontChipProps {
 
 const ReaderFontPicker = () => {
   const theme = useTheme();
-  const { fontFamily, setChapterReaderSettings } = useChapterReaderSettings();
+  const { fontFamily, setSettings: setChapterReaderSettings } =
+    useSettingsContext();
 
   const isSelected = useCallback(
     (item: Font) => item.fontFamily === fontFamily,

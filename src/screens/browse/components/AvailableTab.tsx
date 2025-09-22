@@ -160,7 +160,6 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
 
   return (
     <FlashList
-      estimatedItemSize={64}
       data={searchedPlugins}
       extraData={theme}
       renderItem={renderItem}

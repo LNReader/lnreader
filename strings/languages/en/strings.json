@@ -175,6 +175,8 @@
     "display": "Display",
     "done": "Done",
     "downloads": "Downloads",
+    "error": "Error",
+    "open": "Open",
     "edit": "Edit",
     "example": "Example",
     "filter": "Filter",
@@ -451,7 +453,7 @@
   },
   "readerSettings": {
     "autoScrollInterval": "Auto scroll interval (in seconds)",
-    "autoScrollOffset": "Auto scroll offset (screen height by default)",
+    "autoScrollOffsetPercent": "Auto scroll offset (percent of screen height)",
     "backgroundColor": "Background color",
     "backgroundColorModal": "Reader background color",
     "clearCustomCSS": "Are you sure? Your custom CSS would be reset.",
@@ -474,6 +476,14 @@
   },
   "sourceScreen": {
     "noResultsFound": "No results found"
+  },
+  "browseSourceScreen": {
+    "directOpen": {
+      "title": "Open Novel Directly",
+      "message": "Enter the novel URL or path from this source",
+      "invalidUrl": "Invalid URL. Please use a URL from this source or a relative path.",
+      "failed": "Failed to open novel:"
+    }
   },
   "statsScreen": {
     "downloadedChapters": "Downloaded chapters",

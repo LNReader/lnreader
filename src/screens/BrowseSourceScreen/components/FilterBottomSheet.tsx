@@ -14,7 +14,7 @@ import {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import {
   FilterTypes,
   FilterToValues,
@@ -381,8 +381,8 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
       </BottomSheetView>
       <BottomSheetFlatList
         data={filters && Object.entries(filters)}
-        keyExtractor={item => 'filter' + item[0]}
-        renderItem={({ item }) => (
+        keyExtractor={(item: [string, any]) => 'filter' + item[0]}
+        renderItem={({ item }: { item: [string, any] }) => (
           <FilterItem
             theme={theme}
             filter={item[1]}

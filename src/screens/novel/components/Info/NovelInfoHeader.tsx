@@ -23,12 +23,17 @@ import NovelSummary from '../NovelSummary/NovelSummary';
 import NovelScreenButtonGroup from '../NovelScreenButtonGroup/NovelScreenButtonGroup';
 import { getString } from '@strings/translations';
 import { filterColor } from '@theme/colors';
-import { ChapterInfo, NovelInfo as NovelData } from '@database/types';
-import { ThemeColors } from '@theme/types';
+import { ChapterInfo } from '@database/types';
 import { GlobalSearchScreenProps } from '@navigators/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { UseBooleanReturnType } from '@hooks';
-import { useAppSettings } from '@hooks/persisted';
+import {
+  useNovelChapters,
+  useNovelPages,
+  useNovelState,
+} from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
+import { useTheme } from '@providers/Providers';
 import { NovelStatus, PluginItem } from '@plugins/types';
 import { translateNovelStatus } from '@utils/translateEnum';
 import { getMMKVObject } from '@utils/mmkv/mmkv';
@@ -38,25 +43,16 @@ import {
   NovelMetaSkeleton,
   VerticalBarSkeleton,
 } from '@components/Skeleton/Skeleton';
-import { useNovelContext } from '@screens/novel/NovelContext';
 
 interface NovelInfoHeaderProps {
-  chapters: ChapterInfo[];
   deleteDownloadsSnackbar: UseBooleanReturnType;
-  fetching: boolean;
   filter: string;
-  isLoading: boolean;
   lastRead?: ChapterInfo;
   navigateToChapter: (chapter: ChapterInfo) => void;
   navigation: GlobalSearchScreenProps['navigation'];
-  novel: NovelData | (Omit<NovelData, 'id'> & { id: 'NO_ID' });
   novelBottomSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   onRefreshPage: (page: string) => void;
   openDrawer: () => void;
-  page?: string;
-  setCustomNovelCover: () => Promise<void>;
-  saveNovelCover: () => Promise<void>;
-  theme: ThemeColors;
   totalChapters?: number;
   trackerSheetRef: React.RefObject<BottomSheetModalMethods | null>;
 }
@@ -72,27 +68,32 @@ const getStatusIcon = (status?: string) => {
 };
 
 const NovelInfoHeader = ({
-  chapters,
   deleteDownloadsSnackbar,
-  fetching,
+
   filter,
-  isLoading = false,
+
   lastRead,
   navigateToChapter,
   navigation,
-  novel,
+
   novelBottomSheetRef,
   onRefreshPage,
   openDrawer,
-  page,
-  setCustomNovelCover,
-  saveNovelCover,
-  theme,
+
   totalChapters,
   trackerSheetRef,
 }: NovelInfoHeaderProps) => {
-  const { hideBackdrop = false } = useAppSettings();
-  const { followNovel } = useNovelContext();
+  const { hideBackdrop = false } = useSettingsContext();
+  const {
+    novel,
+    loading: isLoading,
+    followNovel,
+    saveNovelCover,
+    setCustomNovelCover,
+  } = useNovelState();
+  const { chapters, fetching } = useNovelChapters();
+  const { page } = useNovelPages();
+  const theme = useTheme();
 
   const pluginName = useMemo(
     () =>
@@ -105,6 +106,13 @@ const NovelInfoHeader = ({
   const showNotAvailable = async () => {
     showToast('Not available while loading');
   };
+
+  let chapterText = '';
+  if (!fetching || totalChapters !== undefined) {
+    chapterText = `${totalChapters ?? 0} ${getString('novelScreen.chapters')}`;
+  } else {
+    chapterText = getString('common.loading');
+  }
 
   return (
     <>
@@ -205,7 +213,7 @@ const NovelInfoHeader = ({
           handleTrackerSheet={() => trackerSheetRef.current?.present()}
           theme={theme}
         />
-        {isLoading && (!novel.genres || !novel.summary) ? (
+        {isLoading ? (
           <NovelMetaSkeleton />
         ) : (
           <>
@@ -224,7 +232,7 @@ const NovelInfoHeader = ({
           chapters={chapters}
           lastRead={lastRead}
         />
-        {isLoading && (!novel.genres || !novel.summary) ? (
+        {isLoading ? (
           <VerticalBarSkeleton />
         ) : (
           <Pressable
@@ -247,9 +255,7 @@ const NovelInfoHeader = ({
               ) : null}
 
               <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-                {!fetching || totalChapters !== undefined
-                  ? `${totalChapters} ${getString('novelScreen.chapters')}`
-                  : getString('common.loading')}
+                {chapterText}
               </Text>
             </View>
             {page && Number(page) ? (

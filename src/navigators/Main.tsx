@@ -1,13 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import {
+  DefaultTheme,
+  NavigationContainer,
+  NavigationContainerRef,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {
   changeNavigationBarColor,
   setStatusBarColor,
 } from '@theme/utils/setBarColor';
-import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
+import { usePlugins } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
+import { useTheme } from '@providers/Providers';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
 /**
@@ -41,10 +47,14 @@ import { LibraryContextProvider } from '@components/Context/LibraryContext';
 import { UpdateContextProvider } from '@components/Context/UpdateContext';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const MainNavigator = () => {
-  const theme = useTheme();
-  const { updateLibraryOnLaunch } = useAppSettings();
+const MainNavigator = ({
+  ref,
+}: {
+  ref: React.Ref<NavigationContainerRef<RootStackParamList> | null>;
+}) => {
   const { refreshPlugins } = usePlugins();
+  const { updateLibraryOnLaunch } = useSettingsContext();
+  const theme = useTheme();
   const [isOnboarded] = useMMKVBoolean('IS_ONBOARDED');
 
   useEffect(() => {
@@ -70,24 +80,30 @@ const MainNavigator = () => {
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
 
+  const NavTheme = useMemo(
+    () => ({
+      colors: {
+        ...DefaultTheme.colors,
+        primary: theme.primary,
+        background: theme.background,
+        card: theme.surface,
+        text: theme.onSurface,
+        border: theme.outline,
+      },
+      dark: theme.isDark,
+      fonts: DefaultTheme.fonts,
+    }),
+    [theme],
+  );
+
   if (!isOnboarded) {
     return <OnboardingScreen />;
   }
 
   return (
     <NavigationContainer<RootStackParamList>
-      theme={{
-        colors: {
-          ...DefaultTheme.colors,
-          primary: theme.primary,
-          background: theme.background,
-          card: theme.surface,
-          text: theme.onSurface,
-          border: theme.outline,
-        },
-        dark: theme.isDark,
-        fonts: DefaultTheme.fonts,
-      }}
+      ref={ref}
+      theme={NavTheme}
       linking={{
         prefixes: ['lnreader://'],
         config: {

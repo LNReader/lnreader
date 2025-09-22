@@ -10,11 +10,11 @@ import dayjs from 'dayjs';
 import { NovelInfo } from '@database/types';
 import { sleep } from '@utils/sleep';
 import { getString } from '@strings/translations';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 
 export const createBackup = async () => {
   try {
-    const novels = getLibraryNovelsFromDb();
+    const novels = getLibraryNovelsFromDb({});
 
     const datetime = dayjs().format('YYYY-MM-DD_HH_mm');
     const fileName = 'lnreader_backup_' + datetime + '.json';

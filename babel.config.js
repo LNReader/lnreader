@@ -6,6 +6,11 @@ module.exports = function (api) {
   api.cache(true);
   return {
     presets: ['module:@react-native/babel-preset'],
+    env: {
+      production: {
+        plugins: ['react-native-paper/babel'],
+      },
+    },
     plugins: [
       'module:@babel/plugin-transform-export-namespace-from',
       ['babel-plugin-react-compiler', ReactCompilerConfig],
@@ -20,6 +25,7 @@ module.exports = function (api) {
             '@strings': './strings',
             '@services': './src/services',
             '@plugins': './src/plugins',
+            '@providers': './src/providers',
             '@utils': './src/utils',
             '@theme': './src/theme',
             '@navigators': './src/navigators',
@@ -31,7 +37,6 @@ module.exports = function (api) {
           },
         },
       ],
-      'react-native-reanimated/plugin',
       [
         'module:react-native-dotenv',
         {
@@ -40,6 +45,7 @@ module.exports = function (api) {
           path: '.env',
         },
       ],
+      'react-native-worklets/plugin',
     ],
   };
 };

@@ -6,11 +6,12 @@ import {
 import { insertHistory } from '@database/queries/HistoryQueries';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import {
-  useChapterGeneralSettings,
-  useLibrarySettings,
+  useNovelChapters,
+  useNovelLastRead,
   useTrackedNovel,
   useTracker,
 } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { fetchChapter } from '@services/plugin/fetch';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import {
@@ -32,7 +33,7 @@ import { showToast } from '@utils/showToast';
 import { getString } from '@strings/translations';
 import NativeVolumeButtonListener from '@specs/NativeVolumeButtonListener';
 import NativeFile from '@specs/NativeFile';
-import { useNovelContext } from '@screens/novel/NovelContext';
+import { useNovelChapterCache } from '@screens/novel/context/NovelChapterCacheContext';
 
 const emmiter = new NativeEventEmitter(NativeVolumeButtonListener);
 
@@ -41,12 +42,9 @@ export default function useChapter(
   initialChapter: ChapterInfo,
   novel: NovelInfo,
 ) {
-  const {
-    setLastRead,
-    markChapterRead,
-    updateChapterProgress,
-    chapterTextCache,
-  } = useNovelContext();
+  const { markChapterRead, updateChapterProgress } = useNovelChapters();
+  const { setLastRead } = useNovelLastRead();
+  const { chapterTextCache } = useNovelChapterCache();
   const [hidden, setHidden] = useState(true);
   const [chapter, setChapter] = useState(initialChapter);
   const [loading, setLoading] = useState(true);
@@ -55,9 +53,13 @@ export default function useChapter(
   const [[nextChapter, prevChapter], setAdjacentChapter] = useState<
     ChapterInfo[] | undefined[]
   >([]);
-  const { autoScroll, autoScrollInterval, autoScrollOffset, useVolumeButtons } =
-    useChapterGeneralSettings();
-  const { incognitoMode } = useLibrarySettings();
+  const {
+    autoScroll,
+    autoScrollInterval,
+    autoScrollOffsetPercent,
+    useVolumeButtons,
+    incognitoMode,
+  } = useSettingsContext();
   const [error, setError] = useState<string>();
   const { tracker } = useTracker();
   const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
@@ -103,12 +105,11 @@ export default function useChapter(
       if (NativeFile.exists(filePath)) {
         text = NativeFile.readFile(filePath);
       } else {
-        await fetchChapter(novel.pluginId, path)
-          .then(res => {
-            text = res;
-          })
-          .catch(e => setError(e.message));
+        await fetchChapter(novel.pluginId, path).then(res => {
+          text = res;
+        });
       }
+
       return text;
     },
     [chapter.novelId, novel.pluginId],
@@ -121,15 +122,22 @@ export default function useChapter(
         const cachedText = chapterTextCache.get(chap.id);
         const text = cachedText ?? loadChapterText(chap.id, chap.path);
         const [nextChap, prevChap, awaitedText] = await Promise.all([
-          getNextChapter(chap.novelId, chap.position!, chap.page),
-          getPrevChapter(chap.novelId, chap.position!, chap.page),
+          getNextChapter(chap.novelId, chap.position!, chap.page, novel.name),
+          getPrevChapter(chap.novelId, chap.position!, chap.page, novel.name),
           text,
         ]);
         if (nextChap && !chapterTextCache.get(nextChap.id)) {
-          chapterTextCache.set(
-            nextChap.id,
-            loadChapterText(nextChap.id, nextChap.path),
-          );
+          try {
+            const nextText = await loadChapterText(nextChap.id, nextChap.path);
+            chapterTextCache.set(nextChap.id, nextText);
+          } catch (e: any) {
+            if (
+              'message' in e &&
+              !e.message.includes('Network request failed')
+            ) {
+              setError(e.message);
+            }
+          }
         }
         if (!cachedText) {
           chapterTextCache.set(chap.id, text);
@@ -168,7 +176,7 @@ export default function useChapter(
       scrollInterval.current = setInterval(() => {
         webViewRef.current?.injectJavaScript(`(()=>{
           window.scrollBy({top:${defaultTo(
-            autoScrollOffset,
+            autoScrollOffsetPercent,
             Dimensions.get('window').height,
           )},behavior:'smooth'})
         })()`);
@@ -184,7 +192,7 @@ export default function useChapter(
         clearInterval(scrollInterval.current);
       }
     };
-  }, [autoScroll, autoScrollInterval, autoScrollOffset, webViewRef]);
+  }, [autoScroll, autoScrollInterval, autoScrollOffsetPercent, webViewRef]);
 
   const updateTracker = useCallback(() => {
     const chapterNumber = parseChapterNumber(novel.name, chapter.name);
@@ -253,15 +261,19 @@ export default function useChapter(
   useEffect(() => {
     if (!incognitoMode) {
       insertHistory(chapter.id);
-      getDbChapter(chapter.id).then(result => result && setLastRead(result));
+      getDbChapter(chapter.id, novel.name).then(
+        result => result && setLastRead(result),
+      );
     }
 
     return () => {
       if (!incognitoMode) {
-        getDbChapter(chapter.id).then(result => result && setLastRead(result));
+        getDbChapter(chapter.id, novel.name).then(
+          result => result && setLastRead(result),
+        );
       }
     };
-  }, [incognitoMode, setLastRead, setLoading, chapter.id]);
+  }, [incognitoMode, setLastRead, setLoading, chapter.id, novel.name]);
 
   useEffect(() => {
     if (!chapter || !chapterText) {

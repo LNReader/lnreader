@@ -7,15 +7,19 @@ import React, {
 } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { useAppSettings, useTheme } from '@hooks/persisted';
+import {
+  useNovelChapters,
+  useNovelPages,
+  useNovelSettings,
+} from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { Button, LoadingScreenV2 } from '@components/index';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getString } from '@strings/translations';
 import { ThemeColors } from '@theme/types';
 import renderListChapter from './RenderListChapter';
 import { useChapterContext } from '@screens/reader/ChapterContext';
-import { useNovelContext } from '@screens/novel/NovelContext';
-import { FlashList, ViewToken } from '@shopify/flash-list';
+import { FlashList, FlashListRef, ViewToken } from '@shopify/flash-list';
 import { ChapterInfo } from '@database/types';
 
 type ButtonProperties = {
@@ -30,15 +34,16 @@ type ButtonsProperties = {
 
 const ChapterDrawer = () => {
   const { chapter, getChapter, setLoading } = useChapterContext();
-  const { chapters, novelSettings, pages, setPageIndex } = useNovelContext();
+  const { chapters } = useNovelChapters();
+  const { pages, setPageIndex } = useNovelPages();
+  const { novelSettings } = useNovelSettings();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const { defaultChapterSort } = useAppSettings();
-  const listRef = useRef<FlashList<ChapterInfo> | null>(null);
+  const listRef = useRef<FlashListRef<ChapterInfo> | null>(null);
 
   const styles = createStylesheet(theme, insets);
 
-  const { sort = defaultChapterSort } = novelSettings;
+  const { sort } = novelSettings;
   const listAscending = sort === 'ORDER BY position ASC';
 
   const defaultButtonLayout: ButtonsProperties = useMemo(
@@ -82,7 +87,7 @@ const ChapterDrawer = () => {
     useState<ButtonsProperties>(defaultButtonLayout);
 
   const checkViewableItems = useCallback(
-    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+    ({ viewableItems }: { viewableItems: ViewToken<ChapterInfo>[] }) => {
       const curChapter = getString(
         'readerScreen.drawer.scrollToCurrentChapter',
       );
@@ -171,7 +176,6 @@ const ChapterDrawer = () => {
               },
             })
           }
-          estimatedItemSize={60}
           initialScrollIndex={scrollToIndex.current}
         />
       )}
