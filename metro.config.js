@@ -9,8 +9,7 @@
 
 const path = require('path');
 const fs = require('fs');
-const { mergeConfig } = require('metro-config');
-const { getDefaultConfig } = require('@react-native/metro-config');
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const defaultConfig = getDefaultConfig(__dirname);
 
 const map = {
@@ -23,6 +22,9 @@ const map = {
   '.jpg': 'image/jpeg',
 };
 const customConfig = {
+  resolver: {
+    unstable_enableSymlinks: true, // For pnpm symlinks
+  },
   server: {
     port: 8081,
     enhanceMiddleware: (metroMiddleware, metroServer) => {

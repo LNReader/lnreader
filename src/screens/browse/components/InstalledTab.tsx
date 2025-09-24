@@ -386,7 +386,6 @@ export const InstalledTab = memo(
 
     return (
       <FlashList
-        estimatedItemSize={64}
         data={searchedPlugins}
         renderItem={renderItem}
         removeClippedSubviews={true}

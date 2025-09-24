@@ -84,3 +84,4 @@ src/sources/en/generators/
 *.lock
 .tool-versions
 flake.lock
+.rock/
