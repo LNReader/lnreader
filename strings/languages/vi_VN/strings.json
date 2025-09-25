@@ -14,20 +14,24 @@
     "chapterInsertFailed": "lỗi khi thêm chương",
     "clearCachedNovels": "Dọn truyện được lưu tạm thời",
     "clearCachedNovelsDesc": "Xoá bỏ những truyện không có trong thư viện",
-    "clearDatabaseWarning": "Bạn chắc chứ? Những chương đã đọc, tải xuống và tiến trình của các truyện không nằm trong thư viện sẽ bị mất.",
+    "clearDatabaseWarning": "Read and Downloaded chapters and progress of non-library novels will be lost.",
     "clearUpdatesMessage": "Đã dọn cập nhật.",
     "clearUpdatesTab": "Dọn mục cập nhật",
-    "clearUpdatesWarning": "Bạn chắc chứ? Mục cập nhật sẽ được dọn dẹp.",
+    "clearUpdatesWarning": "Updates tab will be cleared.",
     "clearupdatesTabDesc": "Dọn dẹp các chương truyện ở trong mục cập nhật",
     "dataManagement": "Quản lý dữ liệu",
     "deleteReadChapters": "Xóa chương đã đọc",
-    "deleteReadChaptersDialogTitle": "Bạn có chắc không? Toàn bộ chương được đánh đã đọc sẽ bị xoá.",
+    "deleteReadChaptersDialogTitle": "All chapters marked as read will be deleted.",
     "importEpub": "Nhập file Epub",
     "importNovel": "Nhập truyện",
     "importStaticFiles": "Nhập tệp tin tĩnh",
     "novelInsertFailed": "lỗi khi thêm truyện",
     "useFAB": "Sử dụng nút nổi",
-    "userAgent": "User Agent"
+    "userAgent": "User Agent",
+    "recreateDBIndexes": "Recreate DB indexes",
+    "recreateDBIndexesToast": "Recreated DB indexes",
+    "recreateDBIndexesDialogTitle": "All DB indexes will be recreated.\nThis may take a while.",
+    "recreateDBIndexesDesc": "Recreates DB indexes. This may improve performance on slower devices."
   },
   "appearance": "Giao diện",
   "appearanceScreen": {
@@ -51,7 +55,8 @@
       "tako": "Tako",
       "teal": "Xanh mòng két",
       "turquoise": "Ngọc lam",
-      "yotsuba": "Cỏ bốn lá"
+      "yotsuba": "Cỏ bốn lá",
+      "catppuccin": "Catppuccin"
     }
   },
   "backupScreen": {
@@ -61,6 +66,7 @@
     "createBackupWarning": "Tạo sao lưu có thể không hoạt đông ở Android 9 hoặc thấp hơn.",
     "downloadingData": "Đang tải xuống dữ liệu",
     "downloadingDownloadedFiles": "Đang tải xuống các tệp",
+    "failed": "Backup failed",
     "drive": {
       "backup": "Sao lưu qua Drive",
       "backupInterruped": "Sao lưu bị gián đoạn",
@@ -194,7 +200,9 @@
     "signIn": "Đăng nhập",
     "signOut": "Đăng xuất",
     "sort": "Sắp xếp",
-    "submit": "Gửi"
+    "submit": "Gửi",
+    "loading": "Loading ...",
+    "warning": "Warning"
   },
   "webview": {
     "refresh": "Làm mới",
@@ -352,6 +360,8 @@
       "useCustomJSWarning": "May not be supported by all EPUB readers",
       "useReaderTheme": "Use reader theme"
     },
+    "coverSaved": "Cover saved",
+    "coverNotSaved": "Cover not saved",
     "deleteChapterError": "Không thể xoá thư mục chương",
     "deleteMessage": "Xoá chương đã tải xuống?",
     "deletedAllDownloads": "Xoá tất cả tải xuống",
@@ -386,6 +396,7 @@
     },
     "migrate": "Đồng bộ",
     "noSummary": "Không có tóm tắt",
+    "noCoverFound": "No cover found",
     "progress": "Tiến trình %{progress} %",
     "readChaptersDeleted": "Đã xoá chương đã đọc",
     "startReadingChapters": "Bắt đầu đọc %{name}",
@@ -500,5 +511,15 @@
     "light": "Sáng",
     "dark": "Tối",
     "complete": "Hoàn tất"
+  },
+  "notifications": {
+    "IMPORT_EPUB": "Imported epub",
+    "UPDATE_LIBRARY": "Updated library",
+    "DRIVE_BACKUP": "Drive backup",
+    "DRIVE_RESTORE": "Drive restore",
+    "SELF_HOST_BACKUP": "Self host backup",
+    "SELF_HOST_RESTORE": "Self host restore",
+    "MIGRATE_NOVEL": "Migrated novel",
+    "DOWNLOAD_CHAPTER": "Downloaded chapter"
   }
 }
