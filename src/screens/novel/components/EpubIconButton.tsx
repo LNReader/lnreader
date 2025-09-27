@@ -151,7 +151,20 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
         const chapter = chapters[i];
         const filePath = `${NOVEL_STORAGE}/${novel.pluginId}/${novel.id}/${chapter.id}/index.html`;
         if (NativeFile.exists(filePath)) {
-          const downloaded = NativeFile.readFile(filePath);
+          let downloaded = NativeFile.readFile(filePath);
+
+          const regexString = `(${NOVEL_STORAGE}/${novel.pluginId}/${novel.id}/${chapter.id}/.*?)" `;
+          const urlMatcher = new RegExp(regexString, 'g');
+          for (const match of downloaded.matchAll(urlMatcher)) {
+            const path = match[1];
+
+            if (!path) continue;
+
+            if (!NativeFile.exists(path)) {
+              const figureMatcher = new RegExp(`<figure.*?${path}.*?</figure>`);
+              downloaded = downloaded.replace(figureMatcher, '');
+            }
+          }
 
           await epub.addChapter({
             title:
