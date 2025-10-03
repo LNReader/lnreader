@@ -12,6 +12,7 @@ import { useTheme } from '@hooks/persisted';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
 
 import { NovelItem } from '@plugins/types';
+import { getPlugin } from '@plugins/pluginManager';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
 import { NovelInfo } from '@database/types';
@@ -23,6 +24,7 @@ import { useLibraryContext } from '@components/Context/LibraryContext';
 const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
   const theme = useTheme();
   const { pluginId, pluginName, site, showLatestNovels } = route.params;
+  const imageRequestInit = getPlugin(pluginId)?.imageRequestInit;
 
   const {
     isLoading,
@@ -142,6 +144,7 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
                   setInActivity(prev => ({ ...prev, [item.path]: false }));
                 }}
                 selectedNovelIds={[]}
+                imageRequestInit={imageRequestInit}
               />
             );
           }}

@@ -21,6 +21,7 @@ import { getRepositoriesFromDb } from '@database/queries/RepositoryQueries';
 import { showToast } from '@utils/showToast';
 import { PLUGIN_STORAGE } from '@utils/Storages';
 import NativeFile from '@specs/NativeFile';
+import { getUserAgent } from '@hooks/persisted/useUserAgent';
 
 const packages: Record<string, any> = {
   'htmlparser2': { Parser },
@@ -54,6 +55,25 @@ const initPlugin = (pluginId: string, rawCode: string) => {
       ${rawCode}; 
       return exports.default`,
     )(_require, {});
+
+    if (!plugin.imageRequestInit) {
+      plugin.imageRequestInit = {
+        headers: { 'User-Agent': getUserAgent() },
+      };
+    } else {
+      if (!plugin.imageRequestInit.headers) {
+        plugin.imageRequestInit.headers = {};
+      }
+
+      const hasUserAgent = Object.keys(plugin.imageRequestInit.headers).some(
+        header => header.toLowerCase() === 'user-agent',
+      );
+
+      if (!hasUserAgent) {
+        plugin.imageRequestInit.headers['User-Agent'] = getUserAgent();
+      }
+    }
+
     return plugin;
   } catch {
     return undefined;
