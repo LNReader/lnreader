@@ -160,7 +160,6 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
 
   return (
     <FlashList
-      estimatedItemSize={64}
       data={searchedPlugins}
       extraData={theme}
       renderItem={renderItem}
@@ -197,7 +196,8 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
                     navigation.navigate('MoreStack', {
                       screen: 'SettingsStack',
                       params: {
-                        screen: 'RespositorySettings',
+                        screen: 'SubScreen',
+                        params: { settingsSource: 'repo' },
                       },
                     }),
                 },

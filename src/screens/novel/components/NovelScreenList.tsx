@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import { pickCustomNovelCover } from '@database/queries/NovelQueries';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { useBoolean } from '@hooks/index';
-import { useAppSettings, useDownload, useTheme } from '@hooks/persisted';
+import { useDownload, useTheme } from '@hooks/persisted';
 import {
   updateNovel,
   updateNovelPage,
@@ -27,14 +27,15 @@ import { AnimatedFAB } from 'react-native-paper';
 import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { useNovelContext } from '../NovelContext';
-import { FlashList } from '@shopify/flash-list';
+import { FlashList, FlashListRef } from '@shopify/flash-list';
 import FileManager from '@specs/NativeFile';
 import { downloadFile } from '@plugins/helpers/fetch';
-import { StorageAccessFramework } from 'expo-file-system';
+import { StorageAccessFramework } from 'expo-file-system/legacy';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 type NovelScreenListProps = {
   headerOpacity: SharedValue<number>;
-  listRef: React.RefObject<FlashList<ChapterInfo> | null>;
+  listRef: React.RefObject<FlashListRef<ChapterInfo> | null>;
   navigation: any;
   openDrawer: () => void;
   selected: ChapterInfo[];
@@ -94,7 +95,7 @@ const NovelScreenList = ({
     disableHapticFeedback,
     downloadNewChapters,
     refreshNovelMetadata,
-  } = useAppSettings();
+  } = useSettingsContext();
 
   const {
     sort = defaultChapterSort,
@@ -301,7 +302,6 @@ const NovelScreenList = ({
     <>
       <FlashList
         ref={listRef}
-        estimatedItemSize={64}
         data={chapters}
         extraData={[
           chapters.length,

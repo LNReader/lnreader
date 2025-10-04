@@ -10,8 +10,9 @@ import { sleep } from '@utils/sleep';
 import { MMKVStorage, getMMKVObject } from '@utils/mmkv/mmkv';
 import { LAST_UPDATE_TIME } from '@hooks/persisted/useUpdates';
 import dayjs from 'dayjs';
-import { APP_SETTINGS, AppSettings } from '@hooks/persisted/useSettings';
+import { SETTINGS } from '@hooks/persisted/useSettings';
 import { BackgroundTaskMetadata } from '@services/ServiceManager';
+import { DefaultSettings } from '@screens/settings/constants/defaultValues';
 
 const updateLibrary = async (
   {
@@ -30,7 +31,7 @@ const updateLibrary = async (
   }));
 
   const { downloadNewChapters, refreshNovelMetadata, onlyUpdateOngoingNovels } =
-    getMMKVObject<AppSettings>(APP_SETTINGS) || {};
+    getMMKVObject<DefaultSettings>(SETTINGS) || {};
   const options: UpdateNovelOptions = {
     downloadNewChapters: downloadNewChapters || false,
     refreshNovelMetadata: refreshNovelMetadata || false,

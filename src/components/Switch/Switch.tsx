@@ -34,8 +34,6 @@ const Switch = ({ value, size = 22, onValueChange, style }: SwitchProps) => {
           damping: 15,
           stiffness: 120,
           overshootClamping: false,
-          restSpeedThreshold: 0.001,
-          restDisplacementThreshold: 0.001,
         }),
       },
     ],

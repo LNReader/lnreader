@@ -57,6 +57,7 @@
             pkgs.mkShell {
               buildInputs = with pkgs; [
                 nodejs_20
+                nodePackages.pnpm
                 openjdk17
                 androidSdk
                 gradle
@@ -107,10 +108,10 @@
                 echo "Emulator Enabled: Yes"
                 echo ""
                 echo "--- Available Commands ---"
-                echo "  npx react-native run-android"
+                echo "  pnpm android"
+                echo "  pnpm start"
                 echo "  adb devices"
                 echo "  scrcpy"
-                echo "  npm start"
                 echo "--------------------------"
               '';
             };
@@ -125,6 +126,7 @@
             pkgs.mkShell {
               buildInputs = with pkgs; [
                 nodejs_20
+                nodePackages.pnpm
                 openjdk17
                 androidSdk
                 gradle
@@ -166,15 +168,13 @@
                 echo "Emulator Enabled: No"
                 echo ""
                 echo "--- Available Commands ---"
-                echo "  npx react-native run-android"
+                echo "  pnpm android"
+                echo "  pnpm start"
                 echo "  adb devices"
                 echo "  scrcpy"
-                echo "  npm start"
                 echo "--------------------------"
               '';
             };
-            
-           
         };
       });
 }

@@ -6,9 +6,8 @@ import { getLibraryNovelsFromDb } from '@database/queries/LibraryQueries';
 
 import { Category, NovelInfo } from '@database/types';
 
-import { useLibrarySettings } from '@hooks/persisted';
-import { LibrarySortOrder } from '../constants/constants';
 import { switchNovelToLibraryQuery } from '@database/queries/NovelQueries';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 // type Library = Category & { novels: LibraryNovelInfo[] };
 export type ExtendedCategory = Category & { novelIds: number[] };
@@ -26,11 +25,7 @@ export type UseLibraryReturnType = {
 };
 
 export const useLibrary = (): UseLibraryReturnType => {
-  const {
-    filter,
-    sortOrder = LibrarySortOrder.DateAdded_DESC,
-    downloadedOnlyMode = false,
-  } = useLibrarySettings();
+  const { filter, sortOrder, downloadedOnlyMode } = useSettingsContext();
 
   const [library, setLibrary] = useState<NovelInfo[]>([]);
   const [categories, setCategories] = useState<ExtendedCategory[]>([]);

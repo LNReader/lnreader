@@ -1,10 +1,10 @@
 import {
-  DisplayModes,
-  LibraryFilter,
-  LibrarySortOrder,
-} from '@screens/library/constants/constants';
+  defaultSettings,
+  DefaultSettings,
+  ReaderTheme,
+} from '@screens/settings/constants/defaultValues';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useMMKVObject } from 'react-native-mmkv';
-import { Voice } from 'expo-speech';
 
 export const APP_SETTINGS = 'APP_SETTINGS';
 export const BROWSE_SETTINGS = 'BROWSE_SETTINGS';
@@ -12,290 +12,98 @@ export const LIBRARY_SETTINGS = 'LIBRARY_SETTINGS';
 export const CHAPTER_GENERAL_SETTINGS = 'CHAPTER_GENERAL_SETTINGS';
 export const CHAPTER_READER_SETTINGS = 'CHAPTER_READER_SETTINGS';
 
-export interface AppSettings {
-  /**
-   * General settings
-   */
+export const SETTINGS = 'SETTINGS';
 
-  incognitoMode: boolean;
-  disableHapticFeedback: boolean;
+export const useSettings = () => {
+  const [settings, _setSettings] = useMMKVObject<DefaultSettings>(SETTINGS);
 
-  /**
-   * Appearence settings
-   */
+  // Only read partial settings if main settings is undefined
+  const [appSettings] = useMMKVObject<Partial<DefaultSettings>>(APP_SETTINGS);
+  const [browseSettings] =
+    useMMKVObject<Partial<DefaultSettings>>(BROWSE_SETTINGS);
+  const [librarySettings] =
+    useMMKVObject<Partial<DefaultSettings>>(LIBRARY_SETTINGS);
+  const [chapterGeneralSettings] = useMMKVObject<Partial<DefaultSettings>>(
+    CHAPTER_GENERAL_SETTINGS,
+  );
+  const [chapterReaderSettings] = useMMKVObject<Partial<DefaultSettings>>(
+    CHAPTER_READER_SETTINGS,
+  );
 
-  showHistoryTab: boolean;
-  showUpdatesTab: boolean;
-  showLabelsInNav: boolean;
-  useFabForContinueReading: boolean;
-  disableLoadingAnimations: boolean;
+  // Memoize the merged settings to avoid unnecessary recalculations
+  const mergedSettings = useMemo(() => {
+    if (settings !== undefined) return settings;
 
-  /**
-   * Library settings
-   */
-
-  downloadedOnlyMode: boolean;
-  useLibraryFAB: boolean;
-
-  /**
-   * Update settings
-   */
-
-  onlyUpdateOngoingNovels: boolean;
-  updateLibraryOnLaunch: boolean;
-  downloadNewChapters: boolean;
-  refreshNovelMetadata: boolean;
-
-  /**
-   * Novel settings
-   */
-
-  hideBackdrop: boolean;
-  defaultChapterSort: string;
-}
-
-export interface BrowseSettings {
-  showMyAnimeList: boolean;
-  showAniList: boolean;
-  globalSearchConcurrency?: number;
-}
-
-export interface LibrarySettings {
-  sortOrder?: LibrarySortOrder;
-  filter?: LibraryFilter;
-  showDownloadBadges?: boolean;
-  showUnreadBadges?: boolean;
-  showNumberOfNovels?: boolean;
-  displayMode?: DisplayModes;
-  novelsPerRow?: number;
-  incognitoMode?: boolean;
-  downloadedOnlyMode?: boolean;
-}
-
-export interface ChapterGeneralSettings {
-  keepScreenOn: boolean;
-  fullScreenMode: boolean;
-  pageReader: boolean;
-  swipeGestures: boolean;
-  showScrollPercentage: boolean;
-  useVolumeButtons: boolean;
-  showBatteryAndTime: boolean;
-  autoScroll: boolean;
-  autoScrollInterval: number;
-  autoScrollOffset: number | null;
-  verticalSeekbar: boolean;
-  removeExtraParagraphSpacing: boolean;
-  bionicReading: boolean;
-  tapToScroll: boolean;
-  TTSEnable: boolean;
-}
-
-export interface ReaderTheme {
-  backgroundColor: string;
-  textColor: string;
-}
-
-export interface ChapterReaderSettings {
-  theme: string;
-  textColor: string;
-  textSize: number;
-  textAlign: string;
-  padding: number;
-  fontFamily: string;
-  lineHeight: number;
-  customCSS: string;
-  customJS: string;
-  customThemes: ReaderTheme[];
-  tts?: {
-    voice?: Voice;
-    rate?: number;
-    pitch?: number;
-  };
-  epubLocation: string;
-  epubUseAppTheme: boolean;
-  epubUseCustomCSS: boolean;
-  epubUseCustomJS: boolean;
-}
-
-const initialAppSettings: AppSettings = {
-  /**
-   * General settings
-   */
-
-  incognitoMode: false,
-  disableHapticFeedback: false,
-
-  /**
-   * Appearence settings
-   */
-
-  showHistoryTab: true,
-  showUpdatesTab: true,
-  showLabelsInNav: true,
-  useFabForContinueReading: false,
-  disableLoadingAnimations: false,
-
-  /**
-   * Library settings
-   */
-
-  downloadedOnlyMode: false,
-  useLibraryFAB: false,
-
-  /**
-   * Update settings
-   */
-
-  onlyUpdateOngoingNovels: false,
-  updateLibraryOnLaunch: false,
-  downloadNewChapters: false,
-  refreshNovelMetadata: false,
-
-  /**
-   * Novel settings
-   */
-
-  hideBackdrop: false,
-  defaultChapterSort: 'ORDER BY position ASC',
-};
-
-const initialBrowseSettings: BrowseSettings = {
-  showMyAnimeList: true,
-  showAniList: true,
-  globalSearchConcurrency: 3,
-};
-
-export const initialChapterGeneralSettings: ChapterGeneralSettings = {
-  keepScreenOn: true,
-  fullScreenMode: true,
-  pageReader: false,
-  swipeGestures: false,
-  showScrollPercentage: true,
-  useVolumeButtons: false,
-  showBatteryAndTime: false,
-  autoScroll: false,
-  autoScrollInterval: 10,
-  autoScrollOffset: null,
-  verticalSeekbar: true,
-  removeExtraParagraphSpacing: false,
-  bionicReading: false,
-  tapToScroll: false,
-  TTSEnable: false,
-};
-
-export const initialChapterReaderSettings: ChapterReaderSettings = {
-  theme: '#292832',
-  textColor: '#CCCCCC',
-  textSize: 16,
-  textAlign: 'left',
-  padding: 16,
-  fontFamily: '',
-  lineHeight: 1.5,
-  customCSS: '',
-  customJS: '',
-  customThemes: [],
-  tts: {
-    rate: 1,
-    pitch: 1,
-  },
-  epubLocation: '',
-  epubUseAppTheme: false,
-  epubUseCustomCSS: false,
-  epubUseCustomJS: false,
-};
-
-export const useAppSettings = () => {
-  const [appSettings = initialAppSettings, setSettings] =
-    useMMKVObject<AppSettings>(APP_SETTINGS);
-
-  const setAppSettings = (values: Partial<AppSettings>) =>
-    setSettings({ ...appSettings, ...values });
-
-  return {
-    ...appSettings,
-    setAppSettings,
-  };
-};
-
-export const useBrowseSettings = () => {
-  const [browseSettings = initialBrowseSettings, setSettings] =
-    useMMKVObject<BrowseSettings>(BROWSE_SETTINGS);
-
-  const setBrowseSettings = (values: Partial<BrowseSettings>) =>
-    setSettings({ ...browseSettings, ...values });
-
-  return {
-    ...browseSettings,
-    setBrowseSettings,
-  };
-};
-
-const defaultLibrarySettings: LibrarySettings = {
-  showNumberOfNovels: false,
-  downloadedOnlyMode: false,
-  incognitoMode: false,
-  displayMode: DisplayModes.Comfortable,
-  showDownloadBadges: true,
-  showUnreadBadges: true,
-  novelsPerRow: 3,
-  sortOrder: LibrarySortOrder.DateAdded_DESC,
-};
-
-export const useLibrarySettings = () => {
-  const [librarySettings, setSettings] =
-    useMMKVObject<LibrarySettings>(LIBRARY_SETTINGS);
-
-  const setLibrarySettings = (value: Partial<LibrarySettings>) =>
-    setSettings({ ...librarySettings, ...value });
-
-  return {
-    ...{ ...defaultLibrarySettings, ...librarySettings },
-    setLibrarySettings,
-  };
-};
-
-export const useChapterGeneralSettings = () => {
-  const [chapterGeneralSettings = initialChapterGeneralSettings, setSettings] =
-    useMMKVObject<ChapterGeneralSettings>(CHAPTER_GENERAL_SETTINGS);
-
-  const setChapterGeneralSettings = (values: Partial<ChapterGeneralSettings>) =>
-    setSettings({ ...chapterGeneralSettings, ...values });
-
-  return {
-    ...chapterGeneralSettings,
-    setChapterGeneralSettings,
-  };
-};
-
-export const useChapterReaderSettings = () => {
-  const [chapterReaderSettings = initialChapterReaderSettings, setSettings] =
-    useMMKVObject<ChapterReaderSettings>(CHAPTER_READER_SETTINGS);
-
-  const setChapterReaderSettings = (values: Partial<ChapterReaderSettings>) =>
-    setSettings({ ...chapterReaderSettings, ...values });
-
-  const saveCustomReaderTheme = (theme: ReaderTheme) =>
-    setSettings({
+    return {
+      ...defaultSettings,
+      ...appSettings,
+      ...browseSettings,
+      ...librarySettings,
+      ...chapterGeneralSettings,
       ...chapterReaderSettings,
-      customThemes: [theme, ...chapterReaderSettings.customThemes],
-    });
+    };
+  }, [
+    settings,
+    appSettings,
+    browseSettings,
+    librarySettings,
+    chapterGeneralSettings,
+    chapterReaderSettings,
+  ]);
 
-  const deleteCustomReaderTheme = (theme: ReaderTheme) =>
-    setSettings({
-      ...chapterReaderSettings,
-      customThemes: chapterReaderSettings.customThemes.filter(
-        v =>
-          !(
-            v.backgroundColor === theme.backgroundColor &&
-            v.textColor === theme.textColor
-          ),
-      ),
-    });
+  useEffect(() => {
+    if (settings === undefined) {
+      _setSettings(mergedSettings);
+    }
+  }, [settings, _setSettings, mergedSettings]);
 
-  return {
-    ...chapterReaderSettings,
-    setChapterReaderSettings,
-    saveCustomReaderTheme,
-    deleteCustomReaderTheme,
-  };
+  const setSettings = useCallback(
+    (values: Partial<DefaultSettings>) =>
+      _setSettings(prev => ({ ...prev, ...values } as DefaultSettings)),
+    [_setSettings],
+  );
+
+  const saveCustomReaderTheme = useCallback(
+    (theme: ReaderTheme) => {
+      const themes = settings?.customThemes || [];
+      setSettings({
+        customThemes: [theme, ...themes],
+      });
+    },
+    [setSettings, settings?.customThemes],
+  );
+
+  const deleteCustomReaderTheme = useCallback(
+    (theme: ReaderTheme) => {
+      const themes = settings?.customThemes || [];
+      setSettings({
+        customThemes: themes.filter(
+          v =>
+            !(
+              v.backgroundColor === theme.backgroundColor &&
+              v.textColor === theme.textColor
+            ),
+        ),
+      });
+    },
+    [setSettings, settings?.customThemes],
+  );
+
+  // Memoize the final settings object to provide a stable default
+  const value = useMemo(
+    () => ({
+      ...mergedSettings, // Use merged settings
+      setSettings,
+      saveCustomReaderTheme,
+      deleteCustomReaderTheme,
+    }),
+    [
+      mergedSettings,
+      setSettings,
+      saveCustomReaderTheme,
+      deleteCustomReaderTheme,
+    ],
+  );
+
+  return value;
 };
