@@ -28,7 +28,7 @@
     "novelInsertFailed": "فشل إدراج الرواية",
     "useFAB": "Use FAB instead of button",
     "userAgent": "وكيل المستخدم",
-    "recreateDBIndexes": "Recreate DB indexes",
+    "recreateDBIndexes": "",
     "recreateDBIndexesToast": "Recreated DB indexes",
     "recreateDBIndexesDialogTitle": "All DB indexes will be recreated.\nThis may take a while.",
     "recreateDBIndexesDesc": "Recreates DB indexes. This may improve performance on slower devices."
