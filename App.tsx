@@ -44,9 +44,10 @@ Notifications.setNotificationHandler({
     };
   },
 });
-createTables();
 
 const App = () => {
+  createTables();
+
   const navigationRef =
     useRef<NavigationContainerRef<RootStackParamList>>(null);
   // Enable React Navigation DevTools in development
