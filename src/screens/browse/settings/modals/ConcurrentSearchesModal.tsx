@@ -6,8 +6,8 @@ import { Portal } from 'react-native-paper';
 import { RadioButton } from '@components/RadioButton/RadioButton';
 import { ThemeColors } from '@theme/types';
 import { getString } from '@strings/translations';
-import { useBrowseSettings } from '@hooks/persisted/index';
 import { Modal } from '@components';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 
 interface DisplayModeModalProps {
   globalSearchConcurrency: number;
@@ -22,7 +22,7 @@ const ConcurrentSearchesModal: React.FC<DisplayModeModalProps> = ({
   hideModal,
   modalVisible,
 }) => {
-  const { setBrowseSettings } = useBrowseSettings();
+  const { setSettings: setBrowseSettings } = useSettingsContext();
 
   return (
     <Portal>

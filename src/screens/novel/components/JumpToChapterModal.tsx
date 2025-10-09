@@ -9,28 +9,28 @@ import { getString } from '@strings/translations';
 import { Button, Modal, SwitchItem } from '@components';
 
 import { Portal, Text } from 'react-native-paper';
-import { useTheme } from '@hooks/persisted';
-import { ChapterInfo, NovelInfo } from '@database/types';
+import { useTheme } from '@providers/Providers';
+import { ChapterInfo } from '@database/types';
 import { NovelScreenProps } from '@navigators/types';
-import { FlashList, ListRenderItem } from '@shopify/flash-list';
+import { FlashList, FlashListRef, ListRenderItem } from '@shopify/flash-list';
+import useNovelState from '@hooks/persisted/novel/useNovelState';
+import useNovelChapters from '@hooks/persisted/novel/useNovelChapters';
 
 interface JumpToChapterModalProps {
   hideModal: () => void;
   modalVisible: boolean;
-  chapters: ChapterInfo[];
   navigation: NovelScreenProps['navigation'];
-  novel: NovelInfo;
-  chapterListRef: React.RefObject<FlashList<ChapterInfo> | null>;
+  chapterListRef: React.RefObject<FlashListRef<ChapterInfo> | null>;
 }
 
 const JumpToChapterModal = ({
   hideModal,
   modalVisible,
-  chapters,
   navigation,
-  novel,
   chapterListRef,
 }: JumpToChapterModalProps) => {
+  const { novel, loading } = useNovelState();
+  const { chapters } = useNovelChapters();
   const minNumber = Math.min(...chapters.map(c => c.chapterNumber || -1));
   const maxNumber = Math.max(...chapters.map(c => c.chapterNumber || -1));
   const theme = useTheme();
@@ -55,6 +55,7 @@ const JumpToChapterModal = ({
   };
   const navigateToChapter = (chap: ChapterInfo) => {
     onDismiss();
+    if (loading) return;
     navigation.navigate('Chapter', {
       novel: novel,
       chapter: chap,
@@ -217,7 +218,6 @@ const JumpToChapterModal = ({
         {result.length ? (
           <View style={[styles.flashlist, { borderColor: theme.outline }]}>
             <FlashList
-              estimatedItemSize={70}
               data={result}
               extraData={openChapter}
               renderItem={renderItem}

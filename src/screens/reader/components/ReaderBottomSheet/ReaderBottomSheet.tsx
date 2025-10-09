@@ -6,18 +6,13 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {
-  RefObject,
-  useMemo,
-  useState,
-  useCallback,
-  Suspense,
-} from 'react';
+import React, { RefObject, useMemo, useState, useCallback } from 'react';
 import Color from 'color';
 
 import { BottomSheetFlashList, BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
-import { useChapterGeneralSettings, useTheme } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
+import { useTheme } from '@providers/Providers';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { getString } from '@strings/translations';
 
@@ -31,6 +26,7 @@ import { overlay } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { StringMap } from '@strings/types';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 type TabViewLabelProps = {
   route: {
@@ -44,8 +40,8 @@ type TabViewLabelProps = {
   style?: StyleProp<TextStyle | null>;
 };
 
-const ReaderTab: React.FC = React.memo(() => (
-  <Suspense fallback={<></>}>
+const ReaderTab: React.FC = React.memo(() => {
+  return (
     <View style={styles.readerTab}>
       <TextSizeSlider />
       <ReaderThemeSelector />
@@ -65,13 +61,13 @@ const ReaderTab: React.FC = React.memo(() => (
       />
       <ReaderFontPicker />
     </View>
-  </Suspense>
-));
+  );
+});
 
 const GeneralTab: React.FC = React.memo(() => {
   const theme = useTheme();
-  const { setChapterGeneralSettings, ...settings } =
-    useChapterGeneralSettings();
+  const { setSettings: setChapterGeneralSettings, ...settings } =
+    useSettingsContext();
 
   const toggleSetting = useCallback(
     (key: keyof typeof settings) =>
@@ -120,13 +116,14 @@ const GeneralTab: React.FC = React.memo(() => {
   );
 
   return (
-    <BottomSheetFlashList
-      data={preferences}
-      extraData={[settings]}
-      keyExtractor={item => item.key}
-      renderItem={renderItem}
-      estimatedItemSize={60}
-    />
+    <View style={styles.container}>
+      <BottomSheetFlashList
+        data={preferences}
+        extraData={[settings]}
+        keyExtractor={(item: { key: string }) => item.key}
+        renderItem={renderItem}
+      />
+    </View>
   );
 });
 
@@ -186,17 +183,19 @@ const ReaderBottomSheetV2: React.FC<ReaderBottomSheetV2Props> = ({
       ]}
     >
       <BottomSheetView style={styles.flex}>
-        <TabView
-          commonOptions={{
-            label: renderLabel,
-          }}
-          navigationState={{ index, routes }}
-          renderTabBar={renderTabBar}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          style={styles.tabView}
-        />
+        <GestureHandlerRootView style={styles.flex}>
+          <TabView
+            commonOptions={{
+              label: renderLabel,
+            }}
+            navigationState={{ index, routes }}
+            renderTabBar={renderTabBar}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={{ width: layout.width, height: 400 }}
+            style={styles.tabView}
+          />
+        </GestureHandlerRootView>
       </BottomSheetView>
     </BottomSheet>
   );
@@ -206,10 +205,12 @@ export default React.memo(ReaderBottomSheetV2);
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     borderRadius: 8,
   },
   readerTab: {
     paddingVertical: 8,
+    flex: 1,
   },
   tabBar: {
     borderBottomWidth: 0.5,
@@ -218,6 +219,7 @@ const styles = StyleSheet.create({
   tabView: {
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
+    height: 800,
   },
   flex: { flex: 1 },
 });

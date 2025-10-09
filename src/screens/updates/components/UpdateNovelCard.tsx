@@ -11,7 +11,8 @@ import {
 import { List } from 'react-native-paper';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import ChapterItem from '@screens/novel/components/ChapterItem';
-import { useDownload, useTheme, useUpdates } from '@hooks/persisted';
+import { useDownload, useUpdates } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { RootStackParamList } from '@navigators/types';
 import { FlatList } from 'react-native-gesture-handler';
 import { defaultCover } from '@plugins/helpers/constants';
@@ -78,6 +79,16 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
       );
     }
   };
+
+  const handleDeleteChapter = useCallback(
+    (chapter: Update | DownloadedChapter) => {
+      deleteChapter(chapter);
+      if (onlyDownloadedChapters) {
+        setChapterList(chapterList.filter(c => c.id !== chapter.id));
+      }
+    },
+    [chapterList, deleteChapter, onlyDownloadedChapters],
+  );
 
   const navigateToChapter = useCallback(
     (chapter: ChapterInfo) => {
@@ -157,10 +168,9 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                   isUpdateCard
                   novelName={chapterListInfo.novelName}
                   chapter={item}
-                  theme={theme}
                   showChapterTitles={false}
                   downloadChapter={() => handleDownloadChapter(item)}
-                  deleteChapter={() => deleteChapter(item)}
+                  deleteChapter={() => handleDeleteChapter(item)}
                   navigateToChapter={navigateToChapter}
                   left={
                     <View style={styles.novelCover}>
@@ -181,13 +191,12 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
     return (
       <ChapterItem
         isLocal={false}
+        isUpdateCard
         isDownloading={downloadQueue.some(
           c => c.task.data.chapterId === chapterList[0]?.id,
         )}
-        isUpdateCard
         novelName={chapterListInfo.novelName}
         chapter={chapterList[0]}
-        theme={theme}
         showChapterTitles={false}
         downloadChapter={() => handleDownloadChapter(chapterList[0])}
         deleteChapter={() => deleteChapter(chapterList[0])}

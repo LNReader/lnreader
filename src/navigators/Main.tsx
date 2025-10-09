@@ -1,13 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import {
+  DefaultTheme,
+  NavigationContainer,
+  NavigationContainerRef,
+} from '@react-navigation/native';
+import LottieSplashScreen from 'react-native-lottie-splash-screen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {
   changeNavigationBarColor,
   setStatusBarColor,
 } from '@theme/utils/setBarColor';
-import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
+import { usePlugins } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
+import { useTheme } from '@providers/Providers';
 import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
 
 /**
@@ -41,10 +48,14 @@ import { LibraryContextProvider } from '@components/Context/LibraryContext';
 import { UpdateContextProvider } from '@components/Context/UpdateContext';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const MainNavigator = () => {
-  const theme = useTheme();
-  const { updateLibraryOnLaunch } = useAppSettings();
+const MainNavigator = ({
+  ref,
+}: {
+  ref: React.Ref<NavigationContainerRef<RootStackParamList> | null>;
+}) => {
   const { refreshPlugins } = usePlugins();
+  const { updateLibraryOnLaunch } = useSettingsContext();
+  const theme = useTheme();
   const [isOnboarded] = useMMKVBoolean('IS_ONBOARDED');
 
   useEffect(() => {
@@ -70,64 +81,87 @@ const MainNavigator = () => {
 
   const { isNewVersion, latestRelease } = useGithubUpdateChecker();
 
+  const NavTheme = useMemo(
+    () => ({
+      colors: {
+        ...DefaultTheme.colors,
+        primary: theme.primary,
+        background: theme.background,
+        card: theme.surface,
+        text: theme.onSurface,
+        border: theme.outline,
+      },
+      dark: theme.isDark,
+      fonts: DefaultTheme.fonts,
+    }),
+    [theme],
+  );
+
   if (!isOnboarded) {
-    return <OnboardingScreen />;
+    LottieSplashScreen.hide();
+    return (
+      <>
+        <OnboardingScreen />
+      </>
+    );
   }
 
   return (
-    <NavigationContainer<RootStackParamList>
-      theme={{
-        colors: {
-          ...DefaultTheme.colors,
-          primary: theme.primary,
-          background: theme.background,
-          card: theme.surface,
-          text: theme.onSurface,
-          border: theme.outline,
-        },
-        dark: theme.isDark,
-        fonts: DefaultTheme.fonts,
-      }}
-      linking={{
-        prefixes: ['lnreader://'],
-        config: {
-          screens: {
-            MoreStack: {
-              screens: {
-                SettingsStack: {
-                  screens: {
-                    RespositorySettings: '/repo/add',
+    <>
+      <NavigationContainer<RootStackParamList>
+        ref={ref}
+        theme={NavTheme}
+        onReady={() => {
+          // Hide splash screen when navigation is ready (BottomNavigator loaded)
+          LottieSplashScreen.hide();
+        }}
+        linking={{
+          prefixes: ['lnreader://'],
+          config: {
+            screens: {
+              MoreStack: {
+                screens: {
+                  SettingsStack: {
+                    screens: {
+                      RespositorySettings: '/repo/add',
+                    },
                   },
                 },
               },
             },
           },
-        },
-      }}
-    >
-      <LibraryContextProvider>
-        <UpdateContextProvider>
-          {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="BottomNavigator" component={BottomNavigator} />
-            <Stack.Screen name="ReaderStack" component={ReaderStack} />
-            <Stack.Screen name="MoreStack" component={MoreStack} />
-            <Stack.Screen name="SourceScreen" component={BrowseSourceScreen} />
-            <Stack.Screen name="BrowseMal" component={MalTopNovels} />
-            <Stack.Screen name="BrowseAL" component={AniListTopNovels} />
-            <Stack.Screen name="BrowseSettings" component={BrowseSettings} />
-            <Stack.Screen
-              name="GlobalSearchScreen"
-              component={GlobalSearchScreen}
-            />
-            <Stack.Screen name="Migration" component={Migration} />
-            <Stack.Screen name="SourceNovels" component={SourceNovels} />
-            <Stack.Screen name="MigrateNovel" component={MigrateNovel} />
-            <Stack.Screen name="WebviewScreen" component={WebviewScreen} />
-          </Stack.Navigator>
-        </UpdateContextProvider>
-      </LibraryContextProvider>
-    </NavigationContainer>
+        }}
+      >
+        <LibraryContextProvider>
+          <UpdateContextProvider>
+            {isNewVersion && <NewUpdateDialog newVersion={latestRelease} />}
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen
+                name="BottomNavigator"
+                component={BottomNavigator}
+              />
+              <Stack.Screen name="ReaderStack" component={ReaderStack} />
+              <Stack.Screen name="MoreStack" component={MoreStack} />
+              <Stack.Screen
+                name="SourceScreen"
+                component={BrowseSourceScreen}
+              />
+              <Stack.Screen name="BrowseMal" component={MalTopNovels} />
+              <Stack.Screen name="BrowseAL" component={AniListTopNovels} />
+              <Stack.Screen name="BrowseSettings" component={BrowseSettings} />
+              <Stack.Screen
+                name="GlobalSearchScreen"
+                component={GlobalSearchScreen}
+              />
+              <Stack.Screen name="Migration" component={Migration} />
+              <Stack.Screen name="SourceNovels" component={SourceNovels} />
+              <Stack.Screen name="MigrateNovel" component={MigrateNovel} />
+              <Stack.Screen name="WebviewScreen" component={WebviewScreen} />
+            </Stack.Navigator>
+          </UpdateContextProvider>
+        </LibraryContextProvider>
+      </NavigationContainer>
+    </>
   );
 };
 

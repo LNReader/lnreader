@@ -11,6 +11,11 @@ import { getString } from '@strings/translations';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { db } from '@database/db';
 import NativeFile from '@specs/NativeFile';
+import {
+  normaliseAsyncChapter,
+  normaliseAsyncChapters,
+  normaliseChapters,
+} from '@utils/normalizeChapters';
 
 // #region Mutations
 
@@ -195,15 +200,20 @@ export const getCustomPages = (novelId: number) =>
   );
 
 export const getNovelChapters = (novelId: number) =>
-  db.getAllAsync<ChapterInfo>(
-    'SELECT * FROM Chapter WHERE novelId = ?',
-    novelId,
+  normaliseAsyncChapters(
+    db.getAllAsync<ChapterInfo>(
+      'SELECT * FROM Chapter WHERE novelId = ?',
+      novelId,
+    ),
   );
 
-export const getChapter = (chapterId: number) =>
-  db.getFirstAsync<ChapterInfo>(
-    'SELECT * FROM Chapter WHERE id = ?',
-    chapterId,
+export const getChapter = (chapterId: number, novelName?: string) =>
+  normaliseAsyncChapter(
+    db.getFirstAsync<ChapterInfo>(
+      'SELECT * FROM Chapter WHERE id = ?',
+      chapterId,
+    ),
+    novelName,
   );
 
 const getPageChaptersQuery = (
@@ -221,37 +231,49 @@ const getPageChaptersQuery = (
 
 export const getPageChapters = (
   novelId: number,
+  novelName: string,
   sort?: string,
   filter?: string,
   page?: string,
   offset?: number,
   limit?: number,
 ) => {
-  return db.getAllAsync<ChapterInfo>(
-    getPageChaptersQuery(sort, filter, limit, offset),
-    novelId,
-    page || '1',
+  return normaliseAsyncChapters(
+    db.getAllAsync<ChapterInfo>(
+      getPageChaptersQuery(sort, filter, limit, offset),
+      novelId,
+      page || '1',
+    ),
+    novelName,
   );
 };
 
-export const getChapterCount = (novelId: number, page: string = '1') =>
+export const getChapterCount = (
+  novelId: number,
+  page: string = '1',
+  filter: string = '',
+) =>
   db.getFirstSync<{ 'COUNT(*)': number }>(
-    'SELECT COUNT(*) FROM Chapter WHERE novelId = ? AND page = ?',
+    `SELECT COUNT(*) FROM Chapter WHERE novelId = ? AND page = ? ${filter}`,
     novelId,
     page,
   )?.['COUNT(*)'] ?? 0;
 
 export const getPageChaptersBatched = (
   novelId: number,
+  novelName: string,
   sort?: string,
   filter?: string,
   page?: string,
   batch: number = 0,
 ) => {
-  return db.getAllSync<ChapterInfo>(
-    getPageChaptersQuery(sort, filter, 300, 300 * batch),
-    novelId,
-    page || '1',
+  return normaliseChapters(
+    db.getAllSync<ChapterInfo>(
+      getPageChaptersQuery(sort, filter, 300, 300 * batch),
+      novelId,
+      page || '1',
+    ),
+    novelName,
   );
 };
 
@@ -259,49 +281,60 @@ export const getPrevChapter = (
   novelId: number,
   chapterPosition: number,
   page: string,
+  novelName: string,
 ) =>
-  db.getFirstAsync<ChapterInfo>(
-    `SELECT * FROM Chapter 
+  normaliseAsyncChapter(
+    db.getFirstAsync<ChapterInfo>(
+      `SELECT * FROM Chapter 
       WHERE novelId = ? 
       AND (
         (position < ? AND page = ?) 
         OR page < ?
       )
       ORDER BY position DESC, page DESC`,
-    novelId,
-    chapterPosition,
-    page,
-    page,
+      novelId,
+      chapterPosition,
+      page,
+      page,
+    ),
+    novelName,
   );
 
 export const getNextChapter = (
   novelId: number,
   chapterPosition: number,
   page: string,
+  novelName: string,
 ) =>
-  db.getFirstAsync<ChapterInfo>(
-    `SELECT * FROM Chapter 
+  normaliseAsyncChapter(
+    db.getFirstAsync<ChapterInfo>(
+      `SELECT * FROM Chapter 
       WHERE novelId = ? 
       AND (
         (page = ? AND position > ?)  
         OR (position = 0 AND page > ?) 
       )
       ORDER BY position ASC, page ASC`,
-    novelId,
-    page,
-    chapterPosition,
-    page,
+      novelId,
+      page,
+      chapterPosition,
+      page,
+    ),
+    novelName,
   );
 
 const getReadDownloadedChapters = () =>
-  db.getAllAsync<DownloadedChapter>(`
+  normaliseAsyncChapters(
+    db.getAllAsync<DownloadedChapter>(`
         SELECT Chapter.id, Chapter.novelId, pluginId 
         FROM Chapter
         JOIN Novel
-        ON Novel.id = Chapter.novelId AND unread = 0 AND isDownloaded = 1`);
+        ON Novel.id = Chapter.novelId AND unread = 0 AND isDownloaded = 1`),
+  );
 
 export const getDownloadedChapters = () =>
-  db.getAllAsync<DownloadedChapter>(`
+  normaliseAsyncChapters(
+    db.getAllAsync<DownloadedChapter>(`
     SELECT
       Chapter.*,
       Novel.pluginId, Novel.name as novelName, Novel.cover as novelCover, Novel.path as novelPath
@@ -309,7 +342,8 @@ export const getDownloadedChapters = () =>
     JOIN Novel
     ON Chapter.novelId = Novel.id
     WHERE Chapter.isDownloaded = 1
-  `);
+  `),
+  );
 
 export const getUpdatedOverviewFromDb = () =>
   db.getAllAsync<UpdateOverview>(`SELECT

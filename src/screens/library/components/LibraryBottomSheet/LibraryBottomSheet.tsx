@@ -15,7 +15,8 @@ import {
 } from 'react-native-tab-view';
 import color from 'color';
 
-import { useLibrarySettings, useTheme } from '@hooks/persisted';
+import { useSettingsContext } from '@components/Context/SettingsContext';
+import { useTheme } from '@providers/Providers';
 import { getString } from '@strings/translations';
 import { Checkbox, SortItem } from '@components/Checkbox/Checkbox';
 import {
@@ -32,6 +33,7 @@ import { BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { FlashList } from '@shopify/flash-list';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 interface LibraryBottomSheetProps {
   bottomSheetRef: RefObject<BottomSheetModalMethods | null>;
@@ -42,14 +44,13 @@ const FirstRoute = () => {
   const theme = useTheme();
   const {
     filter,
-    setLibrarySettings,
+    setSettings: setLibrarySettings,
     downloadedOnlyMode = false,
-  } = useLibrarySettings();
+  } = useSettingsContext();
 
   return (
     <View style={styles.flex}>
       <FlashList
-        estimatedItemSize={4}
         extraData={[filter]}
         data={libraryFilterList}
         renderItem={({ item }) => (
@@ -74,15 +75,16 @@ const FirstRoute = () => {
 
 const SecondRoute = () => {
   const theme = useTheme();
-  const { sortOrder = LibrarySortOrder.DateAdded_DESC, setLibrarySettings } =
-    useLibrarySettings();
+  const {
+    sortOrder = LibrarySortOrder.DateAdded_DESC,
+    setSettings: setLibrarySettings,
+  } = useSettingsContext();
 
   return (
     <View style={styles.flex}>
       <FlashList
         data={librarySortOrderList}
         extraData={[sortOrder]}
-        estimatedItemSize={5}
         renderItem={({ item }) => (
           <SortItem
             label={item.label}
@@ -113,8 +115,8 @@ const ThirdRoute = () => {
     showNumberOfNovels = false,
     showUnreadBadges = true,
     displayMode = DisplayModes.Comfortable,
-    setLibrarySettings,
-  } = useLibrarySettings();
+    setSettings: setLibrarySettings,
+  } = useSettingsContext();
 
   return (
     <View style={styles.flex}>
@@ -155,7 +157,6 @@ const ThirdRoute = () => {
         {getString('libraryScreen.bottomSheet.display.displayMode')}
       </Text>
       <FlashList
-        estimatedItemSize={4}
         data={displayModesList}
         extraData={[displayMode]}
         renderItem={({ item }) => (
@@ -239,15 +240,17 @@ const LibraryBottomSheet: React.FC<LibraryBottomSheetProps> = ({
           { backgroundColor: overlay(2, theme.surface) },
         ]}
       >
-        <TabView
-          commonOptions={commonOptions}
-          navigationState={{ index, routes }}
-          renderTabBar={renderTabBar}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          style={styles.tabView}
-        />
+        <GestureHandlerRootView style={styles.gestureHandler}>
+          <TabView
+            commonOptions={commonOptions}
+            navigationState={{ index, routes }}
+            renderTabBar={renderTabBar}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={{ width: layout.width }}
+            style={styles.tabView}
+          />
+        </GestureHandlerRootView>
       </BottomSheetView>
     </BottomSheet>
   );
@@ -272,6 +275,10 @@ const styles = StyleSheet.create({
   tabView: {
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
+    height: 480, // Explicit height instead of flex
+  },
+  gestureHandler: {
+    flex: 1,
   },
   flex: { flex: 1 },
 });

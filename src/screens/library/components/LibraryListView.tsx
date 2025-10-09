@@ -9,7 +9,7 @@ import NovelList, { NovelListRenderItem } from '@components/NovelList';
 import { NovelInfo } from '@database/types';
 
 import { getString } from '@strings/translations';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { LibraryScreenProps } from '@navigators/types';
 import ServiceManager from '@services/ServiceManager';
 

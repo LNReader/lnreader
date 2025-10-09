@@ -2,12 +2,12 @@ import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useCallback, useMemo, useState } from 'react';
 import color from 'color';
 
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 
 import { getString } from '@strings/translations';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 
 import { GlobalSearchResult } from '../hooks/useGlobalSearch';
 import GlobalSearchSkeletonLoading from '@screens/browse/loadingAnimation/GlobalSearchSkeletonLoading';
@@ -44,7 +44,7 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
   item,
 }) => {
   const theme = useTheme();
-  const navigation = useNavigation<StackNavigationProp<any>>();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const [inActivity, setInActivity] = useState<Record<string, boolean>>({});
   const { novelInLibrary, switchNovelToLibrary } = useLibraryContext();
 

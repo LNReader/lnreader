@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 
-import { FAB } from 'react-native-paper';
+import { FAB, Portal } from 'react-native-paper';
 import { ErrorScreenV2, SafeAreaView, SearchbarV2 } from '@components/index';
 import NovelList from '@components/NovelList';
 import NovelCover from '@components/NovelCover';
@@ -8,17 +8,19 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import FilterBottomSheet from './components/FilterBottomSheet';
 
 import { useSearch } from '@hooks';
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { useBrowseSource, useSearchSource } from './useBrowseSource';
 
 import { NovelItem } from '@plugins/types';
 import { getString } from '@strings/translations';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { NovelInfo } from '@database/types';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BrowseSourceScreenProps } from '@navigators/types';
 import { useLibraryContext } from '@components/Context/LibraryContext';
+import KeyboardAvoidingModal from '@components/Modal/KeyboardAvoidingModal';
+import TextInput from '@components/TextInput/TextInput';
 
 const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
   const theme = useTheme();
@@ -58,6 +60,10 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
     clearSearchResults();
   };
 
+  const handleDirectNovelOpen = () => {
+    setShowDirectOpenModal(true);
+  };
+
   const handleOpenWebView = async () => {
     navigation.navigate('WebviewScreen', {
       name: pluginName,
@@ -68,16 +74,19 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
 
   const { novelInLibrary, switchNovelToLibrary } = useLibraryContext();
   const [inActivity, setInActivity] = useState<Record<string, boolean>>({});
+  const [showDirectOpenModal, setShowDirectOpenModal] = useState(false);
+  const [directUrl, setDirectUrl] = useState('');
 
   const navigateToNovel = useCallback(
-    (item: NovelItem | NovelInfo) =>
+    (item: NovelItem | NovelInfo) => {
       navigation.navigate('ReaderStack', {
         screen: 'Novel',
         params: {
           ...item,
           pluginId: pluginId,
         },
-      }),
+      });
+    },
     [navigation, pluginId],
   );
 
@@ -93,7 +102,13 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
         onSubmitEditing={onSubmitEditing}
         clearSearchbar={handleClearSearchbar}
         handleBackAction={navigation.goBack}
-        rightIcons={[{ iconName: 'earth', onPress: handleOpenWebView }]}
+        rightIcons={[
+          { iconName: 'earth', onPress: handleOpenWebView },
+          {
+            iconName: 'link',
+            onPress: handleDirectNovelOpen,
+          },
+        ]}
         theme={theme}
       />
       {isLoading || isSearching ? (
@@ -182,6 +197,36 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
           />
         </>
       ) : null}
+
+      {/* Direct Open Modal */}
+      <Portal>
+        <KeyboardAvoidingModal
+          visible={showDirectOpenModal}
+          onDismiss={() => setShowDirectOpenModal(false)}
+          onCancel={() => {
+            setShowDirectOpenModal(false);
+            setDirectUrl('');
+          }} // @ts-ignore
+          onSave={() => navigateToNovel({ path: directUrl, name: directUrl })}
+          title={getString('browseSourceScreen.directOpen.title')}
+        >
+          <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
+            {getString('browseSourceScreen.directOpen.title')}
+          </Text>
+          <Text
+            style={[styles.modalDescription, { color: theme.onSurfaceVariant }]}
+          >
+            {getString('browseSourceScreen.directOpen.message')}
+          </Text>
+          <TextInput
+            placeholder={`${pluginName} novel URL or path`}
+            defaultValue={directUrl}
+            onChangeText={setDirectUrl}
+            style={styles.textInput}
+            autoFocus
+          />
+        </KeyboardAvoidingModal>
+      </Portal>
     </SafeAreaView>
   );
 };
@@ -194,5 +239,27 @@ const styles = StyleSheet.create({
     margin: 16,
     position: 'absolute',
     right: 0,
+  },
+  modalContainer: {
+    margin: 20,
+    borderRadius: 8,
+    padding: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  modalDescription: {
+    fontSize: 14,
+    marginBottom: 16,
+  },
+  textInput: {
+    marginBottom: 16,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 12,
   },
 });

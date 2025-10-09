@@ -4,7 +4,7 @@ import {
   ButtonProps as PaperButtonProps,
 } from 'react-native-paper';
 
-import { useTheme } from '@hooks/persisted';
+import { useTheme } from '@providers/Providers';
 import { ThemeProp } from 'react-native-paper/lib/typescript/types';
 
 interface ButtonProps extends Partial<PaperButtonProps> {

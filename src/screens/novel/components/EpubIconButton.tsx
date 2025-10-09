@@ -1,18 +1,17 @@
-import React, { useMemo } from 'react';
-import { Portal } from 'react-native-paper';
-import ChooseEpubLocationModal from './ChooseEpubLocationModal';
-import { StatusBar, StyleProp, ViewStyle } from 'react-native';
-import { ThemeColors } from '@theme/types';
-
 import EpubBuilder from '@cd-z/react-native-epub-creator';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { ChapterInfo, NovelInfo } from '@database/types';
-
-import { useChapterReaderSettings } from '@hooks/persisted';
 import { useBoolean } from '@hooks/index';
+import NativeFile from '@specs/NativeFile';
+import { ThemeColors } from '@theme/types';
+import { MaterialDesignIconName } from '@type/icon';
 import { showToast } from '@utils/showToast';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import NativeFile from '@specs/NativeFile';
-import { MaterialDesignIconName } from '@type/icon';
+import React, { useMemo } from 'react';
+import { StatusBar, StyleProp, ViewStyle } from 'react-native';
+import { Portal } from 'react-native-paper';
+
+import ChooseEpubLocationModal from './ChooseEpubLocationModal';
 
 interface EpubIconButtonProps {
   theme: ThemeColors;
@@ -37,12 +36,25 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     setTrue: showModal,
     setFalse: hideModal,
   } = useBoolean(false);
-  const readerSettings = useChapterReaderSettings();
+  const readerSettings = useSettingsContext();
   const {
-    epubUseAppTheme = false,
-    epubUseCustomCSS = false,
-    epubUseCustomJS = false,
-  } = useChapterReaderSettings();
+    epubUseAppTheme,
+    epubUseCustomCSS,
+    epubUseCustomJS,
+    codeSnippetsCSS,
+    codeSnippetsJS,
+  } = readerSettings;
+
+  const epubCSS = useMemo(
+    () =>
+      !novel || !epubUseCustomCSS
+        ? ''
+        : codeSnippetsCSS
+            .filter(snippet => snippet.active)
+            .map(snippet => snippet.code)
+            .join('\n'),
+    [novel, epubUseCustomCSS, codeSnippetsCSS],
+  );
 
   const epubStyle = useMemo(
     () =>
@@ -66,7 +78,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
                 text-align: ${readerSettings.textAlign};
                 line-height: ${readerSettings.lineHeight};
                 font-family: "${readerSettings.fontFamily}";
-                background-color: "${readerSettings.theme}";
+                background-color: "${readerSettings.backgroundColor}";
               }
               hr {
                 margin-top: 20px;
@@ -83,16 +95,7 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
             }`
               : ''
           }
-      ${
-        epubUseCustomCSS
-          ? readerSettings.customCSS
-              .replace(
-                RegExp(`#sourceId-${novel.pluginId}\\s*\\{`, 'g'),
-                'body {',
-              )
-              .replace(RegExp(`#sourceId-${novel.pluginId}[^.#A-Z]*`, 'gi'), '')
-          : ''
-      }`,
+      ${epubUseCustomCSS && epubCSS ? epubCSS : ''}`,
     [
       novel,
       epubUseAppTheme,
@@ -102,8 +105,8 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
       readerSettings.textAlign,
       readerSettings.lineHeight,
       readerSettings.fontFamily,
-      readerSettings.theme,
-      readerSettings.customCSS,
+      readerSettings.backgroundColor,
+      epubCSS,
       theme.primary,
       epubUseCustomCSS,
     ],
@@ -111,19 +114,21 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
 
   const epubJS = useMemo(
     () =>
-      !novel
+      !novel || !epubUseCustomJS
         ? ''
-        : `
-        let novelName = "${novel.name}";
-        let chapterName = "";
-        let sourceId =${novel.pluginId};
-        let chapterId ="";
-        let novelId =${novel.id};
-        let html = document.querySelector("chapter").innerHTML;
-          
-        ${readerSettings.customJS}
-        `,
-    [novel, readerSettings],
+        : codeSnippetsJS
+            .filter(snippet => snippet.active)
+            .map(
+              snippet => `
+    try {
+       ${snippet.code}
+    } catch (error) {
+      console.error(\`Error executing ${snippet.name}:\`, error);
+    }
+    `,
+            )
+            .join('\n'),
+    [novel, epubUseCustomJS, codeSnippetsJS],
   );
 
   const createEpub = async (uri: string) => {

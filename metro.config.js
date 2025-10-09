@@ -7,10 +7,10 @@
  * @type {import('@react-native/metro-config').MetroConfig}
  */
 
+const { withRozenite } = require('@rozenite/metro');
 const path = require('path');
 const fs = require('fs');
-const { mergeConfig } = require('metro-config');
-const { getDefaultConfig } = require('@react-native/metro-config');
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const defaultConfig = getDefaultConfig(__dirname);
 
 const map = {
@@ -23,6 +23,17 @@ const map = {
   '.jpg': 'image/jpeg',
 };
 const customConfig = {
+  resolver: {
+    unstable_enableSymlinks: true, // For pnpm symlinks
+  },
+  transformer: {
+    getTransformOptions: async () => ({
+      transform: {
+        experimentalImportSupport: false,
+        inlineRequires: true, 
+      },
+    }),
+  },
   server: {
     port: 8081,
     enhanceMiddleware: (metroMiddleware, metroServer) => {
@@ -49,4 +60,4 @@ const customConfig = {
     },
   },
 };
-module.exports = mergeConfig(defaultConfig, customConfig);
+module.exports = withRozenite(mergeConfig(defaultConfig, customConfig));

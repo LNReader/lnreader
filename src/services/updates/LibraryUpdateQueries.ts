@@ -3,7 +3,6 @@ import { ChapterItem, SourceNovel } from '@plugins/types';
 import { getPlugin, LOCAL_PLUGIN_ID } from '@plugins/pluginManager';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { downloadFile } from '@plugins/helpers/fetch';
-import ServiceManager from '@services/ServiceManager';
 import { db } from '@database/db';
 import NativeFile from '@specs/NativeFile';
 
@@ -58,6 +57,7 @@ const updateNovelChapters = (
   chapters: ChapterItem[],
   downloadNewChapters?: boolean,
   page?: string,
+  addDownloadTask?: (chapterId: number, chapterName: string) => void,
 ) =>
   db.withExclusiveTransactionAsync(async tx => {
     for (let position = 0; position < chapters.length; position++) {
@@ -95,15 +95,8 @@ const updateNovelChapters = (
       }
 
       if (insertId && insertId >= 0) {
-        if (downloadNewChapters) {
-          ServiceManager.manager.addTask({
-            name: 'DOWNLOAD_CHAPTER',
-            data: {
-              chapterId: insertId,
-              novelName: novelName,
-              chapterName: name,
-            },
-          });
+        if (downloadNewChapters && addDownloadTask) {
+          addDownloadTask(insertId, name);
         }
       } else {
         await tx.runAsync(
@@ -138,6 +131,7 @@ const updateNovel = async (
   novelPath: string,
   novelId: number,
   options: UpdateNovelOptions,
+  addDownloadTask?: (chapterId: number, chapterName: string) => void,
 ) => {
   if (pluginId === LOCAL_PLUGIN_ID) {
     return;
@@ -157,6 +151,8 @@ const updateNovel = async (
     novelId,
     novel.chapters || [],
     downloadNewChapters,
+    undefined,
+    addDownloadTask,
   );
 };
 
@@ -166,6 +162,7 @@ const updateNovelPage = async (
   novelId: number,
   page: string,
   options: Pick<UpdateNovelOptions, 'downloadNewChapters'>,
+  addDownloadTask?: (chapterId: number, chapterName: string) => void,
 ) => {
   const { downloadNewChapters } = options;
   const sourcePage = await fetchPage(pluginId, novelPath, page);
@@ -175,6 +172,7 @@ const updateNovelPage = async (
     sourcePage.chapters || [],
     downloadNewChapters,
     page,
+    addDownloadTask,
   );
 };
 

@@ -11,19 +11,29 @@ import MaterialIcon from '@react-native-vector-icons/material-design-icons';
 
 import { List as PaperList, Divider as PaperDivider } from 'react-native-paper';
 import { ThemeColors } from '../../theme/types';
+import { MaterialDesignIconName } from '@type/icon';
 
 interface ListItemProps {
   title: string;
   description?: string | null;
-  icon?: string;
+  icon?: MaterialDesignIconName;
   onPress?: () => void;
+  onPressIn?: () => void;
   theme: ThemeColors;
   disabled?: boolean;
   right?: string;
 }
 
-const Section = ({ children }: { children: ReactNode }) => (
-  <PaperList.Section style={styles.listSection}>{children}</PaperList.Section>
+const Section = ({
+  children,
+  style,
+}: {
+  style?: ViewStyle;
+  children: ReactNode;
+}) => (
+  <PaperList.Section style={[styles.listSection, style]}>
+    {children}
+  </PaperList.Section>
 );
 
 const SubHeader = ({
@@ -43,6 +53,7 @@ const Item: React.FC<ListItemProps> = ({
   description,
   icon,
   onPress,
+  onPressIn,
   theme,
   disabled,
   right,
@@ -88,6 +99,7 @@ const Item: React.FC<ListItemProps> = ({
       onPress={onPress}
       rippleColor={theme.rippleColor}
       style={styles.listItemCtn}
+      onPressIn={onPressIn}
     />
   );
 };
@@ -124,7 +136,7 @@ const Icon = ({ icon, theme }: { icon: string; theme: ThemeColors }) => (
 
 interface ColorItemProps {
   title: string;
-  description: string;
+  description?: string;
   theme: ThemeColors;
   onPress: () => void;
 }
@@ -200,7 +212,8 @@ const styles = StyleSheet.create({
     marginVertical: 0,
   },
   pressable: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

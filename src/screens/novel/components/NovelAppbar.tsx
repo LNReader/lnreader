@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { getString } from '@strings/translations';
-import { Appbar, Menu as DefaultMenu } from 'react-native-paper';
+import { Appbar } from 'react-native-paper';
 import { ThemeColors } from '@theme/types';
 import Animated, {
   FadeIn,
@@ -12,9 +12,14 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import EpubIconButton from './EpubIconButton';
-import { ChapterInfo, NovelInfo } from '@database/types';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { Share, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { MaterialDesignIconName } from '@type/icon';
+import useNovelChapters from '@hooks/persisted/novel/useNovelChapters';
+import useNovelState from '@hooks/persisted/novel/useNovelState';
+import { useDownload } from '@hooks/persisted';
+import { isNumber } from 'lodash-es';
+import { resolveUrl } from '@services/plugin/fetch';
+import { Menu as DefaultMenu } from '@components';
 
 const Menu = React.memo(
   ({
@@ -35,7 +40,6 @@ const Menu = React.memo(
         visible={visible}
         onDismiss={onDismiss}
         anchor={anchor}
-        anchorPosition="bottom"
         contentStyle={{ backgroundColor: theme.surface2 }}
       >
         {items.map((item, index) => (
@@ -56,34 +60,58 @@ const Menu = React.memo(
 );
 
 const NovelAppbar = ({
-  novel,
-  chapters,
   theme,
   isLocal,
-  downloadChapters,
-  deleteChapters,
   showEditInfoModal,
   downloadCustomChapterModal,
-  setCustomNovelCover,
   goBack,
-  shareNovel,
   showJumpToChapterModal,
   headerOpacity,
 }: {
-  novel: NovelInfo | undefined;
-  chapters: ChapterInfo[];
   theme: ThemeColors;
   isLocal: boolean | undefined;
-  downloadChapters: (amount: number | 'all' | 'unread') => void;
-  deleteChapters: () => void;
   showEditInfoModal: React.Dispatch<React.SetStateAction<boolean>>;
   downloadCustomChapterModal: () => void;
-  setCustomNovelCover: () => Promise<void>;
   goBack: () => void;
-  shareNovel: () => void;
   showJumpToChapterModal: (arg: boolean) => void;
   headerOpacity: SharedValue<number>;
 }) => {
+  const { novel, loading, setCustomNovelCover } = useNovelState();
+  const { chapters, deleteChapters: _deleteChapters } = useNovelChapters();
+  const { downloadChapters: _downloadChapters } = useDownload();
+
+  const downloadChapters = useCallback(
+    (amount: number | 'all' | 'unread') => {
+      if (!novel) {
+        return;
+      }
+      let filtered = chapters.filter(chapter => !chapter.isDownloaded);
+      if (amount === 'unread') {
+        filtered = filtered.filter(chapter => chapter.unread);
+      }
+      if (isNumber(amount)) {
+        filtered = filtered.slice(0, amount);
+      }
+      if (filtered && !loading) {
+        _downloadChapters(novel, filtered);
+      }
+    },
+    [novel, chapters, loading, _downloadChapters],
+  );
+
+  const deleteChapters = useCallback(() => {
+    _deleteChapters(chapters.filter(c => c.isDownloaded));
+  }, [chapters, _deleteChapters]);
+
+  const shareNovel = () => {
+    if (!novel) {
+      return;
+    }
+    Share.share({
+      message: resolveUrl(novel.pluginId, novel.path, true),
+    });
+  };
+
   const headerOpacityStyle = useAnimatedStyle(() => {
     const backgroundColor = interpolateColor(
       headerOpacity.value,
@@ -167,9 +195,8 @@ const NovelAppbar = ({
         <View style={styles.row}>
           <EpubIconButton
             theme={theme}
-            novel={novel}
-            chapters={chapters}
             anchor={AppbarAction}
+            chapters={chapters}
           />
 
           <AppbarAction icon="share-variant" onPress={shareNovel} />
