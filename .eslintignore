@@ -1,0 +1,9 @@
+
+// These files cause a bug in a lint plugin
+src/plugins/types/filterTypes.ts
+src/screens/reader/components/ReaderBottomSheet/ReaderValueChange.tsx
+src/screens/settings/constants/defaultValues.ts
+src/screens/BrowseSourceScreen/components/filterUtils.ts
+src/screens/BrowseSourceScreen/components/FilterBottomSheet.tsx
+src/screens/BrowseSourceScreen/useBrowseSource.ts
+src/plugins/types/index.ts
