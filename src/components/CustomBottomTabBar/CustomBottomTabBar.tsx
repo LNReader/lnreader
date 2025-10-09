@@ -80,7 +80,9 @@ function CustomBottomTabBar({
           });
         };
 
-        const iconColor = isFocused ? theme.onPrimary : theme.onSurfaceVariant;
+        const iconColor = isFocused
+          ? theme.onPrimaryContainer
+          : theme.onSurfaceVariant;
 
         return (
           <Pressable
