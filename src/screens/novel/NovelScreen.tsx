@@ -1,6 +1,5 @@
-import React, { Suspense, useCallback, useMemo, useRef, useState } from 'react';
+import React, { Suspense, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View, StatusBar, Text } from 'react-native';
-import { Drawer } from 'react-native-drawer-layout';
 import Animated, {
   SlideInUp,
   SlideOutUp,
@@ -19,7 +18,6 @@ import NovelScreenLoading from './components/LoadingAnimation/NovelScreenLoading
 import { NovelScreenProps } from '@navigators/types';
 import { ChapterInfo } from '@database/types';
 import { getString } from '@strings/translations';
-import NovelDrawer from './components/NovelDrawer';
 import { noop } from 'lodash-es';
 import NovelAppbar from './components/NovelAppbar';
 import { updateChapterProgressByIds } from '@database/queries/ChapterQueries';
@@ -47,7 +45,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
     refreshChapters,
     deleteChapters,
   } = useNovelChapters();
-  const { pageIndex, pages, openPage } = useNovelPages();
+  const { openPage } = useNovelPages();
 
   const theme = useTheme();
   const { downloadChapters } = useDownload();
@@ -60,11 +58,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   const deleteDownloadsSnackbar = useBoolean();
 
   const headerOpacity = useSharedValue(0);
-  const {
-    value: drawerOpen,
-    setTrue: openDrawer,
-    setFalse: closeDrawer,
-  } = useBoolean();
 
   // TODO: fix this
   // useEffect(() => {
@@ -182,45 +175,10 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
 
   const styles = useMemo(() => createStyles(theme), [theme]);
 
-  const renderDrawerContent = useCallback(() => {
-    if (loading) {
-      return null;
-    }
-    if ((novel?.totalPages ?? 0) > 1 || pages.length > 1) {
-      return (
-        <NovelDrawer
-          theme={theme}
-          pages={pages}
-          pageIndex={pageIndex}
-          openPage={openPage}
-          closeDrawer={closeDrawer}
-        />
-      );
-    }
-    return null;
-  }, [
-    loading,
-    novel?.totalPages,
-    pages,
-    theme,
-    pageIndex,
-    openPage,
-    closeDrawer,
-  ]);
   return (
-    <Drawer
-      open={drawerOpen}
-      onOpen={openDrawer}
-      onClose={closeDrawer}
-      swipeEnabled={pages.length > 1}
-      hideStatusBarOnOpen={true}
-      swipeMinVelocity={1000}
-      drawerStyle={styles.drawer}
-      renderDrawerContent={renderDrawerContent}
-    >
-      <Portal.Host>
-        <View style={[styles.container, { backgroundColor: theme.background }]}>
-          <Portal>
+    <Portal.Host>
+      <View style={[styles.container, { backgroundColor: theme.background }]}>
+        <Portal>
             {selected.length === 0 ? (
               <NovelAppbar
                 showEditInfoModal={showEditInfoModal}
@@ -263,7 +221,7 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
                 headerOpacity={headerOpacity}
                 listRef={chapterListRef}
                 navigation={navigation}
-                openDrawer={openDrawer}
+                onPageChange={openPage}
                 routeBaseNovel={route.params}
                 selected={selected}
                 setSelected={setSelected}
@@ -319,7 +277,6 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
           </Portal>
         </View>
       </Portal.Host>
-    </Drawer>
   );
 };
 
@@ -338,7 +295,6 @@ function createStyles(theme: ThemeColors) {
       width: '100%',
     },
     container: { flex: 1 },
-    drawer: { backgroundColor: 'transparent' },
     rowBack: {
       alignItems: 'center',
       flex: 1,

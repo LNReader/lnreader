@@ -8,7 +8,7 @@ import { ReaderStackParamList } from '@navigators/types';
 import { RouteProp } from '@react-navigation/native';
 import { fetchNovel } from '@services/plugin/fetch';
 import { getString } from '@strings/translations';
-import { createContext, useCallback, useMemo, useState } from 'react';
+import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 
 type Route = RouteProp<ReaderStackParamList, 'Novel'>;
 type Params = Route['params'];
@@ -87,6 +87,11 @@ export function NovelStateContextProvider({
     setLoading(false);
     return tmpNovel;
   }, [calculatePages, path, pluginId]);
+
+  // Load novel on mount
+  useEffect(() => {
+    getNovel();
+  }, [getNovel]);
 
   const contextValue = useMemo(
     () =>

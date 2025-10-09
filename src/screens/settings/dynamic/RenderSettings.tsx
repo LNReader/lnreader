@@ -17,7 +17,7 @@ import { RouteProp } from '@react-navigation/native';
 const RenderSettings = ({
   setting,
   quickSettings,
-  route,
+  route: _route,
 }: {
   setting: SettingsItem;
   quickSettings?: boolean;

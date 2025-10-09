@@ -1,10 +1,8 @@
 import React, { memo, useMemo } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import color from 'color';
+import { View, StyleSheet } from 'react-native';
 
 import * as Clipboard from 'expo-clipboard';
 
-import { IconButton } from 'react-native-paper';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 
 import { showToast } from '@utils/showToast';
@@ -22,7 +20,6 @@ import ReadButton from './ReadButton';
 import NovelSummary from '../NovelSummary/NovelSummary';
 import NovelScreenButtonGroup from '../NovelScreenButtonGroup/NovelScreenButtonGroup';
 import { getString } from '@strings/translations';
-import { filterColor } from '@theme/colors';
 import { ChapterInfo } from '@database/types';
 import { GlobalSearchScreenProps } from '@navigators/types';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
@@ -38,6 +35,7 @@ import { NovelStatus, PluginItem } from '@plugins/types';
 import { translateNovelStatus } from '@utils/translateEnum';
 import { getMMKVObject } from '@utils/mmkv/mmkv';
 import { AVAILABLE_PLUGINS } from '@hooks/persisted/usePlugins';
+import NovelPagination from '../NovelPagination';
 
 import {
   NovelMetaSkeleton,
@@ -46,13 +44,12 @@ import {
 
 interface NovelInfoHeaderProps {
   deleteDownloadsSnackbar: UseBooleanReturnType;
-  filter: string;
   lastRead?: ChapterInfo;
   navigateToChapter: (chapter: ChapterInfo) => void;
   navigation: GlobalSearchScreenProps['navigation'];
-  novelBottomSheetRef: React.RefObject<BottomSheetModalMethods | null>;
+  _novelBottomSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   onRefreshPage: (page: string) => void;
-  openDrawer: () => void;
+  onPageChange: (index: number) => void;
   totalChapters?: number;
   trackerSheetRef: React.RefObject<BottomSheetModalMethods | null>;
 }
@@ -70,15 +67,13 @@ const getStatusIcon = (status?: string) => {
 const NovelInfoHeader = ({
   deleteDownloadsSnackbar,
 
-  filter,
-
   lastRead,
   navigateToChapter,
   navigation,
 
-  novelBottomSheetRef,
+  _novelBottomSheetRef,
   onRefreshPage,
-  openDrawer,
+  onPageChange,
 
   totalChapters,
   trackerSheetRef,
@@ -91,8 +86,8 @@ const NovelInfoHeader = ({
     saveNovelCover,
     setCustomNovelCover,
   } = useNovelState();
-  const { chapters, fetching } = useNovelChapters();
-  const { page } = useNovelPages();
+  const { chapters } = useNovelChapters();
+  const { page, pages, pageIndex } = useNovelPages();
   const theme = useTheme();
 
   const pluginName = useMemo(
@@ -106,13 +101,6 @@ const NovelInfoHeader = ({
   const showNotAvailable = async () => {
     showToast('Not available while loading');
   };
-
-  let chapterText = '';
-  if (!fetching || totalChapters !== undefined) {
-    chapterText = `${totalChapters ?? 0} ${getString('novelScreen.chapters')}`;
-  } else {
-    chapterText = getString('common.loading');
-  }
 
   return (
     <>
@@ -235,44 +223,16 @@ const NovelInfoHeader = ({
         {isLoading ? (
           <VerticalBarSkeleton />
         ) : (
-          <Pressable
-            style={styles.bottomsheet}
-            onPress={() =>
-              page ? openDrawer() : novelBottomSheetRef.current?.present()
-            }
-            android_ripple={{
-              color: color(theme.primary).alpha(0.12).string(),
-            }}
-          >
-            <View style={styles.flex}>
-              {page || novel.totalPages ? (
-                <Text
-                  numberOfLines={2}
-                  style={[{ color: theme.onSurface }, styles.pageTitle]}
-                >
-                  Page: {page ?? ''}
-                </Text>
-              ) : null}
-
-              <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-                {chapterText}
-              </Text>
-            </View>
-            {page && Number(page) ? (
-              <IconButton
-                icon="reload"
-                iconColor={theme.onSurface}
-                size={24}
-                onPress={() => onRefreshPage(page)}
-              />
-            ) : null}
-            <IconButton
-              icon="filter-variant"
-              iconColor={filter ? filterColor(theme.isDark) : theme.onSurface}
-              size={24}
-              onPress={() => novelBottomSheetRef.current?.present()}
-            />
-          </Pressable>
+          <NovelPagination
+            page={page}
+            pages={pages}
+            pageIndex={pageIndex}
+            totalPages={novel?.totalPages}
+            totalChapters={totalChapters}
+            onPageChange={onPageChange}
+            onRefreshPage={onRefreshPage}
+            onFilterPress={() => _novelBottomSheetRef.current?.present()}
+          />
         )}
       </>
     </>

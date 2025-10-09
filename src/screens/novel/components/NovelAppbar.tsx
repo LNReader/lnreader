@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { getString } from '@strings/translations';
-import { Appbar, Menu as DefaultMenu } from 'react-native-paper';
+import { Appbar } from 'react-native-paper';
 import { ThemeColors } from '@theme/types';
 import Animated, {
   FadeIn,
@@ -19,6 +19,7 @@ import useNovelState from '@hooks/persisted/novel/useNovelState';
 import { useDownload } from '@hooks/persisted';
 import { isNumber } from 'lodash-es';
 import { resolveUrl } from '@services/plugin/fetch';
+import { Menu as DefaultMenu } from '@components';
 
 const Menu = React.memo(
   ({
@@ -39,7 +40,6 @@ const Menu = React.memo(
         visible={visible}
         onDismiss={onDismiss}
         anchor={anchor}
-        anchorPosition="bottom"
         contentStyle={{ backgroundColor: theme.surface2 }}
       >
         {items.map((item, index) => (

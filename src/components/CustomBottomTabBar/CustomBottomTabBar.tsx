@@ -1,6 +1,7 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useCallback } from 'react';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { Pressable, View } from 'react-native';
+import { Pressable, View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { ThemeColors } from '@theme/types';
 import Animated from 'react-native-reanimated';
@@ -47,14 +48,13 @@ function CustomBottomTabBar({
 
   return (
     <View
-      style={{
-        flexDirection: 'row',
-        backgroundColor: theme.surface2 || theme.surface,
-        paddingBottom: insets?.bottom || 0,
-        paddingTop: 4,
-        paddingHorizontal: 0,
-        minHeight: 80,
-      }}
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.surface2 || theme.surface,
+          paddingBottom: insets?.bottom || 0,
+        },
+      ]}
     >
       {state.routes.map((route, index) => {
         const label = getLabelText(route);
@@ -87,33 +87,23 @@ function CustomBottomTabBar({
             key={route.key}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingVertical: 6,
-              paddingHorizontal: 4,
-              position: 'relative',
-            }}
+            style={styles.pressable}
           >
             {/* Icon */}
             <Animated.View
-              style={{
-                transitionProperty: ['width', 'backgroundColor'],
-                transitionDuration: 250,
-                transitionTimingFunction: 'ease-out',
-
-                marginBottom: showLabel ? 4 : 20,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: 2,
-                width: isFocused ? 52 : 32,
-                borderRadius: 24,
-                backgroundColor: isFocused
-                  ? theme.primaryContainer
-                  : 'transparent',
-              }}
+              style={[
+                styles.iconContainer,
+                {
+                  transitionProperty: ['width', 'backgroundColor'],
+                  transitionDuration: 250,
+                  transitionTimingFunction: 'ease-out',
+                  marginBottom: showLabel ? 4 : 20,
+                  width: isFocused ? 52 : 32,
+                  backgroundColor: isFocused
+                    ? theme.primaryContainer
+                    : 'transparent',
+                },
+              ]}
             >
               {renderIcon({ color: iconColor, route })}
             </Animated.View>
@@ -121,13 +111,13 @@ function CustomBottomTabBar({
             {/* Label */}
             {showLabel ? (
               <Text
-                style={{
-                  color: theme.onSurfaceVariant,
-                  height: 16,
-                  fontSize: 12,
-                  textAlign: 'center',
-                  fontWeight: isFocused ? '700' : '600',
-                }}
+                style={[
+                  styles.label,
+                  {
+                    color: theme.onSurfaceVariant,
+                    fontWeight: isFocused ? '700' : '600',
+                  },
+                ]}
                 numberOfLines={1}
               >
                 {label}
@@ -142,3 +132,32 @@ function CustomBottomTabBar({
 
 export default CustomBottomTabBar;
 export type { CustomBottomTabBarProps };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    paddingTop: 4,
+    paddingHorizontal: 0,
+    minHeight: 80,
+  },
+  pressable: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 6,
+    paddingHorizontal: 4,
+    position: 'relative',
+  },
+  iconContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 2,
+    borderRadius: 24,
+  },
+  label: {
+    height: 16,
+    fontSize: 12,
+    textAlign: 'center',
+  },
+});

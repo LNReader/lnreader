@@ -5,6 +5,7 @@ import {
   NavigationContainer,
   NavigationContainerRef,
 } from '@react-navigation/native';
+import LottieSplashScreen from 'react-native-lottie-splash-screen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {
@@ -104,6 +105,10 @@ const MainNavigator = ({
     <NavigationContainer<RootStackParamList>
       ref={ref}
       theme={NavTheme}
+      onReady={() => {
+        // Hide splash screen when navigation is ready (BottomNavigator loaded)
+        LottieSplashScreen.hide();
+      }}
       linking={{
         prefixes: ['lnreader://'],
         config: {

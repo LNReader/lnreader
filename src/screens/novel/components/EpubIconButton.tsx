@@ -1,18 +1,17 @@
-import React, { useMemo } from 'react';
-import { Portal } from 'react-native-paper';
-import ChooseEpubLocationModal from './ChooseEpubLocationModal';
-import { StatusBar, StyleProp, ViewStyle } from 'react-native';
-import { ThemeColors } from '@theme/types';
-
 import EpubBuilder from '@cd-z/react-native-epub-creator';
+import { useSettingsContext } from '@components/Context/SettingsContext';
 import { ChapterInfo, NovelInfo } from '@database/types';
-
 import { useBoolean } from '@hooks/index';
+import NativeFile from '@specs/NativeFile';
+import { ThemeColors } from '@theme/types';
+import { MaterialDesignIconName } from '@type/icon';
 import { showToast } from '@utils/showToast';
 import { NOVEL_STORAGE } from '@utils/Storages';
-import NativeFile from '@specs/NativeFile';
-import { MaterialDesignIconName } from '@type/icon';
-import { useSettingsContext } from '@components/Context/SettingsContext';
+import React, { useMemo } from 'react';
+import { StatusBar, StyleProp, ViewStyle } from 'react-native';
+import { Portal } from 'react-native-paper';
+
+import ChooseEpubLocationModal from './ChooseEpubLocationModal';
 
 interface EpubIconButtonProps {
   theme: ThemeColors;

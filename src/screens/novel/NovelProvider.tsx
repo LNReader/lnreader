@@ -25,7 +25,10 @@ export function NovelProvider({
 
   return (
     <HeightContextProvider>
-      <NovelPageContextProvider>
+      <NovelPageContextProvider
+        path={RouteNovelParams.path}
+        pluginId={RouteNovelParams.pluginId}
+      >
         <NovelSettingsContextProvider
           path={RouteNovelParams.path}
           pluginId={RouteNovelParams.pluginId}

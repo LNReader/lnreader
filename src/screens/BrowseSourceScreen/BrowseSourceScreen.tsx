@@ -79,7 +79,6 @@ const BrowseSourceScreen = ({ route, navigation }: BrowseSourceScreenProps) => {
 
   const navigateToNovel = useCallback(
     (item: NovelItem | NovelInfo) => {
-      console.log('item', item);
       navigation.navigate('ReaderStack', {
         screen: 'Novel',
         params: {

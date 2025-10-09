@@ -28,6 +28,7 @@ const SettingSwitchV2 = ({
   endOfLine,
 }: SettingSwitchProps): React.ReactElement => {
   const settings = useSettingsContext();
+  
   const { showLastUpdateTime, setShowLastUpdateTime } = useLastUpdate();
 
   const currentValue = useMemo(() => {

@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
-import { NativeEventEmitter, NativeModules, StatusBar } from 'react-native';
+import { NativeEventEmitter, NativeModules, StatusBar, StyleSheet } from 'react-native';
 import WebView from 'react-native-webview';
 import color from 'color';
 
@@ -210,7 +210,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
       resultHtml = resultHtml.replace(text, replacement);
     });
     return resultHtml;
-  }, [html]);
+  }, [html, settings.removeText, settings.replaceText]);
 
   return (
     <>
@@ -396,7 +396,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
           value={selectedTextForReplace}
           editable={false}
           mode="outlined"
-          style={{ marginBottom: 16 }}
+          style={styles.textInput}
           theme={{ colors: { background: theme.surface } }}
         />
         <TextInput
@@ -405,12 +405,18 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
           onChangeText={setReplacementText}
           autoCorrect={false}
           mode="outlined"
-          style={{ marginBottom: 16 }}
+          style={styles.textInput}
           theme={{ colors: { background: theme.surface } }}
         />
       </KeyboardAvoidingModal>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  textInput: {
+    marginBottom: 16,
+  },
+});
 
 export default memo(WebViewReader);

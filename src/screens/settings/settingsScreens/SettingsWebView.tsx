@@ -146,10 +146,7 @@ const SettingsWebView = () => {
       resultHtml = resultHtml.replace(text, replacement);
     });
     return resultHtml;
-  }, [dummyHTML]);
-
-  console.log(customJS);
-  console.log(customCSS);
+  }, [settings.removeText, settings.replaceText]);
 
   const webViewCSS = useMemo(
     () => `
@@ -298,7 +295,7 @@ const SettingsWebView = () => {
             </html>
             `,
     }),
-    [batteryLevel, settings, webViewCSS, customJS, customCSS],
+    [batteryLevel, settings, webViewCSS, customJS, preparedDummyHTML],
   );
 
   return (

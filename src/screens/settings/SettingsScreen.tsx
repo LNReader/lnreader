@@ -5,7 +5,7 @@ import { Appbar, List, SafeAreaView } from '@components';
 import { useTheme } from '@providers/Providers';
 
 import { getString } from '@strings/translations';
-import { SettingsScreenProps, SettingsStackParamList } from '@navigators/types';
+import {  SettingsStackParamList } from '@navigators/types';
 import Settings from './Settings';
 import {
   CommonActions,
@@ -14,7 +14,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 
-const SettingsScreen = ({}: SettingsScreenProps) => {
+const SettingsScreen = () => {
   const theme = useTheme();
   const navigation = useNavigation<NavigationProp<SettingsStackParamList>>();
 

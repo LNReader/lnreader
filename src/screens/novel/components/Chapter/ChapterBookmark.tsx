@@ -3,7 +3,7 @@ import { useTheme } from '@providers/Providers';
 import { memo } from 'react';
 import { StyleSheet } from 'react-native';
 
-const _ChapterBookmarkButton: React.FC = () => {
+const ChapterBookmarkButtonComponent: React.FC = () => {
   const theme = useTheme();
 
   return (
@@ -16,7 +16,7 @@ const _ChapterBookmarkButton: React.FC = () => {
     />
   );
 };
-export const ChapterBookmarkButton = memo(_ChapterBookmarkButton);
+export const ChapterBookmarkButton = memo(ChapterBookmarkButtonComponent);
 
 const styles = StyleSheet.create({
   iconButtonLeft: { marginLeft: 2 },

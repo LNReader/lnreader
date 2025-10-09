@@ -1,2 +1,5 @@
 ignoredBuiltDependencies:
   - protobufjs
+
+onlyBuiltDependencies:
+  - unrs-resolver

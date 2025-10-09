@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
 import {
-  BottomTabBarProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 
@@ -17,8 +16,6 @@ import { useTheme } from '@providers/Providers';
 import { BottomNavigatorParamList } from './types';
 import Icon from '@react-native-vector-icons/material-design-icons';
 import { MaterialDesignIconName } from '@type/icon';
-import { CommonActions } from '@react-navigation/native';
-import { BottomNavigation } from 'react-native-paper';
 import { CustomBottomTabBar } from '@components';
 
 const Tab = createBottomTabNavigator<BottomNavigatorParamList>();
@@ -66,21 +63,26 @@ const BottomNavigator = () => {
     [],
   );
 
+  const renderTabBar = useCallback(
+    (props: any) => (
+      <CustomBottomTabBar
+        {...props}
+        theme={theme}
+        showLabelsInNav={showLabelsInNav}
+        renderIcon={renderIcon}
+      />
+    ),
+    [theme, showLabelsInNav, renderIcon],
+  );
+
   return (
     <Tab.Navigator
       screenOptions={() => ({
         headerShown: false,
         animation: 'shift',
-        lazy: true,
+        lazy: false,
       })}
-      tabBar={props => (
-        <CustomBottomTabBar
-          {...props}
-          theme={theme}
-          showLabelsInNav={showLabelsInNav}
-          renderIcon={renderIcon}
-        />
-      )}
+      tabBar={renderTabBar}
     >
       <Tab.Screen
         name="Library"

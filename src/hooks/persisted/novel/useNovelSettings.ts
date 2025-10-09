@@ -10,17 +10,6 @@ const useNovelSettings = () => {
   }
   const { novelSettings, setNovelSettings } = novelPage;
 
-  const sortAndFilterChapters = useCallback(
-    async (sort?: string, filter?: string) => {
-      setNovelSettings({
-        showChapterTitles: novelSettings?.showChapterTitles,
-        sort,
-        filter,
-      });
-    },
-    [novelSettings?.showChapterTitles, setNovelSettings],
-  );
-
   const setShowChapterTitles = useCallback(
     (v: boolean) => {
       setNovelSettings({ ...novelSettings, showChapterTitles: v });
@@ -31,10 +20,9 @@ const useNovelSettings = () => {
   const result = useMemo(
     () => ({
       novelSettings,
-      sortAndFilterChapters,
       setShowChapterTitles,
     }),
-    [novelSettings, setShowChapterTitles, sortAndFilterChapters],
+    [novelSettings, setShowChapterTitles],
   );
 
   return result;

@@ -32,6 +32,7 @@ const useNovelChapters = () => {
     chapters,
     fetching,
     batchInformation,
+    sortAndFilterChapters,
     setChapters,
     getChapters,
     updateChapter,
@@ -297,6 +298,7 @@ const useNovelChapters = () => {
       deleteChapter,
       deleteChapters,
       refreshChapters,
+      sortAndFilterChapters,
     }),
     [
       chapters,
@@ -315,6 +317,7 @@ const useNovelChapters = () => {
       deleteChapter,
       deleteChapters,
       refreshChapters,
+      sortAndFilterChapters,
     ],
   );
 

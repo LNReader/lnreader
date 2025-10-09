@@ -30,7 +30,7 @@ const customConfig = {
     getTransformOptions: async () => ({
       transform: {
         experimentalImportSupport: false,
-        inlineRequires: false, // temporarily disable to rule out bundle fetch issue
+        inlineRequires: true, 
       },
     }),
   },

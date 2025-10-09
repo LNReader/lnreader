@@ -1,10 +1,11 @@
 import React, { memo, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
-import { Menu, overlay } from 'react-native-paper';
+import { overlay } from 'react-native-paper';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 import Color from 'color';
 import { getString } from '@strings/translations';
 import type { MD3ThemeType } from '@theme/types';
+import { Menu } from '@components';
 
 export interface DownloadButtonProps {
   status: 'idle' | 'downloading' | 'downloaded';
@@ -13,7 +14,7 @@ export interface DownloadButtonProps {
   onDownload: () => void;
 }
 
-const _DownloadButton: React.FC<DownloadButtonProps> = ({
+const I_DownloadButton: React.FC<DownloadButtonProps> = ({
   status,
   theme,
   onDelete,
@@ -110,7 +111,7 @@ function areEqualDownloadButton(
   );
 }
 
-export const DownloadButton = memo(_DownloadButton, areEqualDownloadButton);
+export const DownloadButton = memo(I_DownloadButton, areEqualDownloadButton);
 
 const styles = StyleSheet.create({
   activityIndicator: { margin: 3.5, padding: 5 },

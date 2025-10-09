@@ -116,7 +116,7 @@ const GeneralTab: React.FC = React.memo(() => {
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <BottomSheetFlashList
         data={preferences}
         extraData={[settings]}
@@ -205,6 +205,7 @@ export default React.memo(ReaderBottomSheetV2);
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     borderRadius: 8,
   },
   readerTab: {

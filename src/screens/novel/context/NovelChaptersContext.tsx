@@ -6,6 +6,7 @@ import {
 } from '@database/queries/ChapterQueries';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { useNovelPages, useNovelSettings } from '@hooks/persisted';
+import { NovelSettingsContext } from './NovelSettingsContext';
 import { fetchPage } from '@services/plugin/fetch';
 import { showToast } from '@utils/showToast';
 import {
@@ -88,6 +89,7 @@ interface ChapterContextValue extends ChapterState {
   mutateChapters: (m: (chs: ChapterInfo[]) => ChapterInfo[]) => void;
   updateChapter: (i: number, u: Partial<ChapterInfo>) => void;
   setFetching: (v: boolean) => void;
+  sortAndFilterChapters: (sort?: string, filter?: string) => void;
 }
 
 export const NovelChaptersContext = createContext<ChapterContextValue | null>(
@@ -112,6 +114,14 @@ export function NovelChaptersContextProvider({
 
   const { novel, path, pluginId, loading, getNovel } = novelState;
   const { novelSettings } = useNovelSettings();
+
+  const novelSettingsContext = useContext(NovelSettingsContext);
+  if (!novelSettingsContext) {
+    throw new Error(
+      'NovelSettingsContext must be used within NovelSettingsContextProvider',
+    );
+  }
+  const { setNovelSettings } = novelSettingsContext;
   const { page: currentPage } = useNovelPages();
 
   const [state, dispatch] = useReducer(reducer, {
@@ -149,59 +159,157 @@ export function NovelChaptersContextProvider({
     [],
   );
 
-  const getChapters = useCallback(
-    async (passedNovel?: NovelInfo) => {
-      if (!loading || passedNovel) {
-        const novelName = passedNovel?.name ?? novel.name;
-        const novelId = passedNovel?.id ?? (novel.id as number);
-        let newChapters: ChapterInfo[] = [];
+  const getChaptersFromDB = useCallback(
+    (novelId: number, novelName: string, pageToLoad: string): ChapterInfo[] => {
+      const config = [
+        novelId,
+        novelName,
+        novelSettings.sort,
+        novelSettings.filter,
+        pageToLoad,
+        state.batchInformation.batch,
+      ] as const;
 
-        const config = [
-          novelId,
-          novelName,
-          novelSettings.sort,
-          novelSettings.filter,
-          currentPage,
-          state.batchInformation.batch,
-        ] as const;
+      try {
+        return getPageChaptersBatched(...config) || [];
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Error fetching chapters from DB:', error);
+        return [];
+      }
+    },
+    [novelSettings.sort, novelSettings.filter, state.batchInformation.batch],
+  );
 
-        let chapterCount = getChapterCount(
-          novelId,
-          currentPage,
-          novelSettings.filter,
-        );
+  const fetchAndStoreChapters = useCallback(
+    async (novelId: number, pageToLoad: string): Promise<ChapterInfo[]> => {
+      const sourcePage = await fetchPage(pluginId, path, pageToLoad);
 
-        if (chapterCount) {
-          try {
-            newChapters = getPageChaptersBatched(...config) || [];
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('teaser', error);
-          }
-        }
-        // Fetch next page if no chapters
-        else if (Number(currentPage)) {
-          const sourcePage = await fetchPage(pluginId, path, currentPage);
-          const sourceChapters = sourcePage.chapters.map(ch => {
-            return {
-              ...ch,
-              page: currentPage,
-            };
-          });
-          await insertChapters(novelId, sourceChapters);
-          newChapters = await _getPageChapters(...config);
-          chapterCount = getChapterCount(
-            novelId,
-            currentPage,
-            novelSettings.filter,
-          );
-        }
+      const sourceChapters = sourcePage.chapters.map(ch => {
+        return {
+          ...ch,
+          page: pageToLoad,
+        };
+      });
+
+      await insertChapters(novelId, sourceChapters);
+
+      const config = [
+        novelId,
+        novel.name,
+        novelSettings.sort,
+        novelSettings.filter,
+        pageToLoad,
+        state.batchInformation.batch,
+      ] as const;
+
+      return await _getPageChapters(...config);
+    },
+    [
+      pluginId,
+      path,
+      novel.name,
+      novelSettings.sort,
+      novelSettings.filter,
+      state.batchInformation.batch,
+    ],
+  );
+
+  const loadChaptersSync = useCallback(
+    (novelId: number, novelName: string, pageToLoad: string): boolean => {
+      const chapterCount = getChapterCount(
+        novelId,
+        pageToLoad,
+        novelSettings.filter,
+      );
+
+      if (chapterCount) {
+        const newChapters = getChaptersFromDB(novelId, novelName, pageToLoad);
 
         const batchInformation = {
           batch: 0,
           total: Math.floor(chapterCount / 300),
           totalChapters: chapterCount,
         };
+
+        dispatch({
+          type: 'SET_CHAPTERS',
+          chapters: newChapters,
+          batch: batchInformation,
+        });
+        return true; // Successfully loaded synchronously
+      }
+      return false; // Chapters don't exist, need async loading
+    },
+    [novelSettings.filter, getChaptersFromDB],
+  );
+
+  const sortAndFilterChapters = useCallback(
+    (sort?: string, filter?: string) => {
+      // Update the settings
+      setNovelSettings({
+        showChapterTitles: novelSettings?.showChapterTitles,
+        sort,
+        filter,
+      });
+
+      // If we have a novel available, immediately load chapters synchronously
+      const nov: NovelInfo | undefined =
+        novel && typeof novel.id === 'number'
+          ? (novel as NovelInfo)
+          : undefined;
+
+      if (nov) {
+        const pageToLoad = currentPage || '1';
+        loadChaptersSync(nov.id, nov.name, pageToLoad);
+      }
+    },
+    [
+      novelSettings?.showChapterTitles,
+      setNovelSettings,
+      novel,
+      currentPage,
+      loadChaptersSync,
+    ],
+  );
+
+  const getChapters = useCallback(
+    async (passedNovel?: NovelInfo) => {
+      if (!loading || passedNovel) {
+        const novelName = passedNovel?.name ?? novel.name;
+        const novelId = passedNovel?.id ?? (novel.id as number);
+        const pageToLoad = currentPage || '1'; // Default to page 1 if currentPage not available
+
+        const chapterCount = getChapterCount(
+          novelId,
+          pageToLoad,
+          novelSettings.filter,
+        );
+
+        let newChapters: ChapterInfo[];
+
+        if (chapterCount) {
+          // Chapters exist in DB, use synchronous path
+          newChapters = getChaptersFromDB(novelId, novelName, pageToLoad);
+        }
+        // Fetch from source if no chapters exist and page is valid
+        else if (Number(pageToLoad)) {
+          // Chapters need to be fetched, use asynchronous path
+          newChapters = await fetchAndStoreChapters(novelId, pageToLoad);
+        } else {
+          newChapters = [];
+        }
+
+        const finalChapterCount =
+          chapterCount ||
+          getChapterCount(novelId, pageToLoad, novelSettings.filter);
+
+        const batchInformation = {
+          batch: 0,
+          total: Math.floor(finalChapterCount / 300),
+          totalChapters: finalChapterCount,
+        };
+
         dispatch({
           type: 'SET_CHAPTERS',
           chapters: newChapters,
@@ -213,12 +321,10 @@ export function NovelChaptersContextProvider({
       loading,
       novel.name,
       novel.id,
-      novelSettings.sort,
       novelSettings.filter,
       currentPage,
-      state.batchInformation.batch,
-      pluginId,
-      path,
+      getChaptersFromDB,
+      fetchAndStoreChapters,
     ],
   );
 
@@ -245,16 +351,41 @@ export function NovelChaptersContextProvider({
     };
   }, [mutateChapters]);
 
+  // TODO: Refactor to not rely on useEffect
   useEffect(() => {
+    // Only load chapters if novel is loaded and we have a valid currentPage
+    if (loading || !currentPage) return;
+
     let cancelled = false;
 
+    // Try synchronous path first if novel is available
+    const nov: NovelInfo | undefined =
+      novel && typeof novel.id === 'number' ? (novel as NovelInfo) : undefined;
+
+    if (nov) {
+      const pageToLoad = currentPage || '1';
+      // Try synchronous loading first
+      const syncSuccess = loadChaptersSync(nov.id, nov.name, pageToLoad);
+      if (syncSuccess) {
+        return () => {}; // No cleanup needed for sync path
+      }
+    }
+
+    // Fall back to async path
     (async () => {
       try {
-        const nov = await getNovel();
-        if (!nov || cancelled) {
+        let novelInfo: NovelInfo | undefined =
+          novel && typeof novel.id === 'number'
+            ? (novel as NovelInfo)
+            : undefined;
+        if (!novelInfo) {
+          novelInfo = await getNovel();
+        }
+        if (!novelInfo || cancelled) {
           throw new Error(getString('updatesScreen.unableToGetNovel'));
         }
-        await getChapters(nov);
+
+        await getChapters(novelInfo);
       } catch (e: any) {
         // eslint-disable-next-line no-console
         if (__DEV__) console.error(e);
@@ -262,12 +393,18 @@ export function NovelChaptersContextProvider({
         setFetching(false);
       }
     })();
-
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [novelSettings.filter, novelSettings.sort]);
+  }, [
+    currentPage,
+    getChapters,
+    getNovel,
+    loadChaptersSync,
+    loading,
+    novel,
+    setFetching,
+  ]);
 
   const contextValue = useMemo(
     () => ({
@@ -278,6 +415,7 @@ export function NovelChaptersContextProvider({
       mutateChapters,
       updateChapter,
       setFetching,
+      sortAndFilterChapters,
     }),
     [
       extendChapters,
@@ -285,6 +423,7 @@ export function NovelChaptersContextProvider({
       mutateChapters,
       setChapters,
       setFetching,
+      sortAndFilterChapters,
       state,
       updateChapter,
     ],

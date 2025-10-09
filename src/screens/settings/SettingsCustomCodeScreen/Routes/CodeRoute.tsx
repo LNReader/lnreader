@@ -120,9 +120,7 @@ const CodeRoute = ({
     showToast('Snippet saved successfully');
     jumpTo('first'); // Go back to settings tab
   }, [
-    dLang,
     language,
-    snippetIndex,
     snippets,
     title,
     code,
