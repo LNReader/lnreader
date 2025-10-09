@@ -97,9 +97,17 @@ const MainNavigator = ({
     [theme],
   );
 
+  if (!isOnboarded) {
+    LottieSplashScreen.hide();
+    return (
+      <>
+        <OnboardingScreen />
+      </>
+    );
+  }
+
   return (
     <>
-      {isOnboarded ? null : <OnboardingScreen />}
       <NavigationContainer<RootStackParamList>
         ref={ref}
         theme={NavTheme}
