@@ -7,7 +7,7 @@
     "ios": "react-native run-ios",
     "prestart": "node scripts/setEnvFile.cjs Debug",
     "start": "react-native start",
-    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix",
     "type-check": "tsc --noEmit",
     "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\" ./scripts",
     "buildRelease": "node scripts/setEnvFile.cjs Release && cd android && ./gradlew clean && ./gradlew assembleRelease",
