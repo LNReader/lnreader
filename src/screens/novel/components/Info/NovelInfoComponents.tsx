@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -17,7 +17,7 @@ import { coverPlaceholderColor } from '../../../../theme/colors';
 import { ThemeColors } from '@theme/types';
 import { getString } from '@strings/translations';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
+import { toImageUri } from '@utils/coverUri';
 interface CoverImageProps {
   children: React.ReactNode;
   source: ImageURISource;
@@ -49,18 +49,20 @@ const CoverImage = ({
   theme,
   hideBackdrop,
 }: CoverImageProps) => {
+  const uri = useMemo(() => toImageUri(source.uri), [source.uri]);
+
   if (hideBackdrop) {
     return <View>{children}</View>;
   } else {
     return (
-      <ImageBackground source={source} style={styles.coverImage}>
+      <ImageBackground key={uri} source={{ uri }} style={styles.coverImage}>
         <View
           style={[
             { backgroundColor: color(theme.background).alpha(0.7).string() },
             styles.flex1,
           ]}
         >
-          {source.uri ? (
+          {uri ? (
             <LinearGradient
               colors={['rgba(0,0,0,0)', theme.background]}
               locations={[0, 1]}
@@ -86,13 +88,15 @@ const NovelThumbnail = ({
   const [expanded, setExpanded] = useState(false);
   const { top, right } = useSafeAreaInsets();
 
+  const uri = useMemo(() => toImageUri(source.uri), [source.uri]);
+
   return (
     <Pressable
       onPress={() => setExpanded(!expanded)}
       style={styles.novelThumbnailContainer}
     >
       {!expanded ? (
-        <Image source={source} style={styles.novelThumbnail} />
+        <Image source={{ uri }} style={styles.novelThumbnail} />
       ) : (
         <Portal>
           <IconButton
@@ -119,7 +123,7 @@ const NovelThumbnail = ({
             style={[styles.expandedOverlay]}
             onPress={() => setExpanded(false)}
           >
-            <Image source={source} resizeMode="contain" style={styles.flex1} />
+            <Image source={{ uri }} resizeMode="contain" style={styles.flex1} />
           </Pressable>
         </Portal>
       )}

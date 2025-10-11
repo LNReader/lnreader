@@ -40,13 +40,13 @@ const insertLocalNovel = async (
     await updateNovelCategoryById(insertedNovel.lastInsertRowId, [2]);
     const novelDir = NOVEL_STORAGE + '/local/' + insertedNovel.lastInsertRowId;
     NativeFile.mkdir(novelDir);
-    const newCoverPath =
-      'file://' + novelDir + '/' + cover?.split(/[/\\]/).pop();
 
+    let coverBase64: string | undefined;
     if (cover) {
       const decodedPath = decodePath(cover);
       if (NativeFile.exists(decodedPath)) {
-        NativeFile.moveFile(decodedPath, newCoverPath);
+        coverBase64 = NativeFile.readFileAsBase64(decodedPath);
+        NativeFile.unlink(decodedPath);
       }
     }
     await updateNovelInfo({
@@ -56,7 +56,7 @@ const insertLocalNovel = async (
       artist: artist,
       summary: summary,
       path: NOVEL_STORAGE + '/local/' + insertedNovel.lastInsertRowId,
-      cover: newCoverPath,
+      cover: coverBase64,
       name: name,
       inLibrary: true,
       isLocal: true,
@@ -89,12 +89,10 @@ const insertLocalChapter = async (
       return [];
     }
     const novelDir = NOVEL_STORAGE + '/local/' + novelId;
-    chapterText = chapterText.replace(
-      /=(?<= href=| src=)(["'])([^]*?)\1/g,
-      (_, __, $2: string) => {
-        return `="file://${novelDir}/${$2.split(/[/\\]/).pop()}"`;
-      },
-    );
+    const pattern = new RegExp('=(?<= href=| src=)(["\'])([^]*?)\\1', 'g');
+    chapterText = chapterText.replace(pattern, (_, __, $2: string) => {
+      return `="file://${novelDir}/${$2.split(/[/\\\\]/).pop()}"`;
+    });
     NativeFile.mkdir(novelDir + '/' + insertedChapter.lastInsertRowId);
     NativeFile.writeFile(
       novelDir + '/' + insertedChapter.lastInsertRowId + '/index.html',

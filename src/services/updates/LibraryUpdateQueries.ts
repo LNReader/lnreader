@@ -20,9 +20,18 @@ const updateNovelMetadata = async (
   }
   if (cover) {
     const novelCoverPath = novelDir + '/cover.png';
-    const novelCoverUri = 'file://' + novelCoverPath;
-    downloadFile(cover, novelCoverPath, getPlugin(pluginId)?.imageRequestInit);
-    cover = novelCoverUri + '?' + Date.now();
+    await downloadFile(
+      cover,
+      novelCoverPath,
+      getPlugin(pluginId)?.imageRequestInit,
+    );
+    let coverBase64;
+    try {
+      coverBase64 = await NativeFile.readFileAsBase64(novelCoverPath);
+    } finally {
+      NativeFile.unlink(novelCoverPath);
+    }
+    cover = coverBase64;
   }
 
   db.runSync(

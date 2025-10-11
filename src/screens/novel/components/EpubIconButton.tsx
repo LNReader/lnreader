@@ -130,12 +130,30 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     if (!novel) {
       return;
     }
+
+    let tempCoverPath: string | undefined;
+
+    if (novel.cover) {
+      const { ExternalCachesDirectoryPath } = NativeFile.getConstants();
+      const tempPath = `${ExternalCachesDirectoryPath}/temp_cover_${Date.now()}.png`;
+      tempCoverPath = `file://${tempPath}`;
+
+      try {
+        const base64Data = novel.cover.startsWith('data:image')
+          ? novel.cover.split(',')[1]
+          : novel.cover;
+        NativeFile.writeFileFromBase64(tempPath, base64Data);
+      } catch (error) {
+        tempCoverPath = undefined;
+      }
+    }
+
     const epub = new EpubBuilder(
       {
         title: novel.name,
         fileName: novel.name.replace(/\s/g, ''),
         language: 'en',
-        cover: novel.cover,
+        cover: tempCoverPath,
         description: novel.summary,
         author: novel.author,
         bookId: novel.pluginId.toString(),
@@ -166,6 +184,15 @@ const EpubIconButton: React.FC<EpubIconButtonProps> = ({
     } catch (error) {
       showToast('Cannot create because: ' + error);
       await epub.discardChanges();
+    } finally {
+      if (tempCoverPath && tempCoverPath.startsWith('file://')) {
+        const filePath = tempCoverPath.replace('file://', '');
+        try {
+          if (NativeFile.exists(filePath)) {
+            NativeFile.unlink(filePath);
+          }
+        } catch (error) {}
+      }
     }
   };
   return (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
 
 import { coverPlaceholderColor } from '../theme/colors';
@@ -7,6 +7,7 @@ import color from 'color';
 import { ThemeColors } from '@theme/types';
 import { NovelItem } from '@plugins/types';
 import { NovelInfo } from '@database/types';
+import { toImageUri } from '@utils/coverUri';
 
 interface ListViewProps {
   item: NovelItem | NovelInfo;
@@ -30,6 +31,9 @@ const ListView = ({
   onLongPress,
 }: ListViewProps) => {
   const fadedImage = { opacity: inLibraryBadge ? 0.5 : 1 };
+
+  const coverUri = useMemo(() => toImageUri(item.cover as any), [item.cover]);
+
   return (
     <Pressable
       android_ripple={{ color: theme.rippleColor }}
@@ -44,7 +48,7 @@ const ListView = ({
     >
       <Image
         source={{
-          uri: item.cover,
+          uri: coverUri,
         }}
         style={[styles.extensionIcon, fadedImage]}
       />

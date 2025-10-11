@@ -8,7 +8,9 @@ interface ReadDirResult {
 
 export interface Spec extends TurboModule {
   writeFile: (path: string, content: string) => void;
+  writeFileFromBase64: (path: string, base64Content: string) => void;
   readFile: (path: string) => string;
+  readFileAsBase64: (path: string) => string;
   copyFile: (sourcePath: string, destPath: string) => void;
   moveFile: (sourcePath: string, destPath: string) => void;
   exists: (filePath: string) => boolean;

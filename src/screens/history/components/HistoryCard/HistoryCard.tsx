@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -6,7 +6,6 @@ import dayjs from 'dayjs';
 
 import { IconButtonV2 } from '@components';
 
-import { defaultCover } from '@plugins/helpers/constants';
 import { getString } from '@strings/translations';
 import { useTheme } from '@hooks/persisted';
 
@@ -14,6 +13,7 @@ import { History, NovelInfo } from '@database/types';
 import { HistoryScreenProps } from '@navigators/types';
 
 import { coverPlaceholderColor } from '@theme/colors';
+import { toImageUri } from '@utils/coverUri';
 
 interface HistoryCardProps {
   history: History;
@@ -26,6 +26,11 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
 }) => {
   const theme = useTheme();
   const { navigate } = useNavigation<HistoryScreenProps['navigation']>();
+
+  const coverUri = useMemo(
+    () => toImageUri(history.novelCover),
+    [history.novelCover],
+  );
 
   return (
     <Pressable
@@ -59,10 +64,7 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
             })
           }
         >
-          <Image
-            source={{ uri: history.novelCover || defaultCover }}
-            style={styles.cover}
-          />
+          <Image source={{ uri: coverUri }} style={styles.cover} />
         </Pressable>
         <View style={styles.detailsContainer}>
           <Text
