@@ -251,8 +251,8 @@ void clean_summary(std::string &summary)
     summary = std::regex_replace(summary, regx88, "§");
     std::regex regx89("&#182;");
     summary = std::regex_replace(summary, regx89, "¶");
-    std::regex regx_clean("\n\n\n+");
-    summary = std::regex_replace(summary, regx_clean, "\n\n");
+    std::regex regx_clean("\n\n\n\n\n+");
+    summary = std::regex_replace(summary, regx_clean, "\n\n\n\n");
 
 }
 
