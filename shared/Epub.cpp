@@ -73,7 +73,7 @@ void clean_summary(std::string &summary)
     summary = std::regex_replace(summary, regx2, "\n");
     std::regex regx2a("<hr>");
     summary = std::regex_replace(summary, regx2a, "\n———\n");
-    std::regex regxtags("<\/?(?:[abi]|h[0-9]|span|strong|em)>");
+    std::regex regxtags("<\/?(?:[abip]|h[0-9]|span|div|strong|em)>");
     summary = std::regex_replace(summary, regxtags, "");
     std::regex regx3("<");
     summary = std::regex_replace(summary, regx3, "⟨");
