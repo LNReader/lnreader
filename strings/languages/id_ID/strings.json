@@ -29,8 +29,8 @@
     "useFAB": "",
     "userAgent": "",
     "recreateDBIndexes": "",
-    "recreateDBIndexesToast": "Recreated DB indexes",
-    "recreateDBIndexesDialogTitle": "All DB indexes will be recreated.\nThis may take a while.",
+    "recreateDBIndexesToast": "",
+    "recreateDBIndexesDialogTitle": ".",
     "recreateDBIndexesDesc": "Recreates DB indexes. This may improve performance on slower devices."
   },
   "appearance": "",
