@@ -22,6 +22,7 @@ export const sanitizeChapterText = (
       'summary',
     ]),
     allowedAttributes: {
+      '*': ['data-*'],
       a: ['href', 'class', 'id'],
       div: ['class', 'id'],
       img: ['src', 'class', 'id'],
