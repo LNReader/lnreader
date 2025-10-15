@@ -35,6 +35,20 @@ class NativeZipArchive(context: ReactApplicationContext) : NativeZipArchiveSpec(
             }
         }.start()
     }
+    
+    @ReactMethod
+    override fun zip(sourceDirPath: String, zipFilePath: String, promise: Promise) {
+        Thread {
+            try {
+                FileOutputStream(zipFilePath).use { fos -> 
+                    ZipOutputStream(fos).use { zos -> zipProcess(sourceDirPath, zos) }
+                }
+                promise.resolve(null)
+            } catch (e: Exception) {
+                promise.reject(e)
+            }
+        }.start()
+    }
 
     @ReactMethod
     override fun remoteUnzip(

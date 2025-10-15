@@ -1,6 +1,7 @@
 import { TurboModule, TurboModuleRegistry } from 'react-native';
 
 export interface Spec extends TurboModule {
+  zip: (sourceDirPath: string, destFilePath: string) => Promise<void>;
   unzip: (sourceFilePath: string, distDirPath: string) => Promise<void>;
   remoteUnzip: (
     distDirPath: string,
