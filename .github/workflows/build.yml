@@ -40,7 +40,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Create .env
+      - name: Create Environment File
         run: |
           cat > .env << EOF
           MYANIMELIST_CLIENT_ID=${{ vars.MYANIMELIST_CLIENT_ID }}
