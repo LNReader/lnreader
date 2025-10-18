@@ -155,6 +155,7 @@ class NativeFile(context: ReactApplicationContext) :
         val pb = PushbackInputStream(input, 2)
         val signature = ByteArray(2)
         val len = pb.read(signature)
+        if(len == -1) return pb;
         pb.unread(signature, 0, len)
         return if (signature[0] == 0x1f.toByte() && signature[1] == 0x8b.toByte())
             GZIPInputStream(pb) else pb

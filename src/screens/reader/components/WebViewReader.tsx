@@ -123,6 +123,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
       scalesPageToFit={true}
       showsVerticalScrollIndicator={false}
       javaScriptEnabled={true}
+      webviewDebuggingEnabled={__DEV__}
       onMessage={(ev: { nativeEvent: { data: string } }) => {
         __DEV__ && onLogMessage(ev);
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
@@ -166,7 +167,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
         headers: plugin?.imageRequestInit?.headers,
         method: plugin?.imageRequestInit?.method,
         body: plugin?.imageRequestInit?.body,
-        html: `
+        html: ` 
         <!DOCTYPE html>
           <html>
             <head>
