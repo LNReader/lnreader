@@ -6,9 +6,9 @@ import { BackupSettingsScreenProps } from '@navigators/types';
 import GoogleDriveModal from './Components/GoogleDriveModal';
 import SelfHostModal from './Components/SelfHostModal';
 import {
-  createBackup as deprecatedCreateBackup,
-  restoreBackup as deprecatedRestoreBackup,
-} from '@services/backup/legacy';
+  createBackup as createLocalBackup,
+  restoreBackup as restoreLocalBackup,
+} from '@services/backup/local';
 import { ScrollView } from 'react-native-gesture-handler';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
@@ -56,19 +56,15 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
             {getString('backupScreen.legacyBackup')}
           </List.SubHeader>
           <List.Item
-            title={`${getString('backupScreen.createBackup')} (${getString(
-              'common.deprecated',
-            )})`}
+            title={getString('backupScreen.createBackup')}
             description={getString('backupScreen.createBackupDesc')}
-            onPress={deprecatedCreateBackup}
+            onPress={createLocalBackup}
             theme={theme}
           />
           <List.Item
-            title={`${getString('backupScreen.restoreBackup')} (${getString(
-              'common.deprecated',
-            )})`}
+            title={getString('backupScreen.restoreBackup')}
             description={getString('backupScreen.restoreBackupDesc')}
-            onPress={() => deprecatedRestoreBackup()}
+            onPress={restoreLocalBackup}
             theme={theme}
           />
           <List.InfoItem

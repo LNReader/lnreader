@@ -28,5 +28,8 @@
 - (void)unzip:(nonnull NSString *)sourceFilePath distDirPath:(nonnull NSString *)distDirPath resolve:(nonnull RCTPromiseResolveBlock)resolve reject:(nonnull RCTPromiseRejectBlock)reject { 
   // TODO: implement unzip
 }
+- (void)zip:(nonnull NSString *)sourceDirPath zipFilePath:(nonnull NSString *)zipFilePath resolve:(nonnull RCTPromiseResolveBlock)resolve reject:(nonnull RCTPromiseRejectBlock)reject { 
+  // TODO: implement zip
+}
 
 @end
