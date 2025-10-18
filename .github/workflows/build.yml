@@ -26,9 +26,19 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
+
       - name: Install Dependencies
-        run: |
-          npm install
+        run: npm install
 
       - name: Create .env
         run: |
@@ -39,30 +49,6 @@ jobs:
           RELEASE_DATE=$(date --utc +'%d/%m/%y %I:%M %p %Z')
           BUILD_TYPE=Github Action
           EOF
-
-      - name: Cache Gradle Wrapper
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-
-      - name: Cache Gradle Dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-caches-
-
-      - name: Cache build intermediates
-        uses: actions/cache@v4
-        with:
-          path: |
-            android/app/build/generated
-            android/app/build/intermediates
-            android/app/build/tmp
-            android/.gradle
-          key: ${{ runner.os }}-build-${{ hashFiles('package-lock.json') }}
 
       - name: Make Gradlew Executable
         run: cd android && chmod +x ./gradlew
@@ -79,7 +65,7 @@ jobs:
           COMMIT_ID: ${{ env.COMMIT_ID }}
         run: |
           sed -i 's/LNReader/LNReader-r${{ env.COMMIT_COUNT }}(${{ env.COMMIT_ID }})/g' android/app/src/main/res/values/strings.xml
-          cd android && ./gradlew assembleRelease --no-daemon -PcustomAppId=com.rajarsheechatterjee.LNReader.commit_${{ env.COMMIT_ID }}
+          cd android && ./gradlew assembleRelease -PcustomAppId=com.rajarsheechatterjee.LNReader.commit_${{ env.COMMIT_ID }} --build-cache
           mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/LNReader-r${{ env.COMMIT_COUNT }}-${{ env.COMMIT_ID }}.apk
 
       - name: Upload Release Artifact
