@@ -26,12 +26,11 @@ export const insertNovelAndChapters = async (
   sourceNovel: SourceNovel,
 ): Promise<number | undefined> => {
   const insertNovelQuery =
-    'INSERT INTO Novel (path, pluginId, name, cover, summary, author, artist, status, genres, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    'INSERT INTO Novel (path, pluginId, name, summary, author, artist, status, genres, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
   const novelId: number | undefined = db.runSync(insertNovelQuery, [
     sourceNovel.path,
     pluginId,
     sourceNovel.name,
-    sourceNovel.cover || null,
     sourceNovel.summary || null,
     sourceNovel.author || null,
     sourceNovel.artist || null,
@@ -45,19 +44,14 @@ export const insertNovelAndChapters = async (
       const novelDir = NOVEL_STORAGE + '/' + pluginId + '/' + novelId;
       NativeFile.mkdir(novelDir);
       const novelCoverPath = novelDir + '/cover.png';
-      const novelCoverUri = 'file://' + novelCoverPath;
       await downloadFile(
         sourceNovel.cover,
         novelCoverPath,
         getPlugin(pluginId)?.imageRequestInit,
-      ).then(() => {
-        runSync([
-          [
-            'UPDATE Novel SET cover = ? WHERE id = ?',
-            [novelCoverUri, novelId!],
-          ],
-        ]);
-      });
+      );
+      const base64 = await NativeFile.readFileAsBase64(novelCoverPath);
+      runSync([['UPDATE Novel SET cover = ? WHERE id = ?', [base64, novelId]]]);
+      NativeFile.unlink(novelCoverPath);
     }
     await insertChapters(novelId, sourceNovel.chapters);
   }
@@ -238,19 +232,56 @@ export const updateNovelInfo = async (info: NovelInfo) => {
 };
 
 export const pickCustomNovelCover = async (novel: NovelInfo) => {
-  const image = await DocumentPicker.getDocumentAsync({ type: 'image/*' });
-  if (image.assets && image.assets[0]) {
-    const novelDir = NOVEL_STORAGE + '/' + novel.pluginId + '/' + novel.id;
-    let novelCoverUri = 'file://' + novelDir + '/cover.png';
-    if (!NativeFile.exists(novelDir)) {
-      NativeFile.mkdir(novelDir);
+  const result = await DocumentPicker.getDocumentAsync({ type: 'image/*' });
+  if (!result || !result.assets || !result.assets[0]) {
+    return undefined;
+  }
+
+  const asset = result.assets[0];
+  const { uri, name } = asset as any;
+
+  try {
+    const { ExternalCachesDirectoryPath } = NativeFile.getConstants();
+    let pathForRead = uri as string;
+
+    const isContent = pathForRead.startsWith('content://');
+    const isFile = pathForRead.startsWith('file://');
+
+    if (isFile) {
+      pathForRead = pathForRead.replace('file://', '');
+      try {
+        pathForRead = decodeURI(pathForRead);
+      } catch {}
+    } else if (isContent) {
+      const ext = (name && name.split('.').pop()) || 'img';
+      const tempPath = `${ExternalCachesDirectoryPath}/picked_cover_${Date.now()}.${ext}`;
+      NativeFile.copyFile(uri, tempPath);
+      pathForRead = tempPath;
+    } else {
+      try {
+        pathForRead = decodeURI(pathForRead);
+      } catch {}
     }
-    NativeFile.copyFile(image.assets[0].uri, novelCoverUri);
-    novelCoverUri += '?' + Date.now();
-    runAsync([
-      ['UPDATE Novel SET cover = ? WHERE id = ?', [novelCoverUri, novel.id]],
+
+    const base64 = await NativeFile.readFileAsBase64(pathForRead);
+
+    await runAsync([
+      ['UPDATE Novel SET cover = ? WHERE id = ?', [base64, novel.id]],
     ]);
-    return novelCoverUri;
+
+    if (
+      pathForRead.includes('/picked_cover_') &&
+      NativeFile.exists(pathForRead)
+    ) {
+      try {
+        NativeFile.unlink(pathForRead);
+      } catch (e) {}
+    }
+
+    return base64;
+  } catch (error) {
+    showToast('Failed to set custom cover: ' + error);
+    return undefined;
   }
 };
 

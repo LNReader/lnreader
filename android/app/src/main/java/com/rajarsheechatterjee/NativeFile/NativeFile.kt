@@ -2,6 +2,7 @@ package com.rajarsheechatterjee.NativeFile
 
 import android.net.Uri
 import android.os.Build
+import android.util.Base64
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableMap
@@ -79,8 +80,22 @@ class NativeFile(context: ReactApplicationContext) :
         fw.close()
     }
 
+    override fun writeFileFromBase64(path: String, base64Content: String) {
+        val bytes = Base64.decode(base64Content, Base64.NO_WRAP)
+        val file = File(path)
+        val fos = FileOutputStream(file)
+        fos.write(bytes)
+        fos.close()
+    }
+
     override fun readFile(path: String): String {
         return File(path).bufferedReader().readText()
+    }
+
+    override fun readFileAsBase64(path: String): String {
+        val file = File(path)
+        val bytes = file.readBytes()
+        return Base64.encodeToString(bytes, Base64.NO_WRAP)
     }
 
     override fun copyFile(filepath: String, destPath: String) {

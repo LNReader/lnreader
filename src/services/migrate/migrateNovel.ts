@@ -93,22 +93,27 @@ export const migrateNovel = async (
     await db.runAsync('DELETE FROM Novel WHERE id = ?', fromNovel.id);
   });
 
-  setMMKVObject(
-    `${NOVEL_SETTINSG_PREFIX}_${toNovel!.pluginId}_${toNovel!.path}`,
-    getMMKVObject(
-      `${NOVEL_SETTINSG_PREFIX}_${fromNovel.pluginId}_${fromNovel.path}`,
-    ),
-  );
+  const oldSettingsKey = `${NOVEL_SETTINSG_PREFIX}_${fromNovel.pluginId}_${fromNovel.path}`;
+  const newSettingsKey = `${NOVEL_SETTINSG_PREFIX}_${toNovel!.pluginId}_${
+    toNovel!.path
+  }`;
+  const oldSettings = getMMKVObject<any>(oldSettingsKey);
+  if (oldSettings !== undefined) {
+    setMMKVObject<any>(newSettingsKey, oldSettings);
+  }
 
   const lastRead = getMMKVObject<NovelInfo>(
     `${LAST_READ_PREFIX}_${fromNovel.pluginId}_${fromNovel.path}`,
   );
 
   const setLastRead = (chapter: ChapterInfo) => {
-    setMMKVObject(
-      `${LAST_READ_PREFIX}_${toNovel!.pluginId}_${toNovel!.path}`,
-      chapter,
-    );
+    // Exclude novelCover from MMKV storage to avoid size limitations
+    const chapterWithoutCover: any = { ...(chapter as any) };
+    if ('novelCover' in chapterWithoutCover) {
+      delete chapterWithoutCover.novelCover;
+    }
+    const key = `${LAST_READ_PREFIX}_${toNovel!.pluginId}_${toNovel!.path}`;
+    setMMKVObject(key, chapterWithoutCover);
   };
 
   fromChapters = sortChaptersByNumber(fromNovel.name, fromChapters);

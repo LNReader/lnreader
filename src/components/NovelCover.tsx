@@ -21,8 +21,8 @@ import { useLibrarySettings } from '@hooks/persisted';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
 import { getString } from '@strings/translations';
 import SourceScreenSkeletonLoading from '@screens/browse/loadingAnimation/SourceScreenSkeletonLoading';
-import { defaultCover } from '@plugins/helpers/constants';
 import { ActivityIndicator } from 'react-native-paper';
+import { toImageUri } from '@utils/coverUri';
 
 interface UnreadBadgeProps {
   chaptersDownloaded: number;
@@ -118,7 +118,8 @@ function NovelCover<
 
   const selectNovel = () => onLongPress(item);
 
-  const uri = item.cover || defaultCover;
+  const uri = useMemo(() => toImageUri(item.cover), [item.cover]);
+
   if (item.completeRow) {
     if (!addSkeletonLoading) {
       return <></>;

@@ -69,7 +69,6 @@ const NovelScreenList = ({
     loading,
     novelSettings,
     pages,
-    setNovel,
     sortAndFilterChapters,
     setShowChapterTitles,
     updateChapter,
@@ -236,10 +235,7 @@ const NovelScreenList = ({
     }
     const newCover = await pickCustomNovelCover(novel);
     if (newCover) {
-      setNovel({
-        ...novel,
-        cover: newCover,
-      });
+      await getNovel();
     }
   };
 
@@ -261,38 +257,52 @@ const NovelScreenList = ({
     const cover = novel.cover;
     let tempCoverUri: string | null = null;
     try {
-      let imageExtension = cover.split('.').pop() || 'png';
-      if (imageExtension.includes('?')) {
-        imageExtension = imageExtension.split('?')[0] || 'png';
-      }
-      imageExtension = ['jpg', 'jpeg', 'png', 'webp'].includes(
-        imageExtension || '',
-      )
-        ? imageExtension
-        : 'png';
-
       // sanitize novel name as app crashes while copying file with ':' character
       const novelName = novel.name.replace(/[^a-zA-Z0-9]/g, '_');
-      const fileName = `${novelName}_${novel.id}.${imageExtension}`;
-      const coverDestUri = await StorageAccessFramework.createFileAsync(
-        permissions.directoryUri,
-        fileName,
-        'image/' + imageExtension,
-      );
+      const fileName = `${novelName}_${novel.id}.png`;
+
       if (cover.startsWith('http')) {
         const { ExternalCachesDirectoryPath } = FileManager.getConstants();
         tempCoverUri = ExternalCachesDirectoryPath + '/' + fileName;
         await downloadFile(cover, tempCoverUri);
+        const coverDestUri = await StorageAccessFramework.createFileAsync(
+          permissions.directoryUri,
+          fileName,
+          'image/png',
+        );
         FileManager.copyFile(tempCoverUri, coverDestUri);
-      } else {
+      } else if (cover.startsWith('file://')) {
+        const coverDestUri = await StorageAccessFramework.createFileAsync(
+          permissions.directoryUri,
+          fileName,
+          'image/png',
+        );
         FileManager.copyFile(cover, coverDestUri);
+      } else {
+        const { ExternalCachesDirectoryPath } = FileManager.getConstants();
+        tempCoverUri = ExternalCachesDirectoryPath + '/' + fileName;
+
+        const base64Data = cover.startsWith('data:image')
+          ? cover.split(',')[1]
+          : cover;
+
+        FileManager.writeFileFromBase64(tempCoverUri, base64Data);
+
+        const coverDestUri = await StorageAccessFramework.createFileAsync(
+          permissions.directoryUri,
+          fileName,
+          'image/png',
+        );
+        FileManager.copyFile(tempCoverUri, coverDestUri);
       }
       showToast(getString('novelScreen.coverSaved'));
     } catch (err: any) {
       showToast(err.message);
     } finally {
       if (tempCoverUri) {
-        FileManager.unlink(tempCoverUri);
+        try {
+          FileManager.unlink(tempCoverUri);
+        } catch (e) {}
       }
     }
   };
