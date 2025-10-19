@@ -63,30 +63,26 @@ export default function useChapter(
   const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 
-  const connectVolumeButton = useCallback(() => {
-    emmiter.addListener('VolumeUp', () => {
-      webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top: -${
-            Dimensions.get('window').height * 0.75
-          }, behavior: 'smooth'})
-        })()`);
-    });
-    emmiter.addListener('VolumeDown', () => {
-      webViewRef.current?.injectJavaScript(`(()=>{
-          window.scrollBy({top: ${
-            Dimensions.get('window').height * 0.75
-          }, behavior: 'smooth'})
-        })()`);
-    });
+  const scrollUp = useCallback(() => {
+    webViewRef.current?.injectJavaScript(`(()=>{
+        window.scrollBy({top: ${
+          Dimensions.get('window').height * -0.75
+        }, behavior: 'smooth'})
+      })()`);
+  }, [webViewRef]);
+
+  const scrollDown = useCallback(() => {
+    webViewRef.current?.injectJavaScript(`(()=>{
+        window.scrollBy({top: ${
+          Dimensions.get('window').height * 0.75
+        }, behavior: 'smooth'})
+      })()`);
   }, [webViewRef]);
 
   useEffect(() => {
     if (useVolumeButtons) {
-      connectVolumeButton();
-    } else {
-      emmiter.removeAllListeners('VolumeUp');
-      emmiter.removeAllListeners('VolumeDown');
-      // this is just for sure, without it app still works properly
+      emmiter.addListener('VolumeUp', scrollUp);
+      emmiter.addListener('VolumeDown', scrollDown);
     }
 
     return () => {
@@ -94,7 +90,7 @@ export default function useChapter(
       emmiter.removeAllListeners('VolumeDown');
       Speech.stop();
     };
-  }, [useVolumeButtons, chapter, connectVolumeButton]);
+  }, [useVolumeButtons, chapter, scrollUp, scrollDown]);
 
   const loadChapterText = useCallback(
     async (id: number, path: string) => {
@@ -292,6 +288,8 @@ export default function useChapter(
       setChapter,
       setLoading,
       getChapter,
+      scrollUp,
+      scrollDown,
     }),
     [
       hidden,
@@ -309,6 +307,8 @@ export default function useChapter(
       setChapter,
       setLoading,
       getChapter,
+      scrollUp,
+      scrollDown,
     ],
   );
 }

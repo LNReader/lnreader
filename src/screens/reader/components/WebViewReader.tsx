@@ -1,7 +1,8 @@
 import React, { memo, useEffect, useMemo, useRef } from 'react';
-import { NativeEventEmitter, NativeModules, StatusBar } from 'react-native';
+import { NativeEventEmitter, NativeModules } from 'react-native';
 import WebView from 'react-native-webview';
 import color from 'color';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
@@ -59,6 +60,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
     webViewRef,
   } = useChapterContext();
   const theme = useTheme();
+  const { top } = useSafeAreaInsets();
   const readerSettings = useMemo(
     () =>
       getMMKVObject<ChapterReaderSettings>(CHAPTER_READER_SETTINGS) ||
@@ -178,7 +180,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
               <link rel="stylesheet" href="${assetsUriPrefix}/css/tts.css">
               <style>
               :root {
-                --StatusBar-currentHeight: ${StatusBar.currentHeight}px;
+                --StatusBar-currentHeight: ${top}px;
                 --readerSettings-theme: ${readerSettings.theme};
                 --readerSettings-padding: ${readerSettings.padding}px;
                 --readerSettings-textSize: ${readerSettings.textSize}px;

@@ -10,7 +10,6 @@ import Animated, {
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { ChapterScreenProps } from '@navigators/types';
 import { useChapterContext } from '../ChapterContext';
-import { SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
 import { useNovelContext } from '@screens/novel/NovelContext';
 import { useTheme } from '@hooks/persisted';
 
@@ -42,15 +41,19 @@ const ChapterFooter = ({
   const entering = () => {
     'worklet';
     const animations = {
-      originY: withTiming(SCREEN_HEIGHT - navigationBarHeight - 64, {
-        duration: 250,
-        easing: fastOutSlowIn,
-        reduceMotion: ReduceMotion.System,
-      }),
+      transform: [
+        {
+          translateY: withTiming(0, {
+            duration: 250,
+            easing: fastOutSlowIn,
+            reduceMotion: ReduceMotion.System,
+          }),
+        },
+      ],
       opacity: withTiming(1, { duration: 150 }),
     };
     const initialValues = {
-      originY: SCREEN_HEIGHT - 64,
+      transform: [{ translateY: 100 }],
       opacity: 0,
     };
     return {
@@ -61,15 +64,19 @@ const ChapterFooter = ({
   const exiting = () => {
     'worklet';
     const animations = {
-      originY: withTiming(SCREEN_HEIGHT - 64, {
-        duration: 250,
-        easing: fastOutSlowIn,
-        reduceMotion: ReduceMotion.System,
-      }),
+      transform: [
+        {
+          translateY: withTiming(100, {
+            duration: 250,
+            easing: fastOutSlowIn,
+            reduceMotion: ReduceMotion.System,
+          }),
+        },
+      ],
       opacity: withTiming(0, { duration: 150 }),
     };
     const initialValues = {
-      originY: SCREEN_HEIGHT - navigationBarHeight - 64,
+      transform: [{ translateY: 0 }],
       opacity: 1,
     };
     return {
