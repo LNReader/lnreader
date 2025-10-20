@@ -33,12 +33,12 @@ const ChapterDrawer = () => {
   const { chapters, novelSettings, pages, setPageIndex } = useNovelContext();
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const { defaultChapterSort } = useAppSettings();
+  const { defaultChapterSort, showChapterTitles: showChapterTitlesAppWide } = useAppSettings();
   const listRef = useRef<FlashList<ChapterInfo> | null>(null);
 
   const styles = createStylesheet(theme, insets);
 
-  const { sort = defaultChapterSort } = novelSettings;
+  const { sort = defaultChapterSort, showChapterTitles = showChapterTitlesAppWide } = novelSettings;
   const listAscending = sort === 'ORDER BY position ASC';
 
   const defaultButtonLayout: ButtonsProperties = useMemo(
@@ -169,6 +169,7 @@ const ChapterDrawer = () => {
                 setLoading(true);
                 getChapter(val.item);
               },
+              showChapterTitles: showChapterTitles
             })
           }
           estimatedItemSize={60}

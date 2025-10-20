@@ -49,7 +49,7 @@ export const NOVEL_SETTINSG_PREFIX = 'NOVEL_SETTINGS';
 export const LAST_READ_PREFIX = 'LAST_READ_PREFIX';
 
 const defaultNovelSettings: NovelSettings = {
-  showChapterTitles: true,
+  showChapterTitles: 'always',
 };
 const defaultPageIndex = 0;
 
@@ -61,7 +61,7 @@ type TrackedNovel = SearchResult & UserListEntry;
 export interface NovelSettings {
   sort?: string;
   filter?: string;
-  showChapterTitles?: boolean;
+  showChapterTitles?: 'always' | 'never' | 'read';
 }
 
 // #endregion
@@ -163,6 +163,14 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
     useMMKVObject<NovelSettings>(
       `${NOVEL_SETTINSG_PREFIX}_${pluginId}_${novelPath}`,
     );
+  
+  // convert settings format
+  useEffect(() => {
+    if(novelSettings.showChapterTitles as any === true)
+      setNovelSettings({ ...novelSettings, showChapterTitles: 'always' });
+    if(novelSettings.showChapterTitles as any === false)
+      setNovelSettings({ ...novelSettings, showChapterTitles: 'never' });
+  }, [novelSettings]);
 
   const [chapters, _setChapters] = useState<ChapterInfo[]>([]);
   const [batchInformation, setBatchInformation] = useState<{
@@ -274,7 +282,7 @@ export const useNovel = (novelOrPath: string | NovelInfo, pluginId: string) => {
   );
 
   const setShowChapterTitles = useCallback(
-    (v: boolean) => {
+    (v: 'always' | 'never' | 'read') => {
       setNovelSettings({ ...novelSettings, showChapterTitles: v });
     },
     [novelSettings, setNovelSettings],

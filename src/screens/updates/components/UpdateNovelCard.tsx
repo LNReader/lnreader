@@ -158,7 +158,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
                   novelName={chapterListInfo.novelName}
                   chapter={item}
                   theme={theme}
-                  showChapterTitles={false}
+                  showChapterTitles={'never'}
                   downloadChapter={() => handleDownloadChapter(item)}
                   deleteChapter={() => deleteChapter(item)}
                   navigateToChapter={navigateToChapter}
@@ -188,7 +188,7 @@ const UpdateNovelCard: React.FC<UpdateCardProps> = ({
         novelName={chapterListInfo.novelName}
         chapter={chapterList[0]}
         theme={theme}
-        showChapterTitles={false}
+        showChapterTitles={'never'}
         downloadChapter={() => handleDownloadChapter(chapterList[0])}
         deleteChapter={() => deleteChapter(chapterList[0])}
         navigateToChapter={navigateToChapter}

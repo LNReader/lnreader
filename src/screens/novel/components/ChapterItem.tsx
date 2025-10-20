@@ -16,7 +16,7 @@ interface ChapterItemProps {
   isBookmarked?: boolean;
   chapter: ChapterInfo;
   theme: ThemeColors;
-  showChapterTitles: boolean;
+  showChapterTitles: 'always' | 'never' | 'read';
   isSelected?: boolean;
   downloadChapter: () => void;
   deleteChapter: () => void;
@@ -52,6 +52,12 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
     chapter;
 
   isBookmarked ??= bookmark;
+
+  const showThisChapterTitle = (
+    showChapterTitles === 'always' || (
+      showChapterTitles === 'read' && !unread
+    )
+  );
 
   return (
     <View key={'chapterItem' + id}>
@@ -116,7 +122,7 @@ const ChapterItem: React.FC<ChapterItemProps> = ({
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                {showChapterTitles
+                {showThisChapterTitle
                   ? name
                   : getString('novelScreen.chapterChapnum', {
                       num: chapterNumber,

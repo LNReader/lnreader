@@ -94,12 +94,13 @@ const NovelScreenList = ({
     disableHapticFeedback,
     downloadNewChapters,
     refreshNovelMetadata,
+    showChapterTitles: showChapterTitlesAppWide,
   } = useAppSettings();
 
   const {
     sort = defaultChapterSort,
     filter = '',
-    showChapterTitles = false,
+    showChapterTitles = showChapterTitlesAppWide,
   } = novelSettings;
 
   const theme = useTheme();

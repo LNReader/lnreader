@@ -15,7 +15,7 @@ export const getLibraryNovelsFromDb = (
   }
 
   if (downloadedOnlyMode) {
-    query += ` ${LibraryFilter.DownloadedOnly}`;
+    query += ` AND ${LibraryFilter.Downloaded}`;
   }
 
   if (searchText) {

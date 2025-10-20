@@ -13,15 +13,13 @@ export const CHAPTER_GENERAL_SETTINGS = 'CHAPTER_GENERAL_SETTINGS';
 export const CHAPTER_READER_SETTINGS = 'CHAPTER_READER_SETTINGS';
 
 export interface AppSettings {
-  /**
+  /*
    * General settings
    */
-
-  incognitoMode: boolean;
   disableHapticFeedback: boolean;
 
-  /**
-   * Appearence settings
+  /*
+   * Appearance settings
    */
 
   showHistoryTab: boolean;
@@ -30,14 +28,13 @@ export interface AppSettings {
   useFabForContinueReading: boolean;
   disableLoadingAnimations: boolean;
 
-  /**
+  /*
    * Library settings
    */
 
-  downloadedOnlyMode: boolean;
   useLibraryFAB: boolean;
 
-  /**
+  /*
    * Update settings
    */
 
@@ -46,13 +43,19 @@ export interface AppSettings {
   downloadNewChapters: boolean;
   refreshNovelMetadata: boolean;
 
-  /**
+  /*
    * Novel settings
    */
 
   hideBackdrop: boolean;
   defaultChapterSort: string;
+
+  showChapterTitles: 'never' | 'always' | 'read';
 }
+
+export const ShowChapterTitlesDisplayMapping = () => ({
+  "never": "Never", "always": "Always", "read": "For read chapters" 
+});
 
 export interface BrowseSettings {
   showMyAnimeList: boolean;
@@ -61,14 +64,62 @@ export interface BrowseSettings {
 }
 
 export interface LibrarySettings {
+  /**
+   * The sort order of novels in the library.
+   * 
+   * @default Date added (descending, i.e. newest first)
+   */
   sortOrder?: LibrarySortOrder;
+  /**
+   * The current filter for novels in the library.
+   * Note that only one of these filters can be active at a time.
+   * 
+   * @default undefined (none)
+   */
   filter?: LibraryFilter;
+  /**
+   * Whether to show the number of downloaded chapters in a novel on the cover in the library grid
+   * (or on the side in list view). If {@linkcode showUnreadBadges} is also `true` the badges are
+   * merged seamlessly.
+   * 
+   * @default true
+   */
   showDownloadBadges?: boolean;
+  /**
+   * Whether to show the number of unread chapters in a novel on the cover in the library grid
+   * (or on the side in list view). If {@linkcode showDownloadBadges} is also `true` the badges are
+   * merged seamlessly.
+   * 
+   * @default true
+   */
   showUnreadBadges?: boolean;
+  /**
+   * Whether to show the number of novels per category as a badge on the tab in the library.
+   * 
+   * @default false
+   */
   showNumberOfNovels?: boolean;
+  /**
+   * The way the list of novels in the library and sources is displayed.
+   * 
+   * @default Comfortable grid
+   */
   displayMode?: DisplayModes;
+  /**
+   * The number of novels to display in a row in the library and sources,
+   * if {@linkcode displayMode} is set to a grid mode.
+   * 
+   * @default 3 (M)
+   */
   novelsPerRow?: number;
+  /**
+   * If enabled, reading activity will not be added to the history.
+   */
   incognitoMode?: boolean;
+  /**
+   * If enabled, only novels that have downloaded chapters will be shown in the library.
+   * Equivalent to the "Downloaded" filter.
+   */
   downloadedOnlyMode?: boolean;
 }
 
@@ -119,30 +170,27 @@ export interface ChapterReaderSettings {
 
 const initialAppSettings: AppSettings = {
   /**
-   * General settings
+   * Refers to vibrations in response to certain user actions, like long-press selecting chapters.
    */
-
-  incognitoMode: false,
   disableHapticFeedback: false,
 
-  /**
+
+  /*
    * Appearence settings
    */
-
   showHistoryTab: true,
   showUpdatesTab: true,
   showLabelsInNav: true,
   useFabForContinueReading: false,
   disableLoadingAnimations: false,
 
-  /**
+  /*
    * Library settings
    */
 
-  downloadedOnlyMode: false,
   useLibraryFAB: false,
 
-  /**
+  /*
    * Update settings
    */
 
@@ -151,12 +199,14 @@ const initialAppSettings: AppSettings = {
   downloadNewChapters: false,
   refreshNovelMetadata: false,
 
-  /**
+  /*
    * Novel settings
    */
 
   hideBackdrop: false,
   defaultChapterSort: 'ORDER BY position ASC',
+
+  showChapterTitles: 'never',
 };
 
 const initialBrowseSettings: BrowseSettings = {
