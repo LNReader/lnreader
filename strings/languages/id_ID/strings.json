@@ -28,7 +28,7 @@
     "novelInsertFailed": "",
     "useFAB": "",
     "userAgent": "",
-    "recreateDBIndexes": "",
+    "recreateDBIndexes": "Recreate DB indexes",
     "recreateDBIndexesToast": "",
     "recreateDBIndexesDialogTitle": ".",
     "recreateDBIndexesDesc": "Recreates DB indexes. This may improve performance on slower devices."
