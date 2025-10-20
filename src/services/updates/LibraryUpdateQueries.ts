@@ -101,7 +101,7 @@ const updateNovelChapters = (
             data: {
               chapterId: insertId,
               novelName: novelName,
-              chapterName: name,
+              chapterNumber: chapterNumber,
             },
           });
         }

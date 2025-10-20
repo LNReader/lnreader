@@ -148,7 +148,7 @@ export const migrateNovel = async (
         data: {
           chapterId: toChapter.id,
           novelName: toNovel.name,
-          chapterName: toChapter.name,
+          chapterNumber: toChapter.chapterNumber
         },
       });
       await sleep(1000);

@@ -1,9 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
-import DisplayModeModal from './modals/DisplayModeModal';
-import GridSizeModal from './modals/GridSizeModal';
-
 import {
   useAppSettings,
   useLastUpdate,
@@ -23,6 +20,8 @@ import NovelBadgesModal from './modals/NovelBadgesModal';
 import { NavigationState } from '@react-navigation/native';
 import { getString } from '@strings/translations';
 import SettingSwitch from '../components/SettingSwitch';
+import SelectOneModal from './modals/SelectOneModal';
+import { ShowChapterTitlesDisplayMapping } from '@hooks/persisted/useSettings';
 
 interface GenralSettingsProps {
   navigation: NavigationState;
@@ -38,6 +37,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
     showNumberOfNovels = false,
     showUnreadBadges = true,
     sortOrder = LibrarySortOrder.DateAdded_DESC,
+    setLibrarySettings,
   } = useLibrarySettings();
 
   const sortOrderDisplay: string[] = sortOrder.split(' ');
@@ -58,6 +58,7 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
     refreshNovelMetadata,
     disableHapticFeedback,
     useLibraryFAB,
+    showChapterTitles = "always",
     setAppSettings,
   } = useAppSettings();
 
@@ -100,6 +101,12 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
    * Chapter Sort Modal
    */
   const defaultChapterSortModal = useBoolean();
+
+  /**
+   * Hide Chapter Titles Modal
+   */
+  const showChapterTitlesModalRef = useBoolean();
+
   return (
     <SafeAreaView excludeTop>
       <Appbar
@@ -178,6 +185,12 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
             onPress={defaultChapterSortModal.setTrue}
             theme={theme}
           />
+          <List.Item // TODO
+            title={"Show chapter titles"}
+            description={ShowChapterTitlesDisplayMapping()[showChapterTitles]}
+            onPress={showChapterTitlesModalRef.setTrue}
+            theme={theme}
+          />
           <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>
             {getString('generalSettingsScreen.globalUpdate')}
@@ -251,10 +264,13 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
           />
         </List.Section>
       </ScrollView>
-      <DisplayModeModal
-        displayMode={displayMode}
-        displayModalVisible={displayModalRef.value}
-        hideDisplayModal={displayModalRef.setFalse}
+      <SelectOneModal
+        title={getString('generalSettingsScreen.displayMode')}
+        options={Object.fromEntries(displayModesList.map(mode => [mode.value, mode.label]))}
+        value={displayMode + ''}
+        setValue={value => setLibrarySettings({ displayMode: Number(value) })}
+        visible={displayModalRef.value}
+        dismiss={displayModalRef.setFalse}
         theme={theme}
       />
       <DefaultChapterSortModal
@@ -264,10 +280,24 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
         setAppSettings={setAppSettings}
         theme={theme}
       />
-      <GridSizeModal
-        novelsPerRow={novelsPerRow}
-        gridSizeModalVisible={gridSizeModalRef.value}
-        hideGridSizeModal={gridSizeModalRef.setFalse}
+      <SelectOneModal
+        title={getString('generalSettingsScreen.gridSize')}
+        description={getString('generalSettingsScreen.gridSizeDesc', {
+          num: novelsPerRow,
+        })}
+        options={{
+          5: 'XS',
+          4: 'S',
+          3: 'M',
+          2: 'L',
+          1: 'XL',
+        }}
+        value={novelsPerRow.toString()}
+        setValue={novelsPerRow => {
+          setLibrarySettings({ novelsPerRow: Number(novelsPerRow) })
+        }}
+        visible={gridSizeModalRef.value}
+        dismiss={gridSizeModalRef.setFalse}
         theme={theme}
       />
       <NovelBadgesModal
@@ -278,6 +308,15 @@ const GenralSettings: React.FC<GenralSettingsProps> = ({ navigation }) => {
       <NovelSortModal
         novelSortModalVisible={novelSortModalRef.value}
         hideNovelSortModal={novelSortModalRef.setFalse}
+        theme={theme}
+      />
+      <SelectOneModal
+        title={"Show chapter titles"}
+        options={ShowChapterTitlesDisplayMapping()}
+        value={showChapterTitles}
+        setValue={value => setAppSettings({ showChapterTitles: value as any })}
+        visible={showChapterTitlesModalRef.value}
+        dismiss={showChapterTitlesModalRef.setFalse}
         theme={theme}
       />
     </SafeAreaView>

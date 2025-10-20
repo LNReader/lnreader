@@ -4,6 +4,7 @@ import { Text } from 'react-native-paper';
 import color from 'color';
 import { ChapterInfo } from '@database/types';
 import { ThemeColors } from '@theme/types';
+import { getString } from '@strings/translations';
 
 type Styles = {
   chapterCtn: StyleProp<ViewStyle>;
@@ -18,6 +19,7 @@ type Props = {
   theme: ThemeColors;
   chapterId: number;
   onPress: () => void;
+  showChapterTitles: 'never' | 'always' | 'read';
 };
 
 const renderListChapter = ({
@@ -26,7 +28,15 @@ const renderListChapter = ({
   theme,
   onPress,
   chapterId,
+  showChapterTitles,
 }: Props) => {
+
+  const showThisChapterTitle = (
+    showChapterTitles === 'always' || (
+      showChapterTitles === 'read' && !item.unread
+    )
+  );
+
   return (
     <View
       style={[
@@ -48,7 +58,11 @@ const renderListChapter = ({
             { color: item.unread ? theme.onSurface : theme.outline },
           ]}
         >
-          {item.name}
+          {showThisChapterTitle
+            ? item.name
+            : getString('novelScreen.chapterChapnum', {
+                num: item.chapterNumber,
+              })}
         </Text>
         {item.releaseTime ? (
           <Text

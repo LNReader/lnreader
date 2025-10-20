@@ -49,7 +49,7 @@ export type BackgroundTask =
   | DownloadChapterTask;
 export type DownloadChapterTask = {
   name: 'DOWNLOAD_CHAPTER';
-  data: { chapterId: number; novelName: string; chapterName: string };
+  data: { chapterId: number; novelName: string; chapterNumber?: number };
 };
 
 export type BackgroundTaskMetadata = {
@@ -351,7 +351,9 @@ export default class ServiceManager {
           progress: undefined,
           progressText:
             task.name === 'DOWNLOAD_CHAPTER'
-              ? task.data.chapterName
+              ? getString('novelScreen.chapterChapnum', {
+                num: task.data.chapterNumber,
+              })
               : undefined,
         },
         id: makeId(),

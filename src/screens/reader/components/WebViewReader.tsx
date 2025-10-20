@@ -15,11 +15,13 @@ import {
   ChapterReaderSettings,
   initialChapterGeneralSettings,
   initialChapterReaderSettings,
+  useAppSettings,
 } from '@hooks/persisted/useSettings';
 import { getBatteryLevelSync } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
 import { PLUGIN_STORAGE } from '@utils/Storages';
 import { useChapterContext } from '../ChapterContext';
+import { useNovelContext } from '@screens/novel/NovelContext';
 
 type WebViewPostEvent = {
   type: string;
@@ -80,6 +82,22 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
   const pluginCustomJS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.js`;
   const pluginCustomCSS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.css`;
   const nextChapterScreenVisible = useRef<boolean>(false);
+
+  const { showChapterTitles: showChapterTitlesAppWide } = useAppSettings();
+  const { novelSettings: { showChapterTitles = showChapterTitlesAppWide }} = useNovelContext();
+
+  const showThisChapterTitle = (
+    showChapterTitles === 'always' || (
+      showChapterTitles === 'read' && !chapter.unread
+    )
+  );
+
+  const showNextChapterTitle = nextChapter && (
+    showChapterTitles === 'always' || (
+      showChapterTitles === 'read' && !nextChapter.unread
+    )
+  );
+
 
   useEffect(() => {
     const mmkvListener = MMKVStorage.addOnValueChangedListener(key => {
@@ -248,9 +266,18 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
                   strings: {
                     finished: `${getString(
                       'readerScreen.finished',
-                    )}: ${chapter.name.trim()}`,
+                    )}: ${(showThisChapterTitle
+                        ? chapter.name
+                        : getString('novelScreen.chapterChapnum', {
+                            num: chapter.chapterNumber,
+                          })).trim()}`,
                     nextChapter: getString('readerScreen.nextChapter', {
-                      name: nextChapter?.name,
+
+                      name: nextChapter && showNextChapterTitle
+                        ? nextChapter?.name
+                        : getString('novelScreen.chapterChapnum', {
+                            num: nextChapter?.chapterNumber,
+                          }),
                     }),
                     noNextChapter: getString('readerScreen.noNextChapter'),
                   },

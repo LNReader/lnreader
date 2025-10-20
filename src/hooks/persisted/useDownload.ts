@@ -26,7 +26,7 @@ export default function useDownload() {
       data: {
         chapterId: chapter.id,
         novelName: novel.name,
-        chapterName: chapter.name,
+        chapterNumber: chapter.chapterNumber,
       },
     });
   const downloadChapters = (novel: NovelInfo, chapters: ChapterInfo[]) =>
@@ -36,7 +36,7 @@ export default function useDownload() {
         data: {
           chapterId: chapter.id,
           novelName: novel.name,
-          chapterName: chapter.name,
+          chapterNumber: chapter.chapterNumber,
         },
       })),
     );

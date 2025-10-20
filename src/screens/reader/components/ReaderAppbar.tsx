@@ -13,6 +13,8 @@ import { ThemeColors } from '@theme/types';
 import { bookmarkChapter } from '@database/queries/ChapterQueries';
 import { useChapterContext } from '../ChapterContext';
 import { useNovelContext } from '@screens/novel/NovelContext';
+import { useAppSettings } from '@hooks/persisted';
+import { getString } from '@strings/translations';
 
 interface ReaderAppbarProps {
   theme: ThemeColors;
@@ -29,8 +31,15 @@ const ReaderAppbar = ({
   bookmarked,
   setBookmarked,
 }: ReaderAppbarProps) => {
+  const { showChapterTitles: showChapterTitlesAppWide } = useAppSettings();
   const { chapter, novel } = useChapterContext();
-  const { statusBarHeight } = useNovelContext();
+  const { statusBarHeight, novelSettings: { showChapterTitles = showChapterTitlesAppWide } } = useNovelContext();
+
+  const showThisChapterTitle = (
+    showChapterTitles === 'always' || (
+      showChapterTitles === 'read' && !chapter.unread
+    )
+  );
 
   const entering = () => {
     'worklet';
@@ -102,7 +111,11 @@ const ReaderAppbar = ({
             style={[styles.subtitle, { color: theme.onSurfaceVariant }]}
             numberOfLines={1}
           >
-            {chapter.name}
+            {showThisChapterTitle
+                ? chapter.name
+                : getString('novelScreen.chapterChapnum', {
+                    num: chapter.chapterNumber,
+                  })}
           </Text>
         </View>
         <IconButtonV2

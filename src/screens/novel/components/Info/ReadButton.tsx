@@ -6,6 +6,7 @@ import { ChapterInfo } from '@database/types';
 import { useAppSettings } from '@hooks/persisted';
 import Animated, { ZoomIn } from 'react-native-reanimated';
 import { StyleSheet } from 'react-native';
+import { useNovelContext } from '@screens/novel/NovelContext';
 
 interface ReadButtonProps {
   chapters: ChapterInfo[];
@@ -18,7 +19,8 @@ const ReadButton = ({
   lastRead,
   navigateToChapter,
 }: ReadButtonProps) => {
-  const { useFabForContinueReading = false } = useAppSettings();
+  const { useFabForContinueReading = false, showChapterTitles: showChapterTitlesAppWide } = useAppSettings();
+  const { novelSettings: { showChapterTitles = showChapterTitlesAppWide } } = useNovelContext();
 
   const navigateToLastReadChapter = () => {
     if (lastRead) {
@@ -28,15 +30,27 @@ const ReadButton = ({
     }
   };
 
+  const chapterToDisplay = lastRead ?? chapters[0];
+  const showThisChapterTitle = chapterToDisplay && (
+    showChapterTitles === 'always' || (
+      showChapterTitles === 'read' && !chapterToDisplay.unread
+    )
+  );
+  const chapterNameOrNum = chapterToDisplay && (showThisChapterTitle ?
+    chapterToDisplay.name :
+    getString('novelScreen.chapterChapnum', {
+      num: chapterToDisplay.chapterNumber
+    }));
+
   if (!useFabForContinueReading) {
-    return chapters.length > 0 || lastRead ? (
+    return chapterToDisplay ? (
       <Animated.View entering={ZoomIn.duration(150)}>
         <Button
           title={
             lastRead
-              ? `${getString('novelScreen.continueReading')} ${lastRead.name}`
+              ? `${getString('novelScreen.continueReading')} ${chapterNameOrNum}`
               : getString('novelScreen.startReadingChapters', {
-                  name: chapters[0].name,
+                  name: chapterNameOrNum,
                 })
           }
           style={styles.margin}

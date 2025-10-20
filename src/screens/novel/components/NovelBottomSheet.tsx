@@ -20,8 +20,8 @@ interface ChaptersSettingsSheetProps {
   sort: string;
   filter: string;
   theme: ThemeColors;
-  showChapterTitles: boolean;
-  setShowChapterTitles: (v: boolean) => void;
+  showChapterTitles: 'always' | 'never' | 'read';
+  setShowChapterTitles: (v: 'always' | 'never' | 'read') => void;
 }
 
 const ChaptersSettingsSheet = ({
@@ -152,15 +152,21 @@ const ChaptersSettingsSheet = ({
     () => (
       <View style={styles.flex}>
         <Checkbox
-          status={showChapterTitles}
+          status={showChapterTitles === 'always'}
           label={getString('novelScreen.bottomSheet.displays.sourceTitle')}
-          onPress={() => setShowChapterTitles(true)}
+          onPress={() => setShowChapterTitles('always')}
           theme={theme}
         />
         <Checkbox
-          status={!showChapterTitles}
+          status={showChapterTitles === 'never'}
           label={getString('novelScreen.bottomSheet.displays.chapterNumber')}
-          onPress={() => setShowChapterTitles(false)}
+          onPress={() => setShowChapterTitles('never')}
+          theme={theme}
+        />
+        <Checkbox
+          status={showChapterTitles === 'read'}
+          label={"Titles for read chapters only"}
+          onPress={() => setShowChapterTitles('read')}
           theme={theme}
         />
       </View>

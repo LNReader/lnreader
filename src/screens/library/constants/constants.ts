@@ -4,7 +4,6 @@ export enum LibraryFilter {
   Downloaded = 'chaptersDownloaded > 0',
   Unread = 'lastReadAt IS NULL',
   Completed = "status LIKE 'Completed'",
-  DownloadedOnly = 'AND chaptersDownloaded > 0',
   Started = 'lastReadAt IS NOT NULL',
 }
 
@@ -77,8 +76,17 @@ export const librarySortOrderList = [
 ];
 
 export enum DisplayModes {
+  /**
+   * Compact grid: Title is overlayed on the image to save space
+   */
   Compact,
+  /**
+   * Comfortable grid: Title is shown below the image
+   */
   Comfortable,
+  /**
+   * Cover only grid: Title is hidden
+   */
   CoverOnly,
   List,
 }
