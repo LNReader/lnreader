@@ -38,11 +38,18 @@ const updateLibrary = async (
 
   let libraryNovels: LibraryNovelInfo[] = [];
   if (categoryId) {
-    libraryNovels = getLibraryWithCategory(categoryId, onlyUpdateOngoingNovels);
+    libraryNovels = getLibraryWithCategory(
+      categoryId,
+      onlyUpdateOngoingNovels,
+      true,
+    );
   } else {
     libraryNovels = getLibraryNovelsFromDb(
       '',
       onlyUpdateOngoingNovels ? "status = 'Ongoing'" : '',
+      '',
+      false,
+      true,
     ) as LibraryNovelInfo[];
   }
 
