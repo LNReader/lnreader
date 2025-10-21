@@ -20,7 +20,6 @@ import {
 } from './tables/ChapterTable';
 
 import { createRepositoryTableQuery } from './tables/RepositoryTable';
-import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { showToast } from '@utils/showToast';
 
 const dbName = 'lnreader.db';
@@ -28,9 +27,6 @@ const dbName = 'lnreader.db';
 export const db = SQLite.openDatabaseSync(dbName);
 
 export const createTables = () => {
-  const isOnBoard = MMKVStorage.getBoolean('IS_ONBOARDED');
-
-  // These values are not persistent and need to be set on every app start
   db.execSync('PRAGMA busy_timeout = 5000');
   db.execSync('PRAGMA cache_size = 10000');
   db.execSync('PRAGMA foreign_keys = ON');
@@ -39,7 +35,7 @@ export const createTables = () => {
     db.getFirstSync<{ user_version: number }>('PRAGMA user_version')
       ?.user_version ?? 0;
 
-  if (!isOnBoard) {
+  if (userVersion === 0) {
     db.execSync('PRAGMA journal_mode = WAL');
     db.execSync('PRAGMA synchronous = NORMAL');
     db.execSync('PRAGMA temp_store = MEMORY');
@@ -58,10 +54,8 @@ export const createTables = () => {
       db.runSync(createNovelTriggerQueryDelete);
       db.execSync('PRAGMA user_version = 1');
     });
-  } else {
-    if (userVersion < 1) {
-      updateToDBVersion1();
-    }
+  } else if (userVersion < 1) {
+    updateToDBVersion1();
   }
 };
 
