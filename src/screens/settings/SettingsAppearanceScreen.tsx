@@ -1,24 +1,29 @@
-import React, { useState } from 'react';
-import { ScrollView, Text, StyleSheet } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { ScrollView, Text, StyleSheet, View } from 'react-native';
 
 import { ThemePicker } from '@components/ThemePicker/ThemePicker';
+import type { SegmentedControlOption } from '@components/SegmentedControl';
 import SettingSwitch from './components/SettingSwitch';
 import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
 
 import { useAppSettings, useTheme } from '@hooks/persisted';
 import {
   useMMKVBoolean,
-  useMMKVObject,
+  useMMKVNumber,
   useMMKVString,
 } from 'react-native-mmkv';
-import { Appbar, List, SafeAreaView } from '@components';
+import { Appbar, List, SafeAreaView, SegmentedControl } from '@components';
 import { AppearanceSettingsScreenProps } from '@navigators/types';
 import { getString } from '@strings/translations';
 import { darkThemes, lightThemes } from '@theme/md3';
+import { ThemeColors } from '@theme/types';
+
+type ThemeMode = 'light' | 'dark' | 'system';
 
 const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
   const theme = useTheme();
-  const [, setTheme] = useMMKVObject('APP_THEME');
+  const [, setThemeId] = useMMKVNumber('APP_THEME_ID');
+  const [themeMode = 'system', setThemeMode] = useMMKVString('THEME_MODE');
   const [isAmoledBlack = false, setAmoledBlack] =
     useMMKVBoolean('AMOLED_BLACK');
   const [, setCustomAccentColor] = useMMKVString('CUSTOM_ACCENT_COLOR');
@@ -32,12 +37,54 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
     setAppSettings,
   } = useAppSettings();
 
+  const currentMode = themeMode as ThemeMode;
+
   /**
    * Accent Color Modal
    */
   const [accentColorModal, setAccentColorModal] = useState(false);
   const showAccentColorModal = () => setAccentColorModal(true);
   const hideAccentColorModal = () => setAccentColorModal(false);
+
+  const themeModeOptions: SegmentedControlOption<ThemeMode>[] = useMemo(
+    () => [
+      {
+        value: 'system',
+        label: getString('appearanceScreen.themeModeSystem'),
+      },
+      {
+        value: 'light',
+        label: getString('appearanceScreen.themeModeLight'),
+      },
+      {
+        value: 'dark',
+        label: getString('appearanceScreen.themeModeDark'),
+      },
+    ],
+    [],
+  );
+
+  const handleModeChange = (mode: ThemeMode) => {
+    setThemeMode(mode);
+
+    if (mode !== 'system') {
+      const themes = mode === 'dark' ? darkThemes : lightThemes;
+      const currentThemeInMode = themes.find(t => t.id === theme.id);
+
+      if (!currentThemeInMode) {
+        setThemeId(themes[0].id);
+      }
+    }
+  };
+
+  const handleThemeSelect = (selectedTheme: ThemeColors) => {
+    setThemeId(selectedTheme.id);
+    setCustomAccentColor(undefined);
+
+    if (currentMode !== 'system') {
+      setThemeMode(selectedTheme.isDark ? 'dark' : 'light');
+    }
+  };
 
   return (
     <SafeAreaView excludeTop>
@@ -54,6 +101,18 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
           <List.SubHeader theme={theme}>
             {getString('appearanceScreen.appTheme')}
           </List.SubHeader>
+
+          {/* Theme Mode Selector */}
+          <View style={styles.segmentedControlContainer}>
+            <SegmentedControl
+              options={themeModeOptions}
+              value={currentMode}
+              onChange={handleModeChange}
+              theme={theme}
+            />
+          </View>
+
+          {/* Light Themes */}
           <Text style={[{ color: theme.onSurface }, styles.themeSectionText]}>
             {getString('appearanceScreen.lightTheme')}
           </Text>
@@ -68,13 +127,12 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
                 key={item.id}
                 currentTheme={theme}
                 theme={item}
-                onPress={() => {
-                  setTheme(item);
-                  setCustomAccentColor(undefined);
-                }}
+                onPress={() => handleThemeSelect(item)}
               />
             ))}
           </ScrollView>
+
+          {/* Dark Themes */}
           <Text style={[{ color: theme.onSurface }, styles.themeSectionText]}>
             {getString('appearanceScreen.darkTheme')}
           </Text>
@@ -89,13 +147,11 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
                 key={item.id}
                 currentTheme={theme}
                 theme={item}
-                onPress={() => {
-                  setTheme(item);
-                  setCustomAccentColor(undefined);
-                }}
+                onPress={() => handleThemeSelect(item)}
               />
             ))}
           </ScrollView>
+
           {theme.isDark ? (
             <SettingSwitch
               label={getString('appearanceScreen.pureBlackDarkMode')}
@@ -187,5 +243,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     flexDirection: 'row',
+  },
+  segmentedControlContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
 });

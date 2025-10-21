@@ -6,6 +6,7 @@ import { lavenderTheme } from './lavender';
 import { strawberryDaiquiriTheme } from './strawberry';
 import { takoTheme } from './tako';
 import { catppuccinTheme } from './catppuccin';
+import { yinyangTheme } from './yinyang';
 
 export const lightThemes = [
   defaultTheme.light,
@@ -16,6 +17,7 @@ export const lightThemes = [
   strawberryDaiquiriTheme.light,
   takoTheme.light,
   catppuccinTheme.light,
+  yinyangTheme.light,
 ];
 export const darkThemes = [
   defaultTheme.dark,
@@ -26,4 +28,5 @@ export const darkThemes = [
   strawberryDaiquiriTheme.dark,
   takoTheme.dark,
   catppuccinTheme.dark,
+  yinyangTheme.dark,
 ];

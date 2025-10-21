@@ -45,6 +45,10 @@ export interface StringMap {
   'appearanceScreen.pureBlackDarkMode': 'string';
   'appearanceScreen.showHistoryInTheNav': 'string';
   'appearanceScreen.showUpdatesInTheNav': 'string';
+  'appearanceScreen.themeMode': 'string';
+  'appearanceScreen.themeModeLight': 'string';
+  'appearanceScreen.themeModeDark': 'string';
+  'appearanceScreen.themeModeSystem': 'string';
   'appearanceScreen.theme.default': 'string';
   'appearanceScreen.theme.lavender': 'string';
   'appearanceScreen.theme.midnightDusk': 'string';
@@ -55,6 +59,7 @@ export interface StringMap {
   'appearanceScreen.theme.turquoise': 'string';
   'appearanceScreen.theme.yotsuba': 'string';
   'appearanceScreen.theme.catppuccin': 'string';
+  'appearanceScreen.theme.yinyang': 'string';
   'backupScreen.backupName': 'string';
   'backupScreen.createBackup': 'string';
   'backupScreen.createBackupDesc': 'string';
@@ -415,6 +420,7 @@ export interface StringMap {
   'onboardingScreen.pickATheme': 'string';
   'onboardingScreen.light': 'string';
   'onboardingScreen.dark': 'string';
+  'onboardingScreen.system': 'string';
   'onboardingScreen.complete': 'string';
   'notifications.IMPORT_EPUB': 'string';
   'notifications.UPDATE_LIBRARY': 'string';

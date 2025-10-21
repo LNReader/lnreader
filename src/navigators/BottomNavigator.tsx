@@ -118,6 +118,10 @@ const BottomNavigator = () => {
         headerShown: false,
         animation: 'shift',
         lazy: true,
+        tabBarBadgeStyle: {
+          backgroundColor: theme.error,
+          color: theme.onError,
+        },
       })}
       tabBar={renderBottomBar}
     >
