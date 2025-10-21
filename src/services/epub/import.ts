@@ -75,12 +75,13 @@ const insertLocalChapter = async (
   releaseTime: string,
 ) => {
   const insertedChapter = await db.runAsync(
-    'INSERT INTO Chapter(novelId, name, path, releaseTime, position) VALUES(?, ?, ?, ?, ?)',
+    'INSERT INTO Chapter(novelId, name, path, releaseTime, position, isDownloaded) VALUES(?, ?, ?, ?, ?, ?)',
     novelId,
     name,
     NOVEL_STORAGE + '/local/' + novelId + '/' + fakeId,
     releaseTime,
     fakeId,
+    1,
   );
   if (insertedChapter.lastInsertRowId && insertedChapter.lastInsertRowId >= 0) {
     let chapterText: string = '';

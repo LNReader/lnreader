@@ -1,4 +1,3 @@
-import { LibraryFilter } from '@screens/library/constants/constants';
 import { LibraryNovelInfo, NovelInfo } from '../types';
 import { getAllSync } from '../utils/helpers';
 
@@ -15,7 +14,7 @@ export const getLibraryNovelsFromDb = (
   }
 
   if (downloadedOnlyMode) {
-    query += ` ${LibraryFilter.DownloadedOnly}`;
+    query += ` AND (chaptersDownloaded = 1 OR isLocal = 1)`;
   }
 
   if (searchText) {

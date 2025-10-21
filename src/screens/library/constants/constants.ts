@@ -1,7 +1,7 @@
 import { getString } from '@strings/translations';
 
 export enum LibraryFilter {
-  Downloaded = 'chaptersDownloaded > 0',
+  Downloaded = '(chaptersDownloaded > 0 OR isLocal = 1)',
   Unread = 'lastReadAt IS NULL',
   Completed = "status LIKE 'Completed'",
   DownloadedOnly = 'AND chaptersDownloaded > 0',
