@@ -39,7 +39,7 @@ const HistoryScreen = ({ navigation }: HistoryScreenProps) => {
     setSearchText(text);
     setSearchResults(
       history.filter(item =>
-        item.novelName.toLowerCase().includes(searchText.toLowerCase()),
+        item.novelName.toLowerCase().includes(text.toLowerCase()),
       ),
     );
   };
