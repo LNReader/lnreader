@@ -8,7 +8,7 @@ import {
   setStatusBarColor,
 } from '@theme/utils/setBarColor';
 import { useAppSettings, usePlugins, useTheme } from '@hooks/persisted';
-import { useGithubUpdateChecker } from '@hooks/common/githubUpdateChecker';
+import { useGithubUpdateChecker } from '@hooks/common/useGithubUpdateChecker';
 
 /**
  * Navigators
