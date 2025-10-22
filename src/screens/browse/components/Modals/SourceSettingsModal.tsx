@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { Portal, TextInput } from 'react-native-paper';
 import { Button, Modal, SwitchItem } from '@components/index';
 import { useTheme } from '@hooks/persisted';
 import { getString } from '@strings/translations';
@@ -16,7 +16,7 @@ interface PluginSettings {
   [key: string]: PluginSetting;
 }
 
-interface SourceSettingsModal {
+interface SourceSettingsModalProps {
   visible: boolean;
   onDismiss: () => void;
   title: string;
@@ -25,7 +25,7 @@ interface SourceSettingsModal {
   pluginSettings?: PluginSettings;
 }
 
-const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
+const SourceSettingsModal: React.FC<SourceSettingsModalProps> = ({
   onDismiss,
   visible,
   title,
@@ -83,59 +83,63 @@ const SourceSettingsModal: React.FC<SourceSettingsModal> = ({
 
   if (!pluginSettings || Object.keys(pluginSettings).length === 0) {
     return (
-      <Modal visible={visible} onDismiss={onDismiss}>
-        <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-          {title}
-        </Text>
-        <Text style={{ color: theme.onSurfaceVariant }}>
-          {description || 'No settings available.'}
-        </Text>
-      </Modal>
+      <Portal>
+        <Modal visible={visible} onDismiss={onDismiss}>
+          <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
+            {title}
+          </Text>
+          <Text style={{ color: theme.onSurfaceVariant }}>
+            {description || 'No settings available.'}
+          </Text>
+        </Modal>
+      </Portal>
     );
   }
 
   return (
-    <Modal visible={visible} onDismiss={onDismiss}>
-      <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-        {title}
-      </Text>
-      <Text style={{ color: theme.onSurfaceVariant }}>{description}</Text>
-      {Object.entries(pluginSettings).map(([key, setting]) => {
-        if (setting?.type === 'Switch') {
+    <Portal>
+      <Modal visible={visible} onDismiss={onDismiss}>
+        <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
+          {title}
+        </Text>
+        <Text style={{ color: theme.onSurfaceVariant }}>{description}</Text>
+        {Object.entries(pluginSettings).map(([key, setting]) => {
+          if (setting?.type === 'Switch') {
+            return (
+              <SwitchItem
+                key={key}
+                value={!!formValues[key]}
+                label={setting.label}
+                onPress={() => handleChange(key, !formValues[key])}
+                theme={theme}
+              />
+            );
+          }
           return (
-            <SwitchItem
+            <TextInput
               key={key}
-              value={!!formValues[key]}
+              mode="outlined"
               label={setting.label}
-              onPress={() => handleChange(key, !formValues[key])}
-              theme={theme}
+              value={(formValues[key] ?? '') as string}
+              onChangeText={value => handleChange(key, value)}
+              placeholder={`Enter ${setting.label}`}
+              placeholderTextColor={theme.onSurfaceDisabled}
+              underlineColor={theme.outline}
+              style={[{ color: theme.onSurface }, styles.textInput]}
+              theme={{ colors: { ...theme } }}
             />
           );
-        }
-        return (
-          <TextInput
-            key={key}
-            mode="outlined"
-            label={setting.label}
-            value={(formValues[key] ?? '') as string}
-            onChangeText={value => handleChange(key, value)}
-            placeholder={`Enter ${setting.label}`}
-            placeholderTextColor={theme.onSurfaceDisabled}
-            underlineColor={theme.outline}
-            style={[{ color: theme.onSurface }, styles.textInput]}
-            theme={{ colors: { ...theme } }}
+        })}
+        <View style={styles.customCSSButtons}>
+          <Button
+            onPress={handleSave}
+            style={styles.button}
+            title={getString('common.save')}
+            mode="contained"
           />
-        );
-      })}
-      <View style={styles.customCSSButtons}>
-        <Button
-          onPress={handleSave}
-          style={styles.button}
-          title={getString('common.save')}
-          mode="contained"
-        />
-      </View>
-    </Modal>
+        </View>
+      </Modal>
+    </Portal>
   );
 };
 

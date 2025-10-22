@@ -71,14 +71,15 @@ export default function usePlugins() {
       getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
     return fetchPlugins().then(fetchedPlugins => {
       fetchedPlugins.filter(plg => {
-        const finded = installedPlugins.find(v => v.id === plg.id);
-        if (finded) {
-          if (newer(plg.version, finded.version)) {
-            finded.hasUpdate = true;
-            finded.iconUrl = plg.iconUrl;
-            finded.url = plg.url;
-            if (finded.id === lastUsedPlugin?.id) {
-              setLastUsedPlugin(finded);
+        const found = installedPlugins.find(v => v.id === plg.id);
+        if (found) {
+          found.updateApi = plg.api;
+          if (newer(plg.version, found.version)) {
+            found.hasUpdate = true;
+            found.iconUrl = plg.iconUrl;
+            found.url = plg.url;
+            if (found.id === lastUsedPlugin?.id) {
+              setLastUsedPlugin(found);
             }
           }
           return false;

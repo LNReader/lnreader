@@ -1,5 +1,6 @@
 import { reverse, uniqBy } from 'lodash-es';
 import { newer } from '@utils/compareVersion';
+import semver from 'semver'
 
 // packages for plugins
 import {
@@ -82,9 +83,27 @@ const initPlugin = (pluginId: string, rawCode: string) => {
 
 const plugins: Record<string, Plugin | undefined> = {};
 
+const checkPluginApiVersion = (version?: string) => {
+  if(!version) return true;
+
+  if(version.indexOf('.') === -1) {
+    version = version + '.0.0';
+  } else if(version.split('.').length === 2) {
+    version = version + '.0';
+  }
+
+  const unsupportedVersions: string[] = [];
+  if(unsupportedVersions.some(v => semver.satisfies(version, v)))
+    return false;
+  return semver.satisfies(version, '<=1.0')
+}
+
 const installPlugin = async (
   _plugin: PluginItem,
 ): Promise<Plugin | undefined> => {
+  if(!checkPluginApiVersion(_plugin.api)) {
+    throw new Error(`API version ${_plugin.api} is not supported.`);
+  }
   const rawCode = await fetch(_plugin.url, {
     headers: { 'pragma': 'no-cache', 'cache-control': 'no-cache' },
   }).then(res => res.text());
@@ -181,5 +200,6 @@ export {
   uninstallPlugin,
   updatePlugin,
   fetchPlugins,
+  checkPluginApiVersion,
   LOCAL_PLUGIN_ID,
 };

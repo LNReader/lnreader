@@ -11,12 +11,14 @@ import { Button, IconButtonV2 } from '@components';
 import { showToast } from '@utils/showToast';
 import { UseBooleanReturnType } from '@hooks';
 import ConfirmationDialog from '@components/ConfirmationDialog/ConfirmationDialog';
+import { checkPluginApiVersion } from '@plugins/pluginManager';
 
 interface PluginListItemProps {
   item: PluginItem;
   theme: ThemeColors;
   navigation: BrowseScreenProps['navigation'];
   settingsModal: UseBooleanReturnType;
+  pluginIncompatibleModal: UseBooleanReturnType;
   navigateToSource: (plugin: PluginItem, showLatestNovels?: boolean) => void;
   setSelectedPluginId: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -27,6 +29,7 @@ export const PluginListItem = memo(
     theme,
     navigation,
     settingsModal,
+    pluginIncompatibleModal,
     navigateToSource,
     setSelectedPluginId,
   }: PluginListItemProps) => {
@@ -35,6 +38,11 @@ export const PluginListItem = memo(
 
     const isPluginPinned = isPinned(item.id);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+    const canUpdate = useMemo(
+      () => (item.updateApi && checkPluginApiVersion(item.updateApi)) ?? true ,
+      [item.updateApi],
+    );
 
     const leftActionStyle = useMemo(
       () => [styles.buttonGroup, { backgroundColor: theme.secondary }],
@@ -107,12 +115,17 @@ export const PluginListItem = memo(
     }, [setSelectedPluginId, item.id, settingsModal]);
 
     const handleUpdatePress = useCallback(() => {
-      updatePlugin(item)
-        .then(version =>
-          showToast(getString('browseScreen.updatedTo', { version })),
-        )
-        .catch((error: Error) => showToast(error.message));
-    }, [updatePlugin, item]);
+      if(canUpdate) {
+        updatePlugin(item)
+          .then(version =>
+            showToast(getString('browseScreen.updatedTo', { version })),
+          )
+          .catch((error: Error) => showToast(error.message));
+      } else {
+        setSelectedPluginId(item.id);
+        pluginIncompatibleModal.setTrue();
+      }
+    }, [updatePlugin, item, canUpdate, setSelectedPluginId, pluginIncompatibleModal]);
 
     const handleLatestPress = useCallback(() => {
       navigateToSource(item, true);
@@ -199,6 +212,7 @@ export const PluginListItem = memo(
               <IconButtonV2
                 name="download-outline"
                 size={22}
+                disabled={!canUpdate && 'visible'}
                 color={theme.primary}
                 onPress={handleUpdatePress}
                 theme={theme}

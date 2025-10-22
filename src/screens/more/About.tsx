@@ -11,6 +11,8 @@ import { AboutScreenProps } from '@navigators/types';
 import { GIT_HASH, RELEASE_DATE, BUILD_TYPE } from '@env';
 import * as Clipboard from 'expo-clipboard';
 import { version } from '../../../package.json';
+import { Links } from '@utils/constants/links';
+import { StringMap } from '@strings/types';
 
 const AboutScreen = ({ navigation }: AboutScreenProps) => {
   const theme = useTheme();
@@ -57,42 +59,22 @@ const AboutScreen = ({ navigation }: AboutScreenProps) => {
             theme={theme}
           />
           <List.Divider theme={theme} />
-          <List.Item
-            title={getString('aboutScreen.website')}
-            description="https://lnreader.github.io"
-            onPress={() => Linking.openURL('https://lnreader.github.io')}
-            theme={theme}
-          />
-          <List.Item
-            title={getString('aboutScreen.discord')}
-            description="https://discord.gg/QdcWN4MD63"
-            onPress={() => Linking.openURL('https://discord.gg/QdcWN4MD63')}
-            theme={theme}
-          />
-          <List.Item
-            title={getString('aboutScreen.github')}
-            description="https://github.com/LNReader/lnreader"
-            onPress={() =>
-              Linking.openURL('https://github.com/LNReader/lnreader')
-            }
-            theme={theme}
-          />
-          <List.Item
-            title={getString('aboutScreen.sources')}
-            description="https://github.com/LNReader/lnreader-sources"
-            onPress={() =>
-              Linking.openURL('https://github.com/LNReader/lnreader-sources')
-            }
-            theme={theme}
-          />
-          <List.Item
-            title={getString('aboutScreen.helpTranslate')}
-            description="https://crowdin.com/project/lnreader"
-            onPress={() =>
-              Linking.openURL('https://crowdin.com/project/lnreader')
-            }
-            theme={theme}
-          />
+          {
+            Object.entries({
+              'aboutScreen.website': Links.officialSite,
+              'aboutScreen.discord': Links.discord,
+              'aboutScreen.github': Links.github,
+              'aboutScreen.sources': Links.officialPluginRepo,
+              'aboutScreen.helpTranslate': Links.crowdin,
+            } as Record<keyof StringMap, string>).map(([title, url]) => (
+              <List.Item
+                key={title}
+                title={getString(title as keyof StringMap)}
+                onPress={() => Linking.openURL(url)}
+                theme={theme}
+              />
+            ))
+          }
         </List.Section>
       </ScrollView>
     </SafeAreaView>

@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState, memo } from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { Portal } from 'react-native-paper';
 import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
 
 import { useBrowseSettings, usePlugins } from '@hooks/persisted';
@@ -12,8 +11,9 @@ import { useBoolean } from '@hooks';
 import { getPlugin } from '@plugins/pluginManager';
 
 import DiscoverCard from '../discover/DiscoverCard';
-import SourceSettingsModal from './Modals/SourceSettings';
+import SourceSettingsModal from './Modals/SourceSettingsModal';
 import { DeferredPluginListItem } from './DeferredPluginListItem';
+import PluginIncompatibleModal from './Modals/PluginIncompatibleModal';
 
 interface InstalledTabProps {
   navigation: BrowseScreenProps['navigation'];
@@ -31,7 +31,12 @@ export const InstalledTab = memo(
     } = usePlugins();
     const { showMyAnimeList, showAniList } = useBrowseSettings();
     const settingsModal = useBoolean();
+    const pluginIncompatibleModal = useBoolean();
     const [selectedPluginId, setSelectedPluginId] = useState<string>('');
+
+    const selectedPlugin = useMemo(() =>
+        (selectedPluginId && filteredInstalledPlugins.find(plg => plg.id === selectedPluginId)) ?? null,
+      [selectedPluginId]);
 
     const pluginSettings = selectedPluginId
       ? getPlugin(selectedPluginId)?.pluginSettings
@@ -92,12 +97,13 @@ export const InstalledTab = memo(
             theme={theme}
             navigation={navigation}
             settingsModal={settingsModal}
+            pluginIncompatibleModal={pluginIncompatibleModal}
             navigateToSource={navigateToSource}
             setSelectedPluginId={setSelectedPluginId}
           />
         );
       },
-      [theme, navigation, navigateToSource, settingsModal],
+      [theme, navigation, navigateToSource, setSelectedPluginId, settingsModal, pluginIncompatibleModal],
     );
 
     return (
@@ -153,6 +159,7 @@ export const InstalledTab = memo(
                     theme={theme}
                     navigation={navigation}
                     settingsModal={settingsModal}
+                    pluginIncompatibleModal={pluginIncompatibleModal}
                     navigateToSource={navigateToSource}
                     setSelectedPluginId={setSelectedPluginId}
                   />
@@ -175,6 +182,7 @@ export const InstalledTab = memo(
                   theme={theme}
                   navigation={navigation}
                   settingsModal={settingsModal}
+                  pluginIncompatibleModal={pluginIncompatibleModal}
                   navigateToSource={navigateToSource}
                   setSelectedPluginId={setSelectedPluginId}
                 />
@@ -190,16 +198,20 @@ export const InstalledTab = memo(
                 : getString('browseScreen.installedPlugins')}
             </Text>
 
-            <Portal>
-              <SourceSettingsModal
-                visible={settingsModal.value}
-                onDismiss={settingsModal.setFalse}
-                title={getString('browseScreen.settings.title')}
-                description={getString('browseScreen.settings.description')}
-                pluginId={selectedPluginId}
-                pluginSettings={pluginSettings}
-              />
-            </Portal>
+            <SourceSettingsModal
+              visible={settingsModal.value}
+              onDismiss={settingsModal.setFalse}
+              title={getString('browseScreen.settings.title')}
+              description={getString('browseScreen.settings.description')}
+              pluginId={selectedPluginId}
+              pluginSettings={pluginSettings}
+            />
+            {selectedPlugin && <PluginIncompatibleModal
+              update={true}
+              visible={pluginIncompatibleModal.value}
+              onDismiss={pluginIncompatibleModal.setFalse}
+              plugin={selectedPlugin}
+            />}
           </>
         }
       />
