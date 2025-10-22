@@ -66,12 +66,20 @@
   },
   "backupScreen": {
     "backupName": "Backup name",
+    "backupCreated": "Backup created successfully",
+    "backupRestored": "Backup restored successfully",
+    "categoriesRestored": "Restored %{count} categories",
     "createBackup": "Create backup",
     "createBackupDesc": "Can be used to restore current library",
     "createBackupWarning": "Create backup may not work on devices with Android 9 or lower.",
     "downloadingData": "Downloading Data",
     "downloadingDownloadedFiles": "Downloading Downloaded files",
     "failed": "Backup failed",
+    "novelsRestored": "Restored %{count} novels",
+    "restoringCategories": "Restoring categories...",
+    "restoringNovels": "Restoring novels...",
+    "restoringSettings": "Restoring settings...",
+    "settingsRestored": "Settings restored",
     "drive": {
       "backup": "Drive Backup",
       "backupInterruped": "Drive Backup Interruped",
@@ -82,13 +90,7 @@
     "googeDrive": "Googe Drive",
     "googeDriveDesc": "Backup to your Google Drive",
     "invalidBackupFolder": "Invalid backup folder",
-    "legacy": {
-      "backupCreated": "Backup created %{fileName}",
-      "libraryRestored": "Library Restored",
-      "noAvailableBackup": "There's no available backup",
-      "novelsRestored": "%{num} novels restored"
-    },
-    "legacyBackup": "Legacy Backup",
+    "localBackup": "Local Backup",
     "noBackupFound": "No backup found",
     "preparingData": "Preparing Data",
     "remote": {

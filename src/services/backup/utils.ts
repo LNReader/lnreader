@@ -1,5 +1,5 @@
 import { SELF_HOST_BACKUP } from '@hooks/persisted/useSelfHost';
-import { TRACKER } from '@hooks/persisted/useTracker';
+import { OLD_TRACKED_NOVEL_PREFIX } from '@hooks/persisted/migrations/trackerMigration';
 import { LAST_UPDATE_TIME } from '@hooks/persisted/useUpdates';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
 import { version } from '../../../package.json';
@@ -18,6 +18,8 @@ import { BackupEntryName } from './types';
 import { ROOT_STORAGE } from '@utils/Storages';
 import ServiceManager from '@services/ServiceManager';
 import NativeFile from '@specs/NativeFile';
+import { showToast } from '@utils/showToast';
+import { getString } from '@strings/translations';
 
 const APP_STORAGE_URI = 'file://' + ROOT_STORAGE;
 
@@ -27,7 +29,7 @@ export const CACHE_DIR_PATH =
 const backupMMKVData = () => {
   const excludeKeys = [
     ServiceManager.manager.STORE_KEY,
-    TRACKER,
+    OLD_TRACKED_NOVEL_PREFIX,
     SELF_HOST_BACKUP,
     LAST_UPDATE_TIME,
   ];
@@ -114,7 +116,9 @@ export const restoreData = async (cacheDirPath: string) => {
   // nothing to do
 
   // novels
+  showToast(getString('backupScreen.restoringNovels'));
   const items = NativeFile.readDir(novelDirPath);
+  let novelCount = 0;
   for (const item of items) {
     if (!item.isDirectory) {
       const backupNovel = JSON.parse(NativeFile.readFile(item.path));
@@ -122,21 +126,31 @@ export const restoreData = async (cacheDirPath: string) => {
         backupNovel.cover = APP_STORAGE_URI + backupNovel.cover;
       }
       await _restoreNovelAndChapters(backupNovel);
+      novelCount++;
     }
   }
+  showToast(getString('backupScreen.novelsRestored', { count: novelCount }));
 
   // categories
+  showToast(getString('backupScreen.restoringCategories'));
   const categories: BackupCategory[] = JSON.parse(
     NativeFile.readFile(cacheDirPath + '/' + BackupEntryName.CATEGORY),
   );
   for (const category of categories) {
     await _restoreCategory(category);
   }
+  showToast(
+    getString('backupScreen.categoriesRestored', {
+      count: categories.length,
+    }),
+  );
 
   // settings
+  showToast(getString('backupScreen.restoringSettings'));
   restoreMMKVData(
     JSON.parse(
       NativeFile.readFile(cacheDirPath + '/' + BackupEntryName.SETTING),
     ),
   );
+  showToast(getString('backupScreen.settingsRestored'));
 };

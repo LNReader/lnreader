@@ -53,7 +53,7 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
             onPress={openGoogleDriveModal}
           />
           <List.SubHeader theme={theme}>
-            {getString('backupScreen.legacyBackup')}
+            {getString('backupScreen.localBackup')}
           </List.SubHeader>
           <List.Item
             title={getString('backupScreen.createBackup')}
