@@ -46,6 +46,10 @@
     "pureBlackDarkMode": "Режим с чистым чёрным",
     "showHistoryInTheNav": "Показать историю в навигации",
     "showUpdatesInTheNav": "Показать историю в навигации",
+    "themeMode": "Theme mode",
+    "themeModeLight": "Light",
+    "themeModeDark": "Dark",
+    "themeModeSystem": "System",
     "theme": {
       "default": "По умолчанию",
       "lavender": "Пурпурный",
@@ -56,7 +60,8 @@
       "teal": "Бирюзовая",
       "turquoise": "Бирюзовый",
       "yotsuba": "Ёцуба",
-      "catppuccin": "Catppuccin"
+      "catppuccin": "Catppuccin",
+      "yinyang": "Yin & Yang"
     }
   },
   "backupScreen": {
@@ -510,6 +515,7 @@
     "pickATheme": "Выберите тему",
     "light": "Светлая",
     "dark": "Тёмная",
+    "system": "System",
     "complete": "Готово"
   },
   "notifications": {
