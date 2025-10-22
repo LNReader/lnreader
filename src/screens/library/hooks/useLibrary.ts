@@ -45,7 +45,18 @@ export const useLibrary = (): UseLibraryReturnType => {
       novelIds: (c.novelIds ?? '').split(',').map(Number),
     }));
 
-    setCategories(res);
+    const filteredCategories = res.filter((cat, index) => {
+      if (index !== 0) {
+        return true;
+      }
+
+      const hasUserCategories = res.length > 2;
+      const hasNovels = cat.novelIds.length > 0 && cat.novelIds[0] !== 0;
+
+      return !hasUserCategories || hasNovels;
+    });
+
+    setCategories(filteredCategories);
   }, []);
 
   const getLibrary = useCallback(async () => {

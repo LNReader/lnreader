@@ -12,7 +12,7 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import ExportNovelAsEpubButton from './ExportNovelAsEpubButton';
-import { ChapterInfo, NovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { MaterialDesignIconName } from '@type/icon';
 
