@@ -90,7 +90,7 @@ export const mangaUpdatesTracker: Tracker = {
     throw 'Session expired, please re-authenticate';
   },
 
-  handleSearch: async (search, auth) => {
+  handleSearch: async search => {
     const searchUrl = `${baseApiUrl}/series/search`;
     const response = await fetch(searchUrl, {
       method: 'POST',

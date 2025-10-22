@@ -1,4 +1,3 @@
-import SafeAreaView from '@components/SafeAreaView/SafeAreaView';
 import { useTheme } from '@hooks/persisted';
 import React from 'react';
 import { StyleSheet } from 'react-native';

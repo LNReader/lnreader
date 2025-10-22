@@ -5,15 +5,15 @@ import { RadioButton as MaterialRadioButton } from 'react-native-paper';
 
 interface RadioButtonGroupProps {
   children?: React.ReactNode;
-  value: string;
-  onValueChange: () => void;
+  value: string | number;
+  onValueChange: (value: string) => void;
 }
 
 interface RadioButtonProps {
-  value: string;
+  value: string | number;
   label: string;
   theme: ThemeColors;
-  labelStyle: StyleSheet.AbsoluteFillStyle;
+  labelStyle?: StyleSheet.AbsoluteFillStyle;
 }
 
 export const RadioButtonGroup = ({
@@ -21,7 +21,10 @@ export const RadioButtonGroup = ({
   value,
   onValueChange,
 }: RadioButtonGroupProps) => (
-  <MaterialRadioButton.Group onValueChange={onValueChange} value={value}>
+  <MaterialRadioButton.Group
+    onValueChange={onValueChange}
+    value={String(value)}
+  >
     {children}
   </MaterialRadioButton.Group>
 );
@@ -34,7 +37,7 @@ export const RadioButton = ({
 }: RadioButtonProps) => (
   <View style={styles.radioButtonContainer}>
     <MaterialRadioButton
-      value={value}
+      value={String(value)}
       color={theme.primary}
       uncheckedColor={theme.onSurfaceVariant}
     />
