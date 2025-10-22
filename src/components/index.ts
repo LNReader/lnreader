@@ -16,3 +16,4 @@ export { default as ConfirmationDialog } from './ConfirmationDialog/Confirmation
 export { default as SafeAreaView } from './SafeAreaView/SafeAreaView';
 export { default as Modal } from './Modal/Modal';
 export { SegmentedControl } from './SegmentedControl';
+export { DialogTitle } from './DialogTitle';

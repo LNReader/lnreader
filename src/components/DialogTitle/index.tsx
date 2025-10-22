@@ -1,0 +1,1 @@
+export { DialogTitle } from './DialogTitle';

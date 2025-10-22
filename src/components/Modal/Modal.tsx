@@ -1,4 +1,3 @@
-import SafeAreaView from '@components/SafeAreaView/SafeAreaView';
 import { useTheme } from '@hooks/persisted';
 import React from 'react';
 import { StyleSheet } from 'react-native';
@@ -13,20 +12,18 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const theme = useTheme();
   return (
-    <SafeAreaView>
-      <PaperModal
-        visible={visible}
-        onDismiss={onDismiss}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: overlay(2, theme.surface) },
-          contentContainerStyle,
-        ]}
-        {...props}
-      >
-        {children}
-      </PaperModal>
-    </SafeAreaView>
+    <PaperModal
+      visible={visible}
+      onDismiss={onDismiss}
+      contentContainerStyle={[
+        styles.modalContainer,
+        { backgroundColor: overlay(2, theme.surface) },
+        contentContainerStyle,
+      ]}
+      {...props}
+    >
+      {children}
+    </PaperModal>
   );
 };
 

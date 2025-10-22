@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, ToastAndroid } from 'react-native';
-import { overlay, Portal } from 'react-native-paper';
-import BottomSheet from '@components/BottomSheet/BottomSheet';
+import React, { useCallback, useMemo, useState } from 'react';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
+import { Portal, overlay } from 'react-native-paper';
 
+import BottomSheet from '@components/BottomSheet/BottomSheet';
+import { useTheme, useTracker, useTrackedNovel } from '@hooks/persisted';
+import { UserListStatus } from '@services/Trackers';
+import { NovelInfo } from '@database/types';
+import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { getStatusLabel, getTrackerIcon } from './constants';
+import { AddTrackingCard, TrackedItemCard } from './TrackerCards';
 import TrackSearchDialog from './TrackSearchDialog';
 import SetTrackStatusDialog from './SetTrackStatusDialog';
 import SetTrackScoreDialog from './SetTrackScoreDialog';
 import SetTrackChaptersDialog from './SetTrackChaptersDialog';
-import { AddTrackingCard, TrackedItemCard } from './TrackerCards';
-import { ThemeColors } from '@theme/types';
-import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { useTracker, useTrackedNovel } from '@hooks/persisted';
-import { UserListStatus } from '@services/Trackers';
-import { NovelInfo } from '@database/types';
 
-interface Props {
+interface TrackSheetProps {
   bottomSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   novel: NovelInfo;
-  theme: ThemeColors;
 }
 
-const TrackSheet = ({ bottomSheetRef, novel, theme }: Props) => {
+const TrackSheet: React.FC<TrackSheetProps> = ({ bottomSheetRef, novel }) => {
+  const theme = useTheme();
   const { tracker } = useTracker();
   const { trackedNovel, trackNovel, untrackNovel, updateTrackedNovel } =
     useTrackedNovel(novel.id);
@@ -29,70 +29,99 @@ const TrackSheet = ({ bottomSheetRef, novel, theme }: Props) => {
   const [trackStatusDialog, setTrackStatusDialog] = useState(false);
   const [trackChaptersDialog, setTrackChaptersDialog] = useState(false);
   const [trackScoreDialog, setTrackScoreDialog] = useState(false);
-  const handleSetSearchTrackDialog = () => {
+
+  const closeBottomSheet = useCallback(() => {
     bottomSheetRef.current?.close();
+  }, [bottomSheetRef]);
+
+  const handleSetSearchTrackDialog = useCallback(() => {
     setTrackSearchDialog(true);
-  };
-  const handleSetStatusDialog = () => {
-    bottomSheetRef.current?.close();
+  }, [closeBottomSheet]);
+
+  const handleSetStatusDialog = useCallback(() => {
+    closeBottomSheet();
     setTrackStatusDialog(true);
-  };
-  const handleSetChaptersDialog = () => {
-    bottomSheetRef.current?.close();
+  }, [closeBottomSheet]);
+
+  const handleSetChaptersDialog = useCallback(() => {
+    closeBottomSheet();
     setTrackChaptersDialog(true);
-  };
-  const handleSetScoreDialog = () => {
-    bottomSheetRef.current?.close();
+  }, [closeBottomSheet]);
+
+  const handleSetScoreDialog = useCallback(() => {
+    closeBottomSheet();
     setTrackScoreDialog(true);
-  };
-  if (!tracker) {
+  }, [closeBottomSheet]);
+
+  const handleDismissSearchDialog = useCallback(() => {
+    setTrackSearchDialog(false);
+  }, []);
+
+  const handleDismissStatusDialog = useCallback(() => {
+    setTrackStatusDialog(false);
+  }, []);
+
+  const handleDismissChaptersDialog = useCallback(() => {
+    setTrackChaptersDialog(false);
+  }, []);
+
+  const handleDismissScoreDialog = useCallback(() => {
+    setTrackScoreDialog(false);
+  }, []);
+
+  const updateTrackChapters = useCallback(
+    (newChapters: string) => {
+      if (!tracker) return;
+
+      if (!newChapters) {
+        ToastAndroid.show('Enter a valid number', ToastAndroid.SHORT);
+        return;
+      }
+
+      const newProgress = Number(newChapters);
+      if (isNaN(newProgress)) {
+        ToastAndroid.show('Enter a valid number', ToastAndroid.SHORT);
+        return;
+      }
+
+      updateTrackedNovel(tracker, { progress: newProgress });
+    },
+    [tracker, updateTrackedNovel],
+  );
+
+  const updateTrackStatus = useCallback(
+    (newStatus: UserListStatus) => {
+      if (!tracker) return;
+      updateTrackedNovel(tracker, { status: newStatus });
+    },
+    [tracker, updateTrackedNovel],
+  );
+
+  const updateTrackScore = useCallback(
+    (newScore: number) => {
+      if (!tracker) return;
+      updateTrackedNovel(tracker, { score: newScore });
+    },
+    [tracker, updateTrackedNovel],
+  );
+
+  const trackerIcon = useMemo(
+    () => (tracker ? getTrackerIcon(tracker.name) : null),
+    [tracker],
+  );
+
+  const snapPoints = useMemo(
+    () => (trackedNovel ? [180] : [130]),
+    [trackedNovel],
+  );
+
+  if (!tracker || !trackerIcon) {
     return null;
   }
 
-  const getStatus = (status: string) => {
-    switch (status) {
-      case 'CURRENT':
-        return 'Reading';
-      case 'PLANNING':
-        return 'Plan to read';
-      case 'COMPLETED':
-        return 'Completed';
-      case 'DROPPED':
-        return 'Dropped';
-      case 'PAUSED':
-        return 'On Hold';
-      case 'REPEATING':
-        return 'Rereading';
-    }
-  };
-
-  const updateTrackChapters = (newChapters: string) => {
-    if (newChapters !== '') {
-      const newProgress = Number(newChapters);
-      updateTrackedNovel(tracker, { progress: newProgress });
-
-      setTrackChaptersDialog(false);
-    } else {
-      ToastAndroid.show('Enter a valid number', ToastAndroid.SHORT);
-    }
-  };
-
-  const updateTrackStatus = (newStatus: UserListStatus) => {
-    updateTrackedNovel(tracker, { status: newStatus });
-    setTrackStatusDialog(false);
-  };
-
-  const updateTrackScore = (newScore: number) => {
-    updateTrackedNovel(tracker, { score: newScore });
-    setTrackScoreDialog(false);
-  };
-
   return (
     <>
-      <BottomSheet
-        bottomSheetRef={bottomSheetRef}
-        snapPoints={trackedNovel ? [180] : [130]}
-      >
+      <BottomSheet bottomSheetRef={bottomSheetRef} snapPoints={snapPoints}>
         <View
           style={[
             styles.contentContainer,
@@ -100,34 +129,20 @@ const TrackSheet = ({ bottomSheetRef, novel, theme }: Props) => {
           ]}
         >
           {!trackedNovel ? (
-            tracker.name === 'MyAnimeList' ? (
-              <AddTrackingCard
-                icon={require('../../../../../assets/mal.png')}
-                theme={theme}
-                setTrackSearchDialog={handleSetSearchTrackDialog}
-              />
-            ) : (
-              <AddTrackingCard
-                icon={require('../../../../../assets/anilist.png')}
-                theme={theme}
-                setTrackSearchDialog={handleSetSearchTrackDialog}
-              />
-            )
+            <AddTrackingCard
+              icon={trackerIcon}
+              onPress={handleSetSearchTrackDialog}
+            />
           ) : (
             <TrackedItemCard
-              untrackNovel={untrackNovel}
+              onUntrack={untrackNovel}
               tracker={tracker}
-              icon={
-                tracker?.name === 'MyAnimeList'
-                  ? require('../../../../../assets/mal.png')
-                  : require('../../../../../assets/anilist.png')
-              }
+              icon={trackerIcon}
               trackItem={trackedNovel}
-              handSetTrackStatusDialog={handleSetStatusDialog}
-              handleSetTrackChaptersDialog={handleSetChaptersDialog}
-              handleSetTrackScoreDialog={handleSetScoreDialog}
-              theme={theme}
-              getStatus={getStatus}
+              onSetStatus={handleSetStatusDialog}
+              onSetChapters={handleSetChaptersDialog}
+              onSetScore={handleSetScoreDialog}
+              getStatus={getStatusLabel}
             />
           )}
         </View>
@@ -137,35 +152,31 @@ const TrackSheet = ({ bottomSheetRef, novel, theme }: Props) => {
           <>
             <SetTrackStatusDialog
               trackItem={trackedNovel}
-              trackStatusDialog={trackStatusDialog}
-              setTrackStatusDialog={setTrackStatusDialog}
-              updateTrackStatus={updateTrackStatus}
-              theme={theme}
+              visible={trackStatusDialog}
+              onDismiss={handleDismissStatusDialog}
+              onUpdateStatus={updateTrackStatus}
             />
             <SetTrackChaptersDialog
               trackItem={trackedNovel}
-              trackChaptersDialog={trackChaptersDialog}
-              setTrackChaptersDialog={setTrackChaptersDialog}
-              updateTrackChapters={updateTrackChapters}
-              theme={theme}
+              visible={trackChaptersDialog}
+              onDismiss={handleDismissChaptersDialog}
+              onUpdateChapters={updateTrackChapters}
             />
             <SetTrackScoreDialog
               tracker={tracker}
               trackItem={trackedNovel}
-              trackScoreDialog={trackScoreDialog}
-              setTrackScoreDialog={setTrackScoreDialog}
-              updateTrackScore={updateTrackScore}
-              theme={theme}
+              visible={trackScoreDialog}
+              onDismiss={handleDismissScoreDialog}
+              onUpdateScore={updateTrackScore}
             />
           </>
         ) : (
           <TrackSearchDialog
             tracker={tracker}
-            trackNovel={trackNovel}
-            trackSearchDialog={trackSearchDialog}
-            setTrackSearchDialog={setTrackSearchDialog}
+            onTrackNovel={trackNovel}
+            visible={trackSearchDialog}
+            onDismiss={handleDismissSearchDialog}
             novelName={novel.name}
-            theme={theme}
           />
         )}
       </Portal>

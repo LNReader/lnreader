@@ -1,6 +1,7 @@
 import { AuthenticationResult, Tracker, TrackerName } from '@services/Trackers';
 import { aniListTracker } from '@services/Trackers/aniList';
 import { myAnimeListTracker } from '@services/Trackers/myAnimeList';
+import { mangaUpdatesTracker } from '@services/Trackers/mangaUpdates';
 import { useMMKVObject } from 'react-native-mmkv';
 
 export const TRACKER = 'TRACKER';
@@ -14,6 +15,7 @@ export type TrackerMetadata = {
 const trackers: Record<TrackerName, Tracker> = {
   AniList: aniListTracker,
   MyAnimeList: myAnimeListTracker,
+  MangaUpdates: mangaUpdatesTracker,
 };
 
 export const getTracker = (name: TrackerName) => {

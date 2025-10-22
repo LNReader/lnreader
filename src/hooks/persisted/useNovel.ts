@@ -1,9 +1,8 @@
 /* eslint-disable no-console */
-import { SearchResult, UserListEntry } from '@services/Trackers';
 import { useMMKVNumber, useMMKVObject } from 'react-native-mmkv';
-import { TrackerMetadata, getTracker } from './useTracker';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { MMKVStorage } from '@utils/mmkv/mmkv';
+import { TRACKED_NOVEL_PREFIX } from './useTrackedNovel';
 import {
   getNovelByPath,
   deleteCachedNovels as _deleteCachedNovels,
@@ -39,11 +38,6 @@ import { useLibraryContext } from '@components/Context/LibraryContext';
 
 // #region constants
 
-// store key: '<PREFIX>_<novel.pluginId>_<novel.path>',
-// store key: '<PREFIX>_<novel.id>',
-
-export const TRACKED_NOVEL_PREFIX = 'TRACKED_NOVEL_PREFIX';
-
 export const NOVEL_PAGE_INDEX_PREFIX = 'NOVEL_PAGE_INDEX_PREFIX';
 export const NOVEL_SETTINSG_PREFIX = 'NOVEL_SETTINGS';
 export const LAST_READ_PREFIX = 'LAST_READ_PREFIX';
@@ -56,82 +50,11 @@ const defaultPageIndex = 0;
 // #endregion
 // #region types
 
-type TrackedNovel = SearchResult & UserListEntry;
-
 export interface NovelSettings {
   sort?: string;
   filter?: string;
   showChapterTitles?: boolean;
 }
-
-// #endregion
-// #region definition useTrackedNovel
-
-export const useTrackedNovel = (novelId: number | 'NO_ID') => {
-  const [trackedNovel, setValue] = useMMKVObject<TrackedNovel>(
-    `${TRACKED_NOVEL_PREFIX}_${novelId}`,
-  );
-  const updateNovelProgess = useCallback(
-    (tracker: TrackerMetadata, chaptersRead: number) => {
-      if (!trackedNovel || novelId === 'NO_ID') {
-        return;
-      }
-      return getTracker(tracker.name).updateUserListEntry(
-        trackedNovel.id,
-        { progress: chaptersRead },
-        tracker.auth,
-      );
-    },
-    [novelId, trackedNovel],
-  );
-  if (novelId === 'NO_ID') {
-    return {
-      trackedNovel: undefined,
-      trackNovel: () => {},
-      untrackNovel: () => {},
-      updateTrackedNovel: () => {},
-      updateNovelProgess: () => {},
-    };
-  }
-
-  // #endregion
-  // #region trackNovel functions
-
-  const trackNovel = (tracker: TrackerMetadata, novel: SearchResult) => {
-    getTracker(tracker.name)
-      .getUserListEntry(novel.id, tracker.auth)
-      .then((data: UserListEntry) => {
-        setValue({
-          ...novel,
-          ...data,
-        });
-      });
-  };
-
-  const untrackNovel = () => setValue(undefined);
-
-  const updateTrackedNovel = (
-    tracker: TrackerMetadata,
-    data: Partial<UserListEntry>,
-  ) => {
-    if (!trackedNovel) {
-      return;
-    }
-    return getTracker(tracker.name).updateUserListEntry(
-      trackedNovel.id,
-      data,
-      tracker.auth,
-    );
-  };
-
-  return {
-    trackedNovel,
-    trackNovel,
-    untrackNovel,
-    updateTrackedNovel,
-    updateNovelProgess,
-  };
-};
 
 // #endregion
 // #region definition useNovel

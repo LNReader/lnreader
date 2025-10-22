@@ -380,11 +380,7 @@ const NovelScreenList = ({
             filter={filter}
             showChapterTitles={showChapterTitles}
           />
-          <TrackSheet
-            bottomSheetRef={trackerSheetRef}
-            novel={novel}
-            theme={theme}
-          />
+          <TrackSheet bottomSheetRef={trackerSheetRef} novel={novel} />
           {useFabForContinueReading && (lastRead || chapters[0]) ? (
             <AnimatedFAB
               style={[
