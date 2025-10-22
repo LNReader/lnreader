@@ -195,20 +195,6 @@ export const PluginListItem = memo(
               </View>
             </View>
             <View style={styles.flex} />
-            <Button
-              title={getString('browseScreen.latest')}
-              textColor={theme.primary}
-              onPress={handleLatestPress}
-            />
-            {item.hasSettings ? (
-              <IconButtonV2
-                name="cog-outline"
-                size={22}
-                color={theme.primary}
-                onPress={handleSettingsPress}
-                theme={theme}
-              />
-            ) : null}
             {item.hasUpdate || __DEV__ ? (
               <IconButtonV2
                 name="download-outline"
@@ -218,6 +204,20 @@ export const PluginListItem = memo(
                 theme={theme}
               />
             ) : null}
+            {item.hasSettings ? (
+              <IconButtonV2
+                name="cog-outline"
+                size={22}
+                color={theme.primary}
+                onPress={handleSettingsPress}
+                theme={theme}
+              />
+            ) : null}
+            <Button
+              title={getString('browseScreen.latest')}
+              textColor={theme.primary}
+              onPress={handleLatestPress}
+            />
           </Pressable>
         </Swipeable>
         <ConfirmationDialog

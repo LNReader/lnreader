@@ -13,6 +13,7 @@ import {
 import { getString } from '@strings/translations';
 import { showToast } from '@utils/showToast';
 import {
+  Dimensions,
   NativeSyntheticEvent,
   NativeScrollEvent,
   RefreshControl,
@@ -108,6 +109,7 @@ const NovelScreenList = ({
   const { downloadQueue, downloadChapter } = useDownload();
 
   const [isFabExtended, setIsFabExtended] = useState(true);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
 
   const novelBottomSheetRef = useRef<BottomSheetModalMethods>(null);
   const trackerSheetRef = useRef<BottomSheetModalMethods>(null);
@@ -122,6 +124,9 @@ const NovelScreenList = ({
     if (useFabForContinueReading && lastRead) {
       setIsFabExtended(currentScrollPosition <= 0);
     }
+
+    const screenHeight = Dimensions.get('window').height;
+    setShowScrollToTop(currentScrollPosition > screenHeight / 2);
   };
 
   const onRefresh = async () => {
@@ -228,6 +233,10 @@ const NovelScreenList = ({
       screen: 'Chapter',
       params: { novel, chapter },
     });
+  };
+
+  const scrollToTop = () => {
+    listRef.current?.scrollToOffset({ offset: 0, animated: true });
   };
 
   const setCustomNovelCover = async () => {
@@ -381,6 +390,20 @@ const NovelScreenList = ({
             showChapterTitles={showChapterTitles}
           />
           <TrackSheet bottomSheetRef={trackerSheetRef} novel={novel} />
+          {showScrollToTop && (
+            <AnimatedFAB
+              style={[
+                styles.scrollToTopFab,
+                { backgroundColor: theme.surface, marginBottom: bottomInset },
+              ]}
+              color={theme.primary}
+              icon="arrow-up"
+              label=""
+              extended={false}
+              onPress={scrollToTop}
+              visible={showScrollToTop}
+            />
+          )}
           {useFabForContinueReading && (lastRead || chapters[0]) ? (
             <AnimatedFAB
               style={[
@@ -428,6 +451,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  scrollToTopFab: {
+    bottom: 16,
+    position: 'absolute',
   },
 });
 
