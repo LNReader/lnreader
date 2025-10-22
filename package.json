@@ -77,6 +77,7 @@
     "react-native-drawer-layout": "^4.1.8",
     "react-native-edge-to-edge": "^1.6.0",
     "react-native-error-boundary": "^2.0.0",
+    "react-native-file-access": "^3.2.0",
     "react-native-gesture-handler": "~2.25.0",
     "react-native-lottie-splash-screen": "^1.1.2",
     "react-native-mmkv": "^3.2.0",

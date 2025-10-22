@@ -10,13 +10,13 @@ import { getString } from '@strings/translations';
 import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 import { showToast } from '@utils/showToast';
 
-interface ChooseEpubLocationModalProps {
+interface ExportEpubModalProps {
   isVisible: boolean;
   onSubmit?: (uri: string) => void;
   hideModal: () => void;
 }
 
-const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
+const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
   isVisible,
   onSubmit: onSubmitProp,
   hideModal,
@@ -67,12 +67,12 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
     <Modal visible={isVisible} onDismiss={onDismiss}>
       <View>
         <Text style={[styles.modalTitle, { color: theme.onSurface }]}>
-          {getString('novelScreen.convertToEpubModal.chooseLocation')}
+          {getString('novelScreen.exportEpubModal.title')}
         </Text>
         <TextInput
           onChangeText={setUri}
           value={uri}
-          placeholder={getString('novelScreen.convertToEpubModal.pathToFolder')}
+          placeholder={getString('novelScreen.exportEpubModal.selectFolder')}
           onSubmitEditing={onSubmit}
           mode="outlined"
           theme={{ colors: { ...theme } }}
@@ -88,22 +88,20 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
       </View>
       <View style={styles.settings}>
         <SwitchItem
-          label={getString('novelScreen.convertToEpubModal.useReaderTheme')}
+          label={getString('novelScreen.exportEpubModal.applyReaderTheme')}
           value={useAppTheme.value}
           onPress={useAppTheme.toggle}
           theme={theme}
         />
         <SwitchItem
-          label={getString('novelScreen.convertToEpubModal.useCustomCSS')}
+          label={getString('novelScreen.exportEpubModal.includeCustomCSS')}
           value={useCustomCSS.value}
           onPress={useCustomCSS.toggle}
           theme={theme}
         />
         <SwitchItem
-          label={getString('novelScreen.convertToEpubModal.useCustomJS')}
-          description={getString(
-            'novelScreen.convertToEpubModal.useCustomJSWarning',
-          )}
+          label={getString('novelScreen.exportEpubModal.includeCustomJS')}
+          description={getString('novelScreen.exportEpubModal.customJSWarning')}
           value={useCustomJS.value}
           onPress={useCustomJS.toggle}
           theme={theme}
@@ -111,7 +109,7 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
       </View>
       <List.InfoItem
         style={styles.infoItem}
-        title={getString('novelScreen.convertToEpubModal.chaptersWarning')}
+        title={getString('novelScreen.exportEpubModal.downloadedChaptersOnly')}
         theme={theme}
       />
       <View style={styles.modalFooterCtn}>
@@ -122,7 +120,7 @@ const ChooseEpubLocationModal: React.FC<ChooseEpubLocationModalProps> = ({
   );
 };
 
-export default ChooseEpubLocationModal;
+export default ExportEpubModal;
 
 const styles = StyleSheet.create({
   infoItem: {

@@ -11,7 +11,7 @@ import Animated, {
   interpolateColor,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import EpubIconButton from './EpubIconButton';
+import ExportNovelAsEpubButton from './ExportNovelAsEpubButton';
 import { ChapterInfo, NovelInfo } from '@database/types';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { MaterialDesignIconName } from '@type/icon';
@@ -165,13 +165,7 @@ const NovelAppbar = ({
         <Appbar.BackAction onPress={goBack} />
 
         <View style={styles.row}>
-          <EpubIconButton
-            theme={theme}
-            novel={novel}
-            chapters={chapters}
-            anchor={AppbarAction}
-          />
-
+          <ExportNovelAsEpubButton novel={novel} chapters={chapters} />
           <AppbarAction icon="share-variant" onPress={shareNovel} />
           <AppbarAction
             icon="text-box-search-outline"
