@@ -6,6 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 
+import { getPlugin } from '@plugins/pluginManager';
 import { getString } from '@strings/translations';
 import { useTheme } from '@hooks/persisted';
 
@@ -47,6 +48,7 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
   const navigation = useNavigation<StackNavigationProp<any>>();
   const [inActivity, setInActivity] = useState<Record<string, boolean>>({});
   const { novelInLibrary, switchNovelToLibrary } = useLibraryContext();
+  const imageRequestInit = getPlugin(item.plugin.id)?.imageRequestInit;
 
   const errorColor = theme.isDark ? '#B3261E' : '#F2B8B5';
   const noResultsColor = interpolateColor(
@@ -152,6 +154,7 @@ const GlobalSearchSourceResults: React.FC<{ item: GlobalSearchResult }> = ({
                     }}
                     selectedNovelIds={[]}
                     isSelected={false}
+                    imageRequestInit={imageRequestInit}
                   />
                 );
               }}

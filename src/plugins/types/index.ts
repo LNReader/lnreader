@@ -62,12 +62,12 @@ export interface PluginItem {
 export interface ImageRequestInit {
   [x: string]: string | Record<string, string> | Headers | FormData | undefined;
   method?: string;
-  headers?: Record<string, string>;
+  headers: Record<string, string>;
   body?: string;
 }
 
 export interface Plugin extends PluginItem {
-  imageRequestInit?: ImageRequestInit;
+  imageRequestInit: ImageRequestInit;
   filters?: Filters;
   pluginSettings: any;
   popularNovels: (

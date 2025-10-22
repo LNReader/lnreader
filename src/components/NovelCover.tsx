@@ -15,7 +15,7 @@ import { useDeviceOrientation } from '@hooks';
 import { coverPlaceholderColor } from '../theme/colors';
 import { DisplayModes } from '@screens/library/constants/constants';
 import { DBNovelInfo, NovelInfo } from '@database/types';
-import { NovelItem } from '@plugins/types';
+import { NovelItem, ImageRequestInit } from '@plugins/types';
 import { ThemeColors } from '@theme/types';
 import { useLibrarySettings } from '@hooks/persisted';
 import { getUserAgent } from '@hooks/persisted/useUserAgent';
@@ -64,6 +64,7 @@ interface INovelCover<TNovel> {
   onLongPress: (item: TNovel) => void;
   selectedNovelIds: number[];
   globalSearch?: boolean;
+  imageRequestInit?: ImageRequestInit;
 }
 
 function isFromDB(
@@ -85,6 +86,7 @@ function NovelCover<
   onLongPress,
   globalSearch,
   selectedNovelIds,
+  imageRequestInit,
 }: INovelCover<TNovel>) {
   const {
     displayMode = DisplayModes.Comfortable,
@@ -119,6 +121,13 @@ function NovelCover<
   const selectNovel = () => onLongPress(item);
 
   const uri = item.cover || defaultCover;
+  const requestInit = imageRequestInit || ({} as ImageRequestInit);
+  if (!requestInit.headers) {
+    requestInit.headers = {
+      'User-Agent': getUserAgent(),
+    };
+  }
+
   if (item.completeRow) {
     if (!addSkeletonLoading) {
       return <></>;
@@ -184,7 +193,7 @@ function NovelCover<
           {inActivity ? <InActivityBadge theme={theme} /> : null}
         </View>
         <Image
-          source={{ uri, headers: { 'User-Agent': getUserAgent() } }}
+          source={{ uri, ...requestInit }}
           style={[
             {
               height: coverHeight,

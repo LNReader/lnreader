@@ -12,6 +12,7 @@ import { getString } from '@strings/translations';
 import { useTheme } from '@hooks/persisted';
 import { LibraryScreenProps } from '@navigators/types';
 import ServiceManager from '@services/ServiceManager';
+import { getPlugin } from '@plugins/pluginManager';
 
 interface Props {
   categoryId: number;
@@ -34,6 +35,8 @@ export const LibraryView: React.FC<Props> = ({
 }) => {
   const theme = useTheme();
   const renderItem = ({ item }: { item: NovelInfo }) => {
+    const imageRequestInit = getPlugin(item.pluginId)?.imageRequestInit;
+
     return (
       <NovelCover
         item={item}
@@ -54,6 +57,7 @@ export const LibraryView: React.FC<Props> = ({
         }}
         libraryStatus={false} // yes but actually no :D
         selectedNovelIds={selectedNovelIds}
+        imageRequestInit={imageRequestInit}
       />
     );
   };
