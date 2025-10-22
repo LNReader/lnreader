@@ -46,6 +46,10 @@
     "pureBlackDarkMode": "Tamamen siyah karanlık tema",
     "showHistoryInTheNav": "Navigasyonda geçmişi göster",
     "showUpdatesInTheNav": "Menüde güncellemeleri göster",
+    "themeMode": "Theme mode",
+    "themeModeLight": "Light",
+    "themeModeDark": "Dark",
+    "themeModeSystem": "System",
     "theme": {
       "default": "Varsayılan",
       "lavender": "Lavanta",
@@ -56,7 +60,8 @@
       "teal": "Turkuaz Yeşili",
       "turquoise": "Turkuaz",
       "yotsuba": "Yotsuba",
-      "catppuccin": "Catppuccin"
+      "catppuccin": "Catppuccin",
+      "yinyang": "Yin & Yang"
     }
   },
   "backupScreen": {
@@ -510,6 +515,7 @@
     "pickATheme": "Tema seç",
     "light": "Açık",
     "dark": "Koyu",
+    "system": "System",
     "complete": "Tamamla"
   },
   "notifications": {
