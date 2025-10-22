@@ -31,7 +31,7 @@ import { overlay } from 'react-native-paper';
 import { BottomSheetView } from '@gorhom/bottom-sheet';
 import BottomSheet from '@components/BottomSheet/BottomSheet';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { FlashList } from '@shopify/flash-list';
+import { LegendList } from '@legendapp/list';
 
 interface LibraryBottomSheetProps {
   bottomSheetRef: RefObject<BottomSheetModalMethods | null>;
@@ -48,7 +48,8 @@ const FirstRoute = () => {
 
   return (
     <View style={styles.flex}>
-      <FlashList
+      <LegendList
+        recycleItems
         estimatedItemSize={4}
         extraData={[filter]}
         data={libraryFilterList}
@@ -79,7 +80,8 @@ const SecondRoute = () => {
 
   return (
     <View style={styles.flex}>
-      <FlashList
+      <LegendList
+        recycleItems
         data={librarySortOrderList}
         extraData={[sortOrder]}
         estimatedItemSize={5}
@@ -154,7 +156,8 @@ const ThirdRoute = () => {
       <Text style={[styles.sectionHeader, { color: theme.onSurfaceVariant }]}>
         {getString('libraryScreen.bottomSheet.display.displayMode')}
       </Text>
-      <FlashList
+      <LegendList
+        recycleItems
         estimatedItemSize={4}
         data={displayModesList}
         extraData={[displayMode]}

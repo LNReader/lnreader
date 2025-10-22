@@ -5,7 +5,7 @@ import { RadioButton } from '@components/RadioButton/RadioButton';
 
 import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 import { Voice } from 'expo-speech';
-import { FlashList } from '@shopify/flash-list';
+import { LegendList } from '@legendapp/list';
 import { Modal } from '@components';
 import { StyleSheet } from 'react-native';
 
@@ -32,7 +32,8 @@ const VoicePickerModal: React.FC<VoicePickerModalProps> = ({
         onDismiss={onDismiss}
         contentContainerStyle={[styles.containerStyle]}
       >
-        <FlashList
+        <LegendList
+          recycleItems
           ListHeaderComponent={
             <TextInput
               mode="outlined"
@@ -69,7 +70,6 @@ const VoicePickerModal: React.FC<VoicePickerModalProps> = ({
           )}
           keyExtractor={item => item.identifier || 'system'}
           estimatedItemSize={64}
-          removeClippedSubviews={true}
           ListEmptyComponent={
             <ActivityIndicator
               size={24}

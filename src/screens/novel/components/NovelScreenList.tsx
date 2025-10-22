@@ -28,14 +28,14 @@ import { AnimatedFAB } from 'react-native-paper';
 import { ChapterListSkeleton } from '@components/Skeleton/Skeleton';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { useNovelContext } from '../NovelContext';
-import { FlashList } from '@shopify/flash-list';
+import { LegendList, LegendListRef } from '@legendapp/list';
 import FileManager from '@specs/NativeFile';
 import { downloadFile } from '@plugins/helpers/fetch';
 import { StorageAccessFramework } from 'expo-file-system';
 
 type NovelScreenListProps = {
   headerOpacity: SharedValue<number>;
-  listRef: React.RefObject<FlashList<ChapterInfo> | null>;
+  listRef: React.RefObject<LegendListRef | null>;
   navigation: any;
   openDrawer: () => void;
   selected: ChapterInfo[];
@@ -308,10 +308,11 @@ const NovelScreenList = ({
 
   return (
     <>
-      <FlashList
+      <LegendList
         ref={listRef}
         estimatedItemSize={64}
         data={chapters}
+        recycleItems
         extraData={[
           chapters.length,
           selected.length,

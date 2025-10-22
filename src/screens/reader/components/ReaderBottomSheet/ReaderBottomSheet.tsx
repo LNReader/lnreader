@@ -98,14 +98,7 @@ const GeneralTab: React.FC = React.memo(() => {
   );
 
   const renderItem = useCallback(
-    ({
-      item,
-    }: {
-      item: {
-        key: string;
-        label: string;
-      };
-    }) => (
+    ({ item }: { item: { key: string; label: string } }) => (
       <ReaderSheetPreferenceItem
         key={item.key}
         label={getString(
@@ -123,7 +116,7 @@ const GeneralTab: React.FC = React.memo(() => {
     <BottomSheetFlashList
       data={preferences}
       extraData={[settings]}
-      keyExtractor={item => item.key}
+      keyExtractor={(item: { key: string; label: string }) => item.key}
       renderItem={renderItem}
       estimatedItemSize={60}
     />

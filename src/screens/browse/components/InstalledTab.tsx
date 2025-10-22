@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState, memo } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { Portal } from 'react-native-paper';
-import { FlashList, ListRenderItem } from '@shopify/flash-list';
+import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
 
 import { useBrowseSettings, usePlugins } from '@hooks/persisted';
 import { PluginItem } from '@plugins/types';
@@ -84,8 +84,8 @@ export const InstalledTab = memo(
       return unpinnedPluginsList;
     }, [searchText, pinnedPluginsList, unpinnedPluginsList]);
 
-    const renderItem: ListRenderItem<PluginItem> = useCallback(
-      ({ item }) => {
+    const renderItem = useCallback(
+      ({ item }: LegendListRenderItemProps<PluginItem>) => {
         return (
           <DeferredPluginListItem
             item={item}
@@ -101,11 +101,11 @@ export const InstalledTab = memo(
     );
 
     return (
-      <FlashList
+      <LegendList
         estimatedItemSize={64}
         data={searchedPlugins}
+        recycleItems
         renderItem={renderItem}
-        removeClippedSubviews={true}
         showsVerticalScrollIndicator={false}
         keyExtractor={item => item.id + '_installed'}
         drawDistance={100}
@@ -146,14 +146,17 @@ export const InstalledTab = memo(
                 >
                   {getString('browseScreen.pinnedPlugins')}
                 </Text>
-                {pinnedPluginsList.map(plugin =>
-                  renderItem({
-                    item: plugin,
-                    index: 0,
-                    target: 'Cell',
-                    extraData: [theme],
-                  }),
-                )}
+                {pinnedPluginsList.map(plugin => (
+                  <DeferredPluginListItem
+                    key={plugin.id}
+                    item={plugin}
+                    theme={theme}
+                    navigation={navigation}
+                    settingsModal={settingsModal}
+                    navigateToSource={navigateToSource}
+                    setSelectedPluginId={setSelectedPluginId}
+                  />
+                ))}
               </>
             ) : null}
 
@@ -167,12 +170,14 @@ export const InstalledTab = memo(
                 >
                   {getString('browseScreen.lastUsed')}
                 </Text>
-                {renderItem({
-                  item: lastUsedPlugin,
-                  index: 0,
-                  target: 'Cell',
-                  extraData: [theme],
-                })}
+                <DeferredPluginListItem
+                  item={lastUsedPlugin}
+                  theme={theme}
+                  navigation={navigation}
+                  settingsModal={settingsModal}
+                  navigateToSource={navigateToSource}
+                  setSelectedPluginId={setSelectedPluginId}
+                />
               </>
             ) : null}
 

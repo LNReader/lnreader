@@ -15,8 +15,7 @@ import { ThemeColors } from '@theme/types';
 import renderListChapter from './RenderListChapter';
 import { useChapterContext } from '@screens/reader/ChapterContext';
 import { useNovelContext } from '@screens/novel/NovelContext';
-import { FlashList, ViewToken } from '@shopify/flash-list';
-import { ChapterInfo } from '@database/types';
+import { LegendList, LegendListRef, ViewToken } from '@legendapp/list';
 
 type ButtonProperties = {
   text: string;
@@ -34,7 +33,8 @@ const ChapterDrawer = () => {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { defaultChapterSort } = useAppSettings();
-  const listRef = useRef<FlashList<ChapterInfo> | null>(null);
+  const listRef = useRef<LegendListRef | null>(null);
+  // ChapterInfo is used via the hooks
 
   const styles = createStylesheet(theme, insets);
 
@@ -149,8 +149,9 @@ const ChapterDrawer = () => {
       {scrollToIndex === undefined ? (
         <LoadingScreenV2 theme={theme} />
       ) : (
-        <FlashList
+        <LegendList
           ref={listRef}
+          recycleItems
           viewabilityConfig={{
             minimumViewTime: 100,
             viewAreaCoveragePercentThreshold: 95,

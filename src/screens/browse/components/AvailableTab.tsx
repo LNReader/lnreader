@@ -15,7 +15,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { getLocaleLanguageName } from '@utils/constants/languages';
-import { FlashList, ListRenderItem } from '@shopify/flash-list';
+import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
 interface AvailableTabProps {
   searchText: string;
   theme: ThemeColors;
@@ -144,27 +144,26 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
       });
   }, [searchText, filteredAvailablePlugins]);
 
-  const renderItem: ListRenderItem<PluginItem & { header: boolean }> =
-    useCallback(
-      ({ item }) => {
-        return (
-          <AvailablePluginCard
-            plugin={item}
-            theme={theme}
-            installPlugin={installPlugin}
-          />
-        );
-      },
-      [theme, installPlugin],
-    );
+  const renderItem = useCallback(
+    ({ item }: LegendListRenderItemProps<PluginItem & { header: boolean }>) => {
+      return (
+        <AvailablePluginCard
+          plugin={item}
+          theme={theme}
+          installPlugin={installPlugin}
+        />
+      );
+    },
+    [theme, installPlugin],
+  );
 
   return (
-    <FlashList
+    <LegendList
       estimatedItemSize={64}
       data={searchedPlugins}
+      recycleItems
       extraData={theme}
       renderItem={renderItem}
-      removeClippedSubviews={true}
       showsVerticalScrollIndicator={false}
       keyExtractor={item => item.id + '_available'}
       refreshControl={
