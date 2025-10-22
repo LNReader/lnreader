@@ -303,9 +303,14 @@ export interface StringMap {
   'novelScreen.exportEpubModal.applyReaderTheme': 'string';
   'novelScreen.exportEpubModal.customJSWarning': 'string';
   'novelScreen.exportEpubModal.downloadedChaptersOnly': 'string';
+  'novelScreen.exportEpubModal.endChapter': 'string';
+  'novelScreen.exportEpubModal.exportAll': 'string';
   'novelScreen.exportEpubModal.includeCustomCSS': 'string';
   'novelScreen.exportEpubModal.includeCustomJS': 'string';
+  'novelScreen.exportEpubModal.invalidRange': 'string';
   'novelScreen.exportEpubModal.selectFolder': 'string';
+  'novelScreen.exportEpubModal.startChapter': 'string';
+  'novelScreen.exportEpubModal.startGreaterThanEnd': 'string';
   'novelScreen.exportEpubModal.title': 'string';
   'novelScreen.epub.exportFailed': 'string';
   'novelScreen.epub.exportSuccess': 'string';

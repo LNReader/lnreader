@@ -5,19 +5,19 @@ import { StatusBar, StyleProp, ViewStyle } from 'react-native';
 import EpubBuilder from '@cd-z/react-native-epub-creator';
 import NativeFile from '@specs/NativeFile';
 
-import { ChapterInfo, NovelInfo } from '@database/types';
+import { NovelInfo } from '@database/types';
 import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 import { useBoolean } from '@hooks/index';
 import { showToast } from '@utils/showToast';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { getString } from '@strings/translations';
+import { getNovelDownloadedChapters } from '@database/queries/ChapterQueries';
 
 import ExportEpubModal from './ExportEpubModal';
 import { MaterialDesignIconName } from '@type/icon';
 
 interface ExportNovelAsEpubButtonProps {
   novel?: NovelInfo;
-  chapters: ChapterInfo[];
   iconComponent: (props: {
     icon: MaterialDesignIconName;
     onPress: () => void;
@@ -28,7 +28,6 @@ interface ExportNovelAsEpubButtonProps {
 
 const ExportNovelAsEpubButton: React.FC<ExportNovelAsEpubButtonProps> = ({
   novel,
-  chapters,
   iconComponent: IconComponent,
 }) => {
   const theme = useTheme();
@@ -111,7 +110,11 @@ const ExportNovelAsEpubButton: React.FC<ExportNovelAsEpubButtonProps> = ({
     `;
   }, [novel, readerSettings]);
 
-  const exportNovelAsEpub = async (destinationUri: string) => {
+  const exportNovelAsEpub = async (
+    destinationUri: string,
+    startChapter?: number,
+    endChapter?: number,
+  ) => {
     if (!novel) {
       showToast(getString('novelScreen.epub.noNovelSelected'));
       return;
@@ -120,6 +123,17 @@ const ExportNovelAsEpubButton: React.FC<ExportNovelAsEpubButtonProps> = ({
     let epub: EpubBuilder | undefined;
 
     try {
+      const chapters = await getNovelDownloadedChapters(
+        novel.id,
+        startChapter,
+        endChapter,
+      );
+
+      if (chapters.length === 0) {
+        showToast(getString('novelScreen.epub.noDownloadedChapters'));
+        return;
+      }
+
       epub = new EpubBuilder(
         {
           title: novel.name,

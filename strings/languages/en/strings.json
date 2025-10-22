@@ -365,11 +365,16 @@
     "continueReading": "Continue reading",
     "exportEpubModal": {
       "applyReaderTheme": "Apply reader theme to EPUB",
-      "customJSWarning": "Custom JavaScript may not be supported by all EPUB readers",
+      "customJSWarning": "Custom JS may not be supported by all EPUB readers",
       "downloadedChaptersOnly": "Only downloaded chapters will be included in the EPUB file",
+      "endChapter": "End Chapter",
+      "exportAll": "Export All Chapters",
       "includeCustomCSS": "Include Custom CSS",
       "includeCustomJS": "Include Custom JS",
+      "invalidRange": "Please enter valid chapter numbers",
       "selectFolder": "Select destination folder for EPUB file",
+      "startChapter": "Start Chapter",
+      "startGreaterThanEnd": "Start chapter must be less than or equal to end chapter",
       "title": "Export Novel as EPUB"
     },
     "epub": {

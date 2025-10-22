@@ -57,7 +57,6 @@ const Menu = React.memo(
 
 const NovelAppbar = ({
   novel,
-  chapters,
   theme,
   isLocal,
   downloadChapters,
@@ -71,7 +70,6 @@ const NovelAppbar = ({
   headerOpacity,
 }: {
   novel: NovelInfo | undefined;
-  chapters: ChapterInfo[];
   theme: ThemeColors;
   isLocal: boolean | undefined;
   downloadChapters: (amount: number | 'all' | 'unread') => void;
@@ -165,11 +163,7 @@ const NovelAppbar = ({
         <Appbar.BackAction onPress={goBack} />
 
         <View style={styles.row}>
-          <ExportNovelAsEpubButton
-            novel={novel}
-            chapters={chapters}
-            iconComponent={AppbarAction}
-          />
+          <ExportNovelAsEpubButton novel={novel} iconComponent={AppbarAction} />
           <AppbarAction icon="share-variant" onPress={shareNovel} />
           <AppbarAction
             icon="text-box-search-outline"

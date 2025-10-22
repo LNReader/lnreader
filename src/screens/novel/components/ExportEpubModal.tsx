@@ -12,7 +12,7 @@ import { showToast } from '@utils/showToast';
 
 interface ExportEpubModalProps {
   isVisible: boolean;
-  onSubmit?: (uri: string) => void;
+  onSubmit?: (uri: string, startChapter?: number, endChapter?: number) => void;
   hideModal: () => void;
 }
 
@@ -34,13 +34,39 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
   const useAppTheme = useBoolean(epubUseAppTheme);
   const useCustomCSS = useBoolean(epubUseCustomCSS);
   const useCustomJS = useBoolean(epubUseCustomJS);
+  const exportAll = useBoolean(true);
+  const [startChapter, setStartChapter] = useState('');
+  const [endChapter, setEndChapter] = useState('');
 
   const onDismiss = () => {
     hideModal();
     setUri(epubLocation);
+    exportAll.setTrue();
+    setStartChapter('');
+    setEndChapter('');
   };
 
   const onSubmit = () => {
+    if (!exportAll.value) {
+      const start = parseInt(startChapter, 10);
+      const end = parseInt(endChapter, 10);
+
+      if (isNaN(start) || isNaN(end)) {
+        showToast(getString('novelScreen.exportEpubModal.invalidRange'));
+        return;
+      }
+
+      if (start < 1 || end < 1) {
+        showToast(getString('novelScreen.exportEpubModal.invalidRange'));
+        return;
+      }
+
+      if (start > end) {
+        showToast(getString('novelScreen.exportEpubModal.startGreaterThanEnd'));
+        return;
+      }
+    }
+
     setChapterReaderSettings({
       epubLocation: uri,
       epubUseAppTheme: useAppTheme.value,
@@ -48,7 +74,10 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
       epubUseCustomJS: useCustomJS.value,
     });
 
-    onSubmitProp?.(uri);
+    const start = exportAll.value ? undefined : parseInt(startChapter, 10);
+    const end = exportAll.value ? undefined : parseInt(endChapter, 10);
+
+    onSubmitProp?.(uri, start, end);
     hideModal();
   };
 
@@ -87,6 +116,38 @@ const ExportEpubModal: React.FC<ExportEpubModalProps> = ({
         />
       </View>
       <View style={styles.settings}>
+        <SwitchItem
+          label={getString('novelScreen.exportEpubModal.exportAll')}
+          value={exportAll.value}
+          onPress={exportAll.toggle}
+          theme={theme}
+        />
+        {!exportAll.value && (
+          <View style={styles.rangeInputs}>
+            <TextInput
+              label={getString('novelScreen.exportEpubModal.startChapter')}
+              value={startChapter}
+              onChangeText={setStartChapter}
+              keyboardType="numeric"
+              mode="outlined"
+              theme={{ colors: { ...theme } }}
+              underlineColor={theme.outline}
+              dense
+              style={styles.rangeInput}
+            />
+            <TextInput
+              label={getString('novelScreen.exportEpubModal.endChapter')}
+              value={endChapter}
+              onChangeText={setEndChapter}
+              keyboardType="numeric"
+              mode="outlined"
+              theme={{ colors: { ...theme } }}
+              underlineColor={theme.outline}
+              dense
+              style={styles.rangeInput}
+            />
+          </View>
+        )}
         <SwitchItem
           label={getString('novelScreen.exportEpubModal.applyReaderTheme')}
           value={useAppTheme.value}
@@ -139,5 +200,13 @@ const styles = StyleSheet.create({
   },
   settings: {
     marginTop: 12,
+  },
+  rangeInputs: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 12,
+  },
+  rangeInput: {
+    flex: 1,
   },
 });

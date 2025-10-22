@@ -311,6 +311,26 @@ export const getDownloadedChapters = () =>
     WHERE Chapter.isDownloaded = 1
   `);
 
+export const getNovelDownloadedChapters = (
+  novelId: number,
+  startPosition?: number,
+  endPosition?: number,
+) => {
+  if (startPosition !== undefined && endPosition !== undefined) {
+    return db.getAllAsync<ChapterInfo>(
+      'SELECT * FROM Chapter WHERE novelId = ? AND isDownloaded = 1 AND position >= ? AND position <= ? ORDER BY position ASC',
+      novelId,
+      startPosition - 1,
+      endPosition - 1,
+    );
+  }
+
+  return db.getAllAsync<ChapterInfo>(
+    'SELECT * FROM Chapter WHERE novelId = ? AND isDownloaded = 1 ORDER BY position ASC',
+    novelId,
+  );
+};
+
 export const getUpdatedOverviewFromDb = () =>
   db.getAllAsync<UpdateOverview>(`SELECT
   Novel.id AS novelId,
