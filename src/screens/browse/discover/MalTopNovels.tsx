@@ -15,7 +15,7 @@ import { SafeAreaView, SearchbarV2 } from '@components';
 
 import { showToast } from '@utils/showToast';
 import { scrapeSearchResults, scrapeTopNovels } from './MyAnimeListScraper';
-import MalNovelCard from './TrackerNovelCard';
+import DiscoverNovelCard from './DiscoverNovelCard';
 import { useTheme } from '@hooks/persisted';
 import MalLoading from '../loadingAnimation/MalLoading';
 import { BrowseMalScreenProps } from '@navigators/types';
@@ -74,7 +74,7 @@ const BrowseMalScreen = ({ navigation }: BrowseMalScreenProps) => {
   }, [getNovels]);
 
   const renderItem: FlatListProps<any>['renderItem'] = ({ item }) => (
-    <MalNovelCard
+    <DiscoverNovelCard
       novel={item}
       theme={theme}
       onPress={() =>

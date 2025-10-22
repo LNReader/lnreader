@@ -111,6 +111,7 @@
   "browseScreen": {
     "addedToLibrary": "Added to library",
     "available": "Available",
+    "deletePluginMessage": "Are you sure you want to uninstall %{name}?",
     "discover": "Discover",
     "globalSearch": "Global search",
     "installFailed": "Installation failed: %{name}",
@@ -127,10 +128,14 @@
       "selectSourceDesc": "Select a Source To Migrate From"
     },
     "noSource": "Your library does not have any novels from this source",
+    "pinnedPlugin": "Pinned %{name}",
+    "pinnedPlugins": "Pinned plugins",
     "removeFromLibrary": "Removed from Library",
     "searchbar": "Search sources",
+    "searchResults": "Search results",
     "selectNovel": "Select Novel",
     "uninstalledPlugin": "Uninstalled %{name}",
+    "unpinnedPlugin": "Unpinned %{name}",
     "updateFailed": "Update failed",
     "updatedTo": "Updated to %{version}",
     "settings": {

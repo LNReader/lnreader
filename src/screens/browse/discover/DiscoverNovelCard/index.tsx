@@ -14,7 +14,7 @@ interface Props {
   theme: ThemeColors;
 }
 
-const MalNovelCard: React.FC<Props> = ({ novel, onPress, theme }) => {
+const DiscoverNovelCard: React.FC<Props> = ({ novel, onPress, theme }) => {
   return (
     <View style={[styles.container, { backgroundColor: theme.overlay3 }]}>
       <Pressable
@@ -56,7 +56,7 @@ const MalNovelCard: React.FC<Props> = ({ novel, onPress, theme }) => {
   );
 };
 
-export default MalNovelCard;
+export default DiscoverNovelCard;
 
 const styles = StyleSheet.create({
   container: {

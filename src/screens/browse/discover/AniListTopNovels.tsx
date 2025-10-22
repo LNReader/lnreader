@@ -13,7 +13,7 @@ import { ErrorView } from '@components/ErrorView/ErrorView';
 import { SafeAreaView, SearchbarV2 } from '@components';
 
 import { showToast } from '@utils/showToast';
-import TrackerNovelCard from './TrackerNovelCard';
+import DiscoverNovelCard from './DiscoverNovelCard';
 import { useTheme, useTracker } from '@hooks/persisted';
 import TrackerLoading from '../loadingAnimation/TrackerLoading';
 import { queryAniList } from '@services/Trackers/aniList';
@@ -151,7 +151,7 @@ const BrowseALScreen = ({ navigation }: BrowseALScreenProps) => {
   }, [searchAniList]);
 
   const renderItem: ListRenderItem<ALNovel> = ({ item }) => (
-    <TrackerNovelCard
+    <DiscoverNovelCard
       novel={item}
       theme={theme}
       onPress={() =>

@@ -18,6 +18,7 @@ export const AVAILABLE_PLUGINS = 'AVAILABLE_PLUGINS';
 export const INSTALLED_PLUGINS = 'INSTALL_PLUGINS';
 export const LANGUAGES_FILTER = 'LANGUAGES_FILTER';
 export const LAST_USED_PLUGIN = 'LAST_USED_PLUGIN';
+export const PINNED_PLUGINS = 'PINNED_PLUGINS';
 export const FILTERED_AVAILABLE_PLUGINS = 'FILTERED_AVAILABLE_PLUGINS';
 export const FILTERED_INSTALLED_PLUGINS = 'FILTERED_INSTALLED_PLUGINS';
 
@@ -26,6 +27,8 @@ const defaultLang = languagesMapping[locale.split('-')[0]] || 'English';
 export default function usePlugins() {
   const [lastUsedPlugin, setLastUsedPlugin] =
     useMMKVObject<PluginItem>(LAST_USED_PLUGIN);
+  const [pinnedPlugins = [], setPinnedPlugins] =
+    useMMKVObject<string[]>(PINNED_PLUGINS);
   const [languagesFilter = [defaultLang], setLanguagesFilter] =
     useMMKVObject<string[]>(LANGUAGES_FILTER);
   const [filteredAvailablePlugins = [], setFilteredAvailablePlugins] =
@@ -130,6 +133,9 @@ export default function usePlugins() {
     if (lastUsedPlugin?.id === plugin.id) {
       MMKVStorage.delete(LAST_USED_PLUGIN);
     }
+    if (pinnedPlugins.includes(plugin.id)) {
+      setPinnedPlugins(pinnedPlugins.filter(id => id !== plugin.id));
+    }
     const installedPlugins =
       getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
     setMMKVObject(
@@ -175,10 +181,27 @@ export default function usePlugins() {
     });
   };
 
+  const togglePinPlugin = useCallback(
+    (pluginId: string) => {
+      if (pinnedPlugins.includes(pluginId)) {
+        setPinnedPlugins(pinnedPlugins.filter(id => id !== pluginId));
+      } else {
+        setPinnedPlugins([...pinnedPlugins, pluginId]);
+      }
+    },
+    [pinnedPlugins, setPinnedPlugins],
+  );
+
+  const isPinned = useCallback(
+    (pluginId: string) => pinnedPlugins.includes(pluginId),
+    [pinnedPlugins],
+  );
+
   return {
     filteredAvailablePlugins,
     filteredInstalledPlugins,
     lastUsedPlugin,
+    pinnedPlugins,
     languagesFilter,
     setLastUsedPlugin,
     refreshPlugins,
@@ -186,5 +209,7 @@ export default function usePlugins() {
     installPlugin,
     uninstallPlugin,
     updatePlugin,
+    togglePinPlugin,
+    isPinned,
   };
 }

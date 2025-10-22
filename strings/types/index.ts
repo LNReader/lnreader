@@ -98,6 +98,7 @@ export interface StringMap {
   'browse': 'string';
   'browseScreen.addedToLibrary': 'string';
   'browseScreen.available': 'string';
+  'browseScreen.deletePluginMessage': 'string';
   'browseScreen.discover': 'string';
   'browseScreen.globalSearch': 'string';
   'browseScreen.installFailed': 'string';
@@ -112,10 +113,14 @@ export interface StringMap {
   'browseScreen.migration.selectSource': 'string';
   'browseScreen.migration.selectSourceDesc': 'string';
   'browseScreen.noSource': 'string';
+  'browseScreen.pinnedPlugin': 'string';
+  'browseScreen.pinnedPlugins': 'string';
   'browseScreen.removeFromLibrary': 'string';
   'browseScreen.searchbar': 'string';
+  'browseScreen.searchResults': 'string';
   'browseScreen.selectNovel': 'string';
   'browseScreen.uninstalledPlugin': 'string';
+  'browseScreen.unpinnedPlugin': 'string';
   'browseScreen.updateFailed': 'string';
   'browseScreen.updatedTo': 'string';
   'browseScreen.settings.title': 'string';
