@@ -46,6 +46,10 @@
     "pureBlackDarkMode": "Режим Pure Black",
     "showHistoryInTheNav": "Показувати історію в навігації",
     "showUpdatesInTheNav": "Показувати оновлення в навігації",
+    "themeMode": "Theme mode",
+    "themeModeLight": "Light",
+    "themeModeDark": "Dark",
+    "themeModeSystem": "System",
     "theme": {
       "default": "За замовчуванням",
       "lavender": "Лаванда",
@@ -56,7 +60,8 @@
       "teal": "Бірюзова",
       "turquoise": "Турмалін",
       "yotsuba": "Йоцуба",
-      "catppuccin": "Catppuccin"
+      "catppuccin": "Catppuccin",
+      "yinyang": "Yin & Yang"
     }
   },
   "backupScreen": {
@@ -510,6 +515,7 @@
     "pickATheme": "Оберіть тему",
     "light": "Світла",
     "dark": "Темна",
+    "system": "System",
     "complete": "Завершити"
   },
   "notifications": {
