@@ -15,11 +15,13 @@ export interface BaseDialogProps {
 }
 
 export interface TrackStatusDialogProps extends BaseDialogProps {
+  tracker: TrackerMetadata;
   trackItem: TrackedNovel;
   onUpdateStatus: (status: UserListStatus) => void;
 }
 
 export interface TrackChaptersDialogProps extends BaseDialogProps {
+  tracker: TrackerMetadata;
   trackItem: TrackedNovel;
   onUpdateChapters: (chapters: string) => void;
 }

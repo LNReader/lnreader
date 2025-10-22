@@ -60,7 +60,7 @@ export default function useChapter(
   const { incognitoMode } = useLibrarySettings();
   const [error, setError] = useState<string>();
   const { tracker } = useTracker();
-  const { trackedNovel, updateNovelProgess } = useTrackedNovel(novel.id);
+  const { trackedNovel, updateAllTrackedNovels } = useTrackedNovel(novel.id);
   const { setImmersiveMode, showStatusAndNavBar } = useFullscreenMode();
 
   const connectVolumeButton = useCallback(() => {
@@ -189,9 +189,9 @@ export default function useChapter(
   const updateTracker = useCallback(() => {
     const chapterNumber = parseChapterNumber(novel.name, chapter.name);
     if (tracker && trackedNovel && chapterNumber > trackedNovel.progress) {
-      updateNovelProgess(tracker, chapterNumber);
+      updateAllTrackedNovels({ progress: chapterNumber });
     }
-  }, [chapter.name, novel.name, trackedNovel, tracker, updateNovelProgess]);
+  }, [chapter.name, novel.name, trackedNovel, tracker, updateAllTrackedNovels]);
 
   const saveProgress = useCallback(
     (percentage: number) => {
