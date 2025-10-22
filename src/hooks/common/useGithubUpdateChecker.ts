@@ -71,7 +71,7 @@ export const useGithubUpdateChecker = (): GithubUpdate => {
     checkForRelease();
   }, []);
 
-  if (!checking) {
+  if (!checking && shouldCheckForUpdate()) {
     const data = {
       latestRelease,
       isNewVersion: isNewVersion(latestRelease.tag_name),

@@ -394,7 +394,7 @@ const NovelScreenList = ({
             <AnimatedFAB
               style={[
                 styles.scrollToTopFab,
-                { backgroundColor: theme.surface, marginBottom: bottomInset },
+                { backgroundColor: theme.surface2, marginBottom: bottomInset },
               ]}
               color={theme.primary}
               icon="arrow-up"

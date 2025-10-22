@@ -165,7 +165,11 @@ const NovelAppbar = ({
         <Appbar.BackAction onPress={goBack} />
 
         <View style={styles.row}>
-          <ExportNovelAsEpubButton novel={novel} chapters={chapters} />
+          <ExportNovelAsEpubButton
+            novel={novel}
+            chapters={chapters}
+            iconComponent={AppbarAction}
+          />
           <AppbarAction icon="share-variant" onPress={shareNovel} />
           <AppbarAction
             icon="text-box-search-outline"

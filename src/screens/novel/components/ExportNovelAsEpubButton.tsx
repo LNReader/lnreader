@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { Appbar, Portal } from 'react-native-paper';
-import { StatusBar } from 'react-native';
+import { Portal } from 'react-native-paper';
+import { StatusBar, StyleProp, ViewStyle } from 'react-native';
 
 import EpubBuilder from '@cd-z/react-native-epub-creator';
 import NativeFile from '@specs/NativeFile';
@@ -13,15 +13,23 @@ import { NOVEL_STORAGE } from '@utils/Storages';
 import { getString } from '@strings/translations';
 
 import ExportEpubModal from './ExportEpubModal';
+import { MaterialDesignIconName } from '@type/icon';
 
 interface ExportNovelAsEpubButtonProps {
   novel?: NovelInfo;
   chapters: ChapterInfo[];
+  iconComponent: (props: {
+    icon: MaterialDesignIconName;
+    onPress: () => void;
+    style?: StyleProp<ViewStyle>;
+    size?: number;
+  }) => React.JSX.Element;
 }
 
 const ExportNovelAsEpubButton: React.FC<ExportNovelAsEpubButtonProps> = ({
   novel,
   chapters,
+  iconComponent: IconComponent,
 }) => {
   const theme = useTheme();
 
@@ -172,7 +180,7 @@ const ExportNovelAsEpubButton: React.FC<ExportNovelAsEpubButtonProps> = ({
 
   return (
     <>
-      <Appbar.Action icon="book-arrow-down-outline" onPress={showModal} />
+      <IconComponent icon="book-arrow-down-outline" onPress={showModal} />
       <Portal>
         <ExportEpubModal
           isVisible={isModalVisible}
