@@ -46,6 +46,10 @@
     "pureBlackDarkMode": "Modo escuridão",
     "showHistoryInTheNav": "Mostrar histórico no navegador",
     "showUpdatesInTheNav": "Mostrar novidades no navegador",
+    "themeMode": "Theme mode",
+    "themeModeLight": "Light",
+    "themeModeDark": "Dark",
+    "themeModeSystem": "System",
     "theme": {
       "default": "Padrão",
       "lavender": "Lavanda",
@@ -56,7 +60,8 @@
       "teal": "Ciano",
       "turquoise": "Turquesa",
       "yotsuba": "Japonês",
-      "catppuccin": "Catppuccin"
+      "catppuccin": "Catppuccin",
+      "yinyang": "Yin & Yang"
     }
   },
   "backupScreen": {
@@ -510,6 +515,7 @@
     "pickATheme": "Pick a theme",
     "light": "Light",
     "dark": "Dark",
+    "system": "System",
     "complete": "Complete"
   },
   "notifications": {
