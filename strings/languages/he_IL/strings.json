@@ -46,6 +46,10 @@
     "pureBlackDarkMode": "Pure black dark mode",
     "showHistoryInTheNav": "הראה היסטוריה בסרגל הניווט",
     "showUpdatesInTheNav": "הראה עדכונים בסרגל הניווט",
+    "themeMode": "Theme mode",
+    "themeModeLight": "Light",
+    "themeModeDark": "Dark",
+    "themeModeSystem": "System",
     "theme": {
       "default": "ברירת מחדל",
       "lavender": "לבנדר",
@@ -56,7 +60,8 @@
       "teal": "כחול-ירקרק",
       "turquoise": "טורקיז",
       "yotsuba": "Yotsuba",
-      "catppuccin": "Catppuccin"
+      "catppuccin": "Catppuccin",
+      "yinyang": "Yin & Yang"
     }
   },
   "backupScreen": {
@@ -510,6 +515,7 @@
     "pickATheme": "Pick a theme",
     "light": "Light",
     "dark": "Dark",
+    "system": "System",
     "complete": "Complete"
   },
   "notifications": {
