@@ -38,7 +38,10 @@ export const TrackedItemCard = ({
   return (
     <View style={[{ backgroundColor: theme.surface }, styles.cardContainer]}>
       <View
-        style={[styles.titleContainer, { borderBottomColor: theme.outline }]}
+        style={[
+          styles.titleContainer,
+          { borderBottomColor: 'rgba(0, 0, 0, 0.12)' },
+        ]}
       >
         <Image source={icon} style={styles.trackerIcon} />
         <View style={styles.listItemContainer}>
@@ -55,7 +58,10 @@ export const TrackedItemCard = ({
       </View>
       <View style={styles.trackedItemRow}>
         <TouchableRipple
-          style={[{ borderRightColor: theme.outline }, styles.listItemLeft]}
+          style={[
+            { borderRightColor: 'rgba(0, 0, 0, 0.12)' },
+            styles.listItemLeft,
+          ]}
           borderless
           onPress={handSetTrackStatusDialog}
           rippleColor={color(theme.primary).alpha(0.12).string()}
@@ -77,7 +83,10 @@ export const TrackedItemCard = ({
           </Text>
         </TouchableRipple>
         <TouchableRipple
-          style={[{ borderLeftColor: theme.outline }, styles.listItemRight]}
+          style={[
+            { borderLeftColor: 'rgba(0, 0, 0, 0.12)' },
+            styles.listItemRight,
+          ]}
           borderless
           onPress={handleSetTrackScoreDialog}
           rippleColor={color(theme.primary).alpha(0.12).string()}

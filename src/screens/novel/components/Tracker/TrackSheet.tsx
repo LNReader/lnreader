@@ -49,6 +49,18 @@ const TrackSheet = ({ bottomSheetRef, novel, theme }: Props) => {
     return null;
   }
 
+  const getTrackerIcon = () => {
+    switch (tracker.name) {
+      case 'MyAnimeList':
+        return require('../../../../../assets/mal.png');
+      case 'MangaUpdates':
+        return require('../../../../../assets/mangaupdates.png');
+      case 'AniList':
+      default:
+        return require('../../../../../assets/anilist.png');
+    }
+  };
+
   const getStatus = (status: string) => {
     switch (status) {
       case 'CURRENT':
@@ -100,28 +112,16 @@ const TrackSheet = ({ bottomSheetRef, novel, theme }: Props) => {
           ]}
         >
           {!trackedNovel ? (
-            tracker.name === 'MyAnimeList' ? (
-              <AddTrackingCard
-                icon={require('../../../../../assets/mal.png')}
-                theme={theme}
-                setTrackSearchDialog={handleSetSearchTrackDialog}
-              />
-            ) : (
-              <AddTrackingCard
-                icon={require('../../../../../assets/anilist.png')}
-                theme={theme}
-                setTrackSearchDialog={handleSetSearchTrackDialog}
-              />
-            )
+            <AddTrackingCard
+              icon={getTrackerIcon()}
+              theme={theme}
+              setTrackSearchDialog={handleSetSearchTrackDialog}
+            />
           ) : (
             <TrackedItemCard
               untrackNovel={untrackNovel}
               tracker={tracker}
-              icon={
-                tracker?.name === 'MyAnimeList'
-                  ? require('../../../../../assets/mal.png')
-                  : require('../../../../../assets/anilist.png')
-              }
+              icon={getTrackerIcon()}
               trackItem={trackedNovel}
               handSetTrackStatusDialog={handleSetStatusDialog}
               handleSetTrackChaptersDialog={handleSetChaptersDialog}

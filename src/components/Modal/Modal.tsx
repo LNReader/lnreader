@@ -13,20 +13,18 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const theme = useTheme();
   return (
-    <SafeAreaView>
-      <PaperModal
-        visible={visible}
-        onDismiss={onDismiss}
-        contentContainerStyle={[
-          styles.modalContainer,
-          { backgroundColor: overlay(2, theme.surface) },
-          contentContainerStyle,
-        ]}
-        {...props}
-      >
-        {children}
-      </PaperModal>
-    </SafeAreaView>
+    <PaperModal
+      visible={visible}
+      onDismiss={onDismiss}
+      contentContainerStyle={[
+        styles.modalContainer,
+        { backgroundColor: overlay(2, theme.surface) },
+        contentContainerStyle,
+      ]}
+      {...props}
+    >
+      {children}
+    </PaperModal>
   );
 };
 

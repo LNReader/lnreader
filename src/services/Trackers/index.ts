@@ -1,4 +1,4 @@
-export type TrackerName = 'AniList' | 'MyAnimeList';
+export type TrackerName = 'AniList' | 'MyAnimeList' | 'MangaUpdates';
 /**
  * Normalized list status values.
  * Not all trackers will use all of these.

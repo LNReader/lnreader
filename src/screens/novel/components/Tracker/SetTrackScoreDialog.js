@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { MyAnimeListScoreSelector } from './MyAnimeList';
 import { AniListScoreSelector } from './AniList';
+import { MangaUpdatesScoreSelector } from './MangaUpdates';
 import { Modal } from '@components';
 
 const SetTrackScoreDialog = ({
@@ -22,6 +23,12 @@ const SetTrackScoreDialog = ({
       </Text>
       {tracker.name === 'MyAnimeList' ? (
         <MyAnimeListScoreSelector
+          theme={theme}
+          trackItem={trackItem}
+          updateTrackScore={updateTrackScore}
+        />
+      ) : tracker.name === 'MangaUpdates' ? (
+        <MangaUpdatesScoreSelector
           theme={theme}
           trackItem={trackItem}
           updateTrackScore={updateTrackScore}
