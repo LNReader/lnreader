@@ -23,7 +23,7 @@ import { useChapterContext } from '../ChapterContext';
 
 type WebViewPostEvent = {
   type: string;
-  data?: { [key: string]: string | number };
+  data?: string | number | { [key: string]: string | number | boolean };
 };
 
 type WebViewReaderProps = {
