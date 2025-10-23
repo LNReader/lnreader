@@ -213,7 +213,7 @@ if (title) {
         {/* Code Editor */}
         <View style={styles.editorContainer}>
           <TextInput
-            mode="outlined"
+            mode="flat"
             value={activeCodeTab === 'css' ? cssValue : jsValue}
             onChangeText={text =>
               activeCodeTab === 'css' ? setCssValue(text) : setJsValue(text)
@@ -228,10 +228,9 @@ if (title) {
             autoCorrect={false}
             autoCapitalize="none"
             spellCheck={false}
-            style={styles.codeEditor}
+            style={[styles.codeEditor, { backgroundColor: theme.surface2 }]}
+            activeUnderlineColor={theme.primary}
             contentStyle={styles.codeEditorContent}
-            outlineColor={theme.outline}
-            activeOutlineColor={theme.primary}
             textColor={theme.onSurface}
             placeholderTextColor={theme.onSurfaceVariant}
           />
@@ -269,6 +268,7 @@ if (title) {
             onPress={handleReset}
             mode="outlined"
             style={styles.button}
+            disabled={activeCodeTab === 'css' ? !cssValue : !jsValue}
           />
           <Button
             title={getString('common.save')}
@@ -344,10 +344,7 @@ const styles = StyleSheet.create({
     maxHeight: 400,
   },
   codeEditorContent: {
-    fontFamily: Platform.select({
-      ios: 'Menlo',
-      android: 'monospace',
-    }),
+    fontFamily: 'monospace',
     fontSize: 13,
     lineHeight: 20,
     paddingTop: 12,

@@ -1,15 +1,9 @@
-import {
-  View,
-  StatusBar,
-  Pressable,
-  StyleSheet,
-  useWindowDimensions,
-} from 'react-native';
+import { View, StatusBar, StyleSheet, useWindowDimensions } from 'react-native';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
-import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
+import { FAB } from 'react-native-paper';
 import { dummyHTML } from './utils';
 
 import { Appbar, SafeAreaView } from '@components/index';
@@ -52,7 +46,7 @@ const SettingsReaderScreen = () => {
   const navigation = useNavigation();
   const webViewRef = useRef<WebView>(null);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, right } = useSafeAreaInsets();
   const { height: screenHeight } = useWindowDimensions();
   const [activeTab, setActiveTab] = useState<string>('display');
 
@@ -282,23 +276,19 @@ const SettingsReaderScreen = () => {
       </View>
 
       {/* Floating Action Button to Open Bottom Sheet */}
-      <Pressable
+      <FAB
         style={[
           styles.fab,
           {
-            backgroundColor: theme.primaryContainer,
-            bottom: bottom + 16,
+            backgroundColor: theme.primary,
+            bottom,
+            right,
           },
         ]}
+        icon="cog"
+        color={theme.onPrimary}
         onPress={openBottomSheet}
-        android_ripple={{ color: theme.rippleColor, borderless: false }}
-      >
-        <MaterialCommunityIcons
-          name="cog"
-          size={24}
-          color={theme.onPrimaryContainer}
-        />
-      </Pressable>
+      />
 
       {/* Bottom Sheet with Tabs */}
       <BottomSheet
@@ -343,12 +333,7 @@ export default SettingsReaderScreen;
 const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
-    right: 16,
-    width: 56,
-    height: 56,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
+    margin: 16,
   },
   bottomSheetContent: {
     flex: 1,

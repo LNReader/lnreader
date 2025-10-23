@@ -432,7 +432,7 @@
       "padding": "Padding",
       "pageReader": "Paged reading (Experimental)",
       "removeExtraSpacing": "Remove extra spacing",
-      "scrollAmount": "Scroll amount (screen heights)",
+      "scrollAmount": "Scroll amount (screen height by default)",
       "showBatteryAndTime": "Battery & time",
       "showProgressPercentage": "Reading progress",
       "swipeGestures": "Swipe between chapters",

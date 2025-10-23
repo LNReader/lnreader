@@ -114,51 +114,6 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
             theme={theme}
           />
         </List.Section>
-        <List.Section>
-          <List.SubHeader theme={theme}>
-            {getString('advancedSettingsScreen.dataManagement')}
-          </List.SubHeader>
-          <List.Item
-            title={getString('advancedSettingsScreen.clearCachedNovels')}
-            description={getString(
-              'advancedSettingsScreen.clearCachedNovelsDesc',
-            )}
-            onPress={showClearDatabaseDialog}
-            theme={theme}
-          />
-          <List.Item
-            title={getString('advancedSettingsScreen.recreateDBIndexes')}
-            description={getString(
-              'advancedSettingsScreen.recreateDBIndexesDesc',
-            )}
-            onPress={showRecreateDBIndexDialog}
-            theme={theme}
-          />
-          <List.Item
-            title={getString('advancedSettingsScreen.clearUpdatesTab')}
-            description={getString(
-              'advancedSettingsScreen.clearupdatesTabDesc',
-            )}
-            onPress={showClearUpdatesDialog}
-            theme={theme}
-          />
-          <List.Item
-            title={getString('advancedSettingsScreen.deleteReadChapters')}
-            onPress={showDeleteReadChaptersDialog}
-            theme={theme}
-          />
-          <List.Item
-            title={getString('webview.clearCookies')}
-            onPress={clearCookies}
-            theme={theme}
-          />
-          <List.Item
-            title={getString('advancedSettingsScreen.userAgent')}
-            description={userAgent}
-            onPress={showUserAgentModal}
-            theme={theme}
-          />
-        </List.Section>
       </ScrollView>
       <Portal>
         <ConfirmationDialog
