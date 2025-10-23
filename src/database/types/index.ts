@@ -115,3 +115,6 @@ export interface Repository {
   id: number;
   url: string;
 }
+
+// Export migration types
+export * from './migration';

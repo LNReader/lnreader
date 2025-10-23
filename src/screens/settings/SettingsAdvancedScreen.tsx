@@ -20,7 +20,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { getUserAgentSync } from 'react-native-device-info';
 import CookieManager from '@react-native-cookies/cookies';
 import { store } from '@plugins/helpers/storage';
-import { recreateDBIndex } from '@database/db';
+import { recreateDatabaseIndexes } from '@database/db';
 
 const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   const theme = useTheme();
@@ -56,7 +56,7 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
   } = useBoolean();
 
   const {
-    value: recreateDBIndexDialog,
+    value: recreateDatabaseIndexesDialog,
     setTrue: showRecreateDBIndexDialog,
     setFalse: hideRecreateDBIndexDialog,
   } = useBoolean();
@@ -174,9 +174,9 @@ const AdvancedSettings = ({ navigation }: AdvancedSettingsScreenProps) => {
           message={getString(
             'advancedSettingsScreen.recreateDBIndexesDialogTitle',
           )}
-          visible={recreateDBIndexDialog}
+          visible={recreateDatabaseIndexesDialog}
           onSubmit={() => {
-            recreateDBIndex();
+            recreateDatabaseIndexes();
             showToast(
               getString('advancedSettingsScreen.recreateDBIndexesToast'),
             );
