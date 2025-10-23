@@ -83,6 +83,3 @@ montes, nascetur ridiculus mus. Donec quam felis,
 ultricies nec, pellentesque eu, pretium quis, sem.</p> 
 
 `;
-
-export const dummyText =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lobortis, diam sed malesuada bibendum, nulla libero scelerisque sapien, nec interdum nisl ipsum ac ipsum. In lacinia eros ut quam commodo, in finibus augue ultricies. Vestibulum ex purus, condimentum eget sem at, molestie semper mi. Mauris ac feugiat quam. Pellentesque sagittis bibendum nibh eu lacinia. Aenean rhoncus, velit sit amet mollis egestas, diam turpis ornare velit, a dictum elit velit in erat. Quisque luctus in sem a vulputate.\n\nPellentesque id tempus orci, non finibus tortor. Suspendisse in neque non eros eleifend hendrerit vitae a lacus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;';

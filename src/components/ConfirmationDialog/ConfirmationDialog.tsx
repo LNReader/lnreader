@@ -37,11 +37,13 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         style={[styles.container, { backgroundColor: theme.overlay3 }]}
       >
         <Dialog.Title style={{ color: theme.onSurface }}>{title}</Dialog.Title>
-        <Dialog.Content>
-          <Text style={[styles.content, { color: theme.onSurface }]}>
-            {message}
-          </Text>
-        </Dialog.Content>
+        {message ? (
+          <Dialog.Content>
+            <Text style={[styles.content, { color: theme.onSurface }]}>
+              {message}
+            </Text>
+          </Dialog.Content>
+        ) : null}
         <View style={styles.buttonCtn}>
           <Button onPress={handleOnSubmit} title={getString('common.ok')} />
           <Button onPress={onDismiss} title={getString('common.cancel')} />
