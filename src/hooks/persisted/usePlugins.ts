@@ -214,3 +214,8 @@ export default function usePlugins() {
     isPinned,
   };
 }
+
+export function usePluginInfo(pluginId: string) {
+  const installedPlugins = getMMKVObject<PluginItem[]>(INSTALLED_PLUGINS) || [];
+  return installedPlugins.find(plg => plg.id === pluginId);
+}
