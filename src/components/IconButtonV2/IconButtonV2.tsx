@@ -10,7 +10,7 @@ type Props = {
   name: MaterialDesignIconName;
   color?: string;
   size?: number;
-  disabled?: boolean;
+  disabled?: boolean | 'visible';
   padding?: number;
   onPress?: () => void;
   theme: ThemeColors;
@@ -31,7 +31,7 @@ const IconButton: React.FC<Props> = ({
     <Pressable
       style={[styles.pressable, { padding }]}
       onPress={onPress}
-      disabled={disabled}
+      disabled={(disabled === true)}
       android_ripple={
         onPress
           ? { color: Color(theme.primary).alpha(0.12).string() }
@@ -41,7 +41,7 @@ const IconButton: React.FC<Props> = ({
       <MaterialCommunityIcons
         name={name}
         size={size}
-        color={disabled ? theme.outline : color || theme.onSurface}
+        color={disabled !== false ? theme.outline : color || theme.onSurface}
       />
     </Pressable>
   </View>

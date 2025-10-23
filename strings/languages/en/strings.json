@@ -143,6 +143,18 @@
     "settings": {
       "title": "Plugin Settings",
       "description": "Fill in the plugin settings. Restart app to apply the settings."
+    },
+    "incompatible": {
+      "append": " (unsupported)",
+      "updateTitle": "Update incompatible",
+      "installTitle": "Plugin incompatible",
+      "updateText1": "The latest version of ",
+      "installText1": "The plugin ",
+      "text2": " was developed for API version ",
+      "text3": ", which is not yet supported by this version of LNReader. To install this plugin, you need to update the app.",
+      "text4": "See the ",
+      "text5": "compatibility table",
+      "text6": " for more information."
     }
   },
   "browseSettings": "Browse Settings",

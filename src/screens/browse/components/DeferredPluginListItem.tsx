@@ -13,6 +13,7 @@ interface DeferredPluginListItemProps {
   theme: ThemeColors;
   navigation: BrowseScreenProps['navigation'];
   settingsModal: UseBooleanReturnType;
+  pluginIncompatibleModal: UseBooleanReturnType;
   navigateToSource: (plugin: PluginItem, showLatestNovels?: boolean) => void;
   setSelectedPluginId: React.Dispatch<React.SetStateAction<string>>;
 }

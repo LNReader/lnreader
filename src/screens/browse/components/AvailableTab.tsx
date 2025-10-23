@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState, memo } from 'react';
-import { View, Text, StyleSheet, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, RefreshControl, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { usePlugins } from '@hooks/persisted';
 import { PluginItem } from '@plugins/types';
@@ -16,6 +16,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { getLocaleLanguageName } from '@utils/constants/languages';
 import { LegendList, LegendListRenderItemProps } from '@legendapp/list';
+import { checkPluginApiVersion } from '@plugins/pluginManager';
+import { useBoolean } from '@hooks/index';
+import PluginIncompatibleModal from './Modals/PluginIncompatibleModal';
 interface AvailableTabProps {
   searchText: string;
   theme: ThemeColors;
@@ -24,12 +27,14 @@ interface AvailablePluginCardProps {
   plugin: PluginItem & { header: boolean };
   theme: ThemeColors;
   installPlugin: (plugin: PluginItem) => Promise<void>;
+  incompatiblePopup?: (plugin: PluginItem) => void;
 }
 
 const AvailablePluginCard = ({
   plugin,
   theme,
   installPlugin,
+  incompatiblePopup,
 }: AvailablePluginCardProps) => {
   const ratio = useSharedValue(1);
   const imageStyles = useAnimatedStyle(() => ({
@@ -42,77 +47,99 @@ const AvailablePluginCard = ({
   const textStyles = useAnimatedStyle(() => ({
     lineHeight: ratio.value * 20,
   }));
+
+  const canInstall = useMemo(
+    () => checkPluginApiVersion(plugin.api),
+    [plugin.api],
+  );
+
+  const unsupportedStr = !canInstall ? getString('browseScreen.incompatible.append') : '';
+
   return (
-    <View>
-      {plugin.header ? (
-        <Text style={[styles.listHeader, { color: theme.onSurfaceVariant }]}>
-          {getLocaleLanguageName(plugin.lang)}
-        </Text>
-      ) : null}
-      <Animated.View
-        style={[
-          styles.container,
-          { backgroundColor: theme.surface },
-          viewStyles,
-        ]}
-      >
-        <Animated.View style={styles.row}>
-          <Animated.Image
-            source={{ uri: plugin.iconUrl }}
-            style={[
-              styles.icon,
-              imageStyles,
-              { backgroundColor: theme.surface },
-            ]}
-          />
-          <Animated.View style={styles.details}>
-            <Animated.Text
-              numberOfLines={1}
+    <Pressable onPress={() => !canInstall && incompatiblePopup?.(plugin)}>
+      <View>
+        {plugin.header ? (
+          <Text style={[styles.listHeader, { color: theme.onSurfaceVariant }]}>
+            {getLocaleLanguageName(plugin.lang)}
+          </Text>
+        ) : null}
+        <Animated.View
+          style={[
+            styles.container,
+            {
+              backgroundColor: canInstall ? theme.surface : theme.surfaceDisabled,
+            },
+            viewStyles,
+          ]}
+        >
+          <Animated.View style={styles.row}>
+            <Animated.Image
+              source={{ uri: plugin.iconUrl }}
               style={[
+                styles.icon,
+                imageStyles,
                 {
-                  color: theme.onSurface,
+                  backgroundColor: canInstall
+                    ? theme.surface
+                    : theme.surfaceDisabled,
                 },
-                styles.name,
-                textStyles,
               ]}
-            >
-              {plugin.name}
-            </Animated.Text>
-            <Animated.Text
-              numberOfLines={1}
-              style={[
-                { color: theme.onSurfaceVariant },
-                styles.addition,
-                textStyles,
-              ]}
-            >
-              {`${getLocaleLanguageName(plugin.lang)} - ${plugin.version}`}
-            </Animated.Text>
+            />
+            <Animated.View style={styles.details}>
+              <Animated.Text
+                numberOfLines={1}
+                style={[
+                  {
+                    color: canInstall ? theme.onSurface : theme.onSurfaceDisabled ,
+                  },
+                  styles.name,
+                  textStyles,
+                ]}
+              >
+                {plugin.name}
+              </Animated.Text>
+              <Animated.Text
+                numberOfLines={1}
+                style={[
+                  { color: theme.onSurfaceVariant },
+                  styles.addition,
+                  textStyles,
+                ]}
+              >
+                {`${getLocaleLanguageName(plugin.lang)} - ${plugin.version}` +
+                  unsupportedStr}
+              </Animated.Text>
+            </Animated.View>
           </Animated.View>
+          <IconButtonV2
+            name="download-outline"
+            color={theme.primary}
+            disabled={!canInstall}
+            onPress={() => {
+              if (canInstall) {
+                ratio.value = withTiming(0, { duration: 500 });
+                installPlugin(plugin)
+                  .then(() => {
+                    showToast(
+                      getString('browseScreen.installedPlugin', {
+                        name: plugin.name,
+                      }),
+                    );
+                  })
+                  .catch((error: Error) => {
+                    showToast(error.message);
+                    ratio.value = 1;
+                  });
+              } else {
+                incompatiblePopup?.(plugin);
+              }
+            }}
+            size={22}
+            theme={theme}
+          />
         </Animated.View>
-        <IconButtonV2
-          name="download-outline"
-          color={theme.primary}
-          onPress={() => {
-            ratio.value = withTiming(0, { duration: 500 });
-            installPlugin(plugin)
-              .then(() => {
-                showToast(
-                  getString('browseScreen.installedPlugin', {
-                    name: plugin.name,
-                  }),
-                );
-              })
-              .catch((error: Error) => {
-                showToast(error.message);
-                ratio.value = 1;
-              });
-          }}
-          size={22}
-          theme={theme}
-        />
-      </Animated.View>
-    </View>
+      </View>
+    </Pressable>
   );
 };
 
@@ -122,6 +149,9 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
   const [refreshing, setRefreshing] = useState(false);
   const { filteredAvailablePlugins, refreshPlugins, installPlugin } =
     usePlugins();
+
+  const pluginIncompatibleModal = useBoolean();
+  const [selectedPluginId, setSelectedPluginId] = useState<string>('');
 
   const searchedPlugins = useMemo(() => {
     let res = filteredAvailablePlugins;
@@ -144,6 +174,11 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
       });
   }, [searchText, filteredAvailablePlugins]);
 
+  const selectedPlugin = useMemo(
+    () => ((selectedPluginId && searchedPlugins.filter(plg => plg.id === selectedPluginId)[0]) ?? null),
+    [selectedPluginId],
+  );
+
   const renderItem = useCallback(
     ({ item }: LegendListRenderItemProps<PluginItem & { header: boolean }>) => {
       return (
@@ -151,10 +186,14 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
           plugin={item}
           theme={theme}
           installPlugin={installPlugin}
+          incompatiblePopup={() => {
+            setSelectedPluginId(item.id);
+            pluginIncompatibleModal.setTrue();
+          }}
         />
       );
     },
-    [theme, installPlugin],
+    [theme, installPlugin, setSelectedPluginId],
   );
 
   return (
@@ -213,6 +252,17 @@ export const AvailableTab = memo(({ searchText, theme }: AvailableTabProps) => {
             />
           </View>
         )
+      }
+      ListHeaderComponent={
+        <>
+          {selectedPlugin && (
+            <PluginIncompatibleModal
+              plugin={selectedPlugin}
+              visible={pluginIncompatibleModal.value}
+              onDismiss={pluginIncompatibleModal.setFalse}
+            />
+          )}
+        </>
       }
     />
   );

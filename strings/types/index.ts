@@ -129,6 +129,16 @@ export interface StringMap {
   'browseScreen.updatedTo': 'string';
   'browseScreen.settings.title': 'string';
   'browseScreen.settings.description': 'string';
+  'browseScreen.incompatible.append': 'string';
+  'browseScreen.incompatible.updateTitle': 'string';
+  'browseScreen.incompatible.installTitle': 'string';
+  'browseScreen.incompatible.updateText1': 'string';
+  'browseScreen.incompatible.installText1': 'string';
+  'browseScreen.incompatible.text2': 'string';
+  'browseScreen.incompatible.text3': 'string';
+  'browseScreen.incompatible.text4': 'string';
+  'browseScreen.incompatible.text5': 'string';
+  'browseScreen.incompatible.text6': 'string';
   'browseSettings': 'string';
   'browseSettingsScreen.concurrentSearches': 'string';
   'browseSettingsScreen.multi': 'string';

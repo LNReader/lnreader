@@ -57,6 +57,20 @@ export interface PluginItem {
   customCSS?: string;
   hasUpdate?: boolean;
   hasSettings?: boolean;
+
+  /**
+   * The API version against which the plugin is developed.
+   * This allows older version of LNReader to prevent the
+   * installation of plugins developed after breaking changes
+   * to the plugin API.
+   * 
+   * Non-breaking, optional additions to the API do not require
+   * a version bump. This should only be used if an older version
+   * of LNReader would not be able to understand the plugin's
+   * API without adaptation.
+   */
+  api?: string;
+  updateApi?: string;
 }
 
 export interface ImageRequestInit {
