@@ -57,6 +57,7 @@
             pkgs.mkShell {
               buildInputs = with pkgs; [
                 nodejs_20
+                nodePackages.pnpm
                 openjdk17
                 androidSdk
                 gradle
@@ -110,7 +111,7 @@
                 echo "  npx react-native run-android"
                 echo "  adb devices"
                 echo "  scrcpy"
-                echo "  pnpm run dev:start"
+                echo "  npm start"
                 echo "--------------------------"
               '';
             };
@@ -125,6 +126,7 @@
             pkgs.mkShell {
               buildInputs = with pkgs; [
                 nodejs_20
+                nodePackages.pnpm
                 openjdk17
                 androidSdk
                 gradle
@@ -172,9 +174,7 @@
                 echo "  pnpm run dev:start"
                 echo "--------------------------"
               '';
-            };
-            
-           
+            };            
         };
       });
 }

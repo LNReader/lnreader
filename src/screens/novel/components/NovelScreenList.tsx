@@ -31,7 +31,7 @@ import { useNovelContext } from '../NovelContext';
 import { LegendList, LegendListRef } from '@legendapp/list';
 import FileManager from '@specs/NativeFile';
 import { downloadFile } from '@plugins/helpers/fetch';
-import { StorageAccessFramework } from 'expo-file-system';
+import { StorageAccessFramework } from 'expo-file-system/legacy';
 
 type NovelScreenListProps = {
   headerOpacity: SharedValue<number>;

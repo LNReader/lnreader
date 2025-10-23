@@ -10,7 +10,7 @@ import {
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { TextInput, Portal } from 'react-native-paper';
 import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
-import { StorageAccessFramework } from 'expo-file-system';
+import { StorageAccessFramework } from 'expo-file-system/legacy';
 import * as DocumentPicker from 'expo-document-picker';
 import { useTheme, useChapterReaderSettings } from '@hooks/persisted';
 import { getString } from '@strings/translations';
