@@ -63,10 +63,15 @@ const i18n = new I18n({
 });
 i18n.defaultLocale = 'en';
 i18n.enableFallback = true;
-i18n.locale = Localization.locale;
-dayjs.locale(Localization.locale);
 
-export const localization = Localization.locale;
+const detectedLocale =
+  Localization.getLocales()[0]?.languageTag ?? i18n.defaultLocale;
+
+i18n.locale = detectedLocale;
+dayjs.locale(detectedLocale);
+
+export const localization = detectedLocale;
+
 export const getString = (
   stringKey: keyof StringMap,
   options?: TranslateOptions,

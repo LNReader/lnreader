@@ -3,20 +3,24 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "android": "npm run prestart && react-native run-android --appIdSuffix \"debug\" --active-arch-only",
-    "ios": "react-native run-ios",
-    "prestart": "node scripts/setEnvFile.cjs Debug",
-    "start": "react-native start",
+    "dev:android": "pnpm run generate:env:debug && react-native run-android --appIdSuffix \"debug\" --active-arch-only",
+    "dev:ios": "react-native run-ios",
+    "dev:start": "react-native start",
+    "dev:clean-start": "pnpm run dev:start -- --reset-cache",
+    "build:release:android": "pnpm run generate:env:release && cd android && ./gradlew clean && ./gradlew assembleRelease",
+    "build:open-apk": "open ./android/app/build/outputs/apk/release/",
+    "generate:env:debug": "node scripts/generate-env-file.cjs Debug",
+    "generate:env:release": "node scripts/generate-env-file.cjs Release",
+    "generate:string-types": "node scripts/generate-string-types.cjs",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "pnpm run lint -- --fix",
+    "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\" ./scripts",
+    "format:check": "prettier --check \"./src/**/*.{js,jsx,ts,tsx}\" ./scripts",
     "type-check": "tsc --noEmit",
-    "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\" ./scripts",
-    "buildRelease": "node scripts/setEnvFile.cjs Release && cd android && ./gradlew clean && ./gradlew assembleRelease",
-    "open": "open ./android/app/build/outputs/apk/release/",
-    "strings": "node scripts/stringTypes.cjs",
+    "clean:full": "rm -rf node_modules/ ./android/build/ ./android/app/build/ ./android/app/.cxx && pnpm i && cd android/ && ./gradlew clean && cd .. && pnpm run dev:start -- --reset-cache",
     "prepare": "husky install",
-    "rebuild": "rm -rf node_modules/ ./android/build/ ./android/app/build/ ./android/app/.cxx && npm i && cd android/ && ./gradlew clean && cd .. && npm start -- --reset-cache",
-    "nix": "nix develop --extra-experimental-features nix-command --extra-experimental-features flakes",
-    "nix-emulator": "nix develop .#emulator --extra-experimental-features nix-command --extra-experimental-features flakes"
+    "nix:shell": "nix develop --extra-experimental-features nix-command --extra-experimental-features flakes",
+    "nix:emulator": "nix develop .#emulator --extra-experimental-features nix-command --extra-experimental-features flakes"
   },
   "codegenConfig": {
     "name": "LNReaderSpec",
@@ -129,5 +133,6 @@
   },
   "engines": {
     "node": ">=20"
-  }
+  },
+  "packageManager": "pnpm@9.15.0"
 }

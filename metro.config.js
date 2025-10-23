@@ -23,6 +23,9 @@ const map = {
   '.jpg': 'image/jpeg',
 };
 const customConfig = {
+  resolver: {
+    unstable_enableSymlinks: true,
+  },
   server: {
     port: 8081,
     enhanceMiddleware: (metroMiddleware, metroServer) => {

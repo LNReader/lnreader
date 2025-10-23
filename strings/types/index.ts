@@ -399,10 +399,12 @@ export interface StringMap {
   'readerSettings.customJS': 'string';
   'readerSettings.deleteCustomTheme': 'string';
   'readerSettings.jsHint': 'string';
+  'readerSettings.navigationControls': 'string';
   'readerSettings.notSaved': 'string';
   'readerSettings.openCSSFile': 'string';
   'readerSettings.openJSFile': 'string';
   'readerSettings.preset': 'string';
+  'readerSettings.readingMode': 'string';
   'readerSettings.readerTheme': 'string';
   'readerSettings.saveCustomTheme': 'string';
   'readerSettings.textColor': 'string';

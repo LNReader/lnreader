@@ -110,7 +110,7 @@
                 echo "  npx react-native run-android"
                 echo "  adb devices"
                 echo "  scrcpy"
-                echo "  npm start"
+                echo "  pnpm run dev:start"
                 echo "--------------------------"
               '';
             };
@@ -169,7 +169,7 @@
                 echo "  npx react-native run-android"
                 echo "  adb devices"
                 echo "  scrcpy"
-                echo "  npm start"
+                echo "  pnpm run dev:start"
                 echo "--------------------------"
               '';
             };
