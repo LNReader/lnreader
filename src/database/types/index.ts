@@ -1,4 +1,5 @@
 import { NovelStatus } from '@plugins/types';
+
 export interface NovelInfo {
   id: number;
   path: string;
@@ -116,5 +117,4 @@ export interface Repository {
   url: string;
 }
 
-// Export migration types
 export * from './migration';

@@ -21,18 +21,3 @@ export interface Migration {
    */
   migrate: (db: SQLiteDatabase) => void;
 }
-
-/**
- * Configuration for the migration runner
- */
-export interface MigrationConfig {
-  /**
-   * Whether to show migration logs
-   */
-  verbose?: boolean;
-
-  /**
-   * Custom error handler for migrations
-   */
-  onError?: (error: Error, migration: Migration) => void;
-}

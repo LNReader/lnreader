@@ -73,10 +73,7 @@ export const initializeDatabase = () => {
     createInitialSchema();
   }
 
-  const migrationRunner = new MigrationRunner(migrations, {
-    verbose: __DEV__,
-  });
-
+  const migrationRunner = new MigrationRunner(migrations);
   migrationRunner.runMigrations(db);
 };
 

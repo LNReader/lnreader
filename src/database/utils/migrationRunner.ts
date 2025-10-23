@@ -1,5 +1,5 @@
 import { SQLiteDatabase } from 'expo-sqlite';
-import { Migration, MigrationConfig } from '../types/migration';
+import { Migration } from '../types/migration';
 import { showToast } from '@utils/showToast';
 
 /**
@@ -7,15 +7,9 @@ import { showToast } from '@utils/showToast';
  */
 export class MigrationRunner {
   private migrations: Migration[];
-  private config: MigrationConfig;
 
-  constructor(migrations: Migration[], config: MigrationConfig = {}) {
+  constructor(migrations: Migration[]) {
     this.migrations = [...migrations].sort((a, b) => a.version - b.version);
-    this.config = {
-      verbose: false,
-      ...config,
-    };
-
     this.validateMigrations();
   }
 
@@ -43,7 +37,7 @@ export class MigrationRunner {
 
     const sortedVersions = Array.from(versions).sort((a, b) => a - b);
     for (let i = 0; i < sortedVersions.length; i++) {
-      if (sortedVersions[i] !== i + 1 && this.config.verbose) {
+      if (sortedVersions[i] !== i + 1 && __DEV__) {
         // eslint-disable-next-line no-console
         console.warn(
           `Migration versions are not sequential. Expected ${i + 1}, found ${
@@ -72,7 +66,7 @@ export class MigrationRunner {
   runMigrations(db: SQLiteDatabase): void {
     const currentVersion = this.getCurrentVersion(db);
 
-    if (this.config.verbose) {
+    if (__DEV__) {
       // eslint-disable-next-line no-console
       console.log(`Current database version: ${currentVersion}`);
     }
@@ -82,21 +76,21 @@ export class MigrationRunner {
     );
 
     if (pendingMigrations.length === 0) {
-      if (this.config.verbose) {
+      if (__DEV__) {
         // eslint-disable-next-line no-console
         console.log('No pending migrations');
       }
       return;
     }
 
-    if (this.config.verbose) {
+    if (__DEV__) {
       // eslint-disable-next-line no-console
       console.log(`Running ${pendingMigrations.length} pending migration(s)`);
     }
 
     for (const migration of pendingMigrations) {
       try {
-        if (this.config.verbose) {
+        if (__DEV__) {
           // eslint-disable-next-line no-console
           console.log(
             `Running migration ${migration.version}${
@@ -110,7 +104,7 @@ export class MigrationRunner {
           this.setVersion(db, migration.version);
         });
 
-        if (this.config.verbose) {
+        if (__DEV__) {
           // eslint-disable-next-line no-console
           console.log(`Migration ${migration.version} completed successfully`);
         }
@@ -120,16 +114,9 @@ export class MigrationRunner {
             ? error.message
             : `Migration ${migration.version} failed`;
 
-        if (this.config.verbose) {
+        if (__DEV__) {
           // eslint-disable-next-line no-console
           console.error(`Migration ${migration.version} failed:`, error);
-        }
-
-        if (this.config.onError) {
-          this.config.onError(
-            error instanceof Error ? error : new Error(errorMessage),
-            migration,
-          );
         } else {
           showToast(`Database migration failed: ${errorMessage}`);
         }
@@ -138,20 +125,10 @@ export class MigrationRunner {
       }
     }
 
-    if (this.config.verbose) {
+    if (__DEV__) {
       const newVersion = this.getCurrentVersion(db);
       // eslint-disable-next-line no-console
       console.log(`Database updated to version ${newVersion}`);
     }
-  }
-
-  getTargetVersion(): number {
-    return this.migrations.length > 0
-      ? Math.max(...this.migrations.map(m => m.version))
-      : 0;
-  }
-
-  getMigrations(): readonly Migration[] {
-    return this.migrations;
   }
 }

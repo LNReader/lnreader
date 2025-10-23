@@ -51,12 +51,6 @@ export const migrations: Migration[] = [
 
 Migration runs automatically on next app launch.
 
-## Current Migrations
-
-| Version | Description                                     | File                        |
-| ------- | ----------------------------------------------- | --------------------------- |
-| 1       | Add counter columns and triggers to Novel table | `001_add_novel_counters.ts` |
-
 ## Additional Resources
 
 - [SQLite ALTER TABLE](https://www.sqlite.org/lang_altertable.html)
