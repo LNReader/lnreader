@@ -256,6 +256,7 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
                   },
                 })}
               </script>
+              <script src="${assetsUriPrefix}/js/polyfill-onscrollend.js"></script>
               <script src="${assetsUriPrefix}/js/icons.js"></script>
               <script src="${assetsUriPrefix}/js/van.js"></script>
               <script src="${assetsUriPrefix}/js/text-vibe.js"></script>
