@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Portal, Appbar, Snackbar } from 'react-native-paper';
-import { useDownload, useTheme } from '@hooks/persisted';
+import { useAppSettings, useDownload, useTheme } from '@hooks/persisted';
 import JumpToChapterModal from './components/JumpToChapterModal';
 import { Actionbar } from '../../components/Actionbar/Actionbar';
 import EditInfoModal from './components/EditInfoModal';
@@ -23,7 +23,11 @@ import NovelDrawer from './components/NovelDrawer';
 import { isNumber, noop } from 'lodash-es';
 import NovelAppbar from './components/NovelAppbar';
 import { resolveUrl } from '@services/plugin/fetch';
-import { updateChapterProgressByIds } from '@database/queries/ChapterQueries';
+import {
+  getAllUndownloadedAndUnreadChapters,
+  getAllUndownloadedChapters,
+  updateChapterProgressByIds,
+} from '@database/queries/ChapterQueries';
 import { MaterialDesignIconName } from '@type/icon';
 import NovelScreenList from './components/NovelScreenList';
 import { ThemeColors } from '@theme/types';
@@ -78,18 +82,34 @@ const Novel = ({ route, navigation }: NovelScreenProps) => {
   // useFocusEffect(refreshChapters);
 
   const downloadChs = useCallback(
-    (amount: number | 'all' | 'unread') => {
+    async (amount: number | 'all' | 'unread') => {
       if (!novel) {
         return;
       }
-      let filtered = chapters.filter(chapter => !chapter.isDownloaded);
+
+      let chaptersToUse = chapters;
+
+      if (amount === 'all') {
+        const allChapters = await getAllUndownloadedChapters(novel.id);
+        chaptersToUse = allChapters;
+      }
+
       if (amount === 'unread') {
-        filtered = filtered.filter(chapter => chapter.unread);
+        const allUnreadChapters = await getAllUndownloadedAndUnreadChapters(
+          novel.id,
+        );
+        chaptersToUse = allUnreadChapters;
       }
+
+      let filtered = chaptersToUse;
+
       if (isNumber(amount)) {
-        filtered = filtered.slice(0, amount);
+        filtered = filtered
+          .filter(chapter => !chapter.isDownloaded)
+          .slice(0, amount);
       }
-      if (filtered) {
+
+      if (filtered.length > 0) {
         downloadChapters(novel, filtered);
       }
     },

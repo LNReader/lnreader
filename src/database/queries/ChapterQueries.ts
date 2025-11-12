@@ -200,6 +200,24 @@ export const getNovelChapters = (novelId: number) =>
     novelId,
   );
 
+export const getUnreadNovelChapters = (novelId: number) =>
+  db.getAllAsync<ChapterInfo>(
+    'SELECT * FROM Chapter WHERE novelId = ? AND unread = 1',
+    novelId,
+  );
+
+export const getAllUndownloadedChapters = (novelId: number) =>
+  db.getAllAsync<ChapterInfo>(
+    'SELECT * FROM Chapter WHERE novelId = ? AND isDownloaded = 0',
+    novelId,
+  );
+
+export const getAllUndownloadedAndUnreadChapters = (novelId: number) =>
+  db.getAllAsync<ChapterInfo>(
+    'SELECT * FROM Chapter WHERE novelId = ? AND isDownloaded = 0 AND unread = 1',
+    novelId,
+  );
+
 export const getChapter = (chapterId: number) =>
   db.getFirstAsync<ChapterInfo>(
     'SELECT * FROM Chapter WHERE id = ?',
