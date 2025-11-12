@@ -231,7 +231,7 @@ const ChaptersSettingsSheet = ({
           renderScene={renderScene}
           onIndexChange={setIndex}
           initialLayout={{ width: layout.width }}
-          style={styles.radius}
+          style={styles.tabView}
         />
       </BottomSheetView>
     </BottomSheet>
@@ -246,13 +246,19 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     flex: 1,
   },
-  radius: {
+  tabView: {
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
+    height: 240,
   },
   transparent: {
     backgroundColor: 'transparent',
   },
-  flex: { flex: 1 },
-  tabBar: { borderBottomWidth: 1, elevation: 0 },
+  flex: {
+    flex: 1,
+  },
+  tabBar: {
+    borderBottomWidth: 1,
+    elevation: 0,
+  },
 });

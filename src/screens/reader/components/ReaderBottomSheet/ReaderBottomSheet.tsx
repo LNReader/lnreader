@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
   tabView: {
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
+    height: 600,
   },
   flex: { flex: 1 },
 });

@@ -8,11 +8,7 @@ import {
 } from 'react-native';
 
 import BottomSheet from '@components/BottomSheet/BottomSheet';
-import {
-  BottomSheetFlatList,
-  BottomSheetModal,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetFlatList, BottomSheetModal } from '@gorhom/bottom-sheet';
 
 import { useTheme } from '@hooks/persisted';
 import {
@@ -70,7 +66,6 @@ const FilterItem: React.FC<FilterItemProps> = ({
           label={
             <Text
               style={[
-                styles.label,
                 {
                   color: theme.onSurface,
                   backgroundColor: overlay(2, theme.surface),
@@ -118,7 +113,6 @@ const FilterItem: React.FC<FilterItemProps> = ({
                 label={
                   <Text
                     style={[
-                      styles.label,
                       {
                         color: isVisible ? theme.primary : theme.onSurface,
                         backgroundColor: overlay(2, theme.surface),
@@ -170,7 +164,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
           onPress={toggleCard}
           android_ripple={{ color: theme.rippleColor }}
         >
-          <Text style={[styles.label, { color: theme.onSurfaceVariant }]}>
+          <Text style={[{ color: theme.onSurfaceVariant }]}>
             {filter.label}
           </Text>
           <MaterialCommunityIcons
@@ -250,7 +244,7 @@ const FilterItem: React.FC<FilterItemProps> = ({
           onPress={toggleCard}
           android_ripple={{ color: theme.rippleColor }}
         >
-          <Text style={[styles.label, { color: theme.onSurfaceVariant }]}>
+          <Text style={[{ color: theme.onSurfaceVariant }]}>
             {filter.label}
           </Text>
           <MaterialCommunityIcons
@@ -358,27 +352,29 @@ const FilterBottomSheet: React.FC<BottomSheetProps> = ({
       bottomInset={bottom}
       backgroundStyle={styles.transparent}
       style={[styles.container, { backgroundColor: overlay(2, theme.surface) }]}
+      handleComponent={() => (
+        <View
+          style={[styles.buttonContainer, { borderBottomColor: theme.outline }]}
+        >
+          <Button
+            title={getString('common.reset')}
+            onPress={() => {
+              setSelectedFilters(filters);
+              clearFilters(filters);
+            }}
+          />
+          <Button
+            title={getString('common.filter')}
+            textColor={theme.onPrimary}
+            onPress={() => {
+              setFilters(selectedFilters);
+              filterSheetRef?.current?.close();
+            }}
+            mode="contained"
+          />
+        </View>
+      )}
     >
-      <BottomSheetView
-        style={[styles.buttonContainer, { borderBottomColor: theme.outline }]}
-      >
-        <Button
-          title={getString('common.reset')}
-          onPress={() => {
-            setSelectedFilters(filters);
-            clearFilters(filters);
-          }}
-        />
-        <Button
-          title={getString('common.filter')}
-          textColor={theme.onPrimary}
-          onPress={() => {
-            setFilters(selectedFilters);
-            filterSheetRef?.current?.close();
-          }}
-          mode="contained"
-        />
-      </BottomSheetView>
       <BottomSheetFlatList
         data={filters && Object.entries(filters)}
         keyExtractor={item => 'filter' + item[0]}
@@ -424,10 +420,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     flex: 1,
   },
-  label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+
   picker: {
     paddingHorizontal: 24,
     width: 200,
