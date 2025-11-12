@@ -174,5 +174,6 @@ const styles = StyleSheet.create({
   buttonLabel: {
     fontSize: 12,
     marginTop: 4,
+    textAlign: 'center',
   },
 });
