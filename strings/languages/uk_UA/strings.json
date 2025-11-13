@@ -37,6 +37,12 @@
   "appearanceScreen": {
     "accentColor": "Основний колір",
     "alwaysShowNavLabels": "Завжди показувати мітки навігації",
+    "appLanguage": "App language",
+    "languagePickerModal": {
+      "title": "Select Language",
+      "restartNote": "You will need to restart the app for the language change to take full effect."
+    },
+    "appLanguageDefault": "Default",
     "appTheme": "Тема додатка",
     "darkTheme": "Темна тема",
     "hideBackdrop": "Приховати фон",
