@@ -37,6 +37,12 @@
   "appearanceScreen": {
     "accentColor": "Màu chủ đạo",
     "alwaysShowNavLabels": "Luôn hiển thị tiêu đề thanh điều hướng",
+    "appLanguage": "App language",
+    "languagePickerModal": {
+      "title": "Select Language",
+      "restartNote": "You will need to restart the app for the language change to take full effect."
+    },
+    "appLanguageDefault": "Default",
     "appTheme": "Chủ đề",
     "darkTheme": "Màu tối",
     "hideBackdrop": "Ẩn bóng",
