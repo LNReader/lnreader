@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     width: 40,
   },
   name: {
-    fontWeight: 'bold',
+    fontWeight: '500',
     lineHeight: 20,
   },
   row: {

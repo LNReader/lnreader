@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   headerCtn: {
     borderBottomWidth: 1,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: 500,
     marginBottom: 4,
     padding: 16,
   },

@@ -36,6 +36,10 @@ export interface StringMap {
   'appearance': 'string';
   'appearanceScreen.accentColor': 'string';
   'appearanceScreen.alwaysShowNavLabels': 'string';
+  'appearanceScreen.appLanguage': 'string';
+  'appearanceScreen.languagePickerModal.title': 'string';
+  'appearanceScreen.languagePickerModal.restartNote': 'string';
+  'appearanceScreen.appLanguageDefault': 'string';
   'appearanceScreen.appTheme': 'string';
   'appearanceScreen.darkTheme': 'string';
   'appearanceScreen.hideBackdrop': 'string';

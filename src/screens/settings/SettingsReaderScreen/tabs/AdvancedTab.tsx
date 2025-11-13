@@ -166,7 +166,7 @@ if (title) {
                     activeCodeTab === 'css'
                       ? theme.primary
                       : theme.onSurfaceVariant,
-                  fontWeight: activeCodeTab === 'css' ? '600' : '400',
+                  fontWeight: activeCodeTab === 'css' ? '500' : '400',
                 },
               ]}
             >
@@ -201,7 +201,7 @@ if (title) {
                     activeCodeTab === 'js'
                       ? theme.primary
                       : theme.onSurfaceVariant,
-                  fontWeight: activeCodeTab === 'js' ? '600' : '400',
+                  fontWeight: activeCodeTab === 'js' ? '500' : '400',
                 },
               ]}
             >

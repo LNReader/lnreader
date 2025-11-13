@@ -12,7 +12,7 @@ import AdvancedSettings from '../screens/settings/SettingsAdvancedScreen';
 import GeneralSettings from '../screens/settings/SettingsGeneralScreen/SettingsGeneralScreen';
 import TaskQueue from '../screens/more/TaskQueueScreen';
 import Downloads from '../screens/more/DownloadsScreen';
-import AppearanceSettings from '../screens/settings/SettingsAppearanceScreen';
+import AppearanceSettings from '../screens/settings/SettingsAppearanceScreen/SettingsAppearanceScreen';
 import CategoriesScreen from '@screens/Categories/CategoriesScreen';
 import RespositorySettings from '@screens/settings/SettingsRepositoryScreen/SettingsRepositoryScreen';
 // import LibrarySettings from '@screens/settings/SettingsLibraryScreen/SettingsLibraryScreen';

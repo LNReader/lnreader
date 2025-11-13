@@ -36,7 +36,7 @@ export const Banner: React.FC<Props> = ({
 const styles = StyleSheet.create({
   bannerText: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: 500,
   },
   container: {
     alignItems: 'center',

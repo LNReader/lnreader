@@ -237,7 +237,7 @@ const createStylesheet = (theme: ThemeColors, insets: EdgeInsets) => {
       borderBottomWidth: 1,
       color: theme.onSurface,
       fontSize: 16,
-      fontWeight: 'bold',
+      fontWeight: '500',
       marginBottom: 4,
       padding: 16,
     },

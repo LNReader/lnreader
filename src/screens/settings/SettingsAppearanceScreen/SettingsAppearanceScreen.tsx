@@ -3,8 +3,9 @@ import { ScrollView, Text, StyleSheet, View } from 'react-native';
 
 import { ThemePicker } from '@components/ThemePicker/ThemePicker';
 import type { SegmentedControlOption } from '@components/SegmentedControl';
-import SettingSwitch from './components/SettingSwitch';
+import SettingSwitch from '../components/SettingSwitch';
 import ColorPickerModal from '@components/ColorPickerModal/ColorPickerModal';
+import LanguagePickerModal from './LanguagePickerModal';
 
 import { useAppSettings, useTheme } from '@hooks/persisted';
 import {
@@ -45,6 +46,58 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
   const [accentColorModal, setAccentColorModal] = useState(false);
   const showAccentColorModal = () => setAccentColorModal(true);
   const hideAccentColorModal = () => setAccentColorModal(false);
+
+  /**
+   * Language Picker Modal
+   */
+  const [languageModal, setLanguageModal] = useState(false);
+  const showLanguageModal = () => setLanguageModal(true);
+  const hideLanguageModal = () => setLanguageModal(false);
+  const [appLocale = ''] = useMMKVString('APP_LOCALE');
+
+  const getCurrentLanguageName = (): string => {
+    if (!appLocale) {
+      return getString('appearanceScreen.appLanguageDefault');
+    }
+    const languageMap: Record<string, string> = {
+      af: 'Afrikaans',
+      ar: 'العربية',
+      as: 'অসমীয়া',
+      ca: 'Català',
+      cs: 'Čeština',
+      da: 'Dansk',
+      de: 'Deutsch',
+      el: 'Ελληνικά',
+      en: 'English',
+      es: 'Español',
+      fi: 'Suomi',
+      fr: 'Français',
+      he: 'עברית',
+      hi: 'हिन्दी',
+      hu: 'Magyar',
+      id: 'Bahasa Indonesia',
+      it: 'Italiano',
+      ja: '日本語',
+      ko: '한국어',
+      nl: 'Nederlands',
+      no: 'Norsk',
+      or: 'ଓଡ଼ିଆ',
+      pl: 'Polski',
+      pt: 'Português',
+      'pt-BR': 'Português (Brasil)',
+      ro: 'Română',
+      ru: 'Русский',
+      sq: 'Shqip',
+      sr: 'Српски',
+      sv: 'Svenska',
+      tr: 'Türkçe',
+      uk: 'Українська',
+      vi: 'Tiếng Việt',
+      'zh-CN': '简体中文',
+      'zh-TW': '繁體中文',
+    };
+    return languageMap[appLocale] || appLocale;
+  };
 
   const themeModeOptions: SegmentedControlOption<ThemeMode>[] = useMemo(
     () => [
@@ -166,6 +219,12 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
             onPress={showAccentColorModal}
             theme={theme}
           />
+          <List.Item
+            title={getString('appearanceScreen.appLanguage')}
+            description={getCurrentLanguageName()}
+            onPress={showLanguageModal}
+            theme={theme}
+          />
           <List.Divider theme={theme} />
           <List.SubHeader theme={theme}>
             {getString('appearanceScreen.novelInfo')}
@@ -221,6 +280,10 @@ const AppearanceSettings = ({ navigation }: AppearanceSettingsScreenProps) => {
         onSubmit={val => setCustomAccentColor(val)}
         theme={theme}
         showAccentColors={true}
+      />
+      <LanguagePickerModal
+        visible={languageModal}
+        onDismiss={hideLanguageModal}
       />
     </SafeAreaView>
   );

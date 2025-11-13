@@ -210,7 +210,7 @@ export const InstalledTab = memo(
 const styles = StyleSheet.create({
   listHeader: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: '500',
     paddingHorizontal: 16,
     paddingVertical: 8,
   },

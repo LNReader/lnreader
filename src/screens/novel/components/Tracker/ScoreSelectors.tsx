@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   guideTitle: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: 500,
     marginBottom: 8,
   },
   helperText: {

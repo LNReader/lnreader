@@ -261,7 +261,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
     ({ route, color }: TabViewLabelProps) => {
       return (
         <Row>
-          <Text style={[{ color }, styles.fontWeight600]}>{route.title}</Text>
+          <Text style={[{ color }, styles.fontWeight500]}>{route.title}</Text>
           {showNumberOfNovels ? (
             <View
               style={[
@@ -283,7 +283,7 @@ const LibraryScreen = ({ navigation }: LibraryScreenProps) => {
       showNumberOfNovels,
       styles.badgeCtn,
       styles.badgetText,
-      styles.fontWeight600,
+      styles.fontWeight500,
       theme.onSurfaceVariant,
       theme.surfaceVariant,
     ],
@@ -502,8 +502,8 @@ function createStyles(theme: ThemeColors) {
       position: 'absolute',
       right: 0,
     },
-    fontWeight600: {
-      fontWeight: '600',
+    fontWeight500: {
+      fontWeight: 500,
     },
     globalSearchBtn: {
       margin: 16,

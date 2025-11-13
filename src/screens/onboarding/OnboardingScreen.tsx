@@ -81,11 +81,11 @@ const styles = StyleSheet.create({
     height: 90,
   },
   headline: {
-    fontWeight: '600',
+    fontWeight: 500,
     paddingBottom: 8,
   },
   helpText: {
-    fontWeight: '600',
+    fontWeight: 500,
     paddingBottom: 8,
   },
   stepContainer: {
