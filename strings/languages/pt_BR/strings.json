@@ -37,6 +37,12 @@
   "appearanceScreen": {
     "accentColor": "Alterar cor",
     "alwaysShowNavLabels": "Sempre mostrar abas de navegação",
+    "appLanguage": "App language",
+    "languagePickerModal": {
+      "title": "Select Language",
+      "restartNote": "You will need to restart the app for the language change to take full effect."
+    },
+    "appLanguageDefault": "Default",
     "appTheme": "Tema do aplicativo",
     "darkTheme": "Tema escuro",
     "hideBackdrop": "Esconder fundo",
