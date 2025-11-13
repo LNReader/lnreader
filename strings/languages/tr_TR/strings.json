@@ -37,6 +37,12 @@
   "appearanceScreen": {
     "accentColor": "Vurgu Rengi",
     "alwaysShowNavLabels": "Menü yazılarını hep göster",
+    "appLanguage": "App language",
+    "languagePickerModal": {
+      "title": "Select Language",
+      "restartNote": "You will need to restart the app for the language change to take full effect."
+    },
+    "appLanguageDefault": "Default",
     "appTheme": "Uygulama teması",
     "darkTheme": "Karanlık Tema",
     "hideBackdrop": "Arka planı gizle",
