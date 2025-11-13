@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import color from 'color';
+import { StyleSheet, Text, View } from 'react-native';
 
-import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
+import { SelectableChip } from '@components/index';
 import { getString } from '@strings/translations';
 import { useChapterReaderSettings, useTheme } from '@hooks/persisted';
 
@@ -25,54 +24,19 @@ const ReaderFontPicker = () => {
   const FontChipItem = useCallback(
     ({ item }: FontChipProps) => {
       return (
-        <View
+        <SelectableChip
           key={item.fontFamily}
-          style={[
-            styles.container,
-            {
-              backgroundColor: theme.surfaceVariant,
-            },
-          ]}
-        >
-          <Pressable
-            style={styles.content}
-            onPress={() =>
-              setChapterReaderSettings({ fontFamily: item.fontFamily })
-            }
-            android_ripple={{
-              color: color(theme.primary).alpha(0.12).string(),
-            }}
-          >
-            {isSelected(item) ? (
-              <MaterialCommunityIcons
-                name="check"
-                color={theme.primary}
-                size={16}
-              />
-            ) : null}
-            <Text
-              style={[
-                styles.label,
-                {
-                  fontFamily: item.fontFamily,
-                  color: isSelected(item) ? theme.primary : theme.onSurface,
-                },
-                isSelected(item) && styles.mLeft,
-              ]}
-            >
-              {item.name}
-            </Text>
-          </Pressable>
-        </View>
+          label={item.name}
+          selected={isSelected(item)}
+          theme={theme}
+          onPress={() =>
+            setChapterReaderSettings({ fontFamily: item.fontFamily })
+          }
+          customFontFamily={item.fontFamily}
+        />
       );
     },
-    [
-      isSelected,
-      setChapterReaderSettings,
-      theme.onSurface,
-      theme.primary,
-      theme.surfaceVariant,
-    ],
+    [isSelected, setChapterReaderSettings],
   );
 
   return (
@@ -93,26 +57,6 @@ const ReaderFontPicker = () => {
 
 export default React.memo(ReaderFontPicker);
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 8,
-    marginHorizontal: 6,
-    overflow: 'hidden',
-  },
-  content: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    flexGrow: 1,
-    justifyContent: 'center',
-    minHeight: 32,
-    paddingHorizontal: 10,
-    paddingVertical: 1,
-  },
-  label: {
-    fontSize: 16,
-  },
-  mLeft: {
-    marginLeft: 4,
-  },
   row: {
     alignItems: 'center',
     flexDirection: 'row',

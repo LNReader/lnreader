@@ -4,6 +4,7 @@ export { default as LoadingScreenV2 } from './LoadingScreenV2/LoadingScreenV2';
 export { default as ErrorScreenV2 } from './ErrorScreenV2/ErrorScreenV2';
 export { default as EmptyView } from './EmptyView/EmptyView';
 export { default as Chip } from './Chip/Chip';
+export { default as SelectableChip } from './Chip/SelectableChip';
 export { default as Button } from './Button/Button';
 export { default as Appbar } from './Appbar/Appbar';
 export { default as SwitchItem } from './Switch/SwitchItem';

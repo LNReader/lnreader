@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { debounce } from 'lodash-es';
 
 import { NovelItem, PluginItem } from '@plugins/types';
 import { getPlugin } from '@plugins/pluginManager';
@@ -7,6 +8,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 interface Props {
   defaultSearchText?: string;
+  hasResultsOnly?: boolean;
 }
 
 export interface GlobalSearchResult {
@@ -16,7 +18,10 @@ export interface GlobalSearchResult {
   error?: string | null;
 }
 
-export const useGlobalSearch = ({ defaultSearchText }: Props) => {
+export const useGlobalSearch = ({
+  defaultSearchText,
+  hasResultsOnly = false,
+}: Props) => {
   const isMounted = useRef(true); //if user closes the search screen, cancel the search
   const isFocused = useRef(true); //if the user opens a sub-screen (e.g. novel screen), pause the search
   const lastSearch = useRef(''); //if the user changes search, cancel running searches
@@ -147,13 +152,31 @@ export const useGlobalSearch = ({ defaultSearchText }: Props) => {
     [filteredInstalledPlugins, globalSearchConcurrency],
   );
 
+  const debouncedGlobalSearch = useMemo(
+    () => debounce(globalSearch, 300),
+    [globalSearch],
+  );
+
   useEffect(() => {
     if (defaultSearchText) {
-      globalSearch(defaultSearchText);
+      debouncedGlobalSearch(defaultSearchText);
     }
-  }, [defaultSearchText, globalSearch]);
 
-  return { searchResults, globalSearch, progress };
+    return () => {
+      debouncedGlobalSearch.cancel();
+    };
+  }, [defaultSearchText, debouncedGlobalSearch]);
+
+  const filteredSearchResults = useMemo(() => {
+    if (!hasResultsOnly) {
+      return searchResults;
+    }
+    return searchResults.filter(
+      result => !result.isLoading && !result.error && result.novels.length > 0,
+    );
+  }, [searchResults, hasResultsOnly]);
+
+  return { searchResults: filteredSearchResults, globalSearch, progress };
 };
 
 function novelResultSorter(
