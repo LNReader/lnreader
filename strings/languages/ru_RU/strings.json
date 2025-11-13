@@ -37,6 +37,12 @@
   "appearanceScreen": {
     "accentColor": "Цветовой оттенок",
     "alwaysShowNavLabels": "Всегда показывать навигационные метки",
+    "appLanguage": "App language",
+    "languagePickerModal": {
+      "title": "Select Language",
+      "restartNote": "You will need to restart the app for the language change to take full effect."
+    },
+    "appLanguageDefault": "Default",
     "appTheme": "Тема приложения",
     "darkTheme": "Тёмная тема",
     "hideBackdrop": "Скрыть фон",
