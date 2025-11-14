@@ -36,10 +36,6 @@ export const PluginListItem = memo(
     const isPluginPinned = isPinned(item.id);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-    const leftActionStyle = useMemo(
-      () => [styles.buttonGroup, { backgroundColor: theme.secondary }],
-      [theme.inverseSurface],
-    );
     const rightActionStyle = useMemo(
       () => [styles.buttonGroup, { backgroundColor: theme.primary }],
       [theme.error],
@@ -122,25 +118,18 @@ export const PluginListItem = memo(
       navigateToSource(item);
     }, [navigateToSource, item]);
 
-    // Memoized render actions
-    const renderLeftActions = useCallback(
-      (_progress: any, _dragX: any, ref: any) => (
-        <View style={leftActionStyle}>
-          <IconButtonV2
-            name="earth"
-            size={22}
-            color={theme.onSecondary}
-            onPress={() => handleWebviewPress(ref)}
-            theme={theme}
-          />
-        </View>
-      ),
-      [leftActionStyle, theme, handleWebviewPress],
-    );
-
     const renderRightActions = useCallback(
       (_progress: any, _dragX: any, ref: any) => (
         <View style={styles.rightActionsContainer}>
+          <View style={rightActionStyle}>
+            <IconButtonV2
+              name="earth"
+              size={22}
+              color={theme.onPrimary}
+              onPress={() => handleWebviewPress(ref)}
+              theme={theme}
+            />
+          </View>
           <View style={rightActionStyle}>
             <IconButtonV2
               name={isPluginPinned ? 'pin-off' : 'pin'}
@@ -175,7 +164,6 @@ export const PluginListItem = memo(
         <Swipeable
           dragOffsetFromLeftEdge={30}
           dragOffsetFromRightEdge={30}
-          renderLeftActions={renderLeftActions}
           renderRightActions={renderRightActions}
         >
           <Pressable
