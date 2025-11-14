@@ -142,7 +142,7 @@ window.tts = new (function () {
   this.reading = false;
 
   this.readable = element => {
-    ele = element ?? this.currentElement;
+    const ele = element ?? this.currentElement;
     if (
       ele.nodeName !== 'SPAN' &&
       this.readableNodeNames.includes(ele.nodeName)
@@ -158,6 +158,14 @@ window.tts = new (function () {
       }
     }
     return true;
+  };
+
+  this.normalizeText = text => {
+    if (!text) return '';
+    return text
+      .replace(/\s+/g, ' ')
+      .replace(/\s*([.,!?;:])\s*/g, '$1 ')
+      .trim();
   };
 
   // if can find a readable node, else stop tts
@@ -204,13 +212,23 @@ window.tts = new (function () {
     try {
       this.currentElement?.classList?.remove('highlight');
       if (this.findNextTextNode()) {
-        this.reading = true;
-        this.speak();
+        const text = this.normalizeText(this.currentElement?.innerText);
+        if (text) {
+          this.reading = true;
+          this.speak();
+        } else {
+          this.next();
+        }
       } else {
         this.reading = false;
         this.stop();
-        document.getElementById('TTS-Controller').firstElementChild.innerHTML =
-          volumnIcon;
+        const controller = document.getElementById('TTS-Controller');
+        if (controller?.firstElementChild) {
+          controller.firstElementChild.innerHTML = volumnIcon;
+        }
+        if (reader.nextChapter) {
+          reader.post({ type: 'next', autoStartTTS: true });
+        }
       }
     } catch (e) {
       alert(e);
@@ -240,6 +258,7 @@ window.tts = new (function () {
   this.pause = () => {
     this.reading = false;
     reader.post({ type: 'stop-speak' });
+    reader.post({ type: 'tts-state', data: { isReading: false } });
   };
 
   this.stop = () => {
@@ -249,12 +268,59 @@ window.tts = new (function () {
     this.currentElement = reader.chapterElement;
     this.started = false;
     this.reading = false;
+    reader.post({ type: 'tts-state', data: { isReading: false } });
+  };
+
+  this.isElementInViewport = element => {
+    if (!element) return false;
+    const rect = element.getBoundingClientRect();
+    const windowHeight =
+      window.innerHeight || document.documentElement.clientHeight;
+    const windowWidth =
+      window.innerWidth || document.documentElement.clientWidth;
+
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= windowHeight &&
+      rect.right <= windowWidth
+    );
+  };
+
+  this.scrollToElement = element => {
+    if (!element) return;
+    // Check if element is partially visible (at least some part is in viewport)
+    const rect = element.getBoundingClientRect();
+    const windowHeight =
+      window.innerHeight || document.documentElement.clientHeight;
+    const isPartiallyVisible =
+      rect.top < windowHeight &&
+      rect.bottom > 0 &&
+      rect.left < window.innerWidth &&
+      rect.right > 0;
+
+    // Only scroll if element is not visible or barely visible
+    if (!isPartiallyVisible || rect.top < 0 || rect.bottom > windowHeight) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'nearest',
+      });
+    }
   };
 
   this.speak = () => {
+    if (!this.currentElement) return;
     this.prevElement = this.currentElement;
+    this.scrollToElement(this.currentElement);
     this.currentElement.classList.add('highlight');
-    reader.post({ type: 'speak', data: this.currentElement?.innerText });
+    const text = this.normalizeText(this.currentElement.innerText);
+    if (text) {
+      reader.post({ type: 'speak', data: text });
+      reader.post({ type: 'tts-state', data: { isReading: true } });
+    } else {
+      this.next();
+    }
   };
 })();
 
@@ -561,7 +627,14 @@ window.addEventListener('load', () => {
         .replace(
           /<br>\s*<br>[^]+/,
           _ =>
-            `${/\/p>/.test(_) ? _.replace(/<br>\s*<br>(?:(?=\s*<\/?p[> ])|(?<=<\/?p\b[^>]*><br>\s*<br>))\s*/g, '') : _}`,
+            `${
+              /\/p>/.test(_)
+                ? _.replace(
+                    /<br>\s*<br>(?:(?=\s*<\/?p[> ])|(?<=<\/?p\b[^>]*><br>\s*<br>))\s*/g,
+                    '',
+                  )
+                : _
+            }`,
         ) //if p found, delete all double br near p
         .replace(/<br>(?:(?=\s*<\/?p[> ])|(?<=<\/?p>\s*<br>))\s*/g, '');
     }

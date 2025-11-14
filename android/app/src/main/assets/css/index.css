@@ -146,10 +146,18 @@ td {
   text-align: right;
 }
 
-.highlight,
+.highlight {
+  color: var(--readerSettings-textColor) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--readerSettings-textColor) 20%,
+    var(--readerSettings-theme)
+  );
+}
+
 .highlight * {
-  color: var(--theme-onSecondary) !important;
-  background-color: var(--theme-secondary);
+  color: var(--readerSettings-textColor) !important;
+  background-color: transparent;
 }
 
 #Image-Modal {

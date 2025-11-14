@@ -20,10 +20,18 @@ import { getBatteryLevelSync } from 'react-native-device-info';
 import * as Speech from 'expo-speech';
 import { PLUGIN_STORAGE } from '@utils/Storages';
 import { useChapterContext } from '../ChapterContext';
+import {
+  showTTSNotification,
+  updateTTSNotification,
+  dismissTTSNotification,
+  getTTSAction,
+  clearTTSAction,
+} from '@utils/ttsNotification';
 
 type WebViewPostEvent = {
   type: string;
   data?: { [key: string]: string | number };
+  autoStartTTS?: boolean;
 };
 
 type WebViewReaderProps = {
@@ -80,6 +88,64 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
   const pluginCustomJS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.js`;
   const pluginCustomCSS = `file://${PLUGIN_STORAGE}/${plugin?.id}/custom.css`;
   const nextChapterScreenVisible = useRef<boolean>(false);
+  const autoStartTTSRef = useRef<boolean>(false);
+  const isTTSReadingRef = useRef<boolean>(false);
+
+  useEffect(() => {
+    const checkNotificationActions = setInterval(() => {
+      const action = getTTSAction();
+      if (action) {
+        clearTTSAction();
+        switch (action) {
+          case 'TTS_PLAY_PAUSE':
+            webViewRef.current?.injectJavaScript(`
+              if (window.tts) {
+                if (tts.reading) {
+                  tts.pause();
+                } else {
+                  tts.resume();
+                }
+              }
+            `);
+            break;
+          case 'TTS_STOP':
+            webViewRef.current?.injectJavaScript(`
+              if (window.tts) {
+                tts.stop();
+              }
+            `);
+            break;
+          case 'TTS_NEXT':
+            webViewRef.current?.injectJavaScript(`
+              if (window.tts && window.reader && window.reader.nextChapter) {
+                window.reader.post({ type: 'next', autoStartTTS: true });
+              }
+            `);
+            break;
+        }
+      }
+    }, 500);
+
+    return () => {
+      clearInterval(checkNotificationActions);
+    };
+  }, [webViewRef]);
+
+  useEffect(() => {
+    if (isTTSReadingRef.current) {
+      updateTTSNotification({
+        novelName: novel?.name || 'Unknown',
+        chapterName: chapter.name,
+        isPlaying: isTTSReadingRef.current,
+      });
+    }
+  }, [novel?.name, chapter.name]);
+
+  useEffect(() => {
+    return () => {
+      dismissTTSNotification();
+    };
+  }, []);
 
   useEffect(() => {
     const mmkvListener = MMKVStorage.addOnValueChangedListener(key => {
@@ -124,6 +190,26 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
       showsVerticalScrollIndicator={false}
       javaScriptEnabled={true}
       webviewDebuggingEnabled={__DEV__}
+      onLoadEnd={() => {
+        if (autoStartTTSRef.current) {
+          autoStartTTSRef.current = false;
+          setTimeout(() => {
+            webViewRef.current?.injectJavaScript(`
+              (function() {
+                if (window.tts && reader.generalSettings.val.TTSEnable) {
+                  setTimeout(() => {
+                    tts.start();
+                    const controller = document.getElementById('TTS-Controller');
+                    if (controller && controller.firstElementChild) {
+                      controller.firstElementChild.innerHTML = pauseIcon;
+                    }
+                  }, 500);
+                }
+              })();
+            `);
+          }, 300);
+        }
+      }}
       onMessage={(ev: { nativeEvent: { data: string } }) => {
         __DEV__ && onLogMessage(ev);
         const event: WebViewPostEvent = JSON.parse(ev.nativeEvent.data);
@@ -133,6 +219,9 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
             break;
           case 'next':
             nextChapterScreenVisible.current = true;
+            if (event.autoStartTTS) {
+              autoStartTTSRef.current = true;
+            }
             navigateChapter('NEXT');
             break;
           case 'prev':
@@ -145,6 +234,20 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
             break;
           case 'speak':
             if (event.data && typeof event.data === 'string') {
+              if (!isTTSReadingRef.current) {
+                isTTSReadingRef.current = true;
+                showTTSNotification({
+                  novelName: novel?.name || 'Unknown',
+                  chapterName: chapter.name,
+                  isPlaying: true,
+                });
+              } else {
+                updateTTSNotification({
+                  novelName: novel?.name || 'Unknown',
+                  chapterName: chapter.name,
+                  isPlaying: true,
+                });
+              }
               Speech.speak(event.data, {
                 onDone() {
                   webViewRef.current?.injectJavaScript('tts.next?.()');
@@ -159,6 +262,20 @@ const WebViewReader: React.FC<WebViewReaderProps> = ({ onPress }) => {
             break;
           case 'stop-speak':
             Speech.stop();
+            isTTSReadingRef.current = false;
+            dismissTTSNotification();
+            break;
+          case 'tts-state':
+            if (event.data && typeof event.data === 'object') {
+              const data = event.data as { isReading?: boolean };
+              const isReading = data.isReading === true;
+              isTTSReadingRef.current = isReading;
+              updateTTSNotification({
+                novelName: novel?.name || 'Unknown',
+                chapterName: chapter.name,
+                isPlaying: isReading,
+              });
+            }
             break;
         }
       }}
