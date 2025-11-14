@@ -11,13 +11,13 @@
   "advancedSettings": "Дополнительно",
   "advancedSettingsScreen": {
     "cachedNovelsDeletedToast": "Кэшированные новеллы удалены",
-    "chapterInsertFailed": "ошибка вставки главы",
+    "chapterInsertFailed": "не удалось вставить главу",
     "clearCachedNovels": "Очистить кэш новелл",
-    "clearCachedNovelsDesc": "Удалить кэшированные новеллы, которые не находятся в библиотеке",
+    "clearCachedNovelsDesc": "Удалить кэшированные новеллы, которые не находятся в вашей библиотеке",
     "clearDatabaseWarning": "Вы уверены? Прочитанные и загруженные главы и прогресс не библиотечных новелл будут потеряны.",
     "clearUpdatesMessage": "Обновления очищены.",
     "clearUpdatesTab": "Очистить вкладку обновления",
-    "clearUpdatesWarning": "Вы уверены? Обновления будут удалены.",
+    "clearUpdatesWarning": "Вкладка обновлений будет очищена.",
     "clearupdatesTabDesc": "Очищает записи глав на вкладке обновлений",
     "dataManagement": "Управление данными",
     "deleteReadChapters": "Удалять прочитанные главы",
@@ -26,22 +26,36 @@
     "importNovel": "Импорт новеллы",
     "importStaticFiles": "Импорт файлов статики",
     "novelInsertFailed": "ошибка вставки главы",
-    "useFAB": "Использовать FAB вместо кнопки",
-    "userAgent": "User Agent"
+    "useFAB": "Использовать плавающую кнопку действия вместо основной кнопки",
+    "userAgent": "User Agent",
+    "recreateDBIndexes": "Пересоздать индексы базы данных",
+    "recreateDBIndexesToast": "Индексы базы данных пересозданы",
+    "recreateDBIndexesDialogTitle": "Все индексы базы данных будут пересозданы.\nЭто может занять некоторое время.",
+    "recreateDBIndexesDesc": "Пересоздаёт индексы базы данных. Это может улучшить производительность на слабых устройствах."
   },
   "appearance": "Внешний вид",
   "appearanceScreen": {
     "accentColor": "Цветовой оттенок",
     "alwaysShowNavLabels": "Всегда показывать навигационные метки",
+    "appLanguage": "App language",
+    "languagePickerModal": {
+      "title": "Select Language",
+      "restartNote": "You will need to restart the app for the language change to take full effect."
+    },
+    "appLanguageDefault": "Default",
     "appTheme": "Тема приложения",
     "darkTheme": "Тёмная тема",
     "hideBackdrop": "Скрыть фон",
     "lightTheme": "Светлая тема",
-    "navbar": "Навбар",
+    "navbar": "Панель навигации",
     "novelInfo": "Информация о новелле",
     "pureBlackDarkMode": "Режим с чистым чёрным",
     "showHistoryInTheNav": "Показать историю в навигации",
     "showUpdatesInTheNav": "Показать историю в навигации",
+    "themeMode": "Тема оформления",
+    "themeModeLight": "Светлая",
+    "themeModeDark": "Тёмная",
+    "themeModeSystem": "Система",
     "theme": {
       "default": "По умолчанию",
       "lavender": "Пурпурный",
@@ -51,38 +65,43 @@
       "tako": "Тако",
       "teal": "Бирюзовая",
       "turquoise": "Бирюзовый",
-      "yotsuba": "Ёцуба"
+      "yotsuba": "Ёцуба",
+      "catppuccin": "Катппучини",
+      "yinyang": "Инь и ян"
     }
   },
   "backupScreen": {
     "backupName": "Имя резервной копии",
+    "backupCreated": "Backup created successfully",
+    "backupRestored": "Backup restored successfully",
+    "categoriesRestored": "Restored %{count} categories",
     "createBackup": "Создать резервную копию",
     "createBackupDesc": "Может быть использовано для восстановления текущей библиотеки",
     "createBackupWarning": "Создание резервной копии может не работать на устройствах с Android 9 или ниже.",
     "downloadingData": "Загрузка данных",
-    "downloadingDownloadedFiles": "Загрузка загруженных файлов",
+    "downloadingDownloadedFiles": "Загрузка скачанных файлов",
+    "failed": "Резервное копирование не удалось",
+    "novelsRestored": "Restored %{count} novels",
+    "restoringCategories": "Restoring categories...",
+    "restoringNovels": "Restoring novels...",
+    "restoringSettings": "Restoring settings...",
+    "settingsRestored": "Settings restored",
     "drive": {
-      "backup": "Drive Backup",
+      "backup": "Резервная копия диска",
       "backupInterruped": "Резервное копирование прервано",
-      "googleDriveBackup": "Бэкап Google Drive",
-      "restore": "Drive Restore",
-      "restoreInterruped": "Drive Restore Interruped"
+      "googleDriveBackup": "Резервное копирование на Google Диск",
+      "restore": "Восстановление диска",
+      "restoreInterruped": "Восстановление прервано"
     },
-    "googeDrive": "Google Drive",
-    "googeDriveDesc": "Резервное копирование на Google Drive",
+    "googeDrive": "Google Диск",
+    "googeDriveDesc": "Резервное копирование на Google Диск",
     "invalidBackupFolder": "Неверная папка резервной копии",
-    "legacy": {
-      "backupCreated": "Резервная копия создана %{fileName}",
-      "libraryRestored": "Библиотека восстановлена",
-      "noAvailableBackup": "Нет доступных резервных копий",
-      "novelsRestored": "%{num} Новеллы восстановлены"
-    },
-    "legacyBackup": "Резервное копирование (Устаревшее)",
+    "localBackup": "Local Backup",
     "noBackupFound": "Резервные копии не найдены",
     "preparingData": "Подготовка данных",
     "remote": {
-      "backup": "Self Host Backup",
-      "host": "Host",
+      "backup": "Резервное копирование на свой сервер",
+      "host": "Сервер",
       "unknownHost": "Неизвестный хост"
     },
     "remoteBackup": "Удалённое резервное копирование",
@@ -100,6 +119,7 @@
   "browseScreen": {
     "addedToLibrary": "Добавлено в библиотеку",
     "available": "Расширения",
+    "deletePluginMessage": "Are you sure you want to uninstall %{name}?",
     "discover": "Узнайте больше",
     "globalSearch": "Глобальный поиск",
     "installFailed": "Не удалось установить: %{name}",
@@ -116,10 +136,14 @@
       "selectSourceDesc": "Выберите источник для переноса из"
     },
     "noSource": "В вашей библиотеке нет новелл из этого источника",
+    "pinnedPlugin": "Pinned %{name}",
+    "pinnedPlugins": "Pinned plugins",
     "removeFromLibrary": "Удалено из библиотеки",
     "searchbar": "Поиск источника",
+    "searchResults": "Search results",
     "selectNovel": "Выбрать новеллу",
     "uninstalledPlugin": "Удалено %{name}",
+    "unpinnedPlugin": "Unpinned %{name}",
     "updateFailed": "Ошибка обновления",
     "updatedTo": "Обновлено до %{version}",
     "settings": {
@@ -130,7 +154,7 @@
   "browseSettings": "Настройки обзора",
   "browseSettingsScreen": {
     "concurrentSearches": "Параллельный поиск источников",
-    "multi": "Многоязыковое",
+    "multi": "Многоязычные",
     "languages": "Языки"
   },
   "categories": {
@@ -157,7 +181,7 @@
     "about": "О программе",
     "add": "Добавить",
     "all": "Все",
-    "backup": "Бэкап",
+    "backup": "Резервная копия",
     "cancel": "Отменить",
     "categories": "Категории",
     "chapters": "Главы",
@@ -183,7 +207,7 @@
     "remove": "Удалить",
     "reset": "Сбросить",
     "restore": "Восстановить",
-    "resume": "Возобновить",
+    "resume": "Продолжить",
     "retry": "Повторить",
     "save": "Сохранить",
     "search": "Поиск",
@@ -194,7 +218,9 @@
     "signIn": "Войти",
     "signOut": "Выйти",
     "sort": "Сортировка",
-    "submit": "Продолжить"
+    "submit": "Продолжить",
+    "loading": "Загрузка...",
+    "warning": "Внимание"
   },
   "webview": {
     "refresh": "Обновить",
@@ -216,7 +242,7 @@
   "downloadScreen": {
     "cancelDownloads": "Отменить загрузки",
     "cancelled": "Загрузки отменены.",
-    "chapterEmptyOrScrapeError": "Either chapter is empty or the app couldn't scrape it",
+    "chapterEmptyOrScrapeError": "Либо глава пуста, либо приложению не удалось ее обработать",
     "chapterName": "Глава: %{name}",
     "completed": "Загрузка завершена",
     "dbInfo": "Загрузки сохраняются в базе данных SQLite.",
@@ -337,29 +363,42 @@
       },
       "order": {
         "byChapterName": "По названию главы",
-        "bySource": "Источник"
+        "bySource": "По источнику"
       }
     },
     "chapterChapnum": "Глава: %{num}",
     "chapters": "главы",
     "continueReading": "Продолжить чтение",
-    "convertToEpubModal": {
-      "chaptersWarning": "Включать в EPUB только загруженные главы",
-      "chooseLocation": "Выберите каталог хранения EPUB",
-      "pathToFolder": "Путь к папке сохранения EPUB",
-      "useCustomCSS": "Использовать пользовательский CSS",
-      "useCustomJS": "Использовать пользовательский JS",
-      "useCustomJSWarning": "Может поддерживаться не всеми читателями EPUB",
-      "useReaderTheme": "Использовать тему для чтения"
+    "exportEpubModal": {
+      "applyReaderTheme": "Apply reader theme to EPUB",
+      "customJSWarning": "Custom JS may not be supported by all EPUB readers",
+      "downloadedChaptersOnly": "Only downloaded chapters will be included in the EPUB file",
+      "endChapter": "End Chapter",
+      "exportAll": "Export All Chapters",
+      "includeCustomCSS": "Include Custom CSS",
+      "includeCustomJS": "Include Custom JS",
+      "invalidRange": "Please enter valid chapter numbers",
+      "selectFolder": "Select destination folder for EPUB file",
+      "startChapter": "Start Chapter",
+      "startGreaterThanEnd": "Start chapter must be less than or equal to end chapter",
+      "title": "Export Novel as EPUB"
     },
-    "deleteChapterError": "Cant delete chapter chapter folder",
+    "epub": {
+      "exportFailed": "Failed to export EPUB: %{error}",
+      "exportSuccess": "Successfully exported %{chapters} chapters as EPUB",
+      "noDownloadedChapters": "No downloaded chapters found. Please download chapters before exporting.",
+      "noNovelSelected": "No novel selected for export"
+    },
+    "coverSaved": "Обложка сохранена",
+    "coverNotSaved": "Обложка не сохранена",
+    "deleteChapterError": "Не получается удалить папку с главами",
     "deleteMessage": "Удалить загруженные главы?",
     "deletedAllDownloads": "Удалить все загрузки",
     "download": {
       "custom": "Пользовательский",
-      "customAmount": "Загрузить произвольную сумму",
+      "customAmount": "Загрузить конкретное количество",
       "delete": "Удалить загруженные",
-      "next": "Следующая глава",
+      "next": "Следующую главу",
       "next10": "Следующие 10 глав",
       "next5": "Следующие 5 глав",
       "unread": "Непрочитанные"
@@ -386,9 +425,10 @@
     },
     "migrate": "Перенос",
     "noSummary": "Нет сводки",
+    "noCoverFound": "Обложка не найдена",
     "progress": "Прогресс %{progress}%",
-    "readChaptersDeleted": "Read chapters deleted",
-    "startReadingChapters": "Начать чтение %{name}",
+    "readChaptersDeleted": "Прочитанные главы удалены",
+    "startReadingChapters": "Начать %{name}",
     "status": {
       "cancelled": "Отменено",
       "completed": "Завершено",
@@ -405,61 +445,63 @@
   },
   "readerScreen": {
     "bottomSheet": {
-      "allowTextSelection": "Разрешить выделение текста",
-      "autoscroll": "Автопрокрутка",
-      "bionicReading": "Бионическое чтение",
+      "allowTextSelection": "Text selection",
+      "autoscroll": "Auto-scroll",
+      "bionicReading": "Bionic reading",
       "tapToScroll": "Коснитесь для прокрутки",
       "color": "Цвет",
       "fontStyle": "Шрифт",
       "fullscreen": "Полноэкранный",
-      "lineHeight": "Высота строки",
+      "lineHeight": "Line height",
       "padding": "Отступ",
-      "pageReader": "Tap left or right to navigate through pages in the reader (Experimental)",
-      "removeExtraSpacing": "Удалить дополнительный интервал параграфа",
+      "pageReader": "Paged reading (Experimental)",
+      "removeExtraSpacing": "Remove extra spacing",
       "scrollAmount": "Смещение автопрокрутки (высота экрана по умолчанию)",
-      "showBatteryAndTime": "Показывать батарею и время",
-      "showProgressPercentage": "Показывать процент прогресса",
-      "swipeGestures": "Проведите влево или вправо для перехода между главами",
-      "textAlign": "Выравнивание текста",
+      "showBatteryAndTime": "Battery & time",
+      "showProgressPercentage": "Reading progress",
+      "swipeGestures": "Swipe between chapters",
+      "textAlign": "Text alignment",
       "textSize": "Размер текста",
-      "useChapterDrawerSwipeNavigation": "Проведите вправо, чтобы открыть",
-      "verticalSeekbar": "Вертикальная панель навигации",
+      "useChapterDrawerSwipeNavigation": "Swipe to open drawer",
+      "verticalSeekbar": "Vertical seekbar",
       "keepScreenOn": "Не выключать экран",
-      "volumeButtonsScroll": "Прокрутка кноками громкости"
+      "volumeButtonsScroll": "Volume button scrolling"
     },
     "drawer": {
       "scrollToBottom": "Прокрутить вниз",
       "scrollToCurrentChapter": "Прокрутка к текущей главе",
       "scrollToTop": "Прокрутить вверх"
     },
-    "emptyChapterMessage": "<p>Chapter is empty.</p><p>Report on <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> if it's available in WebView.</p><p>Plugin: %{pluginId}</p><p>Novel: %{novelName}</p><p>Chapter: %{chapterName}</p>",
+    "emptyChapterMessage": "<p>Глава пуста.</p><p> Сообщите на GitHub, <a href='https://github.com/LNReader/lnreader-sources/issues/new/choose'>GitHub</a> если он доступен в WebView.</p><p>Плагин: %{pluginId}</p><p>Новелла: %{novelName}</p><p>Глава: %{chapterName}</p>",
     "finished": "Завершено",
-    "nextChapter": "Следующий: %{name}",
+    "nextChapter": "%{name}Следующий: %{name}",
     "noNextChapter": "Следующей главы нет",
     "noPreviousChapter": "Предыдущей главы нет"
   },
   "readerSettings": {
-    "autoScrollInterval": "Интервал автопрокрутки (в секундах)",
-    "autoScrollOffset": "Смещение автопрокрутки (высота экрана по умолчанию)",
+    "autoScrollInterval": "Scroll interval (seconds)",
+    "autoScrollOffset": "Scroll offset (screen heights)",
     "backgroundColor": "Цвет фона",
-    "backgroundColorModal": "Цвет фона при чтении",
-    "clearCustomCSS": "Вы уверены? Ваш пользовательский CSS будет сброшен.",
-    "clearCustomJS": "Вы уверены? Ваш пользовательский JS будет сброшен.",
-    "cssHint": "Подсказка: Вы можете создать исходный код конфигурации с исходным ID. (#sourceId-[SOURCEID])",
+    "backgroundColorModal": "Background color",
+    "clearCustomCSS": "Reset your custom CSS?",
+    "clearCustomJS": "Reset your custom JS?",
+    "cssHint": "Target specific sources using #sourceId-[SOURCEID] in your selectors",
     "customCSS": "Пользовательские CSS",
     "customJS": "Пользовательский JS",
-    "deleteCustomTheme": "Удалить пользовательскую тему",
-    "jsHint": "Подсказка: У вас есть доступ к следующим переменным: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "deleteCustomTheme": "Delete theme",
+    "jsHint": "Available variables: html, novelName, chapterName, sourceId, chapterId, novelId",
+    "navigationControls": "Navigation Controls",
     "notSaved": "Не сохранено",
-    "openCSSFile": "Открыть CSS-файл",
-    "openJSFile": "Открыть JS-файл",
+    "openCSSFile": "Import CSS file",
+    "openJSFile": "Import JS file",
     "preset": "Предустановка",
-    "readerTheme": "Тема при чтении",
-    "saveCustomTheme": "Сохранить пользовательскую тему",
+    "readingMode": "Reading Mode",
+    "readerTheme": "Theme",
+    "saveCustomTheme": "Save theme",
     "textColor": "Цвет текста",
-    "textColorModal": "Цвет текста при чтении",
+    "textColorModal": "Text color",
     "title": "Чтение",
-    "verticalSeekbarDesc": "Переключение между вертикальной и горизонтальной панелями навигации"
+    "verticalSeekbarDesc": "Use vertical seekbar"
   },
   "sourceScreen": {
     "noResultsFound": "Ничего не найдено"
@@ -478,7 +520,7 @@
   "tracking": "Отслеживание",
   "trackingScreen": {
     "logOutMessage": "Выйти из %{name}?",
-    "revalidate": "Revalidate",
+    "revalidate": "Подтвердите еще раз",
     "services": "Сервисы отслеживания"
   },
   "updates": "Обновления",
@@ -499,6 +541,17 @@
     "pickATheme": "Выберите тему",
     "light": "Светлая",
     "dark": "Тёмная",
+    "system": "Система",
     "complete": "Готово"
+  },
+  "notifications": {
+    "IMPORT_EPUB": "Импортирован epub",
+    "UPDATE_LIBRARY": "Обновление библиотеки",
+    "DRIVE_BACKUP": "Резервное копирование",
+    "DRIVE_RESTORE": "Восстановление с диска",
+    "SELF_HOST_BACKUP": "Локальное резервное копирование",
+    "SELF_HOST_RESTORE": "Локальное восстановление",
+    "MIGRATE_NOVEL": "Перенесённая новелла",
+    "DOWNLOAD_CHAPTER": "Загруженные главы"
   }
 }
