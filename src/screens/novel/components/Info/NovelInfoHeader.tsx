@@ -52,8 +52,10 @@ interface NovelInfoHeaderProps {
   novel: NovelData | (Omit<NovelData, 'id'> & { id: 'NO_ID' });
   novelBottomSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   onRefreshPage: (page: string) => void;
-  openDrawer: () => void;
   page?: string;
+  pageIndex: number;
+  pages: string[];
+  pageNavigationSheetRef: React.RefObject<BottomSheetModalMethods | null>;
   setCustomNovelCover: () => Promise<void>;
   saveNovelCover: () => Promise<void>;
   theme: ThemeColors;
@@ -82,9 +84,6 @@ const NovelInfoHeader = ({
   navigation,
   novel,
   novelBottomSheetRef,
-  onRefreshPage,
-  openDrawer,
-  page,
   setCustomNovelCover,
   saveNovelCover,
   theme,
@@ -227,46 +226,29 @@ const NovelInfoHeader = ({
         {isLoading && (!novel.genres || !novel.summary) ? (
           <VerticalBarSkeleton />
         ) : (
-          <Pressable
-            style={styles.bottomsheet}
-            onPress={() =>
-              page ? openDrawer() : novelBottomSheetRef.current?.present()
-            }
-            android_ripple={{
-              color: color(theme.primary).alpha(0.12).string(),
-            }}
-          >
-            <View style={styles.flex}>
-              {page || novel.totalPages ? (
-                <Text
-                  numberOfLines={2}
-                  style={[{ color: theme.onSurface }, styles.pageTitle]}
-                >
-                  Page: {page ?? ''}
-                </Text>
-              ) : null}
-
-              <Text style={[{ color: theme.onSurface }, styles.chapters]}>
-                {!fetching || totalChapters !== undefined
-                  ? `${totalChapters} ${getString('novelScreen.chapters')}`
-                  : getString('common.loading')}
-              </Text>
-            </View>
-            {page && Number(page) ? (
-              <IconButton
-                icon="reload"
-                iconColor={theme.onSurface}
-                size={24}
-                onPress={() => onRefreshPage(page)}
-              />
-            ) : null}
-            <IconButton
-              icon="filter-variant"
-              iconColor={filter ? filterColor(theme.isDark) : theme.onSurface}
-              size={24}
+          <View style={styles.bottomsheetContainer}>
+            <Pressable
+              style={styles.bottomsheet}
               onPress={() => novelBottomSheetRef.current?.present()}
-            />
-          </Pressable>
+              android_ripple={{
+                color: color(theme.primary).alpha(0.12).string(),
+              }}
+            >
+              <View style={styles.flex}>
+                <Text style={[{ color: theme.onSurface }, styles.chapters]}>
+                  {!fetching || totalChapters !== undefined
+                    ? `${totalChapters} ${getString('novelScreen.chapters')}`
+                    : getString('common.loading')}
+                </Text>
+              </View>
+              <IconButton
+                icon="filter-variant"
+                iconColor={filter ? filterColor(theme.isDark) : theme.onSurface}
+                size={24}
+                onPress={() => novelBottomSheetRef.current?.present()}
+              />
+            </Pressable>
+          </View>
         )}
       </>
     </>
@@ -281,16 +263,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingRight: 12,
-    paddingVertical: 4,
+    paddingVertical: 8,
+  },
+  bottomsheetContainer: {
+    gap: 12,
   },
   chapters: {
     fontSize: 14,
     paddingHorizontal: 16,
   },
   flex: { flex: 1 },
-  infoItem: {
-    marginVertical: 2,
-  },
   marginRight: { marginRight: 4 },
   novelDetails: {
     flex: 1,
@@ -298,9 +280,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingBottom: 16,
     paddingLeft: 12,
-  },
-  pageTitle: {
-    fontSize: 16,
-    paddingHorizontal: 16,
   },
 });
