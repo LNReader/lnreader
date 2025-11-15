@@ -5,10 +5,7 @@ import { useBoolean } from '@hooks';
 import { BackupSettingsScreenProps } from '@navigators/types';
 import GoogleDriveModal from './Components/GoogleDriveModal';
 import SelfHostModal from './Components/SelfHostModal';
-import {
-  createBackup as createLocalBackup,
-  restoreBackup as restoreLocalBackup,
-} from '@services/backup/local';
+import ServiceManager from '@services/ServiceManager';
 import { ScrollView } from 'react-native-gesture-handler';
 import { getString } from '@strings/translations';
 import { StyleSheet } from 'react-native';
@@ -58,13 +55,17 @@ const BackupSettings = ({ navigation }: BackupSettingsScreenProps) => {
           <List.Item
             title={getString('backupScreen.createBackup')}
             description={getString('backupScreen.createBackupDesc')}
-            onPress={createLocalBackup}
+            onPress={() => {
+              ServiceManager.manager.addTask({ name: 'LOCAL_BACKUP' });
+            }}
             theme={theme}
           />
           <List.Item
             title={getString('backupScreen.restoreBackup')}
             description={getString('backupScreen.restoreBackupDesc')}
-            onPress={restoreLocalBackup}
+            onPress={() => {
+              ServiceManager.manager.addTask({ name: 'LOCAL_RESTORE' });
+            }}
             theme={theme}
           />
           <List.InfoItem

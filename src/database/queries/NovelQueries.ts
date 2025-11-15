@@ -26,7 +26,7 @@ export const insertNovelAndChapters = async (
   sourceNovel: SourceNovel,
 ): Promise<number | undefined> => {
   const insertNovelQuery =
-    'INSERT INTO Novel (path, pluginId, name, cover, summary, author, artist, status, genres, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    'INSERT OR IGNORE INTO Novel (path, pluginId, name, cover, summary, author, artist, status, genres, totalPages) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   const novelId: number | undefined = db.runSync(insertNovelQuery, [
     sourceNovel.path,
     pluginId,

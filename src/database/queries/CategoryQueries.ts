@@ -104,7 +104,7 @@ export const getAllNovelCategories = () =>
 
 export const _restoreCategory = (category: BackupCategory) => {
   const d = category.novelIds.map(novelId => [
-    'INSERT INTO NovelCategory (categoryId, novelId) VALUES (?, ?)',
+    'INSERT OR IGNORE INTO NovelCategory (categoryId, novelId) VALUES (?, ?)',
     [category.id, novelId],
   ]) as Array<[string, SQLite.SQLiteBindParams]>;
 
@@ -114,7 +114,7 @@ export const _restoreCategory = (category: BackupCategory) => {
       [category.id, category.sort],
     ],
     [
-      'INSERT INTO Category (id, name, sort) VALUES (?, ?, ?)',
+      'INSERT OR IGNORE INTO Category (id, name, sort) VALUES (?, ?, ?)',
       [category.id, category.name, category.sort],
     ],
     ...d,

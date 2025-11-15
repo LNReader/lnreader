@@ -12,6 +12,7 @@ import {
   SelfHostData,
   selfHostRestore,
 } from './backup/selfhost';
+import { createBackup, restoreBackup } from './backup/local';
 import { migrateNovel, MigrateNovelData } from './migrate/migrateNovel';
 import { downloadChapter } from './download/downloadChapter';
 import { askForPostNotificationsPermission } from '@utils/askForPostNoftificationsPermission';
@@ -23,6 +24,8 @@ type taskNames =
   | 'DRIVE_RESTORE'
   | 'SELF_HOST_BACKUP'
   | 'SELF_HOST_RESTORE'
+  | 'LOCAL_BACKUP'
+  | 'LOCAL_RESTORE'
   | 'MIGRATE_NOVEL'
   | 'DOWNLOAD_CHAPTER';
 
@@ -45,6 +48,8 @@ export type BackgroundTask =
   | { name: 'DRIVE_RESTORE'; data: DriveFile }
   | { name: 'SELF_HOST_BACKUP'; data: SelfHostData }
   | { name: 'SELF_HOST_RESTORE'; data: SelfHostData }
+  | { name: 'LOCAL_BACKUP' }
+  | { name: 'LOCAL_RESTORE' }
   | { name: 'MIGRATE_NOVEL'; data: MigrateNovelData }
   | DownloadChapterTask;
 export type DownloadChapterTask = {
@@ -233,6 +238,10 @@ export default class ServiceManager {
         return createSelfHostBackup(task.task.data, this.setMeta.bind(this));
       case 'SELF_HOST_RESTORE':
         return selfHostRestore(task.task.data, this.setMeta.bind(this));
+      case 'LOCAL_BACKUP':
+        return createBackup(this.setMeta.bind(this));
+      case 'LOCAL_RESTORE':
+        return restoreBackup(this.setMeta.bind(this));
       case 'MIGRATE_NOVEL':
         return migrateNovel(task.task.data, this.setMeta.bind(this));
       case 'DOWNLOAD_CHAPTER':
@@ -250,6 +259,8 @@ export default class ServiceManager {
       'DRIVE_RESTORE': 0,
       'SELF_HOST_BACKUP': 0,
       'SELF_HOST_RESTORE': 0,
+      'LOCAL_BACKUP': 0,
+      'LOCAL_RESTORE': 0,
       'MIGRATE_NOVEL': 0,
       'DOWNLOAD_CHAPTER': 0,
     };
@@ -286,7 +297,7 @@ export default class ServiceManager {
     if (manager.getTaskList().length === 0) {
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'Background tasks done',
+          title: getString('common.done'),
           body: Object.keys(doneTasks)
             .filter(key => doneTasks[key as BackgroundTask['name']] > 0)
             .map(
@@ -305,24 +316,36 @@ export default class ServiceManager {
   getTaskName(task: BackgroundTask) {
     switch (task.name) {
       case 'DOWNLOAD_CHAPTER':
-        return 'Download ' + task.data.novelName;
+        return `${getString('notifications.DOWNLOAD_CHAPTER')}: ${
+          task.data.novelName
+        }`;
       case 'IMPORT_EPUB':
-        return 'Import Epub ' + task.data.filename;
+        return `${getString('notifications.IMPORT_EPUB')}: ${
+          task.data.filename
+        }`;
       case 'MIGRATE_NOVEL':
-        return 'Migrate Novel ' + task.data.fromNovel.name;
+        return `${getString('notifications.MIGRATE_NOVEL')}: ${
+          task.data.fromNovel.name
+        }`;
       case 'UPDATE_LIBRARY':
         if (task.data !== undefined) {
-          return 'Update Category ' + task.data.categoryName;
+          return `${getString('notifications.UPDATE_LIBRARY')}: ${
+            task.data.categoryName
+          }`;
         }
-        return 'Update Library';
+        return getString('notifications.UPDATE_LIBRARY');
       case 'DRIVE_BACKUP':
-        return 'Drive Backup';
+        return getString('notifications.DRIVE_BACKUP');
       case 'DRIVE_RESTORE':
-        return 'Drive Restore';
+        return getString('notifications.DRIVE_RESTORE');
       case 'SELF_HOST_BACKUP':
-        return 'Self Host Backup';
+        return getString('notifications.SELF_HOST_BACKUP');
       case 'SELF_HOST_RESTORE':
-        return 'Self Host Restore';
+        return getString('notifications.SELF_HOST_RESTORE');
+      case 'LOCAL_BACKUP':
+        return getString('notifications.LOCAL_BACKUP');
+      case 'LOCAL_RESTORE':
+        return getString('notifications.LOCAL_RESTORE');
       default:
         return 'Unknown Task';
     }

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getCategoriesFromDb } from '@database/queries/CategoryQueries';
@@ -9,6 +9,8 @@ import { Category, NovelInfo } from '@database/types';
 import { useLibrarySettings } from '@hooks/persisted';
 import { LibrarySortOrder } from '../constants/constants';
 import { switchNovelToLibraryQuery } from '@database/queries/NovelQueries';
+import ServiceManager, { BackgroundTask } from '@services/ServiceManager';
+import { useMMKVObject } from 'react-native-mmkv';
 
 // type Library = Category & { novels: LibraryNovelInfo[] };
 export type ExtendedCategory = Category & { novelIds: number[] };
@@ -103,6 +105,28 @@ export const useLibrary = (): UseLibraryReturnType => {
   useFocusEffect(() => {
     getLibrary();
   });
+
+  const [taskQueue] = useMMKVObject<BackgroundTask[]>(
+    ServiceManager.manager.STORE_KEY,
+  );
+  const restoreTasksCount = useMemo(
+    () =>
+      taskQueue?.filter(
+        t =>
+          t.name === 'LOCAL_RESTORE' ||
+          t.name === 'DRIVE_RESTORE' ||
+          t.name === 'SELF_HOST_RESTORE',
+      ).length || 0,
+    [taskQueue],
+  );
+  const prevRestoreTasksCountRef = useRef(restoreTasksCount);
+
+  useEffect(() => {
+    if (prevRestoreTasksCountRef.current > 0 && restoreTasksCount === 0) {
+      getLibrary();
+    }
+    prevRestoreTasksCountRef.current = restoreTasksCount;
+  }, [restoreTasksCount]);
 
   return {
     library,
