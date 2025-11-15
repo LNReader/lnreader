@@ -69,27 +69,25 @@ const updateNovelChapters = (
         chapterNumber,
       } = chapters[position];
       const chapterPage = page || customPage || '1';
-      const st = await tx.prepareAsync(
+
+      const result = await tx.runAsync(
         `
-          INSERT OR IGNORE INTO Chapter (path, name, releaseTime, novelId, updatedTime, chapterNumber, page, position)
-          VALUES (?, ?, ?, ?, datetime('now','localtime'), ?, ?, ?);
+          INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, chapterNumber, page, position)
+          SELECT ?, ?, ?, ?, datetime('now','localtime'), ?, ?, ?
+          WHERE NOT EXISTS (SELECT id FROM Chapter WHERE path = ? AND novelId = ?);
         `,
+        path,
+        name,
+        releaseTime || null,
+        novelId,
+        chapterNumber || null,
+        chapterPage,
+        position,
+        path,
+        novelId,
       );
-      let insertId = -1;
-      try {
-        const result = await st.executeAsync([
-          path,
-          name,
-          releaseTime || null,
-          novelId,
-          chapterNumber || null,
-          chapterPage,
-          position,
-        ]);
-        insertId = result.lastInsertRowId;
-      } finally {
-        await st.finalizeAsync();
-      }
+
+      const insertId = result.lastInsertRowId;
 
       if (insertId && insertId >= 0) {
         if (downloadNewChapters) {
@@ -105,26 +103,25 @@ const updateNovelChapters = (
       } else {
         await tx.runAsync(
           `
-              UPDATE Chapter SET
-                name = ?, releaseTime = ?, updatedTime = datetime('now','localtime'), page = ?, position = ?
-              WHERE path = ? AND novelId = ? AND (name != ? OR releaseTime != ? OR page != ? OR position != ?);
-            `,
-          [
-            name,
-            releaseTime || null,
-            chapterPage,
-            position,
-            path,
-            novelId,
-            name,
-            releaseTime || null,
-            chapterPage,
-            position,
-          ],
+            UPDATE Chapter SET
+              name = ?, releaseTime = ?, updatedTime = datetime('now','localtime'), page = ?, position = ?
+            WHERE path = ? AND novelId = ? AND (name != ? OR releaseTime != ? OR page != ? OR position != ?);
+          `,
+          name,
+          releaseTime || null,
+          chapterPage,
+          position,
+          path,
+          novelId,
+          name,
+          releaseTime || null,
+          chapterPage,
+          position,
         );
       }
     }
   });
+
 export interface UpdateNovelOptions {
   downloadNewChapters?: boolean;
   refreshNovelMetadata?: boolean;

@@ -22,34 +22,54 @@ export const insertChapters = async (
     return;
   }
 
-  await db
-    .withTransactionAsync(async () => {
-      const statement = db.prepareSync(` 
-        INSERT INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
-        VALUES (?, ?, ?, ${novelId}, ?, ?, ?)
-        ON CONFLICT(path, novelId) DO UPDATE SET
-        page = excluded.page,
-        position = excluded.position,
-        name = excluded.name,
-        releaseTime = excluded.releaseTime,
-        chapterNumber = excluded.chapterNumber;
-        `);
-      try {
-        chapters.map((chapter, index) =>
-          statement.executeSync(
-            chapter.path,
-            chapter.name ?? 'Chapter ' + (index + 1),
-            chapter.releaseTime || '',
-            chapter.chapterNumber || null,
-            chapter.page || '1',
-            index,
-          ),
+  await db.withExclusiveTransactionAsync(async tx => {
+    for (let index = 0; index < chapters.length; index++) {
+      const chapter = chapters[index];
+      const chapterName = chapter.name ?? 'Chapter ' + (index + 1);
+      const chapterPage = chapter.page || '1';
+
+      const result = await tx.runAsync(
+        `
+          INSERT INTO Chapter (path, name, releaseTime, novelId, chapterNumber, page, position)
+          SELECT ?, ?, ?, ?, ?, ?, ?
+          WHERE NOT EXISTS (SELECT id FROM Chapter WHERE path = ? AND novelId = ?);
+        `,
+        chapter.path,
+        chapterName,
+        chapter.releaseTime || '',
+        novelId,
+        chapter.chapterNumber || null,
+        chapterPage,
+        index,
+        chapter.path,
+        novelId,
+      );
+
+      const insertId = result.lastInsertRowId;
+
+      if (!insertId || insertId < 0) {
+        await tx.runAsync(
+          `
+            UPDATE Chapter SET
+              page = ?, position = ?, name = ?, releaseTime = ?, chapterNumber = ?
+            WHERE path = ? AND novelId = ? AND (page != ? OR position != ? OR name != ? OR releaseTime != ? OR chapterNumber != ?);
+          `,
+          chapterPage,
+          index,
+          chapterName,
+          chapter.releaseTime || '',
+          chapter.chapterNumber || null,
+          chapter.path,
+          novelId,
+          chapterPage,
+          index,
+          chapterName,
+          chapter.releaseTime || '',
+          chapter.chapterNumber || null,
         );
-      } finally {
-        statement.finalizeSync();
       }
-    })
-    .catch();
+    }
+  });
 };
 
 export const markChapterRead = (chapterId: number) =>

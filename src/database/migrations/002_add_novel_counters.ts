@@ -1,35 +1,62 @@
+import { SQLiteDatabase } from 'expo-sqlite';
+
 import { Migration } from '../types/migration';
 
+const columnExists = (
+  db: SQLiteDatabase,
+  tableName: string,
+  columnName: string,
+): boolean => {
+  const columns = db.getAllSync<{ name: string }>(
+    `PRAGMA table_info(${tableName})`,
+  );
+  return columns.some(col => col.name === columnName);
+};
+
 /**
- * Migration 1: Add counter columns to Novel table
+ * Migration 2: Add counter columns to Novel table
  * - Adds chaptersDownloaded, chaptersUnread, totalChapters columns
  * - Adds lastReadAt, lastUpdatedAt timestamp columns
  * - Populates columns with existing data
  */
-export const migration001: Migration = {
-  version: 1,
+export const migration002: Migration = {
+  version: 2,
   description: 'Add counter columns and triggers to Novel table',
   migrate: db => {
-    db.runSync(`
-      ALTER TABLE Novel 
-      ADD COLUMN chaptersDownloaded INTEGER DEFAULT 0
-    `);
-    db.runSync(`
-      ALTER TABLE Novel 
-      ADD COLUMN chaptersUnread INTEGER DEFAULT 0
-    `);
-    db.runSync(`
-      ALTER TABLE Novel 
-      ADD COLUMN totalChapters INTEGER DEFAULT 0
-    `);
-    db.runSync(`
-      ALTER TABLE Novel 
-      ADD COLUMN lastReadAt TEXT
-    `);
-    db.runSync(`
-      ALTER TABLE Novel 
-      ADD COLUMN lastUpdatedAt TEXT
-    `);
+    if (!columnExists(db, 'Novel', 'chaptersDownloaded')) {
+      db.runSync(`
+        ALTER TABLE Novel 
+        ADD COLUMN chaptersDownloaded INTEGER DEFAULT 0
+      `);
+    }
+
+    if (!columnExists(db, 'Novel', 'chaptersUnread')) {
+      db.runSync(`
+        ALTER TABLE Novel 
+        ADD COLUMN chaptersUnread INTEGER DEFAULT 0
+      `);
+    }
+
+    if (!columnExists(db, 'Novel', 'totalChapters')) {
+      db.runSync(`
+        ALTER TABLE Novel 
+        ADD COLUMN totalChapters INTEGER DEFAULT 0
+      `);
+    }
+
+    if (!columnExists(db, 'Novel', 'lastReadAt')) {
+      db.runSync(`
+        ALTER TABLE Novel 
+        ADD COLUMN lastReadAt TEXT
+      `);
+    }
+
+    if (!columnExists(db, 'Novel', 'lastUpdatedAt')) {
+      db.runSync(`
+        ALTER TABLE Novel 
+        ADD COLUMN lastUpdatedAt TEXT
+      `);
+    }
 
     db.runSync(`
       UPDATE Novel

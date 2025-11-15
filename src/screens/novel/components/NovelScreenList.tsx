@@ -329,7 +329,7 @@ const NovelScreenList = ({
         ListFooterComponent={
           !fetching ? (
             hasMultiplePages ? (
-              <View style={styles.pageNavigationWrapper}>
+              <View>
                 <PagePaginationControl
                   currentPage={pageIndex + 1}
                   totalPages={pages.length}
