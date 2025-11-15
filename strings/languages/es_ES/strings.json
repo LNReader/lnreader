@@ -74,24 +74,25 @@
     "backupName": "Nombre de copia de seguridad",
     "backupCreated": "Backup created successfully",
     "backupRestored": "Backup restored successfully",
+    "savingBackup": "Saving Backup",
     "categoriesRestored": "Restored %{count} categories",
     "createBackup": "Crear una copia de seguridad",
     "createBackupDesc": "Puede utilizarse para restaurar la biblioteca actual",
     "createBackupWarning": "Crear un respaldo puede no funcionar en dispositivos con Android 9 o inferior.",
     "downloadingData": "Descargando Datos",
-    "downloadingDownloadedFiles": "Descargando archivos descargados",
+    "downloadingDownloadedFiles": "Downloading Downloaded Files",
     "failed": "Copia de Seguridad Fallida",
     "novelsRestored": "Restored %{count} novels",
-    "restoringCategories": "Restoring categories...",
-    "restoringNovels": "Restoring novels...",
-    "restoringSettings": "Restoring settings...",
+    "restoringCategories": "Restoring Categories",
+    "restoringNovels": "Restoring Novels",
+    "restoringSettings": "Restoring Settings",
     "settingsRestored": "Settings restored",
     "drive": {
       "backup": "Copia de Seguridad del Disco",
-      "backupInterruped": "Copia de Seguridad del Disco interrumpida",
+      "backupInterruped": "Drive Backup Interrupted",
       "googleDriveBackup": "Copia de Seguridad de Google Drive",
       "restore": "Recuperación del Disco",
-      "restoreInterruped": "Recuperación del Disco interrumpida"
+      "restoreInterruped": "Drive Restore Interrupted"
     },
     "googeDrive": "Google Drive",
     "googeDriveDesc": "Realizar copia de seguridad a tu Google Drive",
@@ -113,7 +114,7 @@
     "selfHost": "Autoalojar",
     "selfHostDesc": "Guardar copia de seguridad en tu servidor",
     "uploadingData": "Subiendo datos",
-    "uploadingDownloadedFiles": "Subiendo archivos descargados"
+    "uploadingDownloadedFiles": "Uploading Downloaded Files"
   },
   "browse": "Navegar",
   "browseScreen": {
@@ -545,13 +546,15 @@
     "complete": "Complete"
   },
   "notifications": {
-    "IMPORT_EPUB": "Imported epub",
-    "UPDATE_LIBRARY": "Updated library",
-    "DRIVE_BACKUP": "Drive backup",
-    "DRIVE_RESTORE": "Drive restore",
-    "SELF_HOST_BACKUP": "Self host backup",
-    "SELF_HOST_RESTORE": "Self host restore",
-    "MIGRATE_NOVEL": "Migrated novel",
-    "DOWNLOAD_CHAPTER": "Downloaded chapter"
+    "IMPORT_EPUB": "Importing EPUB",
+    "UPDATE_LIBRARY": "Updating Library",
+    "DRIVE_BACKUP": "Google Drive Backup",
+    "DRIVE_RESTORE": "Google Drive Restore",
+    "SELF_HOST_BACKUP": "Self-Host Backup",
+    "SELF_HOST_RESTORE": "Self-Host Restore",
+    "LOCAL_BACKUP": "Local Backup",
+    "LOCAL_RESTORE": "Local Restore",
+    "MIGRATE_NOVEL": "Migrating Novel",
+    "DOWNLOAD_CHAPTER": "Downloading Chapter"
   }
 }

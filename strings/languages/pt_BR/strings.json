@@ -74,24 +74,25 @@
     "backupName": "Salvar nome",
     "backupCreated": "Backup created successfully",
     "backupRestored": "Backup restored successfully",
+    "savingBackup": "Saving Backup",
     "categoriesRestored": "Restored %{count} categories",
     "createBackup": "Criar salvo",
     "createBackupDesc": "Pode ser usado para restaurar biblioteca",
     "createBackupWarning": "Salvo criado pode não funcionar em aparelhos com androide 9 ou menos.",
     "downloadingData": "Baixando informação",
-    "downloadingDownloadedFiles": "Baixando arquivos salvos",
+    "downloadingDownloadedFiles": "Downloading Downloaded Files",
     "failed": "Backup failed",
     "novelsRestored": "Restored %{count} novels",
-    "restoringCategories": "Restoring categories...",
-    "restoringNovels": "Restoring novels...",
-    "restoringSettings": "Restoring settings...",
+    "restoringCategories": "Restoring Categories",
+    "restoringNovels": "Restoring Novels",
+    "restoringSettings": "Restoring Settings",
     "settingsRestored": "Settings restored",
     "drive": {
       "backup": "Salvar no Drive",
-      "backupInterruped": "",
+      "backupInterruped": "Drive Backup Interrupted",
       "googleDriveBackup": "",
       "restore": "",
-      "restoreInterruped": ""
+      "restoreInterruped": "Drive Restore Interrupted"
     },
     "googeDrive": "",
     "googeDriveDesc": "Backup to your Google Drive",
@@ -113,7 +114,7 @@
     "selfHost": "Self Host",
     "selfHostDesc": "Backup to your server",
     "uploadingData": "Uploading Data",
-    "uploadingDownloadedFiles": "Uploading Downloaded files"
+    "uploadingDownloadedFiles": "Uploading Downloaded Files"
   },
   "browse": "Navegar",
   "browseScreen": {
@@ -545,13 +546,15 @@
     "complete": "Complete"
   },
   "notifications": {
-    "IMPORT_EPUB": "Imported epub",
-    "UPDATE_LIBRARY": "Updated library",
-    "DRIVE_BACKUP": "Drive backup",
-    "DRIVE_RESTORE": "Drive restore",
-    "SELF_HOST_BACKUP": "Self host backup",
-    "SELF_HOST_RESTORE": "Self host restore",
-    "MIGRATE_NOVEL": "Migrated novel",
-    "DOWNLOAD_CHAPTER": "Downloaded chapter"
+    "IMPORT_EPUB": "Importing EPUB",
+    "UPDATE_LIBRARY": "Updating Library",
+    "DRIVE_BACKUP": "Google Drive Backup",
+    "DRIVE_RESTORE": "Google Drive Restore",
+    "SELF_HOST_BACKUP": "Self-Host Backup",
+    "SELF_HOST_RESTORE": "Self-Host Restore",
+    "LOCAL_BACKUP": "Local Backup",
+    "LOCAL_RESTORE": "Local Restore",
+    "MIGRATE_NOVEL": "Migrating Novel",
+    "DOWNLOAD_CHAPTER": "Downloading Chapter"
   }
 }

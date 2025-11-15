@@ -74,24 +74,25 @@
     "backupName": "Backup name",
     "backupCreated": "Backup created successfully",
     "backupRestored": "Backup restored successfully",
+    "savingBackup": "Saving Backup",
     "categoriesRestored": "Restored %{count} categories",
     "createBackup": "Créer une sauvegarde",
     "createBackupDesc": "Peut être utilisé pour restaurer la bibliothèque actuelle",
     "createBackupWarning": "Créer une sauvegarde peut ne pas fonctionner sur les appareils équipés d'Android 9 ou d'une version antérieure.",
     "downloadingData": "Téléchargement de données",
-    "downloadingDownloadedFiles": "Downloading Downloaded files",
+    "downloadingDownloadedFiles": "Downloading Downloaded Files",
     "failed": "Backup failed",
     "novelsRestored": "Restored %{count} novels",
-    "restoringCategories": "Restoring categories...",
-    "restoringNovels": "Restoring novels...",
-    "restoringSettings": "Restoring settings...",
+    "restoringCategories": "Restoring Categories",
+    "restoringNovels": "Restoring Novels",
+    "restoringSettings": "Restoring Settings",
     "settingsRestored": "Settings restored",
     "drive": {
       "backup": "Drive Backup",
-      "backupInterruped": "Drive Backup Interruped",
+      "backupInterruped": "Drive Backup Interrupted",
       "googleDriveBackup": "Google Drive Backup",
       "restore": "Drive Restore",
-      "restoreInterruped": "Drive Restore Interruped"
+      "restoreInterruped": "Drive Restore Interrupted"
     },
     "googeDrive": "Googe Drive",
     "googeDriveDesc": "Sauvegarde sur votre Google Drive",
@@ -113,7 +114,7 @@
     "selfHost": "Self Host",
     "selfHostDesc": "Backup to your server",
     "uploadingData": "Uploading Data",
-    "uploadingDownloadedFiles": "Uploading Downloaded files"
+    "uploadingDownloadedFiles": "Uploading Downloaded Files"
   },
   "browse": "Parcourir",
   "browseScreen": {
@@ -545,13 +546,15 @@
     "complete": "Complete"
   },
   "notifications": {
-    "IMPORT_EPUB": "Imported epub",
-    "UPDATE_LIBRARY": "Updated library",
-    "DRIVE_BACKUP": "Drive backup",
-    "DRIVE_RESTORE": "Drive restore",
-    "SELF_HOST_BACKUP": "Self host backup",
-    "SELF_HOST_RESTORE": "Self host restore",
-    "MIGRATE_NOVEL": "Migrated novel",
-    "DOWNLOAD_CHAPTER": "Downloaded chapter"
+    "IMPORT_EPUB": "Importing EPUB",
+    "UPDATE_LIBRARY": "Updating Library",
+    "DRIVE_BACKUP": "Google Drive Backup",
+    "DRIVE_RESTORE": "Google Drive Restore",
+    "SELF_HOST_BACKUP": "Self-Host Backup",
+    "SELF_HOST_RESTORE": "Self-Host Restore",
+    "LOCAL_BACKUP": "Local Backup",
+    "LOCAL_RESTORE": "Local Restore",
+    "MIGRATE_NOVEL": "Migrating Novel",
+    "DOWNLOAD_CHAPTER": "Downloading Chapter"
   }
 }

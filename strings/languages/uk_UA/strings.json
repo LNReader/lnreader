@@ -74,24 +74,25 @@
     "backupName": "Назва резервної копії",
     "backupCreated": "Backup created successfully",
     "backupRestored": "Backup restored successfully",
+    "savingBackup": "Saving Backup",
     "categoriesRestored": "Restored %{count} categories",
     "createBackup": "Створити резервну копію",
     "createBackupDesc": "Можна використати для відновлення бібліотеки",
     "createBackupWarning": "Створення резервної копії може не працювати на пристроях з Android 9 або нижче.",
     "downloadingData": "Завантаження даних",
-    "downloadingDownloadedFiles": "Завантаження збережених файлів",
+    "downloadingDownloadedFiles": "Downloading Downloaded Files",
     "failed": "Backup failed",
     "novelsRestored": "Restored %{count} novels",
-    "restoringCategories": "Restoring categories...",
-    "restoringNovels": "Restoring novels...",
-    "restoringSettings": "Restoring settings...",
+    "restoringCategories": "Restoring Categories",
+    "restoringNovels": "Restoring Novels",
+    "restoringSettings": "Restoring Settings",
     "settingsRestored": "Settings restored",
     "drive": {
       "backup": "Резервне копіювання в Google Drive",
-      "backupInterruped": "Процес резервного копіювання перервано",
+      "backupInterruped": "Drive Backup Interrupted",
       "googleDriveBackup": "Резервна копія в Google Drive",
       "restore": "Відновлення з Google Drive",
-      "restoreInterruped": "Процес відновлення перервано"
+      "restoreInterruped": "Drive Restore Interrupted"
     },
     "googeDrive": "Google Drive",
     "googeDriveDesc": "Резервне копіювання у ваш Google Drive",
@@ -113,7 +114,7 @@
     "selfHost": "Власний сервер",
     "selfHostDesc": "Резервне копіювання на власний сервер",
     "uploadingData": "Відправлення даних",
-    "uploadingDownloadedFiles": "Відправлення завантажених файлів"
+    "uploadingDownloadedFiles": "Uploading Downloaded Files"
   },
   "browse": "Огляд",
   "browseScreen": {
@@ -545,13 +546,15 @@
     "complete": "Завершити"
   },
   "notifications": {
-    "IMPORT_EPUB": "Imported epub",
-    "UPDATE_LIBRARY": "Updated library",
-    "DRIVE_BACKUP": "Drive backup",
-    "DRIVE_RESTORE": "Drive restore",
-    "SELF_HOST_BACKUP": "Self host backup",
-    "SELF_HOST_RESTORE": "Self host restore",
-    "MIGRATE_NOVEL": "Migrated novel",
-    "DOWNLOAD_CHAPTER": "Downloaded chapter"
+    "IMPORT_EPUB": "Importing EPUB",
+    "UPDATE_LIBRARY": "Updating Library",
+    "DRIVE_BACKUP": "Google Drive Backup",
+    "DRIVE_RESTORE": "Google Drive Restore",
+    "SELF_HOST_BACKUP": "Self-Host Backup",
+    "SELF_HOST_RESTORE": "Self-Host Restore",
+    "LOCAL_BACKUP": "Local Backup",
+    "LOCAL_RESTORE": "Local Restore",
+    "MIGRATE_NOVEL": "Migrating Novel",
+    "DOWNLOAD_CHAPTER": "Downloading Chapter"
   }
 }

@@ -74,24 +74,25 @@
     "backupName": "",
     "backupCreated": "",
     "backupRestored": "",
+    "savingBackup": "Saving Backup",
     "categoriesRestored": "Restored %{count} categories",
     "createBackup": "",
     "createBackupDesc": "",
     "createBackupWarning": "",
     "downloadingData": "",
-    "downloadingDownloadedFiles": "",
+    "downloadingDownloadedFiles": "Downloading Downloaded Files",
     "failed": "",
     "novelsRestored": "Restored %{count} novels",
-    "restoringCategories": "Restoring categories...",
-    "restoringNovels": "Restoring novels...",
-    "restoringSettings": "Restoring settings...",
+    "restoringCategories": "Restoring Categories",
+    "restoringNovels": "Restoring Novels",
+    "restoringSettings": "Restoring Settings",
     "settingsRestored": "Settings restored",
     "drive": {
       "backup": "",
-      "backupInterruped": "",
+      "backupInterruped": "Drive Backup Interrupted",
       "googleDriveBackup": "",
       "restore": "",
-      "restoreInterruped": ""
+      "restoreInterruped": "Drive Restore Interrupted"
     },
     "googeDrive": "",
     "googeDriveDesc": "",
@@ -113,7 +114,7 @@
     "selfHost": "",
     "selfHostDesc": "",
     "uploadingData": "",
-    "uploadingDownloadedFiles": ""
+    "uploadingDownloadedFiles": "Uploading Downloaded Files"
   },
   "browse": "Telusur",
   "browseScreen": {
@@ -545,13 +546,15 @@
     "complete": "Complete"
   },
   "notifications": {
-    "IMPORT_EPUB": "Imported epub",
-    "UPDATE_LIBRARY": "Updated library",
-    "DRIVE_BACKUP": "Drive backup",
-    "DRIVE_RESTORE": "Drive restore",
-    "SELF_HOST_BACKUP": "Self host backup",
-    "SELF_HOST_RESTORE": "Self host restore",
-    "MIGRATE_NOVEL": "Migrated novel",
-    "DOWNLOAD_CHAPTER": "Downloaded chapter"
+    "IMPORT_EPUB": "Importing EPUB",
+    "UPDATE_LIBRARY": "Updating Library",
+    "DRIVE_BACKUP": "Google Drive Backup",
+    "DRIVE_RESTORE": "Google Drive Restore",
+    "SELF_HOST_BACKUP": "Self-Host Backup",
+    "SELF_HOST_RESTORE": "Self-Host Restore",
+    "LOCAL_BACKUP": "Local Backup",
+    "LOCAL_RESTORE": "Local Restore",
+    "MIGRATE_NOVEL": "Migrating Novel",
+    "DOWNLOAD_CHAPTER": "Downloading Chapter"
   }
 }
