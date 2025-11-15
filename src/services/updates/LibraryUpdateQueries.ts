@@ -71,9 +71,8 @@ const updateNovelChapters = (
       const chapterPage = page || customPage || '1';
       const st = await tx.prepareAsync(
         `
-          INSERT INTO Chapter (path, name, releaseTime, novelId, updatedTime, chapterNumber, page, position)
-          SELECT ?, ?, ?, ?, datetime('now','localtime'), ?, ?, ?
-          WHERE NOT EXISTS (SELECT id FROM Chapter WHERE path = ? AND novelId = ?);
+          INSERT OR IGNORE INTO Chapter (path, name, releaseTime, novelId, updatedTime, chapterNumber, page, position)
+          VALUES (?, ?, ?, ?, datetime('now','localtime'), ?, ?, ?);
         `,
       );
       let insertId = -1;
@@ -86,8 +85,6 @@ const updateNovelChapters = (
           chapterNumber || null,
           chapterPage,
           position,
-          path,
-          novelId,
         ]);
         insertId = result.lastInsertRowId;
       } finally {
