@@ -74,24 +74,25 @@
     "backupName": "Имя резервной копии",
     "backupCreated": "Резервная копия успешно создана",
     "backupRestored": "Резервная копия успешно восстановлена",
+    "savingBackup": "Сохранение резервной копии",
     "categoriesRestored": "Восстановлены %{count} категории",
     "createBackup": "Создать резервную копию",
     "createBackupDesc": "Может быть использовано для восстановления текущей библиотеки",
     "createBackupWarning": "Создание резервной копии может не работать на устройствах с Android 9 или ниже.",
     "downloadingData": "Загрузка данных",
-    "downloadingDownloadedFiles": "Загрузка скачанных файлов",
+    "downloadingDownloadedFiles": "Загрузка загруженных файлов",
     "failed": "Резервное копирование не удалось",
     "novelsRestored": "Восстановлено %{count} новелл",
-    "restoringCategories": "Восстановление категорий...",
-    "restoringNovels": "Восстановление новелл...",
-    "restoringSettings": "Восстановление настроек...",
+    "restoringCategories": "Восстановление категорий",
+    "restoringNovels": "Восстановление новелл",
+    "restoringSettings": "Восстановление настроек",
     "settingsRestored": "Настройки восстановлены",
     "drive": {
       "backup": "Резервная копия диска",
-      "backupInterruped": "Резервное копирование прервано",
+      "backupInterruped": "Резервная копия диска прервана",
       "googleDriveBackup": "Резервное копирование на Google Диск",
       "restore": "Восстановление диска",
-      "restoreInterruped": "Восстановление прервано"
+      "restoreInterruped": "Восстановление диска прервано"
     },
     "googeDrive": "Google Диск",
     "googeDriveDesc": "Резервное копирование на Google Диск",
@@ -113,7 +114,7 @@
     "selfHost": "Свой сервер",
     "selfHostDesc": "Резервное копирование на свой сервер",
     "uploadingData": "Выгрузка данных",
-    "uploadingDownloadedFiles": "Выгрузка загруженных файлов"
+    "uploadingDownloadedFiles": "Выгрузка скаченных файлов"
   },
   "browse": "Обзор",
   "browseScreen": {
@@ -454,8 +455,8 @@
       "fullscreen": "Полноэкранный",
       "lineHeight": "Высота строки",
       "padding": "Отступ",
-      "pageReader": "Paged reading (Experimental)",
-      "removeExtraSpacing": "Remove extra spacing",
+      "pageReader": "Постраничное чтение (экспериментально)",
+      "removeExtraSpacing": "Удалить лишние пробелы",
       "scrollAmount": "Смещение автопрокрутки (высота экрана по умолчанию)",
       "showBatteryAndTime": "Батарея и время",
       "showProgressPercentage": "Прогресс чтения",
@@ -479,8 +480,8 @@
     "noPreviousChapter": "Предыдущей главы нет"
   },
   "readerSettings": {
-    "autoScrollInterval": "Scroll interval (seconds)",
-    "autoScrollOffset": "Scroll offset (screen heights)",
+    "autoScrollInterval": "Интервал прокрутки (секунды)",
+    "autoScrollOffset": "Смещение прокрутки (высота экрана)",
     "backgroundColor": "Цвет фона",
     "backgroundColorModal": "Цвет фона",
     "clearCustomCSS": "Сбросить пользовательские CSS?",
@@ -545,13 +546,15 @@
     "complete": "Готово"
   },
   "notifications": {
-    "IMPORT_EPUB": "Импортирован epub",
-    "UPDATE_LIBRARY": "Обновление библиотеки",
-    "DRIVE_BACKUP": "Резервное копирование",
-    "DRIVE_RESTORE": "Восстановление с диска",
-    "SELF_HOST_BACKUP": "Локальное резервное копирование",
-    "SELF_HOST_RESTORE": "Локальное восстановление",
-    "MIGRATE_NOVEL": "Перенесённая новелла",
+    "IMPORT_EPUB": "Importing EPUB",
+    "UPDATE_LIBRARY": "Обновляем библиотеку",
+    "DRIVE_BACKUP": "Резервное копирование на Google Диск",
+    "DRIVE_RESTORE": "Восстановление Google Drive",
+    "SELF_HOST_BACKUP": "Резервное копирование на свой сервер",
+    "SELF_HOST_RESTORE": "Self-Host Restore",
+    "LOCAL_BACKUP": "Локальное резервное копирование",
+    "LOCAL_RESTORE": "Локальное восстановление",
+    "MIGRATE_NOVEL": "Миграция новелл",
     "DOWNLOAD_CHAPTER": "Загруженные главы"
   }
 }
