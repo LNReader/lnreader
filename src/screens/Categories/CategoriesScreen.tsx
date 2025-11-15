@@ -53,11 +53,15 @@ const CategoriesScreen = () => {
 
     const systemCategories = categories.filter(cat => cat.id === 1);
 
-    const updatedOrderCategories = [...systemCategories, ...data];
-    requestAnimationFrame(() => {
-      setCategories(updatedOrderCategories);
-      updateCategoryOrderInDb(updatedOrderCategories);
-    });
+    const updatedOrderCategories = [...systemCategories, ...data].map(
+      (category, index) => ({
+        ...category,
+        sort: index,
+      }),
+    );
+
+    setCategories(updatedOrderCategories);
+    updateCategoryOrderInDb(updatedOrderCategories);
   };
 
   const renderItem = ({
