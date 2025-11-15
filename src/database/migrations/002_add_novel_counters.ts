@@ -7,10 +7,14 @@ const columnExists = (
   tableName: string,
   columnName: string,
 ): boolean => {
-  const columns = db.getAllSync<{ name: string }>(
-    `PRAGMA table_info(${tableName})`,
-  );
-  return columns.some(col => col.name === columnName);
+  try {
+    const columns = db.getAllSync<{ name: string }>(
+      `PRAGMA table_info(${tableName})`,
+    );
+    return columns.some(col => col.name === columnName);
+  } catch {
+    return false;
+  }
 };
 
 /**
