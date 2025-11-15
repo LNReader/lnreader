@@ -74,24 +74,25 @@
     "backupName": "备份名称",
     "backupCreated": "Backup created successfully",
     "backupRestored": "Backup restored successfully",
+    "savingBackup": "Saving Backup",
     "categoriesRestored": "Restored %{count} categories",
     "createBackup": "创建备份",
     "createBackupDesc": "可用于恢复当前书库",
     "createBackupWarning": "创建备份可能无法在 Android 9 或更低版本的设备上运行。",
     "downloadingData": "下载数据",
-    "downloadingDownloadedFiles": "下载已下载文件",
+    "downloadingDownloadedFiles": "Downloading Downloaded Files",
     "failed": "备份失败",
     "novelsRestored": "Restored %{count} novels",
-    "restoringCategories": "Restoring categories...",
-    "restoringNovels": "Restoring novels...",
-    "restoringSettings": "Restoring settings...",
+    "restoringCategories": "Restoring Categories",
+    "restoringNovels": "Restoring Novels",
+    "restoringSettings": "Restoring Settings",
     "settingsRestored": "Settings restored",
     "drive": {
       "backup": "云端硬盘备份",
-      "backupInterruped": "云端硬盘备份中断",
+      "backupInterruped": "Drive Backup Interrupted",
       "googleDriveBackup": "Google 云端硬盘备份",
       "restore": "云端硬盘恢复",
-      "restoreInterruped": "云端硬盘恢复中断"
+      "restoreInterruped": "Drive Restore Interrupted"
     },
     "googeDrive": "Google 云端硬盘",
     "googeDriveDesc": "备份到您的 Google 云端硬盘",
@@ -113,7 +114,7 @@
     "selfHost": "自托管",
     "selfHostDesc": "备份到您的服务器",
     "uploadingData": "上传数据",
-    "uploadingDownloadedFiles": "上传已下载文件"
+    "uploadingDownloadedFiles": "Uploading Downloaded Files"
   },
   "browse": "浏览",
   "browseScreen": {
@@ -545,13 +546,15 @@
     "complete": "完成"
   },
   "notifications": {
-    "IMPORT_EPUB": "Epub已导入",
-    "UPDATE_LIBRARY": "书库已更新",
-    "DRIVE_BACKUP": "云端硬盘备份",
-    "DRIVE_RESTORE": "云端硬盘恢复",
-    "SELF_HOST_BACKUP": "自托管备份",
-    "SELF_HOST_RESTORE": "自托管恢复",
-    "MIGRATE_NOVEL": "小说已迁移",
-    "DOWNLOAD_CHAPTER": "章节已下载"
+    "IMPORT_EPUB": "Importing EPUB",
+    "UPDATE_LIBRARY": "Updating Library",
+    "DRIVE_BACKUP": "Google Drive Backup",
+    "DRIVE_RESTORE": "Google Drive Restore",
+    "SELF_HOST_BACKUP": "Self-Host Backup",
+    "SELF_HOST_RESTORE": "Self-Host Restore",
+    "LOCAL_BACKUP": "Local Backup",
+    "LOCAL_RESTORE": "Local Restore",
+    "MIGRATE_NOVEL": "Migrating Novel",
+    "DOWNLOAD_CHAPTER": "Downloading Chapter"
   }
 }
