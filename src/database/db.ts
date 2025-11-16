@@ -31,7 +31,7 @@ export const db = SQLite.openDatabaseSync(dbName);
 
 /**
  * Creates the initial database schema for fresh installations
- * Sets up all tables, indexes, triggers and sets version to 1
+ * Sets up all tables, indexes, triggers and sets version to 2
  */
 const createInitialSchema = () => {
   db.execSync('PRAGMA journal_mode = WAL');
@@ -52,7 +52,7 @@ const createInitialSchema = () => {
     db.runSync(createNovelTriggerQueryUpdate);
     db.runSync(createNovelTriggerQueryDelete);
 
-    db.execSync('PRAGMA user_version = 1');
+    db.execSync('PRAGMA user_version = 2');
   });
 };
 
@@ -65,9 +65,23 @@ export const initializeDatabase = () => {
   db.execSync('PRAGMA cache_size = 10000');
   db.execSync('PRAGMA foreign_keys = ON');
 
-  const userVersion =
-    db.getFirstSync<{ user_version: number }>('PRAGMA user_version')
-      ?.user_version ?? 0;
+  let userVersion = 0;
+  try {
+    const result = db.getFirstSync<{ user_version: number }>(
+      'PRAGMA user_version',
+    );
+    userVersion = result?.user_version ?? 0;
+  } catch (error) {
+    // If PRAGMA query fails, assume fresh database
+    if (__DEV__) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        'Failed to get database version, assuming fresh install:',
+        error,
+      );
+    }
+    userVersion = 0;
+  }
 
   if (userVersion === 0) {
     createInitialSchema();

@@ -49,10 +49,19 @@ export class MigrationRunner {
   }
 
   private getCurrentVersion(db: SQLiteDatabase): number {
-    return (
-      db.getFirstSync<{ user_version: number }>('PRAGMA user_version')
-        ?.user_version ?? 0
-    );
+    try {
+      const result = db.getFirstSync<{ user_version: number }>(
+        'PRAGMA user_version',
+      );
+      return result?.user_version ?? 0;
+    } catch (error) {
+      // If PRAGMA query fails, assume version 0 (fresh database)
+      if (__DEV__) {
+        // eslint-disable-next-line no-console
+        console.warn('Failed to get database version, assuming 0:', error);
+      }
+      return 0;
+    }
   }
 
   private setVersion(db: SQLiteDatabase, version: number): void {

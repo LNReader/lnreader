@@ -27,86 +27,99 @@ export const migration002: Migration = {
   version: 2,
   description: 'Add counter columns and triggers to Novel table',
   migrate: db => {
-    if (!columnExists(db, 'Novel', 'chaptersDownloaded')) {
-      db.runSync(`
-        ALTER TABLE Novel 
-        ADD COLUMN chaptersDownloaded INTEGER DEFAULT 0
-      `);
+    const addColumnSafely = (columnName: string, columnDefinition: string) => {
+      if (!columnExists(db, 'Novel', columnName)) {
+        try {
+          db.runSync(`
+            ALTER TABLE Novel 
+            ADD COLUMN ${columnName} ${columnDefinition}
+          `);
+        } catch (error) {
+          // Gracefully handle ALTER TABLE failures (e.g., table doesn't exist)
+          // Columns will be created when table is created in initial schema
+          if (__DEV__) {
+            // eslint-disable-next-line no-console
+            console.warn(
+              `Failed to add column ${columnName} to Novel table:`,
+              error,
+            );
+          }
+        }
+      }
+    };
+
+    addColumnSafely('chaptersDownloaded', 'INTEGER DEFAULT 0');
+    addColumnSafely('chaptersUnread', 'INTEGER DEFAULT 0');
+    addColumnSafely('totalChapters', 'INTEGER DEFAULT 0');
+    addColumnSafely('lastReadAt', 'TEXT');
+    addColumnSafely('lastUpdatedAt', 'TEXT');
+
+    // Verify all columns exist before running UPDATE queries to prevent SQL errors
+    const allColumnsExist =
+      columnExists(db, 'Novel', 'chaptersDownloaded') &&
+      columnExists(db, 'Novel', 'chaptersUnread') &&
+      columnExists(db, 'Novel', 'totalChapters') &&
+      columnExists(db, 'Novel', 'lastReadAt') &&
+      columnExists(db, 'Novel', 'lastUpdatedAt');
+
+    if (allColumnsExist) {
+      try {
+        db.runSync(`
+          UPDATE Novel
+          SET chaptersDownloaded = (
+            SELECT COUNT(*)
+            FROM Chapter
+            WHERE Chapter.novelId = Novel.id 
+              AND Chapter.isDownloaded = 1
+          )
+        `);
+
+        db.runSync(`
+          UPDATE Novel
+          SET chaptersUnread = (
+            SELECT COUNT(*)
+            FROM Chapter
+            WHERE Chapter.novelId = Novel.id 
+              AND Chapter.unread = 1
+          )
+        `);
+
+        db.runSync(`
+          UPDATE Novel
+          SET totalChapters = (
+            SELECT COUNT(*)
+            FROM Chapter
+            WHERE Chapter.novelId = Novel.id
+          )
+        `);
+
+        db.runSync(`
+          UPDATE Novel
+          SET lastReadAt = (
+            SELECT MAX(readTime)
+            FROM Chapter
+            WHERE Chapter.novelId = Novel.id
+          )
+        `);
+
+        db.runSync(`
+          UPDATE Novel
+          SET lastUpdatedAt = (
+            SELECT MAX(updatedTime)
+            FROM Chapter
+            WHERE Chapter.novelId = Novel.id
+          )
+        `);
+      } catch (error) {
+        // Gracefully handle UPDATE failures - columns already added with defaults
+        if (__DEV__) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            'Failed to populate counter columns in Novel table:',
+            error,
+          );
+        }
+      }
     }
-
-    if (!columnExists(db, 'Novel', 'chaptersUnread')) {
-      db.runSync(`
-        ALTER TABLE Novel 
-        ADD COLUMN chaptersUnread INTEGER DEFAULT 0
-      `);
-    }
-
-    if (!columnExists(db, 'Novel', 'totalChapters')) {
-      db.runSync(`
-        ALTER TABLE Novel 
-        ADD COLUMN totalChapters INTEGER DEFAULT 0
-      `);
-    }
-
-    if (!columnExists(db, 'Novel', 'lastReadAt')) {
-      db.runSync(`
-        ALTER TABLE Novel 
-        ADD COLUMN lastReadAt TEXT
-      `);
-    }
-
-    if (!columnExists(db, 'Novel', 'lastUpdatedAt')) {
-      db.runSync(`
-        ALTER TABLE Novel 
-        ADD COLUMN lastUpdatedAt TEXT
-      `);
-    }
-
-    db.runSync(`
-      UPDATE Novel
-      SET chaptersDownloaded = (
-        SELECT COUNT(*)
-        FROM Chapter
-        WHERE Chapter.novelId = Novel.id 
-          AND Chapter.isDownloaded = 1
-      )
-    `);
-
-    db.runSync(`
-      UPDATE Novel
-      SET chaptersUnread = (
-        SELECT COUNT(*)
-        FROM Chapter
-        WHERE Chapter.novelId = Novel.id 
-          AND Chapter.unread = 1
-      )
-    `);
-
-    db.runSync(`
-      UPDATE Novel
-      SET totalChapters = (
-        SELECT COUNT(*)
-        FROM Chapter
-        WHERE Chapter.novelId = Novel.id
-      )
-    `);
-
-    db.runSync(`
-      UPDATE Novel
-      SET lastReadAt = (
-        SELECT MAX(readTime)
-        FROM Chapter
-        WHERE Chapter.novelId = Novel.id
-      )
-    `);
-
-    db.runSync(`
-      UPDATE Novel
-      SET lastUpdatedAt = (
-        SELECT MAX(updatedTime)
-        FROM Chapter
-        WHERE Chapter.novelId = Novel.id
-      )
-    `);
   },
 };
