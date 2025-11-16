@@ -97,6 +97,9 @@ export default class ServiceManager {
   }
 
   isMultiplicableTask(task: BackgroundTask) {
+    if (!task?.name) {
+      return false;
+    }
     return (
       ['DOWNLOAD_CHAPTER', 'IMPORT_EPUB', 'MIGRATE_NOVEL'] as Array<
         BackgroundTask['name']
@@ -132,14 +135,18 @@ export default class ServiceManager {
     transformer: (meta: BackgroundTaskMetadata) => BackgroundTaskMetadata,
   ) {
     const taskList = [...this.getTaskList()];
+    if (taskList.length === 0 || !taskList[0]?.meta) {
+      return;
+    }
+
     taskList[0] = {
       ...taskList[0],
       meta: transformer(taskList[0].meta),
     };
 
     if (
-      taskList[0].meta.isRunning &&
-      taskList[0].task.name !== 'DOWNLOAD_CHAPTER'
+      taskList[0].meta?.isRunning &&
+      taskList[0].task?.name !== 'DOWNLOAD_CHAPTER'
     ) {
       const now = Date.now();
       if (now - this.lastNotifUpdate > 1000) {
@@ -150,11 +157,11 @@ export default class ServiceManager {
             return;
           }
           BackgroundService.updateNotification({
-            taskTitle: taskList[0].meta.name,
-            taskDesc: taskList[0].meta.progressText ?? '',
+            taskTitle: taskList[0].meta?.name || 'Unknown Task',
+            taskDesc: taskList[0].meta?.progressText ?? '',
             progressBar: {
-              indeterminate: taskList[0].meta.progress === undefined,
-              value: (taskList[0].meta.progress || 0) * 100,
+              indeterminate: taskList[0].meta?.progress === undefined,
+              value: (taskList[0].meta?.progress || 0) * 100,
               max: 100,
             },
           });
@@ -162,11 +169,11 @@ export default class ServiceManager {
       } else {
         this.lastNotifUpdate = now;
         BackgroundService.updateNotification({
-          taskTitle: taskList[0].meta.name,
-          taskDesc: taskList[0].meta.progressText ?? '',
+          taskTitle: taskList[0].meta?.name || 'Unknown Task',
+          taskDesc: taskList[0].meta?.progressText ?? '',
           progressBar: {
-            indeterminate: taskList[0].meta.progress === undefined,
-            value: (taskList[0].meta.progress || 0) * 100,
+            indeterminate: taskList[0].meta?.progress === undefined,
+            value: (taskList[0].meta?.progress || 0) * 100,
             max: 100,
           },
         });
@@ -185,8 +192,8 @@ export default class ServiceManager {
     let count = 0;
     for (const task of startingTasks) {
       if (
-        task.task.name === 'DOWNLOAD_CHAPTER' &&
-        task.meta.name === currentTask.meta.name
+        task.task?.name === 'DOWNLOAD_CHAPTER' &&
+        task.meta?.name === currentTask.meta?.name
       ) {
         if (task.id === currentTask.id) {
           i = count;
@@ -209,13 +216,18 @@ export default class ServiceManager {
     task: QueuedBackgroundTask,
     startingTasks: QueuedBackgroundTask[],
   ) {
+    // Safety check for old format tasks
+    if (!task?.task?.name) {
+      return;
+    }
+
     const progress =
       task.task.name === 'DOWNLOAD_CHAPTER'
         ? this.getProgressForNotification(task, startingTasks)
         : null;
     await BackgroundService.updateNotification({
-      taskTitle: task.meta.name,
-      taskDesc: task.meta.progressText ?? '',
+      taskTitle: task.meta?.name || 'Unknown Task',
+      taskDesc: task.meta?.progressText ?? '',
       progressBar: {
         indeterminate: progress === null,
         max: 100,
@@ -279,12 +291,18 @@ export default class ServiceManager {
       newtasks.forEach(t => tasksSet.add(t.id));
 
       try {
+        // Safety check - getTaskList() should already handle conversion, but double-check
+        if (!currentTask?.task?.name) {
+          // Skip invalid tasks
+          setMMKVObject(manager.STORE_KEY, manager.getTaskList().slice(1));
+          continue;
+        }
         await manager.executeTask(currentTask, startingTasks);
         doneTasks[currentTask.task.name] += 1;
       } catch (error: any) {
         await Notifications.scheduleNotificationAsync({
           content: {
-            title: currentTask.meta.name,
+            title: currentTask.meta?.name || 'Task Error',
             body: error?.message || String(error),
           },
           trigger: null,
@@ -314,23 +332,26 @@ export default class ServiceManager {
   }
 
   getTaskName(task: BackgroundTask) {
+    if (!task?.name) {
+      return 'Unknown Task';
+    }
     switch (task.name) {
       case 'DOWNLOAD_CHAPTER':
         return `${getString('notifications.DOWNLOAD_CHAPTER')}: ${
-          task.data.novelName
+          task.data?.novelName || ''
         }`;
       case 'IMPORT_EPUB':
         return `${getString('notifications.IMPORT_EPUB')}: ${
-          task.data.filename
+          task.data?.filename || ''
         }`;
       case 'MIGRATE_NOVEL':
         return `${getString('notifications.MIGRATE_NOVEL')}: ${
-          task.data.fromNovel.name
+          task.data?.fromNovel?.name || ''
         }`;
       case 'UPDATE_LIBRARY':
         if (task.data !== undefined) {
           return `${getString('notifications.UPDATE_LIBRARY')}: ${
-            task.data.categoryName
+            task.data?.categoryName || ''
           }`;
         }
         return getString('notifications.UPDATE_LIBRARY');
@@ -352,18 +373,51 @@ export default class ServiceManager {
   }
 
   getTaskList() {
-    return getMMKVObject<Array<QueuedBackgroundTask>>(this.STORE_KEY) || [];
+    const tasks = getMMKVObject<Array<any>>(this.STORE_KEY) || [];
+
+    const convertedTasks = tasks
+      .map(task => {
+        if (task?.task && task?.meta && task?.id) {
+          return task as QueuedBackgroundTask;
+        }
+
+        if (task?.name && !task?.task) {
+          const backgroundTask = task as BackgroundTask;
+          return {
+            task: backgroundTask,
+            meta: {
+              name: this.getTaskName(backgroundTask),
+              isRunning: false,
+              progress: undefined,
+              progressText:
+                backgroundTask.name === 'DOWNLOAD_CHAPTER'
+                  ? (backgroundTask as DownloadChapterTask).data?.chapterName
+                  : undefined,
+            },
+            id: makeId(),
+          } as QueuedBackgroundTask;
+        }
+
+        return null;
+      })
+      .filter((task): task is QueuedBackgroundTask => task !== null);
+
+    const hasOldFormat = tasks.some(task => task?.name && !task?.task);
+
+    if (hasOldFormat) {
+      setMMKVObject(this.STORE_KEY, convertedTasks);
+    }
+
+    return convertedTasks;
   }
 
   addTask(tasks: BackgroundTask | BackgroundTask[]) {
-    let currentTasks = this.getTaskList();
-    // @ts-expect-error Older version can still have tasks with old format
-    currentTasks = currentTasks.filter(task => !task?.name);
+    const currentTasks = this.getTaskList();
 
     const addableTasks = (Array.isArray(tasks) ? tasks : [tasks]).filter(
       task =>
         this.isMultiplicableTask(task) ||
-        !currentTasks.some(_t => _t.task.name === task.name),
+        !currentTasks.some(_t => _t.task?.name === task.name),
     );
     if (addableTasks.length) {
       const newTasks: QueuedBackgroundTask[] = addableTasks.map(task => ({
@@ -374,7 +428,7 @@ export default class ServiceManager {
           progress: undefined,
           progressText:
             task.name === 'DOWNLOAD_CHAPTER'
-              ? task.data.chapterName
+              ? task.data?.chapterName
               : undefined,
         },
         id: makeId(),
@@ -391,13 +445,13 @@ export default class ServiceManager {
       this.pause();
       setMMKVObject(
         this.STORE_KEY,
-        taskList.filter(t => t.task.name !== name),
+        taskList.filter(t => t.task?.name !== name),
       );
       this.resume();
     } else {
       setMMKVObject(
         this.STORE_KEY,
-        taskList.filter(t => t.task.name !== name),
+        taskList.filter(t => t.task?.name !== name),
       );
     }
   }
