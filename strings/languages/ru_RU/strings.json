@@ -371,7 +371,7 @@
     "chapters": "главы",
     "continueReading": "Продолжить чтение",
     "exportEpubModal": {
-      "applyReaderTheme": "Apply reader theme to EPUB",
+      "applyReaderTheme": "Применить тему чтения к EPUB",
       "customJSWarning": "Пользовательский JS может поддерживаться не всеми программами чтения EPUB",
       "downloadedChaptersOnly": "Только загруженные главы будут включены в EPUB файл",
       "endChapter": "End Chapter",
@@ -546,7 +546,7 @@
     "complete": "Готово"
   },
   "notifications": {
-    "IMPORT_EPUB": "Importing EPUB",
+    "IMPORT_EPUB": "Импортирование EPUB",
     "UPDATE_LIBRARY": "Обновляем библиотеку",
     "DRIVE_BACKUP": "Резервное копирование на Google Диск",
     "DRIVE_RESTORE": "Восстановление Google Drive",
