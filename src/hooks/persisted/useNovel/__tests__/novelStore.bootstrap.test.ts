@@ -1,6 +1,7 @@
 import { NovelInfo } from '@database/types';
 import { getString } from '@i18n/translations';
 import { createNovelStoreActions } from '../store/novelStore.actions';
+import { createNovelSlice } from '../store/novelStore';
 
 interface BootstrapServiceSlice {
   bootstrapNovelAsync: jest.Mock;
@@ -86,6 +87,21 @@ const createHarness = (overrides: Partial<TestState> = {}) => {
 describe('novelStore.bootstrap', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('starts in a loading state until the initial bootstrap completes', () => {
+    const state = createNovelSlice({
+      pluginId: 'plugin.test',
+      novelPath: '/x',
+      initialNovelSettings: {
+        sort: 'positionAsc',
+        filter: [],
+        showChapterTitles: true,
+      },
+    });
+
+    expect(state.loading).toBe(true);
+    expect(state.fetching).toBe(true);
   });
 
   it('maps a missing novel to the not-found error', async () => {
