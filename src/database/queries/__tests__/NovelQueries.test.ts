@@ -14,6 +14,7 @@ import {
 } from './testData';
 import {
   categorySchema,
+  chapterSchema,
   novelCategorySchema,
   novelSchema,
 } from '@database/schema';
@@ -34,6 +35,7 @@ import {
   pickCustomNovelCover,
   updateNovelCategoryById,
   updateNovelCategories,
+  _restoreNovelAndChapters,
 } from '../NovelQueries';
 
 const mockGetLibraryDefaultCategoryId = jest.fn<number | undefined, []>();
@@ -392,6 +394,73 @@ describe('NovelQueries', () => {
 
       const restored = await getNovelByPath('/test/novel', 'test-plugin');
       expect(restored?.name).toBe('Restored Novel');
+    });
+  });
+
+  describe('_restoreNovelAndChapters', () => {
+    it('does not replace an unrelated novel when backup IDs collide', async () => {
+      const testDb = getTestDb();
+      await insertTestNovel(testDb, {
+        path: '/existing/novel',
+        pluginId: 'existing-plugin',
+        name: 'Existing Novel',
+        inLibrary: true,
+      });
+
+      const mapping = await _restoreNovelAndChapters({
+        id: 1,
+        path: '/restored/novel',
+        pluginId: 'restored-plugin',
+        name: 'Restored Novel',
+        cover: null,
+        summary: null,
+        author: null,
+        artist: null,
+        status: 'Ongoing',
+        genres: null,
+        inLibrary: true,
+        isLocal: false,
+        totalPages: 0,
+        chapters: [
+          {
+            id: 10,
+            novelId: 1,
+            path: '/restored/chapter-1',
+            name: 'Chapter 1',
+            releaseTime: null,
+            readTime: null,
+            bookmark: false,
+            unread: true,
+            isDownloaded: true,
+            updatedTime: null,
+            chapterNumber: 1,
+            page: '1',
+            progress: null,
+            position: 0,
+            scanlator: null,
+            timeSpent: 0,
+          },
+        ],
+      });
+
+      expect(mapping.restoredNovelId).not.toBe(1);
+      expect(
+        (await getNovelByPath('/existing/novel', 'existing-plugin'))?.name,
+      ).toBe('Existing Novel');
+      expect(
+        (await getNovelByPath('/restored/novel', 'restored-plugin'))?.id,
+      ).toBe(mapping.restoredNovelId);
+      const restoredChapters = await testDb.drizzleDb
+        .select()
+        .from(chapterSchema)
+        .where(eq(chapterSchema.novelId, mapping.restoredNovelId))
+        .all();
+      expect(mapping.chapters).toEqual([
+        {
+          backupChapterId: 10,
+          restoredChapterId: restoredChapters[0].id,
+        },
+      ]);
     });
   });
 

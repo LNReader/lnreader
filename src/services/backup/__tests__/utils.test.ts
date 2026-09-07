@@ -58,6 +58,7 @@ jest.mock('@plugins/pluginManager', () => ({
 }));
 
 jest.mock('@utils/Storages', () => ({
+  NOVEL_STORAGE: '/storage/Novels',
   ROOT_STORAGE: '/storage',
 }));
 
@@ -78,6 +79,15 @@ describe('selective backup data', () => {
     jest.mocked(getAllNovelChaptersForBackup).mockResolvedValue([]);
     jest.mocked(getCategoriesFromDb).mockResolvedValue([]);
     jest.mocked(getAllNovelCategories).mockResolvedValue([]);
+    jest.mocked(_restoreNovelAndChapters).mockImplementation(async novel => ({
+      pluginId: novel.pluginId,
+      backupNovelId: novel.id,
+      restoredNovelId: novel.id,
+      chapters: novel.chapters.map(chapter => ({
+        backupChapterId: chapter.id,
+        restoredChapterId: chapter.id,
+      })),
+    }));
   });
 
   it('writes the selected sections to the v2 manifest', async () => {
@@ -128,6 +138,86 @@ describe('selective backup data', () => {
     expect(_restoreNovelAndChapters).not.toHaveBeenCalled();
     expect(_restoreCategory).not.toHaveBeenCalled();
     expect(MMKVStorage.set).toHaveBeenCalledWith('INSTALL_PLUGINS', '[]');
+  });
+
+  it('merges restored plugins with the existing registry', async () => {
+    const options: BackupOptions = {
+      library: false,
+      settings: true,
+      plugins: true,
+      downloadedFiles: false,
+    };
+    jest
+      .mocked(NativeFile.exists)
+      .mockImplementation(
+        async path =>
+          path.endsWith('/Version.json') ||
+          path.endsWith('/Setting.json') ||
+          path.endsWith('/Plugins.json'),
+      );
+    jest.mocked(NativeFile.readFile).mockImplementation(async path => {
+      if (path.endsWith('/Version.json')) {
+        return JSON.stringify({
+          appVersion: '2.1.0',
+          formatVersion: 2,
+          sections: options,
+        });
+      }
+      if (path.endsWith('/Setting.json')) {
+        return JSON.stringify({
+          INSTALL_PLUGINS: JSON.stringify([
+            { id: 'restored', name: 'Restored' },
+          ]),
+          THEME: 'dark',
+        });
+      }
+      return JSON.stringify([{ id: 'restored', name: 'Restored' }]);
+    });
+    jest
+      .mocked(MMKVStorage.getString)
+      .mockReturnValueOnce(
+        JSON.stringify([{ id: 'existing', name: 'Existing' }]),
+      );
+
+    await restoreData('/cache');
+
+    expect(MMKVStorage.set).toHaveBeenCalledWith('THEME', 'dark');
+    expect(MMKVStorage.set).toHaveBeenCalledWith(
+      'INSTALL_PLUGINS',
+      JSON.stringify([
+        { id: 'existing', name: 'Existing' },
+        { id: 'restored', name: 'Restored' },
+      ]),
+    );
+  });
+
+  it('merges the plugin registry from legacy settings', async () => {
+    jest
+      .mocked(NativeFile.exists)
+      .mockImplementation(async path => path.endsWith('/Setting.json'));
+    jest.mocked(NativeFile.readFile).mockImplementation(async path => {
+      if (path.endsWith('/Version.json')) {
+        return JSON.stringify({ version: '2.0.0' });
+      }
+      return JSON.stringify({
+        INSTALL_PLUGINS: JSON.stringify([{ id: 'legacy', name: 'Legacy' }]),
+      });
+    });
+    jest
+      .mocked(MMKVStorage.getString)
+      .mockReturnValueOnce(
+        JSON.stringify([{ id: 'existing', name: 'Existing' }]),
+      );
+
+    await restoreData('/cache');
+
+    expect(MMKVStorage.set).toHaveBeenCalledWith(
+      'INSTALL_PLUGINS',
+      JSON.stringify([
+        { id: 'existing', name: 'Existing' },
+        { id: 'legacy', name: 'Legacy' },
+      ]),
+    );
   });
 
   it('includes stored covers with library data when downloads are omitted', async () => {

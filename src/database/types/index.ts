@@ -121,6 +121,16 @@ export interface BackupNovel extends NovelInfo {
   chapters: ChapterInfo[];
 }
 
+export interface RestoredNovelMapping {
+  pluginId: string;
+  backupNovelId: number;
+  restoredNovelId: number;
+  chapters: {
+    backupChapterId: number;
+    restoredChapterId: number;
+  }[];
+}
+
 export interface BackupCategory extends Category {
   novelIds: number[];
 }

@@ -13,13 +13,17 @@ import {
   getAllNovelCategories,
   getCategoriesFromDb,
 } from '@database/queries/CategoryQueries';
-import { BackupCategory, BackupNovel } from '@database/types';
+import {
+  BackupCategory,
+  BackupNovel,
+  type RestoredNovelMapping,
+} from '@database/types';
 import {
   BackupEntryName,
   type BackupManifest,
   type ResolvedBackupManifest,
 } from './types';
-import { ROOT_STORAGE } from '@utils/Storages';
+import { NOVEL_STORAGE, ROOT_STORAGE } from '@utils/Storages';
 import { BACKGROUND_TASKS_STORE_KEY } from '@services/backgroundTasks/constants';
 import type { TaskProgressUpdater } from '@services/backgroundTasks/contracts';
 import NativeFile from '@modules/native-file';
@@ -32,6 +36,7 @@ import {
   type BackupOptions,
 } from './options';
 import { INSTALLED_PLUGINS_KEY } from '@plugins/pluginManager';
+import type { PluginItem } from '@plugins/types';
 
 const APP_STORAGE_URI = 'file://' + ROOT_STORAGE;
 
@@ -39,6 +44,14 @@ const stripUriSuffix = (uri: string) => uri.split(/[?#]/, 1)[0];
 
 const parentDirectory = (path: string) =>
   path.slice(0, Math.max(0, path.lastIndexOf('/')));
+
+const parsePluginList = (value: unknown): PluginItem[] => {
+  const parsed = typeof value === 'string' ? JSON.parse(value) : value;
+  if (!Array.isArray(parsed)) {
+    throw new Error('Invalid installed plugin registry');
+  }
+  return parsed as PluginItem[];
+};
 
 export const CACHE_DIR_PATH =
   NativeFile.ExternalCachesDirectoryPath + '/BackupData';
@@ -49,13 +62,13 @@ export const clearBackupCache = async (cacheDirPath = CACHE_DIR_PATH) => {
   }
 };
 
-const backupMMKVData = (options: BackupOptions) => {
+const backupMMKVData = () => {
   const excludeKeys = [
     BACKGROUND_TASKS_STORE_KEY,
     OLD_TRACKED_NOVEL_PREFIX,
     SELF_HOST_BACKUP,
     LAST_UPDATE_TIME,
-    ...(options.plugins ? [] : [INSTALLED_PLUGINS_KEY]),
+    INSTALLED_PLUGINS_KEY,
   ];
   const keys = MMKVStorage.getAllKeys().filter(
     key => !excludeKeys.includes(key),
@@ -173,7 +186,7 @@ export const prepareBackupData = async (
     try {
       await NativeFile.writeFile(
         cacheDirPath + '/' + BackupEntryName.SETTING,
-        JSON.stringify(backupMMKVData(options)),
+        JSON.stringify(backupMMKVData()),
       );
     } catch {
       failedSectionCount++;
@@ -247,6 +260,18 @@ export const restoreData = async (
   const novelDirPath = cacheDirPath + '/' + BackupEntryName.NOVEL_AND_CHAPTERS;
   const coversDirPath = cacheDirPath + '/' + BackupEntryName.COVERS;
   const pluginIds = new Set<string>();
+  const novelIdMap = new Map<number, number>();
+  const novelMappings: RestoredNovelMapping[] = [];
+  const installedPluginsBeforeRestore = (() => {
+    try {
+      return parsePluginList(
+        MMKVStorage.getString(INSTALLED_PLUGINS_KEY) ?? '[]',
+      );
+    } catch {
+      return [];
+    }
+  })();
+  let pluginsFromSettings: PluginItem[] = [];
 
   // version
   // nothing to do
@@ -281,18 +306,24 @@ export const restoreData = async (
           const backupNovel = JSON.parse(fileContent) as BackupNovel;
           pluginIds.add(backupNovel.pluginId);
 
-          if (backupNovel.cover && !backupNovel.cover.startsWith('http')) {
-            const coverBackupPath = coversDirPath + '/' + backupNovel.id;
-            if (await NativeFile.exists(coverBackupPath)) {
-              const coverPath =
-                ROOT_STORAGE + stripUriSuffix(backupNovel.cover);
-              await NativeFile.mkdir(parentDirectory(coverPath));
-              await NativeFile.copyFile(coverBackupPath, coverPath);
-            }
+          const hasStoredCover =
+            backupNovel.cover && !backupNovel.cover.startsWith('http');
+          if (hasStoredCover) {
             backupNovel.cover = APP_STORAGE_URI + backupNovel.cover;
           }
 
-          await _restoreNovelAndChapters(backupNovel);
+          const novelMapping = await _restoreNovelAndChapters(backupNovel);
+          novelMappings.push(novelMapping);
+          novelIdMap.set(backupNovel.id, novelMapping.restoredNovelId);
+
+          if (hasStoredCover) {
+            const coverBackupPath = coversDirPath + '/' + backupNovel.id;
+            if (await NativeFile.exists(coverBackupPath)) {
+              const coverPath = `${NOVEL_STORAGE}/${backupNovel.pluginId}/${novelMapping.restoredNovelId}/cover.png`;
+              await NativeFile.mkdir(parentDirectory(coverPath));
+              await NativeFile.copyFile(coverBackupPath, coverPath);
+            }
+          }
           novelCount++;
         } catch {
           failedCount++;
@@ -332,7 +363,15 @@ export const restoreData = async (
           }),
         );
         try {
-          await _restoreCategory(category);
+          await _restoreCategory(
+            {
+              ...category,
+              novelIds: category.novelIds.filter(novelId =>
+                novelIdMap.has(novelId),
+              ),
+            },
+            novelIdMap,
+          );
           categoryCount++;
         } catch {
           failedCategoryCount++;
@@ -358,6 +397,12 @@ export const restoreData = async (
     try {
       const fileContent = await NativeFile.readFile(settingsFilePath);
       const settingsData = JSON.parse(fileContent);
+      if (INSTALLED_PLUGINS_KEY in settingsData) {
+        pluginsFromSettings = parsePluginList(
+          settingsData[INSTALLED_PLUGINS_KEY],
+        );
+        delete settingsData[INSTALLED_PLUGINS_KEY];
+      }
       restoreMMKVData(settingsData);
       settingsRestored = true;
     } catch {
@@ -366,20 +411,32 @@ export const restoreData = async (
   }
 
   // installed plugin registry
-  if (manifest.formatVersion === 2 && manifest.sections.plugins) {
-    const pluginMetadataPath =
-      cacheDirPath + '/' + BackupEntryName.PLUGIN_METADATA;
-    if (!(await NativeFile.exists(pluginMetadataPath))) {
-      failedSectionCount++;
-    } else {
-      try {
-        const installedPlugins = await NativeFile.readFile(pluginMetadataPath);
-        JSON.parse(installedPlugins);
-        MMKVStorage.set(INSTALLED_PLUGINS_KEY, installedPlugins);
-      } catch {
+  if (manifest.sections.plugins) {
+    let restoredPlugins = pluginsFromSettings;
+    if (manifest.formatVersion === 2) {
+      const pluginMetadataPath =
+        cacheDirPath + '/' + BackupEntryName.PLUGIN_METADATA;
+      if (!(await NativeFile.exists(pluginMetadataPath))) {
         failedSectionCount++;
+      } else {
+        try {
+          restoredPlugins = parsePluginList(
+            await NativeFile.readFile(pluginMetadataPath),
+          );
+        } catch {
+          failedSectionCount++;
+        }
       }
     }
+    const mergedPlugins = [
+      ...new Map(
+        [...installedPluginsBeforeRestore, ...restoredPlugins].map(plugin => [
+          plugin.id,
+          plugin,
+        ]),
+      ).values(),
+    ];
+    MMKVStorage.set(INSTALLED_PLUGINS_KEY, JSON.stringify(mergedPlugins));
   }
 
   return {
@@ -390,6 +447,7 @@ export const restoreData = async (
     settingsRestored,
     failedSectionCount,
     pluginIds: [...pluginIds],
+    novelMappings,
     manifest,
   };
 };

@@ -8,6 +8,7 @@ import {
   novelCategorySchema,
   type CategoryRow,
 } from '@database/schema';
+import { BUILT_IN_CATEGORY_IDS } from '@database/constants';
 
 /**
  * Get all categories with their novel IDs using Drizzle ORM
@@ -209,39 +210,54 @@ export const getAllNovelCategories = async (): Promise<NovelCategory[]> => {
  */
 export const _restoreCategory = async (
   category: BackupCategory,
-): Promise<void> => {
-  await dbManager.write(async tx => {
-    // Delete existing category with same id or sort
-    await tx
-      .delete(categorySchema)
-      .where(
-        sql`${categorySchema.id} = ${category.id} OR ${categorySchema.sort} = ${category.sort}`,
-      )
-      .run();
+  novelIdMap?: ReadonlyMap<number, number>,
+): Promise<number> => {
+  return dbManager.write(async tx => {
+    const existingByName = await tx
+      .select({ id: categorySchema.id })
+      .from(categorySchema)
+      .where(eq(categorySchema.name, category.name))
+      .get();
+    const isBuiltInCategory = new Set<number>(
+      Object.values(BUILT_IN_CATEGORY_IDS),
+    ).has(category.id);
+    const existingBuiltIn =
+      existingByName || !isBuiltInCategory
+        ? undefined
+        : await tx
+            .select({ id: categorySchema.id })
+            .from(categorySchema)
+            .where(eq(categorySchema.id, category.id))
+            .get();
 
-    // Insert the category
-    await tx
-      .insert(categorySchema)
-      .values({
-        id: category.id,
-        name: category.name,
-        sort: category.sort,
-      })
-      .onConflictDoNothing()
-      .run();
+    let categoryId = existingByName?.id ?? existingBuiltIn?.id;
+    if (!categoryId) {
+      const restoredCategory = await tx
+        .insert(categorySchema)
+        .values({
+          name: category.name,
+          sort: category.sort,
+        })
+        .returning({ id: categorySchema.id })
+        .get();
+      categoryId = restoredCategory.id;
+    }
 
     // Insert novel-category associations
     if (category.novelIds && category.novelIds.length > 0) {
-      for (const novelId of category.novelIds) {
+      for (const backupNovelId of category.novelIds) {
+        const novelId = novelIdMap?.get(backupNovelId) ?? backupNovelId;
         await tx
           .insert(novelCategorySchema)
           .values({
-            categoryId: category.id,
+            categoryId,
             novelId: novelId,
           })
           .onConflictDoNothing()
           .run();
       }
     }
+
+    return categoryId;
   });
 };

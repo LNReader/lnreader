@@ -6,6 +6,7 @@ import {
 } from '@plugins/pluginManager';
 import { PLUGIN_STORAGE } from '@utils/Storages';
 import type { ResolvedBackupManifest } from './types';
+import type { RestoredNovelMapping } from '@database/types';
 
 export type RestoreResult = {
   novelCount: number;
@@ -15,6 +16,7 @@ export type RestoreResult = {
   settingsRestored: boolean;
   failedSectionCount: number;
   pluginIds: string[];
+  novelMappings: RestoredNovelMapping[];
   manifest: ResolvedBackupManifest;
 };
 

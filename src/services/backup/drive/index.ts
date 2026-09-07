@@ -15,12 +15,17 @@ import {
 import { getBackupCompletionText } from '../backupResult';
 import { download, updateMetadata, uploadMedia } from '@api/drive/request';
 import { ZipBackupName } from '../types';
-import { ROOT_STORAGE } from '@utils/Storages';
 import type {
   DriveBackupData,
   TaskProgressUpdater,
 } from '@services/backgroundTasks/contracts';
-import { getSelectedBackupFileSections } from '../fileSections';
+import {
+  getLegacyFilesRestorePath,
+  getNovelFilesRestorePath,
+  getSelectedBackupFileSections,
+  restoreLegacyFiles,
+  restoreNovelFiles,
+} from '../fileSections';
 import { resolveBackupOptions } from '../options';
 
 const uploadBackupSection = async (
@@ -134,8 +139,14 @@ export const driveRestore = async (
     if (!legacyFile) {
       throw new Error(getString('backupScreen.invalidBackupFolder'));
     }
-    await download(legacyFile, ROOT_STORAGE);
+    const legacyFilesRestorePath = getLegacyFilesRestorePath(CACHE_DIR_PATH);
+    await download(legacyFile, legacyFilesRestorePath);
+    await restoreLegacyFiles(
+      legacyFilesRestorePath,
+      restoreResult.novelMappings,
+    );
   } else {
+    const novelFilesRestorePath = getNovelFilesRestorePath(CACHE_DIR_PATH);
     for (const section of getSelectedBackupFileSections(
       restoreResult.manifest.sections,
     )) {
@@ -143,7 +154,18 @@ export const driveRestore = async (
       if (!file) {
         throw new Error(getString('backupScreen.invalidBackupFolder'));
       }
-      await download(file, section.storagePath);
+      await download(
+        file,
+        section.archiveName === ZipBackupName.NOVEL_FILES
+          ? novelFilesRestorePath
+          : section.storagePath,
+      );
+    }
+    if (restoreResult.manifest.sections.downloadedFiles) {
+      await restoreNovelFiles(
+        novelFilesRestorePath,
+        restoreResult.novelMappings,
+      );
     }
   }
   const missingPluginIds = await finalizeRestoredPlugins(restoreResult);

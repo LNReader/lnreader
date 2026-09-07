@@ -6,7 +6,12 @@ import { insertChapters } from './ChapterQueries';
 
 import { showToast } from '@utils/showToast';
 import { getString } from '@i18n/translations';
-import { BackupNovel, DBNovelInfo, NovelInfo } from '../types';
+import {
+  BackupNovel,
+  DBNovelInfo,
+  NovelInfo,
+  type RestoredNovelMapping,
+} from '../types';
 import { SourceNovel } from '@plugins/types';
 import { NOVEL_STORAGE } from '@utils/Storages';
 import { downloadFile } from '@plugins/helpers/fetch';
@@ -440,18 +445,13 @@ export const updateNovelCategories = async (
 /**
  * Restores novel and chapters from a backup object.
  */
-export const _restoreNovelAndChapters = async (backupNovel: BackupNovel) => {
-  const { chapters, ...novel } = backupNovel;
-  await dbManager.write(async tx => {
-    // Delete existing novel data
-    await tx.delete(novelSchema).where(eq(novelSchema.id, novel.id)).run();
-    await tx
-      .delete(chapterSchema)
-      .where(eq(chapterSchema.novelId, novel.id))
-      .run();
-
-    // Restore novel
-    await tx
+export const _restoreNovelAndChapters = async (
+  backupNovel: BackupNovel,
+): Promise<RestoredNovelMapping> => {
+  const { chapters, id: backupNovelId, ...novel } = backupNovel;
+  return dbManager.write(async tx => {
+    // Match novels by their stable source identity, not the database-local ID.
+    const restoredNovel = await tx
       .insert(novelSchema)
       .values({
         ...novel,
@@ -459,15 +459,71 @@ export const _restoreNovelAndChapters = async (backupNovel: BackupNovel) => {
         chaptersDownloaded: 0,
         chaptersUnread: 0,
       })
+      .onConflictDoUpdate({
+        target: [novelSchema.path, novelSchema.pluginId],
+        set: {
+          ...novel,
+          totalChapters: 0,
+          chaptersDownloaded: 0,
+          chaptersUnread: 0,
+        },
+      })
+      .returning({ id: novelSchema.id })
+      .get();
+
+    if (novel.cover?.startsWith(`file://${NOVEL_STORAGE}/`)) {
+      const cacheSuffix = novel.cover.match(/[?#].*$/)?.[0] ?? '';
+      await tx
+        .update(novelSchema)
+        .set({
+          cover: `file://${NOVEL_STORAGE}/${novel.pluginId}/${restoredNovel.id}/cover.png${cacheSuffix}`,
+        })
+        .where(eq(novelSchema.id, restoredNovel.id))
+        .run();
+    }
+
+    await tx
+      .delete(chapterSchema)
+      .where(eq(chapterSchema.novelId, restoredNovel.id))
       .run();
+
+    const chapterMappings: RestoredNovelMapping['chapters'] = [];
 
     // Restore chapters in batches
     if (chapters.length > 0) {
       const BATCH_SIZE = 100;
       for (let i = 0; i < chapters.length; i += BATCH_SIZE) {
         const batch = chapters.slice(i, i + BATCH_SIZE);
-        await tx.insert(chapterSchema).values(batch).run();
+        const restoredChapters = await tx
+          .insert(chapterSchema)
+          .values(
+            batch.map(({ id: _chapterId, novelId: _novelId, ...chapter }) => ({
+              ...chapter,
+              novelId: restoredNovel.id,
+            })),
+          )
+          .returning({ id: chapterSchema.id, path: chapterSchema.path })
+          .all();
+        const restoredIdsByPath = new Map(
+          restoredChapters.map(chapter => [chapter.path, chapter.id]),
+        );
+        for (const chapter of batch) {
+          const restoredChapterId = restoredIdsByPath.get(chapter.path);
+          if (restoredChapterId !== undefined) {
+            chapterMappings.push({
+              backupChapterId: chapter.id,
+              restoredChapterId,
+            });
+          }
+        }
       }
     }
+
+    return {
+      pluginId: novel.pluginId,
+      backupNovelId,
+      restoredNovelId: restoredNovel.id,
+      chapters: chapterMappings,
+    };
   });
 };

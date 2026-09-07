@@ -24,6 +24,7 @@ import {
   deleteCategoryById,
   updateCategoryOrderInDb,
   getAllNovelCategories,
+  _restoreCategory,
 } from '../CategoryQueries';
 import { showToast } from '@utils/showToast';
 
@@ -53,6 +54,56 @@ describe('CategoryQueries', () => {
       const testCat = result.find(c => c.id === categoryId);
       expect(testCat).toBeDefined();
       expect(testCat?.novelIds).toBe(String(novelId));
+    });
+  });
+
+  describe('_restoreCategory', () => {
+    it('preserves existing memberships while adding restored memberships', async () => {
+      const testDb = getTestDb();
+      const existingNovelId = await insertTestNovel(testDb, {
+        inLibrary: true,
+      });
+      const restoredNovelId = await insertTestNovel(testDb, {
+        inLibrary: true,
+      });
+      await insertTestNovelCategory(testDb, existingNovelId, 1);
+
+      await _restoreCategory({
+        id: 1,
+        name: 'Default',
+        sort: 1,
+        novelIds: [restoredNovelId],
+      });
+
+      const memberships = await getAllNovelCategories();
+      expect(
+        memberships
+          .filter(membership => membership.categoryId === 1)
+          .map(membership => membership.novelId),
+      ).toEqual(expect.arrayContaining([existingNovelId, restoredNovelId]));
+    });
+
+    it('does not overwrite a custom category with a colliding backup ID', async () => {
+      const testDb = getTestDb();
+      const existingCategoryId = await insertTestCategory(testDb, {
+        name: 'Existing Category',
+      });
+
+      const restoredCategoryId = await _restoreCategory({
+        id: existingCategoryId,
+        name: 'Restored Category',
+        sort: 3,
+        novelIds: [],
+      });
+
+      expect(restoredCategoryId).not.toBe(existingCategoryId);
+      const categories = await getCategoriesFromDb();
+      expect(
+        categories.find(category => category.id === existingCategoryId)?.name,
+      ).toBe('Existing Category');
+      expect(
+        categories.find(category => category.id === restoredCategoryId)?.name,
+      ).toBe('Restored Category');
     });
   });
 

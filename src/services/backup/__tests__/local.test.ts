@@ -82,6 +82,7 @@ describe('local selective backup', () => {
       settingsRestored: true,
       failedSectionCount: 0,
       pluginIds: ['restored'],
+      novelMappings: [],
       manifest: {
         appVersion: '2.1.0',
         formatVersion: 2 as const,

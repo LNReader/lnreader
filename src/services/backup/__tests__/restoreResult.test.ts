@@ -64,6 +64,7 @@ const successfulResult: RestoreResult = {
   settingsRestored: true,
   failedSectionCount: 0,
   pluginIds: ['installed'],
+  novelMappings: [],
   manifest: {
     appVersion: '2.1.0',
     formatVersion: 2,

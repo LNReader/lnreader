@@ -10,13 +10,18 @@ import {
 } from '../restoreResult';
 import { getBackupCompletionText } from '../backupResult';
 import NativeZipArchive from '@modules/native-zip-archive';
-import { ROOT_STORAGE } from '@utils/Storages';
 import { ZipBackupName } from '../types';
 import NativeFile from '@modules/native-file';
 import { getString } from '@i18n/translations';
 import type { TaskProgressUpdater } from '@services/backgroundTasks/contracts';
 import { sleep } from '@utils/sleep';
-import { getSelectedBackupFileSections } from '../fileSections';
+import {
+  getLegacyFilesRestorePath,
+  getNovelFilesRestorePath,
+  getSelectedBackupFileSections,
+  restoreLegacyFiles,
+  restoreNovelFiles,
+} from '../fileSections';
 import { resolveBackupOptions, type BackupOptions } from '../options';
 
 export const createBackup = async (
@@ -136,8 +141,14 @@ export const restoreBackup = async (
       if (!(await NativeFile.exists(legacyArchive))) {
         throw new Error(getString('backupScreen.invalidBackupFolder'));
       }
-      await NativeZipArchive.unzip(legacyArchive, ROOT_STORAGE);
+      const legacyFilesRestorePath = getLegacyFilesRestorePath(CACHE_DIR_PATH);
+      await NativeZipArchive.unzip(legacyArchive, legacyFilesRestorePath);
+      await restoreLegacyFiles(
+        legacyFilesRestorePath,
+        restoreResult.novelMappings,
+      );
     } else {
+      const novelFilesRestorePath = getNovelFilesRestorePath(CACHE_DIR_PATH);
       for (const section of getSelectedBackupFileSections(
         restoreResult.manifest.sections,
       )) {
@@ -145,7 +156,18 @@ export const restoreBackup = async (
         if (!(await NativeFile.exists(archivePath))) {
           throw new Error(getString('backupScreen.invalidBackupFolder'));
         }
-        await NativeZipArchive.unzip(archivePath, section.storagePath);
+        await NativeZipArchive.unzip(
+          archivePath,
+          section.archiveName === ZipBackupName.NOVEL_FILES
+            ? novelFilesRestorePath
+            : section.storagePath,
+        );
+      }
+      if (restoreResult.manifest.sections.downloadedFiles) {
+        await restoreNovelFiles(
+          novelFilesRestorePath,
+          restoreResult.novelMappings,
+        );
       }
     }
     const missingPluginIds = await finalizeRestoredPlugins(restoreResult);

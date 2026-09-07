@@ -13,12 +13,17 @@ import {
 } from '../restoreResult';
 import { getBackupCompletionText } from '../backupResult';
 import { ZipBackupName } from '../types';
-import { ROOT_STORAGE } from '@utils/Storages';
 import type {
   SelfHostData,
   TaskProgressUpdater,
 } from '@services/backgroundTasks/contracts';
-import { getSelectedBackupFileSections } from '../fileSections';
+import {
+  getLegacyFilesRestorePath,
+  getNovelFilesRestorePath,
+  getSelectedBackupFileSections,
+  restoreLegacyFiles,
+  restoreNovelFiles,
+} from '../fileSections';
 import { resolveBackupOptions } from '../options';
 
 export const createSelfHostBackup = async (
@@ -100,8 +105,19 @@ export const selfHostRestore = async (
   await sleep(200);
 
   if (restoreResult.manifest.formatVersion === 1) {
-    await download(host, backupFolder, ZipBackupName.DOWNLOAD, ROOT_STORAGE);
+    const legacyFilesRestorePath = getLegacyFilesRestorePath(CACHE_DIR_PATH);
+    await download(
+      host,
+      backupFolder,
+      ZipBackupName.DOWNLOAD,
+      legacyFilesRestorePath,
+    );
+    await restoreLegacyFiles(
+      legacyFilesRestorePath,
+      restoreResult.novelMappings,
+    );
   } else {
+    const novelFilesRestorePath = getNovelFilesRestorePath(CACHE_DIR_PATH);
     for (const section of getSelectedBackupFileSections(
       restoreResult.manifest.sections,
     )) {
@@ -109,7 +125,15 @@ export const selfHostRestore = async (
         host,
         backupFolder,
         section.archiveName,
-        section.storagePath,
+        section.archiveName === ZipBackupName.NOVEL_FILES
+          ? novelFilesRestorePath
+          : section.storagePath,
+      );
+    }
+    if (restoreResult.manifest.sections.downloadedFiles) {
+      await restoreNovelFiles(
+        novelFilesRestorePath,
+        restoreResult.novelMappings,
       );
     }
   }
