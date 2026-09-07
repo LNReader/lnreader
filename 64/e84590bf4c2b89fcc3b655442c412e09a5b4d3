@@ -1,0 +1,103 @@
+src/services/backup/__tests__/utils.test.ts
+  s_edcc41295e9dcd::t_4bd0ea9eef0734 82-90
+  s_13fb36838bb585::t_7ada6c07e1125b 150-153,157,178-180
+  s_13fb36838bb585::t_0d164b67e94bd0 143-145,147-149,158-165,174-177,181-183,185-189,219-222
+  s_13fb36838bb585::t_feb70dc55ecab4 195-197
+  s_13fb36838bb585::t_a3fc003b5d008f 61,146,154-156,166-173,184,190-194,198-218
+src/database/queries/__tests__/CategoryQueries.test.ts
+  s_13fb36838bb585::t_18faa7a5da036d 84,108-109
+  s_13fb36838bb585::t_a3fc003b5d008f 85-100,107
+  s_13fb36838bb585::t_feb70dc55ecab4 101-106
+  s_13fb36838bb585::t_2fce8c39b84eb6 27,60-79,83
+  s_13fb36838bb585::t_3ac5cf86948642 80-82
+src/services/backup/restoreResult.ts
+  s_13fb36838bb585::t_ecf27a78bdbe5f 9,19
+src/database/queries/__tests__/NovelQueries.test.ts
+  s_13fb36838bb585::t_5200a75ea29b2f 17,424-443,453-463
+  s_13fb36838bb585::t_d2173d157c24cf 410,446,452
+  s_13fb36838bb585::t_1ac8dadfc224ea 464-466
+  s_13fb36838bb585::t_3ac5cf86948642 447-449
+  s_13fb36838bb585::t_2fce8c39b84eb6 38,400-409,411-423,444-445,450-451
+src/services/backup/drive/index.ts
+  s_13fb36838bb585::t_46801ed81aaa2b 22,24-25,27-28,149,157-168
+  s_13fb36838bb585::t_efd35f5a2567ea 23,26,142-147
+src/services/backup/__tests__/restoreResult.test.ts
+  s_13fb36838bb585::t_d2173d157c24cf 67
+src/services/backup/utils.ts
+  s_13fb36838bb585::t_5bad6db47e2c22 17-20,26,39,48-54,71,264-274,309-319,322,400-405,414-419,421-428,431-439,450
+  s_13fb36838bb585::t_0d705925fe09e1 263
+  s_13fb36838bb585::t_1e81df4433f56e 65,189
+  s_13fb36838bb585::t_a89a8daaa8746f 366-374
+  s_13fb36838bb585::t_3d787c6bf3a639 16
+  s_13fb36838bb585::t_20e5f86216eed0 55
+src/services/backup/__tests__/local.test.ts
+  s_13fb36838bb585::t_d2173d157c24cf 85
+src/services/backup/selfhost/index.ts
+  s_13fb36838bb585::t_efd35f5a2567ea 21,24,108-118
+  s_13fb36838bb585::t_46801ed81aaa2b 20,22-23,25-26,120,128-136
+src/database/types/index.ts
+  s_13fb36838bb585::t_ecf27a78bdbe5f 124-133
+src/services/backup/fileSections.ts
+  s_13fb36838bb585::t_8397a40c71019d 4-5,32-35,39-89,94,96,103-105
+  s_13fb36838bb585::t_efd35f5a2567ea 36-38,90-93,95,97-102,106
+src/services/backup/local/index.ts
+  s_13fb36838bb585::t_46801ed81aaa2b 18,20-21,23-24,151,159-170
+  s_13fb36838bb585::t_efd35f5a2567ea 19,22,144-149
+src/database/queries/NovelQueries.ts
+  s_13fb36838bb585::t_1e62b41f62b6b4 9-14,448-451,473-483,490-491,497,505-518,522-527
+  s_13fb36838bb585::t_d41a069ba4bb1f 452-454,462-472,484-487,498-504,521
+src/database/queries/CategoryQueries.ts
+  s_13fb36838bb585::t_d41a069ba4bb1f 213-215,217-218,220,235-244,248-249,253,260-261
+  s_13fb36838bb585::t_66eeab5ad8c730 11,216,219,224-226,233-234
+  s_13fb36838bb585::t_b15f02a05ee7ad 221-223
+  s_edcc41295e9dcd::t_4bd0ea9eef0734 227-231
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "64e84590bf4c2b89fcc3b655442c412e09a5b4d3",
+  "prompts": {
+    "13fb36838bb585ec": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06f91-07b8-78a3-b3a8-e40ff568fddb",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Rajarshee Chatterjee <rajarshee.adm@gmail.com>",
+      "total_additions": 138,
+      "total_deletions": 53,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "2de021e7c8a0402b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a07c60-b80e-7a62-85e7-238964d6be81",
+        "model": "unknown"
+      },
+      "human_author": "Rajarshee Chatterjee <rajarshee.adm@gmail.com>",
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  },
+  "sessions": {
+    "s_13fb36838bb585": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06f91-07b8-78a3-b3a8-e40ff568fddb",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Rajarshee Chatterjee <rajarshee.adm@gmail.com>"
+    },
+    "s_edcc41295e9dcd": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a07c60-036e-7760-a899-5fb7b471b3f1",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Rajarshee Chatterjee <rajarshee.adm@gmail.com>"
+    }
+  }
+}
