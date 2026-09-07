@@ -1,0 +1,23 @@
+src/hooks/persisted/useNovel/__tests__/novelStore.bootstrap.test.ts
+  s_80dfd51b02ba9a::t_dd0c0736b55847 96-100
+  s_80dfd51b02ba9a::t_8f0a6e27c9a07f 4,92-95,101-104
+  s_80dfd51b02ba9a::t_40d5ecada9b3ed 105-106
+src/hooks/persisted/useNovel/store/novelStore.ts
+  s_80dfd51b02ba9a::t_8f0a6e27c9a07f 24-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "9bde3df74df36eb16d72b858bcfcde449404caf2",
+  "prompts": {},
+  "sessions": {
+    "s_80dfd51b02ba9a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a07c71-abbc-74a0-8763-d2d59fafbbb7",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Rajarshee Chatterjee <rajarshee.adm@gmail.com>"
+    }
+  }
+}
