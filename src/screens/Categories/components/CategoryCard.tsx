@@ -67,7 +67,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
                 },
               ]}
               onPress={showCategoryModal}
-              disabled={category.id === 2}
+              disabled={category.id <= 2}
               numberOfLines={1}
             >
               {category.name}

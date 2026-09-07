@@ -64,14 +64,16 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
           {getString('common.cancel')}
         </Dialog.Action>
         <Dialog.Action
+          disabled={!categoryName.trim()}
           onPress={async () => {
-            if (isCategoryNameDuplicate(categoryName)) {
+            const normalizedName = categoryName.trim();
+            if (isCategoryNameDuplicate(normalizedName)) {
               showToast(getString('categories.duplicateError'));
             } else {
               if (isEditMode && category) {
-                updateCategory(category?.id, categoryName);
+                await updateCategory(category.id, normalizedName);
               } else {
-                await createCategory(categoryName);
+                await createCategory(normalizedName);
               }
               finalize();
             }

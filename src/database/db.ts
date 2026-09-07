@@ -8,7 +8,10 @@ import { migrate } from 'drizzle-orm/op-sqlite/migrator';
 import migrations from '../../drizzle/migrations';
 import { createDbManager } from './manager/manager';
 import { open } from '@op-engineering/op-sqlite';
-import { createCategoryDefaultQuery } from './queryStrings/populate';
+import {
+  createCategoryDefaultQuery,
+  repairDefaultCategoryNameQuery,
+} from './queryStrings/populate';
 import {
   createCategoryTriggerQuery,
   createNovelTriggerQueryDelete,
@@ -332,6 +335,7 @@ const setPragmas = (executor: SqlExecutor) => {
 const populateDatabase = (executor: SqlExecutor) => {
   console.log('Populating database');
   executor.executeSync(createCategoryDefaultQuery);
+  executor.executeSync(repairDefaultCategoryNameQuery);
 };
 
 const createDbTriggers = (executor: SqlExecutor) => {

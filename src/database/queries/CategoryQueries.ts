@@ -10,6 +10,16 @@ import {
 } from '@database/schema';
 import { BUILT_IN_CATEGORY_IDS } from '@database/constants';
 
+const DEFAULT_CATEGORY_ID = BUILT_IN_CATEGORY_IDS.default;
+
+const normalizeCategoryName = (categoryName: string): string => {
+  const normalizedName = categoryName.trim();
+  if (!normalizedName) {
+    throw new Error('Category name cannot be empty');
+  }
+  return normalizedName;
+};
+
 /**
  * Get all categories with their novel IDs using Drizzle ORM
  */
@@ -91,11 +101,13 @@ export const getCategoriesWithCount = async (
 export const createCategory = async (
   categoryName: string,
 ): Promise<CategoryRow> => {
+  const normalizedName = normalizeCategoryName(categoryName);
+
   return await dbManager.write(async tx => {
     const categoryCount = await tx.$count(categorySchema);
     const row = await tx
       .insert(categorySchema)
-      .values({ name: categoryName, sort: categoryCount + 1 })
+      .values({ name: normalizedName, sort: categoryCount + 1 })
       .returning()
       .get();
     return row;
@@ -153,10 +165,16 @@ export const updateCategory = async (
   categoryId: number,
   categoryName: string,
 ): Promise<void> => {
+  if (categoryId === DEFAULT_CATEGORY_ID) {
+    return;
+  }
+
+  const normalizedName = normalizeCategoryName(categoryName);
+
   await dbManager.write(async tx => {
     await tx
       .update(categorySchema)
-      .set({ name: categoryName })
+      .set({ name: normalizedName })
       .where(eq(categorySchema.id, categoryId))
       .run();
   });
@@ -166,11 +184,16 @@ export const updateCategory = async (
  * Check if a category name already exists using Drizzle ORM
  */
 export const isCategoryNameDuplicate = (categoryName: string): boolean => {
+  const normalizedName = categoryName.trim();
+  if (!normalizedName) {
+    return false;
+  }
+
   const result = dbManager.getSync(
     dbManager
       .select({ id: categorySchema.id })
       .from(categorySchema)
-      .where(eq(categorySchema.name, categoryName)),
+      .where(eq(categorySchema.name, normalizedName)),
   );
 
   return !!result;
@@ -213,29 +236,32 @@ export const _restoreCategory = async (
   novelIdMap?: ReadonlyMap<number, number>,
 ): Promise<number> => {
   return dbManager.write(async tx => {
-    const existingByName = await tx
-      .select({ id: categorySchema.id })
-      .from(categorySchema)
-      .where(eq(categorySchema.name, category.name))
-      .get();
-    const isBuiltInCategory = new Set<number>(
-      Object.values(BUILT_IN_CATEGORY_IDS),
-    ).has(category.id);
-    const existingBuiltIn =
-      existingByName || !isBuiltInCategory
+    const isDefaultCategory = category.id === DEFAULT_CATEGORY_ID;
+    const normalizedName = isDefaultCategory
+      ? undefined
+      : normalizeCategoryName(category.name);
+    const existingByName = normalizedName
+      ? await tx
+          .select({ id: categorySchema.id })
+          .from(categorySchema)
+          .where(eq(categorySchema.name, normalizedName))
+          .get()
+      : undefined;
+    const existingDefault =
+      existingByName || !isDefaultCategory
         ? undefined
         : await tx
             .select({ id: categorySchema.id })
             .from(categorySchema)
-            .where(eq(categorySchema.id, category.id))
+            .where(eq(categorySchema.id, DEFAULT_CATEGORY_ID))
             .get();
 
-    let categoryId = existingByName?.id ?? existingBuiltIn?.id;
+    let categoryId = existingByName?.id ?? existingDefault?.id;
     if (!categoryId) {
       const restoredCategory = await tx
         .insert(categorySchema)
         .values({
-          name: category.name,
+          name: normalizedName ?? getString('categories.default'),
           sort: category.sort,
         })
         .returning({ id: categorySchema.id })

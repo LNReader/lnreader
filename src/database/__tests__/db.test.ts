@@ -289,6 +289,27 @@ describe('runDatabaseBootstrap', () => {
       sqlite.close();
     }
   });
+
+  it('repairs only an empty default category name', () => {
+    const sqlite = open({ name: ':memory:' });
+    try {
+      createSchema(sqlite);
+      sqlite.executeSync(
+        "INSERT INTO Category (id, name, sort) VALUES (1, '   ', 1), (2, 'Legacy user category', 2)",
+      );
+
+      runDatabaseBootstrap(createExecutor(sqlite));
+
+      expect(
+        sqlite.executeSync('SELECT id, name FROM Category ORDER BY id').rows,
+      ).toEqual([
+        { id: 1, name: 'categories.default' },
+        { id: 2, name: 'Legacy user category' },
+      ]);
+    } finally {
+      sqlite.close();
+    }
+  });
 });
 
 describe('production migrations', () => {
