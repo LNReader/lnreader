@@ -1,0 +1,49 @@
+src/database/queries/__tests__/NovelQueries.test.ts
+  s_13fb36838bb585::t_3ac5cf86948642 427-429
+  s_13fb36838bb585::t_2fce8c39b84eb6 37,399-426,430-432
+  s_13fb36838bb585::t_1ac8dadfc224ea 433-435
+src/database/queries/NovelQueries.ts
+  s_13fb36838bb585::t_d41a069ba4bb1f 444-447,455-469,477-485,488-489
+src/services/backup/__tests__/utils.test.ts
+  s_13fb36838bb585::t_0d164b67e94bd0 133-139,146-157,161-172
+  s_13fb36838bb585::t_7ada6c07e1125b 140-145,158-160
+src/database/queries/CategoryQueries.ts
+  s_13fb36838bb585::t_d41a069ba4bb1f 212-226,228-246,250-251,255,262-263
+src/services/backup/utils.ts
+  s_13fb36838bb585::t_0d705925fe09e1 250
+  s_13fb36838bb585::t_a89a8daaa8746f 296-297,337-345,386-387,389-390,392-400
+  s_13fb36838bb585::t_f989df5aca6d0a 388,391
+src/database/queries/__tests__/CategoryQueries.test.ts
+  s_13fb36838bb585::t_3ac5cf86948642 80-82
+  s_13fb36838bb585::t_2fce8c39b84eb6 27,60-79,83
+  s_13fb36838bb585::t_18faa7a5da036d 84-86
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "fd09c4b7a9cd96cd4f5bbd52da4a4c847f3f6738",
+  "prompts": {
+    "516dbc56bae9d9ee": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06b0e-5c29-7293-9fca-7079986d9b37",
+        "model": "unknown"
+      },
+      "human_author": "Rajarshee Chatterjee <rajarshee.adm@gmail.com>",
+      "total_additions": 36,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  },
+  "sessions": {
+    "s_13fb36838bb585": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06f91-07b8-78a3-b3a8-e40ff568fddb",
+        "model": "gpt-5.6-luna"
+      },
+      "human_author": "Rajarshee Chatterjee <rajarshee.adm@gmail.com>"
+    }
+  }
+}
