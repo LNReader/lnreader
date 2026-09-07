@@ -1,0 +1,35 @@
+src/database/db.ts
+  s_d92071531586b0::t_524ccce7c0a2af 12-14,338
+  s_d92071531586b0::t_aa65ed30624c08 11
+src/database/__tests__/db.test.ts
+  s_d92071531586b0::t_524ccce7c0a2af 292-312
+src/database/queryStrings/populate.ts
+  s_d92071531586b0::t_524ccce7c0a2af 11-16
+src/database/queries/__tests__/CategoryQueries.test.ts
+  s_d92071531586b0::t_265a846ce8ce83 80,124,231
+  s_d92071531586b0::t_524ccce7c0a2af 61,73,78-79,81,112-123,125-140,158-169,202-210,214-230,232-233
+  s_d92071531586b0::t_c7272f66ef2d32 211-213
+src/screens/Categories/components/AddCategoryModal.tsx
+  s_d92071531586b0::t_524ccce7c0a2af 67,69-70,74,76
+src/database/queries/CategoryQueries.ts
+  s_d92071531586b0::t_524ccce7c0a2af 14-22,104-105,110,168-173,177,187-191,196,239-249,251,256,264
+  s_d92071531586b0::t_4b26371bab9fd5 13,250,259
+src/screens/Categories/components/CategoryCard.tsx
+  s_d92071531586b0::t_524ccce7c0a2af 70
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "edb3df719f1b0836c955d30c3033064e02530577",
+  "prompts": {},
+  "sessions": {
+    "s_d92071531586b0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a06b0e-5d3a-7080-81fa-ea4a6b4f3609",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Rajarshee Chatterjee <rajarshee.adm@gmail.com>"
+    }
+  }
+}
