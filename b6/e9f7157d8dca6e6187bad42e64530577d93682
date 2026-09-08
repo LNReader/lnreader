@@ -1,0 +1,19 @@
+.github/ISSUE_TEMPLATE/request_feature.yml
+  s_5abe60a73d09c4::t_6b5e9be93225c0 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "b6e9f7157d8dca6e6187bad42e64530577d93682",
+  "prompts": {},
+  "sessions": {
+    "s_5abe60a73d09c4": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a07c72-fea0-79e2-bd66-65f5f7cb6924",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Rajarshee Chatterjee <rajarshee.adm@gmail.com>"
+    }
+  }
+}
