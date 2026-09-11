@@ -91,12 +91,14 @@ class NativeBackgroundTasksModule : Module() {
 
         AsyncFunction("cancel") { taskId: String ->
             runBlocking(Dispatchers.IO) {
-                requireTask(taskId)
+                val task = requireTask(taskId)
+                val isRunning = task.state == BackgroundTaskState.RUNNING ||
+                    TaskExecutionRegistry.isActive(taskId)
                 dao.updateState(taskId, BackgroundTaskState.CANCELLED, System.currentTimeMillis())
-                if (TaskExecutionRegistry.isActive(taskId)) {
+                if (isRunning) {
                     emitInterruption(taskId, "cancel")
                 }
-                BackgroundTaskScheduler.cancel(appContext.reactContext!!, taskId)
+                BackgroundTaskScheduler.cancel(appContext.reactContext!!, taskId, isRunning)
                 dao.updateCheckpoint(taskId, null, System.currentTimeMillis())
                 TaskNotificationFactory.dismiss(appContext.reactContext!!, taskId)
             }

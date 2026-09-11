@@ -14,7 +14,7 @@ class TaskActionReceiver : BroadcastReceiver() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val dao = BackgroundTaskDatabase.get(context).tasks()
-                dao.get(taskId) ?: return@launch
+                val task = dao.get(taskId) ?: return@launch
                 when (intent.action) {
                     TaskNotificationFactory.ACTION_PAUSE -> {
                         dao.updateState(taskId, BackgroundTaskState.PAUSED, System.currentTimeMillis())
@@ -29,11 +29,13 @@ class TaskActionReceiver : BroadcastReceiver() {
                         BackgroundTaskScheduler.enqueue(context, taskId)
                     }
                     TaskNotificationFactory.ACTION_CANCEL -> {
+                        val isRunning = task.state == BackgroundTaskState.RUNNING ||
+                            TaskExecutionRegistry.isActive(taskId)
                         dao.updateState(taskId, BackgroundTaskState.CANCELLED, System.currentTimeMillis())
-                        if (TaskExecutionRegistry.isActive(taskId)) {
+                        if (isRunning) {
                             NativeBackgroundTasksModule.emitInterruption(taskId, "cancel")
                         }
-                        BackgroundTaskScheduler.cancel(context, taskId)
+                        BackgroundTaskScheduler.cancel(context, taskId, isRunning)
                         TaskNotificationFactory.dismiss(context, taskId)
                     }
                 }

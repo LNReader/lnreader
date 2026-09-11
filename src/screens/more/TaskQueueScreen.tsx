@@ -11,7 +11,14 @@ import { useTheme } from '@hooks/persisted';
 
 import { showToast } from '../../utils/showToast';
 import { getString } from '@i18n/translations';
-import { Appbar, EmptyView, Menu, SafeAreaView } from '@components';
+import {
+  Appbar,
+  ConfirmationDialog,
+  EmptyView,
+  IconButtonV2,
+  Menu,
+  SafeAreaView,
+} from '@components';
 import { TaskQueueScreenProps } from '@navigators/types';
 import {
   BACKGROUND_TASKS_STORE_KEY,
@@ -29,6 +36,7 @@ const DownloadQueue = ({ navigation }: TaskQueueScreenProps) => {
   );
   const [isRunning, setIsRunning] = useState(backgroundTasks.isRunning);
   const [visible, setVisible] = useState(false);
+  const [taskToCancel, setTaskToCancel] = useState<QueuedBackgroundTask>();
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
   useEffect(() => {
@@ -37,8 +45,6 @@ const DownloadQueue = ({ navigation }: TaskQueueScreenProps) => {
       setIsRunning(false);
     }
   }, [taskQueue]);
-
-  //TODO: there should probably be a way to cancel a specific task from this screen
 
   return (
     <SafeAreaView excludeTop>
@@ -76,24 +82,39 @@ const DownloadQueue = ({ navigation }: TaskQueueScreenProps) => {
 
       <FlatList
         contentContainerStyle={styles.paddingBottom}
-        keyExtractor={(item, index) => 'task_' + index}
+        keyExtractor={item => item.id}
         data={taskQueue || []}
         renderItem={({ item }) => (
           <View style={styles.padding}>
-            <Text style={{ color: theme.onSurface }}>{item.meta.name}</Text>
-            {item.meta.progressText ? (
-              <Text style={{ color: theme.onSurfaceVariant }}>
-                {item.meta.progressText}
-              </Text>
-            ) : null}
-            <ProgressBar
-              indeterminate={
-                item.meta.isRunning && item.meta.progress === undefined
-              }
-              progress={item.meta.progress}
-              color={theme.primary}
-              style={[{ backgroundColor: theme.surface2 }, styles.marginTop]}
-            />
+            <View style={styles.taskRow}>
+              <View style={styles.taskDetails}>
+                <Text style={{ color: theme.onSurface }}>{item.meta.name}</Text>
+                {item.meta.progressText ? (
+                  <Text style={{ color: theme.onSurfaceVariant }}>
+                    {item.meta.progressText}
+                  </Text>
+                ) : null}
+                <ProgressBar
+                  indeterminate={
+                    item.meta.isRunning && item.meta.progress === undefined
+                  }
+                  progress={item.meta.progress}
+                  color={theme.primary}
+                  style={[
+                    { backgroundColor: theme.surface2 },
+                    styles.marginTop,
+                  ]}
+                />
+              </View>
+              <IconButtonV2
+                accessibilityLabel={`${getString('common.cancel')} ${
+                  item.meta.name
+                }`}
+                name="close"
+                onPress={() => setTaskToCancel(item)}
+                theme={theme}
+              />
+            </View>
           </View>
         )}
         ListEmptyComponent={
@@ -127,6 +148,19 @@ const DownloadQueue = ({ navigation }: TaskQueueScreenProps) => {
           }}
         />
       ) : null}
+      <ConfirmationDialog
+        title={getString('taskQueue.cancelTaskTitle')}
+        message={getString('taskQueue.cancelTaskConfirmation', {
+          task: taskToCancel?.meta.name ?? '',
+        })}
+        visible={taskToCancel !== undefined}
+        confirmLabel={getString('taskQueue.cancelTaskAction')}
+        cancelLabel={getString('taskQueue.keepTaskAction')}
+        onDismiss={() => setTaskToCancel(undefined)}
+        onConfirm={() =>
+          taskToCancel ? backgroundTasks.cancel(taskToCancel.id) : undefined
+        }
+      />
     </SafeAreaView>
   );
 };
@@ -143,4 +177,6 @@ const styles = StyleSheet.create({
   marginTop: { marginTop: 8 },
   paddingBottom: { paddingBottom: 100, flexGrow: 1 },
   padding: { padding: 16 },
+  taskDetails: { flex: 1 },
+  taskRow: { alignItems: 'center', flexDirection: 'row', gap: 8 },
 });

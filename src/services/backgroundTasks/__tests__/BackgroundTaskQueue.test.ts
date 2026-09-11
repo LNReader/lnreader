@@ -8,6 +8,7 @@ let mockStoredTasks: unknown[] = [];
 jest.mock('@modules/native-background-tasks', () => ({
   __esModule: true,
   default: {
+    cancel: jest.fn().mockResolvedValue(undefined),
     complete: jest.fn(),
     enqueue: jest.fn().mockResolvedValue('native-task-1'),
     fail: jest.fn(),
@@ -139,6 +140,51 @@ describe('BackgroundTaskQueue completion notifications', () => {
 
     expect(NativeBackgroundTasks.enqueue).toHaveBeenCalled();
     expect(showToast).not.toHaveBeenCalled();
+  });
+
+  it('cancels only the selected task', async () => {
+    mockStoredTasks = [
+      {
+        id: 'first',
+        task,
+        state: 'running',
+        meta: { name: 'First', isRunning: true },
+      },
+      {
+        id: 'second',
+        task,
+        state: 'queued',
+        meta: { name: 'Second', isRunning: false },
+      },
+    ];
+
+    await new BackgroundTaskQueue().cancel('second');
+
+    expect(NativeBackgroundTasks.cancel).toHaveBeenCalledWith('second');
+    expect(mockStoredTasks).toEqual([expect.objectContaining({ id: 'first' })]);
+  });
+
+  it('cancels an enqueue that is selected before its native id is ready', async () => {
+    const queue = new BackgroundTaskQueue();
+    let resolveEnqueue!: (id: string) => void;
+    jest.mocked(NativeBackgroundTasks.enqueue).mockReturnValueOnce(
+      new Promise(resolve => {
+        resolveEnqueue = resolve;
+      }),
+    );
+
+    queue.enqueue(task);
+    await Promise.resolve();
+    await Promise.resolve();
+    const pendingId = (mockStoredTasks[0] as { id: string }).id;
+
+    await queue.cancel(pendingId);
+    resolveEnqueue('native-task-2');
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(NativeBackgroundTasks.cancel).toHaveBeenCalledWith('native-task-2');
+    expect(mockStoredTasks).toEqual([]);
   });
 
   it('keeps progress updates scoped to concurrently running tasks', async () => {

@@ -19,6 +19,9 @@ interface BackgroundTaskDao {
     @Query("SELECT * FROM background_tasks WHERE type = :type AND state IN ('queued', 'running', 'paused') LIMIT 1")
     suspend fun getActiveByType(type: String): BackgroundTaskEntity?
 
+    @Query("SELECT * FROM background_tasks WHERE queueName = :queueName AND state = 'queued' ORDER BY createdAt ASC")
+    suspend fun getQueuedByQueueName(queueName: String): List<BackgroundTaskEntity>
+
     @Query("UPDATE background_tasks SET state = :state, updatedAt = :updatedAt WHERE id = :id")
     suspend fun updateState(id: String, state: String, updatedAt: Long)
 

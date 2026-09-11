@@ -331,6 +331,10 @@ export interface StringMap {
   'downloadScreen.noDownloads': 'string';
   'downloadScreen.pluginNotFound': 'string';
   'downloadScreen.removeDownloadsWarning': 'string';
+  'taskQueue.cancelTaskAction': 'string';
+  'taskQueue.cancelTaskTitle': 'string';
+  'taskQueue.cancelTaskConfirmation': 'string';
+  'taskQueue.keepTaskAction': 'string';
   'errorBoundary.title': 'string';
   'errorBoundary.description': 'string';
   'errorBoundary.copyStackTrace': 'string';

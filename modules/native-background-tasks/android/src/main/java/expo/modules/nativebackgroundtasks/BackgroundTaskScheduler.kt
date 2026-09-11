@@ -37,8 +37,17 @@ object BackgroundTaskScheduler {
         return request.id
     }
 
-    suspend fun cancel(context: Context, taskId: String) {
+    suspend fun cancel(context: Context, taskId: String, isRunning: Boolean) {
+        // A queued worker must finish as a no-op so WorkManager does not cancel
+        // every task chained after it.
+        if (!isRunning) return
+
         WorkManager.getInstance(context).cancelAllWorkByTag(taskId).await()
+        val dao = BackgroundTaskDatabase.get(context).tasks()
+        val queueName = dao.get(taskId)?.queueName ?: return
+        // Cancelling running work also cancels its dependents, so rebuild the
+        // remaining queue after the worker has stopped.
+        dao.getQueuedByQueueName(queueName).forEach { enqueue(context, it.id) }
     }
 
     suspend fun enqueueLibraryUpdate(
