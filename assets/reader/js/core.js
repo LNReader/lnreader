@@ -211,12 +211,19 @@ window.tts = new (function () {
 
   this.normalizeText = text => {
     if (!text) return '';
-    return text
+    const normalized = text
       .replace(/\s+/g, ' ')
       .trim()
       .replace(/^["'“”‘’]+|["'“”‘’]+$/g, '')
       .replace(/\s*([.,!?;:])\s*/g, '$1 ')
       .trim();
+
+    const dashOnlyText = normalized.replace(/\s/g, '');
+    if (dashOnlyText.length >= 3 && /^[\-‐‑‒–—―﹘﹣－]+$/u.test(dashOnlyText)) {
+      return '';
+    }
+
+    return normalized;
   };
 
   // if can find a readable node, else stop tts

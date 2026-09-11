@@ -71,10 +71,13 @@ const loadTtsTraversal = (chapterElement: TestElement): TtsTraversal => {
   return context.window.tts;
 };
 
-const getQueuedText = (chapter: TestElement): string[] =>
-  loadTtsTraversal(chapter)
+const getQueuedText = (chapter: TestElement): string[] => {
+  const tts = loadTtsTraversal(chapter);
+  return tts
     .getAllReadableElements(chapter)
-    .map(readableElement => readableElement.innerText);
+    .map(readableElement => tts.normalizeText(readableElement.innerText))
+    .filter(Boolean);
+};
 
 describe('reader TTS traversal', () => {
   describe('text normalization', () => {
@@ -98,6 +101,17 @@ describe('reader TTS traversal', () => {
         'He said “hello” before leaving.',
       );
     });
+
+    it.each(['---', '————', '— — —'])('skips dash-only divider %s', input => {
+      expect(tts.normalizeText(input)).toBe('');
+    });
+
+    it.each(['—', '— Hello', 'Wait---what?'])(
+      'preserves prose punctuation %s',
+      input => {
+        expect(tts.normalizeText(input)).toBe(input);
+      },
+    );
   });
 
   it('queues paragraphs wrapped in spans only once', () => {
@@ -146,6 +160,20 @@ describe('reader TTS traversal', () => {
         element('p', text('First paragraph')),
         element('p', text('Second paragraph')),
       ),
+    );
+
+    expect(getQueuedText(chapter)).toEqual([
+      'First paragraph',
+      'Second paragraph',
+    ]);
+  });
+
+  it('does not queue dash-only divider paragraphs', () => {
+    const chapter = element(
+      'div',
+      element('p', text('First paragraph')),
+      element('p', text('----------------')),
+      element('p', text('Second paragraph')),
     );
 
     expect(getQueuedText(chapter)).toEqual([
