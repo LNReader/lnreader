@@ -219,7 +219,10 @@ window.tts = new (function () {
       .trim();
 
     const dashOnlyText = normalized.replace(/\s/g, '');
-    if (dashOnlyText.length >= 3 && /^[\-‐‑‒–—―﹘﹣－]+$/u.test(dashOnlyText)) {
+    if (
+      dashOnlyText.length >= 3 &&
+      /^[\-‐‑‒–—―−⁓⸺⸻﹘﹣－]+$/u.test(dashOnlyText)
+    ) {
       return '';
     }
 

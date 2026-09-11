@@ -102,9 +102,12 @@ describe('reader TTS traversal', () => {
       );
     });
 
-    it.each(['---', '————', '— — —'])('skips dash-only divider %s', input => {
-      expect(tts.normalizeText(input)).toBe('');
-    });
+    it.each(['---', '————', '— — —', '−−−', '⁓⁓⁓', '⸺⸺⸺', '⸻⸻⸻'])(
+      'skips dash-only divider %s',
+      input => {
+        expect(tts.normalizeText(input)).toBe('');
+      },
+    );
 
     it.each(['—', '— Hello', 'Wait---what?'])(
       'preserves prose punctuation %s',
