@@ -383,6 +383,12 @@
     "pluginNotFound": "Tillägget hittades inte!",
     "removeDownloadsWarning": "Är du säker? Alla nedladdade kapitel kommer att tas bort."
   },
+  "taskQueue": {
+    "cancelTaskAction": "Cancel task",
+    "cancelTaskTitle": "Cancel task?",
+    "cancelTaskConfirmation": "Are you sure you want to cancel %{task}?",
+    "keepTaskAction": "Keep task"
+  },
   "errorBoundary": {
     "title": "Ett oväntat fel uppstod",
     "description": "Ett oväntat fel uppstod i programmet. Kopiera stackspåret nedan och dela det i vår supportkanal på Discord.",
