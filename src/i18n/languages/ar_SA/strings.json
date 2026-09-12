@@ -383,6 +383,12 @@
     "pluginNotFound": "لم يتم العثور على الإضافة!",
     "removeDownloadsWarning": "هل أنت متأكد؟ سيتم حذف جميع الفصول المحملة."
   },
+  "taskQueue": {
+    "cancelTaskAction": "Cancel task",
+    "cancelTaskTitle": "Cancel task?",
+    "cancelTaskConfirmation": "Are you sure you want to cancel %{task}?",
+    "keepTaskAction": "Keep task"
+  },
   "errorBoundary": {
     "title": "An Unexpected Error Occurred",
     "description": "The application ran into an unexpected error. Please copy the stack trace below and share it on our Discord support channel.",
